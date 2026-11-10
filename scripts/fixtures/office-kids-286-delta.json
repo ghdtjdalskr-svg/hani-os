@@ -1,0 +1,14 @@
+{
+  "release": "5f40eb405cc057a16dc8f30ebc195ff5aed8d77c",
+  "schema": 1,
+  "files": {
+    "hani-office-live.js": {
+      "afterSha256": "1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850",
+      "beforeSha256": "8d2db07921446cca8a234acfff4f026a2d44f0fdb2dedcea241dba6f462cd54e"
+    },
+    "hani-office-live.css": {
+      "afterSha256": "a7aaa77fa50268e4e01a698f1c6b932a214e709bdac732028d308353a068406e",
+      "beforeSha256": "08d17d38c291d85481b2315f1579be6af265b677f62c3be6f2c0ed643f73eee5"
+    }
+  }
+}

@@ -2,6 +2,38 @@
   "schema": 1,
   "layers": [
     {
+      "from": "2.9.285",
+      "to": "2.9.286",
+      "files": {
+        "index.html": {
+          "count": 60,
+          "after": "fe7d00e8ad34b0095872144c434e6d299df240f6b4e89f46da29ff2bdc59e72c",
+          "before": "78ad579c21526aa39fef2dc89e320b98724d11457b4bc8bb9d413b459b5dd18a"
+        },
+        "hani-main.js": {
+          "count": 1,
+          "after": "8d5e861e7a076b012e8eafc93b94258945659122dac9ec5cb92be687897a8773",
+          "before": "1b245194f5fc6dfc4184e44c187f08b071870efca7989cbf8ed28c94425efbf2"
+        },
+        "assets/data/hani-history-releases-v1.json": {
+          "count": 1,
+          "after": "bad8ec62479c9f4d05322c76ec21299d33b7045ebacf0b73e138ee1036d512ff",
+          "before": "4859f87461dfb78db3f72a1da2fab07d0ba2b95c806dccbc6e685732b2defd01",
+          "replacements": [
+            {
+              "after": "6\",\n      \"date\": \"2026-11-09\",\n      \"status\": \"released\",\n      \"title\": \"꼬마 남매 평일 매일 방문\",\n      \"category\": \"하니 그룹\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.286 꼬마 남매 평일 매일 방문\"\n      }\n    },\n    {\n      \"id\": \"v2.9.285\",\n      \"date\": \"2026-11-09\",\n      \"status\": \"released\",\n      \"title\": \"뉴스룸 4컷 2호와 지난 호 보기\",\n      \"category\": \"뉴스·학습\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"b5f54978226bc209ee60ec7f10cd3d92474bfa05\",\n        \"subject\": \"release: v2.9.285 뉴스룸 4컷 2호와 지난 호 보기 (#477)",
+              "before": "5\",\n      \"date\": \"2026-11-09\",\n      \"status\": \"released\",\n      \"title\": \"뉴스룸 4컷 2호와 지난 호 보기\",\n      \"category\": \"뉴스·학습\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.285 뉴스룸 4컷 2호와 지난 호 보기"
+            }
+          ]
+        }
+      },
+      "feature": {
+        "module": "./hani-office-kids-286-source.cjs",
+        "restore": "restoreKids286Source",
+        "fixture": "./fixtures/office-kids-286-delta.json"
+      }
+    },
+    {
       "from": "2.9.284",
       "to": "2.9.285",
       "files": {

@@ -1,0 +1,50 @@
+﻿[
+    {
+        "exit":  0,
+        "file":  "hani-office-live.js"
+    },
+    {
+        "exit":  0,
+        "file":  "scripts/hani-office-kids-pose-b-source.cjs"
+    },
+    {
+        "exit":  0,
+        "file":  "scripts/hani-office-kids-pose-b.test.mjs"
+    },
+    {
+        "exit":  0,
+        "file":  "scripts/hani-office-kids-lively.test.mjs"
+    },
+    {
+        "exit":  0,
+        "file":  "scripts/hani-office-kids-weekday-source.cjs"
+    },
+    {
+        "exit":  0,
+        "file":  "scripts/hani-office-kids-weekday.test.mjs"
+    },
+    {
+        "exit":  0,
+        "file":  "artifacts/kids-weekday/patch.mjs"
+    },
+    {
+        "exit":  0,
+        "file":  "artifacts/kids-weekday/capture-office.mjs"
+    },
+    {
+        "exit":  0,
+        "file":  "artifacts/kids-weekday/validate.mjs"
+    },
+    {
+        "exit":  0,
+        "file":  "artifacts/kids-weekday/baseline-read.cjs"
+    },
+    {
+        "exit":  0,
+        "file":  "artifacts/kids-weekday/preserve-generated.mjs"
+    },
+    {
+        "exit":  0,
+        "file":  "artifacts/kids-weekday/summarize.mjs"
+    }
+]

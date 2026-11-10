@@ -1,0 +1,7 @@
+# 꼬마 방문 포즈 B 적용
+
+- 2026-11-08 KST · Codex · `hani/kids-visit-pose-b` · base/main `70c5d5d` 일치(GitHub 조회). **구현·실행 가능한 검증 완료 / 미커밋.** push/merge/버전 변경 없음(2.9.280 유지).
+- [kids-v2.webp](../../assets/office-companions/kids-v2.webp): 투명 RGBA **384×1152, 4열×8행, 96×144 셀, pivot [48,135]**. 원본 16프레임의 보이는 RGBA 픽셀 보존 + B 손 흔들기·의자 독서/바닥 앉기·놀람/삐짐·팔짱/매달리기 16프레임. [v1/v2 비교](compare-v1-v2.png). built-in **image_gen**에 v1·B안·표정 기준을 함께 제공했고, 생성물의 추가 포즈를 정렬·무손실 WebP 변환했습니다. [프롬프트](PROMPTS.json) · [배치](atlas-layout.json).
+- 기존 `companionAtlas`·`companionActivity`·방문 owner·persistent slot/100ms tick에서 연결. 이동·직원 대화가 대기 포즈보다 우선하며, 접근은 기존 가구/거리 검사 통과 시만 허용. **새 storage/timer/listener 0**, v1·manifest·main/index·Cloud 경로 보존. 실제 4F 11:51:58.75~59.75에 수연 매달리기 및 보행 복귀 재현([일정 증거](natural-pose-evidence.json)).
+- **꼬마 B/기존 활동/방문 13/13·15/15·16/16, M9 15/15 PASS**, syntax·diff check PASS. 사무실 **68파일: 730통과·34건 Git subprocess EPERM 차단·3 skip**, 전체 PASS 아님(219도 Git 선행 조건에서 차단). 기존 exact-inverse assertion/고정 계약은 보존하고 이번 변경만 되돌리는 바깥 레이어 추가. [최종 집계·파일별 로그](test-summary.json) · [보존·의존성 증거](validation.json): closure161·누락0, 기존 시트2종 해시·scheduler 바이트 동일.
+- **차단:** Edge `spawn EPERM`으로 PC1280/폰390 PNG·실화면 접촉/레이아웃 미검증([촬영 스크립트](capture-office.mjs), [로그](browser-results.json)). Git `index.lock Permission denied`로 새 커밋 없음. Notion 쓰기는 자동 승인 검토 `approval policy is never`로 거절돼 미반영. 다음은 허용 환경에서 촬영·이 작업만 로컬 커밋이며, push/merge/버전 변경은 별도 지시 전 금지입니다.

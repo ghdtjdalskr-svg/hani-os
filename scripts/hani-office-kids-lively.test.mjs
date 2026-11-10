@@ -3,8 +3,10 @@ import {loadScene,at} from './hani-office-lively-fixture.mjs';
 import {fixture as mountFixture} from './hani-building-206-engine.test.mjs';import {assets} from './hani-office-v2-fixture.mjs';
 import {restoreKids278Source,projectPreKidsSource,projectPreVisitsSource,projectPreStaffChatSource,projectPreCompanionHomesSource} from './hani-office-chairman-patrol-278-source.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
+import kidsPoseB from './hani-office-kids-pose-b-source.cjs';
+import weekday from './hani-office-kids-weekday-source.cjs';
 const fixture=(...args)=>{while(args.length<5)args.push(undefined);return mountFixture(...args,projectPreVisitsSource)};
-const {scene,table}=loadScene(),r=scene.residents,plain=x=>JSON.parse(JSON.stringify(x)),day='2026-11-07',options={chairmanPresent:true};
+const {scene,table}=loadScene({transform:weekday.projectPreKidsWeekdaySource}),r=scene.residents,plain=x=>JSON.parse(JSON.stringify(x)),day='2026-11-07',options={chairmanPresent:true};
 const chair=(floor='4f',extra={})=>({floors:[{id:floor,people:[{id:'seongmin',floor,position:[51,70],pose:'sitting',walking:false,facing:'right',...extra}]}]});
 const kids=(sec,snap=chair(),reduced=false)=>r.companionSnapshot(at(day,sec),snap,true,reduced).filter(p=>p.kid);
 const delta=(a,b)=>Math.hypot((a[0]-b[0])*scene.art.width/100,(a[1]-b[1])*scene.art.height/100);
@@ -67,7 +69,7 @@ test('latest mounted slots rotate every new dialogue, retain taps/bubble, reduce
  assert.equal(r.companions.find(p=>p.id==='kid-suyeon').lines.length,10);assert.equal(r.companions.find(p=>p.id==='kid-suhyeon').lines.length,6);
 });
 test('kids add no runtime files or atlas/CSS bytes',async()=>{
- const read=f=>fs.readFileSync(f),a=await resolveRuntimeClosure({exists:fs.existsSync,read}),b=await resolveRuntimeClosure({exists:fs.existsSync,read:f=>f==='hani-office-live.js'?restoreKids278Source(read(f).toString()):read(f)});assert.deepEqual(a.files,b.files);assert.deepEqual(a.missing,[]);assert.equal(fs.readFileSync('hani-office-live.css','utf8'),fs.readFileSync('artifacts/kids-lively/baseline/hani-office-live.css','utf8'));
+ const read=f=>kidsPoseB.projectPreKidsPoseBSource(fs.readFileSync(f).toString(),f),a=await resolveRuntimeClosure({exists:fs.existsSync,read}),b=await resolveRuntimeClosure({exists:fs.existsSync,read:f=>f==='hani-office-live.js'?restoreKids278Source(read(f).toString()):read(f)});assert.deepEqual(a.files,b.files);assert.deepEqual(a.missing,[]);assert.equal(read('hani-office-live.css'),fs.readFileSync('artifacts/kids-lively/baseline/hani-office-live.css','utf8'));
 });
 
 test('actual staff response survives the child bubble duration through the single mounted owner',()=>{
