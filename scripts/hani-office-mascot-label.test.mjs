@@ -1,3 +1,4 @@
+import kidsPoseB from './hani-office-kids-pose-b-source.cjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -8,7 +9,7 @@ import {assets} from './hani-office-v2-fixture.mjs';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
 
-const source=fs.readFileSync('hani-office-live.js','utf8'),base=inverse.restoreMascotLabelSource(source);
+const source=kidsPoseB.projectPreKidsPoseBSource(fs.readFileSync('hani-office-live.js','utf8')),base=inverse.restoreMascotLabelSource(source);
 const expected={'companion-frog':'전략기획실 마스코트','companion-penguin':'개발실 마스코트','companion-chick':'라이프&엔터 마스코트','companion-fox':'재무실 마스코트','companion-otter':'기업솔루션 마스코트'};
 const homes={'companion-frog':'4f','companion-penguin':'3f','companion-chick':'2f','companion-fox':'2f','companion-otter':'1f'};
 const read=f=>fs.readFileSync(f,'utf8'),plain=x=>JSON.parse(JSON.stringify(x));
@@ -70,7 +71,7 @@ test('other pets, NPCs and siblings retain name/title/aria/auxiliary text; masco
 });
 
 test('all week movement/floors/following/dialogue states are identical; timer/listener/storage owners and runtime closure are unchanged',async()=>{
- const current=loadScene().scene,old=loadScene({transform:inverse.projectPreMascotLabelSource}).scene;
+ const current=loadScene({transform:kidsPoseB.projectPreKidsPoseBSource}).scene,old=loadScene({transform:inverse.projectPreMascotLabelSource}).scene;
  for(let d=2;d<=8;d++)for(const seconds of [0,25200,36000,50400,72000,86399])for(const present of [false,true]){
   const now=at('2026-11-0'+d,seconds),staff=current.snapshot(now,{chairmanPresent:present}),res=current.residents.snapshot(now,staff);assert.deepEqual(plain(staff),plain(old.snapshot(now,{chairmanPresent:present})));assert.deepEqual(plain(res),plain(old.residents.snapshot(now,staff)));assert.deepEqual(plain(current.residents.companionSnapshot(now,staff,true,false,res)),plain(old.residents.companionSnapshot(now,staff,true,false,res)));
  }

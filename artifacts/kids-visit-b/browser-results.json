@@ -1,0 +1,134 @@
+{
+  "result": "pass",
+  "date": "2026-11-08",
+  "source": "local actual office section/runtime/assets, isolated fresh context",
+  "checks": [
+    {
+      "file": "office-1280-wave.png",
+      "width": 1280,
+      "clock": "2026-11-08T01:00:14.000Z",
+      "overflow": false,
+      "kids": [
+        {
+          "id": "kid-suhyeon",
+          "pose": "sitting",
+          "facing": "right",
+          "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+          "frame": "33.3333% 14.2857%",
+          "position": [
+            13.648325358851674,
+            21.623804463336874
+          ]
+        },
+        {
+          "id": "kid-suyeon",
+          "pose": "wave",
+          "facing": "right",
+          "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+          "frame": "0% 100%",
+          "position": [
+            8.145933014354068,
+            21.623804463336874
+          ]
+        }
+      ],
+      "writes": []
+    },
+    {
+      "file": "office-1280-seat-b.png",
+      "width": 1280,
+      "clock": "2026-11-08T01:00:21.000Z",
+      "overflow": false,
+      "kids": [
+        {
+          "id": "kid-suhyeon",
+          "pose": "sitting",
+          "facing": "right",
+          "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+          "frame": "33.3333% 14.2857%",
+          "position": [
+            13.648325358851674,
+            21.623804463336874
+          ]
+        },
+        {
+          "id": "kid-suyeon",
+          "pose": "seat-b",
+          "facing": "right",
+          "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+          "frame": "33.3333% 100%",
+          "position": [
+            8.145933014354068,
+            21.623804463336874
+          ]
+        }
+      ],
+      "writes": []
+    },
+    {
+      "file": "office-390-wave.png",
+      "width": 390,
+      "clock": "2026-11-08T01:00:14.000Z",
+      "overflow": false,
+      "kids": [
+        {
+          "id": "kid-suhyeon",
+          "pose": "sitting",
+          "facing": "right",
+          "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+          "frame": "33.3333% 14.2857%",
+          "position": [
+            13.648325358851674,
+            21.623804463336874
+          ]
+        },
+        {
+          "id": "kid-suyeon",
+          "pose": "wave",
+          "facing": "right",
+          "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+          "frame": "0% 100%",
+          "position": [
+            8.145933014354068,
+            21.623804463336874
+          ]
+        }
+      ],
+      "writes": []
+    },
+    {
+      "file": "office-390-seat-b.png",
+      "width": 390,
+      "clock": "2026-11-08T01:00:21.000Z",
+      "overflow": false,
+      "kids": [
+        {
+          "id": "kid-suhyeon",
+          "pose": "sitting",
+          "facing": "right",
+          "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+          "frame": "33.3333% 14.2857%",
+          "position": [
+            13.648325358851674,
+            21.623804463336874
+          ]
+        },
+        {
+          "id": "kid-suyeon",
+          "pose": "seat-b",
+          "facing": "right",
+          "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+          "frame": "33.3333% 100%",
+          "position": [
+            8.145933014354068,
+            21.623804463336874
+          ]
+        }
+      ],
+      "writes": []
+    }
+  ],
+  "errors": [],
+  "writes": [],
+  "browser": "157.0.4341.42"
+}

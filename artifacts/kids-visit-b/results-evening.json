@@ -1,0 +1,2917 @@
+{
+  "task": "kidsb-evening",
+  "dateKST": "2026-11-09~10",
+  "owner": "Codex (one developer and automated tests)",
+  "worktree": "kids-visit-b",
+  "branch": "hani/kids-visit-pose-b",
+  "providedHead": "818db42",
+  "gitCommands": 0,
+  "remoteFreshness": "not checked: task prohibits Git",
+  "status": "implemented; targeted and requested tests completed; existing metadata failures and Git checks need release owner follow-up",
+  "changedFiles": [
+    "hani-office-live.js",
+    "scripts/fixtures/office-kids-daily-delta.json",
+    "scripts/hani-office-kids-daily-source.cjs",
+    "scripts/hani-office-kids-weekday.test.mjs",
+    "scripts/hani-office-kids-merge.test.mjs"
+  ],
+  "approval": "../kidsb-evening-task.md read completely as UTF-8; Korean intact; time change and specified test/fixture updates only",
+  "risk": {
+    "tier": "NORMAL",
+    "chairman": "5 weekdays x 240 minutes: with chairmanPresent=true, chairman present and one safe child in all 1200 samples; absence hides the child by existing policy; normal presence requires unlocked visible/active app with 10-minute grace or existing active override",
+    "night": "child window [18:00,22:00) does not overlap residentClock night [22:00,02:00)",
+    "visual": "Edge157 PC1280/mobile390; 20 scene checks, 4 inspected PNGs; 4F actual schedule and 5F test-only injected chairman position; no overflow, JS errors or writes",
+    "newIssuesFound": [],
+    "existingBlocker": "hani-history-releases-v1.json hash disagrees with release layer pins; 4 failures in 3 files reproduced with all five changed files restored to initial bytes via read-only process-local snapshot preload; no runtime/source fixes outside scope"
+  },
+  "audit": {
+    "syntax": [
+      {
+        "file": "hani-office-live.js",
+        "exit": 0,
+        "stderr": ""
+      },
+      {
+        "file": "scripts/hani-office-kids-daily-source.cjs",
+        "exit": 0,
+        "stderr": ""
+      },
+      {
+        "file": "scripts/hani-office-kids-weekday.test.mjs",
+        "exit": 0,
+        "stderr": ""
+      },
+      {
+        "file": "scripts/hani-office-kids-merge.test.mjs",
+        "exit": 0,
+        "stderr": ""
+      }
+    ],
+    "inverse": {
+      "dailyHash": "7e941be508a5efea0c309c8c689cd32bf976d3122a49ac34c7579e33acf67f36",
+      "weekdayHash": "6ed8145767ab7e0f762a64aba892182cd1df8c2c015cf23007056b818a758aaa",
+      "bbe71c0Hash": "3c64d0e91bea897d3ee59a3e406a710934b40c2299abb9d9c0e10cd3d6d1fe1d",
+      "baselineHash": "3c64d0e91bea897d3ee59a3e406a710934b40c2299abb9d9c0e10cd3d6d1fe1d",
+      "baselineBytes": 436700,
+      "bufferRoundTrip": true
+    },
+    "ownerBefore": "4eb2dd2a1834b766c712e3aa9553a000191336a66aa02e2f0e50a5aaf5805f6b",
+    "ownerAfter": "1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850",
+    "runtimeChangedBytes": 3,
+    "crlf": 252,
+    "lf": 4705,
+    "tokenCounts": [
+      {
+        "pattern": "/\\b(?:localStorage|sessionStorage)\\b/g",
+        "before": 2,
+        "after": 2
+      },
+      {
+        "pattern": "/\\b(?:setInterval|setTimeout|addEventListener)\\s*\\(/g",
+        "before": 21,
+        "after": 21
+      },
+      {
+        "pattern": "/\\b(?:supabase|cloudClient)\\b/g",
+        "before": 0,
+        "after": 0
+      },
+      {
+        "pattern": "/hani_os_life_v23/g",
+        "before": 0,
+        "after": 0
+      },
+      {
+        "pattern": "/2\\.9\\.15-safe-baseline-bootstrap/g",
+        "before": 0,
+        "after": 0
+      }
+    ],
+    "versionUnchanged": true,
+    "fixtureHash": "034494e170a749911d593ea97b1de09ce919d19503eebd61b47f6aeeb9dd7004",
+    "closure": {
+      "files": 164,
+      "missing": [],
+      "kidsV2": true
+    },
+    "runtimeAssets": {
+      "count": 503,
+      "changed": [
+        "hani-office-live.js"
+      ]
+    }
+  },
+  "office": {
+    "files": 72,
+    "pass": 787,
+    "gitBlocked": 35,
+    "otherFailures": 0,
+    "skipped": 3
+  },
+  "extras": {
+    "files": 11,
+    "pass": 78,
+    "gitBlocked": 2,
+    "otherFailures": 4,
+    "skipped": 0
+  },
+  "total": {
+    "files": 83,
+    "pass": 865,
+    "gitBlocked": 37,
+    "otherFailures": 4,
+    "skipped": 3
+  },
+  "gitBlockedFiles": [
+    "hani-dev-report-generate.test.mjs",
+    "hani-newsroom-4cut-230.test.mjs",
+    "hani-office-219.test.mjs",
+    "hani-office-actions-216.test.mjs",
+    "hani-office-affinity-274-pins.test.mjs",
+    "hani-office-barista-night-273-pins.test.mjs",
+    "hani-office-bori-stroll.test.mjs",
+    "hani-office-cafe-rest.test.mjs",
+    "hani-office-chairman-patrol-278-pins.test.mjs",
+    "hani-office-companion-homes.test.mjs",
+    "hani-office-companions-276-pins.test.mjs",
+    "hani-office-consult.test.mjs",
+    "hani-office-icons.test.mjs",
+    "hani-office-lively-v2.test.mjs",
+    "hani-office-mascot-label.test.mjs",
+    "hani-office-obr12.test.mjs",
+    "hani-office-obr14.test.mjs",
+    "hani-office-obr15.test.mjs",
+    "hani-office-obr21.test.mjs",
+    "hani-office-obr4.test.mjs",
+    "hani-office-obr6.test.mjs",
+    "hani-office-obr7.test.mjs",
+    "hani-office-obr8.test.mjs",
+    "hani-office-obr9.test.mjs",
+    "hani-office-pet-bori-272-pins.test.mjs",
+    "hani-office-pets-268-pins.test.mjs",
+    "hani-office-pets-bubble.test.mjs",
+    "hani-office-v2-215.test.mjs",
+    "hani-office-xmas-269-pins.test.mjs",
+    "hani-office-xmas.test.mjs"
+  ],
+  "performance": [
+    {
+      "file": "hani-office-cafe-rest.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-cafe-rest.test.mjs",
+      "exit": 1,
+      "elapsedMs": 3162,
+      "separateSequentialPerformanceRun": true,
+      "pass": 3,
+      "fail": 1,
+      "skipped": 0,
+      "measurements": [
+        "cafe cold plan {\n  chairmanPresent: false,\n  samples: [ 273.01379999999995, 276.0573999999999, 274.2229000000002 ]\n}",
+        "cafe cold plan {\n  chairmanPresent: true,\n  samples: [ 302.8535999999999, 306.12030000000004, 305.98030000000017 ]\n}"
+      ],
+      "failures": [
+        {
+          "test": "cafe route uses clear lower-right floor, retains the lounge and sign mounting surface",
+          "gitBlocked": true,
+          "reason": "'TASK_GIT_BLOCKED: Git invocation prevented by task'"
+        }
+      ],
+      "originalLimitsUnchanged": true
+    },
+    {
+      "file": "hani-office-lively-v2.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-lively-v2.test.mjs",
+      "exit": 1,
+      "elapsedMs": 19391,
+      "separateSequentialPerformanceRun": true,
+      "pass": 7,
+      "fail": 1,
+      "skipped": 0,
+      "measurements": [
+        "obr2 Node performance {\n  firstMs: [ 328.7758, 297.1333000000013, 281.46459999999934 ],\n  warmMs: 0.6500095000000001\n}"
+      ],
+      "failures": [
+        {
+          "test": "obr2: deterministic query order, reduced motion and frozen spatial bytes",
+          "gitBlocked": true,
+          "reason": "'TASK_GIT_BLOCKED: Git invocation prevented by task'"
+        }
+      ],
+      "originalLimitsUnchanged": true
+    }
+  ],
+  "tests": [
+    {
+      "file": "hani-office-kids-weekday.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-kids-weekday.test.mjs",
+      "exit": 0,
+      "reusedSameSourceIdentity": true,
+      "pass": 19,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-219.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-219.test.mjs",
+      "exit": 1,
+      "elapsedMs": 123,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "scripts\\hani-office-219.test.mjs",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-actions-216.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-actions-216.test.mjs",
+      "exit": 1,
+      "elapsedMs": 38523,
+      "pass": 14,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-actions-221.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-actions-221.test.mjs",
+      "exit": 0,
+      "elapsedMs": 5288,
+      "pass": 20,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-affinity-274-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-affinity-274-pins.test.mjs",
+      "exit": 1,
+      "elapsedMs": 900,
+      "pass": 2,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "274 base commit independently proves the entire original JS/CSS/helper blobs",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-affinity-cap.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-affinity-cap.test.mjs",
+      "exit": 0,
+      "elapsedMs": 6831,
+      "pass": 19,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-affinity-storage.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-affinity-storage.test.mjs",
+      "exit": 0,
+      "elapsedMs": 162,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-affinity.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-affinity.test.mjs",
+      "exit": 0,
+      "elapsedMs": 10007,
+      "pass": 21,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-barista-night-273-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-barista-night-273-pins.test.mjs",
+      "exit": 1,
+      "elapsedMs": 848,
+      "pass": 4,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "273: fixed Git release blobs independently prove every baseline pin and complete diff",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-barista-night.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-barista-night.test.mjs",
+      "exit": 0,
+      "elapsedMs": 16237,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-barista.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-barista.test.mjs",
+      "exit": 0,
+      "elapsedMs": 7772,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-behavior.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-behavior.test.mjs",
+      "exit": 0,
+      "elapsedMs": 46675,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-bori-m9.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-bori-m9.test.mjs",
+      "exit": 0,
+      "elapsedMs": 67480,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-bori-stroll.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-bori-stroll.test.mjs",
+      "exit": 1,
+      "elapsedMs": 216056,
+      "pass": 13,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "stroll inverse independently matches the fixed Git base",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-bubble-close.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-bubble-close.test.mjs",
+      "exit": 0,
+      "elapsedMs": 8102,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-chairman-234.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-chairman-234.test.mjs",
+      "exit": 0,
+      "elapsedMs": 1283,
+      "pass": 6,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-chairman-patrol-278-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-chairman-patrol-278-pins.test.mjs",
+      "exit": 1,
+      "elapsedMs": 1884,
+      "pass": 6,
+      "fail": 6,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "278 independent fixed Git blobs prove pre-patrol bytes",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        },
+        {
+          "test": "278 kids extension independently matches its fixed Git base",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        },
+        {
+          "test": "278 visit extension independently matches fixed Git base",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        },
+        {
+          "test": "278 staff-chat extension independently matches fixed Git base",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        },
+        {
+          "test": "278 bubble placement extension independently matches fixed Git base",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        },
+        {
+          "test": "278 optimization extension independently matches fixed Git base",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-chairman-patrol.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-chairman-patrol.test.mjs",
+      "exit": 0,
+      "elapsedMs": 10256,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-companion-homes.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-companion-homes.test.mjs",
+      "exit": 1,
+      "elapsedMs": 69474,
+      "pass": 15,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "home extension independently matches the specified fixed Git base",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-companions-276-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-companions-276-pins.test.mjs",
+      "exit": 1,
+      "elapsedMs": 571,
+      "pass": 2,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "276 fixed Git base independently proves every original blob",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-companions.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-companions.test.mjs",
+      "exit": 0,
+      "elapsedMs": 9556,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-consult.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-consult.test.mjs",
+      "exit": 1,
+      "elapsedMs": 26907,
+      "pass": 19,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "consult: sofa wording, counter words, safety owners and runtime timers",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-crowded-labels.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-crowded-labels.test.mjs",
+      "exit": 0,
+      "elapsedMs": 773,
+      "pass": 19,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-drama.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-drama.test.mjs",
+      "exit": 0,
+      "elapsedMs": 17296,
+      "pass": 20,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-fix-218.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-fix-218.test.mjs",
+      "exit": 0,
+      "elapsedMs": 2432,
+      "pass": 6,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-floor-bubble.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-floor-bubble.test.mjs",
+      "exit": 0,
+      "elapsedMs": 1612,
+      "pass": 21,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-hd-224.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-hd-224.test.mjs",
+      "exit": 0,
+      "elapsedMs": 2507,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-icons.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-icons.test.mjs",
+      "exit": 1,
+      "elapsedMs": 9704,
+      "pass": 14,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-kids-lively.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-kids-lively.test.mjs",
+      "exit": 0,
+      "elapsedMs": 13766,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-kids-merge.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-kids-merge.test.mjs",
+      "exit": 0,
+      "elapsedMs": 2117,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-kids-pose-b.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-kids-pose-b.test.mjs",
+      "exit": 0,
+      "elapsedMs": 11357,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-kids-visit.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-kids-visit.test.mjs",
+      "exit": 0,
+      "elapsedMs": 39579,
+      "pass": 16,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-labels-qa.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-labels-qa.test.mjs",
+      "exit": 0,
+      "elapsedMs": 6510,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-lively.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-lively.test.mjs",
+      "exit": 0,
+      "elapsedMs": 24468,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-mascot-label.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-mascot-label.test.mjs",
+      "exit": 1,
+      "elapsedMs": 27044,
+      "pass": 9,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "outer exact inverse independently restores fixed affinity HEAD and rejects partial/duplicate/unrelated edits",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-motion-1.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-motion-1.test.mjs",
+      "exit": 0,
+      "elapsedMs": 3571,
+      "pass": 16,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-motion-2.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-motion-2.test.mjs",
+      "exit": 0,
+      "elapsedMs": 1179,
+      "pass": 24,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr10.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr10.test.mjs",
+      "exit": 0,
+      "elapsedMs": 2358,
+      "pass": 4,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr12.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr12.test.mjs",
+      "exit": 1,
+      "elapsedMs": 77,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "scripts\\hani-office-obr12.test.mjs",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr14.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr14.test.mjs",
+      "exit": 1,
+      "elapsedMs": 88506,
+      "pass": 4,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr15.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr15.test.mjs",
+      "exit": 1,
+      "elapsedMs": 10586,
+      "pass": 13,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr16.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr16.test.mjs",
+      "exit": 0,
+      "elapsedMs": 7774,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr17.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr17.test.mjs",
+      "exit": 0,
+      "elapsedMs": 2453,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr18.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr18.test.mjs",
+      "exit": 0,
+      "elapsedMs": 5773,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr19.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr19.test.mjs",
+      "exit": 0,
+      "elapsedMs": 3976,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr21.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr21.test.mjs",
+      "exit": 1,
+      "elapsedMs": 26956,
+      "pass": 4,
+      "fail": 2,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        },
+        {
+          "test": "obr21 cached gathering/index decisions equal full index rebuilds",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr3.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr3.test.mjs",
+      "exit": 0,
+      "elapsedMs": 2528,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr4.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr4.test.mjs",
+      "exit": 1,
+      "elapsedMs": 472,
+      "pass": 8,
+      "fail": 2,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        },
+        {
+          "test": "obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr6.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr6.test.mjs",
+      "exit": 1,
+      "elapsedMs": 720,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "scripts\\hani-office-obr6.test.mjs",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr7.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr7.test.mjs",
+      "exit": 1,
+      "elapsedMs": 65,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "scripts\\hani-office-obr7.test.mjs",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr8.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr8.test.mjs",
+      "exit": 1,
+      "elapsedMs": 2200,
+      "pass": 2,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr9.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr9.test.mjs",
+      "exit": 1,
+      "elapsedMs": 67,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "scripts\\hani-office-obr9.test.mjs",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-pet-bori-272-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-pet-bori-272-pins.test.mjs",
+      "exit": 1,
+      "elapsedMs": 963,
+      "pass": 3,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "272: fixed Git release blobs independently prove every baseline pin and complete diff",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-pet-bori.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-pet-bori.test.mjs",
+      "exit": 0,
+      "elapsedMs": 44201,
+      "pass": 14,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-pets-268-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-pets-268-pins.test.mjs",
+      "exit": 1,
+      "elapsedMs": 340,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "v2.9.268: exact fixture pairs are the complete diff from pinned origin/main, with no other source edits",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-pets-bubble.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-pets-bubble.test.mjs",
+      "exit": 1,
+      "elapsedMs": 47464,
+      "pass": 21,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-props.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-props.test.mjs",
+      "exit": 0,
+      "elapsedMs": 4242,
+      "pass": 11,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-release-projection.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-release-projection.test.mjs",
+      "exit": 0,
+      "elapsedMs": 99,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-residents.test.mjs",
+      "exit": 0,
+      "elapsedMs": 71356,
+      "pass": 49,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-seats-215.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-seats-215.test.mjs",
+      "exit": 0,
+      "elapsedMs": 731,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-snack.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-snack.test.mjs",
+      "exit": 0,
+      "elapsedMs": 17363,
+      "pass": 26,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-staff-chat.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-staff-chat.test.mjs",
+      "exit": 0,
+      "elapsedMs": 73380,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-tap-lines.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-tap-lines.test.mjs",
+      "exit": 0,
+      "elapsedMs": 2170,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-tlayout.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-tlayout.test.mjs",
+      "exit": 0,
+      "elapsedMs": 13656,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-top-labels.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-top-labels.test.mjs",
+      "exit": 0,
+      "elapsedMs": 92,
+      "pass": 7,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-v2-215.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-v2-215.test.mjs",
+      "exit": 1,
+      "elapsedMs": 727,
+      "pass": 17,
+      "fail": 1,
+      "skipped": 2,
+      "failures": [
+        {
+          "test": "frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-visitors-cafe.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-visitors-cafe.test.mjs",
+      "exit": 0,
+      "elapsedMs": 3935,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-xmas-269-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-xmas-269-pins.test.mjs",
+      "exit": 1,
+      "elapsedMs": 491,
+      "pass": 1,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-xmas.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-xmas.test.mjs",
+      "exit": 1,
+      "elapsedMs": 1443,
+      "pass": 12,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-zoom.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-zoom.test.mjs",
+      "exit": 0,
+      "elapsedMs": 12007,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-pb-chibitoon.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-pb-chibitoon.test.mjs",
+      "exit": 1,
+      "elapsedMs": 302,
+      "pass": 4,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "one byte-identical literal sheet is reachable; raw closure reports exact additions/removals",
+          "gitBlocked": false,
+          "reason": "Expected values to be strictly deep-equal:",
+          "preExistingReproduced": true
+        }
+      ]
+    },
+    {
+      "file": "hani-procrastination-board.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-procrastination-board.test.mjs",
+      "exit": 0,
+      "elapsedMs": 361,
+      "pass": 6,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-life-bundle-source.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-life-bundle-source.test.mjs",
+      "exit": 0,
+      "elapsedMs": 485,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-study-retry.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-study-retry.test.mjs",
+      "exit": 0,
+      "elapsedMs": 315,
+      "pass": 26,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-wishlist-quick-add.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-wishlist-quick-add.test.mjs",
+      "exit": 0,
+      "elapsedMs": 146,
+      "pass": 7,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-dev-report-generate.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-dev-report-generate.test.mjs",
+      "exit": 1,
+      "elapsedMs": 260,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "scripts\\hani-dev-report-generate.test.mjs",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-newsroom-4cut-230.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-newsroom-4cut-230.test.mjs --node",
+      "exit": 1,
+      "elapsedMs": 108,
+      "pass": 7,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "release closure literal, static lazy dimensions, canonical route and no new duplicate id literals",
+          "gitBlocked": true,
+          "reason": "TASK_GIT_BLOCKED: Git invocation prevented by task"
+        }
+      ]
+    },
+    {
+      "file": "hani-newsroom-persona.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-newsroom-persona.test.mjs",
+      "exit": 0,
+      "elapsedMs": 112,
+      "pass": 4,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-newsroom-285-source.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-newsroom-285-source.test.mjs",
+      "exit": 1,
+      "elapsedMs": 95,
+      "pass": 1,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "285 version then newsroom then 284 dispatch retains every legacy pin and leaves unrecognized drift unblessed",
+          "gitBlocked": false,
+          "reason": "exact release-285 input assets/data/hani-history-releases-v1.json",
+          "preExistingReproduced": true
+        }
+      ]
+    },
+    {
+      "file": "hani-release-version-layers.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-release-version-layers.test.mjs",
+      "exit": 1,
+      "elapsedMs": 254,
+      "pass": 3,
+      "fail": 2,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "every version and history owner restores full bytes and rejects drift and repeated inverse",
+          "gitBlocked": false,
+          "reason": "Expected values to be strictly equal:",
+          "preExistingReproduced": true
+        },
+        {
+          "test": "token counts, edit uniqueness and output SHA256 are independent guards",
+          "gitBlocked": false,
+          "reason": "The input did not match the regular expression /unique complete release metadata/. Input:",
+          "preExistingReproduced": true
+        }
+      ]
+    },
+    {
+      "file": "hani-seoyun-m9.test.mjs",
+      "command": "node --require ./scripts/hani-m9-polish-preload.cjs --require ./scripts/hani-m9-link-preload.cjs --test --test-isolation=none scripts/hani-seoyun-m9.test.mjs",
+      "exit": 0,
+      "elapsedMs": 3075,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-cafe-rest.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-cafe-rest.test.mjs",
+      "exit": 1,
+      "elapsedMs": 3162,
+      "separateSequentialPerformanceRun": true,
+      "pass": 3,
+      "fail": 1,
+      "skipped": 0,
+      "measurements": [
+        "cafe cold plan {\n  chairmanPresent: false,\n  samples: [ 273.01379999999995, 276.0573999999999, 274.2229000000002 ]\n}",
+        "cafe cold plan {\n  chairmanPresent: true,\n  samples: [ 302.8535999999999, 306.12030000000004, 305.98030000000017 ]\n}"
+      ],
+      "failures": [
+        {
+          "test": "cafe route uses clear lower-right floor, retains the lounge and sign mounting surface",
+          "gitBlocked": true,
+          "reason": "'TASK_GIT_BLOCKED: Git invocation prevented by task'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-lively-v2.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-lively-v2.test.mjs",
+      "exit": 1,
+      "elapsedMs": 19391,
+      "separateSequentialPerformanceRun": true,
+      "pass": 7,
+      "fail": 1,
+      "skipped": 0,
+      "measurements": [
+        "obr2 Node performance {\n  firstMs: [ 328.7758, 297.1333000000013, 281.46459999999934 ],\n  warmMs: 0.6500095000000001\n}"
+      ],
+      "failures": [
+        {
+          "test": "obr2: deterministic query order, reduced motion and frozen spatial bytes",
+          "gitBlocked": true,
+          "reason": "'TASK_GIT_BLOCKED: Git invocation prevented by task'"
+        }
+      ]
+    }
+  ],
+  "baselineReproduction": {
+    "method": "Before-run original snapshots of all 5 changed files supplied only through a temporary process-local fs read preload; physical worktree never reverted; unchanged failing test files executed with original assertions and Git guard",
+    "ownerSha256": "4eb2dd2a1834b766c712e3aa9553a000191336a66aa02e2f0e50a5aaf5805f6b",
+    "historySha256": "bad8ec62479c9f4d05322c76ec21299d33b7045ebacf0b73e138ee1036d512ff",
+    "tests": [
+      {
+        "file": "hani-pb-chibitoon.test.mjs",
+        "exit": 1,
+        "pass": 4,
+        "fail": 1,
+        "skipped": 0,
+        "failures": [
+          {
+            "test": "one byte-identical literal sheet is reachable; raw closure reports exact additions/removals",
+            "gitBlocked": false,
+            "reason": "Same unchanged history metadata contract mismatch as current candidate; failure name and counts match."
+          }
+        ]
+      },
+      {
+        "file": "hani-newsroom-285-source.test.mjs",
+        "exit": 1,
+        "pass": 1,
+        "fail": 1,
+        "skipped": 0,
+        "failures": [
+          {
+            "test": "285 version then newsroom then 284 dispatch retains every legacy pin and leaves unrecognized drift unblessed",
+            "gitBlocked": false,
+            "reason": "Same unchanged history metadata contract mismatch as current candidate; failure name and counts match."
+          }
+        ]
+      },
+      {
+        "file": "hani-release-version-layers.test.mjs",
+        "exit": 1,
+        "pass": 3,
+        "fail": 2,
+        "skipped": 0,
+        "failures": [
+          {
+            "test": "every version and history owner restores full bytes and rejects drift and repeated inverse",
+            "gitBlocked": false,
+            "reason": "Same unchanged history metadata contract mismatch as current candidate; failure name and counts match."
+          },
+          {
+            "test": "token counts, edit uniqueness and output SHA256 are independent guards",
+            "gitBlocked": false,
+            "reason": "Same unchanged history metadata contract mismatch as current candidate; failure name and counts match."
+          }
+        ]
+      }
+    ],
+    "historyContract": {
+      "unchangedInitialAndCurrentSha256": "bad8ec62479c9f4d05322c76ec21299d33b7045ebacf0b73e138ee1036d512ff",
+      "expectedRelease285Sha256": "4859f87461dfb78db3f72a1da2fab07d0ba2b95c806dccbc6e685732b2defd01",
+      "expectedRelease284Sha256": "9534ab3375488f6ddd01d7e2f65b8c68cac8b2f0bf718cdbe78f9965061d00a5",
+      "changedByThisTask": false
+    }
+  },
+  "browser": {
+    "status": "pass",
+    "checks": [
+      {
+        "width": 1280,
+        "syntheticChairFloor": null,
+        "floor": "4f",
+        "time": "18:00:00",
+        "clock": "2026-11-09T09:00:00.000Z",
+        "overflow": 0,
+        "background": "./assets/building/floor-4f-217.webp",
+        "light": {
+          "phase": "evening",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": false
+        },
+        "night": false,
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "pose": "standing",
+            "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+            "rect": {
+              "x": 205.625,
+              "y": 263.8125,
+              "width": 55.390625,
+              "height": 83.09375
+            },
+            "spriteZ": "4"
+          }
+        ],
+        "writes": []
+      },
+      {
+        "width": 1280,
+        "syntheticChairFloor": null,
+        "floor": "4f",
+        "time": "18:30:00",
+        "clock": "2026-11-09T09:30:00.000Z",
+        "overflow": 0,
+        "background": "./assets/building/floor-4f-217.webp",
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": true
+        },
+        "night": false,
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "pose": "standing",
+            "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+            "rect": {
+              "x": 205.625,
+              "y": 263.8125,
+              "width": 55.390625,
+              "height": 83.09375
+            },
+            "spriteZ": "4"
+          }
+        ],
+        "writes": []
+      },
+      {
+        "width": 1280,
+        "syntheticChairFloor": null,
+        "floor": "4f",
+        "time": "19:00:00",
+        "clock": "2026-11-09T10:00:00.000Z",
+        "overflow": 0,
+        "background": "./assets/building/floor-4f-217.webp",
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        },
+        "night": false,
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "pose": "standing",
+            "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+            "rect": {
+              "x": 205.625,
+              "y": 263.8125,
+              "width": 55.390625,
+              "height": 83.09375
+            },
+            "spriteZ": "4"
+          }
+        ],
+        "writes": []
+      },
+      {
+        "width": 1280,
+        "syntheticChairFloor": null,
+        "floor": "4f",
+        "time": "21:59:59.999",
+        "clock": "2026-11-09T12:59:59.999Z",
+        "overflow": 0,
+        "background": "./assets/building/floor-4f-217.webp",
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        },
+        "night": false,
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "pose": "wave",
+            "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+            "rect": {
+              "x": 205.625,
+              "y": 263.8125,
+              "width": 55.390625,
+              "height": 83.09375
+            },
+            "spriteZ": "4"
+          }
+        ],
+        "writes": []
+      },
+      {
+        "width": 1280,
+        "syntheticChairFloor": null,
+        "floor": "4f",
+        "time": "22:00:00",
+        "clock": "2026-11-09T13:00:00.000Z",
+        "overflow": 0,
+        "background": "./assets/building/floor-4f-217.webp",
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        },
+        "night": true,
+        "kids": [],
+        "writes": []
+      },
+      {
+        "width": 1280,
+        "syntheticChairFloor": "5f",
+        "floor": "5f",
+        "time": "18:00:00",
+        "clock": "2026-11-09T09:00:00.000Z",
+        "overflow": 0,
+        "background": "./assets/building/floor-5f-217.webp",
+        "light": {
+          "phase": "evening",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": false
+        },
+        "night": false,
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "pose": "walk-b",
+            "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+            "rect": {
+              "x": 553.90625,
+              "y": 605.28125,
+              "width": 55.390625,
+              "height": 83.09375
+            },
+            "spriteZ": "4"
+          }
+        ],
+        "writes": []
+      },
+      {
+        "width": 1280,
+        "syntheticChairFloor": "5f",
+        "floor": "5f",
+        "time": "18:30:00",
+        "clock": "2026-11-09T09:30:00.000Z",
+        "overflow": 0,
+        "background": "./assets/building/floor-5f-night-243.webp",
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": true
+        },
+        "night": false,
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "pose": "walk-b",
+            "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+            "rect": {
+              "x": 553.90625,
+              "y": 605.28125,
+              "width": 55.390625,
+              "height": 83.09375
+            },
+            "spriteZ": "4"
+          }
+        ],
+        "writes": []
+      },
+      {
+        "width": 1280,
+        "syntheticChairFloor": "5f",
+        "floor": "5f",
+        "time": "19:00:00",
+        "clock": "2026-11-09T10:00:00.000Z",
+        "overflow": 0,
+        "background": "./assets/building/floor-5f-night-243.webp",
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        },
+        "night": false,
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "pose": "walk-b",
+            "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+            "rect": {
+              "x": 553.90625,
+              "y": 605.28125,
+              "width": 55.390625,
+              "height": 83.09375
+            },
+            "spriteZ": "4"
+          }
+        ],
+        "writes": []
+      },
+      {
+        "width": 1280,
+        "syntheticChairFloor": "5f",
+        "floor": "5f",
+        "time": "21:59:59.999",
+        "clock": "2026-11-09T12:59:59.999Z",
+        "overflow": 0,
+        "background": "./assets/building/floor-5f-night-243.webp",
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        },
+        "night": false,
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "pose": "wave",
+            "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+            "rect": {
+              "x": 553.90625,
+              "y": 605.28125,
+              "width": 55.390625,
+              "height": 83.09375
+            },
+            "spriteZ": "4"
+          }
+        ],
+        "writes": []
+      },
+      {
+        "width": 1280,
+        "syntheticChairFloor": "5f",
+        "floor": "5f",
+        "time": "22:00:00",
+        "clock": "2026-11-09T13:00:00.000Z",
+        "overflow": 0,
+        "background": "./assets/building/floor-5f-night-243.webp",
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        },
+        "night": true,
+        "kids": [],
+        "writes": []
+      },
+      {
+        "width": 390,
+        "syntheticChairFloor": null,
+        "floor": "4f",
+        "time": "18:00:00",
+        "clock": "2026-11-09T09:00:00.000Z",
+        "overflow": 0,
+        "background": "./assets/building/floor-4f-217.webp",
+        "light": {
+          "phase": "evening",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": false
+        },
+        "night": false,
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "pose": "standing",
+            "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+            "rect": {
+              "x": 67.90625,
+              "y": 416.359375,
+              "width": 26.65625,
+              "height": 40
+            },
+            "spriteZ": "4"
+          }
+        ],
+        "writes": []
+      },
+      {
+        "width": 390,
+        "syntheticChairFloor": null,
+        "floor": "4f",
+        "time": "18:30:00",
+        "clock": "2026-11-09T09:30:00.000Z",
+        "overflow": 0,
+        "background": "./assets/building/floor-4f-217.webp",
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": true
+        },
+        "night": false,
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "pose": "standing",
+            "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+            "rect": {
+              "x": 67.90625,
+              "y": 416.359375,
+              "width": 26.65625,
+              "height": 40
+            },
+            "spriteZ": "4"
+          }
+        ],
+        "writes": []
+      },
+      {
+        "width": 390,
+        "syntheticChairFloor": null,
+        "floor": "4f",
+        "time": "19:00:00",
+        "clock": "2026-11-09T10:00:00.000Z",
+        "overflow": 0,
+        "background": "./assets/building/floor-4f-217.webp",
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        },
+        "night": false,
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "pose": "standing",
+            "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+            "rect": {
+              "x": 67.90625,
+              "y": 416.359375,
+              "width": 26.65625,
+              "height": 40
+            },
+            "spriteZ": "4"
+          }
+        ],
+        "writes": []
+      },
+      {
+        "width": 390,
+        "syntheticChairFloor": null,
+        "floor": "4f",
+        "time": "21:59:59.999",
+        "clock": "2026-11-09T12:59:59.999Z",
+        "overflow": 0,
+        "background": "./assets/building/floor-4f-217.webp",
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        },
+        "night": false,
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "pose": "wave",
+            "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+            "rect": {
+              "x": 67.90625,
+              "y": 416.359375,
+              "width": 26.65625,
+              "height": 40
+            },
+            "spriteZ": "4"
+          }
+        ],
+        "writes": []
+      },
+      {
+        "width": 390,
+        "syntheticChairFloor": null,
+        "floor": "4f",
+        "time": "22:00:00",
+        "clock": "2026-11-09T13:00:00.000Z",
+        "overflow": 0,
+        "background": "./assets/building/floor-4f-217.webp",
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        },
+        "night": true,
+        "kids": [],
+        "writes": []
+      },
+      {
+        "width": 390,
+        "syntheticChairFloor": "5f",
+        "floor": "5f",
+        "time": "18:00:00",
+        "clock": "2026-11-09T09:00:00.000Z",
+        "overflow": 0,
+        "background": "./assets/building/floor-5f-217.webp",
+        "light": {
+          "phase": "evening",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": false
+        },
+        "night": false,
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "pose": "walk-b",
+            "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+            "rect": {
+              "x": 165.9375,
+              "y": 512.484375,
+              "width": 26.65625,
+              "height": 40
+            },
+            "spriteZ": "4"
+          }
+        ],
+        "writes": []
+      },
+      {
+        "width": 390,
+        "syntheticChairFloor": "5f",
+        "floor": "5f",
+        "time": "18:30:00",
+        "clock": "2026-11-09T09:30:00.000Z",
+        "overflow": 0,
+        "background": "./assets/building/floor-5f-night-243.webp",
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": true
+        },
+        "night": false,
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "pose": "walk-b",
+            "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+            "rect": {
+              "x": 165.9375,
+              "y": 512.484375,
+              "width": 26.65625,
+              "height": 40
+            },
+            "spriteZ": "4"
+          }
+        ],
+        "writes": []
+      },
+      {
+        "width": 390,
+        "syntheticChairFloor": "5f",
+        "floor": "5f",
+        "time": "19:00:00",
+        "clock": "2026-11-09T10:00:00.000Z",
+        "overflow": 0,
+        "background": "./assets/building/floor-5f-night-243.webp",
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        },
+        "night": false,
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "pose": "walk-b",
+            "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+            "rect": {
+              "x": 165.9375,
+              "y": 512.484375,
+              "width": 26.65625,
+              "height": 40
+            },
+            "spriteZ": "4"
+          }
+        ],
+        "writes": []
+      },
+      {
+        "width": 390,
+        "syntheticChairFloor": "5f",
+        "floor": "5f",
+        "time": "21:59:59.999",
+        "clock": "2026-11-09T12:59:59.999Z",
+        "overflow": 0,
+        "background": "./assets/building/floor-5f-night-243.webp",
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        },
+        "night": false,
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "pose": "wave",
+            "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+            "rect": {
+              "x": 165.9375,
+              "y": 512.484375,
+              "width": 26.65625,
+              "height": 40
+            },
+            "spriteZ": "4"
+          }
+        ],
+        "writes": []
+      },
+      {
+        "width": 390,
+        "syntheticChairFloor": "5f",
+        "floor": "5f",
+        "time": "22:00:00",
+        "clock": "2026-11-09T13:00:00.000Z",
+        "overflow": 0,
+        "background": "./assets/building/floor-5f-night-243.webp",
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        },
+        "night": true,
+        "kids": [],
+        "writes": []
+      }
+    ],
+    "errors": [],
+    "shots": [
+      "evening-1280-actual-4f.png",
+      "evening-1280-synthetic-roof.png",
+      "evening-390-actual-4f.png",
+      "evening-390-synthetic-roof.png"
+    ],
+    "browser": "157.0.4341.42",
+    "visualReview": {
+      "reviewer": "Codex direct visual inspection; independent Arin review not performed",
+      "inspectedShots": [
+        "evening-1280-actual-4f.png",
+        "evening-1280-synthetic-roof.png",
+        "evening-390-actual-4f.png",
+        "evening-390-synthetic-roof.png"
+      ],
+      "observations": [
+        "PC1280/390 실제 4F: 아이 1명·B 시트·이름표 표시, 저녁 조명 아래 외형 정상.",
+        "옥상은 일정상 자동 방문 증거가 아니며, 시험에 한해 회장 위치를 5F로 주입했다. 밤 배경·아이·회장·인사 말풍선 표시가 정상이다.",
+        "가로 넘침·화면 JS 오류·저장 호출 0, 22:00에는 아이 숨김."
+      ],
+      "screenshotsKeptInWorktree": false
+    },
+    "transitionAssertions": {
+      "light18_30": true,
+      "rooftopNightBackground18_30": true,
+      "kidEnd22": true,
+      "residentNightStart22": true
+    },
+    "shotHashes": {
+      "evening-1280-actual-4f.png": "3e9027124cef90721c9a01926321e58536216c4c93e6d6692b98f1bd3cb985b8",
+      "evening-1280-synthetic-roof.png": "a245c7104a2ce71de47a6a21ab13d70007b01fda79f81e4e9ca51a5fc85b5598",
+      "evening-390-actual-4f.png": "2ec37cbdaac204cf2abc0277520a3ead5fdc49d5fe65c6139b3cfb4f99788894",
+      "evening-390-synthetic-roof.png": "bd8c779813d42e8ad5b2f967bacb5517ae18bb7e104f348b1a8151e9a0421a18"
+    }
+  },
+  "actualScheduleRisk": {
+    "days": [
+      "2026-01-01",
+      "2026-01-02",
+      "2026-11-09",
+      "2026-11-10",
+      "2026-11-13"
+    ],
+    "minuteSamples": 1200,
+    "chairMissing": [],
+    "kidMissing": [],
+    "badSlots": [],
+    "nightOverlap": [],
+    "samples": [
+      {
+        "day": "2026-01-01",
+        "seconds": 64799.999,
+        "chair": "4f",
+        "kids": [],
+        "night": false,
+        "light": {
+          "phase": "evening",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": false
+        }
+      },
+      {
+        "day": "2026-01-01",
+        "seconds": 64800,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "floor": "4f",
+            "pose": "standing"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "evening",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": false
+        }
+      },
+      {
+        "day": "2026-01-01",
+        "seconds": 66599.999,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "floor": "4f",
+            "pose": "standing"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "evening",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": false
+        }
+      },
+      {
+        "day": "2026-01-01",
+        "seconds": 66600,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "floor": "4f",
+            "pose": "standing"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": true
+        }
+      },
+      {
+        "day": "2026-01-01",
+        "seconds": 67200,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "floor": "4f",
+            "pose": "standing"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        }
+      },
+      {
+        "day": "2026-01-01",
+        "seconds": 68400,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "floor": "4f",
+            "pose": "standing"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        }
+      },
+      {
+        "day": "2026-01-01",
+        "seconds": 79199.999,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "floor": "4f",
+            "pose": "standing"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        }
+      },
+      {
+        "day": "2026-01-01",
+        "seconds": 79200,
+        "chair": "4f",
+        "kids": [],
+        "night": true,
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        }
+      },
+      {
+        "day": "2026-01-02",
+        "seconds": 64799.999,
+        "chair": "4f",
+        "kids": [],
+        "night": false,
+        "light": {
+          "phase": "evening",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": false
+        }
+      },
+      {
+        "day": "2026-01-02",
+        "seconds": 64800,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suhyeon",
+            "floor": "4f",
+            "pose": "sitting"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "evening",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": false
+        }
+      },
+      {
+        "day": "2026-01-02",
+        "seconds": 66599.999,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suhyeon",
+            "floor": "4f",
+            "pose": "sitting"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "evening",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": false
+        }
+      },
+      {
+        "day": "2026-01-02",
+        "seconds": 66600,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suhyeon",
+            "floor": "4f",
+            "pose": "sitting"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": true
+        }
+      },
+      {
+        "day": "2026-01-02",
+        "seconds": 67200,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suhyeon",
+            "floor": "4f",
+            "pose": "standing"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        }
+      },
+      {
+        "day": "2026-01-02",
+        "seconds": 68400,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suhyeon",
+            "floor": "4f",
+            "pose": "sitting"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        }
+      },
+      {
+        "day": "2026-01-02",
+        "seconds": 79199.999,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suhyeon",
+            "floor": "4f",
+            "pose": "sitting"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        }
+      },
+      {
+        "day": "2026-01-02",
+        "seconds": 79200,
+        "chair": "4f",
+        "kids": [],
+        "night": true,
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        }
+      },
+      {
+        "day": "2026-11-09",
+        "seconds": 64799.999,
+        "chair": "4f",
+        "kids": [],
+        "night": false,
+        "light": {
+          "phase": "evening",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": false
+        }
+      },
+      {
+        "day": "2026-11-09",
+        "seconds": 64800,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "floor": "4f",
+            "pose": "standing"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "evening",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": false
+        }
+      },
+      {
+        "day": "2026-11-09",
+        "seconds": 66599.999,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "floor": "4f",
+            "pose": "sitting"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "evening",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": false
+        }
+      },
+      {
+        "day": "2026-11-09",
+        "seconds": 66600,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "floor": "4f",
+            "pose": "standing"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": true
+        }
+      },
+      {
+        "day": "2026-11-09",
+        "seconds": 67200,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "floor": "4f",
+            "pose": "sitting"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        }
+      },
+      {
+        "day": "2026-11-09",
+        "seconds": 68400,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "floor": "4f",
+            "pose": "standing"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        }
+      },
+      {
+        "day": "2026-11-09",
+        "seconds": 79199.999,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "floor": "4f",
+            "pose": "sitting"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        }
+      },
+      {
+        "day": "2026-11-09",
+        "seconds": 79200,
+        "chair": "4f",
+        "kids": [],
+        "night": true,
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        }
+      },
+      {
+        "day": "2026-11-10",
+        "seconds": 64799.999,
+        "chair": "4f",
+        "kids": [],
+        "night": false,
+        "light": {
+          "phase": "evening",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": false
+        }
+      },
+      {
+        "day": "2026-11-10",
+        "seconds": 64800,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "floor": "4f",
+            "pose": "standing"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "evening",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": false
+        }
+      },
+      {
+        "day": "2026-11-10",
+        "seconds": 66599.999,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "floor": "4f",
+            "pose": "sitting"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "evening",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": false
+        }
+      },
+      {
+        "day": "2026-11-10",
+        "seconds": 66600,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "floor": "4f",
+            "pose": "walk-b"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": true
+        }
+      },
+      {
+        "day": "2026-11-10",
+        "seconds": 67200,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "floor": "4f",
+            "pose": "standing"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        }
+      },
+      {
+        "day": "2026-11-10",
+        "seconds": 68400,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "floor": "4f",
+            "pose": "standing"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        }
+      },
+      {
+        "day": "2026-11-10",
+        "seconds": 79199.999,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "floor": "4f",
+            "pose": "sitting"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        }
+      },
+      {
+        "day": "2026-11-10",
+        "seconds": 79200,
+        "chair": "4f",
+        "kids": [],
+        "night": true,
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        }
+      },
+      {
+        "day": "2026-11-13",
+        "seconds": 64799.999,
+        "chair": "4f",
+        "kids": [],
+        "night": false,
+        "light": {
+          "phase": "evening",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": false
+        }
+      },
+      {
+        "day": "2026-11-13",
+        "seconds": 64800,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "floor": "4f",
+            "pose": "standing"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "evening",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": false
+        }
+      },
+      {
+        "day": "2026-11-13",
+        "seconds": 66599.999,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "floor": "4f",
+            "pose": "standing"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "evening",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": false
+        }
+      },
+      {
+        "day": "2026-11-13",
+        "seconds": 66600,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "floor": "4f",
+            "pose": "standing"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0.2,
+            "night": 0
+          },
+          "rooftopNight": true
+        }
+      },
+      {
+        "day": "2026-11-13",
+        "seconds": 67200,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "floor": "4f",
+            "pose": "standing"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        }
+      },
+      {
+        "day": "2026-11-13",
+        "seconds": 68400,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "floor": "4f",
+            "pose": "standing"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        }
+      },
+      {
+        "day": "2026-11-13",
+        "seconds": 79199.999,
+        "chair": "4f",
+        "kids": [
+          {
+            "id": "kid-suyeon",
+            "floor": "4f",
+            "pose": "standing"
+          }
+        ],
+        "night": false,
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        }
+      },
+      {
+        "day": "2026-11-13",
+        "seconds": 79200,
+        "chair": "4f",
+        "kids": [],
+        "night": true,
+        "light": {
+          "phase": "night",
+          "tint": {
+            "morning": 0,
+            "evening": 0,
+            "night": 0.2
+          },
+          "rooftopNight": true
+        }
+      }
+    ],
+    "presence": {
+      "chairmanPresent": true,
+      "chairmanSince": 1794218400000,
+      "chairmanArrivalAt": 1794218400000
+    },
+    "absent": [
+      {
+        "seconds": 64800,
+        "kids": 0
+      },
+      {
+        "seconds": 66600,
+        "kids": 0
+      },
+      {
+        "seconds": 68400,
+        "kids": 0
+      },
+      {
+        "seconds": 79199,
+        "kids": 0
+      }
+    ]
+  },
+  "artifacts": {
+    "originalFiles": 658,
+    "restored": [
+      "artifacts/office-behavior/obr16-layout-node.json",
+      "artifacts/office-behavior/obr17-layout-node.json",
+      "artifacts/office-behavior/obr19-layout-node.json",
+      "artifacts/office-drama/reachability.json"
+    ],
+    "removed": [],
+    "otherInitialFilesByteIdentical": true,
+    "newFilesBeforeReports": [],
+    "scratchCleanup": "verified absolute task directory under system Temp and outside worktree; removed after final checks",
+    "finalScopeCheck": {
+      "changedExistingFiles": [
+        "hani-office-live.js",
+        "scripts/fixtures/office-kids-daily-delta.json",
+        "scripts/hani-office-kids-daily-source.cjs",
+        "scripts/hani-office-kids-weekday.test.mjs",
+        "scripts/hani-office-kids-merge.test.mjs"
+      ],
+      "newReports": [
+        "artifacts/kids-visit-b/REPORT-evening.md",
+        "artifacts/kids-visit-b/results-evening.json"
+      ],
+      "unexpectedExistingChanges": []
+    }
+  },
+  "notion": {
+    "status": "pending",
+    "read": true,
+    "write": false,
+    "reason": "automatic approval review rejected insert_content: approval policy is never",
+    "pending": "2026-11-10 KST: time change complete; branch/assigned SHA, exact byte audit, tests including 4 reproduced metadata failures and 37 Git blocks, UI evidence and release-owner handoff; link REPORT-evening.md"
+  },
+  "unverified": [
+    "Git-based baseline checks (blocked before launching Git); original 219 failure not reached",
+    "remote main freshness, actual Android device",
+    "Candidate build/HINA, merge, Pages and Production read-back; no version increment or deployment requested"
+  ],
+  "handoff": {
+    "next": "Release owner reviews the five source/test/fixture changes and two reports, resolves the pre-existing history metadata contract mismatch in a separate authorized scope, reruns Git-blocked checks and prepares the shared release train",
+    "serverChanges": "none",
+    "newApprovalRequiredForCurrentPatch": false,
+    "CURRENT_DECISIONS": "unchanged; handoff and pending Notion summary integrated in this report to preserve requested output scope"
+  }
+}

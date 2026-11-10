@@ -3,7 +3,7 @@ import {readRawLifeFile} from './hani-life-bundle-source.mjs';
 import outer284 from './hani-save-guard-source.cjs';
 import {projectPrePatrolSource} from './hani-office-chairman-patrol-278-source.mjs';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';import {fixture} from './hani-building-206-engine.test.mjs';import {assets} from './hani-office-v2-fixture.mjs';
-import {restoreStaffChats278Source} from './hani-office-chairman-patrol-278-source.mjs';import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
+import {restoreStaffChats278Source} from './hani-office-chairman-patrol-278-source.mjs';import {resolveRuntimeClosure} from './hani-office-kids-pose-b-closure.mjs';
 const {scene,table}=loadScene(),s=scene.scheduler,day='2026-11-09',options={chairmanPresent:true},plain=x=>JSON.parse(JSON.stringify(x));
 function simulate(date=day,opts=options){const owner=s.createStaffChats(),events=[],seen=new Set();for(let sec=0;sec<86400;sec+=15){const e=owner.update(at(date,sec),opts);if(e&&!seen.has(e.id)){seen.add(e.id);events.push(plain(e))}}return events}
 const events=simulate();

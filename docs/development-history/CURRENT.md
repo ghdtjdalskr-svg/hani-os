@@ -3,6 +3,14 @@
 `hani/audit-safety-284` / 착수·최종 HEAD `3ab1177` / 로컬 origin/main 참조 `5c375d9`(Git 금지·원격 새 조회 없음). **다른 탭 저장 잠금·입력 보존 안내, Cloud 수신 기존 validator 적용**. 운영 변경은 hani-main.js 하나, 표시/cache2.9.284·내부 버전·보호 키 유지, localStorage setItem18→18/remove5→5/clear0→0. **신규10/10·syntax14/14·closure164불변/누락0, 전체122명령67통과·Git38차단·기타차단14·수정전재현실패3. office69파일41통과/28Git차단·744통과/36차단/3skip·Git외실패0.** Edge는 spawn EPERM 및 Windows IPC Access denied로 실제 두 탭·1280/390 PNG 미검증. 생성JSON4복원·신규시험JSON1제거·범위밖변경0. Git/commit/push/merge/버전증가/배포 없음, **서윤 검토·커밋 및 차단 검증 대기**. Notion insert_content는 자동 승인 never 거절로 미반영. [보고서](../../artifacts/save-guard/REPORT.md) · [인수인계](handoffs/2026-11-08-save-guard.md). 아래 기존 기록 보존.
 
 
+# 2026-11-08 · kids B + 평일 방문 main284 충돌 정리 (Codex)
+
+hani/kids-visit-pose-b / 지정 main5c375d9(v2.9.284), Git 명령0. **파일 충돌4개 정리·양쪽 기능 보존, office72파일783통과·35Git 차단·1기타 실패·3skip, M915통과, 문법11/11·원문closure164/누락0·저장/Cloud/새timer/listener0.** 기타1건은400ms성능으로 고정main 단독에서도460ms로 재현·제한 유지. 283pin·기존assertion 보존, weekday→B→main체인 연결. **Edge spawn EPERM/Windows 접근 거부로 새PNG0**, 실제Git검사·index처리·커밋은 서윤 인계. 표시/cache284유지·배포 없음. Notion 착수 쓰기 자동 승인 never 거절로 갱신 대기. [짧은 보고서](../../artifacts/kids-visit-b/REPORT-merge.md) · [인수인계](handoffs/2026-11-08-kids-b-merge.md). 아래 양쪽·과거 기록 보존.
+
+# 2026-11-08 · 꼬마 평일 깜짝 방문 (Codex / kids-visit-b)
+
+`hani/kids-visit-pose-b` / base·HEAD `bbe71c0` / 표시·cache2.9.280 유지. 기존 owner에서 평일 KST 날짜 시드 15~19시 아이1명이 동물 동행1자리 대체, 아빠 인사 각3종·일반 각6줄·남매3세트 추가. **평일58/261(22.22%), 전용16/16·B13/13·kids-lively15/15·M9 15/15, 전체69파일796통과·기존219 대비실패1·skip3·신규 미해결0, syntax12/12·closure161/누락0. Edge157 PC1280/폰390 4장·인사1회/중복0·넘침/오류/저장0.** 타 작업 자동 생성 증거16경로 원문 복원. Git index.lock 권한 거절로 **미커밋**, push/merge/버전 변경/배포 없음. Notion 쓰기 자동 승인 never 거절로 갱신 대기. 종료 시 main `43eda9e`(v2.9.281/#465)로 진행되어 같은 office owner 변경 확인; 자동 merge/rebase 없음, 최신 main 결합·계약 재고정·재검사는 배포 담당 인계. [보고서·대사표·캡처](../../artifacts/kids-weekday/REPORT.md) · [인수인계](handoffs/2026-11-08-kids-weekday.md). 아래 다른 담당·과거 기록 보존.
+
 # 2026-11-08 · 뉴스룸 레이아웃 (Codex / news4cut2)
 
 `hani/newsroom-4cut-002` / 전달 HEAD `1b6274f`(Git 금지·원격 최신성 미확인). 기존 owner JS/CSS 2개에서 4컷 폭·중복·지난 호/최신 탐색·카탈로그 지수·F/U 3/2열·간격/다크 정리. **raw 4컷7·persona4·inverse2·task-local 범위 PASS, office73파일 전부 실행: 769통과·Git36차단·별도3실패·4skip.** 실패3은 office 3F art 215/218 기대와 cold plan400ms 기준2건(단독 재검증도 실패). **Edge spawn EPERM/직접 실행 정책 차단으로 실제 UI·PNG·비교 미검증**, Notion append 자동 승인 never 거절로 갱신 대기. 데이터/Cloud/서버·이미지/카탈로그·index/main·표시/cache284 보존, Git/commit/배포 없음. 서윤 실제 Edge·Git 재검증 뒤 2호와 **2.9.285** 통합 인계. [보고서](../../artifacts/newsroom-layout/REPORT.md) · [인수인계](handoffs/2026-11-08-newsroom-layout.md). 아래 다른 담당 기록 보존.
@@ -516,3 +524,6 @@ Mobile State Persistence 전체, 새기기 Cloud Restore UX, Cloud-first 전환,
 ## 다음 담당
 
 [전체 탭 원장](2026-10-05-all-tabs-status.md)에서 담당과 후보를 확인합니다. 타 작업의 파일·branch를 임의 수정/merge/rebase하지 않습니다. Claude 연결은 대표님의 후속 요청을 기다립니다. 오래된 INDEX/배포 기록은 역사적 근거로 보존합니다.
+# 2026-11-08 · 꼬마 방문 포즈 B 적용 (Codex / kids-visit-b)
+
+`hani/kids-visit-pose-b` / base·GitHub main 확인 `70c5d5d` / 표시·cache2.9.280 유지. v1의 보이는16프레임·좌표 보존 + B16프레임을 추가한 투명 kids-v2(384×1152), 기존 kids owner 안에서 대기 손 흔들기·앉기·표정·매달리기, 방문/이동 우선. **꼬마13/13·15/15·16/16, M9 15/15, 전체68파일730통과·Git34차단·skip3, syntax/diff PASS; 새 저장/timer/listener0·closure161/누락0.** Edge EPERM으로 PC/폰 PNG·실화면 미검증, Git index.lock 권한으로 미커밋, Notion 쓰기 자동 승인 never 거절로 갱신 대기. push/merge/배포/버전 변경 없음. [보고서](../../artifacts/kids-visit-b/REPORT.md) · [인수인계](handoffs/2026-11-08-kids-visit-b.md). 타 담당·과거 기록 보존.

@@ -1,0 +1,59 @@
+{
+  "baseCommit": "bbe71c0ea53d6f65740a4ac0f2ee598d4b2c280f",
+  "file": "hani-office-live.js",
+  "beforeSha256": "6ed8145767ab7e0f762a64aba892182cd1df8c2c015cf23007056b818a758aaa",
+  "afterSha256": "7e941be508a5efea0c309c8c689cd32bf976d3122a49ac34c7579e33acf67f36",
+  "replacements": [
+    {
+      "name": "append canonical general lines",
+      "before": "'이쪽이 조용해. 너도 와.']},",
+      "after": "'이쪽이 조용해. 너도 와.','아빠, 물 여기 뒀어. 그냥 보이길래.','…아빠 기다린 건 아니야. 책이 덜 끝나서.','아빠, 난 한 걸음 뒤에 있을게.','수연아, 뛰지 마. 가방은 내가 들게.','하니 이모한테 인사는 하고 가야지.','보리야, 여기 조용히 앉아 있어도 돼.']},"
+    },
+    {
+      "name": "append sister general lines",
+      "before": "'나 먼저 갈게! 아빠 오고 있지?']}",
+      "after": "'나 먼저 갈게! 아빠 오고 있지?','아빠! 오늘 학교에서 별 스티커 받았어!','아빠 보고 싶어서 발이 먼저 왔어!','아빠, 오늘도 내 옆자리 비워 뒀지?','하니 이모! 나 인사하러 왔어!','서윤 언니, 나도 축하 하트 줄게!','보리야! 아빠랑 같이 천천히 가자!']}"
+    },
+    {
+      "name": "date-based greetings and three sibling exchanges",
+      "before": "  const companionReactions=Object.freeze([",
+      "after": "  const kidsWeekdayGreetings=Object.freeze({\n    'kid-suhyeon':Object.freeze(['…지나가다 들른 거야, 아빠.','아빠, 학교 끝났어. 잠깐만 있다 갈게.','…아빠, 책 읽을 데가 필요해서 온 거야.']),\n    'kid-suyeon':Object.freeze(['아빠! 학교 끝나고 왔어!','아빠아! 오늘은 내가 깜짝 선물이야!','아빠! 하교하자마자 보고 싶어서 왔어!'])\n  });\n  const kidsSiblingLines=Object.freeze([\n    Object.freeze(['…아빠 기다리는 동안만 같이 있어 줄게.','오빠, 아빠 보고 싶어서 온 거 다 알아!']),\n    Object.freeze(['수연아, 아빠 일할 땐 천천히 걸어.','응! 아빠 손 잡고 살금살금 갈게!']),\n    Object.freeze(['…네 가방은 내가 들게. 아빠한텐 비밀이야.','아빠! 오빠가 또 나 챙겨 줬어!'])\n  ]);\n  const companionReactions=Object.freeze(["
+    },
+    {
+      "name": "weekday decision inside canonical companion owner",
+      "before": "    const follows=person=>person.kid?weekend:!weekend&&person.atlasRow===weekday-1;",
+      "after": "    // Calendar-date seed is independent of the resident 07:00 day and refreshes.\n    // One weekday visitor replaces the one animal follower; siblings keep weekends.\n    const surprise=!weekend&&residentSeed(day+'|kids-weekday')%4===0&&seconds>=15*3600&&seconds<19*3600;\n    const visitor=surprise?((residentSeed(day+'|kids-weekday-child')>>>8)%2?'kid-suyeon':'kid-suhyeon'):null;\n    const follows=person=>person.kid?weekend||person.id===visitor:!weekend&&!surprise&&person.atlasRow===weekday-1;"
+    },
+    {
+      "name": "weekday child visibility",
+      "before": "      if(person.kid&&!weekend||follow&&(!chair||!center?.every(Number.isFinite)))continue;",
+      "after": "      if(person.kid&&!weekend&&person.id!==visitor||follow&&(!chair||!center?.every(Number.isFinite)))continue;"
+    },
+    {
+      "name": "arrival metadata after ordinary activity",
+      "before": "      if(child)companionActivity(child,chair,people,states,day,seconds,reduced,now);",
+      "after": "      if(child){\n        companionActivity(child,chair,people,states,day,seconds,reduced,now);\n        if(surprise)child.weekdayArrival={day,line:kidsWeekdayGreetings[child.id][(residentSeed(day+'|kids-weekday-greeting')>>>8)%3]};\n      }"
+    },
+    {
+      "name": "memory dedupe in existing renderer",
+      "before": "  const staffChats=building.scheduler?.createStaffChats();\n  function updateResidents(now){",
+      "after": "  const staffChats=building.scheduler?.createStaffChats();\n  const weekdayGreetings=new Set();\n  function updateResidents(now){"
+    },
+    {
+      "name": "arrival uses existing bubble before other automatic speech",
+      "before": "      const line=affection?.line||state.scene?.line||person.lines[0];",
+      "after": "      // Consume only a visible, actually shown arrival. Floor changes, other\n      // speech and user taps leave it pending; memory alone remembers the day.\n      const arrival=state.weekdayArrival;\n      if(arrival&&!weekdayGreetings.has(arrival.day)&&sceneVisible()&&!document.hidden&&!meeting&&!activeEvent&&!visit&&!staffChats?.current()&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000){\n        weekdayGreetings.add(arrival.day);\n        showBubble(actor,{speaker:person.id,line:arrival.line,resident:true,weekdayArrival:true},3000,true);\n      }\n      const line=affection?.line||state.scene?.line||person.lines[0];"
+    },
+    {
+      "name": "protect greeting from tick line updates",
+      "before": "&&!bubbleSelection?.staffChat&&(!person.companion||autoBubbleEntry)",
+      "after": "&&!bubbleSelection?.staffChat&&!bubbleSelection?.weekdayArrival&&(!person.companion||autoBubbleEntry)"
+    },
+    {
+      "name": "sibling exchanges on the existing activity and bubble clock",
+      "before": "      child.scene={key:child.activity.key,line,patrol:true,notBefore:now.getTime()-rhythm.elapsed*1000+1000};",
+      "after": "      child.scene={key:child.activity.key,line,patrol:true,notBefore:now.getTime()-rhythm.elapsed*1000+1000};\n      const sibling=states.find(p=>p.kid&&p.id!==child.id),turn=Math.floor(seconds/180),elapsed=seconds%180;\n      if(sibling&&sibling.floor===floor&&!chair.walking&&distance(home,sibling.position)<300&&elapsed>=150&&elapsed<174){\n        const exchange=kidsSiblingLines[residentSeed(day+'|siblings|'+turn)%kidsSiblingLines.length];\n        child.scene={key:day+'|siblings|'+turn+'|'+child.id,line:exchange[sister?1:0],patrol:true,sibling:true,notBefore:now.getTime()+(150+(sister?4:1)-elapsed)*1000};\n      }"
+    }
+  ],
+  "mergeBase": "5c375d9"
+}

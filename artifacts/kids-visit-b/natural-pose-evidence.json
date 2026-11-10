@@ -1,0 +1,64 @@
+{
+  "sampleIntervalSeconds": 0.25,
+  "startSeconds": 42690,
+  "endSeconds": 42830,
+  "day": "2026-11-08",
+  "counts": {
+    "kid-suhyeon:walk-b": 123,
+    "kid-suyeon:standing": 153,
+    "kid-suhyeon:walk-a": 123,
+    "kid-suyeon:startled": 33,
+    "kid-suyeon:wave": 111,
+    "kid-suhyeon:cling": 100,
+    "kid-suyeon:walk-b": 100,
+    "kid-suyeon:walk-a": 95,
+    "kid-suyeon:seat-b": 63,
+    "kid-suhyeon:seat-b": 47,
+    "kid-suyeon:cling": 5,
+    "kid-suhyeon:standing": 76,
+    "kid-suhyeon:sitting": 77,
+    "kid-suhyeon:startled": 14
+  },
+  "examples": [
+    {
+      "seconds": 42718.75,
+      "floor": "4f",
+      "position": [
+        37.97607655502392,
+        73.27523910733262
+      ]
+    },
+    {
+      "seconds": 42719,
+      "floor": "4f",
+      "position": [
+        37.97607655502392,
+        73.27523910733262
+      ]
+    },
+    {
+      "seconds": 42719.25,
+      "floor": "4f",
+      "position": [
+        37.97607655502392,
+        73.27523910733262
+      ]
+    },
+    {
+      "seconds": 42719.5,
+      "floor": "4f",
+      "position": [
+        37.97607655502392,
+        73.27523910733262
+      ]
+    },
+    {
+      "seconds": 42719.75,
+      "floor": "4f",
+      "position": [
+        37.97607655502392,
+        73.27523910733262
+      ]
+    }
+  ]
+}

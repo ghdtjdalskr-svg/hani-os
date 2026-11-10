@@ -1,0 +1,14 @@
+﻿{
+    "file":  "hani-office-cafe-rest.test.mjs",
+    "exit":  1,
+    "seconds":  4.9,
+    "pass":  2,
+    "fail":  2,
+    "skipped":  0,
+    "failures":  [
+                     "cafe route uses clear lower-right floor, retains the lounge and sign mounting surface",
+                     "first full daily plan stays below the unchanged 400ms limit, chairman absent and present"
+                 ],
+    "gitBlocked":  true,
+    "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-cafe-rest.test.mjs"
+}

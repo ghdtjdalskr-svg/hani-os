@@ -1,0 +1,85 @@
+{
+  "baseCommit": "bbe71c0ea53d6f65740a4ac0f2ee598d4b2c280f",
+  "runtimeSha256": "bf0b7139b7486750977719729355a643520da68109a9050ddbe1fd9fa9bb705c",
+  "contractSha256": "660c6eb5501c16f71899f0535173ca4ad47611b6f42f4c470ff98cdd088c2211",
+  "displayVersion": "2.9.280",
+  "counts": {
+    "interval": {
+      "before": 2,
+      "after": 2
+    },
+    "timeout": {
+      "before": 4,
+      "after": 4
+    },
+    "listener": {
+      "before": 15,
+      "after": 15
+    },
+    "storage": {
+      "before": 2,
+      "after": 2
+    },
+    "cloud": {
+      "before": 0,
+      "after": 0
+    },
+    "random": {
+      "before": 0,
+      "after": 0
+    }
+  },
+  "schedulerByteIdentical": true,
+  "runtimeClosure": {
+    "count": 161,
+    "missing": []
+  },
+  "year": {
+    "year": 2026,
+    "weekdays": 261,
+    "visits": 58,
+    "children": {
+      "kid-suhyeon": 28,
+      "kid-suyeon": 30
+    },
+    "greetings": {
+      "kid-suhyeon": [
+        "…지나가다 들른 거야, 아빠.",
+        "…아빠, 책 읽을 데가 필요해서 온 거야.",
+        "아빠, 학교 끝났어. 잠깐만 있다 갈게."
+      ],
+      "kid-suyeon": [
+        "아빠아! 오늘은 내가 깜짝 선물이야!",
+        "아빠! 학교 끝나고 왔어!",
+        "아빠! 하교하자마자 보고 싶어서 왔어!"
+      ]
+    },
+    "ratio": 0.2222222222222222
+  },
+  "preserved": [
+    {
+      "file": "hani-office-live.css",
+      "sha256": "a7aaa77fa50268e4e01a698f1c6b932a214e709bdac732028d308353a068406e"
+    },
+    {
+      "file": "hani-main.js",
+      "sha256": "c0ae237d62e2adb2b2749f177fdc915985214b3c34b25362004a18a911125ae3"
+    },
+    {
+      "file": "index.html",
+      "sha256": "42df58715adf49c00c1319acd43698bda5bdcc77c0d819bb41fa13bea7f6a889"
+    },
+    {
+      "file": "assets/office-companions/kids-v1.webp",
+      "sha256": "f9046ee2dc22f0513d481f9382c71707cd8890f5913d2b8653360c414d20478f"
+    },
+    {
+      "file": "assets/office-companions/kids-v2.webp",
+      "sha256": "ca2bde970da098eaa201885fe0bec9c947e229061bac4696e8bc7e96eb7ed930"
+    },
+    {
+      "file": "scripts/fixtures/office-kids-pose-b-delta.json",
+      "sha256": "755acb2933f3b98d61d0e612fd9c20c6831379107398544cbd86ab3d7cd518c8"
+    }
+  ]
+}
