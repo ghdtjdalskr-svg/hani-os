@@ -8,7 +8,7 @@ import {createHash} from 'node:crypto';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
-import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
+import {resolveRuntimeClosure} from './hani-office-kids-pose-b-closure.mjs';
 import {restoreCompanions276Source} from './hani-office-companions-276-source.mjs';
 import {projectPrePatrolSource} from './hani-office-chairman-patrol-278-source.mjs';
 const read=f=>projectPrePatrolSource(fs.readFileSync(f,'utf8'),f),plain=x=>JSON.parse(JSON.stringify(x)),{scene,table}=loadScene({transform:projectPrePatrolSource}),r=scene.residents;

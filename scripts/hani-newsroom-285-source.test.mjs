@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import inverse from './hani-newsroom-285-source.cjs';
-import releases from './hani-release-version-layers.cjs';
+import releases from './hani-release-285-test-source.cjs';
 const {delta,restoreNewsroom285Source:restore}=inverse;
 const read=file=>releases.readRawFileSync(new URL('../'+file,import.meta.url),'utf8');
 

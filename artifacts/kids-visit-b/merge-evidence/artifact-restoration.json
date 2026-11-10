@@ -1,0 +1,29 @@
+{
+  "changed": [
+    {
+      "file": "artifacts/office-behavior/obr16-layout-node.json",
+      "before": "b93abb61e8c8fc727c86669c9c2d1658c7585439a2ed2a6c2d94b5091298709b",
+      "testOutput": "8276fe04bbb967dcdb5f51107930699de03710b31ccfc221aac97229e1657deb",
+      "restored": true
+    },
+    {
+      "file": "artifacts/office-behavior/obr17-layout-node.json",
+      "before": "e285500dfd36c5df258a68dd403f96aefc6f8cfe57edcaf36c64c4eb1800e901",
+      "testOutput": "61a9b61da55e7b9b58e6eb15de576d908ff5fdc48306c85331632ef7b702c0fd",
+      "restored": true
+    },
+    {
+      "file": "artifacts/office-behavior/obr19-layout-node.json",
+      "before": "e38623b7b44eacd000361cfc7a5a7f53679cbd17882dbb18faca3ee54e85f8c8",
+      "testOutput": "7dccd9fe1f3af349db876fcc6ce0d7a2e97c821c8571c62370bb782e39e1c1a2",
+      "restored": true
+    },
+    {
+      "file": "artifacts/office-drama/reachability.json",
+      "before": "6b00b9b08c6069cde4824553a5cb2aa72eeb667ec53b51782a10bd3fa29b1ef1",
+      "testOutput": "1da6c3e1f0229b9f20cfc00805d19aeca2a753c5a28fcf15b95e674172b652a0",
+      "restored": true
+    }
+  ],
+  "added": []
+}

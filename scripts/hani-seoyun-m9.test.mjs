@@ -11,6 +11,7 @@ import {assets} from './hani-office-v2-fixture.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
 const require=createRequire(import.meta.url),{delta,hash,restoreSeoyunM9Source:restore}=inverse;
 const read=f=>capInverse.projectPreAffinityCapSource(fs.readFileSync(f,'utf8'),f),plain=x=>JSON.parse(JSON.stringify(x));
+const readBytes=f=>capInverse.delta.file===f||f==='hani-office-live.css'?Buffer.from(read(f)):fs.readFileSync(f);
 const originalBytes=fs.readFileSync('artifacts/seoyun-m9/originals.json');
 // 2.9.280 release advanced only the index.html/hani-main.js version strings; their pinned digests were refreshed to main 985cc15.
 // 2.9.281 release likewise advanced only those version strings; digests refreshed to main 43eda9e.
@@ -36,7 +37,7 @@ test('one special presentation card follows all nine unchanged M9 cards; MIR and
  assert.deepEqual(cards.filter(c=>!special.includes(c)),original.cards);assert.match(cards[10],/data-character-card="mir"/);assert.match(cards[10],/ca-cover-number">10</);
  for(const text of ['M9 특별 합류 · Platform Architect','M9 SPECIAL LISTING','Technology Integration · Architecture · Delivery','회장님의 아이디어와 M9의 전문성을 실제로 작동하는 시스템으로 연결하는 기술 파트너.','AI STAFF · AI플랫폼개발실 · 팀장'])assert.ok(special[0].includes(text));
  assert.match(special[0],/src="\.\/assets\/profiles\/hani-profile-seoyun.webp"/);
- for(const [file,digest]of Object.entries({...original.assets,...original.files}))assert.equal(hash(fs.readFileSync(file)),digest,file+' unchanged');
+ for(const [file,digest]of Object.entries({...original.assets,...original.files}))assert.equal(hash(readBytes(file)),digest,file+' unchanged');
 });
 
 function organization(){

@@ -5,7 +5,7 @@ import {loadScene,at} from './hani-office-lively-fixture.mjs';
 import {fixture as mountFixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {restorePatrol278Source,projectPreKidsSource} from './hani-office-chairman-patrol-278-source.mjs';
-import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
+import {resolveRuntimeClosure} from './hani-office-kids-pose-b-closure.mjs';
 // Frozen patrol contract remains exact; the lively extension has live tests.
 const fixture=(...args)=>{while(args.length<5)args.push(undefined);return mountFixture(...args,projectPreKidsSource)};
 const {scene,table,context}=loadScene({transform:projectPreKidsSource}),s=scene.scheduler,r=scene.residents,options={chairmanPresent:true},plain=x=>JSON.parse(JSON.stringify(x));

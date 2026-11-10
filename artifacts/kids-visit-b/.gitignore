@@ -1,0 +1,4 @@
+# Early run read source during edits; excluded from evidence.
+/baseline-office.log
+/probe.png
+/retest-prefix.txt
