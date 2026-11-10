@@ -2,6 +2,14 @@
 
 `hani/audit-safety-284` / 착수·최종 HEAD `3ab1177` / 로컬 origin/main 참조 `5c375d9`(Git 금지·원격 새 조회 없음). **다른 탭 저장 잠금·입력 보존 안내, Cloud 수신 기존 validator 적용**. 운영 변경은 hani-main.js 하나, 표시/cache2.9.284·내부 버전·보호 키 유지, localStorage setItem18→18/remove5→5/clear0→0. **신규10/10·syntax14/14·closure164불변/누락0, 전체122명령67통과·Git38차단·기타차단14·수정전재현실패3. office69파일41통과/28Git차단·744통과/36차단/3skip·Git외실패0.** Edge는 spawn EPERM 및 Windows IPC Access denied로 실제 두 탭·1280/390 PNG 미검증. 생성JSON4복원·신규시험JSON1제거·범위밖변경0. Git/commit/push/merge/버전증가/배포 없음, **서윤 검토·커밋 및 차단 검증 대기**. Notion insert_content는 자동 승인 never 거절로 미반영. [보고서](../../artifacts/save-guard/REPORT.md) · [인수인계](handoffs/2026-11-08-save-guard.md). 아래 기존 기록 보존.
 
+
+# 2026-11-08 · 뉴스룸 레이아웃 (Codex / news4cut2)
+
+`hani/newsroom-4cut-002` / 전달 HEAD `1b6274f`(Git 금지·원격 최신성 미확인). 기존 owner JS/CSS 2개에서 4컷 폭·중복·지난 호/최신 탐색·카탈로그 지수·F/U 3/2열·간격/다크 정리. **raw 4컷7·persona4·inverse2·task-local 범위 PASS, office73파일 전부 실행: 769통과·Git36차단·별도3실패·4skip.** 실패3은 office 3F art 215/218 기대와 cold plan400ms 기준2건(단독 재검증도 실패). **Edge spawn EPERM/직접 실행 정책 차단으로 실제 UI·PNG·비교 미검증**, Notion append 자동 승인 never 거절로 갱신 대기. 데이터/Cloud/서버·이미지/카탈로그·index/main·표시/cache284 보존, Git/commit/배포 없음. 서윤 실제 Edge·Git 재검증 뒤 2호와 **2.9.285** 통합 인계. [보고서](../../artifacts/newsroom-layout/REPORT.md) · [인수인계](handoffs/2026-11-08-newsroom-layout.md). 아래 다른 담당 기록 보존.
+# 2026-11-08 · tooling-284 · 2.9.284 시험 기준 갱신 (Codex)
+
+`hani/tooling-284` / 지정·로컬 base `5c375d9` / Git 명령 금지·원격 새 조회 없음. 공통 JSON release inverse·치비툰→283→생활/M9 체인 정리, 기존 assertion·fixture pin 보존. **지정 기능·nav/UI PASS, office69파일 745통과·35Git차단·3skip·기타실패0, 기존 m9-link packaging1FAIL 유지.** 런타임498 origin/main 바이트 동일·시험 부산물 복원·새PNG제거. Git/commit/배포 없음, 서윤 검토·Git 재검증·커밋 인계. Notion 쓰기는 자동 승인 never 거절로 갱신 대기. [짧은 보고서](../../artifacts/tooling-284/REPORT.md) · [인수인계](handoffs/2026-11-08-tooling-284.md). 아래 기존 기록 보존.
+
 # 2026-11-08 · tooling-283 후속 office 8개 (Codex)
 
 `hani/tooling-283` / base `a28918d`(기존 기록·Git 금지로 새 조회 없음). 시험8개가 283·생활 묶음 exact inverse preload를 자체 연결, assertion·고정 pin·Git 호출 보존. **대상110통과·6Git차단, office69파일745통과·35Git차단·3skip·기타실패0, 기존 성공41파일 전부 유지.** 부산물JSON4개 복원·런타임497바이트 동일·범위 밖 변경0. Git/commit/배포 없음, 서윤 실제 Git 재검증·커밋 인계. Notion 쓰기는 자동 승인 never 거절로 갱신 대기. [짧은 보고서](../../artifacts/tooling-283/REPORT-b.md) · [인수인계](handoffs/2026-11-08-tooling-283-b.md). 아래 기존 기록 보존.

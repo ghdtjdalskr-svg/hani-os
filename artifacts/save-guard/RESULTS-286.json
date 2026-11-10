@@ -1,0 +1,3480 @@
+{
+  "task": "saveguard-286",
+  "dateKST": "2026-11-10",
+  "status": "tooling complete; full QA not passing; review and blocked checks handed to Seoyun",
+  "identity": {
+    "branch": "hani/audit-safety-284",
+    "head": "765379601e912079f6cfaa3f7fb8b87e84b2dfe4",
+    "mergeHead": "5f40eb405cc057a16dc8f30ebc195ff5aed8d77c",
+    "originMainCached": "5f40eb405cc057a16dc8f30ebc195ff5aed8d77c",
+    "remoteFreshness": "not fetched; Git commands prohibited",
+    "mergeInProgress": true,
+    "gitCommandsRun": 0
+  },
+  "runtime": {
+    "rootRuntimeFilesCompared": 71,
+    "differentFromMain286": [
+      "hani-main.js"
+    ],
+    "anchors": {
+      "storageLoadedRaw=null": 1166,
+      "storageLoadedRaw=stored": 1258,
+      "function assertStorageTabCurrent(": 1426,
+      "function showStorageTabConflict(": 1415,
+      "function initStorageTabGuard(": 1430,
+      "function validateCloudRecords(": 5934,
+      "function writeProtectedState(": 1293,
+      "function removeProtectedState(": 1329,
+      "function save(": 1439,
+      "initStorageTabGuard();": 8805
+    },
+    "rawMainSha256": "9e672c5d5926c5ea384ede9dab9f4c1e3e3e27a91b0eb2839e0e14b704bded4d",
+    "indexSha256": "fe7d00e8ad34b0095872144c434e6d299df240f6b4e89f46da29ff2bdc59e72c",
+    "eol": {
+      "crlf": 5310,
+      "lf": 8934
+    },
+    "lastScripts": [
+      "./hani-ai-budget-core.js?v=2.9.286",
+      "./hani-ai-budget.js?v=2.9.286",
+      "./hani-launch-greeting.js"
+    ],
+    "protectedKey": true,
+    "internalVersion": true,
+    "displayVersion": "2.9.286",
+    "guardMatchesHEADExceptVersion": true,
+    "outerInverseRetainsAllMain286": true,
+    "preservesServerWrite": true,
+    "localCalls": {
+      "setItem": {
+        "before": 18,
+        "after": 18
+      },
+      "removeItem": {
+        "before": 5,
+        "after": 5
+      },
+      "clear": {
+        "before": 0,
+        "after": 0
+      }
+    },
+    "primaryCalls": {
+      "setItem": {
+        "before": 2,
+        "after": 2
+      },
+      "removeItem": {
+        "before": 1,
+        "after": 1
+      }
+    },
+    "saveConflictReturnsWithoutFormRerender": true
+  },
+  "inverse": {
+    "rows": [
+      {
+        "file": "hani-main.js",
+        "rawSha256": "9e672c5d5926c5ea384ede9dab9f4c1e3e3e27a91b0eb2839e0e14b704bded4d",
+        "beforeSha256": "1b245194f5fc6dfc4184e44c187f08b071870efca7989cbf8ed28c94425efbf2",
+        "edits": 18,
+        "bufferRoundTrip": true,
+        "forwardRoundTrip": true
+      },
+      {
+        "file": "index.html",
+        "rawSha256": "fe7d00e8ad34b0095872144c434e6d299df240f6b4e89f46da29ff2bdc59e72c",
+        "beforeSha256": "78ad579c21526aa39fef2dc89e320b98724d11457b4bc8bb9d413b459b5dd18a",
+        "edits": 22,
+        "bufferRoundTrip": true,
+        "forwardRoundTrip": true
+      },
+      {
+        "file": "assets/data/hani-history-releases-v1.json",
+        "rawSha256": "bad8ec62479c9f4d05322c76ec21299d33b7045ebacf0b73e138ee1036d512ff",
+        "beforeSha256": "4859f87461dfb78db3f72a1da2fab07d0ba2b95c806dccbc6e685732b2defd01",
+        "edits": 1,
+        "bufferRoundTrip": true,
+        "forwardRoundTrip": true
+      },
+      {
+        "file": "guard-patch-only",
+        "rawSha256": "9e672c5d5926c5ea384ede9dab9f4c1e3e3e27a91b0eb2839e0e14b704bded4d",
+        "beforeSha256": "84cf5ceec7f017acfdb618203eb997f75086262ffddde3424534dade802cead5",
+        "edits": 15,
+        "bufferRoundTrip": true,
+        "forwardRoundTrip": true
+      }
+    ],
+    "driftCases": 20
+  },
+  "fixtureSha256": "417ba046772605cad18377ce4a4ffecffff9a7bdbad9c8224f4947837f6b413c",
+  "syntax": [
+    {
+      "file": "scripts/hani-save-guard-source.cjs",
+      "command": "node --check scripts/hani-save-guard-source.cjs",
+      "exit": 0
+    },
+    {
+      "file": "scripts/hani-life-bundle-source.test.mjs",
+      "command": "node --check scripts/hani-life-bundle-source.test.mjs",
+      "exit": 0
+    },
+    {
+      "file": "scripts/hani-release-version-layers.cjs",
+      "command": "node --check scripts/hani-release-version-layers.cjs",
+      "exit": 0
+    },
+    {
+      "file": "hani-main.js",
+      "command": "node --check hani-main.js",
+      "exit": 0
+    }
+  ],
+  "performance": {
+    "loadDependent": true,
+    "criterion": "unchanged best of three cold plans <400ms; lively warm snapshot <3ms",
+    "cafe": [
+      {
+        "chairmanPresent": false,
+        "samples": [
+          377.87760000000003,
+          343.2496000000001,
+          317.44370000000026
+        ]
+      },
+      {
+        "chairmanPresent": true,
+        "samples": [
+          353.27779999999984,
+          439.8251,
+          488.45560000000023
+        ]
+      }
+    ],
+    "lively": {
+      "firstMs": [
+        363.35810000000004,
+        425.2766999999985,
+        402.3731000000007
+      ],
+      "warmMs": 0.9094920999999995
+    }
+  },
+  "preservation": {
+    "snapshotFiles": 1934,
+    "restoredGeneratedFiles": [
+      "artifacts/office-behavior/obr16-layout-node.json",
+      "artifacts/office-behavior/obr17-layout-node.json",
+      "artifacts/office-behavior/obr19-layout-node.json",
+      "artifacts/office-drama/reachability.json"
+    ],
+    "runtimeFilesChanged": [],
+    "modifiedExistingFiles": [
+      "scripts/fixtures/save-guard-284-delta.json",
+      "scripts/hani-life-bundle-source.test.mjs",
+      "scripts/hani-release-version-layers.cjs",
+      "scripts/hani-save-guard-source.cjs"
+    ],
+    "addedFiles": [
+      "docs/development-history/handoffs/2026-11-10-saveguard-286.md",
+      "artifacts/save-guard/REPORT-286.md",
+      "artifacts/save-guard/RESULTS-286.json"
+    ],
+    "outOfScopeChanges": [],
+    "currentAndRelease283Unchanged": true,
+    "temporaryRoot": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu",
+    "oldBrowserEvidenceReused": false
+  },
+  "notion": {
+    "read": true,
+    "write": false,
+    "reason": "MCP tool call requires approval, but approval policy is never",
+    "pending": "착수·최종 검증 결과 요약"
+  },
+  "execution": {
+    "node": "24.22.1",
+    "separateProcessPerFile": true,
+    "noGitPreload": "artifacts/save-guard/no-git.cjs",
+    "legacy285ReaderCases": [
+      "hani-release-version-layers.test.mjs",
+      "hani-newsroom-285-source.test.mjs"
+    ],
+    "legacy285ReaderCode": "const fs=require('node:fs'),path=require('node:path'),{fileURLToPath}=require('node:url');\nconst root=process.cwd(),outer=require(path.join(root,'scripts/hani-save-guard-source.cjs')),original=fs.readFileSync;\nconst owners=new Set(['hani-main.js','index.html','assets/data/hani-history-releases-v1.json']);\nfs.readFileSync=function(file,...args){const value=original.call(this,file,...args);if(typeof file!=='string'&&!(file instanceof URL))return value;const name=path.relative(root,file instanceof URL?fileURLToPath(file):path.resolve(file)).replaceAll('\\\\','/');return owners.has(name)?outer.projectPreSaveGuard284Source(value,name):value;};\nrequire('node:module').syncBuiltinESMExports();",
+    "rawSaveGuardUnitAndBrowserUnprojected": true
+  },
+  "exploratoryAttempt": {
+    "description": "guard and life tests together with --test-isolation=none",
+    "pass": 14,
+    "fail": 1,
+    "cause": "life test installs a global fs preload; the final guard test then reads projected bytes",
+    "resolution": "official 93-command run uses separate processes; guard 10/10 and life 5/5 pass"
+  },
+  "groupStats": {
+    "office": {
+      "files": 69,
+      "passedFiles": 19,
+      "gitBlockedFiles": [
+        "hani-office-219.test.mjs",
+        "hani-office-actions-216.test.mjs",
+        "hani-office-affinity-274-pins.test.mjs",
+        "hani-office-barista-night-273-pins.test.mjs",
+        "hani-office-cafe-rest.test.mjs",
+        "hani-office-chairman-patrol-278-pins.test.mjs",
+        "hani-office-companions-276-pins.test.mjs",
+        "hani-office-consult.test.mjs",
+        "hani-office-lively-v2.test.mjs",
+        "hani-office-obr12.test.mjs",
+        "hani-office-obr15.test.mjs",
+        "hani-office-obr21.test.mjs",
+        "hani-office-obr4.test.mjs",
+        "hani-office-obr6.test.mjs",
+        "hani-office-obr7.test.mjs",
+        "hani-office-obr8.test.mjs",
+        "hani-office-obr9.test.mjs",
+        "hani-office-pet-bori-272-pins.test.mjs",
+        "hani-office-pets-bubble.test.mjs",
+        "hani-office-v2-215.test.mjs",
+        "hani-office-xmas-269-pins.test.mjs"
+      ],
+      "failedWithoutGitFiles": [
+        "hani-office-actions-221.test.mjs",
+        "hani-office-affinity.test.mjs",
+        "hani-office-affinity-cap.test.mjs",
+        "hani-office-affinity-storage.test.mjs",
+        "hani-office-barista.test.mjs",
+        "hani-office-barista-night.test.mjs",
+        "hani-office-behavior.test.mjs",
+        "hani-office-bori-m9.test.mjs",
+        "hani-office-bubble-close.test.mjs",
+        "hani-office-drama.test.mjs",
+        "hani-office-hd-224.test.mjs",
+        "hani-office-icons.test.mjs",
+        "hani-office-kids-lively.test.mjs",
+        "hani-office-kids-visit.test.mjs",
+        "hani-office-labels-qa.test.mjs",
+        "hani-office-motion-1.test.mjs",
+        "hani-office-obr14.test.mjs",
+        "hani-office-obr17.test.mjs",
+        "hani-office-obr18.test.mjs",
+        "hani-office-pet-bori.test.mjs",
+        "hani-office-pets-268-pins.test.mjs",
+        "hani-office-props.test.mjs",
+        "hani-office-seats-215.test.mjs",
+        "hani-office-snack.test.mjs",
+        "hani-office-staff-chat.test.mjs",
+        "hani-office-tap-lines.test.mjs",
+        "hani-office-tlayout.test.mjs",
+        "hani-office-xmas.test.mjs",
+        "hani-office-zoom.test.mjs"
+      ],
+      "tests": 691,
+      "pass": 586,
+      "fail": 102,
+      "skipped": 3
+    },
+    "features": {
+      "files": 19,
+      "passedFiles": 14,
+      "gitBlockedFiles": [
+        "hani-nav-groups.test.mjs",
+        "hani-newsroom-4cut-230.test.mjs"
+      ],
+      "failedWithoutGitFiles": [
+        "hani-pb-chibitoon.test.mjs",
+        "hani-m9-link.test.mjs",
+        "hani-seoyun-m9.test.mjs"
+      ],
+      "tests": 110,
+      "pass": 101,
+      "fail": 9,
+      "skipped": 0
+    },
+    "browser": {
+      "files": 5,
+      "passedFiles": 0,
+      "gitBlockedFiles": [],
+      "failedWithoutGitFiles": [
+        "hani-save-guard.browser.mjs",
+        "hani-navlogin-ui.test.mjs",
+        "hani-navigation-state-ui.test.mjs",
+        "hani-dashboard-period-ui.test.mjs",
+        "hani-design-system-phase1-qa.mjs"
+      ],
+      "tests": 0,
+      "pass": 0,
+      "fail": 0,
+      "skipped": 0
+    }
+  },
+  "tests": [
+    {
+      "group": "office",
+      "file": "hani-office-219.test.mjs",
+      "exit": 1,
+      "seconds": 0.66,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-219.test.mjs",
+      "gitBlocked": true,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 1 - scripts\\\\hani-office-219.test.mjs",
+        "  error: 'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'",
+        "  code: 'USER_GIT_DISABLED'",
+        "# tests 1",
+        "# pass 0",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-219.test.mjs.log",
+      "counts": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "scripts\\\\hani-office-219.test.mjs",
+          "category": "git-blocked",
+          "message": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-actions-216.test.mjs",
+      "exit": 1,
+      "seconds": 51.48,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-actions-216.test.mjs",
+      "gitBlocked": true,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 7 - approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract",
+        "  error: 'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'",
+        "  code: 'USER_GIT_DISABLED'",
+        "# tests 15",
+        "# pass 14",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-actions-216.test.mjs.log",
+      "counts": {
+        "tests": 15,
+        "pass": 14,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract",
+          "category": "git-blocked",
+          "message": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-actions-221.test.mjs",
+      "exit": 1,
+      "seconds": 6.02,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-actions-221.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 7 - 221 preserves 98 released actions, adds 22, keeps disabled/identity/rest/movement budgets and reproduces exactly",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 20",
+        "# pass 19",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-actions-221.test.mjs.log",
+      "counts": {
+        "tests": 20,
+        "pass": 19,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "221 preserves 98 released actions, adds 22, keeps disabled/identity/rest/movement budgets and reproduces exactly",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-affinity.test.mjs",
+      "exit": 1,
+      "seconds": 12.21,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-affinity.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 8 - affinity storage: only the one exact key/counts payload; debounced <= one write per 2s",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 9 - affinity storage: malformed values preserved byte-for-byte with one warning and memory-only clicks",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 10 - affinity storage: read denied, quota and storage getter failure remain usable in memory",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 12 - affinity voices: 25 ids each unlock exactly three Lv3 and two additional Lv5 lines; no early leaks",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 13 - affinity actual owner: Lv1 -> Lv2 -> Lv3, secret stability, float and one persistent slot 1280/false",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 14 - affinity actual owner: Lv1 -> Lv2 -> Lv3, secret stability, float and one persistent slot 1280/true",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 15 - affinity actual owner: Lv1 -> Lv2 -> Lv3, secret stability, float and one persistent slot 390/false",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 16 - affinity actual owner: Lv1 -> Lv2 -> Lv3, secret stability, float and one persistent slot 390/true",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 21",
+        "# pass 13",
+        "# fail 8",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-affinity.test.mjs.log",
+      "counts": {
+        "tests": 21,
+        "pass": 13,
+        "fail": 8,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "affinity storage: only the one exact key/counts payload; debounced <= one write per 2s",
+          "category": "assertion",
+          "message": "|-\n    Expected values to be strictly deep-equal:\n    + actual - expected\n    \n      [\n        'counts',\n    +   'day',\n    +   'today',\n        'v'\n      ]"
+        },
+        {
+          "title": "affinity storage: malformed values preserved byte-for-byte with one warning and memory-only clicks",
+          "category": "assertion",
+          "message": "|-\n    Expected values to be strictly equal:\n    \n    2 !== 20"
+        },
+        {
+          "title": "affinity storage: read denied, quota and storage getter failure remain usable in memory",
+          "category": "assertion",
+          "message": "|-\n    Expected values to be strictly equal:\n    \n    2 !== 3"
+        },
+        {
+          "title": "affinity voices: 25 ids each unlock exactly three Lv3 and two additional Lv5 lines; no early leaks",
+          "category": "assertion",
+          "message": "|-\n    Expected values to be strictly equal:\n    + actual - expected\n    \n    + '회장님 오시면 사무실이 조금 더 신나요♡'\n    - '회의 끝나면 창가에서 아이디어 하나만 더요♡'"
+        },
+        {
+          "title": "affinity actual owner: Lv1 -> Lv2 -> Lv3, secret stability, float and one persistent slot 1280/false",
+          "category": "assertion",
+          "message": "|-\n    The input did not match the regular expression /회장님.*편한 동료/. Input:\n    \n    '하니 · 이동 중 · 복도 끝 창가로 가는 중'"
+        },
+        {
+          "title": "affinity actual owner: Lv1 -> Lv2 -> Lv3, secret stability, float and one persistent slot 1280/true",
+          "category": "assertion",
+          "message": "|-\n    The input did not match the regular expression /회장님.*편한 동료/. Input:\n    \n    '하니 · 복도 끝 창가로 가는 중 · 같이 만들죠! 범위는 제가 잡을게요♡'"
+        },
+        {
+          "title": "affinity actual owner: Lv1 -> Lv2 -> Lv3, secret stability, float and one persistent slot 390/false",
+          "category": "assertion",
+          "message": "|-\n    The input did not match the regular expression /회장님.*편한 동료/. Input:\n    \n    '하니 · 이동 중 · 복도 끝 창가로 가는 중'"
+        },
+        {
+          "title": "affinity actual owner: Lv1 -> Lv2 -> Lv3, secret stability, float and one persistent slot 390/true",
+          "category": "assertion",
+          "message": "|-\n    The input did not match the regular expression /회장님.*편한 동료/. Input:\n    \n    '하니 · 복도 끝 창가로 가는 중 · 같이 만들죠! 범위는 제가 잡을게요♡'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-affinity-274-pins.test.mjs",
+      "exit": 1,
+      "seconds": 0.18,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-affinity-274-pins.test.mjs",
+      "gitBlocked": true,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 1 - 274 exact complete pairs, ordered disjoint; reject missing, duplicate and unrelated bytes",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 2 - 274 -> 273 -> 272 -> 269 -> 268 strict restoration remains enforced",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 3 - 274 base commit independently proves the entire original JS/CSS/helper blobs",
+        "  error: 'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'",
+        "  code: 'USER_GIT_DISABLED'",
+        "# tests 3",
+        "# pass 0",
+        "# fail 3",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-affinity-274-pins.test.mjs.log",
+      "counts": {
+        "tests": 3,
+        "pass": 0,
+        "fail": 3,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "274 exact complete pairs, ordered disjoint; reject missing, duplicate and unrelated bytes",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        },
+        {
+          "title": "274 -> 273 -> 272 -> 269 -> 268 strict restoration remains enforced",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        },
+        {
+          "title": "274 base commit independently proves the entire original JS/CSS/helper blobs",
+          "category": "git-blocked",
+          "message": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-affinity-cap.test.mjs",
+      "exit": 1,
+      "seconds": 8.91,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-affinity-cap.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 19 - raw safety boundary and exact inverse: only owner changed, zero new timers/listeners/runtime files, reject tampering",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 19",
+        "# pass 18",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-affinity-cap.test.mjs.log",
+      "counts": {
+        "tests": 19,
+        "pass": 18,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "raw safety boundary and exact inverse: only owner changed, zero new timers/listeners/runtime files, reject tampering",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact daily-cap runtime accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - 'e668ac0c6ac8104f1c3c5619c1778f48f8fd470cb228549328ca67ba06120492'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-affinity-storage.test.mjs",
+      "exit": 1,
+      "seconds": 0.12,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-affinity-storage.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 1 - storage exception removes only the exact approved owner and preserves every surrounding byte",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 3 - storage exception leaves every outside storage/Cloud/save path visible to the original guards",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 3",
+        "# pass 1",
+        "# fail 2",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-affinity-storage.test.mjs.log",
+      "counts": {
+        "tests": 3,
+        "pass": 1,
+        "fail": 2,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "storage exception removes only the exact approved owner and preserves every surrounding byte",
+          "category": "assertion",
+          "message": "|-\n    exact unique approved affinity owner pair\n    \n    0 !== 1"
+        },
+        {
+          "title": "storage exception leaves every outside storage/Cloud/save path visible to the original guards",
+          "category": "assertion",
+          "message": "|-\n    exact unique approved affinity owner pair\n    \n    0 !== 1"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-barista.test.mjs",
+      "exit": 1,
+      "seconds": 6.61,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-barista.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 10 - barista: plan, blockPlan, snapshot outputs and protected owner bytes preserve the pre-patch baseline",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 10",
+        "# pass 9",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-barista.test.mjs.log",
+      "counts": {
+        "tests": 10,
+        "pass": 9,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "barista: plan, blockPlan, snapshot outputs and protected owner bytes preserve the pre-patch baseline",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-barista-night.test.mjs",
+      "exit": 1,
+      "seconds": 21.98,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-barista-night.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 12 - night barista: byte-exact 360x110 opaque atlas; sole new runtime file 158 -> 159/160",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 13 - night barista: unchanged scheduler/labels/pets/props, timer and listener counts, no storage/Cloud paths",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 13",
+        "# pass 11",
+        "# fail 2",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-barista-night.test.mjs.log",
+      "counts": {
+        "tests": 13,
+        "pass": 11,
+        "fail": 2,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "night barista: byte-exact 360x110 opaque atlas; sole new runtime file 158 -> 159/160",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact patrol 278 bytes accepted: hani-office-live.css\n    + actual - expected\n    \n    + 'a7aaa77fa50268e4e01a698f1c6b932a214e709bdac732028d308353a068406e'\n    - '08d17d38c291d85481b2315f1579be6af265b677f62c3be6f2c0ed643f73eee5'"
+        },
+        {
+          "title": "night barista: unchanged scheduler/labels/pets/props, timer and listener counts, no storage/Cloud paths",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-barista-night-273-pins.test.mjs",
+      "exit": 1,
+      "seconds": 0.24,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-barista-night-273-pins.test.mjs",
+      "gitBlocked": true,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 1 - 273: exact ordered pairs are the complete fixed-272 JS/CSS diff, rejecting all unlisted bytes",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 2 - 273 -> 272 -> 269 -> 268: all stacked source hashes and literal pairs remain enforced",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 5 - 273: fixed Git release blobs independently prove every baseline pin and complete diff",
+        "  error: 'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'",
+        "  code: 'USER_GIT_DISABLED'",
+        "# tests 5",
+        "# pass 2",
+        "# fail 3",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-barista-night-273-pins.test.mjs.log",
+      "counts": {
+        "tests": 5,
+        "pass": 2,
+        "fail": 3,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "273: exact ordered pairs are the complete fixed-272 JS/CSS diff, rejecting all unlisted bytes",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        },
+        {
+          "title": "273 -> 272 -> 269 -> 268: all stacked source hashes and literal pairs remain enforced",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        },
+        {
+          "title": "273: fixed Git release blobs independently prove every baseline pin and complete diff",
+          "category": "git-blocked",
+          "message": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-behavior.test.mjs",
+      "exit": 1,
+      "seconds": 72.67,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-behavior.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 10 - place/geometry contract, no sub-4px timed edge, private homes and full return endpoints",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 10",
+        "# pass 9",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-behavior.test.mjs.log",
+      "counts": {
+        "tests": 10,
+        "pass": 9,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "place/geometry contract, no sub-4px timed edge, private homes and full return endpoints",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-bori-m9.test.mjs",
+      "exit": 1,
+      "seconds": 0.12,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-bori-m9.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 1 - merged exact inverses run M9 then Bori then homes through every unchanged 278 layer",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 2 - merged Bori affection runs on actual daytime snapshots and preserves all pre-M9 rhythm, motion and positions",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 2",
+        "# pass 0",
+        "# fail 2",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-bori-m9.test.mjs.log",
+      "counts": {
+        "tests": 2,
+        "pass": 0,
+        "fail": 2,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "merged exact inverses run M9 then Bori then homes through every unchanged 278 layer",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact M9 special listing bytes accepted: hani-office-live.js\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '880f8bef93ea20fbcb4bcf7cf5205d72c9e62c40b09d56606ab47f13b84826cb'"
+        },
+        {
+          "title": "merged Bori affection runs on actual daytime snapshots and preserves all pre-M9 rhythm, motion and positions",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact M9 special listing bytes accepted: hani-office-live.js\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '880f8bef93ea20fbcb4bcf7cf5205d72c9e62c40b09d56606ab47f13b84826cb'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-bori-stroll.test.mjs",
+      "exit": 0,
+      "seconds": 0.49,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-bori-stroll.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 6",
+        "# pass 6",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-bori-stroll.test.mjs.log",
+      "counts": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "office",
+      "file": "hani-office-bubble-close.test.mjs",
+      "exit": 1,
+      "seconds": 10.45,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-bubble-close.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 17 - bubble close: protected owner bytes, global listeners and timer allocations are unchanged",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 17",
+        "# pass 16",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-bubble-close.test.mjs.log",
+      "counts": {
+        "tests": 17,
+        "pass": 16,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "bubble close: protected owner bytes, global listeners and timer allocations are unchanged",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-cafe-rest.test.mjs",
+      "exit": 1,
+      "seconds": 3.95,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-cafe-rest.test.mjs",
+      "gitBlocked": true,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 1 - cafe route uses clear lower-right floor, retains the lounge and sign mounting surface",
+        "  error: 'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'",
+        "  code: 'USER_GIT_DISABLED'",
+        "not ok 3 - approved workday cadence and exact frozen placement code stay intact",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 4",
+        "# pass 2",
+        "# fail 2",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-cafe-rest.test.mjs.log",
+      "counts": {
+        "tests": 4,
+        "pass": 2,
+        "fail": 2,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "cafe route uses clear lower-right floor, retains the lounge and sign mounting surface",
+          "category": "git-blocked",
+          "message": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+        },
+        {
+          "title": "approved workday cadence and exact frozen placement code stay intact",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-chairman-234.test.mjs",
+      "exit": 0,
+      "seconds": 0.51,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-chairman-234.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 6",
+        "# pass 6",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-chairman-234.test.mjs.log",
+      "counts": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "office",
+      "file": "hani-office-chairman-patrol.test.mjs",
+      "exit": 0,
+      "seconds": 0.49,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-chairman-patrol.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 6",
+        "# pass 6",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-chairman-patrol.test.mjs.log",
+      "counts": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "office",
+      "file": "hani-office-chairman-patrol-278-pins.test.mjs",
+      "exit": 1,
+      "seconds": 0.22,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-chairman-patrol-278-pins.test.mjs",
+      "gitBlocked": true,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 1 - 278 exact complete ordered replacements reject missing, duplicate, unrelated and baseline bytes",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 2 - 278 independent fixed Git blobs prove pre-patrol bytes",
+        "  error: 'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'",
+        "  code: 'USER_GIT_DISABLED'",
+        "not ok 3 - 278 kids extension strictly restores every authored 1066c57 byte and rejects mutations",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 4 - 278 kids extension independently matches its fixed Git base",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 5 - 278 visit extension strictly restores 59db365 and rejects every partial, duplicate or unrelated byte",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 6 - 278 visit extension independently matches fixed Git base",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 7 - 278 staff-chat extension strictly preserves ordered complete replacements and rejects mutations",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 8 - 278 staff-chat extension independently matches fixed Git base",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 9 - 278 bubble placement extension strictly restores complete 0159d09 bytes and rejects all mutations",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 10 - 278 bubble placement extension independently matches fixed Git base",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 11 - 278 optimization extension preserves the entire previous contract and rejects all mutations",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 12 - 278 optimization extension independently matches fixed Git base",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 12",
+        "# pass 0",
+        "# fail 12",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-chairman-patrol-278-pins.test.mjs.log",
+      "counts": {
+        "tests": 12,
+        "pass": 0,
+        "fail": 12,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "278 exact complete ordered replacements reject missing, duplicate, unrelated and baseline bytes",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        },
+        {
+          "title": "278 independent fixed Git blobs prove pre-patrol bytes",
+          "category": "git-blocked",
+          "message": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+        },
+        {
+          "title": "278 kids extension strictly restores every authored 1066c57 byte and rejects mutations",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        },
+        {
+          "title": "278 kids extension independently matches its fixed Git base",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        },
+        {
+          "title": "278 visit extension strictly restores 59db365 and rejects every partial, duplicate or unrelated byte",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact visit 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - 'bbaceed5e8ac8ea5f33b67d8568a88b111d484c186f79d14d562bd3df77f8cae'"
+        },
+        {
+          "title": "278 visit extension independently matches fixed Git base",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact visit 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - 'bbaceed5e8ac8ea5f33b67d8568a88b111d484c186f79d14d562bd3df77f8cae'"
+        },
+        {
+          "title": "278 staff-chat extension strictly preserves ordered complete replacements and rejects mutations",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact staff-chat extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '87e892c33ec1c2ded09c3d1d09914acb97ae737e1dbbcce439e10cf97ed18d5e'"
+        },
+        {
+          "title": "278 staff-chat extension independently matches fixed Git base",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact staff-chat extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '87e892c33ec1c2ded09c3d1d09914acb97ae737e1dbbcce439e10cf97ed18d5e'"
+        },
+        {
+          "title": "278 bubble placement extension strictly restores complete 0159d09 bytes and rejects all mutations",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact bubble placement extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - 'f3797ab8a7fdefdee7b475b604cc9aa8f60c9e15ade6089e517e735eb9efd1ff'"
+        },
+        {
+          "title": "278 bubble placement extension independently matches fixed Git base",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact bubble placement extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - 'f3797ab8a7fdefdee7b475b604cc9aa8f60c9e15ade6089e517e735eb9efd1ff'"
+        },
+        {
+          "title": "278 optimization extension preserves the entire previous contract and rejects all mutations",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact fix278 bytes accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - 'aa5c9893814c89d00e57626b9a43582ad885e4c93d6b152f338204a2e52375c9'"
+        },
+        {
+          "title": "278 optimization extension independently matches fixed Git base",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact fix278 bytes accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - 'aa5c9893814c89d00e57626b9a43582ad885e4c93d6b152f338204a2e52375c9'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-companion-homes.test.mjs",
+      "exit": 0,
+      "seconds": 0.48,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-companion-homes.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 6",
+        "# pass 6",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-companion-homes.test.mjs.log",
+      "counts": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "office",
+      "file": "hani-office-companions.test.mjs",
+      "exit": 0,
+      "seconds": 0.5,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-companions.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 6",
+        "# pass 6",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-companions.test.mjs.log",
+      "counts": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "office",
+      "file": "hani-office-companions-276-pins.test.mjs",
+      "exit": 1,
+      "seconds": 0.12,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-companions-276-pins.test.mjs",
+      "gitBlocked": true,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 1 - 276 exact complete ordered disjoint replacements reject missing, duplicate, unrelated and base bytes",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 2 - 276 fixed Git base independently proves every original blob",
+        "  error: 'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'",
+        "  code: 'USER_GIT_DISABLED'",
+        "# tests 3",
+        "# pass 1",
+        "# fail 2",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-companions-276-pins.test.mjs.log",
+      "counts": {
+        "tests": 3,
+        "pass": 1,
+        "fail": 2,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "276 exact complete ordered disjoint replacements reject missing, duplicate, unrelated and base bytes",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        },
+        {
+          "title": "276 fixed Git base independently proves every original blob",
+          "category": "git-blocked",
+          "message": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-consult.test.mjs",
+      "exit": 1,
+      "seconds": 24.06,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-consult.test.mjs",
+      "gitBlocked": true,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 14 - consult: sofa wording, counter words, safety owners and runtime timers",
+        "  error: 'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'",
+        "  code: 'USER_GIT_DISABLED'",
+        "not ok 15 - consult: separately authored full plans and reverse snapshots retain exact identity in both presence states",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 20",
+        "# pass 18",
+        "# fail 2",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-consult.test.mjs.log",
+      "counts": {
+        "tests": 20,
+        "pass": 18,
+        "fail": 2,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "consult: sofa wording, counter words, safety owners and runtime timers",
+          "category": "git-blocked",
+          "message": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+        },
+        {
+          "title": "consult: separately authored full plans and reverse snapshots retain exact identity in both presence states",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-crowded-labels.test.mjs",
+      "exit": 0,
+      "seconds": 1,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-crowded-labels.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 19",
+        "# pass 19",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-crowded-labels.test.mjs.log",
+      "counts": {
+        "tests": 19,
+        "pass": 19,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "office",
+      "file": "hani-office-drama.test.mjs",
+      "exit": 1,
+      "seconds": 22.68,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-drama.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 19 - release trace sees literal JSON path; caption wraps in full; scheduler and label placement remain frozen",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 20",
+        "# pass 19",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-drama.test.mjs.log",
+      "counts": {
+        "tests": 20,
+        "pass": 19,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "release trace sees literal JSON path; caption wraps in full; scheduler and label placement remain frozen",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-fix-218.test.mjs",
+      "exit": 0,
+      "seconds": 2.52,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-fix-218.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 6",
+        "# pass 6",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-fix-218.test.mjs.log",
+      "counts": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "office",
+      "file": "hani-office-floor-bubble.test.mjs",
+      "exit": 0,
+      "seconds": 1.59,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-floor-bubble.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 18",
+        "# pass 18",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-floor-bubble.test.mjs.log",
+      "counts": {
+        "tests": 18,
+        "pass": 18,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "office",
+      "file": "hani-office-hd-224.test.mjs",
+      "exit": 1,
+      "seconds": 2.84,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-hd-224.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 10 - actual metadata bootstrap tolerates missing/malformed v3 and keeps the v2 scene",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 10",
+        "# pass 9",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-hd-224.test.mjs.log",
+      "counts": {
+        "tests": 10,
+        "pass": 9,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "actual metadata bootstrap tolerates missing/malformed v3 and keeps the v2 scene",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-icons.test.mjs",
+      "exit": 1,
+      "seconds": 4.34,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-icons.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 14 - icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 15 - icons: complete plan/blockPlan and sampled snapshot JSON match the approved G output",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 15",
+        "# pass 13",
+        "# fail 2",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-icons.test.mjs.log",
+      "counts": {
+        "tests": 15,
+        "pass": 13,
+        "fail": 2,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        },
+        {
+          "title": "icons: complete plan/blockPlan and sampled snapshot JSON match the approved G output",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-kids-lively.test.mjs",
+      "exit": 1,
+      "seconds": 16.93,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-kids-lively.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 10 - live walking leads and looks back while brother follows, floor/presence remain authoritative and pets unchanged",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 13 - latest mounted slots rotate every new dialogue, retain taps/bubble, reduced motion, zero writes/timer/listener additions",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 14 - kids add no runtime files or atlas/CSS bytes",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 15 - actual staff response survives the child bubble duration through the single mounted owner",
+        "  error: '[\"크림 · 옆자리 비었죠? 왔어요! · 회장님 · 크림, 잠깐 같이 쉬자.\",\"크림 · 회의는 산책하면서 할까요?\",\"수현 · …거기 위험해.\",\"수연 · 저기까지 갔다가 꼭 돌아올게!\",\"수연 · 아빠 옆자리 찜! 내 자리야!\",\"수연 · 아빠! 손 흔드는 거 보여?\",\"수연 · 오빠, 아빠 보고 싶어서 온 거 다 알아!\",\"수현 · …아빠 기다리는 동안만 같이 있어 줄게.\",\"아린 · 개발실 화이트보드에",
+        "  name: 'AssertionError'",
+        "# tests 15",
+        "# pass 11",
+        "# fail 4",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-kids-lively.test.mjs.log",
+      "counts": {
+        "tests": 15,
+        "pass": 11,
+        "fail": 4,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "live walking leads and looks back while brother follows, floor/presence remain authoritative and pets unchanged",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        },
+        {
+          "title": "latest mounted slots rotate every new dialogue, retain taps/bubble, reduced motion, zero writes/timer/listener additions",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        },
+        {
+          "title": "kids add no runtime files or atlas/CSS bytes",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        },
+        {
+          "title": "actual staff response survives the child bubble duration through the single mounted owner",
+          "category": "assertion",
+          "message": "'[\"크림 · 옆자리 비었죠? 왔어요! · 회장님 · 크림, 잠깐 같이 쉬자.\",\"크림 · 회의는 산책하면서 할까요?\",\"수현 · …거기 위험해.\",\"수연 · 저기까지 갔다가 꼭 돌아올게!\",\"수연 · 아빠 옆자리 찜! 내 자리야!\",\"수연 · 아빠! 손 흔드는 거 보여?\",\"수연 · 오빠, 아빠 보고 싶어서 온 거 다 알아!\",\"수현 · …아빠 기다리는 동안만 같이 있어 줄게.\",\"아린 · 개발실 화이트보드에서 모바일 사용 흐름 스케치 중 · 수연아, 반가워! 천천히 다녀와.\",\"수연 · 서윤 언니~♡ 나 왔어!\",\"서윤 · 수연이 왔어? 배포 멈추고 안아줄게 💜\"]'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-kids-visit.test.mjs",
+      "exit": 1,
+      "seconds": 51.97,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-kids-visit.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 16 - raw runtime preserves timer/listener/storage/cloud counts, all scheduler bytes, CSS/index/main and <=200 closure files",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 16",
+        "# pass 15",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-kids-visit.test.mjs.log",
+      "counts": {
+        "tests": 16,
+        "pass": 15,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "raw runtime preserves timer/listener/storage/cloud counts, all scheduler bytes, CSS/index/main and <=200 closure files",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact visit 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - 'bbaceed5e8ac8ea5f33b67d8568a88b111d484c186f79d14d562bd3df77f8cae'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-labels-qa.test.mjs",
+      "exit": 1,
+      "seconds": 8.19,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-labels-qa.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 14 - QA18: label fitting keeps batched reads; existing steady frames do not add layout measurements",
+        "  error: 'companion and hidden visit bubble obstacle read'",
+        "  name: 'AssertionError'",
+        "# tests 17",
+        "# pass 16",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-labels-qa.test.mjs.log",
+      "counts": {
+        "tests": 17,
+        "pass": 16,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "QA18: label fitting keeps batched reads; existing steady frames do not add layout measurements",
+          "category": "assertion",
+          "message": "'companion and hidden visit bubble obstacle read'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-lively.test.mjs",
+      "exit": 0,
+      "seconds": 32.64,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-lively.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 13",
+        "# pass 13",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-lively.test.mjs.log",
+      "counts": {
+        "tests": 13,
+        "pass": 13,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "office",
+      "file": "hani-office-lively-v2.test.mjs",
+      "exit": 1,
+      "seconds": 24.34,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-lively-v2.test.mjs",
+      "gitBlocked": true,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 6 - obr2: deterministic query order, reduced motion and frozen spatial bytes",
+        "  error: 'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'",
+        "  code: 'USER_GIT_DISABLED'",
+        "# tests 8",
+        "# pass 7",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-lively-v2.test.mjs.log",
+      "counts": {
+        "tests": 8,
+        "pass": 7,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "obr2: deterministic query order, reduced motion and frozen spatial bytes",
+          "category": "git-blocked",
+          "message": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-mascot-label.test.mjs",
+      "exit": 0,
+      "seconds": 0.47,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-mascot-label.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 6",
+        "# pass 6",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-mascot-label.test.mjs.log",
+      "counts": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "office",
+      "file": "hani-office-motion-1.test.mjs",
+      "exit": 1,
+      "seconds": 3.94,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-motion-1.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 2 - approved consultation scheduler source stays frozen, including every route and arrival calculation",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 16",
+        "# pass 15",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-motion-1.test.mjs.log",
+      "counts": {
+        "tests": 16,
+        "pass": 15,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "approved consultation scheduler source stays frozen, including every route and arrival calculation",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-motion-2.test.mjs",
+      "exit": 0,
+      "seconds": 1.17,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-motion-2.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 24",
+        "# pass 24",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-motion-2.test.mjs.log",
+      "counts": {
+        "tests": 24,
+        "pass": 24,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "office",
+      "file": "hani-office-obr10.test.mjs",
+      "exit": 0,
+      "seconds": 2.77,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr10.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 4",
+        "# pass 4",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-obr10.test.mjs.log",
+      "counts": {
+        "tests": 4,
+        "pass": 4,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "office",
+      "file": "hani-office-obr12.test.mjs",
+      "exit": 1,
+      "seconds": 0.08,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr12.test.mjs",
+      "gitBlocked": true,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 1 - scripts\\\\hani-office-obr12.test.mjs",
+        "  error: 'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'",
+        "  code: 'USER_GIT_DISABLED'",
+        "# tests 1",
+        "# pass 0",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-obr12.test.mjs.log",
+      "counts": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "scripts\\\\hani-office-obr12.test.mjs",
+          "category": "git-blocked",
+          "message": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-obr14.test.mjs",
+      "exit": 1,
+      "seconds": 0.1,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr14.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 1 - scripts\\\\hani-office-obr14.test.mjs",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 1",
+        "# pass 0",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-obr14.test.mjs.log",
+      "counts": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "scripts\\\\hani-office-obr14.test.mjs",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-obr15.test.mjs",
+      "exit": 1,
+      "seconds": 14.22,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr15.test.mjs",
+      "gitBlocked": true,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 7 - obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately",
+        "  error: 'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'",
+        "  code: 'USER_GIT_DISABLED'",
+        "# tests 14",
+        "# pass 13",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-obr15.test.mjs.log",
+      "counts": {
+        "tests": 14,
+        "pass": 13,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately",
+          "category": "git-blocked",
+          "message": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-obr16.test.mjs",
+      "exit": 0,
+      "seconds": 9.75,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr16.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 12",
+        "# pass 12",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-obr16.test.mjs.log",
+      "counts": {
+        "tests": 12,
+        "pass": 12,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "office",
+      "file": "hani-office-obr17.test.mjs",
+      "exit": 1,
+      "seconds": 2.61,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr17.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 2 - obr17 actor context removed; canonical layers, atlas pivot and compact >=10px are explicit",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 3",
+        "# pass 2",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-obr17.test.mjs.log",
+      "counts": {
+        "tests": 3,
+        "pass": 2,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "obr17 actor context removed; canonical layers, atlas pivot and compact >=10px are explicit",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-obr18.test.mjs",
+      "exit": 1,
+      "seconds": 6.22,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr18.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 11 - obr18 actor context removed; canonical layers, atlas pivot and compact >=10px are explicit",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 12",
+        "# pass 11",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-obr18.test.mjs.log",
+      "counts": {
+        "tests": 12,
+        "pass": 11,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "obr18 actor context removed; canonical layers, atlas pivot and compact >=10px are explicit",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-obr19.test.mjs",
+      "exit": 0,
+      "seconds": 4.2,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr19.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 3",
+        "# pass 3",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-obr19.test.mjs.log",
+      "counts": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "office",
+      "file": "hani-office-obr21.test.mjs",
+      "exit": 1,
+      "seconds": 18.33,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr21.test.mjs",
+      "gitBlocked": true,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 1 - obr21 authored full absent/present plans and reverse snapshots match frozen delta",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 4 - obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation",
+        "  error: 'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'",
+        "  code: 'USER_GIT_DISABLED'",
+        "not ok 5 - obr21 cached gathering/index decisions equal full index rebuilds",
+        "  error: 'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'",
+        "  code: 'USER_GIT_DISABLED'",
+        "# tests 6",
+        "# pass 3",
+        "# fail 3",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-obr21.test.mjs.log",
+      "counts": {
+        "tests": 6,
+        "pass": 3,
+        "fail": 3,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "obr21 authored full absent/present plans and reverse snapshots match frozen delta",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        },
+        {
+          "title": "obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation",
+          "category": "git-blocked",
+          "message": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+        },
+        {
+          "title": "obr21 cached gathering/index decisions equal full index rebuilds",
+          "category": "git-blocked",
+          "message": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-obr3.test.mjs",
+      "exit": 0,
+      "seconds": 2.45,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr3.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 5",
+        "# pass 5",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-obr3.test.mjs.log",
+      "counts": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "office",
+      "file": "hani-office-obr4.test.mjs",
+      "exit": 1,
+      "seconds": 0.47,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr4.test.mjs",
+      "gitBlocked": true,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 7 - obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows",
+        "  error: 'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'",
+        "  code: 'USER_GIT_DISABLED'",
+        "not ok 8 - obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats",
+        "  error: 'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'",
+        "  code: 'USER_GIT_DISABLED'",
+        "# tests 10",
+        "# pass 8",
+        "# fail 2",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-obr4.test.mjs.log",
+      "counts": {
+        "tests": 10,
+        "pass": 8,
+        "fail": 2,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows",
+          "category": "git-blocked",
+          "message": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+        },
+        {
+          "title": "obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats",
+          "category": "git-blocked",
+          "message": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-obr6.test.mjs",
+      "exit": 1,
+      "seconds": 0.74,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr6.test.mjs",
+      "gitBlocked": true,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 1 - scripts\\\\hani-office-obr6.test.mjs",
+        "  error: 'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'",
+        "  code: 'USER_GIT_DISABLED'",
+        "# tests 1",
+        "# pass 0",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-obr6.test.mjs.log",
+      "counts": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "scripts\\\\hani-office-obr6.test.mjs",
+          "category": "git-blocked",
+          "message": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-obr7.test.mjs",
+      "exit": 1,
+      "seconds": 0.08,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr7.test.mjs",
+      "gitBlocked": true,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 1 - scripts\\\\hani-office-obr7.test.mjs",
+        "  error: 'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'",
+        "  code: 'USER_GIT_DISABLED'",
+        "# tests 1",
+        "# pass 0",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-obr7.test.mjs.log",
+      "counts": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "scripts\\\\hani-office-obr7.test.mjs",
+          "category": "git-blocked",
+          "message": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-obr8.test.mjs",
+      "exit": 1,
+      "seconds": 2.27,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr8.test.mjs",
+      "gitBlocked": true,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 1 - obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words",
+        "  error: 'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'",
+        "  code: 'USER_GIT_DISABLED'",
+        "# tests 3",
+        "# pass 2",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-obr8.test.mjs.log",
+      "counts": {
+        "tests": 3,
+        "pass": 2,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words",
+          "category": "git-blocked",
+          "message": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-obr9.test.mjs",
+      "exit": 1,
+      "seconds": 0.08,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr9.test.mjs",
+      "gitBlocked": true,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 1 - scripts\\\\hani-office-obr9.test.mjs",
+        "  error: 'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'",
+        "  code: 'USER_GIT_DISABLED'",
+        "# tests 1",
+        "# pass 0",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-obr9.test.mjs.log",
+      "counts": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "scripts\\\\hani-office-obr9.test.mjs",
+          "category": "git-blocked",
+          "message": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-pet-bori.test.mjs",
+      "exit": 1,
+      "seconds": 45.67,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-pet-bori.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 8 - Bori: 1F 07–13/15–07, 2F 13–15; visible >=95%, sleeps more than all peers",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 10 - Bori: 25–45 second cycles, longer rests, short 12px/s walks slower than Mochi",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 14 - Bori: no persistence, staff plan owner, timers, listeners and nodes remain unchanged",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 14",
+        "# pass 11",
+        "# fail 3",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-pet-bori.test.mjs.log",
+      "counts": {
+        "tests": 14,
+        "pass": 11,
+        "fail": 3,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "Bori: 1F 07–13/15–07, 2F 13–15; visible >=95%, sleeps more than all peers",
+          "category": "assertion",
+          "message": "|-\n    The expression evaluated to a falsy value:\n    \n      assert.ok(counts['pet-bori'].sleep/total>=.6)"
+        },
+        {
+          "title": "Bori: 25–45 second cycles, longer rests, short 12px/s walks slower than Mochi",
+          "category": "assertion",
+          "message": "|-\n    The expression evaluated to a falsy value:\n    \n      assert.ok(motion.speed<rabbit.speed)"
+        },
+        {
+          "title": "Bori: no persistence, staff plan owner, timers, listeners and nodes remain unchanged",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-pet-bori-272-pins.test.mjs",
+      "exit": 1,
+      "seconds": 0.17,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-pet-bori-272-pins.test.mjs",
+      "gitBlocked": true,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 1 - 272: exact ordered pairs are the complete fixed-271 JS/CSS diff, rejecting all unlisted bytes",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 2 - 272 -> 269 -> 268: all stacked source hashes and literal pairs remain enforced",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 4 - 272: fixed Git release blobs independently prove every baseline pin and complete diff",
+        "  error: 'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'",
+        "  code: 'USER_GIT_DISABLED'",
+        "# tests 4",
+        "# pass 1",
+        "# fail 3",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-pet-bori-272-pins.test.mjs.log",
+      "counts": {
+        "tests": 4,
+        "pass": 1,
+        "fail": 3,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "272: exact ordered pairs are the complete fixed-271 JS/CSS diff, rejecting all unlisted bytes",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        },
+        {
+          "title": "272 -> 269 -> 268: all stacked source hashes and literal pairs remain enforced",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        },
+        {
+          "title": "272: fixed Git release blobs independently prove every baseline pin and complete diff",
+          "category": "git-blocked",
+          "message": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-pets-268-pins.test.mjs",
+      "exit": 1,
+      "seconds": 0.1,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-pets-268-pins.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 1 - v2.9.268: exact fixture pairs are the complete diff from pinned origin/main, with no other source edits",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 1",
+        "# pass 0",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-pets-268-pins.test.mjs.log",
+      "counts": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "v2.9.268: exact fixture pairs are the complete diff from pinned origin/main, with no other source edits",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-pets-bubble.test.mjs",
+      "exit": 1,
+      "seconds": 27.39,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-pets-bubble.test.mjs",
+      "gitBlocked": true,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 10 - real cause: dismissing a manually opened pet trio cannot immediately trigger the automatic trio",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 12 - staff scheduler/plan/blockPlan/snapshot and all staff model helpers stay byte identical; no extra loops, listeners or nodes",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 13 - resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections",
+        "  error: 'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'",
+        "  code: 'USER_GIT_DISABLED'",
+        "not ok 15 - round2: sleeping pets do not greet automatically, but a manual tap still gets one hop",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 16 - round2: every visible pet starts a queued gesture within ten seconds of entering its floor",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 18 - round2: walks start within the new windows and every sampled body stays on existing safe routes",
+        "  error: \"Cannot read properties of undefined (reading 'push')\"",
+        "not ok 21 - round2: staff scheduler and snapshot source bytes stay identical; timer/listener/node/storage paths do not increase",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 22",
+        "# pass 15",
+        "# fail 7",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-pets-bubble.test.mjs.log",
+      "counts": {
+        "tests": 22,
+        "pass": 15,
+        "fail": 7,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "real cause: dismissing a manually opened pet trio cannot immediately trigger the automatic trio",
+          "category": "assertion",
+          "message": "|-\n    Expected values to be strictly equal:\n    \n    5 !== 4"
+        },
+        {
+          "title": "staff scheduler/plan/blockPlan/snapshot and all staff model helpers stay byte identical; no extra loops, listeners or nodes",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        },
+        {
+          "title": "resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections",
+          "category": "git-blocked",
+          "message": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+        },
+        {
+          "title": "round2: sleeping pets do not greet automatically, but a manual tap still gets one hop",
+          "category": "assertion",
+          "message": "|-\n    Expected values to be strictly equal:\n    \n    5 !== 4"
+        },
+        {
+          "title": "round2: every visible pet starts a queued gesture within ten seconds of entering its floor",
+          "category": "assertion",
+          "message": "|-\n    entrance gesture armed on the visible floor\n    \n    undefined !== '1f'"
+        },
+        {
+          "title": "round2: walks start within the new windows and every sampled body stays on existing safe routes",
+          "category": "assertion",
+          "message": "\"Cannot read properties of undefined (reading 'push')\""
+        },
+        {
+          "title": "round2: staff scheduler and snapshot source bytes stay identical; timer/listener/node/storage paths do not increase",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-props.test.mjs",
+      "exit": 1,
+      "seconds": 0.55,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-props.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 11 - props: scheduler/plan/blockPlan/snapshot/labels/home-clear source bytes and all six assets are unchanged",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 11",
+        "# pass 10",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-props.test.mjs.log",
+      "counts": {
+        "tests": 11,
+        "pass": 10,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "props: scheduler/plan/blockPlan/snapshot/labels/home-clear source bytes and all six assets are unchanged",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-release-projection.test.mjs",
+      "exit": 0,
+      "seconds": 0.17,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-release-projection.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 2",
+        "# pass 2",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-release-projection.test.mjs.log",
+      "counts": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "office",
+      "file": "hani-office-residents.test.mjs",
+      "exit": 0,
+      "seconds": 0.51,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-residents.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 6",
+        "# pass 6",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-residents.test.mjs.log",
+      "counts": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "office",
+      "file": "hani-office-seats-215.test.mjs",
+      "exit": 1,
+      "seconds": 0.67,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-seats-215.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 12 - logo removed, one persistent actor owner, lazy sprite slots and no random render path",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 12",
+        "# pass 11",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-seats-215.test.mjs.log",
+      "counts": {
+        "tests": 12,
+        "pass": 11,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "logo removed, one persistent actor owner, lazy sprite slots and no random render path",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-snack.test.mjs",
+      "exit": 1,
+      "seconds": 17.5,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-snack.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 16 - snack: scheduler/snapshot/geometry/residents bytes and complete sampled model JSON preserve c301a13",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 26",
+        "# pass 25",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-snack.test.mjs.log",
+      "counts": {
+        "tests": 26,
+        "pass": 25,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "snack: scheduler/snapshot/geometry/residents bytes and complete sampled model JSON preserve c301a13",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-staff-chat.test.mjs",
+      "exit": 1,
+      "seconds": 102.73,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-staff-chat.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 17 - raw source adds zero timer/listener/storage/cloud references and keeps runtime closure and CSS/index/main unchanged",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 17",
+        "# pass 16",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-staff-chat.test.mjs.log",
+      "counts": {
+        "tests": 17,
+        "pass": 16,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "raw source adds zero timer/listener/storage/cloud references and keeps runtime closure and CSS/index/main unchanged",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact staff-chat extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '87e892c33ec1c2ded09c3d1d09914acb97ae737e1dbbcce439e10cf97ed18d5e'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-tap-lines.test.mjs",
+      "exit": 1,
+      "seconds": 2.22,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-tap-lines.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 9 - cycles all bucket/chairman lines, one-in-five friend, then resets after 10s or bucket change",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 10 - three taps within 2s override friend/normal selection, exact boundary, and reset the burst",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 13 - real delegated taps and keyboard reuse one slot, preserve labels, latest 3s timeout and no storage writes",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 15",
+        "# pass 12",
+        "# fail 3",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-tap-lines.test.mjs.log",
+      "counts": {
+        "tests": 15,
+        "pass": 12,
+        "fail": 3,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "cycles all bucket/chairman lines, one-in-five friend, then resets after 10s or bucket change",
+          "category": "assertion",
+          "message": "|-\n    Expected values to be strictly equal:\n    + actual - expected\n    \n    + 'M9에 온 걸 환영해요, 서윤아♡ 시총은 천천히 따라오세요.'\n    - '나은이는 경쟁 안 한다면서 참 자연스러워!'"
+        },
+        {
+          "title": "three taps within 2s override friend/normal selection, exact boundary, and reset the burst",
+          "category": "assertion",
+          "message": "|-\n    Expected values to be strictly equal:\n    + actual - expected\n    \n    + 'M9에 온 걸 환영해요, 서윤아♡ 시총은 천천히 따라오세요.'\n    - '나은이는 경쟁 안 한다면서 참 자연스러워!'"
+        },
+        {
+          "title": "real delegated taps and keyboard reuse one slot, preserve labels, latest 3s timeout and no storage writes",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-tlayout.test.mjs",
+      "exit": 1,
+      "seconds": 5.3,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-tlayout.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 11 - only the five pinned source fragments change; protected home and label owners are byte identical",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 12 - 16 separately authored complete plan/outings/reverse-snapshot outputs have no exclusions",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 13",
+        "# pass 11",
+        "# fail 2",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-tlayout.test.mjs.log",
+      "counts": {
+        "tests": 13,
+        "pass": 11,
+        "fail": 2,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "only the five pinned source fragments change; protected home and label owners are byte identical",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        },
+        {
+          "title": "16 separately authored complete plan/outings/reverse-snapshot outputs have no exclusions",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-top-labels.test.mjs",
+      "exit": 0,
+      "seconds": 0.11,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-top-labels.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 7",
+        "# pass 7",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-top-labels.test.mjs.log",
+      "counts": {
+        "tests": 7,
+        "pass": 7,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "office",
+      "file": "hani-office-v2-215.test.mjs",
+      "exit": 1,
+      "seconds": 0.87,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-v2-215.test.mjs",
+      "gitBlocked": true,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 7 - frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture",
+        "  error: 'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'",
+        "  code: 'USER_GIT_DISABLED'",
+        "not ok 16 - v2 sprite metadata is real, all art exists, no persistence/cloud calls added",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 20",
+        "# pass 16",
+        "# fail 2",
+        "# skipped 2"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-v2-215.test.mjs.log",
+      "counts": {
+        "tests": 20,
+        "pass": 16,
+        "fail": 2,
+        "skipped": 2
+      },
+      "failures": [
+        {
+          "title": "frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture",
+          "category": "git-blocked",
+          "message": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+        },
+        {
+          "title": "v2 sprite metadata is real, all art exists, no persistence/cloud calls added",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-visitors-cafe.test.mjs",
+      "exit": 0,
+      "seconds": 4.41,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-visitors-cafe.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 5",
+        "# pass 5",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-visitors-cafe.test.mjs.log",
+      "counts": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "office",
+      "file": "hani-office-xmas.test.mjs",
+      "exit": 1,
+      "seconds": 0.73,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-xmas.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 8 - xmas: same-floor clock ticks toggle the event without a click, new timer or listener",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 12 - xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 13 - xmas: literal atlas enters the release closure as the only new runtime file",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 13",
+        "# pass 10",
+        "# fail 3",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-xmas.test.mjs.log",
+      "counts": {
+        "tests": 13,
+        "pass": 10,
+        "fail": 3,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "xmas: same-floor clock ticks toggle the event without a click, new timer or listener",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        },
+        {
+          "title": "xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        },
+        {
+          "title": "xmas: literal atlas enters the release closure as the only new runtime file",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact patrol 278 bytes accepted: hani-office-live.css\n    + actual - expected\n    \n    + 'a7aaa77fa50268e4e01a698f1c6b932a214e709bdac732028d308353a068406e'\n    - '08d17d38c291d85481b2315f1579be6af265b677f62c3be6f2c0ed643f73eee5'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-xmas-269-pins.test.mjs",
+      "exit": 1,
+      "seconds": 0.12,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-xmas-269-pins.test.mjs",
+      "gitBlocked": true,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 1 - v2.9.269: ordered unique pairs are the complete JS/CSS diff and reject unlisted edits",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 2 - v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit",
+        "  error: 'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'",
+        "  code: 'USER_GIT_DISABLED'",
+        "# tests 2",
+        "# pass 0",
+        "# fail 2",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-xmas-269-pins.test.mjs.log",
+      "counts": {
+        "tests": 2,
+        "pass": 0,
+        "fail": 2,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "v2.9.269: ordered unique pairs are the complete JS/CSS diff and reject unlisted edits",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        },
+        {
+          "title": "v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit",
+          "category": "git-blocked",
+          "message": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+        }
+      ]
+    },
+    {
+      "group": "office",
+      "file": "hani-office-zoom.test.mjs",
+      "exit": 1,
+      "seconds": 11.76,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-zoom.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 12 - zoom: scheduler, snapshots and all three protected geometry functions stay byte identical to task base",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 13",
+        "# pass 11",
+        "# fail 1",
+        "# skipped 1"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-office-zoom.test.mjs.log",
+      "counts": {
+        "tests": 13,
+        "pass": 11,
+        "fail": 1,
+        "skipped": 1
+      },
+      "failures": [
+        {
+          "title": "zoom: scheduler, snapshots and all three protected geometry functions stay byte identical to task base",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact kids 278 extension accepted\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'"
+        }
+      ]
+    },
+    {
+      "group": "features",
+      "file": "hani-save-guard.test.mjs",
+      "exit": 0,
+      "seconds": 0.14,
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-save-guard.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 10",
+        "# pass 10",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-save-guard.test.mjs.log",
+      "counts": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "features",
+      "file": "hani-life-bundle-source.test.mjs",
+      "exit": 0,
+      "seconds": 0.57,
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-life-bundle-source.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 5",
+        "# pass 5",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-life-bundle-source.test.mjs.log",
+      "counts": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "features",
+      "file": "hani-study-retry.test.mjs",
+      "exit": 0,
+      "seconds": 0.39,
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-study-retry.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 26",
+        "# pass 26",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-study-retry.test.mjs.log",
+      "counts": {
+        "tests": 26,
+        "pass": 26,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "features",
+      "file": "hani-procrastination-board.test.mjs",
+      "exit": 0,
+      "seconds": 0.47,
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-procrastination-board.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 6",
+        "# pass 6",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-procrastination-board.test.mjs.log",
+      "counts": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "features",
+      "file": "hani-wishlist-quick-add.test.mjs",
+      "exit": 0,
+      "seconds": 0.22,
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-wishlist-quick-add.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 7",
+        "# pass 7",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-wishlist-quick-add.test.mjs.log",
+      "counts": {
+        "tests": 7,
+        "pass": 7,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "features",
+      "file": "hani-dev-report-generate.test.mjs",
+      "exit": 0,
+      "seconds": 1.09,
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-dev-report-generate.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "PASS 형식·3~5개 균등 묶음·범위 정확·캐릭터 직급·원자료/수동 보고서/runtime 바이트 보존",
+        "PASS 같은 입력·출처의 출력 완전 동일, 두 번째 write 0, check drift 감지·쓰기 0",
+        "PASS 잘못된 범위·누락·중복·미배포·잘못된 날짜·기존 묶음 중복은 쓰기 전 차단",
+        "PASS 개인정보·금액·건강 수치·인증정보·금지 호칭·깨진 글자 거절, raw handoff 비노출",
+        "PASS 기본 릴리스당 1편·추가 실행 기존 목록 보존·Git 불가와 편집자료 부재 명시·CLI",
+        "PASS 손상된 목록 marker 차단",
+        "PASS 실제 localGit 함수: 고정 커밋 로컬 조회만, 제목·본문에서 PR 번호만 추출·원문 비노출, Git 거부 명시",
+        "PASS 실제 v230~280 51건/13편, 민감 패턴 0, 링크 존재, 실제 renderer 형식/검색/검토대기 허용·현재 앱 미반영 확인",
+        "PASS 실제 DOM renderer 실행: 파일만 추가 시 앱 목록 불변, VM에서 번들 데이터 교체 시 새 목록·본문·검색 동작, fetch/저장 접근 0",
+        "PASS 실제 번들31편·기존18편·재생성13편·renderer 목록/본문/검색, catalog8→9 exact inverse·이 시험의 디스크 빌더 실행0",
+        "PASS 개발보고서 생성기 10그룹",
+        "# tests 1",
+        "# pass 1",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-dev-report-generate.test.mjs.log",
+      "counts": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "features",
+      "file": "hani-pb-chibitoon.test.mjs",
+      "exit": 1,
+      "seconds": 0.32,
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-pb-chibitoon.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 5 - one byte-identical literal sheet is reachable; raw closure reports exact additions/removals",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 5",
+        "# pass 4",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-pb-chibitoon.test.mjs.log",
+      "counts": {
+        "tests": 5,
+        "pass": 4,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "one byte-identical literal sheet is reachable; raw closure reports exact additions/removals",
+          "category": "assertion",
+          "message": "|-\n    Expected values to be strictly deep-equal:\n    + actual - expected\n    \n      [\n    +   'assets/office-companions/kids-v2.webp',\n        'assets/procrastination/pb-chibi-sheet-v1.webp'\n      ]"
+        }
+      ]
+    },
+    {
+      "group": "features",
+      "file": "hani-newsroom-persona.test.mjs",
+      "exit": 0,
+      "seconds": 0.2,
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-newsroom-persona.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 4",
+        "# pass 4",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-newsroom-persona.test.mjs.log",
+      "counts": {
+        "tests": 4,
+        "pass": 4,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "features",
+      "file": "hani-m9-polish.test.mjs",
+      "exit": 0,
+      "seconds": 0.1,
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-m9-polish.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 2",
+        "# pass 2",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-m9-polish.test.mjs.log",
+      "counts": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "features",
+      "file": "hani-gemini-reports-build.test.mjs",
+      "exit": 0,
+      "seconds": 0.93,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-gemini-reports-build.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "PASS v2.9.164 body/title/id round-trip; surrounding bytes preserved; _ files skipped",
+        "PASS ordering/previous_report_id; sentence/60-char titles; version range; --check detects drift without writing",
+        "PASS heading fallback; mixed LF/CRLF preservation; generated runtime syntax",
+        "PASS actual view validation and newest-first selection (80 reports); search/filter; invalid catalogs rejected",
+        "PASS report subtitle/monthly heading; release range excludes subtitle; exact Markdown preserved",
+        "PASS Gemini reports build tests",
+        "# tests 1",
+        "# pass 1",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-gemini-reports-build.test.mjs.log",
+      "counts": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "features",
+      "file": "hani-nav-groups.test.mjs",
+      "exit": 1,
+      "seconds": 0.26,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-nav-groups.test.mjs",
+      "gitBlocked": true,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 1 - scripts\\\\hani-nav-groups.test.mjs",
+        "  error: 'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'",
+        "  code: 'USER_GIT_DISABLED'",
+        "# tests 1",
+        "# pass 0",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-nav-groups.test.mjs.log",
+      "counts": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "scripts\\\\hani-nav-groups.test.mjs",
+          "category": "git-blocked",
+          "message": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+        }
+      ]
+    },
+    {
+      "group": "features",
+      "file": "hani-navlogin.test.mjs",
+      "exit": 0,
+      "seconds": 0.27,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-navlogin.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "PASS nav/login 45 cases: Cloud-before-entry, retry/guards, logout races, browser-session cookie, verified reload/tab resume, lifecycle, aliases and design picker",
+        "# tests 1",
+        "# pass 1",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-navlogin.test.mjs.log",
+      "counts": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "features",
+      "file": "hani-dashboard-period.test.mjs",
+      "exit": 0,
+      "seconds": 0.21,
+      "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-dashboard-period.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "PASS: 7 period cases; actual bundled runtime; real as-of preserved; blocked source remains hidden; source unchanged. Not authenticated UI QA.",
+        "PASS: latest-input-month dates, future rejection, missing dates; no metric values fabricated.",
+        "PASS: safe diagnostic reason allowlist; arbitrary details hidden.",
+        "PASS: monthly cadence, true basis/date, exact baseline, open/closed settlement, draft/future rejection, empty unverified zero rejection, daily scope, source preservation.",
+        "# tests 1",
+        "# pass 1",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-dashboard-period.test.mjs.log",
+      "counts": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "features",
+      "file": "hani-release-version-layers.test.mjs",
+      "exit": 0,
+      "seconds": 0.48,
+      "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\outer-preload.cjs --test --test-isolation=none --test-reporter=tap scripts/hani-release-version-layers.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 5",
+        "# pass 5",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-release-version-layers.test.mjs.log",
+      "counts": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "features",
+      "file": "hani-newsroom-285-source.test.mjs",
+      "exit": 0,
+      "seconds": 0.13,
+      "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\outer-preload.cjs --test --test-isolation=none --test-reporter=tap scripts/hani-newsroom-285-source.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "# tests 2",
+        "# pass 2",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-newsroom-285-source.test.mjs.log",
+      "counts": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "features",
+      "file": "hani-newsroom-4cut-230.test.mjs",
+      "exit": 1,
+      "seconds": 0.14,
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-newsroom-4cut-230.test.mjs --node",
+      "gitBlocked": true,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 8 - release closure literal, static lazy dimensions, canonical route and no new duplicate id literals",
+        "  error: 'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'",
+        "  code: 'USER_GIT_DISABLED'",
+        "# tests 8",
+        "# pass 7",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-newsroom-4cut-230.test.mjs.log",
+      "counts": {
+        "tests": 8,
+        "pass": 7,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "release closure literal, static lazy dimensions, canonical route and no new duplicate id literals",
+          "category": "git-blocked",
+          "message": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+        }
+      ]
+    },
+    {
+      "group": "features",
+      "file": "hani-m9-link.test.mjs",
+      "exit": 1,
+      "seconds": 0.46,
+      "command": "node --require ./scripts/hani-m9-polish-preload.cjs --test --test-isolation=none --test-reporter=tap scripts/hani-m9-link.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 10 - deployment closure includes every new static reference and the updated manifest",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 10",
+        "# pass 9",
+        "# fail 1",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-m9-link.test.mjs.log",
+      "counts": {
+        "tests": 10,
+        "pass": 9,
+        "fail": 1,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "deployment closure includes every new static reference and the updated manifest",
+          "category": "assertion",
+          "message": "|-\n    Package inclusion is required; resolver missing=[] alone cannot certify it. Report this failure without changing gate/server contracts.\n    + actual - expected\n    \n    + [\n    +   'data/hani-ilbo/issues.json',\n    +   'data/hani-ilbo/extra-m9.json',\n    +   'assets/hani-ilbo/extra-m9-comic.webp',\n    +   'assets/character-archive/seoyun-m9-special-cut.webp'\n    + ]\n    - []"
+        }
+      ]
+    },
+    {
+      "group": "features",
+      "file": "hani-seoyun-m9.test.mjs",
+      "exit": 1,
+      "seconds": 2,
+      "command": "node --require ./scripts/hani-m9-polish-preload.cjs --require ./scripts/hani-m9-link-preload.cjs --test --test-isolation=none --test-reporter=tap scripts/hani-seoyun-m9.test.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "not ok 7 - exact outer inverse restores fixed bytes and rejects missing, duplicated, partial and unrelated edits",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 8 - one special presentation card follows all nine unchanged M9 cards; MIR and original profiles keep their bytes/order",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 13 - Cheese retains all tap lines with one addition; Bori new affection line requires a nearby, same-floor Seoyun",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 14 - raw mounted PC/phone preserves one persistent bubble, listeners/timers, zero writes and unchanged phone geometry owner",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "not ok 15 - runtime closure stays identical with zero missing files; new code adds no storage, Cloud, timer or listener operations",
+        "  error: |-",
+        "  name: 'AssertionError'",
+        "# tests 15",
+        "# pass 10",
+        "# fail 5",
+        "# skipped 0"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-seoyun-m9.test.mjs.log",
+      "counts": {
+        "tests": 15,
+        "pass": 10,
+        "fail": 5,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "title": "exact outer inverse restores fixed bytes and rejects missing, duplicated, partial and unrelated edits",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact M9 special listing bytes accepted: hani-office-live.js\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '880f8bef93ea20fbcb4bcf7cf5205d72c9e62c40b09d56606ab47f13b84826cb'"
+        },
+        {
+          "title": "one special presentation card follows all nine unchanged M9 cards; MIR and original profiles keep their bytes/order",
+          "category": "assertion",
+          "message": "|-\n    hani-office-live.css unchanged\n    + actual - expected\n    \n    + 'a7aaa77fa50268e4e01a698f1c6b932a214e709bdac732028d308353a068406e'\n    - '08d17d38c291d85481b2315f1579be6af265b677f62c3be6f2c0ed643f73eee5'"
+        },
+        {
+          "title": "Cheese retains all tap lines with one addition; Bori new affection line requires a nearby, same-floor Seoyun",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact M9 special listing bytes accepted: hani-office-live.js\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '880f8bef93ea20fbcb4bcf7cf5205d72c9e62c40b09d56606ab47f13b84826cb'"
+        },
+        {
+          "title": "raw mounted PC/phone preserves one persistent bubble, listeners/timers, zero writes and unchanged phone geometry owner",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact M9 special listing bytes accepted: hani-office-live.js\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '880f8bef93ea20fbcb4bcf7cf5205d72c9e62c40b09d56606ab47f13b84826cb'"
+        },
+        {
+          "title": "runtime closure stays identical with zero missing files; new code adds no storage, Cloud, timer or listener operations",
+          "category": "frozen-inverse",
+          "message": "|-\n    only exact M9 special listing bytes accepted: hani-office-live.js\n    + actual - expected\n    \n    + '1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850'\n    - '880f8bef93ea20fbcb4bcf7cf5205d72c9e62c40b09d56606ab47f13b84826cb'"
+        }
+      ]
+    },
+    {
+      "group": "features",
+      "file": "hani-design-system-qa.mjs",
+      "exit": 0,
+      "seconds": 0.07,
+      "command": "node scripts/hani-design-system-qa.mjs",
+      "gitBlocked": false,
+      "browserBlocked": false,
+      "timeout": false,
+      "summary": [
+        "PASS: empty, weighted, unfinished, null fallback, explicit zero, immutable records"
+      ],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-design-system-qa.mjs.log",
+      "counts": {
+        "tests": 0,
+        "pass": 0,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "browser",
+      "file": "hani-save-guard.browser.mjs",
+      "exit": 1,
+      "seconds": 0.69,
+      "command": "node scripts/hani-save-guard.browser.mjs C:\\Users\\홍성민\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules\\playwright\\index.mjs C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+      "gitBlocked": false,
+      "browserBlocked": true,
+      "timeout": false,
+      "summary": [],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-save-guard.browser.mjs.log",
+      "counts": {
+        "tests": 0,
+        "pass": 0,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "browser",
+      "file": "hani-navlogin-ui.test.mjs",
+      "exit": 1,
+      "seconds": 0.25,
+      "command": "node scripts/hani-navlogin-ui.test.mjs C:\\Users\\홍성민\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules\\playwright\\index.mjs C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+      "gitBlocked": false,
+      "browserBlocked": true,
+      "timeout": false,
+      "summary": [],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-navlogin-ui.test.mjs.log",
+      "counts": {
+        "tests": 0,
+        "pass": 0,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "browser",
+      "file": "hani-navigation-state-ui.test.mjs",
+      "exit": 1,
+      "seconds": 0.25,
+      "command": "node scripts/hani-navigation-state-ui.test.mjs C:\\Users\\홍성민\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules\\playwright\\index.mjs C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+      "gitBlocked": false,
+      "browserBlocked": true,
+      "timeout": false,
+      "summary": [],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-navigation-state-ui.test.mjs.log",
+      "counts": {
+        "tests": 0,
+        "pass": 0,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "browser",
+      "file": "hani-dashboard-period-ui.test.mjs",
+      "exit": 1,
+      "seconds": 0.25,
+      "command": "node scripts/hani-dashboard-period-ui.test.mjs C:\\Users\\홍성민\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules\\playwright\\index.mjs C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+      "gitBlocked": false,
+      "browserBlocked": true,
+      "timeout": false,
+      "summary": [],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-dashboard-period-ui.test.mjs.log",
+      "counts": {
+        "tests": 0,
+        "pass": 0,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "group": "browser",
+      "file": "hani-design-system-phase1-qa.mjs",
+      "exit": 1,
+      "seconds": 0.27,
+      "command": "node scripts/hani-design-system-phase1-qa.mjs C:\\Users\\홍성민\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules\\playwright\\index.mjs C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+      "gitBlocked": false,
+      "browserBlocked": true,
+      "timeout": false,
+      "summary": [],
+      "log": "C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-saveguard-286-pV35Cu\\hani-design-system-phase1-qa.mjs.log",
+      "counts": {
+        "tests": 0,
+        "pass": 0,
+        "fail": 0,
+        "skipped": 0
+      },
+      "failures": []
+    }
+  ]
+}
