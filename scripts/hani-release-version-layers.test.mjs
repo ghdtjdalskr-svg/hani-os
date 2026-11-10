@@ -3,10 +3,29 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
+import outer from './hani-save-guard-source.cjs';
 import layers from './hani-release-version-layers.cjs';
 import {pbDelta,restoreChibitoonSource} from './hani-pb-chibitoon-source.mjs';
 const {hash,readRawFileSync:read,restoreVersionLayer:restore,projectVersionSource,projectReleaseSource}=layers;
 const raw=file=>read(new URL('../'+file,import.meta.url),'utf8');
+
+test('287 outer projection matches the supplied 286 baselines without accepting drift or changing strict guard inverses',()=>{
+ for(const file of ['index.html','hani-main.js']){
+  const source=raw(file),baseline=read(new URL('../artifacts/save-guard/baseline/'+file,import.meta.url),'utf8');
+  assert.equal(hash(baseline),layers.getLayer('2.9.287').files[file].before,'independent supplied 286 bytes');
+  assert.equal(restore(source,file,'2.9.287'),baseline);
+  assert.deepEqual(restore(Buffer.from(source),file,'2.9.287'),Buffer.from(baseline));
+  assert.equal(outer.projectPreRelease287Source(source,file),baseline);
+  assert.equal(layers.projectFeatureSource(source,file,'2.9.287'),baseline,'287 feature boundary retains the guarded 286 bytes');
+  assert.deepEqual(outer.projectPreRelease287Source(Buffer.from(source),file),Buffer.from(baseline));
+  assert.throws(()=>outer.restoreSaveGuard284(source,file),/exact save-guard input/,'287 is outside the frozen guard inverse');
+  for(const bad of [source+'\n',source.slice(1),source+source,baseline,source.replace(/\r?\n/,m=>m==='\n'?'\r\n':'\n')]){
+   assert.throws(()=>restore(bad,file,'2.9.287'),/exact release-287 input/);
+   assert.equal(outer.projectPreRelease287Source(bad,file),bad,'projection cannot bless unknown bytes');
+  }
+  assert.equal(raw(file),source,'disk bytes remain raw 287');
+ }
+});
 
 test('283 pins still equal the independently frozen feature manifest',()=>{
  for(const [file,row]of Object.entries(pbDelta.release283)){
@@ -89,4 +108,25 @@ test('a future release and feature need one manifest row without editing legacy 
   assert.ok(path.basename(dir).startsWith('hani-release-future-'));
   fs.rmSync(dir,{recursive:true,force:true});
  }
+});
+
+test('save-guard outer inverse preserves the exact 286 layer, Buffer bytes and strict drift rejection',()=>{
+ const file='hani-main.js',raw287=read(new URL('../'+file,import.meta.url),'utf8'),source=outer.projectPreRelease287Source(raw287,file);
+ const before=outer.restoreSaveGuard286Source(source,file);
+ assert.equal(hash(before),layers.getLayer('2.9.286').files[file].after);
+ assert.deepEqual(outer.restoreSaveGuard286Source(Buffer.from(source),file),Buffer.from(before));
+ assert.equal(outer.projectPreSaveGuard286Source(source,file),before);
+ assert.equal(projectReleaseSource(source,file,'2.9.286'),before);
+ assert.equal(projectReleaseSource(source,file,'2.9.285'),outer.restoreSaveGuard284(source,file));
+ for(const bad of [source+'\n',source.slice(1),source+source,before,source.replace(/\r?\n/,m=>m==='\n'?'\r\n':'\n')]){
+  assert.throws(()=>outer.restoreSaveGuard286Source(bad,file),/exact save-guard input/);
+  assert.equal(outer.projectPreSaveGuard286Source(bad,file),bad);
+ }
+ // A later exact version inverse can expose the guarded 286 input mid-chain.
+ const current=layers.layers[0].to,next='2.9.'+(Number(current.split('.')[2])+1);
+ const future=raw287.replaceAll(current,next);
+ layers.layers.unshift({from:current,to:next,files:{[file]:{count:raw287.split(current).length-1,before:hash(raw287),after:hash(future)}}});
+ try{assert.equal(projectReleaseSource(future,file,'2.9.285'),outer.restoreSaveGuard284(source,file));}
+ finally{layers.layers.shift();}
+ assert.equal(read(new URL('../'+file,import.meta.url),'utf8'),raw287);
 });

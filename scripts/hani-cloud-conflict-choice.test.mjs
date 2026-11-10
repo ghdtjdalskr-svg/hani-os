@@ -35,7 +35,7 @@ function fixture(){
     $:id=>{if(!nodes.has(id))nodes.set(id,node());return nodes.get(id)},
     document:{createElement:node}
   });
-  vm.runInContext(meaningful+helpers,ctx);
+  vm.runInContext(block("function validateStoredRecords(","function writeProtectedState(")+block("function validateCloudRecords(","async function cloudReadRow(")+meaningful+helpers,ctx);
   let snapshots=0;
   const ops={
     verify:async()=>{events.push("verify");await ctx.cloudVerifyChoice(p)},

@@ -4,6 +4,7 @@ const assert=require('node:assert/strict');
 const readRawFileSync=require('node:fs').readFileSync.bind(require('node:fs'));
 const {createHash}=require('node:crypto');
 const manifest=require('./fixtures/release-version-layers.json');
+const outer=require('./hani-save-guard-source.cjs');
 const hash=source=>createHash('sha256').update(source).digest('hex');
 assert.equal(manifest.schema,1,'known release layer schema');
 const layers=manifest.layers;
@@ -49,6 +50,9 @@ function project(source,file,target,features,keepFeature=false){
  assert.ok(layers.some(row=>row.from===target||row.to===target),'known release target '+target);
  for(const layer of layers){
   const version=number(layer.to);
+  if(version<boundary)break;
+  // Release 287 wraps the guarded 286 bytes. Peel the guard only at 286.
+  if(version<=286)source=outer.projectPreSaveGuard286Source(source,file);
   if(version<boundary||version===boundary&&!keepFeature)break;
   const row=layer.files[file];
   if(row&&hash(source)===row.after)source=restoreVersionLayer(source,file,layer.to);
