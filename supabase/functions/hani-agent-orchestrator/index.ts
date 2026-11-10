@@ -462,14 +462,6 @@ function cleanText(value: unknown, max: number): string {
   return String(value ?? "").trim().slice(0, max);
 }
 
-// Same server-only owner allowlist policy as hani-learning-quiz / hani-second-opinion.
-function ownerAccess(user: { id?: string } | null, configuredId: string | undefined) {
-  const allowedId = (configuredId || "").trim();
-  if (!allowedId) return { ok: false, status: 503, error: "OWNER_ACCESS_NOT_CONFIGURED" };
-  if (!user?.id || user.id !== allowedId) return { ok: false, status: 403, error: "OWNER_ACCESS_DENIED" };
-  return { ok: true, status: 200, error: "" };
-}
-
 async function getAuthenticatedUser(req: Request, supabaseUrl: string, publishableKey: string) {
   const authHeader = req.headers.get("Authorization") ?? "";
   if (!authHeader.startsWith("Bearer ")) {
@@ -3415,10 +3407,6 @@ Deno.serve(async (req) => {
   const auth = await getAuthenticatedUser(req, supabaseUrl, publishableKey);
   if (!auth.user) {
     return json({ ok: false, error: "INVALID_SESSION", message: auth.error }, 401);
-  }
-  const access = ownerAccess(auth.user, Deno.env.get("HANI_OWNER_USER_ID"));
-  if (!access.ok) {
-    return json({ ok: false, error: access.error }, access.status);
   }
 
   let body: Record<string, unknown> = {};

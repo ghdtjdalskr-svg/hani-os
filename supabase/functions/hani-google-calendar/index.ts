@@ -106,14 +106,6 @@ function clients() {
     publicClient: createClient(url, pub, { auth: { persistSession: false, autoRefreshToken: false } }),
   };
 }
-// Same server-only owner allowlist policy as hani-learning-quiz / hani-second-opinion.
-function ownerAccess(user: { id?: string } | null, configuredId: string | undefined) {
-  const allowedId = (configuredId || "").trim();
-  if (!allowedId) return { ok: false, status: 503, error: "OWNER_ACCESS_NOT_CONFIGURED" };
-  if (!user?.id || user.id !== allowedId) return { ok: false, status: 403, error: "OWNER_ACCESS_DENIED" };
-  return { ok: true, status: 200, error: "" };
-}
-
 async function userFromRequest(req: Request, admin: ReturnType<typeof createClient>) {
   const auth = req.headers.get("Authorization") || "";
   const token = auth.replace(/^Bearer\s+/i, "").trim();
@@ -223,8 +215,6 @@ Deno.serve(async (req: Request) => {
   if (req.method !== "POST") return json(req, { ok: false, error: "METHOD_NOT_ALLOWED" }, 405);
   try {
     const user = await userFromRequest(req, admin);
-    const access = ownerAccess(user, Deno.env.get("HANI_OWNER_USER_ID"));
-    if (!access.ok) return json(req, { ok: false, error: access.error }, access.status);
     const body = await req.json().catch(() => ({}));
     const action = String(body?.action || "");
 
