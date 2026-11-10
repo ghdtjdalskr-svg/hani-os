@@ -46,11 +46,12 @@ function restoreVersionLayer(source,file,version){
 // Projection dispatch accepts only pinned inputs; drift is left for the caller's
 // strict lower-layer assertion to reject. It never normalizes arbitrary versions.
 function project(source,file,target,features,keepFeature=false){
- // Peel only the hash-pinned merged 286 input before the shared version chain.
- source=outer.projectPreSaveGuard284Source(source,file);
+ // Peel only the pinned save-guard outer edits, retaining the 286 layer.
+ source=outer.projectPreSaveGuard286Source(source,file);
  const boundary=number(target);
  assert.ok(layers.some(row=>row.from===target||row.to===target),'known release target '+target);
  for(const layer of layers){
+  source=outer.projectPreSaveGuard286Source(source,file);
   const version=number(layer.to);
   if(version<boundary||version===boundary&&!keepFeature)break;
   const row=layer.files[file];

@@ -3,10 +3,11 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
+import outer from './hani-save-guard-source.cjs';
 import layers from './hani-release-version-layers.cjs';
 import {pbDelta,restoreChibitoonSource} from './hani-pb-chibitoon-source.mjs';
 const {hash,readRawFileSync:read,restoreVersionLayer:restore,projectVersionSource,projectReleaseSource}=layers;
-const raw=file=>read(new URL('../'+file,import.meta.url),'utf8');
+const raw=file=>outer.projectPreSaveGuard286Source(read(new URL('../'+file,import.meta.url),'utf8'),file);
 
 test('283 pins still equal the independently frozen feature manifest',()=>{
  for(const [file,row]of Object.entries(pbDelta.release283)){
@@ -89,4 +90,25 @@ test('a future release and feature need one manifest row without editing legacy 
   assert.ok(path.basename(dir).startsWith('hani-release-future-'));
   fs.rmSync(dir,{recursive:true,force:true});
  }
+});
+
+test('save-guard outer inverse preserves the exact 286 layer, Buffer bytes and strict drift rejection',()=>{
+ const file='hani-main.js',source=read(new URL('../'+file,import.meta.url),'utf8');
+ const before=outer.restoreSaveGuard286Source(source,file);
+ assert.equal(hash(before),layers.getLayer('2.9.286').files[file].after);
+ assert.deepEqual(outer.restoreSaveGuard286Source(Buffer.from(source),file),Buffer.from(before));
+ assert.equal(outer.projectPreSaveGuard286Source(source,file),before);
+ assert.equal(projectReleaseSource(source,file,'2.9.286'),before);
+ assert.equal(projectReleaseSource(source,file,'2.9.285'),outer.restoreSaveGuard284(source,file));
+ for(const bad of [source+'\n',source.slice(1),source+source,before,source.replace(/\r?\n/,m=>m==='\n'?'\r\n':'\n')]){
+  assert.throws(()=>outer.restoreSaveGuard286Source(bad,file),/exact save-guard input/);
+  assert.equal(outer.projectPreSaveGuard286Source(bad,file),bad);
+ }
+ // A later exact version inverse can expose the guarded 286 input mid-chain.
+ const current=layers.layers[0].to,next='2.9.'+(Number(current.split('.')[2])+1);
+ const future=source.replaceAll(current,next);
+ layers.layers.unshift({from:current,to:next,files:{[file]:{count:source.split(current).length-1,before:hash(source),after:hash(future)}}});
+ try{assert.equal(projectReleaseSource(future,file,'2.9.285'),outer.restoreSaveGuard284(source,file));}
+ finally{layers.layers.shift();}
+ assert.equal(read(new URL('../'+file,import.meta.url),'utf8'),source);
 });

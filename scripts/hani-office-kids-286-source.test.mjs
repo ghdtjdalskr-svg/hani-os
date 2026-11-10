@@ -3,10 +3,11 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
+import outer from './hani-save-guard-source.cjs';
 import inverse from './hani-office-kids-286-source.cjs';
 import releases from './hani-release-version-layers.cjs';
 import view285 from './hani-release-285-test-source.cjs';
-const read=file=>releases.readRawFileSync(new URL('../'+file,import.meta.url),'utf8');
+const read=file=>outer.projectPreSaveGuard286Source(releases.readRawFileSync(new URL('../'+file,import.meta.url),'utf8'),file);
 
 test('286 feature composes every frozen daily/weekday/B inverse with full hashes, buffer parity and strict drift rejection',()=>{
  for(const [file,row] of Object.entries(inverse.delta.files)){
