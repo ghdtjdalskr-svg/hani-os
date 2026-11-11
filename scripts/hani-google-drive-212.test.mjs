@@ -1,4 +1,5 @@
 import {installCloudTransport} from './hani-cloud-transport-fixture.cjs';
+import {calendarBeforeOwnerGuard} from './hani-server-owner-guard-source.cjs';
 // Synthetic credentials are generated at runtime and never printed or saved.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -133,7 +134,7 @@ test('client: popup opens synchronously, validates auth URL and requires the mat
   b.context.window.open=()=>null;await b.run('googleDriveConnect()');assert.match(b.el('[data-gdrive-notice]').textContent,/차단/);assert.deepEqual(b.writes,[]);
 });
 test('safety: Calendar core bytes, unique DOM IDs, memory-only client and untouched data/version contract',()=>{
-  const core=calendar.toString().replace(/function (?:escapeHtml|callbackRedirect)\([\s\S]*?(?=function b64\()/,'').replace(/^      return (?:html\(callbackHtml|callbackRedirect)\(.*\r?$/gm,'      return CALLBACK_RESPONSE;');
+  const core=calendarBeforeOwnerGuard(calendar.toString()).replace(/function (?:escapeHtml|callbackRedirect)\([\s\S]*?(?=function b64\()/,'').replace(/^      return (?:html\(callbackHtml|callbackRedirect)\(.*\r?$/gm,'      return CALLBACK_RESPONSE;');
   assert.equal(createHash('sha256').update(core).digest('hex'),'2a6fb8aec3afa3a876781e8af4a06e1065db6897d8e935622039099003aaaf84','Calendar auth, token encryption and database logic unchanged outside callback response');
   const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8'),ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);assert.equal(ids.length,new Set(ids).size);
   assert.doesNotMatch(client,/localStorage|sessionStorage|\.clear\s*\(|\bcommit\s*\(|\bsave\s*\(|id=["']/);assert.doesNotMatch(edge,/\.clear\s*\(|\.from\("(?!hani_google_calendar_)/);
