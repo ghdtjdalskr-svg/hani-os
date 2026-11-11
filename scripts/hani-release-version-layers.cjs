@@ -46,6 +46,7 @@ function restoreVersionLayer(source,file,version){
 // Projection dispatch accepts only pinned inputs; drift is left for the caller's
 // strict lower-layer assertion to reject. It never normalizes arbitrary versions.
 function project(source,file,target,features,keepFeature=false){
+ source=require('./hani-newsroom-288-source.cjs').projectPreNewsroom288Source(source,file);
  const boundary=number(target);
  assert.ok(layers.some(row=>row.from===target||row.to===target),'known release target '+target);
  for(const layer of layers){

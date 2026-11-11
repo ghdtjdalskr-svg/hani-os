@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import outer from './hani-save-guard-source.cjs';
-import layers from './hani-release-version-layers.cjs';
+import layers from './hani-newsroom-288-test-source.cjs';
 import {pbDelta,restoreChibitoonSource} from './hani-pb-chibitoon-source.mjs';
 const {hash,readRawFileSync:read,restoreVersionLayer:restore,projectVersionSource,projectReleaseSource}=layers;
 const raw=file=>read(new URL('../'+file,import.meta.url),'utf8');

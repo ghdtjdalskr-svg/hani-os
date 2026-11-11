@@ -2053,4 +2053,13 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 @media(prefers-reduced-motion:reduce){#milestones .ms-encore-clap{display:none!important;animation:none!important}}
 @media print{#reading .book-thanks,#milestones .ms-encore{display:none!important}}
 /* 2.9.288: PC에서 주간 4컷이 화면 폭을 꽉 채우지 않도록 크기 제한 */
-@media(min-width:900px){#newsroom .newsroom-4cut .newsroom-4cut-comic{max-width:560px}#newsroom .newsroom-4cut-layout.has-context{grid-template-columns:minmax(0,560px) minmax(280px,1fr);gap:24px}}
+@media(min-width:900px){#newsroom .newsroom-4cut .newsroom-4cut-comic{max-width:560px}#newsroom .newsroom-4cut-layout.has-context{grid-template-columns:minmax(0,560px) minmax(280px,1fr);grid-template-rows:1fr auto;gap:16px 24px}#newsroom .newsroom-4cut-layout.has-context>.newsroom-4cut-comic{grid-column:1;grid-row:1 / 3}#newsroom .newsroom-4cut-layout.has-context>.newsroom-4cut-context{grid-column:2;grid-row:1}#newsroom .newsroom-4cut-layout.has-context>.newsroom-4cut-sources{grid-column:2;grid-row:2;align-self:end}}
+#newsroom .newsroom-4cut-context h4{margin:0 0 12px;font-size:18px;line-height:1.5}
+#newsroom .newsroom-4cut-context dl{margin:0}
+#newsroom .newsroom-4cut-facts dl>div{padding:10px 0;border-bottom:1px solid var(--border-strong)}
+#newsroom .newsroom-4cut-facts dt{font-size:14px;line-height:1.6}
+#newsroom .newsroom-4cut-facts dd{margin:4px 0 0;font-size:17px;font-weight:700;line-height:1.6}
+#newsroom .newsroom-4cut-facts small{display:block;margin-top:4px;font-size:12px;font-weight:400;color:var(--text-secondary)}
+#newsroom .newsroom-4cut .newsroom-4cut-cuts ol{list-style:none;padding:0;margin:0}
+#newsroom .newsroom-4cut .newsroom-4cut-cuts li{display:grid;gap:4px;padding:10px 0;border-bottom:1px solid var(--border-strong);font-size:14px;line-height:1.6}
+@media(max-width:899px){#newsroom .newsroom-4cut-layout>.newsroom-4cut-sources{margin-top:-16px}}

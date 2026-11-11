@@ -1,6 +1,6 @@
 // Test-only outer input view for the frozen 285 contract; assertions stay intact.
 const path=require('node:path'),{fileURLToPath}=require('node:url');
-const releases=require('./hani-release-version-layers.cjs');
+const releases=require('./hani-newsroom-288-test-source.cjs');
 const root=path.resolve(__dirname,'..'),at=releases.layers.findIndex(row=>row.to==='2.9.285');
 require('node:assert/strict').ok(at>=0,'known frozen 285 boundary');
 module.exports={...releases,layers:releases.layers.slice(at),readRawFileSync(file,options){
