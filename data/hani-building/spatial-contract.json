@@ -8823,6 +8823,24 @@
         "rooftop_event"
       ],
       "status": "active"
+    },
+    {
+      "id": "ieum",
+      "name": "이음",
+      "rank": "사원",
+      "team": "strategy",
+      "homeAnchor": "desk_ieum",
+      "entity": "human_chibi",
+      "registration": "registered",
+      "provider": null,
+      "workAnchor": "desk_ieum",
+      "meetingAnchor": "exec_meeting",
+      "breakAnchor": "coffee_counter",
+      "optionalEventAnchor": [
+        "exec_meeting",
+        "release_room"
+      ],
+      "status": "active"
     }
   ],
   "movement": {
