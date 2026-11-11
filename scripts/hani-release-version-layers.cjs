@@ -43,6 +43,12 @@ function restoreVersionLayer(source,file,version){
  assert.equal(hash(before),row.before,'exact release-'+number(layer.from)+' output '+file);
  return before;
 }
+// Peel only the exact deployed 288 version/history bytes, before the frozen
+// newsroom feature inverse. Unknown input remains for strict callers to reject.
+function projectPreRelease288Source(source,file){
+ const row=getLayer('2.9.288').files[file];
+ return row&&hash(source)===row.after?restoreVersionLayer(source,file,'2.9.288'):source;
+}
 // Projection dispatch accepts only pinned inputs; drift is left for the caller's
 // strict lower-layer assertion to reject. It never normalizes arbitrary versions.
 function project(source,file,target,features,keepFeature=false){
@@ -67,7 +73,7 @@ function project(source,file,target,features,keepFeature=false){
  }
  return source;
 }
-module.exports={layers,hash,getLayer,restoreVersionLayer,readRawFileSync,
+module.exports={layers,hash,getLayer,restoreVersionLayer,readRawFileSync,projectPreRelease288Source,
  projectVersionSource:(source,file,target)=>project(source,file,target,false),
  projectReleaseSource:(source,file,target)=>project(source,file,target,true),
  // Leave this feature raw, peeling all newer releases and their features first.

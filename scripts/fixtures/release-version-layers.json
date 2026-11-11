@@ -2,6 +2,38 @@
   "schema": 1,
   "layers": [
     {
+      "from": "2.9.287",
+      "to": "2.9.288",
+      "files": {
+        "index.html": {
+          "count": 60,
+          "after": "93bc09ba5d8d168c040e58a6afacd2cf3822c49a98c885e9a908c6959fed68d0",
+          "before": "af3a9dcf2b6eafb48b6a3bb698cbff441105227e2546c89060d71decbf8c5a17"
+        },
+        "hani-main.js": {
+          "count": 1,
+          "after": "541dd283d48e0fbbe1c6906ab997a69105def4079639f10e8b8b75fc9211baa5",
+          "before": "abfa747c378aa826be9f286d60482d10dc12acfe5fcbab035122f5a0269d62fd"
+        },
+        "assets/data/hani-history-releases-v1.json": {
+          "count": 1,
+          "after": "6446f456178734ba4f372acea6710cebed5714c3e2e4a284eef18e30909b35cc",
+          "before": "cb3f7452361139780d45671764a2135fb638e42d177c90beb382f5a833c3af26",
+          "replacements": [
+            {
+              "after": "    {\n      \"id\": \"v2.9.288\",\n      \"date\": \"2026-11-12\",\n      \"status\": \"released\",\n      \"title\": \"뉴스룸 4컷 PC 크기와 오른쪽 요약\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.288 뉴스룸 4컷 PC 크기와 오른쪽 요약\"\n      }\n    },\n    {\n      \"id\": \"v2.9.287\",\n      \"date\": \"2026-11-11\",\n      \"status\": \"released\",\n      \"title\": \"다른 창 저장 덮어쓰기 방지\",\n      \"category\": \"기록·보호\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"4086b9d1855e097c8551425e2a78f3f45ab5e598\",\n        \"subject\": \"release: v2.9.287 다른 창 저장 덮어쓰기 방지 (#483)\"\n      }\n    },\n",
+              "before": "    {\n      \"id\": \"v2.9.287\",\n      \"date\": \"2026-11-11\",\n      \"status\": \"released\",\n      \"title\": \"다른 창 저장 덮어쓰기 방지\",\n      \"category\": \"기록·보호\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.287 다른 창 저장 덮어쓰기 방지\"\n      }\n    },\n"
+            }
+          ]
+        }
+      },
+      "feature": {
+        "module": "./hani-newsroom-288-source.cjs",
+        "fixture": "./fixtures/newsroom-288-delta.json",
+        "restore": "restoreNewsroom288Source"
+      }
+    },
+    {
       "from": "2.9.286",
       "to": "2.9.287",
       "files": {

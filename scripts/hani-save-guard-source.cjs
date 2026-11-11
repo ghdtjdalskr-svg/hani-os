@@ -31,6 +31,7 @@ function restoreSaveGuard286Source(source,file){
 // Strip only the independently pinned release-287 bytes before legacy inverses.
 // Lazy loading avoids a cycle with the shared dispatcher; strict inverses stay frozen.
 function projectPreRelease287Source(source,file){
+ source=require('./hani-newsroom-288-source.cjs').projectPreNewsroom288Source(source,file);
  const releases=require('./hani-release-version-layers.cjs'),row=releases.getLayer('2.9.287').files[file];
  return row&&hash(source)===row.after?releases.restoreVersionLayer(source,file,'2.9.287'):source;
 }
