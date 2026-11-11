@@ -52,7 +52,7 @@
     if(model.indices.length){
       const panel=node('section'),table=node('table'),caption=node('caption','이 호에 실린 주요 지수'),head=node('thead'),tr=node('tr');
       for(const label of ['지수','종가','주간 변화']){const th=node('th',label);th.setAttribute('scope','col');tr.append(th);}head.append(tr);table.append(caption,head);
-      const body=node('tbody');for(const row of model.indices){const line=node('tr'),th=node('th',row.name);th.setAttribute('scope','row');line.append(th,node('td',row.close??''),node('td',row.change));body.append(line);}table.append(body);panel.append(table,node('p','발행 주간 '+issue.week+' · 이 호에 실린 값만 표시합니다.'));host.append(panel);
+      const body=node('tbody');for(const row of model.indices){const line=node('tr'),th=node('th',row.name);th.setAttribute('scope','row');const change=node('td',row.change);change.className=/하락/.test(row.change)?'is-down':/상승/.test(row.change)?'is-up':'';line.append(th,node('td',row.close??''),change);body.append(line);}table.append(body);panel.append(table,node('p','발행 주간 '+issue.week+' · 이 호에 실린 값만 표시합니다.'));host.append(panel);
     }
     if(model.facts.length){
       const panel=node('section'),list=node('dl');panel.className='newsroom-4cut-facts';

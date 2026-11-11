@@ -2,7 +2,7 @@
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const hash=b=>createHash('sha256').update(b).digest('hex');
 const bytes=fs.readFileSync(path.join(__dirname,'fixtures/newsroom-288-delta.json'));
-assert.equal(hash(bytes),'5bfae0250ad3659f1db405bb95f5cdfd4c260c18460d9e57298136048411754a','frozen newsroom-288 outer fixture');
+assert.equal(hash(bytes),'fc825177d2adfb09b39b3669d616ff256ba1cdc057710063e063241573a90b98','frozen newsroom-288 outer fixture');
 const delta=JSON.parse(bytes),lines=s=>s.match(/[^\n]*\n|[^\n]+$/g)||[];
 function restoreNewsroom288Source(source,file){
   const row=delta.files[file];assert.ok(row,'known newsroom-288 owner');

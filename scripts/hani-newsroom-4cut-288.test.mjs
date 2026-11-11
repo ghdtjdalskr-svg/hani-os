@@ -52,6 +52,13 @@ test('absent fields omit their sections; indices, facts or cuts independently en
     assert.equal(host.hidden,!Object.keys(issue).length);assert.equal(r.nodes.get('.newsroom-4cut-layout').classes.has('has-context'),!host.hidden);
   }
 });
+test('weekly change cells are marked down (blue) or up (red) from the rendered change text only',async()=>{
+  const r=runtime(catalog.issues.find(i=>i.number===2));await r.api.enter();
+  const marked=all(r.nodes.get('.newsroom-4cut-context')).filter(n=>n.tagName==='td'&&n.className);
+  assert.deepEqual(marked.map(n=>[n.className,n.textContent]),[['is-down','11.71% 하락'],['is-down','11.06% 하락'],['is-down','2.68% 하락'],['is-down','3.37% 하락']]);
+  const up=runtime({alt:'코스피는 한 주 1% 오른 100'});await up.api.enter();
+  assert.deepEqual(all(up.nodes.get('.newsroom-4cut-context')).filter(n=>n.tagName==='td'&&n.className).map(n=>[n.className,n.textContent]),[['is-up','1% 상승']]);
+});
 test('XSS labels, numbers, notes, reporters and scenes reach text nodes only',async()=>{
   const attack='<img src=x onerror=alert(1)><script>alert(2)</script>',r=runtime({facts:[{label:attack,value:attack,note:attack}],cuts:[{reporter:attack,scene:attack}]});
   await r.api.enter();const host=r.nodes.get('.newsroom-4cut-context'),nodes=all(host);
