@@ -2052,3 +2052,5 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 @keyframes ms-encore-clap{0%,100%{transform:rotate(0) scale(1)}35%{transform:rotate(-12deg) scale(1.12)}65%{transform:rotate(10deg) scale(1.06)}}
 @media(prefers-reduced-motion:reduce){#milestones .ms-encore-clap{display:none!important;animation:none!important}}
 @media print{#reading .book-thanks,#milestones .ms-encore{display:none!important}}
+/* 2.9.288: PC에서 주간 4컷이 화면 폭을 꽉 채우지 않도록 크기 제한 */
+@media(min-width:900px){#newsroom .newsroom-4cut .newsroom-4cut-comic{max-width:560px}#newsroom .newsroom-4cut-layout.has-context{grid-template-columns:minmax(0,560px) minmax(280px,1fr);gap:24px}}
