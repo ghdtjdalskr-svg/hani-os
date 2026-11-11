@@ -38,17 +38,37 @@
       const closes=text.match(/금요일 종가는 각각\s*([\d,]+(?:\.\d+)?)과\s*([\d,]+(?:\.\d+)?)/);
       indices.push({name:'S&P500',close:closes?.[1]??null,change:us[1]+'% '+direction},{name:'나스닥',close:closes?.[2]??null,change:us[2]+'% '+direction});
     }
-    // No dated next-week schedule exists in the issue catalog today.
-    return {summary:typeof issue?.title==='string'?issue.title.trim():'',indices};
+    const facts=(Array.isArray(issue?.facts)?issue.facts:[]).filter(row=>
+      typeof row?.label==='string'&&row.label.trim()&&typeof row.value==='string'&&row.value.trim());
+    const cuts=(Array.isArray(issue?.cuts)?issue.cuts:[]).filter(row=>
+      typeof row?.reporter==='string'&&row.reporter.trim()&&typeof row.scene==='string'&&row.scene.trim()).slice(0,4);
+    // Additional numbers and scenes are explicit catalog fields, never inferred from alt.
+    return {summary:typeof issue?.title==='string'?issue.title.trim():'',indices,facts,cuts};
   }
   function renderIssuePanels(host,issue) {
     if(!host)return;
-    const model=issuePanels(issue);host.replaceChildren();host.hidden=!model.indices.length;
+    const model=issuePanels(issue);host.replaceChildren();host.hidden=!(model.indices.length||model.facts.length||model.cuts.length);
     const node=(tag,text)=>{const el=document.createElement(tag);if(text!==undefined)el.textContent=text;return el;};
     if(model.indices.length){
       const panel=node('section'),table=node('table'),caption=node('caption','이 호에 실린 주요 지수'),head=node('thead'),tr=node('tr');
       for(const label of ['지수','종가','주간 변화']){const th=node('th',label);th.setAttribute('scope','col');tr.append(th);}head.append(tr);table.append(caption,head);
-      const body=node('tbody');for(const row of model.indices){const line=node('tr'),th=node('th',row.name);th.setAttribute('scope','row');line.append(th,node('td',row.close??''),node('td',row.change));body.append(line);}table.append(body);panel.append(table,node('p','발행 주간 '+issue.week+' · 이 호에 실린 값만 표시합니다.'));host.append(panel);
+      const body=node('tbody');for(const row of model.indices){const line=node('tr'),th=node('th',row.name);th.setAttribute('scope','row');const change=node('td',row.change);change.className=/하락/.test(row.change)?'is-down':/상승/.test(row.change)?'is-up':'';line.append(th,node('td',row.close??''),change);body.append(line);}table.append(body);panel.append(table,node('p','발행 주간 '+issue.week+' · 이 호에 실린 값만 표시합니다.'));host.append(panel);
+    }
+    if(model.facts.length){
+      const panel=node('section'),list=node('dl');panel.className='newsroom-4cut-facts';
+      panel.append(node('h4','이 호의 다른 숫자'));
+      for(const row of model.facts){
+        const entry=node('div'),value=node('dd',row.value);entry.append(node('dt',row.label),value);
+        if(typeof row.note==='string'&&row.note.trim())value.append(node('small',row.note));
+        list.append(entry);
+      }
+      panel.append(list);host.append(panel);
+    }
+    if(model.cuts.length){
+      const panel=node('section'),list=node('ol');panel.className='newsroom-4cut-cuts';
+      panel.append(node('h4','4컷 줄거리'));
+      model.cuts.forEach((row,i)=>{const item=node('li');item.append(node('b',['①','②','③','④'][i]+' '+row.reporter),node('span',row.scene));list.append(item);});
+      panel.append(list);host.append(panel);
     }
   }
   function render() {
@@ -67,7 +87,7 @@
     image.src = imageFile(issue);
     image.alt = issue.alt;
     renderIssuePanels(q('.newsroom-4cut-context'),issue);
-    q('.newsroom-4cut-layout').classList?.toggle('has-context',!!issuePanels(issue).indices.length);
+    q('.newsroom-4cut-layout').classList?.toggle('has-context',!q('.newsroom-4cut-context').hidden);
     // The published image already contains this notice. Keep the text fallback for other artwork.
     for (const selector of ['.newsroom-4cut-footnote', 'dialog .newsroom-4cut-footnote']) {
       q(selector).hidden = /^00[12]$/.test(issue.image);
