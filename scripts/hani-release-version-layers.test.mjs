@@ -4,12 +4,15 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import outer from './hani-save-guard-source.cjs';
+import {restoreNewsroom288Source} from './hani-newsroom-288-source.cjs';
 import layers from './hani-release-version-layers.cjs';
 import {pbDelta,restoreChibitoonSource} from './hani-pb-chibitoon-source.mjs';
 const {hash,readRawFileSync:read,restoreVersionLayer:restore,projectVersionSource,projectReleaseSource}=layers;
 const raw=file=>read(new URL('../'+file,import.meta.url),'utf8');
 
 test('287 outer projection matches the supplied 286 baselines without accepting drift or changing strict guard inverses',()=>{
+ // This frozen contract sees 287 only after the exact 288 version/feature layer.
+ const raw=file=>projectReleaseSource(read(new URL('../'+file,import.meta.url),'utf8'),file,'2.9.287');
  for(const file of ['index.html','hani-main.js']){
   const source=raw(file),baseline=read(new URL('../artifacts/save-guard/baseline/'+file,import.meta.url),'utf8');
   assert.equal(hash(baseline),layers.getLayer('2.9.287').files[file].before,'independent supplied 286 bytes');
@@ -25,6 +28,27 @@ test('287 outer projection matches the supplied 286 baselines without accepting 
   }
   assert.equal(raw(file),source,'disk bytes remain raw 287');
  }
+});
+
+test('288 outer projection peels exact deployed versions/history before the unchanged newsroom inverse',()=>{
+ const layer=layers.getLayer('2.9.288');
+ const newsroom=JSON.parse(read(new URL('./fixtures/newsroom-288-delta.json',import.meta.url),'utf8'));
+ for(const [file,row]of Object.entries(layer.files)){
+  const current=raw(file),bytes=read(new URL('../'+file,import.meta.url)),before=restore(current,file,'2.9.288');
+  const pin=file==='index.html'?newsroom.files[file].afterSha256:layers.getLayer('2.9.287').files[file].after;
+  assert.equal(hash(before),pin,'independent frozen 287/feature bytes');
+  assert.equal(layers.projectPreRelease288Source(current,file),before);
+  assert.deepEqual(layers.projectPreRelease288Source(bytes,file),Buffer.from(before));
+  assert.equal(projectReleaseSource(current,file,'2.9.288'),current,'current feature remains raw at its release');
+  assert.equal(layers.projectFeatureSource(current,file,'2.9.288'),before,'version-only inverse retains this feature');
+  for(const bad of [current+'\n',current.slice(1),current+current,before,current.replace(/\r?\n/,m=>m==='\n'?'\r\n':'\n')]){
+   assert.throws(()=>restore(bad,file,'2.9.288'),/exact release-288 input/);
+   assert.equal(layers.projectPreRelease288Source(bad,file),bad,'unknown bytes cannot become an approved 287 input');
+  }
+  assert.deepEqual(read(new URL('../'+file,import.meta.url)),bytes,'disk bytes stay raw 288');
+ }
+ assert.throws(()=>restoreNewsroom288Source(raw('index.html'),'index.html'),/exact newsroom-288 input/,'strict feature inverse still rejects deployed 288 bytes');
+ assert.equal(layers.projectPreRelease288Source('unknown bytes','not-an-owner'),'unknown bytes');
 });
 
 test('283 pins still equal the independently frozen feature manifest',()=>{

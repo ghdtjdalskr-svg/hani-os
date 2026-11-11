@@ -9,11 +9,13 @@ import {pathToFileURL} from 'node:url';
 import {assertNoNewDuplicateIds} from './hani-duplicate-id-guard.mjs';
 import {readMainBaseline} from './hani-regression-baseline.mjs';
 import {collectReferences} from './hani-runtime-closure.mjs';
+import outer288 from './hani-newsroom-288-source.cjs';
 
 const root = path.resolve(import.meta.dirname, '..');
 const read = f => fs.readFileSync(path.join(root, f), 'utf8');
 const source = read('hani-newsroom-4cut.js');
-const catalog = JSON.parse(read('assets/data/newsroom-4cut/issues.json'));
+// Keep this frozen index-only fixture; the 288 suite exercises raw facts/cuts.
+const catalog = JSON.parse(outer288.projectPreNewsroom288Source(read('assets/data/newsroom-4cut/issues.json'),'assets/data/newsroom-4cut/issues.json'));
 const out = path.join(root, 'artifacts/newsroom-4cut-230');
 const nodeOnly = process.argv.includes('--node');
 const browserOnly = process.argv.includes('--browser');
