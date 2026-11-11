@@ -1,0 +1,500 @@
+[
+  {
+    "finish": "porcelain-cream",
+    "kind": "normal",
+    "disabled": false,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 14.21155059586817,
+    "after": 14.116522143412848
+  },
+  {
+    "finish": "porcelain-cream",
+    "kind": "normal",
+    "disabled": true,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 14.21155059586817,
+    "after": 5.811651672550164
+  },
+  {
+    "finish": "porcelain-cream",
+    "kind": "correct",
+    "disabled": false,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 13.279930872968631,
+    "after": 12.779194582520958
+  },
+  {
+    "finish": "porcelain-cream",
+    "kind": "correct",
+    "disabled": true,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 13.279930872968631,
+    "after": 5.261085330709979
+  },
+  {
+    "finish": "porcelain-cream",
+    "kind": "wrong",
+    "disabled": false,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 13.055075173914958,
+    "after": 12.623045685573587
+  },
+  {
+    "finish": "porcelain-cream",
+    "kind": "wrong",
+    "disabled": true,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 13.055075173914958,
+    "after": 5.196800162671298
+  },
+  {
+    "finish": "porcelain-cream",
+    "kind": "dispute-summary",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 14.32431833699222,
+    "after": 14.116522143412848
+  },
+  {
+    "finish": "porcelain-cream",
+    "kind": "wrong-group",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 13.817562991383872,
+    "after": 14.116522143412848
+  },
+  {
+    "finish": "porcelain-cream",
+    "kind": "wrong-answer",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 13.429453308848696,
+    "after": 14.116522143412848
+  },
+  {
+    "finish": "porcelain-cream",
+    "kind": "wrong-retry",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 13.70753045402453,
+    "after": 14.116522143412848
+  },
+  {
+    "finish": "porcelain-cream",
+    "kind": "study-history",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 14.350521706724747,
+    "after": 14.116522143412848
+  },
+  {
+    "finish": "pure-white",
+    "kind": "normal",
+    "disabled": false,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 13.603958873128365,
+    "after": 13.736988500254029
+  },
+  {
+    "finish": "pure-white",
+    "kind": "normal",
+    "disabled": true,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 13.603958873128365,
+    "after": 6.591399816696423
+  },
+  {
+    "finish": "pure-white",
+    "kind": "correct",
+    "disabled": false,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 12.712169035684076,
+    "after": 12.41547237193489
+  },
+  {
+    "finish": "pure-white",
+    "kind": "correct",
+    "disabled": true,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 12.712169035684076,
+    "after": 5.957298596781807
+  },
+  {
+    "finish": "pure-white",
+    "kind": "wrong",
+    "disabled": false,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 12.496926676190661,
+    "after": 12.260189677577943
+  },
+  {
+    "finish": "pure-white",
+    "kind": "wrong",
+    "disabled": true,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 12.496926676190661,
+    "after": 5.882789520567498
+  },
+  {
+    "finish": "pure-white",
+    "kind": "dispute-summary",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 13.71190541296007,
+    "after": 13.736988500254029
+  },
+  {
+    "finish": "pure-white",
+    "kind": "wrong-group",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 13.226815567633956,
+    "after": 13.736988500254029
+  },
+  {
+    "finish": "pure-white",
+    "kind": "wrong-answer",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 12.855298883099442,
+    "after": 13.736988500254029
+  },
+  {
+    "finish": "pure-white",
+    "kind": "wrong-retry",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 13.12148729238033,
+    "after": 13.736988500254029
+  },
+  {
+    "finish": "pure-white",
+    "kind": "study-history",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 13.736988500254029,
+    "after": 13.736988500254029
+  },
+  {
+    "finish": "titanium-graphite",
+    "kind": "normal",
+    "disabled": false,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 1.1285912403441654,
+    "after": 10.294986096700383
+  },
+  {
+    "finish": "titanium-graphite",
+    "kind": "normal",
+    "disabled": true,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 1.1285912403441654,
+    "after": 5.840711561632757
+  },
+  {
+    "finish": "titanium-graphite",
+    "kind": "correct",
+    "disabled": false,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 1.054607908862943,
+    "after": 7.978324415668322
+  },
+  {
+    "finish": "titanium-graphite",
+    "kind": "correct",
+    "disabled": true,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 1.054607908862943,
+    "after": 4.526387041162321
+  },
+  {
+    "finish": "titanium-graphite",
+    "kind": "wrong",
+    "disabled": false,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 1.0367512949360136,
+    "after": 8.17601744260247
+  },
+  {
+    "finish": "titanium-graphite",
+    "kind": "wrong",
+    "disabled": true,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 1.0367512949360136,
+    "after": 4.638545322603666
+  },
+  {
+    "finish": "titanium-graphite",
+    "kind": "dispute-summary",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 1.1375465393432065,
+    "after": 10.294986096700383
+  },
+  {
+    "finish": "titanium-graphite",
+    "kind": "wrong-group",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 1.097303242864535,
+    "after": 10.294986096700383
+  },
+  {
+    "finish": "titanium-graphite",
+    "kind": "wrong-answer",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 1.0664820326772877,
+    "after": 10.294986096700383
+  },
+  {
+    "finish": "titanium-graphite",
+    "kind": "wrong-retry",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 1.0885651564059964,
+    "after": 10.294986096700383
+  },
+  {
+    "finish": "titanium-graphite",
+    "kind": "study-history",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 1.1396274448255561,
+    "after": 10.294986096700383
+  },
+  {
+    "finish": "midnight-black",
+    "kind": "normal",
+    "disabled": false,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 1.1058373772598133,
+    "after": 14.951846952780262
+  },
+  {
+    "finish": "midnight-black",
+    "kind": "normal",
+    "disabled": true,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 1.1058373772598133,
+    "after": 8.62433583885987
+  },
+  {
+    "finish": "midnight-black",
+    "kind": "correct",
+    "disabled": false,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 1.0333456456908272,
+    "after": 11.471603153008665
+  },
+  {
+    "finish": "midnight-black",
+    "kind": "correct",
+    "disabled": true,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 1.0333456456908272,
+    "after": 6.616905490948313
+  },
+  {
+    "finish": "midnight-black",
+    "kind": "wrong",
+    "disabled": false,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 1.0158490442590502,
+    "after": 11.755376457440619
+  },
+  {
+    "finish": "midnight-black",
+    "kind": "wrong",
+    "disabled": true,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 1.0158490442590502,
+    "after": 6.780588030453516
+  },
+  {
+    "finish": "midnight-black",
+    "kind": "dispute-summary",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 1.1146121258168349,
+    "after": 14.951846952780262
+  },
+  {
+    "finish": "midnight-black",
+    "kind": "wrong-group",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 1.0751801863870267,
+    "after": 14.951846952780262
+  },
+  {
+    "finish": "midnight-black",
+    "kind": "wrong-answer",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 1.0449803717694284,
+    "after": 14.951846952780262
+  },
+  {
+    "finish": "midnight-black",
+    "kind": "wrong-retry",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 1.0666182710839864,
+    "after": 14.951846952780262
+  },
+  {
+    "finish": "midnight-black",
+    "kind": "study-history",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 1.1166510775459173,
+    "after": 14.951846952780262
+  },
+  {
+    "finish": "sakura-pink",
+    "kind": "normal",
+    "disabled": false,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 13.898588149958163,
+    "after": 13.596497301415633
+  },
+  {
+    "finish": "sakura-pink",
+    "kind": "normal",
+    "disabled": true,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 13.898588149958163,
+    "after": 5.62930119116448
+  },
+  {
+    "finish": "sakura-pink",
+    "kind": "correct",
+    "disabled": false,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 12.987484273318314,
+    "after": 12.323590947721005
+  },
+  {
+    "finish": "sakura-pink",
+    "kind": "correct",
+    "disabled": true,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 12.987484273318314,
+    "after": 5.1022850711857
+  },
+  {
+    "finish": "sakura-pink",
+    "kind": "wrong",
+    "disabled": false,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 12.767580278097233,
+    "after": 12.179834949861547
+  },
+  {
+    "finish": "sakura-pink",
+    "kind": "wrong",
+    "disabled": true,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 12.767580278097233,
+    "after": 5.042766373682408
+  },
+  {
+    "finish": "sakura-pink",
+    "kind": "dispute-summary",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 14.008872554176515,
+    "after": 13.596497301415633
+  },
+  {
+    "finish": "sakura-pink",
+    "kind": "wrong-group",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 13.51327682069984,
+    "after": 13.596497301415633
+  },
+  {
+    "finish": "sakura-pink",
+    "kind": "wrong-answer",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 13.133713971580779,
+    "after": 13.596497301415633
+  },
+  {
+    "finish": "sakura-pink",
+    "kind": "wrong-retry",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 13.405667386420586,
+    "after": 13.596497301415633
+  },
+  {
+    "finish": "sakura-pink",
+    "kind": "study-history",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 14.034498881268462,
+    "after": 13.596497301415633
+  },
+  {
+    "finish": "alpine-blue",
+    "kind": "normal",
+    "disabled": false,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 13.041045362341709,
+    "after": 12.9152057271646
+  },
+  {
+    "finish": "alpine-blue",
+    "kind": "normal",
+    "disabled": true,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 13.041045362341709,
+    "after": 5.186818139702681
+  },
+  {
+    "finish": "alpine-blue",
+    "kind": "correct",
+    "disabled": false,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 12.186156588254148,
+    "after": 11.698806456142169
+  },
+  {
+    "finish": "alpine-blue",
+    "kind": "correct",
+    "disabled": true,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 12.186156588254148,
+    "after": 4.698305456486957
+  },
+  {
+    "finish": "alpine-blue",
+    "kind": "wrong",
+    "disabled": false,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 11.979820667936448,
+    "after": 11.54715280690425
+  },
+  {
+    "finish": "alpine-blue",
+    "kind": "wrong",
+    "disabled": true,
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 11.979820667936448,
+    "after": 4.63740051115071
+  },
+  {
+    "finish": "alpine-blue",
+    "kind": "dispute-summary",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 13.14452521962309,
+    "after": 12.9152057271646
+  },
+  {
+    "finish": "alpine-blue",
+    "kind": "wrong-group",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 12.679507739292054,
+    "after": 12.9152057271646
+  },
+  {
+    "finish": "alpine-blue",
+    "kind": "wrong-answer",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 12.323363915198941,
+    "after": 12.9152057271646
+  },
+  {
+    "finish": "alpine-blue",
+    "kind": "wrong-retry",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 12.578537806324015,
+    "after": 12.9152057271646
+  },
+  {
+    "finish": "alpine-blue",
+    "kind": "study-history",
+    "scope": "Token calculation only; not a rendered measurement",
+    "before": 13.168570402520123,
+    "after": 12.9152057271646
+  }
+]

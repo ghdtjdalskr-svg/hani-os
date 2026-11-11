@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "purpose": "Test-only exact 289 outer layer for unchanged frozen assertions; runtime version is untouched.",
+  "files": {
+    "index.html": {
+      "afterSha256": "1dcf2866e037ce20d73a7e2f2990b2bd02a079e06f206684834d99d7f468d625",
+      "beforeSha256": "93bc09ba5d8d168c040e58a6afacd2cf3822c49a98c885e9a908c6959fed68d0",
+      "count": 60,
+      "after": "2.9.289",
+      "before": "2.9.288"
+    },
+    "hani-main.js": {
+      "afterSha256": "f4b9282a03bddce87e39b677fa95a477bbba6b514b4a41c40e21a82f80301812",
+      "beforeSha256": "541dd283d48e0fbbe1c6906ab997a69105def4079639f10e8b8b75fc9211baa5",
+      "count": 1,
+      "after": "2.9.289",
+      "before": "2.9.288"
+    },
+    "assets/data/hani-history-releases-v1.json": {
+      "afterSha256": "5eceffd9104bccd581e1c10e02ed5708828384a3db0a18bd5a09d42e75e03fbc",
+      "beforeSha256": "6446f456178734ba4f372acea6710cebed5714c3e2e4a284eef18e30909b35cc",
+      "count": 1,
+      "after": "    {\n      \"id\": \"v2.9.289\",\n      \"date\": \"2026-11-12\",\n      \"status\": \"released\",\n      \"title\": \"예산 화면 Codex 보조 칸 정리\",\n      \"category\": \"하니 그룹\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.289 예산 화면 Codex 보조 칸 정리\"\n      }\n    },\n    {\n      \"id\": \"v2.9.288\",\n      \"date\": \"2026-11-12\",\n      \"status\": \"released\",\n      \"title\": \"뉴스룸 4컷 PC 크기와 오른쪽 요약\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"98e21fab1bd0e7838e8245dd36423aca3fdeedd6\",\n        \"subject\": \"release: v2.9.288 뉴스룸 4컷 PC 크기와 오른쪽 요약 (#486)\"\n      }\n    },\n",
+      "before": "    {\n      \"id\": \"v2.9.288\",\n      \"date\": \"2026-11-12\",\n      \"status\": \"released\",\n      \"title\": \"뉴스룸 4컷 PC 크기와 오른쪽 요약\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.288 뉴스룸 4컷 PC 크기와 오른쪽 요약\"\n      }\n    },\n"
+    }
+  }
+}
