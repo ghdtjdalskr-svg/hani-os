@@ -7,7 +7,8 @@
   const date=v=>v?new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(v)):'확인 불가';
   const source={ 'codex-app-server':'Codex 공식 조회','codex-app':'Codex 앱 조회','claude-statusline':'Claude Code 제공','claude-plan-usage':'Claude 플랜 사용률 가져오기','claude-code-transcripts':'Claude Code 로컬 집계','official-screen':'공식 화면 확인','gemini-cli':'Gemini CLI 세션','gemini-cli-logs':'Gemini CLI 로컬 집계','antigravity':'Antigravity /usage 조회','manual':'직접 기록'};
   const states={unknown:'확인 불가',expired:'회복 시각 경과 · 재조회 필요',stale:'갱신 필요',limited:'한도 도달',low:'잔여 한도 적음',fresh:'최근 확인'};
-  const visibleSlots=core.slots.filter(s=>s.id!=='gemini-cli');
+  // codex-2 retired from view after 11/11; its slot stays in core so saved summaries remain readable.
+  const hiddenSlots=['gemini-cli','codex-2'],visibleSlots=core.slots.filter(s=>!hiddenSlots.includes(s.id));
   const kinds={session:'5시간 한도',weekly:'주간 한도',daily:'일간 한도',other:'기타 한도'};
   function countdown(v){if(!v)return '회복 시각 확인 불가';const n=Date.parse(v)-Date.now();if(n<=0)return '시각 경과 · 실제 회복 확인 필요';const min=Math.ceil(n/60000),day=Math.floor(min/1440),h=Math.floor(min%1440/60),m=min%60;return `${day?day+'일 ':''}${h?h+'시간 ':''}${m}분 남음`;}
   function notify(message){$('aiBudgetNotice').textContent=message;}
@@ -67,7 +68,7 @@
     finally{clearTimeout(timeout);busy=false;$('aiBudgetRefresh').disabled=false;}
   }
   section.addEventListener('click',e=>{const b=e.target.closest('[data-budget-edit]');if(b)openEditor(b.dataset.budgetEdit);});
-  $('aiBudgetAccount').innerHTML=core.slots.map(s=>`<option value="${esc(s.id)}">${esc(s.label)}</option>`).join('');
+  $('aiBudgetAccount').innerHTML=core.slots.filter(s=>s.id!=='codex-2').map(s=>`<option value="${esc(s.id)}">${esc(s.label)}</option>`).join('');
   $('aiBudgetRefresh').addEventListener('click',refresh);
   $('aiBudgetCancel').addEventListener('click',()=>{$('aiBudgetEditor').hidden=true;});
   $('aiBudgetForm').addEventListener('submit',e=>{
