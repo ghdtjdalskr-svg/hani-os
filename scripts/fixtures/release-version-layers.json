@@ -2,6 +2,38 @@
   "schema": 1,
   "layers": [
     {
+      "from": "2.9.288",
+      "to": "2.9.289",
+      "files": {
+        "index.html": {
+          "count": 60,
+          "after": "1dcf2866e037ce20d73a7e2f2990b2bd02a079e06f206684834d99d7f468d625",
+          "before": "93bc09ba5d8d168c040e58a6afacd2cf3822c49a98c885e9a908c6959fed68d0"
+        },
+        "hani-main.js": {
+          "count": 1,
+          "after": "f4b9282a03bddce87e39b677fa95a477bbba6b514b4a41c40e21a82f80301812",
+          "before": "541dd283d48e0fbbe1c6906ab997a69105def4079639f10e8b8b75fc9211baa5"
+        },
+        "assets/data/hani-history-releases-v1.json": {
+          "count": 1,
+          "after": "5eceffd9104bccd581e1c10e02ed5708828384a3db0a18bd5a09d42e75e03fbc",
+          "before": "6446f456178734ba4f372acea6710cebed5714c3e2e4a284eef18e30909b35cc",
+          "replacements": [
+            {
+              "after": "9\",\n      \"date\": \"2026-11-12\",\n      \"status\": \"released\",\n      \"title\": \"예산 화면 Codex 보조 칸 정리\",\n      \"category\": \"하니 그룹\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.289 예산 화면 Codex 보조 칸 정리\"\n      }\n    },\n    {\n      \"id\": \"v2.9.288\",\n      \"date\": \"2026-11-12\",\n      \"status\": \"released\",\n      \"title\": \"뉴스룸 4컷 PC 크기와 오른쪽 요약\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"98e21fab1bd0e7838e8245dd36423aca3fdeedd6\",\n        \"subject\": \"release: v2.9.288 뉴스룸 4컷 PC 크기와 오른쪽 요약 (#486)",
+              "before": "8\",\n      \"date\": \"2026-11-12\",\n      \"status\": \"released\",\n      \"title\": \"뉴스룸 4컷 PC 크기와 오른쪽 요약\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.288 뉴스룸 4컷 PC 크기와 오른쪽 요약"
+            }
+          ]
+        }
+      },
+      "feature": {
+        "module": "./hani-budget-289-source.cjs",
+        "fixture": "./fixtures/budget-289-delta.json",
+        "restore": "restoreBudget289Source"
+      }
+    },
+    {
       "from": "2.9.287",
       "to": "2.9.288",
       "files": {

@@ -30,9 +30,9 @@
     ['sua','수아','과장','business','B2B · 고객 대응','제안부터 후속 실행까지, 빈틈없이.','고객 · 제안 · 클라우드/CDN/보안','M9']
     ,['taeo','채원','솔루션 매니저','business','Claude · 기업 업무','고객 요구를 분석하고 제안과 후속 실행을 지원합니다.','B2B · 제안 · 기술 검토','AI STAFF']
   ];
-  rows.push(['daon','다온','사원','finance','리스크 애널리스트','회장님, 기대 수익 전에 하방 위험부터 확인할게요.','하방 위험 · 투자 시나리오 · 리스크 자료 정리','AI STAFF','active'],['yoonseul','윤슬','사원','life','러닝 리서처','회장님, 궁금한 주제부터 함께 책장을 펼쳐봐요.','공부 자료 조사 · 독서 길잡이 · 학습 자료 정리','AI STAFF','active']);
+  rows.push(['ieum','이음','사원','strategy','Records & Knowledge Ops','이거… 끝난 거 맞죠?','노션 통합 현황판 · 기록 정리 · 완료 확인','AI STAFF','active'],['daon','다온','사원','finance','리스크 애널리스트','회장님, 기대 수익 전에 하방 위험부터 확인할게요.','하방 위험 · 투자 시나리오 · 리스크 자료 정리','AI STAFF','active'],['yoonseul','윤슬','사원','life','러닝 리서처','회장님, 궁금한 주제부터 함께 책장을 펼쳐봐요.','공부 자료 조사 · 독서 길잡이 · 학습 자료 정리','AI STAFF','active']);
   const staffProfile=id=>window.HANI_CHARACTER_ARCHIVE_DATA?.characters.find(c=>c.id===id);
-  const people = rows.map(([id,name,rank,team,role,line,keywords,group,status])=>({id,name,rank,team,role,line,keywords,group,...(status?{status,registration:status==='planned'?'planned':'registered',floor:'2F',profile:staffProfile(id)}:{})})).sort((a,b)=>Number(b.group==='M9')-Number(a.group==='M9'));
+  const people = rows.map(([id,name,rank,team,role,line,keywords,group,status])=>({id,name,rank,team,role,line,keywords,group,...(status?{status,registration:status==='planned'?'planned':'registered',floor:id==='ieum'?'4F':'2F',profile:staffProfile(id)}:{})})).sort((a,b)=>Number(b.group==='M9')-Number(a.group==='M9'));
   window.HaniOrganizationRoster=Object.freeze({
     chairman:Object.freeze({id:"seongmin",name:"성민",rank:"회장",team:"HANI GROUP"}),
     teams:Object.freeze(teams.map(({id,name,color,tint})=>Object.freeze({id,name,color,tint}))),

@@ -376,6 +376,23 @@
             1612,
             436
           ]
+        },
+        "desk_ieum": {
+          "type": "desk-chair",
+          "row": "hani-records",
+          "seatBounds": [
+            1214,
+            227,
+            1293,
+            321
+          ],
+          "deskBounds": [
+            1200,
+            163,
+            1338,
+            286
+          ],
+          "seatNote": "전략기획실 · 하니 전무님 옆 · 오른쪽 기존 의자"
         }
       },
       "backgroundSha256": "fa31401ff0eaa529ccd3b0b1210565b5d66206675e8e801687ce9b53560fca21",
