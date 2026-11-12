@@ -17,6 +17,7 @@ function restoreKidsDailySource(source,file='hani-office-live.js'){
  return buffer?Buffer.from(restored):restored;
 }
 function projectPreKidsDailySource(source,file='hani-office-live.js'){
+ source=require('./hani-join-ieum-source.cjs').project(source,file);
  return file===delta.file&&hash(source)===delta.afterSha256?restoreKidsDailySource(source,file):source;
 }
 module.exports={delta,hash,restoreKidsDailySource,projectPreKidsDailySource};
