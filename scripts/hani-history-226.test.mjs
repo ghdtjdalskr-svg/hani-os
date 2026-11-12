@@ -1,6 +1,8 @@
 // node scripts/hani-history-226.test.mjs [--unit-only] [--before] [--cdp=http://127.0.0.1:9226]
 // Browser fixtures use the real history catalog, roster, newspaper module and manifest.
 // The additional third-month/approval cases below are explicitly synthetic boundary tests.
+// Project only Node fixtures; the browser HTTP reader below stays raw.
+import joinInverse from './hani-join-ieum-source.cjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -11,7 +13,7 @@ import {pathToFileURL} from 'node:url';
 import {textContrastAudit} from './hani-contrast-audit.mjs';
 
 const root=path.resolve(import.meta.dirname,'..'),out=path.join(root,'artifacts/history-226');
-const read=f=>fs.readFileSync(path.join(root,f),'utf8');
+const read=f=>joinInverse.project(fs.readFileSync(path.join(root,f),'utf8'),f);
 const hub=read('hani-organization-hub.js'),clock=Date.parse('2026-10-21T03:00:00Z');
 const fixture=vm.createContext({window:{},document:{querySelector:()=>null,getElementById:()=>null,readyState:'loading',addEventListener(){}},setTimeout:()=>0});
 vm.runInContext(read('hani-development-history-v1.js'),fixture);

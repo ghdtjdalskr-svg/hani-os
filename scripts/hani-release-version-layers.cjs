@@ -5,6 +5,8 @@ const readRawFileSync=require('node:fs').readFileSync.bind(require('node:fs'));
 const {createHash}=require('node:crypto');
 const manifest=require('./fixtures/release-version-layers.json');
 const outer=require('./hani-save-guard-source.cjs');
+// Load frozen fixtures before any legacy read adapter can project their reads.
+const theme=require('./hani-theme-contrast-source.cjs');
 const hash=source=>createHash('sha256').update(source).digest('hex');
 assert.equal(manifest.schema,1,'known release layer schema');
 const layers=manifest.layers;
@@ -47,6 +49,9 @@ function restoreVersionLayer(source,file,version){
 // first removes 290 + Ieum, then reaches the unchanged 289/288 contracts.
 // Unknown input remains for strict callers to reject.
 function projectPreRelease290Source(source,file){
+ // The pending theme append is outside released main's exact CSS contracts.
+ // Peel only its frozen bytes before the canonical version/feature chain.
+ source=theme.project(source,file);
  const row=getLayer('2.9.290').files[file];
  return row&&hash(source)===row.after?restoreVersionLayer(source,file,'2.9.290'):source;
 }
@@ -65,6 +70,7 @@ function projectPreRelease288Source(source,file){
 function project(source,file,target,features,keepFeature=false){
  const boundary=number(target);
  assert.ok(layers.some(row=>row.from===target||row.to===target),'known release target '+target);
+ source=theme.project(source,file);
  for(const layer of layers){
   const version=number(layer.to);
   if(version<boundary)break;

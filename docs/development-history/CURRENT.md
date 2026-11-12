@@ -1,3 +1,7 @@
+# 2026-11-13 · tc291b · 글자색 시험 층 290 기준 정리 (도연 / Codex)
+
+`hani/theme-contrast` / 로컬 HEAD `47b20fa8` / origin/main ref `46cb7a6`(Git 금지·원격 최신성 미확인). **main 290+이음 → 기존289/288 exact inverse와 pending CSS inverse를 공통 Node 체인에 연결, 고정 해시·수치·단언 보존. 97파일961PASS·Git36차단(29파일)·skip4·기타실패0, office72파일790PASS/Git34/skip3·M9 15/15·문법7/7.** 운영504파일 바이트 동일·산출물JSON4복원/새2제거. **Edge 지시상 미실행으로 전체52/52 미확인**, Git·commit/push·PR·merge·버전·배포 없음. 서윤 Git/Edge·검토·커밋 인계. Notion HANI-87 append는 승인 정책 never 거절로 갱신 대기. [보고서·명령](../../artifacts/theme-contrast/TOOLING-291.md) · [파일별 결과](../../artifacts/theme-contrast/TOOLING-291-results.json) · [인수인계](handoffs/2026-11-13-theme-contrast-tooling.md). 아래 기존·타 담당 기록 보존.
+
 # 2026-11-13 · tooling-290b · frozen JSON 입력 추가 보정 (도연 / Codex)
 
 `hani/tooling-290` / base `5ab007b`(HEAD/ref 파일 읽기만, 원격 최신성 미확인). **onboarding spatial helper·obr6 places 입력에 기존 이음 project만 적용, 단언·해시·숫자 보존. 비 Git 5파일 54PASS·syntax2/2·JSON7핀 일치.** 검색56시험에서 추가 누락 미발견, 기존 shared fixture 경로 정상 입력 확인. 지정2개 포함 Git 필요16시험·Edge는 미실행/서윤 인계, office-219 기존 실패 미수정. 운영·버전·Git 명령·배포 없음. Notion HANI-86 쓰기는 자동 승인 never 거절로 갱신 대기. [추가 수정 보고서](../../artifacts/join-ieum/TOOLING-290.md) · [인수인계](handoffs/2026-11-13-tooling-290.md). 아래 과거 결과 보존.

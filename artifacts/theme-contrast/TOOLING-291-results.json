@@ -1,0 +1,2886 @@
+{
+  "runner": {
+    "node": "v24.20.0",
+    "platform": "win32",
+    "flags": [
+      "--test",
+      "--test-isolation=none",
+      "--test-reporter=tap"
+    ],
+    "temporaryProcessGuard": "\nconst cp=require('node:child_process'),{syncBuiltinESMExports}=require('node:module');\nfor(const key of ['execFileSync','execFile','spawnSync','spawn','execSync','exec']){const original=cp[key];cp[key]=function(file,...args){const command=String(file);if(/(?:^|[\\\\/\\s\"'])git(?:\\.exe)?(?:$|\\s|[\"'])|msedge|chrome|chromium|powershell|cmd\\.exe/i.test(command)){const error=new Error('TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify '+command);error.code='TC291B_PROCESS_DISABLED';if(key==='spawnSync')return {error,status:null,stdout:null,stderr:null};throw error;}return original.call(this,file,...args)}}\nsyncBuiltinESMExports();\n",
+    "guardNote": "Each suite uses --require <temporary process guard>, except the name-filtered theme Node suite. No CLI theme preload. No Edge/Git subprocess was launched."
+  },
+  "syntaxChecks": {
+    "pass": 7,
+    "total": 7
+  },
+  "explicitThemeAdapterSmoke": "PASS",
+  "dateKST": "2026-11-13",
+  "base": "46cb7a69c4beeff3cce3bbe788be6f952e7b99e9",
+  "localHead": "47b20fa8e6a702bc93c9adefcbb73634d84e3ea7",
+  "uncommitted": true,
+  "summary": {
+    "files": 97,
+    "pass": 961,
+    "gitBlocked": 36,
+    "otherFailed": 0,
+    "skipped": 4
+  },
+  "office": [
+    {
+      "file": "hani-office-actions-216.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-actions-216.test.mjs",
+      "summary": {
+        "tests": 15,
+        "pass": 14,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 7 - approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract",
+          "type": "git-blocked",
+          "detail": "not ok 7 - approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract\r\n  ---\r\n  duration_ms: 34.4179\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-actions-216.test.mjs:21:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    assertOnboardedCanon (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-onboarding-232-assertions.mjs:15:17)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-actions-216.test.mjs:27:3)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-actions-221.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-actions-221.test.mjs",
+      "summary": {
+        "tests": 20,
+        "pass": 20,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-affinity-274-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-affinity-274-pins.test.mjs",
+      "summary": {
+        "tests": 3,
+        "pass": 2,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 3 - 274 base commit independently proves the entire original JS/CSS/helper blobs",
+          "type": "git-blocked",
+          "detail": "not ok 3 - 274 base commit independently proves the entire original JS/CSS/helper blobs\r\n  ---\r\n  duration_ms: 0.318\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-affinity-274-pins.test.mjs:21:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-affinity-274-pins.test.mjs:22:45)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-affinity-cap.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-affinity-cap.test.mjs",
+      "summary": {
+        "tests": 19,
+        "pass": 19,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-affinity-storage.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-affinity-storage.test.mjs",
+      "summary": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-affinity.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-affinity.test.mjs",
+      "summary": {
+        "tests": 21,
+        "pass": 21,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-barista-night-273-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-barista-night-273-pins.test.mjs",
+      "summary": {
+        "tests": 5,
+        "pass": 4,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 5 - 273: fixed Git release blobs independently prove every baseline pin and complete diff",
+          "type": "git-blocked",
+          "detail": "not ok 5 - 273: fixed Git release blobs independently prove every baseline pin and complete diff\r\n  ---\r\n  duration_ms: 0.336\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-barista-night-273-pins.test.mjs:47:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-barista-night-273-pins.test.mjs:49:45)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-barista-night.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-barista-night.test.mjs",
+      "summary": {
+        "tests": 13,
+        "pass": 13,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-barista.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-barista.test.mjs",
+      "summary": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-behavior.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-behavior.test.mjs",
+      "summary": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-bori-m9.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-bori-m9.test.mjs",
+      "summary": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-bori-stroll.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-bori-stroll.test.mjs",
+      "summary": {
+        "tests": 14,
+        "pass": 13,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 8 - stroll inverse independently matches the fixed Git base",
+          "type": "git-blocked",
+          "detail": "not ok 8 - stroll inverse independently matches the fixed Git base\r\n  ---\r\n  duration_ms: 0.2483\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-bori-stroll.test.mjs:32:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-bori-stroll.test.mjs:33:20)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-bubble-close.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-bubble-close.test.mjs",
+      "summary": {
+        "tests": 17,
+        "pass": 17,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-cafe-rest.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-cafe-rest.test.mjs",
+      "summary": {
+        "tests": 4,
+        "pass": 3,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 1 - cafe route uses clear lower-right floor, retains the lounge and sign mounting surface",
+          "type": "git-blocked",
+          "detail": "not ok 1 - cafe route uses clear lower-right floor, retains the lounge and sign mounting surface\r\n  ---\r\n  duration_ms: 0.7718\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-cafe-rest.test.mjs:12:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-cafe-rest.test.mjs:15:28)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.start (node:internal/test_runner/test:1257:17)\r\n    startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-chairman-234.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-chairman-234.test.mjs",
+      "summary": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-chairman-patrol-278-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-chairman-patrol-278-pins.test.mjs",
+      "summary": {
+        "tests": 12,
+        "pass": 6,
+        "fail": 6,
+        "skipped": 0
+      },
+      "gitBlocked": 6,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 2 - 278 independent fixed Git blobs prove pre-patrol bytes",
+          "type": "git-blocked",
+          "detail": "not ok 2 - 278 independent fixed Git blobs prove pre-patrol bytes\r\n  ---\r\n  duration_ms: 0.2716\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-chairman-patrol-278-pins.test.mjs:15:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-chairman-patrol-278-pins.test.mjs:15:111)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)\r\n"
+        },
+        {
+          "test": "not ok 4 - 278 kids extension independently matches its fixed Git base",
+          "type": "git-blocked",
+          "detail": "not ok 4 - 278 kids extension independently matches its fixed Git base\r\n  ---\r\n  duration_ms: 91.4961\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-chairman-patrol-278-pins.test.mjs:23:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-chairman-patrol-278-pins.test.mjs:23:154)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        },
+        {
+          "test": "not ok 6 - 278 visit extension independently matches fixed Git base",
+          "type": "git-blocked",
+          "detail": "not ok 6 - 278 visit extension independently matches fixed Git base\r\n  ---\r\n  duration_ms: 79.368\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-chairman-patrol-278-pins.test.mjs:31:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-chairman-patrol-278-pins.test.mjs:31:153)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        },
+        {
+          "test": "not ok 8 - 278 staff-chat extension independently matches fixed Git base",
+          "type": "git-blocked",
+          "detail": "not ok 8 - 278 staff-chat extension independently matches fixed Git base\r\n  ---\r\n  duration_ms: 72.1808\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-chairman-patrol-278-pins.test.mjs:39:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-chairman-patrol-278-pins.test.mjs:39:162)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        },
+        {
+          "test": "not ok 10 - 278 bubble placement extension independently matches fixed Git base",
+          "type": "git-blocked",
+          "detail": "not ok 10 - 278 bubble placement extension independently matches fixed Git base\r\n  ---\r\n  duration_ms: 60.1526\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-chairman-patrol-278-pins.test.mjs:47:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-chairman-patrol-278-pins.test.mjs:47:169)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        },
+        {
+          "test": "not ok 12 - 278 optimization extension independently matches fixed Git base",
+          "type": "git-blocked",
+          "detail": "not ok 12 - 278 optimization extension independently matches fixed Git base\r\n  ---\r\n  duration_ms: 53.5152\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-chairman-patrol-278-pins.test.mjs:56:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-chairman-patrol-278-pins.test.mjs:56:157)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-chairman-patrol.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-chairman-patrol.test.mjs",
+      "summary": {
+        "tests": 15,
+        "pass": 15,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-companion-homes.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-companion-homes.test.mjs",
+      "summary": {
+        "tests": 16,
+        "pass": 15,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 8 - home extension independently matches the specified fixed Git base",
+          "type": "git-blocked",
+          "detail": "not ok 8 - home extension independently matches the specified fixed Git base\r\n  ---\r\n  duration_ms: 0.2726\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-companion-homes.test.mjs:33:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-companion-homes.test.mjs:34:20)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-companions-276-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-companions-276-pins.test.mjs",
+      "summary": {
+        "tests": 3,
+        "pass": 2,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 2 - 276 fixed Git base independently proves every original blob",
+          "type": "git-blocked",
+          "detail": "not ok 2 - 276 fixed Git base independently proves every original blob\r\n  ---\r\n  duration_ms: 0.2961\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-companions-276-pins.test.mjs:15:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-companions-276-pins.test.mjs:15:116)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-companions.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-companions.test.mjs",
+      "summary": {
+        "tests": 17,
+        "pass": 17,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-consult.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-consult.test.mjs",
+      "summary": {
+        "tests": 20,
+        "pass": 19,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 14 - consult: sofa wording, counter words, safety owners and runtime timers",
+          "type": "git-blocked",
+          "detail": "not ok 14 - consult: sofa wording, counter words, safety owners and runtime timers\r\n  ---\r\n  duration_ms: 5.9441\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-consult.test.mjs:84:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-consult.test.mjs:85:70)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-crowded-labels.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-crowded-labels.test.mjs",
+      "summary": {
+        "tests": 19,
+        "pass": 19,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-drama.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-drama.test.mjs",
+      "summary": {
+        "tests": 20,
+        "pass": 20,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-fix-218.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-fix-218.test.mjs",
+      "summary": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-floor-bubble.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-floor-bubble.test.mjs",
+      "summary": {
+        "tests": 21,
+        "pass": 21,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-hd-224.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-hd-224.test.mjs",
+      "summary": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-icons.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-icons.test.mjs",
+      "summary": {
+        "tests": 15,
+        "pass": 14,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 14 - icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc",
+          "type": "git-blocked",
+          "detail": "not ok 14 - icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc\r\n  ---\r\n  duration_ms: 102.1332\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-icons.test.mjs:114:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-icons.test.mjs:117:17)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-kids-286-source.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-kids-286-source.test.mjs",
+      "summary": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-kids-lively.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-kids-lively.test.mjs",
+      "summary": {
+        "tests": 15,
+        "pass": 15,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-kids-merge.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-kids-merge.test.mjs",
+      "summary": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-kids-pose-b.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-kids-pose-b.test.mjs",
+      "summary": {
+        "tests": 13,
+        "pass": 13,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-kids-visit.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-kids-visit.test.mjs",
+      "summary": {
+        "tests": 16,
+        "pass": 16,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-kids-weekday.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-kids-weekday.test.mjs",
+      "summary": {
+        "tests": 19,
+        "pass": 19,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-labels-qa.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-labels-qa.test.mjs",
+      "summary": {
+        "tests": 17,
+        "pass": 17,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-lively-v2.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-lively-v2.test.mjs",
+      "summary": {
+        "tests": 8,
+        "pass": 7,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 6 - obr2: deterministic query order, reduced motion and frozen spatial bytes",
+          "type": "git-blocked",
+          "detail": "not ok 6 - obr2: deterministic query order, reduced motion and frozen spatial bytes\r\n  ---\r\n  duration_ms: 0.5493\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-lively-v2.test.mjs:90:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    assertOnboardedCanon (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-onboarding-232-assertions.mjs:15:17)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-v2.test.mjs:91:2)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-lively.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-lively.test.mjs",
+      "summary": {
+        "tests": 13,
+        "pass": 13,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-mascot-label.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-mascot-label.test.mjs",
+      "summary": {
+        "tests": 10,
+        "pass": 9,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 7 - outer exact inverse independently restores fixed affinity HEAD and rejects partial/duplicate/unrelated edits",
+          "type": "git-blocked",
+          "detail": "not ok 7 - outer exact inverse independently restores fixed affinity HEAD and rejects partial/duplicate/unrelated edits\r\n  ---\r\n  duration_ms: 0.5091\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-mascot-label.test.mjs:36:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-mascot-label.test.mjs:37:20)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-motion-1.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-motion-1.test.mjs",
+      "summary": {
+        "tests": 16,
+        "pass": 16,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-motion-2.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-motion-2.test.mjs",
+      "summary": {
+        "tests": 24,
+        "pass": 24,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr10.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr10.test.mjs",
+      "summary": {
+        "tests": 4,
+        "pass": 4,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr12.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr12.test.mjs",
+      "summary": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 1 - scripts\\\\hani-office-obr12.test.mjs",
+          "type": "git-blocked",
+          "detail": "not ok 1 - scripts\\\\hani-office-obr12.test.mjs\r\n  ---\r\n  duration_ms: 0.4243\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-obr12.test.mjs:1:1'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-obr12.test.mjs:5:14\r\n    ModuleJob.run (node:internal/modules/esm/module_job:561:25)\r\n    async node:internal/modules/esm/loader:647:26\r\n    async node:internal/test_runner/runner:1075:15\r\n    async runFiles (node:internal/test_runner/runner:1041:9)\r\n    async runChain (node:internal/test_runner/runner:1119:5)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr14.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr14.test.mjs",
+      "summary": {
+        "tests": 5,
+        "pass": 4,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 1 - 235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism",
+          "type": "git-blocked",
+          "detail": "not ok 1 - 235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism\r\n  ---\r\n  duration_ms: 910.9212\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-obr14.test.mjs:12:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    json (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:13:30)\r\n    loadScene (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:14:14)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-obr14.test.mjs:16:53)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.start (node:internal/test_runner/test:1257:17)\r\n    startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr15.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr15.test.mjs",
+      "summary": {
+        "tests": 14,
+        "pass": 13,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 7 - obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately",
+          "type": "git-blocked",
+          "detail": "not ok 7 - obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately\r\n  ---\r\n  duration_ms: 671.1599\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-obr15.test.mjs:30:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-obr15.test.mjs:32:20)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr16.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr16.test.mjs",
+      "summary": {
+        "tests": 12,
+        "pass": 12,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr17.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr17.test.mjs",
+      "summary": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr18.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr18.test.mjs",
+      "summary": {
+        "tests": 12,
+        "pass": 12,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr19.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr19.test.mjs",
+      "summary": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr21.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr21.test.mjs",
+      "summary": {
+        "tests": 6,
+        "pass": 4,
+        "fail": 2,
+        "skipped": 0
+      },
+      "gitBlocked": 2,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 4 - obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation",
+          "type": "git-blocked",
+          "detail": "not ok 4 - obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation\r\n  ---\r\n  duration_ms: 1.1055\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-obr21.test.mjs:105:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    json (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:13:30)\r\n    loadScene (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:14:14)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-obr21.test.mjs:106:12)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n"
+        },
+        {
+          "test": "not ok 5 - obr21 cached gathering/index decisions equal full index rebuilds",
+          "type": "git-blocked",
+          "detail": "not ok 5 - obr21 cached gathering/index decisions equal full index rebuilds\r\n  ---\r\n  duration_ms: 0.389\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-obr21.test.mjs:122:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-obr21.test.mjs:123:17)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr3.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr3.test.mjs",
+      "summary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr4.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr4.test.mjs",
+      "summary": {
+        "tests": 10,
+        "pass": 8,
+        "fail": 2,
+        "skipped": 0
+      },
+      "gitBlocked": 2,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 7 - obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows",
+          "type": "git-blocked",
+          "detail": "not ok 7 - obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows\r\n  ---\r\n  duration_ms: 0.7287\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-obr4.test.mjs:12:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    assertOnboardedCanon (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-onboarding-232-assertions.mjs:15:17)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-obr4.test.mjs:13:2)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        },
+        {
+          "test": "not ok 8 - obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats",
+          "type": "git-blocked",
+          "detail": "not ok 8 - obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats\r\n  ---\r\n  duration_ms: 0.3811\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-obr4.test.mjs:25:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-obr4.test.mjs:26:23)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr6.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr6.test.mjs",
+      "summary": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 1 - scripts\\\\hani-office-obr6.test.mjs",
+          "type": "git-blocked",
+          "detail": "not ok 1 - scripts\\\\hani-office-obr6.test.mjs\r\n  ---\r\n  duration_ms: 0.3883\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-obr6.test.mjs:1:1'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-obr6.test.mjs:27:49\r\n    ModuleJob.run (node:internal/modules/esm/module_job:561:25)\r\n    async node:internal/modules/esm/loader:647:26\r\n    async node:internal/test_runner/runner:1075:15\r\n    async runFiles (node:internal/test_runner/runner:1041:9)\r\n    async runChain (node:internal/test_runner/runner:1119:5)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr7.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr7.test.mjs",
+      "summary": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 1 - scripts\\\\hani-office-obr7.test.mjs",
+          "type": "git-blocked",
+          "detail": "not ok 1 - scripts\\\\hani-office-obr7.test.mjs\r\n  ---\r\n  duration_ms: 0.3526\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-obr7.test.mjs:1:1'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-obr7.test.mjs:5:14\r\n    ModuleJob.run (node:internal/modules/esm/module_job:561:25)\r\n    async node:internal/modules/esm/loader:647:26\r\n    async node:internal/test_runner/runner:1075:15\r\n    async runFiles (node:internal/test_runner/runner:1041:9)\r\n    async runChain (node:internal/test_runner/runner:1119:5)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr8.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr8.test.mjs",
+      "summary": {
+        "tests": 3,
+        "pass": 2,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 1 - obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words",
+          "type": "git-blocked",
+          "detail": "not ok 1 - obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words\r\n  ---\r\n  duration_ms: 857.2417\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-obr8.test.mjs:34:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-obr8.test.mjs:37:76)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.start (node:internal/test_runner/test:1257:17)\r\n    startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr9.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr9.test.mjs",
+      "summary": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 1 - scripts\\\\hani-office-obr9.test.mjs",
+          "type": "git-blocked",
+          "detail": "not ok 1 - scripts\\\\hani-office-obr9.test.mjs\r\n  ---\r\n  duration_ms: 0.5388\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-obr9.test.mjs:1:1'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-obr9.test.mjs:6:14\r\n    ModuleJob.run (node:internal/modules/esm/module_job:561:25)\r\n    async node:internal/modules/esm/loader:647:26\r\n    async node:internal/test_runner/runner:1075:15\r\n    async runFiles (node:internal/test_runner/runner:1041:9)\r\n    async runChain (node:internal/test_runner/runner:1119:5)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-pet-bori-272-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-pet-bori-272-pins.test.mjs",
+      "summary": {
+        "tests": 4,
+        "pass": 3,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 4 - 272: fixed Git release blobs independently prove every baseline pin and complete diff",
+          "type": "git-blocked",
+          "detail": "not ok 4 - 272: fixed Git release blobs independently prove every baseline pin and complete diff\r\n  ---\r\n  duration_ms: 0.3734\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-pet-bori-272-pins.test.mjs:37:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-pet-bori-272-pins.test.mjs:39:45)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-pet-bori.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-pet-bori.test.mjs",
+      "summary": {
+        "tests": 14,
+        "pass": 14,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-pets-268-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-pets-268-pins.test.mjs",
+      "summary": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 1 - v2.9.268: exact fixture pairs are the complete diff from pinned origin/main, with no other source edits",
+          "type": "git-blocked",
+          "detail": "not ok 1 - v2.9.268: exact fixture pairs are the complete diff from pinned origin/main, with no other source edits\r\n  ---\r\n  duration_ms: 369.8718\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-pets-268-pins.test.mjs:9:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-pets-268-pins.test.mjs:29:15)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.start (node:internal/test_runner/test:1257:17)\r\n    startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-pets-bubble.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-pets-bubble.test.mjs",
+      "summary": {
+        "tests": 22,
+        "pass": 21,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 13 - resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections",
+          "type": "git-blocked",
+          "detail": "not ok 13 - resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections\r\n  ---\r\n  duration_ms: 0.574\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-pets-bubble.test.mjs:104:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-pets-bubble.test.mjs:106:15)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-props.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-props.test.mjs",
+      "summary": {
+        "tests": 11,
+        "pass": 11,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-release-projection.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-release-projection.test.mjs",
+      "summary": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-residents.test.mjs",
+      "summary": {
+        "tests": 49,
+        "pass": 49,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-seats-215.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-seats-215.test.mjs",
+      "summary": {
+        "tests": 12,
+        "pass": 12,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-snack.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-snack.test.mjs",
+      "summary": {
+        "tests": 26,
+        "pass": 26,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-staff-chat.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-staff-chat.test.mjs",
+      "summary": {
+        "tests": 17,
+        "pass": 17,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-tap-lines.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-tap-lines.test.mjs",
+      "summary": {
+        "tests": 15,
+        "pass": 15,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-tlayout.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-tlayout.test.mjs",
+      "summary": {
+        "tests": 13,
+        "pass": 13,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-top-labels.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-top-labels.test.mjs",
+      "summary": {
+        "tests": 7,
+        "pass": 7,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-v2-215.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-v2-215.test.mjs",
+      "summary": {
+        "tests": 20,
+        "pass": 17,
+        "fail": 1,
+        "skipped": 2
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 7 - frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture",
+          "type": "git-blocked",
+          "detail": "not ok 7 - frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture\r\n  ---\r\n  duration_ms: 0.7142\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-v2-215.test.mjs:18:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    assertOnboardedCanon (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-onboarding-232-assertions.mjs:15:17)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-v2-215.test.mjs:19:3)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-visitors-cafe.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-visitors-cafe.test.mjs",
+      "summary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-xmas-269-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-xmas-269-pins.test.mjs",
+      "summary": {
+        "tests": 2,
+        "pass": 1,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 2 - v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit",
+          "type": "git-blocked",
+          "detail": "not ok 2 - v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit\r\n  ---\r\n  duration_ms: 0.4235\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-xmas-269-pins.test.mjs:40:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-xmas-269-pins.test.mjs:43:16)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-xmas.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-xmas.test.mjs",
+      "summary": {
+        "tests": 13,
+        "pass": 12,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 12 - xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged",
+          "type": "git-blocked",
+          "detail": "not ok 12 - xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged\r\n  ---\r\n  duration_ms: 130.2164\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-xmas.test.mjs:119:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readReleaseSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-reviewed-release-baseline.mjs:85:17)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-xmas.test.mjs:129:14)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-zoom.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-zoom.test.mjs",
+      "summary": {
+        "tests": 13,
+        "pass": 12,
+        "fail": 0,
+        "skipped": 1
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    }
+  ],
+  "results": [
+    {
+      "file": "hani-app-216-audit.test.cjs",
+      "command": "node --test --test-isolation=none scripts/hani-app-216-audit.test.cjs",
+      "summary": {
+        "tests": 7,
+        "pass": 7,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-app-216-practical.test.cjs",
+      "command": "node --test --test-isolation=none scripts/hani-app-216-practical.test.cjs",
+      "summary": {
+        "tests": 12,
+        "pass": 12,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-chart-toss-212.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-chart-toss-212.test.mjs",
+      "summary": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-egress-fix.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-egress-fix.test.mjs",
+      "summary": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-exam-popup-214.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-exam-popup-214.test.mjs",
+      "summary": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-google-drive-212.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-google-drive-212.test.mjs",
+      "summary": {
+        "tests": 11,
+        "pass": 11,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-history-226.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-history-226.test.mjs --unit-only",
+      "summary": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-join-ieum.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-join-ieum.test.mjs",
+      "summary": {
+        "tests": 17,
+        "pass": 17,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-life-bundle-source.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-life-bundle-source.test.mjs",
+      "summary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-milestones-v1.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-milestones-v1.test.mjs",
+      "summary": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-mission-203a.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-mission-203a.test.mjs",
+      "summary": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-newsroom-285-source.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-newsroom-285-source.test.mjs",
+      "summary": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-newsroom-4cut-230.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-newsroom-4cut-230.test.mjs --node",
+      "summary": {
+        "tests": 8,
+        "pass": 7,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 8 - release closure literal, static lazy dimensions, canonical route and no new duplicate id literals",
+          "type": "git-blocked",
+          "detail": "not ok 8 - release closure literal, static lazy dimensions, canonical route and no new duplicate id literals\r\n  ---\r\n  duration_ms: 34.9435\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-newsroom-4cut-230.test.mjs:131:3'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    git (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-regression-baseline.mjs:5:22)\r\n    readMainBaseline (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-regression-baseline.mjs:17:57)\r\n    literalIds (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-duplicate-id-guard.mjs:17:14)\r\n    assertNoNewDuplicateIds (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-duplicate-id-guard.mjs:26:38)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-newsroom-4cut-230.test.mjs:139:17)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-newsroom-4cut-288.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-newsroom-4cut-288.test.mjs",
+      "summary": {
+        "tests": 7,
+        "pass": 7,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-actions-216.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-actions-216.test.mjs",
+      "summary": {
+        "tests": 15,
+        "pass": 14,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 7 - approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract",
+          "type": "git-blocked",
+          "detail": "not ok 7 - approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract\r\n  ---\r\n  duration_ms: 34.4179\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-actions-216.test.mjs:21:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    assertOnboardedCanon (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-onboarding-232-assertions.mjs:15:17)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-actions-216.test.mjs:27:3)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-actions-221.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-actions-221.test.mjs",
+      "summary": {
+        "tests": 20,
+        "pass": 20,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-affinity-274-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-affinity-274-pins.test.mjs",
+      "summary": {
+        "tests": 3,
+        "pass": 2,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 3 - 274 base commit independently proves the entire original JS/CSS/helper blobs",
+          "type": "git-blocked",
+          "detail": "not ok 3 - 274 base commit independently proves the entire original JS/CSS/helper blobs\r\n  ---\r\n  duration_ms: 0.318\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-affinity-274-pins.test.mjs:21:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-affinity-274-pins.test.mjs:22:45)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-affinity-cap.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-affinity-cap.test.mjs",
+      "summary": {
+        "tests": 19,
+        "pass": 19,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-affinity-storage.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-affinity-storage.test.mjs",
+      "summary": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-affinity.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-affinity.test.mjs",
+      "summary": {
+        "tests": 21,
+        "pass": 21,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-barista-night-273-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-barista-night-273-pins.test.mjs",
+      "summary": {
+        "tests": 5,
+        "pass": 4,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 5 - 273: fixed Git release blobs independently prove every baseline pin and complete diff",
+          "type": "git-blocked",
+          "detail": "not ok 5 - 273: fixed Git release blobs independently prove every baseline pin and complete diff\r\n  ---\r\n  duration_ms: 0.336\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-barista-night-273-pins.test.mjs:47:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-barista-night-273-pins.test.mjs:49:45)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-barista-night.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-barista-night.test.mjs",
+      "summary": {
+        "tests": 13,
+        "pass": 13,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-barista.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-barista.test.mjs",
+      "summary": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-behavior.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-behavior.test.mjs",
+      "summary": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-bori-m9.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-bori-m9.test.mjs",
+      "summary": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-bori-stroll.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-bori-stroll.test.mjs",
+      "summary": {
+        "tests": 14,
+        "pass": 13,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 8 - stroll inverse independently matches the fixed Git base",
+          "type": "git-blocked",
+          "detail": "not ok 8 - stroll inverse independently matches the fixed Git base\r\n  ---\r\n  duration_ms: 0.2483\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-bori-stroll.test.mjs:32:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-bori-stroll.test.mjs:33:20)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-bubble-close.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-bubble-close.test.mjs",
+      "summary": {
+        "tests": 17,
+        "pass": 17,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-cafe-rest.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-cafe-rest.test.mjs",
+      "summary": {
+        "tests": 4,
+        "pass": 3,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 1 - cafe route uses clear lower-right floor, retains the lounge and sign mounting surface",
+          "type": "git-blocked",
+          "detail": "not ok 1 - cafe route uses clear lower-right floor, retains the lounge and sign mounting surface\r\n  ---\r\n  duration_ms: 0.7718\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-cafe-rest.test.mjs:12:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-cafe-rest.test.mjs:15:28)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.start (node:internal/test_runner/test:1257:17)\r\n    startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-chairman-234.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-chairman-234.test.mjs",
+      "summary": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-chairman-patrol-278-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-chairman-patrol-278-pins.test.mjs",
+      "summary": {
+        "tests": 12,
+        "pass": 6,
+        "fail": 6,
+        "skipped": 0
+      },
+      "gitBlocked": 6,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 2 - 278 independent fixed Git blobs prove pre-patrol bytes",
+          "type": "git-blocked",
+          "detail": "not ok 2 - 278 independent fixed Git blobs prove pre-patrol bytes\r\n  ---\r\n  duration_ms: 0.2716\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-chairman-patrol-278-pins.test.mjs:15:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-chairman-patrol-278-pins.test.mjs:15:111)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)\r\n"
+        },
+        {
+          "test": "not ok 4 - 278 kids extension independently matches its fixed Git base",
+          "type": "git-blocked",
+          "detail": "not ok 4 - 278 kids extension independently matches its fixed Git base\r\n  ---\r\n  duration_ms: 91.4961\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-chairman-patrol-278-pins.test.mjs:23:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-chairman-patrol-278-pins.test.mjs:23:154)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        },
+        {
+          "test": "not ok 6 - 278 visit extension independently matches fixed Git base",
+          "type": "git-blocked",
+          "detail": "not ok 6 - 278 visit extension independently matches fixed Git base\r\n  ---\r\n  duration_ms: 79.368\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-chairman-patrol-278-pins.test.mjs:31:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-chairman-patrol-278-pins.test.mjs:31:153)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        },
+        {
+          "test": "not ok 8 - 278 staff-chat extension independently matches fixed Git base",
+          "type": "git-blocked",
+          "detail": "not ok 8 - 278 staff-chat extension independently matches fixed Git base\r\n  ---\r\n  duration_ms: 72.1808\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-chairman-patrol-278-pins.test.mjs:39:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-chairman-patrol-278-pins.test.mjs:39:162)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        },
+        {
+          "test": "not ok 10 - 278 bubble placement extension independently matches fixed Git base",
+          "type": "git-blocked",
+          "detail": "not ok 10 - 278 bubble placement extension independently matches fixed Git base\r\n  ---\r\n  duration_ms: 60.1526\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-chairman-patrol-278-pins.test.mjs:47:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-chairman-patrol-278-pins.test.mjs:47:169)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        },
+        {
+          "test": "not ok 12 - 278 optimization extension independently matches fixed Git base",
+          "type": "git-blocked",
+          "detail": "not ok 12 - 278 optimization extension independently matches fixed Git base\r\n  ---\r\n  duration_ms: 53.5152\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-chairman-patrol-278-pins.test.mjs:56:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-chairman-patrol-278-pins.test.mjs:56:157)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-chairman-patrol.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-chairman-patrol.test.mjs",
+      "summary": {
+        "tests": 15,
+        "pass": 15,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-companion-homes.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-companion-homes.test.mjs",
+      "summary": {
+        "tests": 16,
+        "pass": 15,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 8 - home extension independently matches the specified fixed Git base",
+          "type": "git-blocked",
+          "detail": "not ok 8 - home extension independently matches the specified fixed Git base\r\n  ---\r\n  duration_ms: 0.2726\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-companion-homes.test.mjs:33:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-companion-homes.test.mjs:34:20)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-companions-276-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-companions-276-pins.test.mjs",
+      "summary": {
+        "tests": 3,
+        "pass": 2,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 2 - 276 fixed Git base independently proves every original blob",
+          "type": "git-blocked",
+          "detail": "not ok 2 - 276 fixed Git base independently proves every original blob\r\n  ---\r\n  duration_ms: 0.2961\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-companions-276-pins.test.mjs:15:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-companions-276-pins.test.mjs:15:116)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-companions.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-companions.test.mjs",
+      "summary": {
+        "tests": 17,
+        "pass": 17,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-consult.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-consult.test.mjs",
+      "summary": {
+        "tests": 20,
+        "pass": 19,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 14 - consult: sofa wording, counter words, safety owners and runtime timers",
+          "type": "git-blocked",
+          "detail": "not ok 14 - consult: sofa wording, counter words, safety owners and runtime timers\r\n  ---\r\n  duration_ms: 5.9441\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-consult.test.mjs:84:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-consult.test.mjs:85:70)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-crowded-labels.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-crowded-labels.test.mjs",
+      "summary": {
+        "tests": 19,
+        "pass": 19,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-drama.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-drama.test.mjs",
+      "summary": {
+        "tests": 20,
+        "pass": 20,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-fix-218.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-fix-218.test.mjs",
+      "summary": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-floor-bubble.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-floor-bubble.test.mjs",
+      "summary": {
+        "tests": 21,
+        "pass": 21,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-hd-224.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-hd-224.test.mjs",
+      "summary": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-icons.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-icons.test.mjs",
+      "summary": {
+        "tests": 15,
+        "pass": 14,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 14 - icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc",
+          "type": "git-blocked",
+          "detail": "not ok 14 - icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc\r\n  ---\r\n  duration_ms: 102.1332\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-icons.test.mjs:114:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-icons.test.mjs:117:17)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-kids-286-source.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-kids-286-source.test.mjs",
+      "summary": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-kids-lively.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-kids-lively.test.mjs",
+      "summary": {
+        "tests": 15,
+        "pass": 15,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-kids-merge.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-kids-merge.test.mjs",
+      "summary": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-kids-pose-b.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-kids-pose-b.test.mjs",
+      "summary": {
+        "tests": 13,
+        "pass": 13,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-kids-visit.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-kids-visit.test.mjs",
+      "summary": {
+        "tests": 16,
+        "pass": 16,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-kids-weekday.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-kids-weekday.test.mjs",
+      "summary": {
+        "tests": 19,
+        "pass": 19,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-labels-qa.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-labels-qa.test.mjs",
+      "summary": {
+        "tests": 17,
+        "pass": 17,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-lively-v2.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-lively-v2.test.mjs",
+      "summary": {
+        "tests": 8,
+        "pass": 7,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 6 - obr2: deterministic query order, reduced motion and frozen spatial bytes",
+          "type": "git-blocked",
+          "detail": "not ok 6 - obr2: deterministic query order, reduced motion and frozen spatial bytes\r\n  ---\r\n  duration_ms: 0.5493\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-lively-v2.test.mjs:90:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    assertOnboardedCanon (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-onboarding-232-assertions.mjs:15:17)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-v2.test.mjs:91:2)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-lively.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-lively.test.mjs",
+      "summary": {
+        "tests": 13,
+        "pass": 13,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-mascot-label.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-mascot-label.test.mjs",
+      "summary": {
+        "tests": 10,
+        "pass": 9,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 7 - outer exact inverse independently restores fixed affinity HEAD and rejects partial/duplicate/unrelated edits",
+          "type": "git-blocked",
+          "detail": "not ok 7 - outer exact inverse independently restores fixed affinity HEAD and rejects partial/duplicate/unrelated edits\r\n  ---\r\n  duration_ms: 0.5091\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-mascot-label.test.mjs:36:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-mascot-label.test.mjs:37:20)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-motion-1.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-motion-1.test.mjs",
+      "summary": {
+        "tests": 16,
+        "pass": 16,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-motion-2.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-motion-2.test.mjs",
+      "summary": {
+        "tests": 24,
+        "pass": 24,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr10.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr10.test.mjs",
+      "summary": {
+        "tests": 4,
+        "pass": 4,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr12.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr12.test.mjs",
+      "summary": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 1 - scripts\\\\hani-office-obr12.test.mjs",
+          "type": "git-blocked",
+          "detail": "not ok 1 - scripts\\\\hani-office-obr12.test.mjs\r\n  ---\r\n  duration_ms: 0.4243\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-obr12.test.mjs:1:1'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-obr12.test.mjs:5:14\r\n    ModuleJob.run (node:internal/modules/esm/module_job:561:25)\r\n    async node:internal/modules/esm/loader:647:26\r\n    async node:internal/test_runner/runner:1075:15\r\n    async runFiles (node:internal/test_runner/runner:1041:9)\r\n    async runChain (node:internal/test_runner/runner:1119:5)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr14.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr14.test.mjs",
+      "summary": {
+        "tests": 5,
+        "pass": 4,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 1 - 235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism",
+          "type": "git-blocked",
+          "detail": "not ok 1 - 235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism\r\n  ---\r\n  duration_ms: 910.9212\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-obr14.test.mjs:12:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    json (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:13:30)\r\n    loadScene (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:14:14)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-obr14.test.mjs:16:53)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.start (node:internal/test_runner/test:1257:17)\r\n    startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr15.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr15.test.mjs",
+      "summary": {
+        "tests": 14,
+        "pass": 13,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 7 - obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately",
+          "type": "git-blocked",
+          "detail": "not ok 7 - obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately\r\n  ---\r\n  duration_ms: 671.1599\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-obr15.test.mjs:30:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-obr15.test.mjs:32:20)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr16.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr16.test.mjs",
+      "summary": {
+        "tests": 12,
+        "pass": 12,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr17.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr17.test.mjs",
+      "summary": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr18.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr18.test.mjs",
+      "summary": {
+        "tests": 12,
+        "pass": 12,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr19.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr19.test.mjs",
+      "summary": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr21.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr21.test.mjs",
+      "summary": {
+        "tests": 6,
+        "pass": 4,
+        "fail": 2,
+        "skipped": 0
+      },
+      "gitBlocked": 2,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 4 - obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation",
+          "type": "git-blocked",
+          "detail": "not ok 4 - obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation\r\n  ---\r\n  duration_ms: 1.1055\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-obr21.test.mjs:105:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    json (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:13:30)\r\n    loadScene (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:14:14)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-obr21.test.mjs:106:12)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n"
+        },
+        {
+          "test": "not ok 5 - obr21 cached gathering/index decisions equal full index rebuilds",
+          "type": "git-blocked",
+          "detail": "not ok 5 - obr21 cached gathering/index decisions equal full index rebuilds\r\n  ---\r\n  duration_ms: 0.389\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-obr21.test.mjs:122:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-obr21.test.mjs:123:17)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr3.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr3.test.mjs",
+      "summary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr4.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr4.test.mjs",
+      "summary": {
+        "tests": 10,
+        "pass": 8,
+        "fail": 2,
+        "skipped": 0
+      },
+      "gitBlocked": 2,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 7 - obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows",
+          "type": "git-blocked",
+          "detail": "not ok 7 - obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows\r\n  ---\r\n  duration_ms: 0.7287\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-obr4.test.mjs:12:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    assertOnboardedCanon (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-onboarding-232-assertions.mjs:15:17)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-obr4.test.mjs:13:2)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        },
+        {
+          "test": "not ok 8 - obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats",
+          "type": "git-blocked",
+          "detail": "not ok 8 - obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats\r\n  ---\r\n  duration_ms: 0.3811\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-obr4.test.mjs:25:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-obr4.test.mjs:26:23)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr6.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr6.test.mjs",
+      "summary": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 1 - scripts\\\\hani-office-obr6.test.mjs",
+          "type": "git-blocked",
+          "detail": "not ok 1 - scripts\\\\hani-office-obr6.test.mjs\r\n  ---\r\n  duration_ms: 0.3883\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-obr6.test.mjs:1:1'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-obr6.test.mjs:27:49\r\n    ModuleJob.run (node:internal/modules/esm/module_job:561:25)\r\n    async node:internal/modules/esm/loader:647:26\r\n    async node:internal/test_runner/runner:1075:15\r\n    async runFiles (node:internal/test_runner/runner:1041:9)\r\n    async runChain (node:internal/test_runner/runner:1119:5)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr7.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr7.test.mjs",
+      "summary": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 1 - scripts\\\\hani-office-obr7.test.mjs",
+          "type": "git-blocked",
+          "detail": "not ok 1 - scripts\\\\hani-office-obr7.test.mjs\r\n  ---\r\n  duration_ms: 0.3526\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-obr7.test.mjs:1:1'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-obr7.test.mjs:5:14\r\n    ModuleJob.run (node:internal/modules/esm/module_job:561:25)\r\n    async node:internal/modules/esm/loader:647:26\r\n    async node:internal/test_runner/runner:1075:15\r\n    async runFiles (node:internal/test_runner/runner:1041:9)\r\n    async runChain (node:internal/test_runner/runner:1119:5)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr8.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr8.test.mjs",
+      "summary": {
+        "tests": 3,
+        "pass": 2,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 1 - obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words",
+          "type": "git-blocked",
+          "detail": "not ok 1 - obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words\r\n  ---\r\n  duration_ms: 857.2417\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-obr8.test.mjs:34:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-obr8.test.mjs:37:76)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.start (node:internal/test_runner/test:1257:17)\r\n    startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-obr9.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr9.test.mjs",
+      "summary": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 1 - scripts\\\\hani-office-obr9.test.mjs",
+          "type": "git-blocked",
+          "detail": "not ok 1 - scripts\\\\hani-office-obr9.test.mjs\r\n  ---\r\n  duration_ms: 0.5388\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-obr9.test.mjs:1:1'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-obr9.test.mjs:6:14\r\n    ModuleJob.run (node:internal/modules/esm/module_job:561:25)\r\n    async node:internal/modules/esm/loader:647:26\r\n    async node:internal/test_runner/runner:1075:15\r\n    async runFiles (node:internal/test_runner/runner:1041:9)\r\n    async runChain (node:internal/test_runner/runner:1119:5)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-pet-bori-272-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-pet-bori-272-pins.test.mjs",
+      "summary": {
+        "tests": 4,
+        "pass": 3,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 4 - 272: fixed Git release blobs independently prove every baseline pin and complete diff",
+          "type": "git-blocked",
+          "detail": "not ok 4 - 272: fixed Git release blobs independently prove every baseline pin and complete diff\r\n  ---\r\n  duration_ms: 0.3734\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-pet-bori-272-pins.test.mjs:37:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-pet-bori-272-pins.test.mjs:39:45)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-pet-bori.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-pet-bori.test.mjs",
+      "summary": {
+        "tests": 14,
+        "pass": 14,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-pets-268-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-pets-268-pins.test.mjs",
+      "summary": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 1 - v2.9.268: exact fixture pairs are the complete diff from pinned origin/main, with no other source edits",
+          "type": "git-blocked",
+          "detail": "not ok 1 - v2.9.268: exact fixture pairs are the complete diff from pinned origin/main, with no other source edits\r\n  ---\r\n  duration_ms: 369.8718\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-pets-268-pins.test.mjs:9:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-pets-268-pins.test.mjs:29:15)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.start (node:internal/test_runner/test:1257:17)\r\n    startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-pets-bubble.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-pets-bubble.test.mjs",
+      "summary": {
+        "tests": 22,
+        "pass": 21,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 13 - resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections",
+          "type": "git-blocked",
+          "detail": "not ok 13 - resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections\r\n  ---\r\n  duration_ms: 0.574\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-pets-bubble.test.mjs:104:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-pets-bubble.test.mjs:106:15)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-props.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-props.test.mjs",
+      "summary": {
+        "tests": 11,
+        "pass": 11,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-release-projection.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-release-projection.test.mjs",
+      "summary": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-residents.test.mjs",
+      "summary": {
+        "tests": 49,
+        "pass": 49,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-seats-215.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-seats-215.test.mjs",
+      "summary": {
+        "tests": 12,
+        "pass": 12,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-snack.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-snack.test.mjs",
+      "summary": {
+        "tests": 26,
+        "pass": 26,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-staff-chat.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-staff-chat.test.mjs",
+      "summary": {
+        "tests": 17,
+        "pass": 17,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-tap-lines.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-tap-lines.test.mjs",
+      "summary": {
+        "tests": 15,
+        "pass": 15,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-tlayout.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-tlayout.test.mjs",
+      "summary": {
+        "tests": 13,
+        "pass": 13,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-top-labels.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-top-labels.test.mjs",
+      "summary": {
+        "tests": 7,
+        "pass": 7,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-v2-215.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-v2-215.test.mjs",
+      "summary": {
+        "tests": 20,
+        "pass": 17,
+        "fail": 1,
+        "skipped": 2
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 7 - frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture",
+          "type": "git-blocked",
+          "detail": "not ok 7 - frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture\r\n  ---\r\n  duration_ms: 0.7142\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-v2-215.test.mjs:18:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-lively-fixture.mjs:10:9)\r\n    assertOnboardedCanon (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-onboarding-232-assertions.mjs:15:17)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-v2-215.test.mjs:19:3)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-visitors-cafe.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-visitors-cafe.test.mjs",
+      "summary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-office-xmas-269-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-xmas-269-pins.test.mjs",
+      "summary": {
+        "tests": 2,
+        "pass": 1,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 2 - v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit",
+          "type": "git-blocked",
+          "detail": "not ok 2 - v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit\r\n  ---\r\n  duration_ms: 0.4235\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-xmas-269-pins.test.mjs:40:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-xmas-269-pins.test.mjs:43:16)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-xmas.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-xmas.test.mjs",
+      "summary": {
+        "tests": 13,
+        "pass": 12,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 12 - xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged",
+          "type": "git-blocked",
+          "detail": "not ok 12 - xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged\r\n  ---\r\n  duration_ms: 130.2164\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-office-xmas.test.mjs:119:1'\r\n  failureType: 'testCodeFailure'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    readReleaseSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-reviewed-release-baseline.mjs:85:17)\r\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-office-xmas.test.mjs:129:14)\r\n    Test.runInAsyncScope (node:async_hooks:227:14)\r\n    Test.run (node:internal/test_runner/test:1397:25)\r\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\r\n    Test.postRun (node:internal/test_runner/test:1537:19)\r\n    Test.run (node:internal/test_runner/test:1462:12)\r\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-office-zoom.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-zoom.test.mjs",
+      "summary": {
+        "tests": 13,
+        "pass": 12,
+        "fail": 0,
+        "skipped": 1
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-procrastination-board.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-procrastination-board.test.mjs",
+      "summary": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-qa-easy-cleanup.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-qa-easy-cleanup.test.mjs",
+      "summary": {
+        "tests": 12,
+        "pass": 12,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-release-version-layers.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-release-version-layers.test.mjs",
+      "summary": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-save-guard.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-save-guard.test.mjs",
+      "summary": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-seoyun-m9.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-seoyun-m9.test.mjs",
+      "summary": {
+        "tests": 15,
+        "pass": 15,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-settings-225.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-settings-225.test.mjs",
+      "summary": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "failures": [
+        {
+          "test": "not ok 1 - scripts\\\\hani-settings-225.test.mjs",
+          "type": "git-blocked",
+          "detail": "not ok 1 - scripts\\\\hani-settings-225.test.mjs\r\n  ---\r\n  duration_ms: 0.3898\r\n  type: 'test'\r\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tc291\\\\scripts\\\\hani-settings-225.test.mjs:1:1'\r\n  error: 'TC291B_PROCESS_DISABLED: Git/Edge prohibited; Seoyun must verify git'\r\n  code: 'TC291B_PROCESS_DISABLED'\r\n  stack: |-\r\n    cp.<computed> (C:\\Users\\홍성민\\AppData\\Local\\Temp\\tc291b-gNZ7S0\\no-git-edge.cjs:3:284)\r\n    git (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-reviewed-release-baseline.mjs:58:19)\r\n    readMergedReleaseChain (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-reviewed-release-baseline.mjs:60:21)\r\n    readReviewedReleaseBaseline (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-reviewed-release-baseline.mjs:128:17)\r\n    file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-settings-225.test.mjs:18:39\r\n    Array.map (<anonymous>)\r\n    file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tc291/scripts/hani-settings-225.test.mjs:17:100\r\n    ModuleJob.run (node:internal/modules/esm/module_job:561:25)\r\n    async node:internal/modules/esm/loader:647:26\r\n    async node:internal/test_runner/runner:1075:15\r\n"
+        }
+      ],
+      "complete": true
+    },
+    {
+      "file": "hani-simplify-218.test.cjs",
+      "command": "node --test --test-isolation=none scripts/hani-simplify-218.test.cjs",
+      "summary": {
+        "tests": 5,
+        "pass": 4,
+        "fail": 0,
+        "skipped": 1
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-study-retry.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-study-retry.test.mjs",
+      "summary": {
+        "tests": 26,
+        "pass": 26,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-theme-contrast-preload.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-theme-contrast-preload.test.mjs",
+      "summary": {
+        "tests": 4,
+        "pass": 4,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-theme-contrast.test.mjs",
+      "command": "node --test --test-isolation=none --test-name-pattern=\"theme CSS exact inverse|legacy 289 outer|quiz token model\" scripts/hani-theme-contrast.test.mjs",
+      "summary": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    },
+    {
+      "file": "hani-wishlist-quick-add.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-wishlist-quick-add.test.mjs",
+      "summary": {
+        "tests": 7,
+        "pass": 7,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "failures": [],
+      "complete": true
+    }
+  ],
+  "unchangedRuntimeFiles": 504,
+  "runtimeChanges": [],
+  "restoredArtifacts": [
+    "artifacts\\office-behavior\\obr16-layout-node.json",
+    "artifacts\\office-behavior\\obr17-layout-node.json",
+    "artifacts\\office-behavior\\obr19-layout-node.json",
+    "artifacts\\office-drama\\reachability.json"
+  ],
+  "removedNewArtifacts": [
+    "artifacts\\exam-popup-214\\node-results.json",
+    "artifacts\\history-226\\unit.json"
+  ],
+  "codeHashes": {
+    "scripts/hani-release-version-layers.cjs": "0ac35712e9fe70097520e8640a8d62809f8a326424c61e2e49cd4f1970c026b0",
+    "scripts/hani-theme-contrast.test.mjs": "9967230c9539b2ee0e4a3d22d99f9acc96c0d22ce76f7fa0eac5581b3a7f6c02",
+    "scripts/hani-theme-contrast-preload.cjs": "a711520ae70d570560a6a3bf168380889dde46b4505f7720ee254dec873eb7d6",
+    "scripts/hani-theme-contrast-preload.test.mjs": "21f7ea3ced609b29438c8495c615cc74a933ab4220588866f01223dfb1a267a8",
+    "scripts/hani-app-216-audit.test.cjs": "6e0f288865c09149972889bb76d4988d37f47288515a958e0c938dceb04438c9",
+    "scripts/hani-qa-easy-cleanup.test.mjs": "f90074f54c16ba7d9375a237c84ed3b6d714ab0a4aade986da5b85e6109be147",
+    "scripts/hani-history-226.test.mjs": "6c333a108a347be27460fe918d8abf7ed03833879b44b6bd662e396aec219ef3"
+  },
+  "fixtureHashes": {
+    "scripts/fixtures/theme-contrast-delta.json": "5d59f5eef1e0f76e79c2b54dc917e46a37409ffaf1fe81f2b36a4204bf7abafb",
+    "scripts/fixtures/theme-contrast-legacy-289.json": "5cff7afdbf1d5feb8f4d20c1e11ca0938ab89339a4a924220e2bb27dfbe51397"
+  },
+  "notRun": {
+    "Edge": "Explicit task prohibition; 49 browser parent/subtests pending. No 52/52 claim.",
+    "git": [
+      "hani-newsroom-4cut-230.test.mjs",
+      "hani-office-actions-216.test.mjs",
+      "hani-office-affinity-274-pins.test.mjs",
+      "hani-office-barista-night-273-pins.test.mjs",
+      "hani-office-bori-stroll.test.mjs",
+      "hani-office-cafe-rest.test.mjs",
+      "hani-office-chairman-patrol-278-pins.test.mjs",
+      "hani-office-companion-homes.test.mjs",
+      "hani-office-companions-276-pins.test.mjs",
+      "hani-office-consult.test.mjs",
+      "hani-office-icons.test.mjs",
+      "hani-office-lively-v2.test.mjs",
+      "hani-office-mascot-label.test.mjs",
+      "hani-office-obr12.test.mjs",
+      "hani-office-obr14.test.mjs",
+      "hani-office-obr15.test.mjs",
+      "hani-office-obr21.test.mjs",
+      "hani-office-obr4.test.mjs",
+      "hani-office-obr6.test.mjs",
+      "hani-office-obr7.test.mjs",
+      "hani-office-obr8.test.mjs",
+      "hani-office-obr9.test.mjs",
+      "hani-office-pet-bori-272-pins.test.mjs",
+      "hani-office-pets-268-pins.test.mjs",
+      "hani-office-pets-bubble.test.mjs",
+      "hani-office-v2-215.test.mjs",
+      "hani-office-xmas-269-pins.test.mjs",
+      "hani-office-xmas.test.mjs",
+      "hani-settings-225.test.mjs"
+    ],
+    "excludedKnownFailures": [
+      "hani-office-219.test.mjs",
+      "hani-pb-chibitoon.test.mjs",
+      "hani-brand-heroes-218.test.mjs",
+      "hani-dash-218.test.mjs",
+      "hani-fun-top3.test.mjs",
+      "hani-hero-restore.test.mjs",
+      "hani-ilbo-213.test.mjs",
+      "hani-invest-split-ui.test.mjs",
+      "hani-investment-research-ui.test.mjs",
+      "hani-mascots-poster.test.mjs",
+      "hani-nav-groups.test.mjs",
+      "hani-owner-verification-ui.test.mjs",
+      "hani-qa-210.test.mjs",
+      "hani-qa-design-b4.test.mjs",
+      "hani-qa-report-fixes.test.mjs",
+      "hani-remote-media-219.test.mjs",
+      "hani-reviewed-release-baseline.test.mjs",
+      "hani-simplify-225.test.mjs",
+      "hani-theme-white-215.test.mjs",
+      "hani-ui-203b.test.mjs"
+    ]
+  }
+}

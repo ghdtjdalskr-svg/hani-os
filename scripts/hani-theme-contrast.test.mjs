@@ -11,6 +11,8 @@ import os from 'node:os';
 import http from 'node:http';
 import {pathToFileURL} from 'node:url';
 import inverse from './hani-theme-contrast-source.cjs';
+import releaseLayers from './hani-release-version-layers.cjs';
+import joinInverse from './hani-join-ieum-source.cjs';
 
 const root=path.resolve(import.meta.dirname,'..');
 export const finishes=['porcelain-cream','pure-white','titanium-graphite','midnight-black','sakura-pink','alpine-blue'];
@@ -153,13 +155,26 @@ test('theme CSS exact inverse preserves original bytes and rejects drift',()=>{
 });
 
 test('legacy 289 outer layer preserves independent 288 pins without accepting drift',()=>{
+  const mainLayer=releaseLayers.getLayer('2.9.289');
+  assert.deepEqual(Object.keys(inverse.legacy.files).sort(),Object.keys(mainLayer.files).sort());
   for(const [file,row] of Object.entries(inverse.legacy.files)){
-    const raw=fs.readFileSync(path.join(root,file)),before=inverse.restoreLegacy(raw,file);
+    const mainRow=mainLayer.files[file];
+    assert.equal(row.afterSha256,mainRow.after,'same frozen 289 input as main');
+    assert.equal(row.beforeSha256,mainRow.before,'same independent 288 pin as main');
+    assert.equal(row.count,mainRow.count,'same exact metadata/version edit count');
+    const disk=fs.readFileSync(path.join(root,file)),raw=joinInverse.project(disk,file),before=inverse.restoreLegacy(raw,file);
+    assert.deepEqual(releaseLayers.restoreVersionLayer(raw,file,'2.9.289'),before,'main and legacy inverses produce identical bytes');
+    assert.deepEqual(inverse.projectLegacy(raw,file),before);
+    assert.deepEqual(fs.readFileSync(path.join(root,file)),disk,'disk remains raw 290');
     assert.equal(inverse.hash(before),row.beforeSha256);
     assert.deepEqual(inverse.restoreLegacy(raw.toString('utf8'),file),before.toString('utf8'));
     for(const bad of [Buffer.concat([raw,Buffer.from('\n')]),raw.subarray(1),before]){
       assert.throws(()=>inverse.restoreLegacy(bad,file),/exact legacy-289 input/);
       assert.equal(inverse.projectLegacy(bad,file),bad,'unknown bytes are not projected');
+    }
+    for(const bad of [Buffer.concat([disk,Buffer.from('\n')]),disk.subarray(1)]){
+      assert.equal(joinInverse.project(bad,file),bad,'290 drift is not projected');
+      assert.throws(()=>inverse.restoreLegacy(joinInverse.project(bad,file),file),/exact legacy-289 input/);
     }
   }
 });
