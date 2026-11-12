@@ -43,10 +43,15 @@ function restoreVersionLayer(source,file,version){
  assert.equal(hash(before),row.before,'exact release-'+number(layer.from)+' output '+file);
  return before;
 }
-// Peel only the exact deployed 288 version/history bytes, before the frozen
-// newsroom feature inverse. Unknown input remains for strict callers to reject.
-// Release 289 changed only versions/history, so its exact layer is peeled first.
+// Newest exact version bytes precede their feature inverse. The 289 adapter
+// first removes 290 + Ieum, then reaches the unchanged 289/288 contracts.
+// Unknown input remains for strict callers to reject.
+function projectPreRelease290Source(source,file){
+ const row=getLayer('2.9.290').files[file];
+ return row&&hash(source)===row.after?restoreVersionLayer(source,file,'2.9.290'):source;
+}
 function projectPreRelease289Source(source,file){
+ source=require('./hani-join-ieum-source.cjs').project(source,file);
  const row=getLayer('2.9.289').files[file];
  return row&&hash(source)===row.after?restoreVersionLayer(source,file,'2.9.289'):source;
 }
@@ -69,7 +74,8 @@ function project(source,file,target,features,keepFeature=false){
   const row=layer.files[file];
   if(row&&hash(source)===row.after)source=restoreVersionLayer(source,file,layer.to);
   if(features&&layer.feature&&!(keepFeature&&version===boundary)){
-   const delta=require(layer.feature.fixture).files[file];
+   const files=require(layer.feature.fixture).files;
+   const delta=Array.isArray(files)?files.find(row=>row.file===file):files[file];
    if(delta&&hash(source)===delta.afterSha256){
     const buffer=Buffer.isBuffer(source);
     const restored=require(layer.feature.module)[layer.feature.restore](source,file);
@@ -79,7 +85,7 @@ function project(source,file,target,features,keepFeature=false){
  }
  return source;
 }
-module.exports={layers,hash,getLayer,restoreVersionLayer,readRawFileSync,projectPreRelease288Source,projectPreRelease289Source,
+module.exports={layers,hash,getLayer,restoreVersionLayer,readRawFileSync,projectPreRelease288Source,projectPreRelease289Source,projectPreRelease290Source,
  projectVersionSource:(source,file,target)=>project(source,file,target,false),
  projectReleaseSource:(source,file,target)=>project(source,file,target,true),
  // Leave this feature raw, peeling all newer releases and their features first.

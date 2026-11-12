@@ -1,0 +1,1222 @@
+{
+  "dateKST": "2026-11-13",
+  "localHead": "5ab007bf36d25d54d55675b5f623b1c25e72b8a0",
+  "remoteFreshness": "not queried (Git forbidden)",
+  "identity": {
+    "base": "5ab007b (supplied; remote freshness not queried)",
+    "branch": "hani/tooling-290 (HEAD file read)",
+    "node": "v24.20.0",
+    "files": {
+      "scripts/fixtures/release-version-layers.json": "1bb94f458760a1f19c436881db2606208638ad8f01c5f4a6a680810c0f989f14",
+      "scripts/hani-helper-275-source.mjs": "7708321693448abadd6923a000c233d37845947944d0f91ad481c10632f48415",
+      "scripts/hani-join-ieum-preload.cjs": "6e9b5b9526427923855a945ae61ec78d48d7f535db75cb169f6c638c27b917aa",
+      "scripts/hani-join-ieum-source.cjs": "e6488470c73fbd688005fc706b117465e18f44db516aaf5c8f40fc721255d2df",
+      "scripts/hani-join-ieum.test.mjs": "02423181243e080efec1c01ba29f04b30b8d694c9d6225b03d2db85a175af2e4",
+      "scripts/hani-m9-polish-preload.cjs": "e0552318199b02d5a1a7a3f3c12482eabdc3585d9ad4ba87a1897591de9bb453",
+      "scripts/hani-office-fix-218.test.mjs": "207efe65774c904103ae55ce3371d0880ba4002c61bbc1cbe41e2d6a25e89744",
+      "scripts/hani-office-kids-daily-source.cjs": "9b0827510af72b950c0d1b612ea3216624c3fa56f1355292e5dd521e472a8dc6",
+      "scripts/hani-office-kids-merge.test.mjs": "6aee01b3cbfe9c4619f026a565855215e22cb84b33e57f68c869ec40b66c1363",
+      "scripts/hani-office-lively-fixture.mjs": "93fa689fdd4815f52f3476928ebe87c754d69463e42dfb06860c4129d0a4bdb9",
+      "scripts/hani-office-v2-fixture.mjs": "44d92add53900a3da2df86ed90ab89304dc26c847f28e393c50c4ac847e6ba77",
+      "scripts/hani-release-version-layers.cjs": "257d8817579aed9fb951feebec660bd5d0eb944b97ba95048d1351393b9e1cce",
+      "scripts/hani-release-version-layers.test.mjs": "d5f4269312425fe1327a7000f00c5809795a5e243694b06ac9a3225c97a95df4",
+      "scripts/hani-seoyun-m9.test.mjs": "17d79e88d87854a7799a079eeedddac327b21f9c14da5df395be5c8d2cd2520e"
+    },
+    "deleted": [
+      "scripts/hani-join-ieum-release289.cjs"
+    ],
+    "toolingSha256": "a87eae8f326f940c2804c7bc0ca9a8a18ff7195531313019c536ee8498f9e747"
+  },
+  "projectionCLIFlags": false,
+  "directNoPreloadFiles": [
+    "hani-join-ieum.test.mjs",
+    "hani-release-version-layers.test.mjs",
+    "hani-office-hd-224.test.mjs",
+    "hani-seoyun-m9.test.mjs",
+    "hani-save-guard.test.mjs"
+  ],
+  "totals": {
+    "files": 77,
+    "officeFiles": 73,
+    "pass": 835,
+    "gitBlocked": 30,
+    "otherFailed": 1,
+    "skipped": 3,
+    "startupGitBlocked": 6,
+    "passFiles": 48,
+    "gitBlockedFiles": 28,
+    "failedFiles": 1
+  },
+  "files": [
+    {
+      "file": "scripts/hani-join-ieum.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-join-ieum.test.mjs",
+      "pass": 17,
+      "testCases": 17,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-219.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-219.test.mjs",
+      "pass": 0,
+      "testCases": 0,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": true,
+      "status": "GIT_BLOCKED_STARTUP",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-actions-216.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-actions-216.test.mjs",
+      "pass": 14,
+      "testCases": 15,
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "GIT_BLOCKED",
+      "failures": [
+        {
+          "name": "approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "file": "scripts/hani-office-actions-221.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-actions-221.test.mjs",
+      "pass": 20,
+      "testCases": 20,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-affinity-274-pins.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-affinity-274-pins.test.mjs",
+      "pass": 2,
+      "testCases": 3,
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "GIT_BLOCKED",
+      "failures": [
+        {
+          "name": "274 base commit independently proves the entire original JS/CSS/helper blobs",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "file": "scripts/hani-office-affinity-cap.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-affinity-cap.test.mjs",
+      "pass": 19,
+      "testCases": 19,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-affinity-storage.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-affinity-storage.test.mjs",
+      "pass": 3,
+      "testCases": 3,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-affinity.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-affinity.test.mjs",
+      "pass": 21,
+      "testCases": 21,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-barista-night-273-pins.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-barista-night-273-pins.test.mjs",
+      "pass": 4,
+      "testCases": 5,
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "GIT_BLOCKED",
+      "failures": [
+        {
+          "name": "273: fixed Git release blobs independently prove every baseline pin and complete diff",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "file": "scripts/hani-office-barista-night.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-barista-night.test.mjs",
+      "pass": 13,
+      "testCases": 13,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-barista.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-barista.test.mjs",
+      "pass": 10,
+      "testCases": 10,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-behavior.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-behavior.test.mjs",
+      "pass": 10,
+      "testCases": 10,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-bori-m9.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-bori-m9.test.mjs",
+      "pass": 2,
+      "testCases": 2,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-bori-stroll.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-bori-stroll.test.mjs",
+      "pass": 13,
+      "testCases": 14,
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "GIT_BLOCKED",
+      "failures": [
+        {
+          "name": "stroll inverse independently matches the fixed Git base",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "file": "scripts/hani-office-bubble-close.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-bubble-close.test.mjs",
+      "pass": 17,
+      "testCases": 17,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-cafe-rest.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-cafe-rest.test.mjs",
+      "pass": 2,
+      "testCases": 4,
+      "gitBlocked": 1,
+      "otherFailed": 1,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "FAIL",
+      "failures": [
+        {
+          "name": "cafe route uses clear lower-right floor, retains the lounge and sign mounting surface",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        },
+        {
+          "name": "first full daily plan stays below the unchanged 400ms limit, chairman absent and present",
+          "gitBlocked": false,
+          "error": "'{\"chairmanPresent\":true,\"samples\":[434.3422999999998,429.29659999999967,426.34529999999995]}'",
+          "details": "# Subtest: first full daily plan stays below the unchanged 400ms limit, chairman absent and present\nnot ok 4 - first full daily plan stays below the unchanged 400ms limit, chairman absent and present\n  ---\n  duration_ms: 2661.5322\n  type: 'test'\n  location: 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tool290\\\\scripts\\\\hani-office-cafe-rest.test.mjs:52:1'\n  failureType: 'testCodeFailure'\n  error: '{\"chairmanPresent\":true,\"samples\":[434.3422999999998,429.29659999999967,426.34529999999995]}'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tool290/scripts/hani-office-cafe-rest.test.mjs:56:66)\n    Test.runInAsyncScope (node:async_hooks:227:14)\n    Test.run (node:internal/test_runner/test:1397:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:969:18)\n    Test.postRun (node:internal/test_runner/test:1537:19)\n    Test.run (node:internal/test_runner/test:1462:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 2\n# fail 2\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 4662.3988"
+        }
+      ]
+    },
+    {
+      "file": "scripts/hani-office-chairman-234.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-chairman-234.test.mjs",
+      "pass": 0,
+      "testCases": 0,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": true,
+      "status": "GIT_BLOCKED_STARTUP",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-chairman-patrol-278-pins.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-chairman-patrol-278-pins.test.mjs",
+      "pass": 6,
+      "testCases": 12,
+      "gitBlocked": 6,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "GIT_BLOCKED",
+      "failures": [
+        {
+          "name": "278 independent fixed Git blobs prove pre-patrol bytes",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        },
+        {
+          "name": "278 kids extension independently matches its fixed Git base",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        },
+        {
+          "name": "278 visit extension independently matches fixed Git base",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        },
+        {
+          "name": "278 staff-chat extension independently matches fixed Git base",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        },
+        {
+          "name": "278 bubble placement extension independently matches fixed Git base",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        },
+        {
+          "name": "278 optimization extension independently matches fixed Git base",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "file": "scripts/hani-office-chairman-patrol.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-chairman-patrol.test.mjs",
+      "pass": 15,
+      "testCases": 15,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-companion-homes.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-companion-homes.test.mjs",
+      "pass": 15,
+      "testCases": 16,
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "GIT_BLOCKED",
+      "failures": [
+        {
+          "name": "home extension independently matches the specified fixed Git base",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "file": "scripts/hani-office-companions-276-pins.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-companions-276-pins.test.mjs",
+      "pass": 2,
+      "testCases": 3,
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "GIT_BLOCKED",
+      "failures": [
+        {
+          "name": "276 fixed Git base independently proves every original blob",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "file": "scripts/hani-office-companions.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-companions.test.mjs",
+      "pass": 17,
+      "testCases": 17,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-consult.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-consult.test.mjs",
+      "pass": 19,
+      "testCases": 20,
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "GIT_BLOCKED",
+      "failures": [
+        {
+          "name": "consult: sofa wording, counter words, safety owners and runtime timers",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "file": "scripts/hani-office-crowded-labels.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-crowded-labels.test.mjs",
+      "pass": 19,
+      "testCases": 19,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-drama.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-drama.test.mjs",
+      "pass": 20,
+      "testCases": 20,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-fix-218.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-fix-218.test.mjs",
+      "pass": 6,
+      "testCases": 6,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-floor-bubble.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-floor-bubble.test.mjs",
+      "pass": 21,
+      "testCases": 21,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-hd-224.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-hd-224.test.mjs",
+      "pass": 10,
+      "testCases": 10,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-icons.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-icons.test.mjs",
+      "pass": 14,
+      "testCases": 15,
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "GIT_BLOCKED",
+      "failures": [
+        {
+          "name": "icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "file": "scripts/hani-office-kids-286-source.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-kids-286-source.test.mjs",
+      "pass": 3,
+      "testCases": 3,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-kids-lively.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-kids-lively.test.mjs",
+      "pass": 15,
+      "testCases": 15,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-kids-merge.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-kids-merge.test.mjs",
+      "pass": 10,
+      "testCases": 10,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-kids-pose-b.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-kids-pose-b.test.mjs",
+      "pass": 13,
+      "testCases": 13,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-kids-visit.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-kids-visit.test.mjs",
+      "pass": 16,
+      "testCases": 16,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-kids-weekday.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-kids-weekday.test.mjs",
+      "pass": 19,
+      "testCases": 19,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-labels-qa.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-labels-qa.test.mjs",
+      "pass": 17,
+      "testCases": 17,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-lively-v2.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-lively-v2.test.mjs",
+      "pass": 7,
+      "testCases": 8,
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "GIT_BLOCKED",
+      "failures": [
+        {
+          "name": "obr2: deterministic query order, reduced motion and frozen spatial bytes",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "file": "scripts/hani-office-lively.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-lively.test.mjs",
+      "pass": 13,
+      "testCases": 13,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-mascot-label.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-mascot-label.test.mjs",
+      "pass": 9,
+      "testCases": 10,
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "GIT_BLOCKED",
+      "failures": [
+        {
+          "name": "outer exact inverse independently restores fixed affinity HEAD and rejects partial/duplicate/unrelated edits",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "file": "scripts/hani-office-motion-1.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-motion-1.test.mjs",
+      "pass": 16,
+      "testCases": 16,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-motion-2.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-motion-2.test.mjs",
+      "pass": 24,
+      "testCases": 24,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-obr10.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-obr10.test.mjs",
+      "pass": 4,
+      "testCases": 4,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-obr12.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-obr12.test.mjs",
+      "pass": 0,
+      "testCases": 0,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": true,
+      "status": "GIT_BLOCKED_STARTUP",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-obr14.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-obr14.test.mjs",
+      "pass": 4,
+      "testCases": 5,
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "GIT_BLOCKED",
+      "failures": [
+        {
+          "name": "235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "file": "scripts/hani-office-obr15.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-obr15.test.mjs",
+      "pass": 13,
+      "testCases": 14,
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "GIT_BLOCKED",
+      "failures": [
+        {
+          "name": "obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "file": "scripts/hani-office-obr16.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-obr16.test.mjs",
+      "pass": 12,
+      "testCases": 12,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-obr17.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-obr17.test.mjs",
+      "pass": 3,
+      "testCases": 3,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-obr18.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-obr18.test.mjs",
+      "pass": 12,
+      "testCases": 12,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-obr19.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-obr19.test.mjs",
+      "pass": 3,
+      "testCases": 3,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-obr21.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-obr21.test.mjs",
+      "pass": 4,
+      "testCases": 6,
+      "gitBlocked": 2,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "GIT_BLOCKED",
+      "failures": [
+        {
+          "name": "obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        },
+        {
+          "name": "obr21 cached gathering/index decisions equal full index rebuilds",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "file": "scripts/hani-office-obr3.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-obr3.test.mjs",
+      "pass": 5,
+      "testCases": 5,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-obr4.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-obr4.test.mjs",
+      "pass": 8,
+      "testCases": 10,
+      "gitBlocked": 2,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "GIT_BLOCKED",
+      "failures": [
+        {
+          "name": "obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        },
+        {
+          "name": "obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "file": "scripts/hani-office-obr6.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-obr6.test.mjs",
+      "pass": 0,
+      "testCases": 0,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": true,
+      "status": "GIT_BLOCKED_STARTUP",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-obr7.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-obr7.test.mjs",
+      "pass": 0,
+      "testCases": 0,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": true,
+      "status": "GIT_BLOCKED_STARTUP",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-obr8.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-obr8.test.mjs",
+      "pass": 2,
+      "testCases": 3,
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "GIT_BLOCKED",
+      "failures": [
+        {
+          "name": "obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "file": "scripts/hani-office-obr9.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-obr9.test.mjs",
+      "pass": 0,
+      "testCases": 0,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": true,
+      "status": "GIT_BLOCKED_STARTUP",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-pet-bori-272-pins.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-pet-bori-272-pins.test.mjs",
+      "pass": 3,
+      "testCases": 4,
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "GIT_BLOCKED",
+      "failures": [
+        {
+          "name": "272: fixed Git release blobs independently prove every baseline pin and complete diff",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "file": "scripts/hani-office-pet-bori.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-pet-bori.test.mjs",
+      "pass": 14,
+      "testCases": 14,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-pets-268-pins.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-pets-268-pins.test.mjs",
+      "pass": 0,
+      "testCases": 1,
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "GIT_BLOCKED",
+      "failures": [
+        {
+          "name": "v2.9.268: exact fixture pairs are the complete diff from pinned origin/main, with no other source edits",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "file": "scripts/hani-office-pets-bubble.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-pets-bubble.test.mjs",
+      "pass": 21,
+      "testCases": 22,
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "GIT_BLOCKED",
+      "failures": [
+        {
+          "name": "resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "file": "scripts/hani-office-props.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-props.test.mjs",
+      "pass": 11,
+      "testCases": 11,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-release-projection.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-release-projection.test.mjs",
+      "pass": 2,
+      "testCases": 2,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-residents.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-residents.test.mjs",
+      "pass": 49,
+      "testCases": 49,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-seats-215.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-seats-215.test.mjs",
+      "pass": 12,
+      "testCases": 12,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-snack.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-snack.test.mjs",
+      "pass": 26,
+      "testCases": 26,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-staff-chat.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-staff-chat.test.mjs",
+      "pass": 17,
+      "testCases": 17,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-tap-lines.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-tap-lines.test.mjs",
+      "pass": 15,
+      "testCases": 15,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-tlayout.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-tlayout.test.mjs",
+      "pass": 13,
+      "testCases": 13,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-top-labels.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-top-labels.test.mjs",
+      "pass": 7,
+      "testCases": 7,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-v2-215.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-v2-215.test.mjs",
+      "pass": 17,
+      "testCases": 20,
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "skipped": 2,
+      "startupGitBlocked": false,
+      "status": "GIT_BLOCKED",
+      "failures": [
+        {
+          "name": "frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "file": "scripts/hani-office-visitors-cafe.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-visitors-cafe.test.mjs",
+      "pass": 5,
+      "testCases": 5,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-office-xmas-269-pins.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-xmas-269-pins.test.mjs",
+      "pass": 1,
+      "testCases": 2,
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "GIT_BLOCKED",
+      "failures": [
+        {
+          "name": "v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "file": "scripts/hani-office-xmas.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-xmas.test.mjs",
+      "pass": 12,
+      "testCases": 13,
+      "gitBlocked": 1,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "GIT_BLOCKED",
+      "failures": [
+        {
+          "name": "xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged",
+          "gitBlocked": true,
+          "error": "'HANI_GIT_FORBIDDEN: task forbids Git; Seoyun must rerun'",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "file": "scripts/hani-office-zoom.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-zoom.test.mjs",
+      "pass": 12,
+      "testCases": 13,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 1,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-release-version-layers.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-release-version-layers.test.mjs",
+      "pass": 10,
+      "testCases": 10,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-save-guard.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-save-guard.test.mjs",
+      "pass": 10,
+      "testCases": 10,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    },
+    {
+      "file": "scripts/hani-seoyun-m9.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-seoyun-m9.test.mjs",
+      "pass": 15,
+      "testCases": 15,
+      "gitBlocked": 0,
+      "otherFailed": 0,
+      "skipped": 0,
+      "startupGitBlocked": false,
+      "status": "PASS",
+      "failures": []
+    }
+  ],
+  "performanceBaseline": {
+    "preIeumInputs": {
+      "hani-office-live.js": "1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850",
+      "data/hani-building/spatial-contract.json": "ec9921524c70cd8114c5878f5397e568fb37dda7e52b917d016540e65bab1117",
+      "data/hani-building/art-map-v1.json": "50d60c3da36936a77c22f572fe7ed137b3f81fea3972976ba4501d90441c7666",
+      "data/hani-building/office-places.json": "f6cbc09dfd89cf7b6747c30928128daf667b2990570f1e4a88b32aeb636bc70d",
+      "assets/data/office-actions-221.json": "27479ebc6886740b80dfa444f6460216d9f903c3708bc2c611aafc585df2df5c"
+    },
+    "allFrozen289PinsMatch": true,
+    "limitMs": 400,
+    "absentSamplesMs": [
+      370.87919999999986,
+      423.98990000000003,
+      434.0326
+    ],
+    "presentSamplesMs": [
+      434.3422999999998,
+      429.29659999999967,
+      426.34529999999995
+    ],
+    "note": "No threshold change; full test run alone after both suite runs completed."
+  },
+  "preservation": {
+    "runtimeFilesUnchanged": 504,
+    "outsideScopeChanges": [],
+    "restoredTestArtifacts": [
+      "artifacts/office-behavior/obr16-layout-node.json",
+      "artifacts/office-behavior/obr17-layout-node.json",
+      "artifacts/office-behavior/obr19-layout-node.json",
+      "artifacts/office-drama/reachability.json"
+    ],
+    "oldReleaseLayersUnchanged": true,
+    "ieumDeltaUnchanged": true,
+    "hdTestFileUnchanged": true,
+    "excludedFailureTestFilesUnchanged": 22,
+    "changedScriptSyntaxPass": 13
+  }
+}

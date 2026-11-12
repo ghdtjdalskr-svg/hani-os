@@ -102,6 +102,7 @@ export function monthlyQueenThread(template,roster,canon){
   const members=roster.people.filter(p=>p.status!=="planned"&&p.id!==roster.chairman.id);
   const hash=value=>{let n=2166136261;for(const c of value)n=Math.imul(n^c.charCodeAt(0),16777619)>>>0;return n};
   const lines={
+    ieum:"이거… 끝난 거 맞죠? 제 한 표도 빠짐없이 확인하고 응원 기록에 남겨둘게요.",
     hani:"범위는 인기상까지! 간식 예산까지 늘리진 말자고요 ㅋㅋ",
     yuna:"제가요?! 투표 안내도 빠뜨리지 않고 챙기겠습니다.",
     mir:"왜 함께 일하면 편할까? 이번엔 관찰만 하지 않고 나도 골랐어. 헤헤.",

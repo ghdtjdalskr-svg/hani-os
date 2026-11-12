@@ -1,0 +1,1062 @@
+{
+  "dateKST": "2026-11-13",
+  "task": "../tool290b-task.md",
+  "testRuns": [
+    {
+      "file": "scripts/hani-join-ieum.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-join-ieum.test.mjs",
+      "exitCode": 0,
+      "summary": [
+        "# tests 17",
+        "# pass 17",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0",
+        "# duration_ms 3039.2495"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-lively.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-lively.test.mjs",
+      "exitCode": 0,
+      "summary": [
+        "# tests 13",
+        "# pass 13",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0",
+        "# duration_ms 31685.1944"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-obr3.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-obr3.test.mjs",
+      "exitCode": 0,
+      "summary": [
+        "# tests 5",
+        "# pass 5",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0",
+        "# duration_ms 4914.8722"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-obr10.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-obr10.test.mjs",
+      "exitCode": 0,
+      "summary": [
+        "# tests 4",
+        "# pass 4",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0",
+        "# duration_ms 4708.2361"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-tap-lines.test.mjs",
+      "command": "node --test-reporter=tap scripts/hani-office-tap-lines.test.mjs",
+      "exitCode": 0,
+      "summary": [
+        "# tests 15",
+        "# pass 15",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0",
+        "# duration_ms 4289.7117"
+      ]
+    }
+  ],
+  "syntax": {
+    "command": "node --check scripts/hani-office-onboarding-232-assertions.mjs\nnode --check scripts/hani-office-obr6.test.mjs",
+    "result": "PASS 2/2"
+  },
+  "fullRequestedSuites": {
+    "status": "NOT RUN: Git required; user requested list only",
+    "files": [
+      "scripts/hani-office-lively-v2.test.mjs",
+      "scripts/hani-office-obr6.test.mjs"
+    ]
+  },
+  "existingFixtureChecks": {
+    "result": "PASS",
+    "detail": "Imported existing hani-office-v2-fixture.mjs in an isolated Node process; all 7 JSON inputs match frozen pre-Ieum hashes. Evaluated unchanged chairman-234 current-places assertion and consult/obr15 places hash, without running their Git suites."
+  },
+  "notion": {
+    "page": "https://app.notion.com/p/415c5275707481b99d00f36a55cf9f87",
+    "status": "PENDING",
+    "reason": "insert_content rejected: MCP tool call requires approval, but approval policy is never"
+  },
+  "branch": "hani/tooling-290",
+  "base": "5ab007bf36d25d54d55675b5f623b1c25e72b8a0",
+  "gitExecuted": false,
+  "edgeExecuted": false,
+  "inputChecks": [
+    {
+      "file": "data/hani-building/spatial-contract.json",
+      "raw": "c85e69d2754406f602d0741f8a1559ab17121d7a5a46f4a91ea5270f626f7634",
+      "projected": "ec9921524c70cd8114c5878f5397e568fb37dda7e52b917d016540e65bab1117",
+      "result": "PASS"
+    },
+    {
+      "file": "data/hani-building/office-places.json",
+      "raw": "b97e49e365b515ddc2a2b7d9fcbf120b6b3d5bff571c4c4f56fed3993da31512",
+      "projected": "f6cbc09dfd89cf7b6747c30928128daf667b2990570f1e4a88b32aeb636bc70d",
+      "result": "PASS"
+    },
+    {
+      "file": "data/hani-building/art-map-v1.json",
+      "raw": "3bf4b5d50fdf405c002bb380e3a91181cb27677ef511ef7bf2c275ee8eacd798",
+      "projected": "50d60c3da36936a77c22f572fe7ed137b3f81fea3972976ba4501d90441c7666",
+      "result": "PASS"
+    },
+    {
+      "file": "assets/data/office-actions-216.json",
+      "raw": "3f65ca48c051c3989f7c1369dd0fc5caefcf7a96c2d08c123a79261ad57cbecf",
+      "projected": "987a3e8a4efc884deb3e4c77db4707b11a37f33395d773c98f8d98b9eedf9c3b",
+      "result": "PASS"
+    },
+    {
+      "file": "assets/data/office-actions-221.json",
+      "raw": "45994d8923bc5ffa0062320498ed4ccaade508f363a4d7b73c5dec7af7fda0bf",
+      "projected": "27479ebc6886740b80dfa444f6460216d9f903c3708bc2c611aafc585df2df5c",
+      "result": "PASS"
+    },
+    {
+      "file": "assets/data/office-tap-lines-v1.json",
+      "raw": "eb3cfdeb2572ebddd98ef4f3c4511a2896d7d39addf8250dc23f037625be9e52",
+      "projected": "5973caed9c50e4766b605879f7ed89189eb6b6013b77f1784bd233d56a38d362",
+      "result": "PASS"
+    },
+    {
+      "file": "assets/sprites-v3/manifest-v3.json",
+      "raw": "a24197083b2bc88c5e90464a2c7f69d6fce3522ad01054d454d3aa97ceac79a5",
+      "projected": "4fb1e6a147fb041e8942afd6106a3af1aea09196656754bc9bc2eb74f304196d",
+      "result": "PASS"
+    }
+  ],
+  "preservation": {
+    "originalAssertionsHashesNumbers": "PASS: remove only project import/wrapper => exact original source bytes",
+    "scope": {
+      "changedExisting": [
+        "artifacts/join-ieum/TOOLING-290.md",
+        "docs/development-history/CURRENT.md",
+        "docs/development-history/handoffs/2026-11-13-tooling-290.md",
+        "scripts/hani-office-obr6.test.mjs",
+        "scripts/hani-office-onboarding-232-assertions.mjs"
+      ],
+      "added": [
+        "artifacts/join-ieum/TOOLING-290b-results.json"
+      ],
+      "unchangedExisting": 1990,
+      "unexpectedChanges": [],
+      "runtimeFiles": "All runtime files remain byte-identical to follow-up start; only allowlisted test/docs/artifact files differ",
+      "sourceHashes": {
+        "scripts/hani-office-onboarding-232-assertions.mjs": {
+          "before": "4a6c0adb81bf05ad0ac444951f7813ba5a3594c936501ee1223d0ffab28ffe3a",
+          "after": "2ec6e02afdf5decd5f3f1838011466171bdcd85d5df683db58e20203a2849b06"
+        },
+        "scripts/hani-office-obr6.test.mjs": {
+          "before": "d5eea31bdc288df38d73368fd9b302fadaa4383476b3e947434c015866432671",
+          "after": "b1148faab756f8c7aa682e47b3abc867d4fc60712f88b8e9a2153d8540f50838"
+        }
+      }
+    }
+  },
+  "actualInputs": {
+    "spatialAnchors": 326,
+    "spatialCurrentRead": "PASS: actual helper input equals frozen pre-Ieum bytes",
+    "obr6CurrentPin": "PASS: unchanged original assertion fails raw and passes projected"
+  },
+  "scan": {
+    "command": "rg -n 'data/hani-building|office-tap-lines|office-actions|manifest-v3' scripts -g '*.test.*' -g '*assertion*'",
+    "count": 56,
+    "scope": "Direct matching test files plus lively-v2 via assertOnboardedCanon; source/helper inspection, not a full-suite PASS",
+    "tests": [
+      {
+        "file": "scripts/hani-brand-heroes-218.test.mjs",
+        "priorStatus": "not in prior office run",
+        "gitRequired": true,
+        "matches": [
+          {
+            "line": 44,
+            "text": "const files=['index.html','hani-main.js','hani-ui-v02992.js','hani-context-remote-v1.js','hani-context-remote.css','hani-ui-cleanup-v02971.js','hani-office-live.js','hani-investment-committee.js','hani-ilbo.js','hani-organization-hub.js','hani-design-system.css','hani-style-07.css','hani-ai-budget.css','assets/data/office-actions-216.json'];"
+          }
+        ],
+        "gitEvidence": "Imports hani-reviewed-release-baseline.mjs: Git merge-base/show and release-chain reads"
+      },
+      {
+        "file": "scripts/hani-building-206-engine.test.mjs",
+        "priorStatus": "not in prior office run",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 33,
+            "text": "const context=vm.createContext({HaniOfficeV2Assets:assets,HaniOfficeActions216:actionTable,HaniOfficeActions221:actionTable?.schemaVersion==='office-actions-221-v1'?actionTable:null,document,window:{},Date:Clock,Image,matchMedia:()=>({matches:reduced,addEventListener:(name,fn)=>{motionEvents[name]=fn}}),getComputedStyle:()=>({display:'block'}),MutationObserver:class{constructor(cb){observers.push(cb)}observe(){}},setInterval:(fn,ms)=>{timers.push({fn,ms})},setTimeout,console,...environment});"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-desk-mascots.test.mjs",
+        "priorStatus": "not in prior office run",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 16,
+            "text": "const art = JSON.parse(read('data/hani-building/art-map-v1.json'));"
+          },
+          {
+            "line": 17,
+            "text": "const canon = JSON.parse(read('data/hani-building/spatial-contract.json'));"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-fun-chat-fortune.test.mjs",
+        "priorStatus": "not in prior office run",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 19,
+            "text": "const tapBank=JSON.parse(read('assets/data/office-tap-lines-v1.json'));"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-helper-bot.test.mjs",
+        "priorStatus": "not in prior office run",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 14,
+            "text": "const css=read('hani-style-08.css'),tapBank=JSON.parse(read('assets/data/office-tap-lines-v1.json'));"
+          },
+          {
+            "line": 16,
+            "text": "const manifest=JSON.parse(read('assets/sprites-v3/manifest-v3.json'));"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-join-ieum.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 13,
+            "text": "const office=read('hani-office-live.js'),assets={canon:json('data/hani-building/spatial-contract.json'),art:json('data/hani-building/art-map-v1.json'),places:json('data/hani-building/office-places.json'),sprites:json('assets/sprites-v2/manifest.json'),spritesV3:json('assets/sprites-v3/manifest-v3.json')};"
+          },
+          {
+            "line": 14,
+            "text": "const table=json('assets/data/office-actions-221.json'),data=require('../hani-character-archive-data.js'),album=require('../hani-character-archive.js');"
+          },
+          {
+            "line": 39,
+            "text": "const before=JSON.parse(require('./hani-join-ieum-source.cjs').restore(featureRead('data/hani-building/spatial-contract.json'),'data/hani-building/spatial-contract.json'));assert.deepEqual(assets.canon.anchors,before.anchors);assert.deepEqual(assets.canon.people.filter(p=>p.id!=='ieum'),before.people);"
+          },
+          {
+            "line": 57,
+            "text": "assert.deepEqual(assets.spritesV3.entries.filter(p=>p.id!=='ieum'),before('assets/sprites-v3/manifest-v3.json').entries);"
+          },
+          {
+            "line": 58,
+            "text": "const tap=json('assets/data/office-tap-lines-v1.json'),oldTap=before('assets/data/office-tap-lines-v1.json');for(const id of Object.keys(oldTap.staff))assert.deepEqual(tap.staff[id],oldTap.staff[id],id+' tap pool');"
+          },
+          {
+            "line": 62,
+            "text": "for(const version of ['216','221']){const t=json(`assets/data/office-actions-${version}.json`);assert.equal(t.people.filter(p=>p.id==='ieum').length,1);const base=t.actions.find(a=>a.id==='base-work');assert.ok(base.participants.includes('ieum'));assert.ok(base.places.some(p=>p.anchorId==='desk_ieum'))}"
+          },
+          {
+            "line": 67,
+            "text": "const bank=json('assets/data/office-tap-lines-v1.json');assert.equal(scene.tapLines.validate(bank,assets.canon.people),true);"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-mascots-poster.test.mjs",
+        "priorStatus": "not in prior office run",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 146,
+            "text": "const f=officeFixture('10:00',true,()=>art,JSON.parse(read('assets/data/office-actions-221.json')),{"
+          },
+          {
+            "line": 202,
+            "text": "const f=await frameFixture(),s=f.frame.style,art=JSON.parse(read('data/hani-building/art-map-v1.json'));"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-newface-217.test.mjs",
+        "priorStatus": "not in prior office run",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 54,
+            "text": "const hd=JSON.parse(read('assets/sprites-v3/manifest-v3.json'));"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-219.test.mjs",
+        "priorStatus": "GIT_BLOCKED_STARTUP",
+        "gitRequired": true,
+        "matches": [
+          {
+            "line": 32,
+            "text": "const assets={canon:JSON.parse(read('data/hani-building/spatial-contract.json')),sprites:JSON.parse(read('assets/sprites-v2/manifest.json')),art:JSON.parse(read('data/hani-building/art-map-v1.json'))};"
+          },
+          {
+            "line": 33,
+            "text": "const table=JSON.parse(read('assets/data/office-actions-216.json')),source=read('hani-office-live.js');"
+          },
+          {
+            "line": 39,
+            "text": "const current=model(source),baseline=model(old('hani-office-live.js'),{...assets,art:JSON.parse(old('data/hani-building/art-map-v1.json'))});"
+          },
+          {
+            "line": 93,
+            "text": "const priorCanon=expectedOnboardedCanon(JSON.parse(git('show',base+':data/hani-building/spatial-contract.json')));"
+          },
+          {
+            "line": 97,
+            "text": "const priorTable=JSON.parse(git('show',base+':assets/data/office-actions-216.json'));"
+          }
+        ],
+        "gitEvidence": "Prior TOOLING-290-results.json recorded Git-blocked assertion/startup; this session did not execute it"
+      },
+      {
+        "file": "scripts/hani-office-actions-216.test.mjs",
+        "priorStatus": "GIT_BLOCKED",
+        "gitRequired": true,
+        "matches": [
+          {
+            "line": 10,
+            "text": "import {runtimeTable} from './hani-office-actions-216-data.mjs';"
+          },
+          {
+            "line": 14,
+            "text": "const table=JSON.parse(read('assets/data/office-actions-216.json')),catalog=JSON.parse(read('docs/design/office-actions-v1.3.json'));"
+          },
+          {
+            "line": 26,
+            "text": "for(const a of table.actions)assert.ok(read('docs/design/office-actions-v1.3.md').includes('`'+a.id+'`'));"
+          },
+          {
+            "line": 28,
+            "text": "assert.match(source,/fetch\\('\\.\\/assets\\/data\\/office-actions-216\\.json'\\)/);"
+          },
+          {
+            "line": 135,
+            "text": "await vm.runInContext(source,c);assert.deepEqual(calls,['./assets/data/office-actions-221.json','./assets/data/office-actions-216.json']);"
+          }
+        ],
+        "gitEvidence": "Prior TOOLING-290-results.json recorded Git-blocked assertion/startup; this session did not execute it"
+      },
+      {
+        "file": "scripts/hani-office-actions-221.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 10,
+            "text": "import {nightTable} from './hani-office-actions-221-data.mjs';"
+          },
+          {
+            "line": 13,
+            "text": "const source=read('hani-office-live.js'),table=JSON.parse(read('assets/data/office-actions-221.json')),old=JSON.parse(read('assets/data/office-actions-216.json'));"
+          },
+          {
+            "line": 24,
+            "text": "assert.deepEqual(table,nightTable(old));assert.equal(table.schemaVersion,'office-actions-221-v1');"
+          },
+          {
+            "line": 151,
+            "text": "const url221='./assets/data/office-actions-221.json',url216='./assets/data/office-actions-216.json';"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-affinity-cap.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 114,
+            "text": "const table=JSON.parse(read('assets/data/office-actions-221.json')),manifest=JSON.parse(read('assets/sprites-v3/manifest-v3.json'));"
+          },
+          {
+            "line": 119,
+            "text": "fetch:async url=>url.endsWith('/office-tap-lines-v1.json')?{ok:true,json:async()=>JSON.parse(read('assets/data/office-tap-lines-v1.json'))}:{ok:false},"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-affinity.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 6,
+            "text": "const source=read('hani-office-live.js'),table=JSON.parse(read('assets/data/office-actions-221.json')),manifest=JSON.parse(read('assets/sprites-v3/manifest-v3.json'));"
+          },
+          {
+            "line": 25,
+            "text": "fetch:async url=>url.endsWith('/office-tap-lines-v1.json')?{ok:true,json:async()=>JSON.parse(read('assets/data/office-tap-lines-v1.json'))}:{ok:false},"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-barista-night.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 17,
+            "text": "const table=JSON.parse(read('assets/data/office-actions-221.json'));"
+          },
+          {
+            "line": 18,
+            "text": "const manifest=JSON.parse(read('assets/sprites-v3/manifest-v3.json'));"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-barista.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 12,
+            "text": "const table=JSON.parse(read('assets/data/office-actions-221.json'));"
+          },
+          {
+            "line": 13,
+            "text": "const manifest=JSON.parse(read('assets/sprites-v3/manifest-v3.json'));"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-behavior.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 8,
+            "text": "const table=JSON.parse(fs.readFileSync(new URL('../assets/data/office-actions-221.json',import.meta.url),'utf8'));"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-bori-stroll.test.mjs",
+        "priorStatus": "GIT_BLOCKED",
+        "gitRequired": true,
+        "matches": [
+          {
+            "line": 94,
+            "text": "const writes=[],deny=(...args)=>{writes.push(args);throw Error('forbidden persistence')},manifest=JSON.parse(fs.readFileSync('assets/sprites-v3/manifest-v3.json'));"
+          },
+          {
+            "line": 113,
+            "text": "const f=fixture('10:00',false,()=>true,table,{HaniOfficeV2Assets:{...assets,spritesV3:JSON.parse(fs.readFileSync('assets/sprites-v3/manifest-v3.json'))},setTimeout:()=>0});"
+          }
+        ],
+        "gitEvidence": "Prior TOOLING-290-results.json recorded Git-blocked assertion/startup; this session did not execute it"
+      },
+      {
+        "file": "scripts/hani-office-bubble-close.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 12,
+            "text": "const table=JSON.parse(read('assets/data/office-actions-221.json'));"
+          },
+          {
+            "line": 13,
+            "text": "const manifest=JSON.parse(read('assets/sprites-v3/manifest-v3.json'));"
+          },
+          {
+            "line": 21,
+            "text": "fetch:async url=>url.endsWith('/office-tap-lines-v1.json')?{ok:true,json:async()=>JSON.parse(read('assets/data/office-tap-lines-v1.json'))}:{ok:false},"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-cafe-rest.test.mjs",
+        "priorStatus": "FAIL",
+        "gitRequired": true,
+        "matches": [
+          {
+            "line": 15,
+            "text": "const baseline=JSON.parse(readAt('data/hani-building/art-map-v1.json','b653a173079323217bcd5e338e82c50d40d578e1'));"
+          },
+          {
+            "line": 48,
+            "text": "const rules=JSON.parse(read('data/hani-building/office-places.json')).outingRules;assert.equal(rules.deskAmbientSeconds,300);"
+          }
+        ],
+        "gitEvidence": "Prior TOOLING-290-results.json recorded Git-blocked assertion/startup; this session did not execute it"
+      },
+      {
+        "file": "scripts/hani-office-chairman-234.test.mjs",
+        "priorStatus": "GIT_BLOCKED_STARTUP",
+        "gitRequired": true,
+        "matches": [
+          {
+            "line": 19,
+            "text": "assert.equal(createHash('sha256').update(readAt('data/hani-building/office-places.json','b653a173079323217bcd5e338e82c50d40d578e1')).digest('hex'),'6ca0c67f03fa040123b44c7de6a489dd456f285f01fea591640c1192d81cbe66','historical cafe/rest data identity');"
+          },
+          {
+            "line": 20,
+            "text": "assert.equal(createHash('sha256').update(fs.readFileSync('data/hani-building/office-places.json')).digest('hex'),'f6cbc09dfd89cf7b6747c30928128daf667b2990570f1e4a88b32aeb636bc70d','approved lounge words and sofa host roster; historical oracle stays immutable');"
+          }
+        ],
+        "gitEvidence": "Prior TOOLING-290-results.json recorded Git-blocked assertion/startup; this session did not execute it"
+      },
+      {
+        "file": "scripts/hani-office-chairman-patrol.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 77,
+            "text": "const manifest=JSON.parse(fs.readFileSync('assets/sprites-v3/manifest-v3.json')),f=fixture('10:00',false,()=>true,table,{HaniOfficeV2Assets:{...assets,spritesV3:manifest},setTimeout:()=>0,localStorage:{getItem:()=>null,setItem:deny,removeItem:deny,clear:deny},sessionStorage:{setItem:deny,removeItem:deny,clear:deny}});"
+          },
+          {
+            "line": 92,
+            "text": "const manifest=JSON.parse(fs.readFileSync('assets/sprites-v3/manifest-v3.json')),callbacks=[],f=fixture('10:00',false,()=>true,table,{HaniOfficeV2Assets:{...assets,spritesV3:manifest},setTimeout:(fn,ms)=>{callbacks.push({fn,ms});return callbacks.length},clearTimeout:()=>{}});"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-companion-homes.test.mjs",
+        "priorStatus": "GIT_BLOCKED",
+        "gitRequired": true,
+        "matches": [
+          {
+            "line": 105,
+            "text": "const writes=[],manifest=JSON.parse(fs.readFileSync('assets/sprites-v3/manifest-v3.json')),deny=(...args)=>{writes.push(args);throw Error('forbidden home persistence')};"
+          }
+        ],
+        "gitEvidence": "Prior TOOLING-290-results.json recorded Git-blocked assertion/startup; this session did not execute it"
+      },
+      {
+        "file": "scripts/hani-office-companions.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 53,
+            "text": "const writes=[],deny=(...a)=>{writes.push(a);throw Error('forbidden companion persistence')},manifest=JSON.parse(read('assets/sprites-v3/manifest-v3.json'));"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-consult.test.mjs",
+        "priorStatus": "GIT_BLOCKED",
+        "gitRequired": true,
+        "matches": [
+          {
+            "line": 85,
+            "text": "const source=fs.readFileSync('hani-office-live.js','utf8'),original=readAt('hani-office-live.js',base),data=fs.readFileSync('data/hani-building/office-places.json','utf8'),old=readAt('data/hani-building/office-places.json',base);"
+          },
+          {
+            "line": 105,
+            "text": "const labelDelta=JSON.parse(fs.readFileSync('scripts/fixtures/office-labels-qa-source-delta.json'));assert.equal(hash(restoreResidentsSource(fs.readFileSync('hani-office-live.js','utf8'))),labelDelta.afterSha256);assert.equal(labelDelta.beforeSha256,frozen.sourceSha256);assert.equal(hash(fs.readFileSync('data/hani-building/office-places.json')),frozen.placesSha256);assert.equal(frozen.records.length,16);"
+          }
+        ],
+        "gitEvidence": "Prior TOOLING-290-results.json recorded Git-blocked assertion/startup; this session did not execute it"
+      },
+      {
+        "file": "scripts/hani-office-drama.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 14,
+            "text": "const ordinary=JSON.parse(read('assets/data/office-tap-lines-v1.json'));"
+          },
+          {
+            "line": 137,
+            "text": "assert.deepEqual(calls,['./assets/data/office-tap-lines-v1.json','./assets/data/office-drama-v1.json']);assert.equal(writes,0);"
+          },
+          {
+            "line": 190,
+            "text": "const report={sourceSha256:createHash('sha256').update(source).digest('hex'),placesSha256:createHash('sha256').update(fs.readFileSync('data/hani-building/office-places.json')).digest('hex'),window:'09:00 <= KST < 18:00',anchor:'2026-11-02',method:'Each actor event/leg boundary and interval midpoint; verify reachable candidates through scheduler.snapshot. No timetable modification. Counts include clues and transit floors.',days:[]};"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-fix-218.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 32,
+            "text": "if(url.endsWith('office-actions-221.json'))return {ok:false};"
+          },
+          {
+            "line": 37,
+            "text": "assert.equal(requests.length,7);assert.equal(requests.filter(url=>url.endsWith('office-places.json')).length,1);assert.equal(requests.filter(url=>url.endsWith('sprites-v3/manifest-v3.json')).length,1);assert.ok(context.HaniBuildingScene.scheduler);"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-floor-bubble.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 126,
+            "text": "const table=JSON.parse(fs.readFileSync(new URL('../assets/data/office-actions-221.json',import.meta.url),'utf8'));"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-hd-224.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 23,
+            "text": "const hd=json('assets/sprites-v3/manifest-v3.json'),sources=json('docs/design/sprites-v3-meta/_sources.json');"
+          },
+          {
+            "line": 34,
+            "text": "const seed=await resolveRuntimeClosure({entrypoints:['assets/sprites-v3/manifest-v3.json'],exists:f=>fs.existsSync(path.join(root,f)),read:f=>fs.readFileSync(path.join(root,f))});"
+          },
+          {
+            "line": 98,
+            "text": "if(url.endsWith('manifest-v3.json')){"
+          },
+          {
+            "line": 105,
+            "text": "assert.equal(calls.filter(u=>u.endsWith('manifest-v3.json')).length,1);"
+          },
+          {
+            "line": 133,
+            "text": "if(fail==='manifest'&&u.pathname.endsWith('manifest-v3.json')||fail==='atlas'&&/sprites-v3\\/.*\\.webp$/.test(u.pathname))return r.fulfill({status:404,body:''});"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-kids-lively.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 58,
+            "text": "const writes=[],deny=(...args)=>{writes.push(args);throw Error('forbidden persistence')},manifest=JSON.parse(fs.readFileSync('assets/sprites-v3/manifest-v3.json'));"
+          },
+          {
+            "line": 76,
+            "text": "const manifest=JSON.parse(fs.readFileSync('assets/sprites-v3/manifest-v3.json')),callbacks=[];let clock=at(day,45130).getTime();"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-kids-merge.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 50,
+            "text": "const table=JSON.parse(read('assets/data/office-actions-221.json')),manifest=JSON.parse(read('assets/sprites-v3/manifest-v3.json'));"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-kids-pose-b.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 44,
+            "text": "const writes=[],deny=(...a)=>{writes.push(a);throw Error('forbidden write')},manifest=JSON.parse(fs.readFileSync('assets/sprites-v3/manifest-v3.json'));"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-kids-visit.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 38,
+            "text": "function mounted(width=1280){const callbacks=[],writes=[];let clock=at(day,36000).getTime();const deny=(...args)=>{writes.push(args);throw Error('forbidden persistence')};const manifest=JSON.parse(fs.readFileSync('assets/sprites-v3/manifest-v3.json'));"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-kids-weekday.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 130,
+            "text": "const writes=[],deny=(...args)=>{writes.push(args);throw Error('persistence forbidden')},manifest=JSON.parse(fs.readFileSync('assets/sprites-v3/manifest-v3.json'));"
+          },
+          {
+            "line": 152,
+            "text": "const pending=new Map();let serial=0;const f=fixture('10:00',true,()=>true,table,{HaniOfficeV2Assets:{...assets,spritesV3:JSON.parse(fs.readFileSync('assets/sprites-v3/manifest-v3.json'))},setTimeout:fn=>{pending.set(++serial,fn);return serial},clearTimeout:id=>pending.delete(id)},s=>'globalThis.__spoken=[];\\n'+s.replace('function showBubble(actor,selection,duration=3000,automatic=false){','function showBubble(actor,selection,duration=3000,automatic=false){globalThis.__spoken.push({id:actor.dataset.person,line:selection?.line});'));"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-labels-qa.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 25,
+            "text": "for(const file of ['assets/data/office-actions-216.json','assets/data/office-actions-221.json','data/hani-building/office-places.json'])strings(JSON.parse(read(file)),corpus);"
+          },
+          {
+            "line": 96,
+            "text": "const f=fixture('09:00',false,()=>true,scheduled?JSON.parse(read('assets/data/office-actions-221.json')):null,{matchMedia:q=>({matches:phone&&q==='(max-width:600px)',addEventListener(){}}),setTimeout:()=>0});"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-lively-v2.test.mjs",
+        "priorStatus": "GIT_BLOCKED",
+        "gitRequired": true,
+        "matches": [],
+        "gitEvidence": "Prior TOOLING-290-results.json recorded Git-blocked assertion/startup; this session did not execute it"
+      },
+      {
+        "file": "scripts/hani-office-lively.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 7,
+            "text": "const table=JSON.parse(fs.readFileSync(new URL('../assets/data/office-actions-221.json',import.meta.url),'utf8'));"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-mascot-label.test.mjs",
+        "priorStatus": "GIT_BLOCKED",
+        "gitRequired": true,
+        "matches": [
+          {
+            "line": 16,
+            "text": "const table=JSON.parse(read('assets/data/office-actions-221.json')),manifest=JSON.parse(read('assets/sprites-v3/manifest-v3.json'));"
+          }
+        ],
+        "gitEvidence": "Prior TOOLING-290-results.json recorded Git-blocked assertion/startup; this session did not execute it"
+      },
+      {
+        "file": "scripts/hani-office-motion-1.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 117,
+            "text": "const assets={canon:JSON.parse(read('data/hani-building/spatial-contract.json')),art:JSON.parse(read('data/hani-building/art-map-v1.json')),sprites:JSON.parse(read('assets/sprites-v2/manifest.json')),places:JSON.parse(read('data/hani-building/office-places.json'))};"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-motion-2.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 138,
+            "text": "const file='data/hani-building/art-map-v1.json',text=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-obr10.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 6,
+            "text": "const data=JSON.parse(fs.readFileSync('data/hani-building/office-places.json','utf8'));"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-obr15.test.mjs",
+        "priorStatus": "GIT_BLOCKED",
+        "gitRequired": true,
+        "matches": [
+          {
+            "line": 40,
+            "text": "const cafe=JSON.parse(cafeBytes);assert.equal(hash(readAt('hani-office-live.js','b653a173079323217bcd5e338e82c50d40d578e1')),cafe.sourceSha256);assert.equal(hash(readAt('data/hani-building/office-places.json','b653a173079323217bcd5e338e82c50d40d578e1')),cafe.placesSha256);"
+          },
+          {
+            "line": 43,
+            "text": "const consult=JSON.parse(consultBytes);assert.equal(hash(restoreOfficeLabelsSource(fs.readFileSync('hani-office-live.js','utf8'))),consult.sourceSha256);assert.equal(hash(fs.readFileSync('data/hani-building/office-places.json')),consult.placesSha256);"
+          }
+        ],
+        "gitEvidence": "Prior TOOLING-290-results.json recorded Git-blocked assertion/startup; this session did not execute it"
+      },
+      {
+        "file": "scripts/hani-office-obr16.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 71,
+            "text": "const table=JSON.parse(fs.readFileSync('assets/data/office-actions-221.json')),f=fixture('09:00',false,null,table),map=f.ids.get('haniOfficeMap'),actors=[...f.ids.get('haniOfficeActors').children],floor=rect(0,0,342,342*941/1672);"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-obr18.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 71,
+            "text": "const table=JSON.parse(fs.readFileSync('assets/data/office-actions-221.json')),f=fixture('09:00',false,null,table,{matchMedia:q=>({matches:q==='(max-width:600px)',addEventListener(){}})}),map=f.ids.get('haniOfficeMap'),floor=rect(0,0,342,342*941/1672),actors=[...f.ids.get('haniOfficeActors').children],nodes=actors.map(a=>[a.querySelector('.hani-office-name'),a.querySelector('.hani-office-status'),a.officeCompact]);"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-obr3.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 7,
+            "text": "const places=JSON.parse(fs.readFileSync(new URL('data/hani-building/office-places.json',root),'utf8'));"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-obr4.test.mjs",
+        "priorStatus": "GIT_BLOCKED",
+        "gitRequired": true,
+        "matches": [
+          {
+            "line": 26,
+            "text": "const old=JSON.parse(readAt('data/hani-building/art-map-v1.json','4ac6b6c'));"
+          },
+          {
+            "line": 27,
+            "text": "const canon=JSON.parse(read('data/hani-building/spatial-contract.json'));"
+          },
+          {
+            "line": 30,
+            "text": "const context=vm.createContext({HaniOfficeV2Assets:{...assets,canon,art:old},HaniOfficeActions221:JSON.parse(readAt('assets/data/office-actions-221.json','4ac6b6c')),window:{},document:{getElementById:()=>null}});"
+          },
+          {
+            "line": 59,
+            "text": "const table=JSON.parse(read('assets/data/office-actions-'+catalog+'.json'));"
+          },
+          {
+            "line": 66,
+            "text": "const places=JSON.parse(read('data/hani-building/office-places.json'));"
+          }
+        ],
+        "gitEvidence": "Prior TOOLING-290-results.json recorded Git-blocked assertion/startup; this session did not execute it"
+      },
+      {
+        "file": "scripts/hani-office-obr6.test.mjs",
+        "priorStatus": "GIT_BLOCKED_STARTUP",
+        "gitRequired": true,
+        "matches": [
+          {
+            "line": 30,
+            "text": "assert.equal(crypto.createHash('sha256').update(readAt('data/hani-building/office-places.json','b653a173079323217bcd5e338e82c50d40d578e1')).digest('hex'),'6ca0c67f03fa040123b44c7de6a489dd456f285f01fea591640c1192d81cbe66','historical cafe/rest data identity');"
+          },
+          {
+            "line": 31,
+            "text": "assert.equal(crypto.createHash('sha256').update(ieum.project(fs.readFileSync(new URL('data/hani-building/office-places.json',root)),'data/hani-building/office-places.json')).digest('hex'),'f6cbc09dfd89cf7b6747c30928128daf667b2990570f1e4a88b32aeb636bc70d','approved lounge words and sofa host roster; historical obr10 oracle unchanged');"
+          }
+        ],
+        "gitEvidence": "Prior TOOLING-290-results.json recorded Git-blocked assertion/startup; this session did not execute it"
+      },
+      {
+        "file": "scripts/hani-office-pet-bori.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 14,
+            "text": "const table=JSON.parse(read('assets/data/office-actions-221.json'));"
+          },
+          {
+            "line": 15,
+            "text": "const manifest=JSON.parse(read('assets/sprites-v3/manifest-v3.json'));"
+          },
+          {
+            "line": 23,
+            "text": "fetch:async url=>url.endsWith('/office-tap-lines-v1.json')?{ok:true,json:async()=>JSON.parse(read('assets/data/office-tap-lines-v1.json'))}:{ok:false},"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-pets-bubble.test.mjs",
+        "priorStatus": "GIT_BLOCKED",
+        "gitRequired": true,
+        "matches": [
+          {
+            "line": 13,
+            "text": "const table=JSON.parse(read('assets/data/office-actions-221.json'));"
+          },
+          {
+            "line": 14,
+            "text": "const manifest=JSON.parse(read('assets/sprites-v3/manifest-v3.json'));"
+          },
+          {
+            "line": 24,
+            "text": "fetch:async url=>url.endsWith('/office-tap-lines-v1.json')?{ok:true,json:async()=>JSON.parse(read('assets/data/office-tap-lines-v1.json'))}:{ok:false},"
+          }
+        ],
+        "gitEvidence": "Prior TOOLING-290-results.json recorded Git-blocked assertion/startup; this session did not execute it"
+      },
+      {
+        "file": "scripts/hani-office-residents.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 21,
+            "text": "const manifest=JSON.parse(read('assets/sprites-v3/manifest-v3.json'));"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-snack.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 14,
+            "text": "const table=JSON.parse(read('assets/data/office-actions-221.json'));"
+          },
+          {
+            "line": 15,
+            "text": "const manifest=JSON.parse(read('assets/sprites-v3/manifest-v3.json'));"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-staff-chat.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 43,
+            "text": "const f=fixture('09:00',false,()=>true,table,{innerWidth:width,HaniOfficeV2Assets:{...assets,spritesV3:JSON.parse(fs.readFileSync('assets/sprites-v3/manifest-v3.json'))},setTimeout:(fn,ms)=>{callbacks.push({fn,due:clock+ms,active:true});return callbacks.length},clearTimeout:id=>{if(callbacks[id-1])callbacks[id-1].active=false},localStorage:{getItem:()=>null,setItem:deny,removeItem:deny,clear:deny},sessionStorage:{setItem:deny,removeItem:deny,clear:deny}});f.context.window.HaniOfficePresence={chairman:'absent'};"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-tap-lines.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 4,
+            "text": "// node scripts/hani-office-tap-lines.test.mjs [--browser [playwright/index.mjs] [browser.exe]]"
+          },
+          {
+            "line": 17,
+            "text": "const bank=JSON.parse(read('assets/data/office-tap-lines-v1.json')),source=seoyunM9.projectPreSeoyunM9Source(read('hani-office-live.js'));"
+          },
+          {
+            "line": 18,
+            "text": "const actions=JSON.parse(read('assets/data/office-actions-221.json'));"
+          },
+          {
+            "line": 92,
+            "text": "let count=0;const instance=model(async(...args)=>{if(args[0].endsWith('/office-tap-lines-v1.json'))count++;return fetch(...args)}).tapLines.create(roster);"
+          },
+          {
+            "line": 96,
+            "text": "let count=0;const f=fixture('10:00',true,null,actions,{fetch:async url=>{if(url.endsWith('/office-tap-lines-v1.json'))count++;return {ok:false}},setTimeout:()=>{}});await flush();"
+          },
+          {
+            "line": 135,
+            "text": "let deliver;const f=fixture('10:00',true,null,actions,{fetch:url=>url.endsWith('/office-tap-lines-v1.json')?new Promise(resolve=>{deliver=resolve}):Promise.resolve({ok:false}),setTimeout:()=>{}});f.click('3f');"
+          },
+          {
+            "line": 161,
+            "text": "const out=path.join(root,'artifacts/office-tap-lines');fs.mkdirSync(out,{recursive:true});"
+          },
+          {
+            "line": 170,
+            "text": "const page=await context.newPage(),requests=[];page.on('request',r=>{if(r.url().endsWith('/office-tap-lines-v1.json'))requests.push(r.url())});page.on('pageerror',e=>report.errors.push(e.message));"
+          },
+          {
+            "line": 174,
+            "text": "const response=page.waitForResponse(r=>r.url().endsWith('/office-tap-lines-v1.json'));"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-office-v2-215.test.mjs",
+        "priorStatus": "GIT_BLOCKED",
+        "gitRequired": true,
+        "matches": [
+          {
+            "line": 206,
+            "text": "const status={result:'running',scope:process.argv.includes('--floor-4f')?'4F executive suite: 390/1440 light/dark':process.argv.includes('--final-polish')?'final polish: 390/1440 light/dark':process.argv.includes('--seat-audit')?'furniture audit: 360/390/412/1440 light/dark':'full office UI',artSha256:crypto.createHash('sha256').update(read('data/hani-building/art-map-v1.json')).digest('hex'),patchSha256:Object.fromEntries(Object.entries(assets.art.floors).filter(([,f])=>f.signPatch).map(([id,f])=>[id,crypto.createHash('sha256').update(fs.readFileSync(path.join(root,f.signPatch))).digest('hex')])),backgroundSha256:Object.fromEntries(api.floors.map(f=>[f.id,crypto.createHash('sha256').update(fs.readFileSync(path.join(root,f.background))).digest('hex')])),screenshots:[],checks:[],errors:[],consoleErrors:[],writes:[],requests:[]};const save=()=>fs.writeFileSync(path.join(evidence,'browser-status.json'),JSON.stringify(status,null,2));"
+          },
+          {
+            "line": 221,
+            "text": "if(failure?.startsWith('sprites-v2/')&&url.endsWith('manifest-v3.json'))return route.fulfill({status:200,body:'{}',contentType:'application/json'});"
+          }
+        ],
+        "gitEvidence": "Prior TOOLING-290-results.json recorded Git-blocked assertion/startup; this session did not execute it"
+      },
+      {
+        "file": "scripts/hani-office-zoom.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 23,
+            "text": "const manifest=JSON.parse(fs.readFileSync('assets/sprites-v3/manifest-v3.json','utf8'));"
+          }
+        ]
+      },
+      {
+        "file": "scripts/hani-reviewed-release-baseline.test.mjs",
+        "priorStatus": "not in prior office run",
+        "gitRequired": true,
+        "matches": [
+          {
+            "line": 177,
+            "text": "assert.deepEqual(released233Connections.map(c=>c.file).sort(),[\"hani-design-system.css\",\"hani-context-remote.css\",\"hani-design-system.css\",\"hani-design-system.css\",\"hani-context-remote.css\",\"hani-context-remote.css\",\"hani-design-system.css\",\"hani-portfolio-preview.css\",...[\"assets/data/office-actions-216.json\",\"assets/data/office-actions-221.json\",\"hani-asset-market-view.js\",\"hani-asset-update-v1.js\",\"hani-context-remote-v1.js\",\"hani-context-remote.css\",\"hani-design-system.css\",\"hani-design-system.css\",\"hani-design-system.css\",\"hani-investment-committee.js\",\"hani-main.js\",\"hani-main.js\",\"hani-office-live.js\",\"hani-organization-hub.css\",\"hani-organization-hub.js\",\"hani-study-v02984.js\",\"hani-style-07.css\",\"hani-ui-v02992.js\",\"hani-yuna-helpdesk.js\",\"index.html\",\"index.html\"]].sort());"
+          }
+        ],
+        "gitEvidence": "Imports hani-reviewed-release-baseline.mjs: Git merge-base/show and release-chain reads"
+      },
+      {
+        "file": "scripts/hani-seoyun-m9.test.mjs",
+        "priorStatus": "PASS",
+        "gitRequired": false,
+        "matches": [
+          {
+            "line": 62,
+            "text": "const bank=JSON.parse(read('assets/data/office-tap-lines-v1.json')),roster=assets.canon.people;"
+          },
+          {
+            "line": 84,
+            "text": "const bank=JSON.parse(read('assets/data/office-tap-lines-v1.json')),writes=[],requests=[];"
+          }
+        ]
+      }
+    ]
+  },
+  "totals": {
+    "testFiles": 5,
+    "pass": 54,
+    "fail": 0,
+    "syntaxPass": 2,
+    "jsonInputPins": 7,
+    "gitRequiredSearchFiles": 16
+  }
+}

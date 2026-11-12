@@ -1,3 +1,4 @@
+// Connect the existing exact outer chain for default execution as well.
 import './hani-m9-polish-preload.cjs';
 import './hani-m9-link-preload.cjs';
 import test from 'node:test';
