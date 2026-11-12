@@ -1,0 +1,85 @@
+# tooling-290 시험별 최종 결과
+
+2026-11-13 KST · Node v24 · 지정 시험 77개 파일. 각 파일의 마지막 유효 실행 결과만 집계했습니다. 기본 명령은 `node --test-reporter=tap scripts/<시험 파일>`입니다. Git 가능성이 있는 파일에는 임시 Git 차단 가드만 사용했고, 소스 projection을 위한 명령줄 preload는 사용하지 않았습니다.
+
+`시작 차단`은 시험 등록 전 Git이 필요하여 통과 수를 확인할 수 없는 파일입니다. Git 차단은 PASS가 아닙니다. `기타 실패`는 단언이 실제로 실패한 수입니다. 브라우저는 실행하지 않았습니다.
+
+| 시험 파일 | PASS | Git 차단 | 기타 실패 | skip | 상태 |
+| --- | ---: | ---: | ---: | ---: | --- |
+| hani-join-ieum.test.mjs | 17 | 0 | 0 | 0 | PASS |
+| hani-office-219.test.mjs | N/A | startup | 0 | 0 | GIT_BLOCKED_STARTUP |
+| hani-office-actions-216.test.mjs | 14 | 1 | 0 | 0 | GIT_BLOCKED |
+| hani-office-actions-221.test.mjs | 20 | 0 | 0 | 0 | PASS |
+| hani-office-affinity-274-pins.test.mjs | 2 | 1 | 0 | 0 | GIT_BLOCKED |
+| hani-office-affinity-cap.test.mjs | 19 | 0 | 0 | 0 | PASS |
+| hani-office-affinity-storage.test.mjs | 3 | 0 | 0 | 0 | PASS |
+| hani-office-affinity.test.mjs | 21 | 0 | 0 | 0 | PASS |
+| hani-office-barista-night-273-pins.test.mjs | 4 | 1 | 0 | 0 | GIT_BLOCKED |
+| hani-office-barista-night.test.mjs | 13 | 0 | 0 | 0 | PASS |
+| hani-office-barista.test.mjs | 10 | 0 | 0 | 0 | PASS |
+| hani-office-behavior.test.mjs | 10 | 0 | 0 | 0 | PASS |
+| hani-office-bori-m9.test.mjs | 2 | 0 | 0 | 0 | PASS |
+| hani-office-bori-stroll.test.mjs | 13 | 1 | 0 | 0 | GIT_BLOCKED |
+| hani-office-bubble-close.test.mjs | 17 | 0 | 0 | 0 | PASS |
+| hani-office-cafe-rest.test.mjs | 2 | 1 | 1 | 0 | FAIL |
+| hani-office-chairman-234.test.mjs | N/A | startup | 0 | 0 | GIT_BLOCKED_STARTUP |
+| hani-office-chairman-patrol-278-pins.test.mjs | 6 | 6 | 0 | 0 | GIT_BLOCKED |
+| hani-office-chairman-patrol.test.mjs | 15 | 0 | 0 | 0 | PASS |
+| hani-office-companion-homes.test.mjs | 15 | 1 | 0 | 0 | GIT_BLOCKED |
+| hani-office-companions-276-pins.test.mjs | 2 | 1 | 0 | 0 | GIT_BLOCKED |
+| hani-office-companions.test.mjs | 17 | 0 | 0 | 0 | PASS |
+| hani-office-consult.test.mjs | 19 | 1 | 0 | 0 | GIT_BLOCKED |
+| hani-office-crowded-labels.test.mjs | 19 | 0 | 0 | 0 | PASS |
+| hani-office-drama.test.mjs | 20 | 0 | 0 | 0 | PASS |
+| hani-office-fix-218.test.mjs | 6 | 0 | 0 | 0 | PASS |
+| hani-office-floor-bubble.test.mjs | 21 | 0 | 0 | 0 | PASS |
+| hani-office-hd-224.test.mjs | 10 | 0 | 0 | 0 | PASS |
+| hani-office-icons.test.mjs | 14 | 1 | 0 | 0 | GIT_BLOCKED |
+| hani-office-kids-286-source.test.mjs | 3 | 0 | 0 | 0 | PASS |
+| hani-office-kids-lively.test.mjs | 15 | 0 | 0 | 0 | PASS |
+| hani-office-kids-merge.test.mjs | 10 | 0 | 0 | 0 | PASS |
+| hani-office-kids-pose-b.test.mjs | 13 | 0 | 0 | 0 | PASS |
+| hani-office-kids-visit.test.mjs | 16 | 0 | 0 | 0 | PASS |
+| hani-office-kids-weekday.test.mjs | 19 | 0 | 0 | 0 | PASS |
+| hani-office-labels-qa.test.mjs | 17 | 0 | 0 | 0 | PASS |
+| hani-office-lively-v2.test.mjs | 7 | 1 | 0 | 0 | GIT_BLOCKED |
+| hani-office-lively.test.mjs | 13 | 0 | 0 | 0 | PASS |
+| hani-office-mascot-label.test.mjs | 9 | 1 | 0 | 0 | GIT_BLOCKED |
+| hani-office-motion-1.test.mjs | 16 | 0 | 0 | 0 | PASS |
+| hani-office-motion-2.test.mjs | 24 | 0 | 0 | 0 | PASS |
+| hani-office-obr10.test.mjs | 4 | 0 | 0 | 0 | PASS |
+| hani-office-obr12.test.mjs | N/A | startup | 0 | 0 | GIT_BLOCKED_STARTUP |
+| hani-office-obr14.test.mjs | 4 | 1 | 0 | 0 | GIT_BLOCKED |
+| hani-office-obr15.test.mjs | 13 | 1 | 0 | 0 | GIT_BLOCKED |
+| hani-office-obr16.test.mjs | 12 | 0 | 0 | 0 | PASS |
+| hani-office-obr17.test.mjs | 3 | 0 | 0 | 0 | PASS |
+| hani-office-obr18.test.mjs | 12 | 0 | 0 | 0 | PASS |
+| hani-office-obr19.test.mjs | 3 | 0 | 0 | 0 | PASS |
+| hani-office-obr21.test.mjs | 4 | 2 | 0 | 0 | GIT_BLOCKED |
+| hani-office-obr3.test.mjs | 5 | 0 | 0 | 0 | PASS |
+| hani-office-obr4.test.mjs | 8 | 2 | 0 | 0 | GIT_BLOCKED |
+| hani-office-obr6.test.mjs | N/A | startup | 0 | 0 | GIT_BLOCKED_STARTUP |
+| hani-office-obr7.test.mjs | N/A | startup | 0 | 0 | GIT_BLOCKED_STARTUP |
+| hani-office-obr8.test.mjs | 2 | 1 | 0 | 0 | GIT_BLOCKED |
+| hani-office-obr9.test.mjs | N/A | startup | 0 | 0 | GIT_BLOCKED_STARTUP |
+| hani-office-pet-bori-272-pins.test.mjs | 3 | 1 | 0 | 0 | GIT_BLOCKED |
+| hani-office-pet-bori.test.mjs | 14 | 0 | 0 | 0 | PASS |
+| hani-office-pets-268-pins.test.mjs | 0 | 1 | 0 | 0 | GIT_BLOCKED |
+| hani-office-pets-bubble.test.mjs | 21 | 1 | 0 | 0 | GIT_BLOCKED |
+| hani-office-props.test.mjs | 11 | 0 | 0 | 0 | PASS |
+| hani-office-release-projection.test.mjs | 2 | 0 | 0 | 0 | PASS |
+| hani-office-residents.test.mjs | 49 | 0 | 0 | 0 | PASS |
+| hani-office-seats-215.test.mjs | 12 | 0 | 0 | 0 | PASS |
+| hani-office-snack.test.mjs | 26 | 0 | 0 | 0 | PASS |
+| hani-office-staff-chat.test.mjs | 17 | 0 | 0 | 0 | PASS |
+| hani-office-tap-lines.test.mjs | 15 | 0 | 0 | 0 | PASS |
+| hani-office-tlayout.test.mjs | 13 | 0 | 0 | 0 | PASS |
+| hani-office-top-labels.test.mjs | 7 | 0 | 0 | 0 | PASS |
+| hani-office-v2-215.test.mjs | 17 | 1 | 0 | 2 | GIT_BLOCKED |
+| hani-office-visitors-cafe.test.mjs | 5 | 0 | 0 | 0 | PASS |
+| hani-office-xmas-269-pins.test.mjs | 1 | 1 | 0 | 0 | GIT_BLOCKED |
+| hani-office-xmas.test.mjs | 12 | 1 | 0 | 0 | GIT_BLOCKED |
+| hani-office-zoom.test.mjs | 12 | 0 | 0 | 1 | PASS |
+| hani-release-version-layers.test.mjs | 10 | 0 | 0 | 0 | PASS |
+| hani-save-guard.test.mjs | 10 | 0 | 0 | 0 | PASS |
+| hani-seoyun-m9.test.mjs | 15 | 0 | 0 | 0 | PASS |

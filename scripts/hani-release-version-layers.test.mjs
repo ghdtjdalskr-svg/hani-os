@@ -6,6 +6,7 @@ import os from 'node:os';
 import outer from './hani-save-guard-source.cjs';
 import {restoreNewsroom288Source} from './hani-newsroom-288-source.cjs';
 import layers from './hani-release-version-layers.cjs';
+import joinInverse from './hani-join-ieum-source.cjs';
 import {pbDelta,restoreChibitoonSource} from './hani-pb-chibitoon-source.mjs';
 const {hash,readRawFileSync:read,restoreVersionLayer:restore,projectVersionSource,projectReleaseSource}=layers;
 const raw=file=>read(new URL('../'+file,import.meta.url),'utf8');
@@ -56,7 +57,7 @@ test('289 outer projection peels only exact deployed versions/history to the pin
  const layer=layers.getLayer('2.9.289');
  assert.deepEqual(Object.keys(layer.files).sort(),['assets/data/hani-history-releases-v1.json','hani-main.js','index.html'],'version/history owners only');
  for(const [file,row]of Object.entries(layer.files)){
-  const disk=read(new URL('../'+file,import.meta.url)),current=raw(file),before=restore(current,file,'2.9.289');
+  const disk=read(new URL('../'+file,import.meta.url)),current=projectReleaseSource(raw(file),file,'2.9.289'),before=restore(current,file,'2.9.289');
   assert.equal(hash(current),row.after,'deployed 289 bytes');
   assert.equal(hash(before),layers.getLayer('2.9.288').files[file].after,'independent 288 pin');
   assert.equal(layers.projectPreRelease289Source(current,file),before);
@@ -69,6 +70,37 @@ test('289 outer projection peels only exact deployed versions/history to the pin
   assert.deepEqual(read(new URL('../'+file,import.meta.url)),disk,'disk bytes stay raw 289');
  }
  assert.equal(layers.projectPreRelease289Source('unknown bytes','not-an-owner'),'unknown bytes');
+});
+
+test('290 outer version/history inverse precedes the unchanged Ieum delta and rejects every drift',()=>{
+ const layer=layers.getLayer('2.9.290'),join=JSON.parse(read(new URL('./fixtures/join-ieum-delta.json',import.meta.url),'utf8'));
+ assert.deepEqual(Object.keys(layer.files).sort(),['assets/data/hani-history-releases-v1.json','hani-main.js','index.html']);
+ for(const [file,row]of Object.entries(layer.files)){
+  const disk=read(new URL('../'+file,import.meta.url)),source=raw(file),before=restore(source,file,'2.9.290');
+  const feature=join.files.find(row=>row.file===file);
+  assert.equal(hash(before),feature?feature.afterSha256:layers.getLayer('2.9.289').files[file].after,'independent frozen feature/289 pin');
+  assert.equal(layers.projectPreRelease290Source(source,file),before);
+  assert.deepEqual(layers.projectPreRelease290Source(disk,file),Buffer.from(before));
+  assert.equal(projectReleaseSource(source,file,'2.9.290'),source);
+  assert.equal(layers.projectFeatureSource(source,file,'2.9.290'),before);
+  for(const bad of [source+'\n',source.slice(1),source+source,before,source.replace(/\r?\n/,m=>m==='\n'?'\r\n':'\n')]){
+   assert.throws(()=>restore(bad,file,'2.9.290'),/exact release-290 input/);
+   assert.equal(layers.projectPreRelease290Source(bad,file),bad);
+  }
+  if(feature){
+   const inverse=joinInverse;
+   assert.throws(()=>inverse.restore(source,file),/exact Ieum input/,'strict feature inverse rejects deployed 290 bytes');
+   assert.equal(hash(inverse.restore(before,file)),layers.getLayer('2.9.289').files[file].after);
+  }else{
+   const now=JSON.parse(source),old=JSON.parse(before);
+   assert.equal(now.entries[0].id,'v2.9.290');assert.equal(old.entries[0].id,'v2.9.289');
+   assert.equal(old.entries[0].source.commit,'');assert.equal(now.entries[1].source.commit,'91d4943d2386a25d7ed49dc56de25c4d1ab5bd8f');
+   assert.equal(old.entries[0].source.subject,now.entries[1].source.subject.replace(' (#487)',''));
+   assert.deepEqual(now.entries.slice(2),old.entries.slice(1),'older history is untouched');
+  }
+  assert.deepEqual(read(new URL('../'+file,import.meta.url)),disk);
+ }
+ assert.equal(layers.projectPreRelease290Source('unknown bytes','not-an-owner'),'unknown bytes');
 });
 
 test('283 pins still equal the independently frozen feature manifest',()=>{

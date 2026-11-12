@@ -2,6 +2,38 @@
   "schema": 1,
   "layers": [
     {
+      "from": "2.9.289",
+      "to": "2.9.290",
+      "files": {
+        "index.html": {
+          "count": 60,
+          "after": "f243ba2c64f97ab961e7abd9321dde2ee682ea36315368f90d85f648370d40b0",
+          "before": "1b0c8de6452df6c02578e8619760216c2978a7332c782504368946ef7f1dd719"
+        },
+        "hani-main.js": {
+          "count": 1,
+          "after": "b28b57d2356a636073183eb61c172537913702779d6d4230e1280ca2fa108009",
+          "before": "791d27609d1b227f0efea4e4e15152aa50c268621bd85d2e68acb76715129c0f"
+        },
+        "assets/data/hani-history-releases-v1.json": {
+          "count": 1,
+          "after": "d0b200f010d879f1ef58bebe333760c6edffcbac501e88b12dd90c028b3ccc72",
+          "before": "5eceffd9104bccd581e1c10e02ed5708828384a3db0a18bd5a09d42e75e03fbc",
+          "replacements": [
+            {
+              "after": "    {\n      \"id\": \"v2.9.290\",\n      \"date\": \"2026-11-13\",\n      \"status\": \"released\",\n      \"title\": \"신입 이음 사원 입사\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.290 신입 이음 사원 입사\"\n      }\n    },\n    {\n      \"id\": \"v2.9.289\",\n      \"date\": \"2026-11-12\",\n      \"status\": \"released\",\n      \"title\": \"예산 화면 Codex 보조 칸 정리\",\n      \"category\": \"하니 그룹\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"91d4943d2386a25d7ed49dc56de25c4d1ab5bd8f\",\n        \"subject\": \"release: v2.9.289 예산 화면 Codex 보조 칸 정리 (#487)\"\n      }\n    },\n",
+              "before": "    {\n      \"id\": \"v2.9.289\",\n      \"date\": \"2026-11-12\",\n      \"status\": \"released\",\n      \"title\": \"예산 화면 Codex 보조 칸 정리\",\n      \"category\": \"하니 그룹\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.289 예산 화면 Codex 보조 칸 정리\"\n      }\n    },\n"
+            }
+          ]
+        }
+      },
+      "feature": {
+        "module": "./hani-join-ieum-source.cjs",
+        "fixture": "./fixtures/join-ieum-delta.json",
+        "restore": "restore"
+      }
+    },
+    {
       "from": "2.9.288",
       "to": "2.9.289",
       "files": {

@@ -2,6 +2,7 @@ import {applyTlayoutCanon} from './hani-office-tlayout-fixture.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
+import ieum from './hani-join-ieum-source.cjs';
 import {readAt} from './hani-office-lively-fixture.mjs';
 export function expectedOnboardedCanon(original){
  const expected=structuredClone(original);
@@ -13,7 +14,7 @@ export function expectedOnboardedCanon(original){
 export function assertOnboardedCanon(){
  const original=readAt('data/hani-building/spatial-contract.json','65cd8a071d657741319b54c063d1ba8c5ab6aefb');
  assert.equal(crypto.createHash('sha256').update(original).digest('hex'),'d02426b44c49db169efebd782e110226fd1d719d016bc5912516753f3df8841d');
- const actual=JSON.parse(fs.readFileSync(new URL('../data/hani-building/spatial-contract.json',import.meta.url)));
+ const actual=JSON.parse(ieum.project(fs.readFileSync(new URL('../data/hani-building/spatial-contract.json',import.meta.url)),'data/hani-building/spatial-contract.json'));
  const expected=expectedOnboardedCanon(JSON.parse(original));
  // Approved cafe approaches use the room doors; keep every other edge exact.
  for(const [target,from,to]of [['approach_arrival_gate','junction_lobby','door_lobby'],['approach_coffee_counter','junction_cafe','door_cafe']]){
