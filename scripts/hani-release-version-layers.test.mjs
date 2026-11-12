@@ -34,7 +34,8 @@ test('288 outer projection peels exact deployed versions/history before the unch
  const layer=layers.getLayer('2.9.288');
  const newsroom=JSON.parse(read(new URL('./fixtures/newsroom-288-delta.json',import.meta.url),'utf8'));
  for(const [file,row]of Object.entries(layer.files)){
-  const current=raw(file),bytes=read(new URL('../'+file,import.meta.url)),before=restore(current,file,'2.9.288');
+  // This frozen 288 contract sees disk bytes only after the exact 289 version layer.
+  const disk=read(new URL('../'+file,import.meta.url)),current=layers.projectPreRelease289Source(raw(file),file),bytes=layers.projectPreRelease289Source(disk,file),before=restore(current,file,'2.9.288');
   const pin=file==='index.html'?newsroom.files[file].afterSha256:layers.getLayer('2.9.287').files[file].after;
   assert.equal(hash(before),pin,'independent frozen 287/feature bytes');
   assert.equal(layers.projectPreRelease288Source(current,file),before);
@@ -45,10 +46,29 @@ test('288 outer projection peels exact deployed versions/history before the unch
    assert.throws(()=>restore(bad,file,'2.9.288'),/exact release-288 input/);
    assert.equal(layers.projectPreRelease288Source(bad,file),bad,'unknown bytes cannot become an approved 287 input');
   }
-  assert.deepEqual(read(new URL('../'+file,import.meta.url)),bytes,'disk bytes stay raw 288');
+  assert.deepEqual(read(new URL('../'+file,import.meta.url)),disk,'disk bytes stay raw');
  }
- assert.throws(()=>restoreNewsroom288Source(raw('index.html'),'index.html'),/exact newsroom-288 input/,'strict feature inverse still rejects deployed 288 bytes');
+ assert.throws(()=>restoreNewsroom288Source(raw('index.html'),'index.html'),/exact newsroom-288 input/,'strict feature inverse still rejects deployed bytes');
  assert.equal(layers.projectPreRelease288Source('unknown bytes','not-an-owner'),'unknown bytes');
+});
+
+test('289 outer projection peels only exact deployed versions/history to the pinned 288 bytes',()=>{
+ const layer=layers.getLayer('2.9.289');
+ assert.deepEqual(Object.keys(layer.files).sort(),['assets/data/hani-history-releases-v1.json','hani-main.js','index.html'],'version/history owners only');
+ for(const [file,row]of Object.entries(layer.files)){
+  const disk=read(new URL('../'+file,import.meta.url)),current=raw(file),before=restore(current,file,'2.9.289');
+  assert.equal(hash(current),row.after,'deployed 289 bytes');
+  assert.equal(hash(before),layers.getLayer('2.9.288').files[file].after,'independent 288 pin');
+  assert.equal(layers.projectPreRelease289Source(current,file),before);
+  assert.deepEqual(layers.projectPreRelease289Source(disk,file),Buffer.from(before));
+  assert.equal(projectReleaseSource(current,file,'2.9.288'),before);
+  for(const bad of [current+'\n',current.slice(1),current+current,before,current.replace(/\r?\n/,m=>m==='\n'?'\r\n':'\n')]){
+   assert.throws(()=>restore(bad,file,'2.9.289'),/exact release-289 input/);
+   assert.equal(layers.projectPreRelease289Source(bad,file),bad,'unknown bytes cannot become an approved 288 input');
+  }
+  assert.deepEqual(read(new URL('../'+file,import.meta.url)),disk,'disk bytes stay raw 289');
+ }
+ assert.equal(layers.projectPreRelease289Source('unknown bytes','not-an-owner'),'unknown bytes');
 });
 
 test('283 pins still equal the independently frozen feature manifest',()=>{
