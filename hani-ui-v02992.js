@@ -240,6 +240,7 @@ const SPORTS_LINES = Object.freeze({
 });
 
 const PAGE_CHARACTER_PROFILES=Object.freeze({
+  ieum:Object.freeze({identity:"이음 · Records & Knowledge Ops",rank:"사원",team:"전략기획실",floor:"4F",status:"active",image:"./assets/profiles/hani-profile-ieum.webp"}),
   daon:Object.freeze({identity:"다온 · 리스크 애널리스트",rank:"사원",team:"재무자산관리실",floor:"2F",status:"active",image:"./assets/profiles/hani-profile-daon-v2.webp"}),
   yoonseul:Object.freeze({identity:"윤슬 · 러닝 리서처",rank:"사원",team:"라이프&엔터테인먼트",floor:"2F",status:"active",image:"./assets/profiles/hani-profile-yoonseul-v2.webp"}),
   dohyun:Object.freeze({identity:"도연 · Codex 구현/테스트",image:"./assets/profiles/hani-profile-dohyun.webp"}),
@@ -1564,11 +1565,12 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
     sooyeon: ['점심엔 잠깐 호흡 고르고 가요. 페이스는 천천히요.', '오늘 페이스는 여기까지. 회복할 시간도 챙겨요.'],
     sua: ['점심에는 잠시 쉬어요. 다음 이야기는 차분히 이어가요.', '늦은 밤까지 수고했어요. 편안히 마무리하세요.'],
     taeo: ['점심 맛있게 드세요. 오후 안내도 차근차근 도울게요.', '오늘도 고생하셨어요. 다음 이야기는 내일 이어가요.'],
+    ieum: ['점심에는 파일철도 잠깐 덮어둘게요.', '열린 메모는 내일 이어 볼게요. 푹 쉬세요.'],
     daon: ['점심엔 잠깐 거리 두고 쉬어요. 여유도 필요하니까요.', '늦은 밤엔 판단도 쉬어가요. 내일 다시 살펴봐요.'],
     yoonseul: ['점심엔 책갈피를 끼워두고 쉬어가요.', '오늘의 책장은 여기까지. 내일 또 함께 펼쳐봐요.']
   });
   // Pick suitable public lines, excluding old planned-hire and unperformed-work claims.
-  const TAP_PICKS = Object.freeze({hani:[2,2,0],gaeun:[0,0,2],yuna:[2,2,2],mir:[2,1,0],seoyun:[2,1,0],dohyun:[1,0,0],serin:[1,1,0],yuri:[0,2,2],arin:[1,0,2],jieun:[0,1,0],haru:[1,1,1],naeun:[1,1,2],hina:[0,0,1],minji:[1,0,0],sooyeon:[0,1,0],sua:[0,1,0],taeo:[2,1,0],daon:[1,0,0],yoonseul:[0,2,1]});
+  const TAP_PICKS = Object.freeze({ieum:[0,0,0],hani:[2,2,0],gaeun:[0,0,2],yuna:[2,2,2],mir:[2,1,0],seoyun:[2,1,0],dohyun:[1,0,0],serin:[1,1,0],yuri:[0,2,2],arin:[1,0,2],jieun:[0,1,0],haru:[1,1,1],naeun:[1,1,2],hina:[0,0,1],minji:[1,0,0],sooyeon:[0,1,0],sua:[0,1,0],taeo:[2,1,0],daon:[1,0,0],yoonseul:[0,2,1]});
   // Local UI identities only; the canonical employee roster stays at 19.
   const PETS = Object.freeze([
     Object.freeze({id:'pet-cat', name:'치즈', rank:'사무실 고양이', voice:'야옹! ', call:'냥', lines:Object.freeze({morning:'좋은 아침이다냥. 햇볕 자리는 예약했어요.', lunch:'점심이다냥! 낮잠도 일정에 넣어 주세요.', afternoon:'나른한 오후다냥. 키보드 위가 제 지정석인데요.', evening:'복도 순찰 완료, 이상 무다옹.', night:'졸린 밤이다냥. 관심은 없지만 곁에 있을게요.'})}),
