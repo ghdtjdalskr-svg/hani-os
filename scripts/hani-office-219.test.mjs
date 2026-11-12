@@ -1,5 +1,3 @@
-import {expectedOnboardedCanon} from './hani-office-onboarding-232-assertions.mjs';
-import {onboard232} from './hani-office-onboarding-232.mjs';
 // node scripts/hani-office-219.test.mjs [--browser [playwright/index.mjs] [browser.exe] [--labels-only]]
 // Real production index/assets for all revisions; fake KST clock, external traffic blocked.
 import assert from 'node:assert/strict';
@@ -7,12 +5,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import http from 'node:http';
-import {execFileSync} from 'node:child_process';
-import {withoutSimplify225} from './hani-simplify-225-preservation.mjs';
-import {withoutLaunchGreeting} from './hani-launch-greeting-221-preservation.mjs';
+import repository from './hani-test-repository-evidence.cjs';
+import {readApprovedSource} from './hani-retire6-approved.mjs';
 import {readReviewedCurrentSource,readReviewedReleaseBaseline} from './hani-reviewed-release-baseline.mjs';
-import {withoutPhotoBackupUi} from './hani-photo-backup-222-preservation.mjs';
-import {withoutOfflineEntryUi} from './hani-offline-entry-223-preservation.mjs';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 
 const root=fileURLToPath(new URL('../',import.meta.url)),out=path.join(root,'artifacts/office-219');
@@ -23,13 +18,15 @@ const git=(...args)=>{
   const exported=process.env.HANI_OFFICE_TEST_BASELINE?path.join(process.env.HANI_OFFICE_TEST_BASELINE,ref.replaceAll('/','-'),parts.join(':')):revision&&path.join(out,'baseline',revision,parts.join(':'));
   if(exported&&fs.existsSync(exported))return fs.readFileSync(exported);
  }
- return execFileSync('git',args,{cwd:root,maxBuffer:64*1024*1024});
+ // Read verified fixed commit objects; no Git process or ref/index mutation.
+ assert.equal(args[0],'show');assert.equal(args.length,2);const at=args[1].indexOf(':');
+ return Buffer.from(repository.read(args[1].slice(0,at),args[1].slice(at+1)));
 };
 const read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const before='60db7b5',base='974fa64df67a3c0060bdf0eda951aafeaf5a9b11';
 const old=f=>git('show',before+':'+f).toString('utf8');
 const times=['10:00','15:40','21:00','00:30'],widths=[390,412,884,1440],floors=['1f','2f','3f','4f','5f'];
-const assets={canon:JSON.parse(read('data/hani-building/spatial-contract.json')),sprites:JSON.parse(read('assets/sprites-v2/manifest.json')),art:JSON.parse(read('data/hani-building/art-map-v1.json'))};
+const assets={canon:JSON.parse(read('data/hani-building/spatial-contract.json')),sprites:JSON.parse(read('assets/sprites-v2/manifest.json')),art:JSON.parse(read('data/hani-building/art-map-v1.json')),places:JSON.parse(read('data/hani-building/office-places.json'))};
 const table=JSON.parse(read('assets/data/office-actions-216.json')),source=read('hani-office-live.js');
 function model(text,metadata=assets){
  const c=vm.createContext({HaniOfficeV2Assets:metadata,HaniOfficeActions216:table,window:{},document:{getElementById:()=>null}});
@@ -45,32 +42,43 @@ function contrast(fg,bg){
  const x=luminance(fg),y=luminance(bg);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);
 }
 const css=read('hani-office-live.css');
-for(const selector of ['.hani-office-name','.hani-office-status','.hani-office-actor[data-mood="true"] .hani-office-status','.hani-office-actor[data-called="true"] .hani-office-status','.hani-office-character-bubble']){
- const declarations=css.slice(css.indexOf(selector+'{')).split('}')[0],fg=declarations.match(/;color:(#[\da-f]{6}|#[\da-f]{3})/i)?.[1],bg=declarations.match(/;background:(#[\da-f]{6}|#[\da-f]{3})/i)?.[1];
- assert.ok(fg&&bg&&contrast(fg,bg)>=4.5,`${selector} AA text contrast`);
-}
-report.static.push('actual stylesheet: name/status/mood/meeting/speech text contrast >=4.5:1');
+// v234 / ead7eff through v249 / 51f6ba4: one data-status owner and CSS variables replace mood/called rules.
+const declarations=selector=>{
+ const start=css.indexOf(selector+'{');assert.ok(start>=0,'actual CSS selector '+selector);
+ return Object.fromEntries([...css.slice(start+selector.length+1).split('}')[0].matchAll(/([\w-]+):([^;]+)/g)].map(m=>[m[1],m[2]]));
+};
+const resolveColour=(value,variables)=>{
+ assert.ok(value,'CSS colour exists');
+ while(value.startsWith('var(')){const m=value.match(/^var\((--[\w-]+),?([^()]*)\)$/);assert.ok(m,'resolvable CSS colour '+value);value=variables[m[1]]||m[2];assert.ok(value,'CSS variable resolved '+m[1]);}
+ assert.match(value,/^#(?:[\da-f]{3}|[\da-f]{6})$/i);return value;
+};
+const aa=(rule,variables,label)=>assert.ok(contrast(resolveColour(rule.color,variables),resolveColour(rule.background,variables))>=4.5,label+' AA text contrast >=4.5:1');
+const rosterContext=vm.createContext({window:{},document:{getElementById:()=>null,querySelectorAll:()=>[]}});vm.runInContext(read('hani-organization-hub.js'),rosterContext);
+const nameRule=declarations('.hani-office-name');aa(nameRule,{},'default name');
+for(const team of rosterContext.window.HaniOrganizationRoster.teams)aa(nameRule,{'--office-team-tint':team.tint},team.id+' name');
+for(const kind of ['pet','kid']){const rule=declarations(`.hani-office-actor[data-resident="${kind}"] .hani-office-name`);aa({...nameRule,...rule},rule,kind+' name');}
+const statusRule={...declarations('.hani-office-status'),...declarations('.hani-office-status,.hani-office-compact-line')};
+const statusIcons={work:'💻',rest:'☕',waiting:'💬',meeting:'💬',moving:'🚶',night:'🌙'};
+for(const status of ['work','rest','meeting','moving','night'])aa(statusRule,declarations(`.hani-office-actor[data-status="${status}"]`),status+' status/compact');
+aa(declarations('.hani-office-character-bubble'),{},'speech');
+assert.doesNotMatch(css,/\[data-(?:mood|called)="true"\] \.hani-office-status\{/);
+report.static.push('resolved real CSS variables: all team/resident names, five data-status palettes, compact lines and speech AA >=4.5:1');
 
 // Evidence rules out remapped chairs, atlas/pose/scale drift; no hypothetical visual PASS.
-for(const person of assets.canon.people){
- const expected=structuredClone(baseline.art.anchors[person.homeAnchor]);
- if(['daon','yoonseul'].includes(person.id))expected.furniture=expected.furniture.replace(' (planned, empty)','');
- assert.deepEqual(assets.art.anchors[person.homeAnchor],expected,person.id+' reviewed home foot pivot; only onboarding furniture caption may change');
-}
+// v233 seed d19aa0b, v234 / ead7eff and v261 / 41a91fb intentionally re-seat staff; pin approved v289 coordinates.
+const approvedArt=JSON.parse(readApprovedSource('data/hani-building/art-map-v1.json'));
+for(const person of assets.canon.people)assert.deepEqual(assets.art.anchors[person.homeAnchor],approvedArt.anchors[person.homeAnchor],person.id+' approved home foot pivot');
 assert.equal(read('assets/sprites-v2/manifest.json'),old('assets/sprites-v2/manifest.json'));
 const slice=(s,a,b)=>s.slice(s.indexOf(a),s.indexOf(b,s.indexOf(a)));
-const legacyPivot="actor.style.transform='translate(-'+(f.pivot[0]/entry.cell[0]*100)+'%,-'+(f.pivot[1]/entry.cell[1]*100)+'%)';";
-const marginPivot="actor.style.setProperty('--actor-pivot-x',String(-f.pivot[0]/entry.cell[0]));actor.style.setProperty('--actor-pivot-y',String(-f.pivot[1]/entry.cell[1]));";
-assert.equal(slice(source,'  function pose(','  function loadSprite('),slice(old('hani-office-live.js'),'  function pose(','  function loadSprite(').replace(legacyPivot,marginPivot));
+assert.equal(slice(source,'  function pose(','  function loadSprite('),slice(readApprovedSource('hani-office-live.js'),'  function pose(','  function loadSprite('),'approved logical pose/applyPose and margin pivots');
 const scale=s=>[...s.matchAll(/\.hani-office-actor\{[^}]+\}/g)].map(m=>m[0].replace('z-index:4;',''));
-assert.deepEqual(scale(css),[
- '.hani-office-actor{--actor-height:max(40px,6.8cqw);--sprite-ratio:.75;position:absolute;width:calc(var(--actor-height)*var(--sprite-ratio));height:var(--actor-height);margin:0;margin-left:calc(var(--actor-height)*var(--sprite-ratio)*var(--actor-pivot-x,-.5));margin-top:calc(var(--actor-height)*var(--actor-pivot-y,-1));transition:opacity .3s;pointer-events:none}',
- '.hani-office-actor{transition:none}',
- '.hani-office-actor{transition:none}'
-],'reviewed 224 HD actor proportions and reduced-motion/pause rules');
-report.static.push('217 home foot pivots, atlas metadata and pose/pivot unchanged; exact reviewed 224 HD actor CSS');
+assert.deepEqual(scale(css),scale(readApprovedSource('hani-office-live.css')),'approved HD actor proportions and reduced-motion/pause rules');
+report.static.push('approved home foot pivots, unchanged atlas metadata, exact approved pose/pivot and HD actor CSS');
 assert.doesNotMatch(read('hani-office-live.css'),/\.hani-office-status\{display:none\}/);
-assert.doesNotMatch(source,/localStorage|sessionStorage|supabase/);
+// v274+ explicitly owns affinity storage; keep its entire approved owner exact and deny storage elsewhere.
+const affinity=slice(source,'  function createOfficeAffinity(', '  function createTapLines(');
+assert.ok(affinity);assert.equal(affinity,slice(readApprovedSource('hani-office-live.js'),'  function createOfficeAffinity(', '  function createTapLines('));
+assert.doesNotMatch(source.replace(affinity,''),/localStorage|sessionStorage|supabase/);
 for(const time of [...times,'02:00']){
  const instant=`2026-10-19T${time}:00+09:00`,s=current.snapshot(instant),people=s.floors.flatMap(f=>f.visible);
  assert.equal(people.length,time==='02:00'?5:19);assert.ok(people.every(p=>p.line&&p.seat));
@@ -90,17 +98,18 @@ for(const time of [...times,'02:00']){
 }
 // index.html follows main's reviewed-release baseline (version/cache projection); the rest stays exact.
 for(const f of ['index.html','assets/sprites-v2/manifest.json'])assert.equal(f==='index.html'?readReviewedCurrentSource(f):read(f),f==='index.html'?readReviewedReleaseBaseline(f):git('show',base+':'+f).toString('utf8'),f+' preserved against fixed released bytes');
-const priorCanon=expectedOnboardedCanon(JSON.parse(git('show',base+':data/hani-building/spatial-contract.json')));
+const priorCanon=JSON.parse(readApprovedSource('data/hani-building/spatial-contract.json'));
 assert.deepEqual(assets.canon.people,priorCanon.people);assert.deepEqual(assets.canon.floors,priorCanon.floors);
 for(const oldAnchor of priorCanon.anchors)assert.deepEqual(assets.canon.anchors.find(a=>a.id===oldAnchor.id),oldAnchor);
 for(const edge of priorCanon.edges)assert.ok(assets.canon.edges.some(e=>JSON.stringify(e)===JSON.stringify(edge)));
-const priorTable=JSON.parse(git('show',base+':assets/data/office-actions-216.json'));
-assert.deepEqual(table,onboard232({...priorTable,actions:priorTable.actions.map(a=>a.id==='sig-seongmin-4'?{...a,title:'회장님 모드 · 커피 한 모금'}:a)}));
-report.static.push('232 version/cache bytes, canon coordinates/floors and original people plus explicit onboarding delta, action budgets and disabled rows preserved; reviewed window nodes/routes and chairman title are explicit behavior changes; no office storage/Cloud APIs');
+const priorTable=JSON.parse(readApprovedSource('assets/data/office-actions-216.json'));
+assert.deepEqual(table,priorTable);
+report.static.push('version/cache bytes, approved canon coordinates/floors/people/anchors/edges and action table preserved; exact approved affinity owner, no other office storage/Cloud APIs');
 // Execute the real renderer and floor events as well as the scene model. DOM doubles
 // verify persistent identity and speech updates, not visibility or pixel geometry.
 const {fixture}=await import('./hani-building-206-engine.test.mjs');
-const mounted=fixture('10:00',true,null,table),nodes=[...mounted.ids.get('haniOfficeActors').children],pills=nodes.map(n=>n.querySelector('.hani-office-status'));
+const writes=[],denyWrite=(...args)=>{writes.push(args);assert.fail('read-only label UI attempted write');};
+const mounted=fixture('10:00',true,null,table,{localStorage:{getItem:key=>{assert.equal(key,'hani_office_affinity_v1');return null;},setItem:denyWrite,removeItem:denyWrite,clear:denyWrite},sessionStorage:{setItem:denyWrite,removeItem:denyWrite,clear:denyWrite},save:denyWrite,commit:denyWrite}),nodes=[...mounted.ids.get('haniOfficeActors').children],pills=nodes.map(n=>n.querySelector('.hani-office-status'));
 for(const time of times){
  mounted.setDateTime(`2026-10-19T${time}:00+09:00`);let count=0;
  for(const floor of floors){
@@ -113,7 +122,8 @@ for(const time of times){
    assert.equal(pill.title,pill.dataset.full);assert.ok(pill.dataset.full.includes(actor.dataset.line));
    const dot=actor.querySelector('.hani-office-status-dot'),icon=actor.querySelector('.hani-office-activity-icon');
    assert.ok(dot.title);assert.equal(dot.getAttribute('aria-label'),dot.title);
-   assert.equal(icon.textContent,actor.dataset.emoji);assert.equal(icon.hidden,!actor.dataset.emoji);
+   // v249 / 51f6ba4 retains a meaningful state icon even without a scheduled emoji.
+   assert.equal(icon.textContent,actor.dataset.emoji||statusIcons[actor.dataset.status]);assert.equal(icon.hidden,false);
    assert.equal(actor.querySelectorAll('.hani-office-name').length,1);
   }
  }
@@ -172,6 +182,7 @@ for(const [state,title] of [['work','근무 중'],['rest','휴식 중'],['meetin
  layout.ids.get('haniOfficeActors').events.keydown({key:'Escape'});assert.equal(actor.dataset.status,state);assert.equal(actor.querySelector('.hani-office-status-dot').title,title);assert.equal(actor.querySelector('.hani-office-status-dot').getAttribute('aria-label'),title);
 }
 report.static.push('constrained boxes/actual owner: compact tags stagger without overlap; desktop speech > meeting > status, no name collisions, hidden pills recover');
+assert.deepEqual(writes,[],'floor/name/tap labels do not write storage');
 report.result='static-passed-browser-not-run';save();
 console.log('PASS office-219 source/model: home pivots, five clocks, presence, planned-slot agreement, read-only/version/identity preservation');
 if(!process.argv.includes('--browser')){console.log('NOT RUN: real screen/label bounds/overlap/scale screenshots; use --browser');}
@@ -246,7 +257,7 @@ try{
       if(a.label.visible)assert.ok(a.label.inside&&[...a.label.text].length<=10,'obr14 meaningful mobile pill');assert.ok(a.name.dot.visible&&a.name.dot.title&&a.name.dot.aria===a.name.dot.title);
       assert.equal(a.name.dot.color,({work:'rgb(22, 128, 60)',rest:'rgb(168, 100, 8)',meeting:'rgb(37, 99, 235)',moving:'rgb(100, 116, 139)',night:'rgb(126, 34, 206)'})[a.status]);
       assert.ok(a.name.dot.left>=a.name.left&&a.name.dot.right<=a.name.right,'dot inside canonical name');
-      assert.equal(a.name.icon.visible,Boolean(a.emoji));assert.equal(a.name.icon.text,a.emoji);
+      assert.equal(a.name.icon.visible,false,'phone CSS hides the redundant activity icon');assert.equal(a.name.icon.text,a.emoji||statusIcons[a.status]);
      }else if(a.label.visible)assert.ok(a.label.inside&&a.label.text,'visible desktop pill within floor');
      const original=sizes.get(`${width}:${a.id}`);assert.ok(original,'217 daytime reference for '+a.id);
      // 224 deliberately replaced 217's squashed scale with a 40px floor and

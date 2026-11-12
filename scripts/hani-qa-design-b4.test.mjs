@@ -3,7 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
-import {createHash} from 'node:crypto';
+import {approvedRuntimeClosure} from './hani-retire6-approved.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
 import {createHistoryHarness} from './hani-history-226.test.mjs';
 
@@ -121,9 +121,13 @@ test('QA-10: published issue supplies summary + 4 indices; no next-week schedule
   assert.equal(f.nodes.get('.newsroom-4cut-context').children.length,2);
   const image=f.nodes.get('.newsroom-4cut-image');await f.api.enter();assert.equal(f.nodes.get('.newsroom-4cut-image'),image);
 });
-test('QA-10: missing numeric data omits table; absent summary omits context; unsafe text remains text',async()=>{
+test('QA-10: summary-only data hides context; explicit unsafe facts remain text',async()=>{
   const issue={number:1,publishDate:'2026-11-01',week:'fixture',title:'<img src=x>',alt:'수치 없는 테스트',image:'001',sources:[]};
-  const f=comicRuntime({issues:[issue]});await f.api.enter();const panel=f.nodes.get('.newsroom-4cut-context');assert.equal(panel.children.length,1);assert.equal(panel.children[0].children[1].textContent,issue.title);
+  // v288 / 98e21fa removes the duplicate summary panel; only indices/facts/cuts make context visible.
+  const f=comicRuntime({issues:[issue]});await f.api.enter();const panel=f.nodes.get('.newsroom-4cut-context');assert.equal(panel.children.length,0);assert.equal(panel.hidden,true);
+  const fact={label:'<img src=x onerror=alert(1)>',value:'<script>bad</script>'},withFact=comicRuntime({issues:[{...issue,facts:[fact]}]});
+  await withFact.api.enter();const facts=withFact.nodes.get('.newsroom-4cut-context');assert.equal(facts.hidden,false);assert.equal(facts.children.length,1);
+  const entry=facts.children[0].children[1].children[0];assert.equal(entry.children[0].textContent,fact.label);assert.equal(entry.children[1].textContent,fact.value);
   assert.equal(f.api.issuePanels({}).indices.length,0);assert.equal(f.api.issuePanels({}).summary,'');
   assert.equal(f.api.issuePanels({alt:'코스피는 5% 올랐다. 종가는 모름'}).indices.length,0);
   // Invoke the actual panel renderer to cover the fully absent-data branch too.
@@ -185,9 +189,11 @@ test('AA: all six theme surfaces, health colours and translucent banner worst-ca
   for(let pixel=0;pixel<=255;pixel++)for(const fg of ['#111c32','#33415a','#334fa7'])assert.ok(ratio(rgb(fg),[0,0,0].map(()=>255*.94+pixel*.06))>=4.5,fg);
   assert.ok(ratio(rgb('#ffffff'),rgb('#111c32'))>=4.5);
 });
-test('release closure still exactly 128, no missing files or newly packaged image',async()=>{
+test('release closure matches the approved v289 inventory with no missing files',async()=>{
   const result=await resolveRuntimeClosure({exists:f=>fs.existsSync(new URL('../'+f,import.meta.url)),read});assert.ok(result.files.length<=200);assert.deepEqual(result.missing,[]);
-  assert.equal(createHash('sha256').update(result.files.join('\n')).digest('hex'),'8a5f748a13fd729f35db0e48727090c82a605c87da98cf10dccac6c8a8feca64','same 128-file closure as task base 9b50d16');
+  // v283 / a28918d adds runtime owners; v288 / 98e21fa keeps that inventory. Pin approved v289, not HEAD.
+  const approved=await approvedRuntimeClosure();
+  assert.deepEqual(approved.missing,[]);assert.deepEqual(result.files,approved.files,'exact approved runtime inventory');
   assert.ok(result.files.includes('assets/team/hani-team-office.webp'));
   // This published image is dynamically resolved by the original comic owner,
   // so the static closure walker cannot see it. Keep its original catalog id.

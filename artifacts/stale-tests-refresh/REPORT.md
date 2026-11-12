@@ -191,3 +191,85 @@ node scripts/hani-protected-gate-integration.test.mjs
 - 먼저 읽을 파일: 이 보고서 → 변경 시험 → `hani-stale39-source.cjs`/고정 fixture → 읽기 전용 `hani-test-repository-evidence.cjs`.
 - 다른 담당 영향: 기존 release-layer pin/운영 owner/배포 열차는 유지. PR/Preview/merge/Pages/실제 JS/Production read-back은 모두 이 작업에서 미수행·N/A.
 - CURRENT/DECISIONS: 과제의 scripts/보고서 한정 범위 때문에 변경하지 않음. 공통 현황/Notion 반영 대기는 이 보고서로 인계.
+
+## 은퇴 후보 정리 (2차)
+
+은퇴 후보 6개 파일을 살렸고, 승인된 변화와 충돌하던 기대값을 현재 작업 기준(v289)에 맞췄습니다.
+6개 Node 실행과 지정 회귀 22개가 통과했으며, 저장 보호·중복 방지·이미지·접근성·퀸 액자·건강 검사는 유지했습니다.
+운영 파일과 Git은 건드리지 않았고, 실제 화면은 Chrome 권한 차단으로 미검증이며 커밋·push는 서윤에게 인계합니다.
+
+### 작업 식별·승인 범위
+
+- 작업 ID: retire6 / 은퇴 후보 정리 2차. 담당: Codex. 검토·커밋·push: 서윤. 갱신: 2026-11-13 07:18 KST.
+- 상태: 시험 수정·Node 검증 완료 / 브라우저 BLOCKED / 서윤 인계 대기. 후보 Freeze·PR 작성·main 병합·배포는 하지 않았습니다.
+- 저장소/worktree: `HANI_OS_DEV_CLAUDE/stale39`. branch는 HEAD 파일의 `refs/heads/hani/stale-tests-refresh`로 확인했습니다. base/HEAD: `b5e1985d6370a84e45434fc5eb99e51d341ec078` (지시상의 PR #496). 미커밋이므로 candidate SHA 없음.
+- 승인 근거: `../retire6-task.md`의 2026-11-13 결정 “추천대로”: 낡은 검사만 바꾸고 유효한 검사를 살림. 허용 범위: `scripts/`와 이 보고서만. 파일 삭제·운영/버전/cache·저장/Cloud/schema 수정·merge·배포 승인 없음.
+- 기준선: 표시 소스 `HANI_DISPLAY_VERSION="2.9.289"`, HTML 마지막 local script `./hani-launch-greeting.js`. 실제 운영 표시/네트워크 로딩 확인과 구분합니다.
+- 로컬 `origin/main` 파일 참조는 `46cb7a69c4beeff3cce3bbe788be6f952e7b99e9`로, 작업 runtime의 고정 승인 기준 `49096de` 이후 #491~495가 있습니다. 이 중 `9e3fe97`은 v290 이음 입사, `5ab007b`는 좌석·층 데이터, `46cb7a6`는 시험 층 변경입니다. 원격 네트워크 최신성은 미확인입니다. 이 worktree는 v289 기준을 유지했고 merge/rebase를 하지 않았습니다. v290 반영 시 명단·좌석·closure 기대값은 그 승인 근거로 별도 재검증해야 합니다.
+- `START-HERE.md`, `CURRENT.md`, 기존 보고서와 CODEMAP을 읽었습니다. CODEMAP에는 이 여섯 역사 시험의 상세 anchor가 없어 `CODEMAP_MISS`로 실제 import와 owner 함수 주변만 검색했습니다. 운영 DOM/event/renderer 수정 없음.
+
+파일 열은 `scripts/hani-<파일>.test.mjs`입니다. “뺀 것”은 과거 기대값의 폐기를 뜻하며 시험 파일이나 유효한 기능 검사를 삭제한 것이 아닙니다.
+
+| 파일 | 뺀 것 | 바꾼 것 | 남긴 것 | 결과 |
+|---|---|---|---|---|
+| ai-budget-antigravity | 카드 총수 5 고정 | v289 `91d4943`: 정확한 순서 `codex-1, claude-1, gemini-pro, antigravity-cg` 4개 비교 | TSV 오류/중복·ANSI·소수, 실행 파일 탐색·인자·timeout/kill·출력 한도, 시간당 제한·동시 수집, 실패/부분 실패 보존, bridge, KST·만료·오류 안내·XSS·보호 키 | Node PASS / 종료 0 |
+| brand-heroes-218 | 옛 hero 역변환 hunk 전제, 검색 전체 결과 1개 고정, 메뉴 35개, 조직도 hero 금지 | v228 `902b5ab`·v233 `beffc38`의 실제 hero owner 확인; v233 milestones와 v283 `a28918d` procrastination을 포함한 정확한 37개 메뉴 배열·중복 없음; 승인 원문의 검색 결과 전체 비교와 목적 route 1회 확인; 조직도 hero 1개·자산 확인; v283 전용 pb-header 1개·접근 가능한 제목 확인 | 회사명·별칭·route, 나머지 hero owner/기존 이미지, 중첩 banner 제한, 일보 제목, voice 원문, 14파일 전체 바이트·syntax·EOL·로그인/제어/저장 보존 | 3/3 PASS / 종료 0 |
+| mascots-poster | 마스코트 3명 고정, 옛 전체 scene hash, 과거 inventory에 삭제된 portrait를 다시 더한 가상 hash | v272 `c338bda`: 치즈·크림·모찌·보리 정확한 카드 배열 4개, aria 4개·투표/활동 직원 배제; 기존 9개+보리 128/256 이미지 총11개 디코딩·CSS/closure 확인(보리는 승인본에 720px 없음); v261 `41a91fb`·v272 이후 승인된 전체 scene·입력과 실행 결과 비교; v289 승인 closure 전체164개 정확 비교 | 직원19명과 명단/인원/불변성, 무쓰기·비대화형·노선, 토끼 atlas hash·10프레임·알파·그림자, 퀸 당선자/월/KST/이미지·persistent slot·44px·타이머/Escape·외부 탭·profile route·무쓰기/무layout-read, 없어진 portrait 부재 | 22/22 PASS (import된 engine 6개 포함) / 종료 0 |
+| newface-217 | 입사자 homeSeat 없음·층 미등록, 옛 단일 transform 속성 | v232 `4ac6b6c`·v233 seed `d19aa0b`: active 직원이 canonical homeAnchor/owner 좌석을 갖고 정확히 한 층 소속; v242 `39ce4a1`: 실제 pose/applyPose 실행에 reduced fixture 연결, 각 HD/v2 frame의 CSS pivot와 정규화 좌표를 실제 metadata로 비교 | 원래15개 자산 hash, 9개 portrait/thumb 규격·예산·픽셀, 전체19명 avatar/registry/album, 미등록 저자 fallback, HD/v2/missing-manifest/both-fail 경로·로딩 순서·fallback, 8개 v2 pose의 알파/투명 여백/미사용 셀·3:4 비율·literal 의존성 | 5개 그룹 / 11개 자산 PASS / 종료 0. 실화면 미검증 |
+| office-219 | hex만 읽는 AA regex, mood/called CSS selector 전제, 217 좌석/옛 pose·actor CSS 고정, 파일 전체 storage 단어 금지 | v234 `ead7eff` 이후 좌석과 v261 T자 좌석을 고정 승인 v289에 정확 비교; v249 `51f6ba4` 단일 data-status/상태 icon; CSS var를 풀어 모든 팀·resident 이름표, 5상태 status/compact, bubble AA ≥4.5:1; v274 `0b98a29`·v281 `43eda9e` 승인 친밀도 owner만 전체 원문 일치 허용하고 그 밖의 storage/Cloud는 계속 금지; 실제 라벨 이벤트의 write 시도 0; 현재 places dependency 연결; Git process 대신 기존 검증 객체 reader 사용 | atlas 원본, 5시각·5층의 인원/야간 명단/좌석 유일성·일정 일치, 버전/원문/행동표, actor/status persistent identity, 전체 말/접근성·이벤트/최신 timer·collision·resize·상태, browser AA/기하 검사 자체 | 정적·모델·이벤트 PASS + import engine 6/6. `--browser`는 spawn EPERM, checks0/screenshots0 → BLOCKED |
+| qa-design-b4 | summary-only context 1개 기대, 128개 closure hash | v288 `98e21fa`: summary만 있으면 자식0/hidden; 명시적 facts가 있으면 보이고 위험 문구가 textContent로 유지됨; v283 이후 늘어난 closure를 고정 승인 v289 전체164개 목록과 정확 비교 | 발행 지수/빈 데이터·persistent 이미지·XSS, 홈 actions/소식/경고·route·중복 없음,19명 한마디/직급·repeat 회피, 건강 목표의 방향/초과/유효기간/승인 이력·BMI·무변이, 캘린더0/미기록·윤년/KST/중복 날짜,6테마 AA, 월간 생성 성공/실패/차단/취소·저장 횟수 | 24/24 PASS / 종료 0 |
+
+### 변경 방식·안전 증거
+
+- 새 시험 전용 도우미: `scripts/hani-retire6-approved.mjs`. 고정 승인 commit `49096deb9ca99790c48106bbff7ec275273b1b52`만 읽습니다. 기존 `hani-test-repository-evidence.cjs`의 객체 길이/SHA 검증을 재사용하며 HEAD·worktree를 expected source로 승격하지 않습니다. 실제 파일 누락만 missing으로 처리하고 객체 오류는 다시 던집니다. 기존 공통 helper·release manifest·fixture pin은 수정하지 않았습니다.
+- 사용 시험 3개(office-219, mascots-poster, qa-design-b4)를 모두 재실행했습니다. closure 검사는 누락0/상한200을 유지하면서 승인된 **전체 파일 배열**까지 일치시킵니다. 과거 hash를 아무 검증 없이 현재 hash로 덮어쓰지 않았습니다.
+- 이름표/상태 색 변조와 친밀도 키 변조는 임시 preload가 **메모리 반환 문자열만** 바꿨습니다. 이름표 흰색 글자는 `default name AA`에서, 상태 변수의 흰색 글자는 `work status/compact AA`에서, 저장 키를 보호 키로 바꾼 원문은 승인 owner 전체 비교에서 각각 종료1로 거부했습니다. 운영 파일에 변조를 쓰지 않았습니다.
+- 친밀도는 승인된 별도 owner가 이미 존재합니다. 그 owner의 바이트 전체를 고정 근거와 비교한 뒤 제외하고 나머지 소스에 storage/Cloud 금지를 적용합니다. 라벨/floor/tap VM에 write 거부자를 넣어 무쓰기 성질을 유지했습니다. 관련 친밀도 cap/storage 시험도 그대로 통과했습니다.
+- 여섯 시험의 최종 Node 종료 코드는 모두0입니다. 상위 PASS 문구 뒤의 등록된 하위 시험과 비동기 종료도 확인했습니다. office의 브라우저 종료1은 PASS에 포함하지 않습니다.
+
+### 실행한 검증
+
+환경: Node `v24.20.0`, Windows PowerShell. 대상 파일별 별도 process. 여섯 시험·추가 관련 시험·브라우저 명령에는 임시 `no-git.cjs` preload를 붙여 하위 Git process도 거부했습니다. Git 명령 실행0. 해당 preload는 저장소 산출물이 아닙니다.
+
+```powershell
+# 위 표의 여섯 Node 명령 (각각 종료 0)
+node scripts/hani-ai-budget-antigravity.test.mjs
+node scripts/hani-brand-heroes-218.test.mjs
+node scripts/hani-mascots-poster.test.mjs
+node scripts/hani-newface-217.test.mjs
+node scripts/hani-office-219.test.mjs
+node scripts/hani-qa-design-b4.test.mjs
+
+# 지시된 회귀 명령 그대로: 22/22 PASS
+node --test --test-isolation=none scripts/hani-release-version-layers.test.mjs scripts/hani-stale39-source.test.mjs scripts/hani-save-guard.test.mjs
+
+# 추가 관련 검사: 각각 PASS
+node scripts/hani-office-labels-qa.test.mjs       # 17/17
+node scripts/hani-office-affinity-cap.test.mjs    # 19/19
+node scripts/hani-office-affinity-storage.test.mjs # 3/3
+node scripts/hani-newsroom-4cut-288.test.mjs      # 7/7
+node scripts/hani-ai-budget.test.mjs
+node scripts/hani-ai-budget-plan.test.mjs
+```
+
+- 변경 시험6개 + 새 helper1개 `node --check`: 7/7 PASS.
+- 최종 workspace SHA256 대조: 착수 snapshot 2383파일 중 허용한 시험6개와 이 보고서 외 기존 파일 변경/누락0. 새 파일은 시험 helper1개만 남겼습니다. 운영 root JS/CSS/HTML, assets/data/manifest, 버전·cache tag와 범위 밖 파일은 바이트 동일합니다.
+- 시험이 만든 `artifacts/newface-217/validation.json`, `artifacts/office-219/label-results.json`, `artifacts/office-219/label-unit-results.json` 3개는 착수 때 없던 부산물로 제거했습니다. 기존 보고서의 과거 기록은 보존했습니다.
+- 외부 임시 snapshot·원본 복사·실행 로그·Git 차단/음성 검사 preload 폴더와 이번 실패한 Chrome의 잔여 profile 1개도 정확한 절대 경로를 확인한 뒤 제거했습니다.
+- Full package build / One-Pass / HINA / 버전 증가 / Preview / PR 작성 / main 병합 / Pages / Production read-back: 시험·도구/보고서 전용 작업이므로 N/A·미수행. 운영 개선 완료나 배포 완료를 뜻하지 않습니다.
+
+### 미검증·차단·서윤에게 인계
+
+- 실제 Chrome 실행은 `browserType.launch: spawn EPERM`으로 BLOCKED입니다. office `--browser`의 checks0/screenshots0이고, 그 뒤 픽셀 AA·폰/PC 기하·넘침·캡처·실제 클릭 결과는 미검증입니다. Node DOM double을 실화면 PASS로 계산하지 않았습니다. newface의 실제 화면도 별도 미검증입니다.
+- 권한 있는 환경에서 다음 명령을 실행해야 합니다. historical snapshot은 지정 commit의 읽기 전용 객체로 공급되며 Git 명령은 필요 없습니다.
+
+```powershell
+$pw = 'C:\Users\홍성민\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\node_modules\playwright\index.mjs'
+$chrome = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+node scripts/hani-office-219.test.mjs --browser $pw $chrome
+```
+
+- v290 합류 시 이 worktree의 19명/좌석/파일 목록을 그대로 최신 승인 사실로 쓰지 마세요. 서윤이 승인 v290 원문·레이어와 이 변경을 검토한 뒤 그 기준에서 여섯 명령과 회귀를 재실행해야 합니다. 이 작업에서 다른 branch/worktree를 수정하지 않았습니다.
+- 여섯 파일의 최종 Node 검사에서 새 운영 버그 후보는 남지 않았습니다. 실제 화면에 문제가 없는지는 아직 모릅니다. 위 1차 보고서의 라운지 번들·책상 장식·공통 미룬 일 voice/helper 등 기존 후보를 해결했다고 주장하지 않습니다.
+- Notion 현황판/Markdown 규격 읽기는 성공했습니다. 착수 진행 요약 `insert_content`는 **자동 승인 검토가 `MCP tool call requires approval, but approval policy is never`로 거절**했습니다. 갱신·연결 완료가 아닙니다. 같은 쓰기 우회를 시도하지 않았습니다. 서윤이 현황판에 날짜/담당·branch/base·이번 3줄 요약·표의 결과·Chrome BLOCKED·v290 차이·다음 행동·이 원문/PR #496을 기록한 뒤 읽어 확인해야 합니다.
+- 다음 행동: 서윤이 이 절과 변경 시험6개·`hani-retire6-approved.mjs` 검토 → 권한 있는 브라우저 재검사 및 v290 영향 검토 → 허용된 범위의 커밋·push. 시험 삭제/운영 수정/배포 승인은 이 인계에 포함되지 않습니다. CURRENT/DECISIONS는 지시 범위 때문에 수정하지 않았습니다.

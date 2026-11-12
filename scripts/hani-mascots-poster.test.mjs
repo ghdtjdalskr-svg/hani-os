@@ -6,9 +6,8 @@ import os from 'node:os';
 import vm from 'node:vm';
 import {createRequire} from 'node:module';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
-import {restoreResidentsSource} from './hani-office-residents-source.mjs';
-import {reapplyTlayoutSource} from './hani-office-tlayout-fixture.mjs';
 import {createBannerFixture} from './hani-lounge-billboard.test.mjs';
+import {readApprovedSource,approvedRuntimeClosure} from './hani-retire6-approved.mjs';
 const require=createRequire(import.meta.url);
 const sharp=require(process.env.HANI_SHARP_PATH||os.homedir()+'/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/sharp');
 const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
@@ -16,6 +15,10 @@ const hash=x=>createHash('sha256').update(x).digest('hex');
 const hub=read('hani-organization-hub.js'),css=read('hani-organization-hub.css');
 const ids=['hani','yuna','mir','seoyun','dohyun','serin','yuri','arin','gaeun','jieun','haru','naeun','hina','minji','sooyeon','sua','taeo','daon','yoonseul'];
 const denied=()=>assert.fail('read-only mascot UI attempted write/network');
+// v272 / c338bda adds Bori as the fourth companion, outside the 19-person staff roster.
+const mascotIds=['cheese','cream','mochi','bori'];
+// v272 / c338bda uses Bori's 256px portrait at 2x/3x; the original three retain 720px art.
+const portraitSizes=id=>id==='bori'?[256,128]:[720,256,128];
 function fixture(){
   const nodes=new Map(),labels=[{},{}];
   const node=selector=>{
@@ -35,14 +38,16 @@ function fixture(){
   vm.runInContext(hub,c);
   return {c,root,nodes,labels,node};
 }
-test('actual chart renders three noninteractive mascot cards outside the employee directory',()=>{
+test('actual chart renders four noninteractive mascot cards outside the employee directory',()=>{
   const f=fixture(),html=f.root.innerHTML;
   const chart=html.slice(html.indexOf('<section id="ogh-chart"'),html.indexOf('<section id="ogh-teams"'));
   const mascots=chart.slice(chart.indexOf('<section class="ogh-mascots"'));
-  assert.equal((mascots.match(/<article class="ogh-mascot">/g)||[]).length,3);
+  assert.equal((mascots.match(/<article class="ogh-mascot">/g)||[]).length,4);
+  assert.deepEqual([...mascots.matchAll(/ogh-mascot-portrait ogh-mascot-([^"]+)/g)].map(m=>m[1]),mascotIds);
+  for(const value of ['보리','골든 리트리버','크고 순한 친구예요. 로비에 누워 느긋하게 함께 쉬어요.'])assert.ok(mascots.includes(value),value);
   for(const value of ['사내 마스코트','치즈','사내 고양이','도도하고 느긋하게, 어느새 곁에 와 있어요.','크림','사내 강아지','사람을 좋아하는, 밝고 동글동글한 친구예요.','모찌','사내 토끼','조용하고 섬세하게 지켜보다, 천천히 마음을 열고 발치에 앉아요.','함께 지내는 친구들을 소개합니다.'])assert.ok(mascots.includes(value),value);
   assert.doesNotMatch(mascots,/두 친구/);
-  assert.equal((mascots.match(/role="img" aria-label=/g)||[]).length,3);
+  assert.equal((mascots.match(/role="img" aria-label=/g)||[]).length,4);
   assert.doesNotMatch(mascots,/<a\b|<button\b|data-person|data-card-person|data-team=/);
   assert.equal((html.match(/class="ogh-person"/g)||[]).length,19);
   assert.doesNotMatch(html.slice(html.indexOf('<section id="ogh-people"')),/ogh-mascot|사내 고양이|사내 강아지|사내 토끼/);
@@ -53,7 +58,7 @@ test('real roster, sidebar, directory and overview headcounts remain nineteen',(
   assert.ok(Object.isFrozen(roster)&&Object.isFrozen(roster.people));
   f.labels.forEach(l=>assert.equal(l.textContent,'PERSONAL AI COMPANY · 19 AGENTS'));
   assert.equal(f.node('#ogh-count').textContent,'19 PEOPLE');
-  const model=f.c.window.HaniOrganizationHub.overviewData({boardPosts:['cheese','cream','mochi'].map(authorId=>({id:authorId,authorId,createdAt:'2026-11-02T00:00:00Z'}))},[],roster,Date.parse('2026-11-02T03:00:00Z'));
+  const model=f.c.window.HaniOrganizationHub.overviewData({boardPosts:mascotIds.map(authorId=>({id:authorId,authorId,createdAt:'2026-11-02T00:00:00Z'}))},[],roster,Date.parse('2026-11-02T03:00:00Z'));
   assert.equal(model.stats.find(s=>s.label==='AI 직원').value,19);
   assert.equal(model.employee,null,'a mascot post cannot become employee of the month');
   const base=vm.createContext({window:{},document:{getElementById:()=>null,querySelectorAll:()=>[]}});
@@ -67,24 +72,24 @@ test('canonical tab selection hides the chart and mascots together; no missing p
   api.selectTab('aiTeam');assert.equal(f.node('#ogh-chart').hidden,true);assert.equal(f.node('#ogh-count').textContent,'10 PEOPLE');
   api.selectTab('archive');assert.equal(f.node('#ogh-chart').hidden,true);
   api.selectTab('people');assert.equal(f.node('#ogh-chart').hidden,false);assert.equal(f.node('#ogh-count').textContent,'19 PEOPLE');
-  for(const id of ['cheese','cream','mochi'])assert.equal(api.openPerson(id),false);
+  for(const id of mascotIds)assert.equal(api.openPerson(id),false);
   assert.equal(f.node('dialog').open,false);
 });
-test('actual board polls, staff ballots and activity ranks exclude all three mascots',()=>{
+test('actual board polls, staff ballots and activity ranks exclude all four mascots',()=>{
   const f=createBannerFixture(Date.parse('2026-11-30T14:59:59Z'));
   const thread=f.c.HaniBoardLibrary.threads.find(t=>t.id==='queen-2026-11');
   const options=Array.from(thread.poll.options);
   assert.equal(options.length,19);assert.equal(new Set(options).size,19);
-  for(const name of ['치즈','크림','모찌'])assert.ok(!options.includes(name));
-  const post={id:'poll',libraryId:thread.id,createdAt:'2026-11-03T08:00:00+09:00',poll:{options,votes:{cheese:0,cream:1,mochi:2}}};
+  for(const name of ['치즈','크림','모찌','보리'])assert.ok(!options.includes(name));
+  const post={id:'poll',libraryId:thread.id,createdAt:'2026-11-03T08:00:00+09:00',poll:{options,votes:{cheese:0,cream:1,mochi:2,bori:3}}};
   const ballots=Array.from(f.c.queenStaffBallots(post));
   assert.equal(ballots.length,19);assert.ok(ballots.every(b=>ids.includes(b.authorId)));
   assert.equal(f.c.queenStandings(post).named,19);
   const ranks=Array.from(f.c.window.HaniBoard.weeklyActivity());
   assert.equal(ranks.length,19);assert.ok(ranks.every(r=>ids.includes(r.id)));
 });
-test('nine actual WebP portraits decode at staff dimensions and thumbnail dimensions',async()=>{
-  for(const id of ['cheese','cream','mochi'])for(const size of [720,256,128]){
+test('eleven approved WebP portraits decode at their full and thumbnail dimensions',async()=>{
+  for(const id of mascotIds)for(const size of portraitSizes(id)){
     const path=size===720?`assets/profiles/hani-profile-${id}.webp`:`assets/profiles/thumb/hani-profile-${id}-${size}.webp`;
     // URL file paths may contain non-ASCII Windows names; use Buffer for portability.
     const buffer=fs.readFileSync(new URL('../'+path,import.meta.url));
@@ -93,10 +98,10 @@ test('nine actual WebP portraits decode at staff dimensions and thumbnail dimens
     assert.equal((await sharp(buffer).raw().toBuffer({resolveWithObject:true})).info.width,size);
   }
 });
-test('responsive portraits include Mochi; approved sprite joins residents and closure stays at most 160',async()=>{
+test('responsive portraits include all four companions; approved sprite and closure remain complete',async()=>{
   const closure=await resolveRuntimeClosure({exists:f=>fs.existsSync(new URL('../'+f,import.meta.url)),read});
   assert.deepEqual(closure.missing,[]);assert.ok(closure.files.length<=200);
-  for(const id of ['cheese','cream','mochi'])for(const size of [720,256,128]){
+  for(const id of mascotIds)for(const size of portraitSizes(id)){
     const path=size===720?`assets/profiles/hani-profile-${id}.webp`:`assets/profiles/thumb/hani-profile-${id}-${size}.webp`;
     assert.ok(closure.files.includes(path),path);assert.ok(css.includes("url('./"+path+"')"));
   }
@@ -104,7 +109,7 @@ test('responsive portraits include Mochi; approved sprite joins residents and cl
   assert.ok(!closure.files.includes('artifacts/office-pets-npc/pet-rabbit.webp'));
   assert.ok(closure.files.includes('assets/sprites-v3/pet-rabbit.webp'));
   assert.equal(hash(fs.readFileSync(new URL('../assets/sprites-v3/pet-rabbit.webp',import.meta.url))),'dd0e60bde7eb949bac0d491b659d2d93720e042b172c328457a7e9f29975ec2f','only approved rabbit bytes shipped');
-  console.log(JSON.stringify({closure:closure.files.length,limit:160,missing:closure.missing.length}));
+  console.log(JSON.stringify({closure:closure.files.length,limit:200,missing:closure.missing.length}));
 });
 test('Mochi atlas decodes ten contained left/right frames, distinct hop phases and translucent shadows',async()=>{
   const buffer=fs.readFileSync(new URL('../assets/sprites-v3/pet-rabbit.webp',import.meta.url));
@@ -268,8 +273,12 @@ test('frame: steady frames add no layout reads or writes; all staff/visitor/resi
   for(let i=0;i<20;i++){f.setDateTime('2026-11-02T10:00:00.'+String(i*5).padStart(3,'0')+'+09:00');f.timers.find(t=>t.ms===100).fn()}
   assert.equal(reads,0);assert.equal(f.writes.length,0);
   const sceneEnd='/* Read-only Living Office.';
-  assert.equal(hash(officeSource.slice(0,officeSource.indexOf(sceneEnd))),'732be6ee8c4ac02ae0e9d984311c2c43c9e6192fd2468eac48c98b7b05190f91','frozen entire scene/scheduler/residents source bytes (residents updated by pets-affection; staff plans are proven by the tlayout and residents pins)');
-  const old=frameScene({transform:source=>reapplyTlayoutSource(restoreResidentsSource(source))}).scene,current=frameScene().scene;
+  // v272 / c338bda and later approved companion releases change resident bytes; keep exact v289 scene equality.
+  const approved=readApprovedSource('hani-office-live.js');assert.ok(officeSource.includes(sceneEnd)&&approved.includes(sceneEnd));
+  assert.equal(officeSource.slice(0,officeSource.indexOf(sceneEnd)),approved.slice(0,approved.indexOf(sceneEnd)),'entire approved scene/scheduler/residents source bytes');
+  // v261 / 41a91fb and v272+ intentionally change desk/resident plans. Execute the approved full owner instead.
+  for(const file of ['data/hani-building/spatial-contract.json','data/hani-building/art-map-v1.json','data/hani-building/office-places.json','assets/data/office-actions-221.json'])assert.equal(read(file),readApprovedSource(file),file+' approved scheduling inputs');
+  const old=frameScene({transform:()=>approved}).scene,current=frameScene().scene;
   for(const day of ['2026-10-31','2026-11-01','2026-11-02','2026-11-30','2026-12-01'])for(const chairmanPresent of [false,true]){
     const options={chairmanPresent},plan=current.scheduler.plan(day,options),previous=old.scheduler.plan(day,options);
     assert.equal(JSON.stringify(plan),JSON.stringify(previous));assert.equal(JSON.stringify(current.scheduler.blockPlan(day,0,plan,options)),JSON.stringify(old.scheduler.blockPlan(day,0,previous,options)));
@@ -281,13 +290,14 @@ test('frame: steady frames add no layout reads or writes; all staff/visitor/resi
   }
 });
 
-test('frame: portrait file is gone, shared banner decodes, closure loses only the portrait and protected files retain frozen bytes',async()=>{
+test('frame: portrait file is gone, shared banner decodes and closure matches approved shipped inventory',async()=>{
   assert.equal(fs.existsSync(new URL('../'+portraitPath,import.meta.url)),false);
   assert.doesNotMatch(officeCss,/queen-poster|poster-2026-10/);
   const file=fs.readFileSync(new URL('../'+bannerPath,import.meta.url)),meta=await sharp(file).metadata();
   assert.equal(meta.format,'webp');assert.deepEqual([meta.width,meta.height],[1600,400]);
   const closure=await resolveRuntimeClosure({exists:fs.existsSync,read:fs.readFileSync});assert.ok(closure.files.includes(bannerPath));assert.ok(!closure.files.includes(portraitPath));assert.ok(closure.files.length<=200);assert.deepEqual(closure.missing,[]);
-  assert.equal(hash(JSON.stringify([...closure.files,portraitPath].sort())),'27e69a83e1d076a2ec278876ab8fe6041846a958af64a91a70c438a522f3a799','previous frozen inventory loses exactly the portrait');
-  assert.equal(hash(JSON.stringify([...closure.files].sort())),'73680703cbd8d17cba268db3a5b51f56842843b6dccaf9b3773cfdde61a9cace','exact shipped closure');
-  console.log(JSON.stringify({frame:[1171,73,176,107],closureBefore:closure.files.length+1,closure:closure.files.length,limit:160,missing:0}));
+  // v272 / c338bda adds Bori assets; v283 / a28918d adds runtime owners. Compare the full approved v289 list.
+  const approved=await approvedRuntimeClosure();assert.deepEqual(approved.missing,[]);
+  assert.deepEqual(closure.files,approved.files,'exact approved shipped closure; no unexpected additions or omissions');
+  console.log(JSON.stringify({frame:[1171,73,176,107],closure:closure.files.length,limit:200,missing:0}));
 });
