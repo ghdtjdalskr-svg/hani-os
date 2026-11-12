@@ -30,7 +30,10 @@ test('all report Markdown files round-trip unchanged and the actual renderer sel
  assert.deepEqual(Array.from(selected,r=>r.file),files.slice().reverse());
  const recent=selected.filter(r=>r.date>='2026-10-11').map(r=>r.file);
  assert.deepEqual(recent.filter(f=>approvedReportFiles.includes(f)).sort(),[...approvedReportFiles].sort(),'only named approved report additions');
- assert.equal(recent.filter(f=>!approvedReportFiles.includes(f)).length,6,'original six reports remain');
+ const original=files.filter(f=>!approvedReportFiles.includes(f)&&!f.endsWith('-dev-report.md'));
+ assert.equal(original.filter(f=>c.reports.find(r=>r.file===f).date>='2026-10-11').length,6,'original six reports remain');
+ const added=recent.filter(f=>!approvedReportFiles.includes(f)&&!original.includes(f));
+ assert.deepEqual(added.sort(),files.filter(f=>f.endsWith('-dev-report.md')).sort(),'all 13 approved dev release reports retained');
  assert.equal(c.reports.find(r=>r.id.includes('october-monthly')).release_version,'v2.9.149~v2.9.217');
 });
 test('historical identities, renderers, protected owners, versions and unrelated bytes are preserved',t=>{

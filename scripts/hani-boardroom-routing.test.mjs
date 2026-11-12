@@ -3,7 +3,8 @@ import fs from "node:fs";
 import { stripTypeScriptTypes } from "node:module";
 import vm from "node:vm";
 
-const sourcePath = process.argv[2];
+// The original explicit Edge-source argument remains supported.
+const sourcePath = process.argv[2] || new URL('../supabase/functions/hani-agent-orchestrator/index.ts', import.meta.url);
 assert.ok(sourcePath, "pass rebuilt Edge Function source path");
 const source = fs.readFileSync(sourcePath, "utf8");
 const objectStart = source.indexOf("function asObject(value:");

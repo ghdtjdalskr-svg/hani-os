@@ -1,3 +1,5 @@
+import './hani-m9-polish-preload.cjs';
+import './hani-m9-link-preload.cjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

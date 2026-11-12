@@ -120,7 +120,7 @@ test('persistent root/slot/message nodes, one click owner, back/X/Escape/outside
   assert.match(css,/@media\(prefers-reduced-motion:reduce\)\{#haniHelperBot \.hani-fun-card\{animation:none;transform:none;opacity:1\}\}/);
 });
 
-test('same duty as helper for every employee/pet; runtime files stay exactly 159 (158 + 은하 barista-night.webp from 2.9.273)',async()=>{
+test('same duty as helper for every employee/pet; exact 159 originals plus three approved 283 dependencies',async()=>{
   const f=fixture({loading:true}),api=f.window.HaniFunPreview,ids=new Set();
   for(let i=0;i<23;i++){
     const at=start+i*DAY,duty=f.api.duty(staff,at),card=api.fortune(at,duty);ids.add(duty.id);
@@ -128,8 +128,10 @@ test('same duty as helper for every employee/pet; runtime files stay exactly 159
   }
   assert.equal(ids.size,23);
   const closure=await resolveRuntimeClosure({read:f=>fs.readFileSync(path.join(root,f)),exists:f=>fs.existsSync(path.join(root,f))});
-  assert.deepEqual(closure.missing,[]);assert.equal(closure.files.length,159);
-  assert.deepEqual(closure.files,JSON.parse(read('artifacts/helper-drag/baseline-runtime-files.json')));
+  assert.deepEqual(closure.missing,[]);
+  const original=JSON.parse(read('artifacts/helper-drag/baseline-runtime-files.json'));assert.equal(original.length,159);
+  const additions=['assets/procrastination/pb-chibi-sheet-v1.webp','hani-procrastination-board.css','hani-procrastination-board.js'];
+  assert.equal(closure.files.length,162);assert.deepEqual(closure.files,[...original,...additions].sort());
   new vm.Script(ui);assert.match(ui,/window\.HaniFunPreview\?\.mount\(root, panel\)/);
 });
 

@@ -2,11 +2,12 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-const dir=path.resolve(process.argv[2]),root=path.resolve(import.meta.dirname,'..');
+import repository from './hani-test-repository-evidence.cjs';
+const dir=process.argv[2]?path.resolve(process.argv[2]):null,root=path.resolve(import.meta.dirname,'..');
 const files=['hani-main.js','index.html','hani-ai-budget.js','hani-ai-budget-core.js','hani-investment-committee.js','scripts/hani-ai-budget-bridge.mjs'];
 const beforeIds=new Map(),afterIds=new Map();
 for(const file of files){
-  const old=fs.readFileSync(path.join(dir,file.replaceAll('/','-')),'utf8'),now=fs.readFileSync(path.join(root,file),'utf8');
+  const old=dir?fs.readFileSync(path.join(dir,file.replaceAll('/','-')),'utf8'):repository.read(repository.baseline,file),now=fs.readFileSync(path.join(root,file),'utf8');
   const calls=s=>Array.from(s.matchAll(/\blocalStorage\s*\.\s*(?:setItem|removeItem|clear)\s*\([^\n]*/g),m=>m[0]);
   assert.deepEqual(calls(now),calls(old),file+' no new or changed app localStorage writes');
   assert.equal((now.match(/\.clear\s*\(/g)||[]).length,(old.match(/\.clear\s*\(/g)||[]).length,file+' no new clear');
