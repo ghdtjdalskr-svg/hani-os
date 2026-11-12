@@ -5,12 +5,12 @@
 - 작업 ID / 제목: office-tap-bubble / 직원을 눌러도 말풍선이 가끔 안 뜨는 문제
 - 갱신 시각(KST): 2026-11-12
 - 담당 도구 / 검토 담당: Claude Code(서윤)
-- 상태: 승인 대기(미리보기) · 배포 열차 탑승 대기
+- 상태: 미리보기 승인 완료(2026-11-13) · 배포 열차 탑승 대기
 - 저장소 / branch / worktree: ghdtjdalskr-svg/hani-os / `hani/office-tap-bubble` / `.claude/worktrees/bold-bell-72a3b1`
 - base SHA: origin/main `49096deb9ca99790c48106bbff7ec275273b1b52` (재현은 `7769fbe`, 두 SHA 사이 runtime 변경 없음)
 - 목표 / 완료 조건: 사용자가 직원을 누르면 항상 그 직원 말풍선이 열린다.
 - 수정 파일·범위: `hani-office-live.js` 1줄(IntersectionObserver 콜백). 표시 버전·`?v=`·`HANI_DISPLAY_VERSION` 미변경(§11).
-- 승인 근거: 회장님 지시(2026-11-12) “hani/office-tap-bubble 브랜치에서 수정, 배포·머지는 승인 전 금지”.
+- 승인 근거: 회장님 지시(2026-11-12) “hani/office-tap-bubble 브랜치에서 수정, 배포·머지는 승인 전 금지”. 2026-11-13 회장님 채팅 “승인” = 미리보기 승인(배포·머지 승인 아님, 열차에서 “배포준비해” 필요).
 
 ## 원인
 
@@ -41,5 +41,5 @@
 
 ## 다음 담당에게
 
-- 다음 행동: 회장님 미리보기 승인 → 배포 열차 탑승.
+- 다음 행동: 미리보기 승인 완료(11/13) → 배포 열차 탑승 대기, 회장님 “배포준비해” 시 열차에 합침.
 - 다른 작업 영향: `hani/join-ieum`도 같은 줄(`entries[0]`)을 갖고 있어 열차에서 합칠 때 이 수정이 함께 적용되는지 확인.
