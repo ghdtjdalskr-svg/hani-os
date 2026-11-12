@@ -1,3 +1,11 @@
+# 2026-11-13 · tooling-290b · frozen JSON 입력 추가 보정 (도연 / Codex)
+
+`hani/tooling-290` / base `5ab007b`(HEAD/ref 파일 읽기만, 원격 최신성 미확인). **onboarding spatial helper·obr6 places 입력에 기존 이음 project만 적용, 단언·해시·숫자 보존. 비 Git 5파일 54PASS·syntax2/2·JSON7핀 일치.** 검색56시험에서 추가 누락 미발견, 기존 shared fixture 경로 정상 입력 확인. 지정2개 포함 Git 필요16시험·Edge는 미실행/서윤 인계, office-219 기존 실패 미수정. 운영·버전·Git 명령·배포 없음. Notion HANI-86 쓰기는 자동 승인 never 거절로 갱신 대기. [추가 수정 보고서](../../artifacts/join-ieum/TOOLING-290.md) · [인수인계](handoffs/2026-11-13-tooling-290.md). 아래 과거 결과 보존.
+
+# 2026-11-13 · tooling-290 · 이음 후속 시험 층 (도연 / Codex)
+
+`hani/tooling-290` / 로컬 HEAD `5ab007b`(HEAD/ref 읽기, Git 명령·원격 조회 없음). **290 버전/연혁 → frozen 이음 → 공통 289 이하 exact inverse 연결, M9 기본 실행·HD/164/19 단언 보존. 지정77파일 835PASS·Git단언30차단/시작6파일차단·성능1FAIL·skip3.** 핵심5파일 외부 preload 없이62PASS, syntax13/13·운영504파일 불변·시험 JSON4복원·기존 실패22파일 미수정. cafe-rest는 289 핀 입력 단독 출근best426.3453ms/기존400ms로 미해결, 서윤 Git·Edge·성능 재검증 인계. Git/commit/push/PR/merge/버전/배포 없음. Notion 착수 쓰기 자동 승인 never 거절로 갱신 대기. [보고서](../../artifacts/join-ieum/TOOLING-290.md) · [인수인계](handoffs/2026-11-13-tooling-290.md). 아래 과거·타 담당 기록 보존.
+
 # 2026-11-08 · 저장 안전장치 01+07 (Codex / audit-safe)
 
 `hani/audit-safety-284` / 착수·최종 HEAD `3ab1177` / 로컬 origin/main 참조 `5c375d9`(Git 금지·원격 새 조회 없음). **다른 탭 저장 잠금·입력 보존 안내, Cloud 수신 기존 validator 적용**. 운영 변경은 hani-main.js 하나, 표시/cache2.9.284·내부 버전·보호 키 유지, localStorage setItem18→18/remove5→5/clear0→0. **신규10/10·syntax14/14·closure164불변/누락0, 전체122명령67통과·Git38차단·기타차단14·수정전재현실패3. office69파일41통과/28Git차단·744통과/36차단/3skip·Git외실패0.** Edge는 spawn EPERM 및 Windows IPC Access denied로 실제 두 탭·1280/390 PNG 미검증. 생성JSON4복원·신규시험JSON1제거·범위밖변경0. Git/commit/push/merge/버전증가/배포 없음, **서윤 검토·커밋 및 차단 검증 대기**. Notion insert_content는 자동 승인 never 거절로 미반영. [보고서](../../artifacts/save-guard/REPORT.md) · [인수인계](handoffs/2026-11-08-save-guard.md). 아래 기존 기록 보존.
