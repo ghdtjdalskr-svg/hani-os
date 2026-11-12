@@ -6,7 +6,7 @@
   "layout": "Only row 0 columns 0..3 are populated: standing, sitting, walk-a, walk-b. Other cells are transparent reserved capacity. This is the user-requested front-only four-pose subset, not a completed four-direction animation set. Resident humans use the same four columns; pets use five poses in left/right rows.",
   "shadow": "Generated translucent floor shadow included per frame. Do not double-render; future split shadow pass requires mask/extraction work.",
   "pivotMeaning": "Bottom center of included floor shadow; chair/desk masking must be validated by runtime owner.",
-  "spriteBytes": 1173194,
+  "spriteBytes": 1205496,
   "maxSpriteBytes": 1475000,
   "entries": [
     {
@@ -5044,6 +5044,138 @@
         "partial": 26860,
         "opaque": 1466
       }
+    },
+    {
+      "id": "ieum",
+      "name": "이음",
+      "kind": "human",
+      "planned": false,
+      "file": "ieum.webp",
+      "sizeBytes": 32302,
+      "sha256": "c276dec44aeb2c022d32bddf6f3b66f514137dda90106dd54cc34a48e43a0ddf",
+      "sourceSha256": "95644ec0a6c9516b8f61d71378ace41508d5918673edc234158ec24355ae36f9",
+      "sourceRowSplit": 668,
+      "identityReference": "../profiles/hani-profile-ieum.webp",
+      "atlas": [
+        1152,
+        1536
+      ],
+      "cell": [
+        144,
+        192
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            33,
+            15,
+            77,
+            168
+          ],
+          "sourceRect": [
+            199,
+            18,
+            291,
+            638
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            144,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            36,
+            36,
+            72,
+            147
+          ],
+          "sourceRect": [
+            671,
+            58,
+            291,
+            598
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            288,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            35,
+            24,
+            74,
+            159
+          ],
+          "sourceRect": [
+            199,
+            686,
+            291,
+            626
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            432,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            36,
+            24,
+            72,
+            159
+          ],
+          "sourceRect": [
+            679,
+            686,
+            288,
+            632
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 1737944,
+        "partial": 30310,
+        "opaque": 1218
+      },
+      "maxBytes": 100000,
+      "generator": "built-in image_gen",
+      "scale": 3,
+      "quality": 88
     }
   ],
   "scale": 3,
