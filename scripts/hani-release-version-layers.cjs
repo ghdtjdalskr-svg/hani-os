@@ -47,6 +47,8 @@ function restoreVersionLayer(source,file,version){
 // newsroom feature inverse. Unknown input remains for strict callers to reject.
 // Release 289 changed only versions/history, so its exact layer is peeled first.
 function projectPreRelease289Source(source,file){
+ // The unreleased tap-bubble fix is newer than 289; peel its exact pair first.
+ source=require('./hani-office-tap-bubble-source.cjs').projectPreTapBubbleSource(source,file);
  const row=getLayer('2.9.289').files[file];
  return row&&hash(source)===row.after?restoreVersionLayer(source,file,'2.9.289'):source;
 }
@@ -58,6 +60,7 @@ function projectPreRelease288Source(source,file){
 // Projection dispatch accepts only pinned inputs; drift is left for the caller's
 // strict lower-layer assertion to reject. It never normalizes arbitrary versions.
 function project(source,file,target,features,keepFeature=false){
+ source=require('./hani-office-tap-bubble-source.cjs').projectPreTapBubbleSource(source,file);
  const boundary=number(target);
  assert.ok(layers.some(row=>row.from===target||row.to===target),'known release target '+target);
  for(const layer of layers){

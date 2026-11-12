@@ -4,9 +4,11 @@ import {loadScene,at} from './hani-office-lively-fixture.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';import {assets} from './hani-office-v2-fixture.mjs';
 import mainOffice from './hani-office-kids-main-source.cjs';
 import daily from './hani-office-kids-daily-source.cjs';
+import tapBubble from './hani-office-tap-bubble-source.cjs';
 import inverse from './hani-office-kids-weekday-source.cjs';import poseB from './hani-office-kids-pose-b-source.cjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
-const dailyRaw=fs.readFileSync('hani-office-live.js','utf8'),raw=daily.restoreKidsDailySource(dailyRaw),base=inverse.restoreKidsWeekdaySource(raw),plain=x=>JSON.parse(JSON.stringify(x));
+// The daily layer's own checks see it as the outermost layer: peel only the newer exact tap-bubble pair.
+const dailyRaw=tapBubble.projectPreTapBubbleSource(fs.readFileSync('hani-office-live.js','utf8')),raw=daily.restoreKidsDailySource(dailyRaw),base=inverse.restoreKidsWeekdaySource(raw),plain=x=>JSON.parse(JSON.stringify(x));
 const {scene,table}=loadScene(),r=scene.residents,old=loadScene({transform:inverse.projectPreKidsWeekdaySource}).scene;
 const previous=loadScene({transform:daily.restoreKidsDailySource}).scene.residents;
 const chair=(floor='4f',extra={})=>({floors:[{id:floor,people:[{id:'seongmin',floor,position:[51,70],pose:'sitting',walking:false,facing:'right',...extra}]}]});
@@ -24,7 +26,7 @@ function weekendEqual(actual,before){
 }
 
 test('daily exact outer inverse round-trips mixed EOL bytes, keeps frozen weekday/B/main assertions and rejects all drift',()=>{
- const bytes=fs.readFileSync('hani-office-live.js'),before=daily.restoreKidsDailySource(bytes);
+ const bytes=tapBubble.projectPreTapBubbleSource(fs.readFileSync('hani-office-live.js')),before=daily.restoreKidsDailySource(bytes);
  assert.deepEqual(before,Buffer.from(raw));assert.equal(daily.hash(before),daily.delta.beforeSha256);
  assert.equal(daily.delta.replacements.length,1);
  let forward=raw;

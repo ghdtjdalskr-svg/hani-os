@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "baseCommit": "49096deb9ca99790c48106bbff7ec275273b1b52",
+  "file": "hani-office-live.js",
+  "beforeSha256": "1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850",
+  "afterSha256": "e5ec146ddcaaafee41b8e3b323c3514daae19b40c35458eae1351962f25b9af8",
+  "before": "new IntersectionObserver(entries=>{mapOnScreen=entries[0].isIntersecting;syncVisibility()})",
+  "after": "new IntersectionObserver(entries=>{mapOnScreen=entries[entries.length-1].isIntersecting;syncVisibility()})"
+}
