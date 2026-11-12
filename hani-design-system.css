@@ -2082,3 +2082,22 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 #newsroom .newsroom-4cut .newsroom-4cut-cuts li{grid-template-columns:auto 1fr;align-items:baseline;column-gap:10px;border-bottom-style:dashed}
 #newsroom .newsroom-4cut .newsroom-4cut-cuts li:last-child{border-bottom:0}
 #newsroom .newsroom-4cut .newsroom-4cut-cuts b{color:var(--control-accent,inherit);white-space:nowrap}
+
+/* Theme contrast: pair quiz ink with its Finish surface, including graded results. */
+#app #study .study-exam-sheet{color:var(--text-primary);background:var(--surface-panel)!important}
+#app #study .study-exam-sheet .study-question{color:var(--text-primary);background:var(--surface-raised)}
+#app #study .study-exam-sheet :is(.study-exam-head h3,.study-question h4,.study-exam-stamp>b){color:var(--text-primary)}
+#app #study .study-exam-sheet :is(.study-exam-head p,.study-exam-stamp>span,.study-exam-kicker){color:var(--text-secondary)}
+#app #study .study-exam-sheet .study-choice{color:var(--text-primary);background:var(--surface-raised)}
+#app #study .study-exam-sheet .study-choice:hover{background:var(--surface-panel)}
+#app #study .study-exam-sheet .study-choice.is-correct{background:color-mix(in srgb,#5ec58b 14%,var(--surface-raised))}
+#app #study .study-exam-sheet .study-choice.is-wrong{background:color-mix(in srgb,#ee8c8c 14%,var(--surface-raised))}
+#app #study .study-exam-sheet .study-choice:has(input:disabled) span{color:var(--text-secondary);opacity:1}
+#app #study .study-exam-sheet .study-dispute{color:var(--text-primary);border-color:var(--border-strong)}
+#app #study :is(.study-wrong-group,.study-wrong-answer>div,.study-retry,.study-history-card){color:var(--text-primary);background:var(--surface-raised)}
+#app #study :is(.study-wrong-row p,.study-wrong-group-title span){color:var(--text-secondary)}
+#app #study .study-retry .study-choice{color:var(--text-primary);background:var(--surface-raised)}
+/* Theme contrast: dark Finish surfaces keep headings and counts readable. */
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #procrastination .pb-header #procrastinationTitle{color:var(--text-primary)}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #deployTechnicalDetails .deploy-hero-top h4{color:var(--text-primary)}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #haniOfficeLive .hani-building-rooms p{color:var(--text-secondary)}
