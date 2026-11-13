@@ -1,11 +1,11 @@
 {
-  "base": "e1f3ac7e944484b09fe102464b22ef6e66204d9a",
-  "head": "4701b5853bd289df7ce5febea38fd8da32b3cea9",
+  "base": "bcc588ba634cc28ca9922210153f1cffec6d9e91",
+  "head": "0e8f385df27d9518620e65e8a03150ff1c61b077",
   "identity": {
     "index.html": "73d7844a2e28fe00091111d801e6f5df294dbb637760e3e4855a543848869d79",
-    "hani-main.js": "ecf1d2d6a625dc313c75bfe2d65addffdc739796babc1bbde868c1954ac186b5",
+    "hani-main.js": "0455b9b264da756e16d29c78b5077551bc8b8c9701684142b54b1f28829e92cf",
     "hani-design-system.css": "38e127ac1cb59fca96575a65d2ebe64004ffd4c33c0696858da2cfdf7db2205c",
-    "hani-theme-collections.json": "1e7797401b2d5bc6c60cdd0e0cf88de00e0368378ce491863b947e1312901061"
+    "assets/theme-collections/collections.json": "d12ce25ee16ecf92ab562eb548e2d6624a284de224e610702b7d24b68e07ceb9"
   },
   "viewports": [
     {
@@ -16,7 +16,7 @@
       "studioPassiveWrites": 0,
       "studioVisible": true,
       "homeVisible": false,
-      "art": "http://127.0.0.1:9867/assets/theme-collections/thaw-2027q1/teaser-wide.webp",
+      "art": "http://127.0.0.1:1746/assets/theme-collections/thaw-2027q1/teaser-wide.webp",
       "lifePreserved": true
     },
     {
@@ -27,7 +27,7 @@
       "studioPassiveWrites": 0,
       "studioVisible": true,
       "homeVisible": true,
-      "art": "http://127.0.0.1:9867/assets/theme-collections/thaw-2027q1/teaser-wide.webp",
+      "art": "http://127.0.0.1:1746/assets/theme-collections/thaw-2027q1/teaser-wide.webp",
       "lifePreserved": true
     },
     {
@@ -38,7 +38,7 @@
       "studioPassiveWrites": 0,
       "studioVisible": true,
       "homeVisible": true,
-      "art": "http://127.0.0.1:9867/assets/theme-collections/thaw-2027q1/teaser-wide.webp",
+      "art": "http://127.0.0.1:1746/assets/theme-collections/thaw-2027q1/teaser-wide.webp",
       "lifePreserved": true
     },
     {
@@ -49,7 +49,7 @@
       "studioPassiveWrites": 0,
       "studioVisible": true,
       "homeVisible": false,
-      "art": "http://127.0.0.1:9867/assets/theme-collections/thaw-2027q1/teaser-wide.webp",
+      "art": "http://127.0.0.1:1746/assets/theme-collections/thaw-2027q1/teaser-wide.webp",
       "lifePreserved": true
     },
     {
@@ -60,7 +60,7 @@
       "studioPassiveWrites": 0,
       "studioVisible": true,
       "homeVisible": false,
-      "art": "http://127.0.0.1:9867/assets/theme-collections/thaw-2027q1/teaser-mobile.webp",
+      "art": "http://127.0.0.1:1746/assets/theme-collections/thaw-2027q1/teaser-mobile.webp",
       "lifePreserved": true
     },
     {
@@ -71,7 +71,7 @@
       "studioPassiveWrites": 0,
       "studioVisible": true,
       "homeVisible": true,
-      "art": "http://127.0.0.1:9867/assets/theme-collections/thaw-2027q1/teaser-mobile.webp",
+      "art": "http://127.0.0.1:1746/assets/theme-collections/thaw-2027q1/teaser-mobile.webp",
       "lifePreserved": true
     },
     {
@@ -82,7 +82,7 @@
       "studioPassiveWrites": 0,
       "studioVisible": true,
       "homeVisible": true,
-      "art": "http://127.0.0.1:9867/assets/theme-collections/thaw-2027q1/teaser-mobile.webp",
+      "art": "http://127.0.0.1:1746/assets/theme-collections/thaw-2027q1/teaser-mobile.webp",
       "lifePreserved": true
     },
     {
@@ -93,7 +93,7 @@
       "studioPassiveWrites": 0,
       "studioVisible": true,
       "homeVisible": false,
-      "art": "http://127.0.0.1:9867/assets/theme-collections/thaw-2027q1/teaser-mobile.webp",
+      "art": "http://127.0.0.1:1746/assets/theme-collections/thaw-2027q1/teaser-mobile.webp",
       "lifePreserved": true
     }
   ],
@@ -346,7 +346,7 @@
     {
       "width": 1280,
       "phase": "before",
-      "path": "/hani-theme-collections.json",
+      "path": "/assets/theme-collections/collections.json",
       "status": 200
     },
     {
@@ -358,7 +358,7 @@
     {
       "width": 1280,
       "phase": "teaser",
-      "path": "/hani-theme-collections.json",
+      "path": "/assets/theme-collections/collections.json",
       "status": 200
     },
     {
@@ -370,7 +370,7 @@
     {
       "width": 1280,
       "phase": "launch",
-      "path": "/hani-theme-collections.json",
+      "path": "/assets/theme-collections/collections.json",
       "status": 200
     },
     {
@@ -382,7 +382,7 @@
     {
       "width": 1280,
       "phase": "after",
-      "path": "/hani-theme-collections.json",
+      "path": "/assets/theme-collections/collections.json",
       "status": 200
     },
     {
@@ -394,7 +394,7 @@
     {
       "width": 390,
       "phase": "before",
-      "path": "/hani-theme-collections.json",
+      "path": "/assets/theme-collections/collections.json",
       "status": 200
     },
     {
@@ -406,7 +406,7 @@
     {
       "width": 390,
       "phase": "teaser",
-      "path": "/hani-theme-collections.json",
+      "path": "/assets/theme-collections/collections.json",
       "status": 200
     },
     {
@@ -418,7 +418,7 @@
     {
       "width": 390,
       "phase": "launch",
-      "path": "/hani-theme-collections.json",
+      "path": "/assets/theme-collections/collections.json",
       "status": 200
     },
     {
@@ -430,7 +430,7 @@
     {
       "width": 390,
       "phase": "after",
-      "path": "/hani-theme-collections.json",
+      "path": "/assets/theme-collections/collections.json",
       "status": 200
     },
     {

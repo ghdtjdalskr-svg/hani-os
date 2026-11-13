@@ -1,3 +1,7 @@
+# 2026-11-13 · THAW JSON 위치 이동 (도연 / Codex)
+
+`hani/theme-thaw` / 착수 HEAD `0e8f385` / 전달·로컬 main `bcc588b`(#502, 객체 읽기만·원격 새 조회 없음). **assets/theme-collections/collections.json 추가·JSON 기준 그림 URL 해석·294 연혁 title/subject 축약. raw171→171/JSON1+WebP2/누락0, main293 168·frozen289 164. 지정87파일 중 비Git60파일 729PASS/실패0/skip1·Git27파일 목록만, office 비Git46파일610PASS.** 다른 시험281·fixture110·루트JSON·그림·게이트·표시/cache293·저장/Cloud 보존, 부산물4복원·새street증거이관. Git·Edge·commit/push·main 재병합·배포 없음. 서윤 실제 Git/Edge 확인·커밋 인계. Notion 착수 append는 자동 승인 never 거절로 미반영. [보고서 JSON 위치 이동 절](../../artifacts/theme-thaw/REPORT-294.md#json-위치-이동) · [인수인계](handoffs/2026-11-13-theme-thaw-move.md). 아래 기존 기록 보존.
+
 # 2026-11-13 · THAW main293 재정비 (도연 / Codex)
 
 `hani/theme-thaw` / HEAD `4701b58` / 전달·로컬 main `e1f3ac7`(ref/객체 확인만). **운영 수정0·THAW exact inverse → 293 이하 기존 시험 층 연결, 단언·숫자·hash 보존. 99파일956PASS/31Git차단/skip4·비Git실패0, office73파일791PASS. raw171→168→164/누락0·기존fixture110 보존.** 11~12월 홈 홍보는 없으나 SEASON에는 잠긴 THAW 행이 보임. 4시점×1280/390 browser 실행기 준비, 실제 Edge/PNG 미실행. Git 명령·commit/push·버전 증가·merge·배포 없음, 서윤 검증 인계. Notion append는 자동 승인 never 거절로 갱신 대기. [보고서](../../artifacts/theme-thaw/REPORT-294.md) · [인수인계](handoffs/2026-11-13-theme-thaw-294.md). 아래 기존·타 담당 기록 보존.

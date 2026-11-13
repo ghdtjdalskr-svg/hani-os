@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {pathToFileURL} from 'node:url';
 const root=path.resolve(import.meta.dirname,'../..'),out=import.meta.dirname;
-const report={base:'e1f3ac7e944484b09fe102464b22ef6e66204d9a',head:'4701b5853bd289df7ce5febea38fd8da32b3cea9',identity:Object.fromEntries(['index.html','hani-main.js','hani-design-system.css','hani-theme-collections.json'].map(f=>[f,createHash('sha256').update(fs.readFileSync(path.join(root,f))).digest('hex')])),viewports:[],screenshots:[],errors:[],cases:[],fetches:[]};
+const report={base:'bcc588ba634cc28ca9922210153f1cffec6d9e91',head:'0e8f385df27d9518620e65e8a03150ff1c61b077',identity:Object.fromEntries(['index.html','hani-main.js','hani-design-system.css','assets/theme-collections/collections.json'].map(f=>[f,createHash('sha256').update(fs.readFileSync(path.join(root,f))).digest('hex')])),viewports:[],screenshots:[],errors:[],cases:[],fetches:[]};
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css','.webp':'image/webp','.png':'image/png','.svg':'image/svg+xml','.json':'application/json'};
 const server=http.createServer((req,res)=>{const uri=decodeURIComponent(new URL(req.url,'http://test').pathname),file=path.resolve(root,'.'+(uri==='/'?'/index.html':uri));if(!file.startsWith(root+path.sep)||uri.split('/').some(x=>x.startsWith('.'))||!fs.existsSync(file)||!fs.statSync(file).isFile()){res.writeHead(404).end();return}res.setHeader('Content-Type',mime[path.extname(file)]||'application/octet-stream');res.end(fs.readFileSync(file))});
 await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
@@ -21,7 +21,7 @@ try{
     await context.route('**/*',r=>new URL(r.request().url()).origin===origin?r.continue():r.abort());
     await context.addInitScript(({now})=>{const Native=Date,clock=Native.parse(now);window.Date=class extends Native{constructor(...args){super(...(args.length?args:[clock]))}static now(){return clock}};localStorage.setItem('hani_os_signature_finish_v1','midnight-black');localStorage.setItem('hani_os_season_theme_v1','winter')},{now});
     const page=await context.newPage();page.on('pageerror',e=>report.errors.push({width,phase,error:e.message}));page.on('dialog',d=>d.dismiss());
-    page.on('response',response=>{const url=new URL(response.url());if(url.pathname.endsWith('/hani-theme-collections.json')||url.pathname.includes('/assets/theme-collections/'))report.fetches.push({width,phase,path:url.pathname,status:response.status()})});
+    page.on('response',response=>{const url=new URL(response.url());if(url.pathname.includes('/assets/theme-collections/'))report.fetches.push({width,phase,path:url.pathname,status:response.status()})});
     await page.goto(origin);await page.waitForFunction(()=>typeof loginGateInitialized!=='undefined'&&loginGateInitialized&&typeof THEME_COLLECTIONS!=='undefined'&&THEME_COLLECTIONS.length===1);
     await page.evaluate(()=>{cloudStopAutoSync();unlockLoginGate();showView('home')});
     await page.evaluate(()=>{window.thawBeforeLife=localStorage.getItem('hani_os_life_v23');window.thawBeforeState=JSON.stringify(state);window.thawWrites=[];for(const method of ['setItem','removeItem','clear']){const old=Storage.prototype[method];Storage.prototype[method]=function(...args){window.thawWrites.push([method,...args]);return old.apply(this,args)}};syncThemeCollections();});
@@ -62,7 +62,7 @@ try{
     }
     assert.equal(await page.evaluate(()=>localStorage.getItem('hani_os_life_v23')===window.thawBeforeLife&&JSON.stringify(state)===window.thawBeforeState),true,'life bytes and in-memory records unchanged');
     if(phase==='teaser'||phase==='launch'){await page.evaluate(()=>showView('home'));await page.locator('[data-collection-dismiss]').click();await page.evaluate(()=>syncThemeCollections());assert.equal(await page.locator('#themeCollectionHome').evaluate(e=>e.hidden),true);}
-    assert.ok(report.fetches.some(r=>r.width===width&&r.phase===phase&&r.path.endsWith('/hani-theme-collections.json')&&r.status===200));
+    assert.ok(report.fetches.some(r=>r.width===width&&r.phase===phase&&r.path.endsWith('/assets/theme-collections/collections.json')&&r.status===200));
     report.viewports.push({width,phase,now,passiveWrites:0,studioPassiveWrites:0,studioVisible:true,homeVisible:phase==='teaser'||phase==='launch',art:studioPassive.art,lifePreserved:true});await context.close();
   }
   assert.deepEqual(report.errors,[]);report.result='PASS';

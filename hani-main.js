@@ -2219,15 +2219,17 @@ const SEASON_COLLECTION_ARTWORK={
   winter:{src:"./assets/seasonal-collection/winter-v2.webp",title:"후드 뒤집어쓰고, 눈싸움!",cast:"하루 · 민지 · 지은 · 수아",alt:"패딩 후드를 쓰고 눈싸움하는 하루·민지·지은·수아"}
 };
 // Quarterly collections exhibit existing Finish × Season choices. No edition IDs
-// enter storage; the adjacent JSON is the single collection/artwork definition.
+// enter storage; the collection JSON is the single collection/artwork definition.
 const THEME_COLLECTIONS=[];
 const themeCollectionMemory={dismissed:new Set(),rows:new Map(),home:null,dialog:null};
-async function loadThemeCollections(read=()=>fetch("./hani-theme-collections.json")){
+async function loadThemeCollections(read=()=>fetch("./assets/theme-collections/collections.json")){
   try{
     const response=await read();if(!response.ok)return false;
     const collections=await response.json();
     if(!Array.isArray(collections)||collections.some(item=>!item.id||!SEASON_THEMES[item.season]||!Number.isFinite(Date.parse(item.launch))||!Array.isArray(item.palette)))return false;
-    THEME_COLLECTIONS.splice(0,THEME_COLLECTIONS.length,...collections);
+    const jsonUrl=response.url||new URL("./assets/theme-collections/collections.json",document.baseURI).href;
+    const resolved=collections.map(collection=>({...collection,art:new URL(collection.art,jsonUrl).href,mobileArt:new URL(collection.mobileArt,jsonUrl).href}));
+    THEME_COLLECTIONS.splice(0,THEME_COLLECTIONS.length,...resolved);
     syncThemeCollections();return true;
   }catch(_){return false} // Unavailable campaign data never affects saved themes.
 }
