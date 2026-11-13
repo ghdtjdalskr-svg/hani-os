@@ -1,4 +1,6 @@
 // Node-only: execute the existing presentation owners against synthetic, immutable data.
+// Ieum is an exact outer layer over this frozen 19-person presentation contract.
+import './hani-join-ieum-preload.cjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

@@ -1,4 +1,6 @@
 // Actual render functions and synthetic imported records. No storage or network.
+// Keep the frozen cascade contract behind the existing exact feature chain.
+require('./hani-m9-polish-preload.cjs');
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),test=require('node:test');
 const main=fs.readFileSync('hani-main.js','utf8'),index=fs.readFileSync('index.html','utf8');
 const pick=(a,b)=>{const start=main.indexOf(a),end=main.indexOf(b,start);assert.ok(start>=0&&end>start,a);return main.slice(start,end)};
