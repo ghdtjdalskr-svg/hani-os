@@ -1,9 +1,10 @@
 import fs from 'node:fs';
 import vm from 'node:vm';
 import {execFileSync} from 'node:child_process';
+import ieum from './hani-join-ieum-source.cjs';
 export const root=new URL('../',import.meta.url);
 export function readAt(file,ref=null){
- if(!ref)return fs.readFileSync(new URL(file,root),'utf8');
+ if(!ref)return ieum.project(fs.readFileSync(new URL(file,root),'utf8'),file);
  const exported=new URL('artifacts/office-behavior/lively-baseline/'+ref+'/'+file,root);
  if(fs.existsSync(exported))return fs.readFileSync(exported,'utf8');
  return execFileSync('git',['show',ref+':'+file],{cwd:root,encoding:'utf8',maxBuffer:32*1024*1024});

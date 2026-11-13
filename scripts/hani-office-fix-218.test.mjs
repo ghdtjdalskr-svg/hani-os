@@ -5,15 +5,19 @@ import path from 'node:path';
 import vm from 'node:vm';
 import http from 'node:http';
 import {fileURLToPath} from 'node:url';
+import ieum from './hani-join-ieum-source.cjs';
 
 const root=fileURLToPath(new URL('../',import.meta.url));
 const out=new URL('../artifacts/fix-218/',import.meta.url);
 fs.mkdirSync(out,{recursive:true});
-const source=fs.readFileSync(new URL('../hani-office-live.js',import.meta.url),'utf8');
+const source=ieum.project(fs.readFileSync(new URL('../hani-office-live.js',import.meta.url),'utf8'),'hani-office-live.js');
 const server=http.createServer((req,res)=>{
   const file=path.resolve(root,'.'+new URL(req.url,'http://local').pathname);
   if(!file.startsWith(root)||!fs.existsSync(file)){res.writeHead(404).end();return;}
-  res.setHeader('Content-Type','application/json');res.end(fs.readFileSync(file));
+  // Real async bootstrap/HTTP path, with only the exact later Ieum bytes
+  // removed from the served files. Keep 218's frozen 19-person assertions.
+  const name=path.relative(root,file).replaceAll('\\','/');
+  res.setHeader('Content-Type','application/json');res.end(ieum.project(fs.readFileSync(file),name));
 });
 await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
 const origin='http://127.0.0.1:'+server.address().port;

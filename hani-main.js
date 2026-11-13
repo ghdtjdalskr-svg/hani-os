@@ -1691,6 +1691,7 @@ const canonicalProfileImages=Object.freeze({
   dohyun:"./assets/profiles/hani-profile-dohyun.webp",
   serin:"./assets/profiles/hani-profile-serin.webp",
   yuri:"./assets/profiles/hani-profile-yuri.webp",
+  ieum:"./assets/profiles/hani-profile-ieum.webp",
   daon:"./assets/profiles/hani-profile-daon-v2.webp",
   yoonseul:"./assets/profiles/hani-profile-yoonseul-v2.webp",
   arin:"./assets/profiles/hani-profile-arin.webp"
@@ -4767,7 +4768,7 @@ const team=[
 {key:"yuna",emoji:"🗂️",name:"유나",position:"인턴",role:"AI Operations Intern",desc:"성민 오피스 접수·자료정리·담당 Agent 전달",go:"intake",tone:"violet"}
 ];
 // Staff profiles do not enable an AI provider.
-team.push({key:"daon",imageKey:"daon",emoji:"📊",name:"다온",position:"사원",role:"재무자산관리실 · 리스크 애널리스트 · 2F",desc:"하방 위험부터 차분히 확인",status:"active",go:"asset",tone:"sand"},{key:"yoonseul",imageKey:"yoonseul",emoji:"📚",name:"윤슬",position:"사원",role:"라이프&엔터테인먼트 · 러닝 리서처 · 2F",desc:"회장님의 공부·독서 자료 정리",status:"active",go:"study",tone:"mint"});
+team.push({key:"ieum",imageKey:"ieum",emoji:"🗂️",name:"이음",position:"사원",role:"전략기획실 · Records & Knowledge Ops · 4F",desc:"노션 통합 현황판·기록 정리",status:"active",go:"agentReview",tone:"sand"},{key:"daon",imageKey:"daon",emoji:"📊",name:"다온",position:"사원",role:"재무자산관리실 · 리스크 애널리스트 · 2F",desc:"하방 위험부터 차분히 확인",status:"active",go:"asset",tone:"sand"},{key:"yoonseul",imageKey:"yoonseul",emoji:"📚",name:"윤슬",position:"사원",role:"라이프&엔터테인먼트 · 러닝 리서처 · 2F",desc:"회장님의 공부·독서 자료 정리",status:"active",go:"study",tone:"mint"});
 // Identity and navigation stay local; work status is a read-only, separately maintained feed.
 const developmentTeam=[
   {
@@ -4880,6 +4881,7 @@ function loadAiTeamStatus(){
 function developmentPortrait(member,full=false){const src=(full?agentImages:sidebarAgentImages)[member.imageKey];return `<img data-development-portrait src="${esc(src)}" alt="${esc(member.name)} 프로필" decoding="async"><span data-development-portrait-fallback hidden>${esc(member.name)}</span>`}
 function bindDevelopmentPortraits(root){root?.querySelectorAll('[data-development-portrait]').forEach(image=>{const fallback=image.nextElementSibling;const update=()=>{const failed=!image.naturalWidth;image.hidden=failed;if(fallback)fallback.hidden=!failed};image.onload=update;image.onerror=update;if(image.complete)update()})}
 const TEAM_PROFILE_META={
+  ieum:{"rank":"사원 · 4F","headline":"흩어진 기록의 맥락을 연결하고, 열린 상태를 끝까지 닫는 꼼꼼한 신입.","focus":["노션 통합 현황판","기록 정리","완료 확인"],"traits":["흩어진 기록의 맥락을 연결하고, 열린 상태를 끝까지 닫는 꼼꼼한 신입.","INFJ · 6월 3일 생일"],"style":["회장님으로 호칭","이거… 끝난 거 맞죠?","그럼 완료로 닫아둘게요."],"strengths":["기록의 맥락 연결","열린 상태 후속 확인"],"quote":"이거… 끝난 거 맞죠?","signature":["전략기획실","Records & Knowledge Ops","4F"],"note":"하니 전무님 옆 자리. 서윤 팀장은 개발기록·시스템 문맥 멘토이자 비공식 첫 선배."},
   daon:{"rank": "사원 · 2F", "headline": "회장님의 투자 선택 전에 손실 가능성과 불확실성을 정리하는 동료.", "focus": ["하방 위험", "투자 시나리오", "리스크 자료 정리"], "traits": ["침착하고 정확함", "조금 수줍지만 필요한 말은 분명하게", "좋은 전망에도 반대 근거를 확인"], "style": ["회장님으로 호칭", "회장님, 기대 수익 전에 하방 위험부터 확인할게요."], "strengths": ["하방 위험", "투자 시나리오", "리스크 자료 정리"], "quote": "회장님, 기대 수익 전에 하방 위험부터 확인할게요.", "signature": ["재무자산관리실", "2F", "10.23 입사"], "note": "투자 결정은 회장님께 있습니다. 지은의 재무 관리·하루의 구매 검토를 대신하지 않습니다. 2F · 지은·하루 옆 예정 좌석"},
   yoonseul:{"rank": "사원 · 2F", "headline": "회장님의 공부와 독서를 돕고 궁금한 주제를 함께 탐색하는 동료.", "focus": ["공부 자료 조사", "독서 길잡이", "학습 자료 정리"], "traits": ["따뜻하고 호기심이 많음", "공부 자료를 정리하는 일을 즐김", "작은 배움도 차곡차곡 연결"], "style": ["회장님으로 호칭", "회장님, 궁금한 주제부터 함께 책장을 펼쳐봐요."], "strengths": ["공부 자료 조사", "독서 길잡이", "학습 자료 정리"], "quote": "회장님, 궁금한 주제부터 함께 책장을 펼쳐봐요.", "signature": ["라이프&엔터테인먼트", "2F", "10.23 입사"], "note": "학습 자료 조사·정리를 돕습니다. 히나의 학습 지도·최종 검수를 대신하지 않습니다. 2F · 라이프&엔터테인먼트 예정 좌석"},
   gemini:{rank:"개발 보고팀",headline:"개발의 배경부터 결과와 남은 과제까지 쉽게 전하는 보고서 담당",focus:["확정된 공식 개발 기록 요약","주간 개발 보고서 작성","주요 기능 완료 보고서 작성"],traits:["근거를 중심으로 정리","비개발자도 이해할 수 있게 설명","완료와 미검증 항목을 구분"],style:["성민 대표님께 결론부터 보고","표와 요약으로 변화 설명","배경·과정·결과·남은 과제 순서로 전달"],strengths:["여러 배포를 주간 단위로 요약","핵심 변화와 영향 정리","보고서 초안 작성"],quote:"대표님, 무엇을 왜 바꿨고 어디까지 확인했는지 정리해 드리겠습니다.",signature:["주간 요약","기능 완료","개발 보고"],note:"Gemini는 보고서 초안을 작성합니다. Codex가 공식 기록과 대조하고 성민 대표님이 공개를 승인합니다. 이 프로필에서 직접 Gemini를 호출하거나 개발·배포를 실행하지 않습니다."},
@@ -7550,7 +7552,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.289";
+const HANI_DISPLAY_VERSION="2.9.292";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];

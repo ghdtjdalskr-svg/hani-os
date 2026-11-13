@@ -389,6 +389,9 @@
   // All mutable state is disposable memory; no life records or data triggers enter here.
   // Approved staff dialogue is embedded beside existing dialogue data.
   const staffChatLines=Object.freeze([
+    {"id":"chat-ieum-hani","a":"이음","b":"하니","place":"desk","time":"day","lines":[{"speaker":"a","text":"하니 전무님, 이거… 끝난 거 맞죠?"},{"speaker":"b","text":"완료 근거까지 확인해 보자, 이음아♡"},{"speaker":"a","text":"네, 확인되면 완료로 닫아둘게요."}]},
+    {"id":"chat-ieum-seoyun","a":"이음","b":"서윤","place":"lounge","time":"day","lines":[{"speaker":"a","text":"서윤 선배, 개발기록은 어디부터 이어요?"},{"speaker":"b","text":"기준 기록과 아직 열린 이유부터 같이 보자."},{"speaker":"a","text":"아, 시스템 문맥을 먼저 잇는 거군요."}]},
+    {"id":"chat-ieum-close","a":"하니","b":"이음","place":"lounge","time":"evening","lines":[{"speaker":"a","text":"이음아, 아직 확인 못 한 건 남겨두면 돼♡"},{"speaker":"b","text":"네, 확인한 건만요. 그럼 완료로 닫아둘게요."},{"speaker":"a","text":"좋아, 다음 기록도 차근차근 이어보자♡"}]},
     {"id":"chat-01","a":"하니","b":"나은","place":"lounge","time":"morning","lines":[{"speaker":"a","text":"나은아, 오늘 안건 우선순위 다 잡았어!"},{"speaker":"b","text":"우선순위보다 아침밥 먹었는지가 먼저야!"},{"speaker":"a","text":"아메리카노 마셨는데 밥으로 안 쳐줘? 헤헤♡"},{"speaker":"b","text":"절대 안 되지! 팬트리에 구운 계란 챙겨놨어."}]},
     {"id":"chat-02","a":"하니","b":"히나","place":"desk","time":"day","lines":[{"speaker":"a","text":"히나야, 이번 학습 화면 검수 일정 괜찮아?"},{"speaker":"b","text":"만년 과장 히나 선생님한테 맡겨만 줘용! 🐰"},{"speaker":"a","text":"방금 칠판 예문 오타 난 건 못 본 척할게?"},{"speaker":"b","text":"あれ？😳 그건 Scope 밖이라 못 본 거예용!"}]},
     {"id":"chat-03","a":"나은","b":"히나","place":"pantry","time":"evening","lines":[{"speaker":"a","text":"히나야, 눈 반쯤 감겼는데 얼른 퇴근해야지."},{"speaker":"b","text":"언니이~ 저 하나도 안 졸려용, 문제 더 볼래용!"},{"speaker":"a","text":"잠깐, 펜 내려놔! 오늘은 회복이 먼저야."},{"speaker":"b","text":"헤헤♡ 언니 허브차 마시고 딱 정리할게용!"}]},
@@ -1337,7 +1340,7 @@
         people:[{id,home,seat,outbound,inbound,out,back,visitor:!!visitor}],resources:geometry.resources,floors:geometry.floors};
     }
     // Pure vocabulary shared by snapshots and the existing persistent label slot.
-    const workLines={hani:'기획안 정리 중',yuna:'요청 분류 중',jieun:'일정 조율 중',haru:'기록 정리 중',gaeun:'일정 확인 중',seoyun:'설계 검토 중',dohyun:'코드 수정 중',serin:'수치 분석 중',yuri:'품질 점검 중',arin:'화면 검토 중',hina:'검증 기록 중',daon:'콘텐츠 구상 중',yoonseul:'문장 다듬는 중',sua:'접수 확인 중',taeo:'안내 준비 중',minji:'업무 메모 중',mir:'흐름 살피는 중',seongmin:'결재 검토 중',sooyeon:'자료 대조 중',naeun:'예산 점검 중'};
+    const workLines={ieum:'기록 맥락 연결 중',hani:'기획안 정리 중',yuna:'요청 분류 중',jieun:'일정 조율 중',haru:'기록 정리 중',gaeun:'일정 확인 중',seoyun:'설계 검토 중',dohyun:'코드 수정 중',serin:'수치 분석 중',yuri:'품질 점검 중',arin:'화면 검토 중',hina:'검증 기록 중',daon:'콘텐츠 구상 중',yoonseul:'문장 다듬는 중',sua:'접수 확인 중',taeo:'안내 준비 중',minji:'업무 메모 중',mir:'흐름 살피는 중',seongmin:'결재 검토 중',sooyeon:'자료 대조 중',naeun:'예산 점검 중'};
     const shortWords=[[/고민/,'잠깐 고민 중'],[/퀴즈/,'퀴즈 푸는 중'],[/비용|예산/,'비용 살피는 중'],[/고생|인사/,'인사 나누는 중'],[/웃|미소/,'살짝 웃는 중'],[/도장|결재/,'결재 확인 중'],[/메일/,'메일 확인 중'],[/일정|약속/,'일정 확인 중'],[/노래|음악|플레이리스트/,'음악 고르는 중'],[/졸음|꾸벅/,'졸음 쫓는 중'],[/커피 주문/,'커피 주문 중'],[/메뉴 고르/,'메뉴 고르는 중'],[/커피/,'커피 한 모금'],[/택배/,'택배 확인 중'],[/배달/,'배달 확인 중'],[/게시판|소식/,'소식 읽는 중'],[/검증|테스트/,'결과 확인 중'],[/수다|이야기/,'이야기 나누는 중'],[/코드|버그/,'코드 살피는 중'],[/메모/,'메모 정리 중'],[/보고서/,'보고서 다듬는 중'],[/스트레칭|기지개/,'기지개 켜는 중'],[/고양이/,'고양이 영상 중'],[/인스타/,'인스타 보는 중'],[/간식/,'간식 살피는 중'],[/생각|아이디어/,'생각 정리 중'],[/창밖|풍경|별/,'풍경 보는 중'],[/쉬는|휴식|소파/,'잠깐 쉬는 중'],[/확인|체크/,'내용 확인 중'],[/정리/,'자료 정리 중'],[/읽|책|페이지/,'읽어 보는 중']];
     function fullShortLine(line){
       if(chairmanShort.has(line))return chairmanShort.get(line);
@@ -3762,6 +3765,8 @@
   motion.addEventListener?.('change',event=>{reduced=event.matches;if(reduced)for(const actor of actors.values()){finishTravel(actor);clearMotion(actor)}if(sceneVisible())updateBuilding(true,false)});
   const spriteEntries=new Map((assets?.sprites.entries||[]).map(e=>[e.id,e])),spriteCache=new Map();
   const hdEntries=new Map((assets?.spritesV3?.entries||[]).filter(e=>e.scale===3&&(e.frames?.length===4||['pet-cat','pet-dog'].includes(e.id)&&e.frames?.length===10)&&e.cell?.length===2&&e.atlas?.length===2).map(e=>[e.id,e]));
+  // Seed newly registered HD-only colleagues in the existing sprite registry.
+  for(const [id]of people)if(!spriteEntries.has(id)&&hdEntries.has(id))spriteEntries.set(id,hdEntries.get(id));
   const residentSlots=assets?.spritesV3?[...HaniBuildingScene.residents.people,...HaniBuildingScene.residents.companions]:[];
   for(const person of residentSlots)if(!spriteEntries.has(person.id))spriteEntries.set(person.id,(person.companion?HaniBuildingScene.residents.companionAtlas(person):HaniBuildingScene.residents.atlas(person)));
   const visualIdentity=HaniBuildingScene.scheduler?.identity||{seongmin:{entity:'human_user',role:'chairman',officeVisual:'ceo_frog',spriteId:'seongmin'}};
@@ -4199,6 +4204,7 @@
   const dramaCaption=document.createElement('small'),dramaTitle=document.createElement('b'),dramaSummary=document.createElement('span');dramaCaption.className='hani-building-drama-caption';dramaCaption.hidden=true;dramaCaption.append(dramaTitle,dramaSummary);caption.append(dramaCaption);let tapCatalogStarted=false;
   // View-only snack overlay. The table is the sole copy-edit point (up to 3 lines per staff id).
   const snackLines={
+    ieum:["회장님, 간식 받았다고 적어둘게요.","파일철은 잠깐 덮고 잘 먹겠습니다.","회장님, 따뜻한 간식 감사해요."],
     hani:["회장님, 간식은 이번 Scope 안이네요♡","회장님, 당 충전 끝! 전략부터 잡을게요.","회장님 간식이라니, 헤헤 힘이 나네요♡"],
     gaeun:["회장님, 간식 타임도 일정에 넣어둘게요.","회장님 감사해요, 회의 준비도 마쳤어요.","회장님 덕분에 다음 일정도 든든하겠어요."],
     yuna:["회장님! 간식 접수는 제가 먼저 할게요!","감사합니다 회장님, 기운 내서 안내할게요!","회장님, 이 간식은 제 자리로 분류할게요!"],
@@ -4222,6 +4228,7 @@
   // One event/staff table; birthday pairs are [own thanks, colleague congratulations].
   const eventLines={snack:snackLines,
     coffee:{
+      ieum:["회장님, 커피와 함께 기록을 펼칠게요.","한 모금 쉬고 마지막 확인할게요.","회장님, 커피 감사해요."],
       hani:["회장님 커피라니, 오후 전략도 문제없어요♡","회장님, 커피로 팀 정렬 완료예요♡","회장님 센스 최고! 헤헤, 잘 마실게요♡"],
       gaeun:["회장님, 커피 타임도 일정에 반영해둘게요.","회장님 감사해요, 브리핑 준비도 마쳤어요.","회장님 덕분에 회의실 공기가 향긋해졌어요."],
       yuna:["회장님! 커피 배부는 제가 먼저 안내할게요!","감사합니다 회장님, 자리마다 잘 전달할게요!","회장님 커피 덕분에 안내 목소리가 밝아져요!"],
@@ -4243,6 +4250,7 @@
       taeo:["회장님, 정리하면 향·온도 모두 완벽합니다.","회장님, 커피 지원은 즉시 반영하겠습니다.","회장님, 잘 마시고 후속 미팅 정리할게요."]
     },
     applause:{
+      ieum:["회장님, 꼼꼼히 봐주셔서 감사해요.","열린 건 끝까지 챙겨볼게요.","완료 근거도 차근차근 확인할게요."],
       hani:["회장님 칭찬이라니, 헤헤 더 힘이 나네요♡","회장님, 우리 팀 호흡이 딱 맞아떨어졌어요♡","회장님 박수 덕분에 다음 전략도 든든해요♡"],
       gaeun:["회장님 칭찬 말씀도 회의록에 남겨둘게요.","회장님 감사해요, 후속 일정도 잘 챙길게요.","회장님 격려 덕분에 준비한 보람이 있어요."],
       yuna:["회장님! 칭찬 접수도 제가 일등으로 할게요!","회장님 박수 소리, 온 층에 안내할래요!","감사합니다 회장님! 더 밝게 연결해볼게요!"],
@@ -4264,6 +4272,7 @@
       taeo:["회장님, 정리하면 팀워크의 결과입니다.","회장님, 격려 말씀은 실행으로 잇겠습니다.","회장님, 긍정 피드백 확인. 후속 진행해요."]
     },
     cheer:{
+      ieum:["회장님, 오늘도 함께 화이팅이에요.","하니 전무님 옆에서 열심히 배울게요.","서윤 선배께 질문할 용기가 나요."],
       hani:["회장님도 오늘 하루 화이팅이에요, 헤헤♡","네 회장님! 오늘 우선순위도 힘차게 갈게요♡","회장님 응원 받고 전 부서 화이팅할게요♡"],
       gaeun:["회장님 화이팅이에요, 오늘 일정 시작할게요.","네 회장님, 오늘 요청도 잘 정리할게요.","회장님 응원 덕분에 오늘 브리핑도 힘나네요."],
       yuna:["회장님도 오늘 하루 활기차게 화이팅이에요!","네 회장님! 작은 요청도 씩씩하게 챙길게요!","회장님 화이팅! 오늘 안내도 기운 넘쳐요!"],
@@ -4285,6 +4294,7 @@
       taeo:["회장님, 정리하면 오늘도 준비 끝났습니다.","회장님도 화이팅입니다. 바로 실행할게요.","회장님, 응원은 결과로 번역하겠습니다."]
     },
     birthday:{
+      ieum:["회장님, 제 생일까지 챙겨주셔서 감사해요.","이음 사원님, 생일 축하해요!"],
       hani:["회장님, 생일 축하 고마워요! 헤헤♡","하니 전무님, 생일 진심으로 축하해요!"],
       gaeun:["회장님, 생일 축하도 일정에 담아둘게요.","가은 비서님, 생일 축하해요! 늘 든든해요!"],
       yuna:["회장님! 생일 축하 접수는 제가 일등이에요!","유나 사원님, 생일 축하해요! 오늘 주인공!"],
@@ -4313,7 +4323,7 @@
     cheer:{label:'📣 깜짝 응원',icon:'📣',status:'화이팅 외치는 중'},
     birthday:{label:'🎂 생일 축하',icon:'🎂',status:'생일 축하 중'}
   };
-  const staffBirthdays={hani:'01-17',gaeun:'09-25',yuna:'02-20',mir:'05-14',seoyun:'03-12',dohyun:'06-18',serin:'07-23',yuri:'09-11',arin:'04-24',jieun:'04-09',haru:'05-29',daon:'11-21',naeun:'07-08',hina:'08-21',minji:'10-08',sooyeon:'11-06',yoonseul:'03-26',sua:'12-12',taeo:'02-06'};
+  const staffBirthdays={ieum:'06-03',hani:'01-17',gaeun:'09-25',yuna:'02-20',mir:'05-14',seoyun:'03-12',dohyun:'06-18',serin:'07-23',yuri:'09-11',arin:'04-24',jieun:'04-09',haru:'05-29',daon:'11-21',naeun:'07-08',hina:'08-21',minji:'10-08',sooyeon:'11-06',yoonseul:'03-26',sua:'12-12',taeo:'02-06'};
   const eventButton=document.createElement('button');eventButton.id='haniOfficeEvents';eventButton.type='button';eventButton.className='btn hani-office-events';eventButton.textContent='🎉 회장님 이벤트';eventButton.hidden=true;eventButton.setAttribute('aria-expanded','false');eventButton.setAttribute('aria-controls','haniOfficeEventPanel');caption.append(eventButton);
   const eventPanel=document.createElement('div');eventPanel.id='haniOfficeEventPanel';eventPanel.className='hani-office-event-panel';eventPanel.hidden=true;eventPanel.setAttribute('role','group');eventPanel.setAttribute('aria-label','회장님 이벤트');caption.append(eventPanel);
   const eventButtons=new Map();
@@ -4606,7 +4616,7 @@
   // Exactly one new listener: a visible unload may have no visibilitychange.
   globalThis.addEventListener?.('pagehide',()=>affinity.flush(true));
   new MutationObserver(syncVisibility).observe(root.closest(".view"),{attributes:true,attributeFilter:["class","hidden","style"]});
-  if(typeof IntersectionObserver==='function')new IntersectionObserver(entries=>{mapOnScreen=entries[0].isIntersecting;syncVisibility()}).observe(map);
+  if(typeof IntersectionObserver==='function')new IntersectionObserver(entries=>{mapOnScreen=entries[entries.length-1].isIntersecting;syncVisibility()}).observe(map);
   if(typeof ResizeObserver==='function')new ResizeObserver(()=>{fitStatusLabels();fitBubble()}).observe(map);
   document.fonts?.ready.then(()=>{fitStatusLabels();fitBubble()});
   updateBuilding(true);syncVisibility();

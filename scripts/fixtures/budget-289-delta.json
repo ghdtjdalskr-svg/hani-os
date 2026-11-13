@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "release": "2.9.289",
+  "files": {
+    "hani-ai-budget.js": {
+      "afterSha256": "58613b69bb9a7f89b4e11f0e49ab98b9c2ad584b9109521d9d0d9e7aca965048",
+      "beforeSha256": "ba67b44614c007fd129b36c21f57a28ec4f69912d626d61b82453910550a21d1",
+      "edits": [
+        {
+          "before": "  const visibleSlots=core.slots.filter(s=>s.id!=='gemini-cli');\n",
+          "after": "  // codex-2 retired from view after 11/11; its slot stays in core so saved summaries remain readable.\n  const hiddenSlots=['gemini-cli','codex-2'],visibleSlots=core.slots.filter(s=>!hiddenSlots.includes(s.id));\n"
+        },
+        {
+          "before": "  $('aiBudgetAccount').innerHTML=core.slots.map(",
+          "after": "  $('aiBudgetAccount').innerHTML=core.slots.filter(s=>s.id!=='codex-2').map("
+        }
+      ]
+    }
+  }
+}

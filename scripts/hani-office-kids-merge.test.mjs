@@ -12,7 +12,11 @@ import mascot from './hani-office-mascot-label-source.cjs';
 import release284 from './hani-release-284-source.cjs';
 import release283 from './hani-release-283-source.cjs';
 import releases from './hani-release-version-layers.cjs';
-const read=f=>readRawLifeFile(f,'utf8'),raw=read('hani-office-live.js'),main=kids.restoreKidsPoseBSource(raw);
+import ieum from './hani-join-ieum-source.cjs';
+// Retain the raw life/launch contract after only the exact 290 + Ieum outer
+// layer. This reader bypasses older legacy preloads, preserving the 164 pin.
+const read284=(file,options)=>ieum.project(readRawLifeFile(file,options),file);
+const read=f=>read284(f,'utf8'),raw=read('hani-office-live.js'),main=kids.restoreKidsPoseBSource(raw);
 
 test('284 exact version inverse retains all 283 pins and rejects unrelated, partial, duplicated and EOL edits',()=>{
  for(const file of Object.keys(release284.delta.files)){
@@ -35,8 +39,8 @@ test('full kids inverse recovers pinned main; affinity owner, storage keys, Clou
 });
 
 test('raw 284 closure keeps life bundle and launch assets; only kids atlas changes against pinned main',async()=>{
- const options={exists:fs.existsSync,read:f=>readRawLifeFile(f)};
- const a=await resolveRuntimeClosure(options),b=await resolveRuntimeClosure({...options,read:f=>kids.delta.files.some(row=>row.file===f)?Buffer.from(kids.restoreKidsPoseBSource(read(f),f)):readRawLifeFile(f)});
+ const options={exists:fs.existsSync,read:f=>read284(f)};
+ const a=await resolveRuntimeClosure(options),b=await resolveRuntimeClosure({...options,read:f=>kids.delta.files.some(row=>row.file===f)?Buffer.from(kids.restoreKidsPoseBSource(read(f),f)):read284(f)});
  assert.equal(a.files.length,164);assert.equal(b.files.length,164);assert.deepEqual(a.missing,[]);assert.deepEqual(b.missing,[]);
  assert.deepEqual(a.files.filter(f=>!b.files.includes(f)),['assets/office-companions/kids-v2.webp']);assert.deepEqual(b.files.filter(f=>!a.files.includes(f)),['assets/office-companions/kids-v1.webp']);
  for(const file of ['hani-launch-greeting.js','hani-launch-greeting.css','assets/launch/chibi-launch-v1-day.webp','assets/launch/chibi-launch-v1-night.webp','hani-procrastination-board.js'])assert.ok(a.files.includes(file),file);

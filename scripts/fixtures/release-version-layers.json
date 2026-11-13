@@ -2,6 +2,102 @@
   "schema": 1,
   "layers": [
     {
+      "from": "2.9.290",
+      "to": "2.9.291",
+      "files": {
+        "index.html": {
+          "count": 60,
+          "after": "4f688c28f5d2112b3da9da9541c1d36c686cebbef8a703c346f86511ef57f774",
+          "before": "f243ba2c64f97ab961e7abd9321dde2ee682ea36315368f90d85f648370d40b0"
+        },
+        "hani-main.js": {
+          "count": 1,
+          "after": "ca886c8dd080935bc238917e9bafcf8a3e652b4fc5c782c99405d11b98a97ba6",
+          "before": "b28b57d2356a636073183eb61c172537913702779d6d4230e1280ca2fa108009"
+        },
+        "assets/data/hani-history-releases-v1.json": {
+          "count": 1,
+          "after": "5af30e0f92c68935306266bbfbeffbeca4a1001164e7a56ecef45b2e7c7f4d11",
+          "before": "d0b200f010d879f1ef58bebe333760c6edffcbac501e88b12dd90c028b3ccc72",
+          "replacements": [
+            {
+              "before": "      \"id\": \"v2.9.290\",\n      \"date\": \"2026-11-13\",\n      \"status\": \"released\",\n      \"title\": \"신입 이음 사원 입사\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.290 신입 이음 사원 입사\"\n",
+              "after": "      \"id\": \"v2.9.291\",\n      \"date\": \"2026-11-13\",\n      \"status\": \"released\",\n      \"title\": \"어두운 테마 글자색 잘 보이게 수정\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.291 어두운 테마 글자색 잘 보이게 수정\"\n      }\n    },\n    {\n      \"id\": \"v2.9.290\",\n      \"date\": \"2026-11-13\",\n      \"status\": \"released\",\n      \"title\": \"신입 이음 사원 입사\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"9e3fe97f5e58cb7a5ebc1f5796f6b523d417e5a1\",\n        \"subject\": \"release: v2.9.290 신입 이음 사원 입사 (#492)\"\n"
+            }
+          ]
+        }
+      },
+      "feature": {
+        "module": "./hani-contrast-291-source.cjs",
+        "fixture": "./fixtures/contrast-291-delta.json",
+        "restore": "restore"
+      }
+    },
+    {
+      "from": "2.9.289",
+      "to": "2.9.290",
+      "files": {
+        "index.html": {
+          "count": 60,
+          "after": "f243ba2c64f97ab961e7abd9321dde2ee682ea36315368f90d85f648370d40b0",
+          "before": "1b0c8de6452df6c02578e8619760216c2978a7332c782504368946ef7f1dd719"
+        },
+        "hani-main.js": {
+          "count": 1,
+          "after": "b28b57d2356a636073183eb61c172537913702779d6d4230e1280ca2fa108009",
+          "before": "791d27609d1b227f0efea4e4e15152aa50c268621bd85d2e68acb76715129c0f"
+        },
+        "assets/data/hani-history-releases-v1.json": {
+          "count": 1,
+          "after": "d0b200f010d879f1ef58bebe333760c6edffcbac501e88b12dd90c028b3ccc72",
+          "before": "5eceffd9104bccd581e1c10e02ed5708828384a3db0a18bd5a09d42e75e03fbc",
+          "replacements": [
+            {
+              "after": "    {\n      \"id\": \"v2.9.290\",\n      \"date\": \"2026-11-13\",\n      \"status\": \"released\",\n      \"title\": \"신입 이음 사원 입사\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.290 신입 이음 사원 입사\"\n      }\n    },\n    {\n      \"id\": \"v2.9.289\",\n      \"date\": \"2026-11-12\",\n      \"status\": \"released\",\n      \"title\": \"예산 화면 Codex 보조 칸 정리\",\n      \"category\": \"하니 그룹\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"91d4943d2386a25d7ed49dc56de25c4d1ab5bd8f\",\n        \"subject\": \"release: v2.9.289 예산 화면 Codex 보조 칸 정리 (#487)\"\n      }\n    },\n",
+              "before": "    {\n      \"id\": \"v2.9.289\",\n      \"date\": \"2026-11-12\",\n      \"status\": \"released\",\n      \"title\": \"예산 화면 Codex 보조 칸 정리\",\n      \"category\": \"하니 그룹\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.289 예산 화면 Codex 보조 칸 정리\"\n      }\n    },\n"
+            }
+          ]
+        }
+      },
+      "feature": {
+        "module": "./hani-join-ieum-source.cjs",
+        "fixture": "./fixtures/join-ieum-delta.json",
+        "restore": "restore"
+      }
+    },
+    {
+      "from": "2.9.288",
+      "to": "2.9.289",
+      "files": {
+        "index.html": {
+          "count": 60,
+          "after": "1dcf2866e037ce20d73a7e2f2990b2bd02a079e06f206684834d99d7f468d625",
+          "before": "93bc09ba5d8d168c040e58a6afacd2cf3822c49a98c885e9a908c6959fed68d0"
+        },
+        "hani-main.js": {
+          "count": 1,
+          "after": "f4b9282a03bddce87e39b677fa95a477bbba6b514b4a41c40e21a82f80301812",
+          "before": "541dd283d48e0fbbe1c6906ab997a69105def4079639f10e8b8b75fc9211baa5"
+        },
+        "assets/data/hani-history-releases-v1.json": {
+          "count": 1,
+          "after": "5eceffd9104bccd581e1c10e02ed5708828384a3db0a18bd5a09d42e75e03fbc",
+          "before": "6446f456178734ba4f372acea6710cebed5714c3e2e4a284eef18e30909b35cc",
+          "replacements": [
+            {
+              "after": "9\",\n      \"date\": \"2026-11-12\",\n      \"status\": \"released\",\n      \"title\": \"예산 화면 Codex 보조 칸 정리\",\n      \"category\": \"하니 그룹\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.289 예산 화면 Codex 보조 칸 정리\"\n      }\n    },\n    {\n      \"id\": \"v2.9.288\",\n      \"date\": \"2026-11-12\",\n      \"status\": \"released\",\n      \"title\": \"뉴스룸 4컷 PC 크기와 오른쪽 요약\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"98e21fab1bd0e7838e8245dd36423aca3fdeedd6\",\n        \"subject\": \"release: v2.9.288 뉴스룸 4컷 PC 크기와 오른쪽 요약 (#486)",
+              "before": "8\",\n      \"date\": \"2026-11-12\",\n      \"status\": \"released\",\n      \"title\": \"뉴스룸 4컷 PC 크기와 오른쪽 요약\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.288 뉴스룸 4컷 PC 크기와 오른쪽 요약"
+            }
+          ]
+        }
+      },
+      "feature": {
+        "module": "./hani-budget-289-source.cjs",
+        "fixture": "./fixtures/budget-289-delta.json",
+        "restore": "restoreBudget289Source"
+      }
+    },
+    {
       "from": "2.9.287",
       "to": "2.9.288",
       "files": {

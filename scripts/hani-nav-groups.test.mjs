@@ -19,7 +19,7 @@ assert.deepEqual(groups,[
   ["health",["diet","exercise"]],
   ["growth",["reading","study","university","certificate"]],
   ["life",["wishlist","travel","movie","game","diary"]],
-  ["work",["tasks","calendar","work","drive"]],
+  ["work",["tasks","procrastination","calendar","work","drive"]],
   ["development",["aiWork","dev","geminiReports","deployment","aiBudget"]]
 ]);
 const navViews=views(aside);
