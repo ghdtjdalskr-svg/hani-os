@@ -57,6 +57,7 @@ function restoreVersionLayer(source,file,version){
 // first removes 290 + Ieum, then reaches the unchanged 289/288 contracts.
 // Unknown input remains for strict callers to reject.
 function projectPreRelease294Source(source,file){
+ source=require('./hani-design-polish-1-source.cjs').project(source,file);
  const row=getLayer('2.9.294').files[file];
  return row&&hash(source)===row.after?restoreVersionLayer(source,file,'2.9.294'):source;
 }
@@ -78,6 +79,7 @@ function projectPreRelease288Source(source,file){
 // Projection dispatch accepts only pinned inputs; drift is left for the caller's
 // strict lower-layer assertion to reject. It never normalizes arbitrary versions.
 function project(source,file,target,features,keepFeature=false){
+ source=require('./hani-design-polish-1-source.cjs').project(source,file);
  const boundary=number(target);
  assert.ok(layers.some(row=>row.from===target||row.to===target),'known release target '+target);
  for(const layer of layers){

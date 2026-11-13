@@ -1,0 +1,42 @@
+
+/* 2.9.29x 디자인 다듬기 1차 — read-only UI; existing owners keep events/data. */
+/* 2,3: the heading owns a row; the filter label never competes with its select. */
+#app #investmentCommittee .ic-header{flex-direction:column;align-items:stretch;gap:10px}
+#app #investmentCommittee .ic-header h2{word-break:keep-all;overflow-wrap:normal}
+#app #investmentCommittee .ic-filter{white-space:nowrap;flex-wrap:wrap}
+#app #investmentCommittee .ic-filter select{flex:0 1 220px;min-width:0}
+/* 4: each phrase is an indivisible visual unit, including narrow phone widths. */
+#app #monthlyReportPending .monthly-report-empty-title>span{display:inline-block;white-space:nowrap}
+/* 5,6: explicit ink/surface pairs on the existing light panels, in every Finish. */
+#app #intake .yuna-desk #yunaTargetHelp{color:#4d4660!important;background:#fff}
+#app #asset #assetStats .stat:has(.asset-evaluation){background:#f4f1fa!important}
+#app #asset #assetStats .stat:has(.asset-evaluation) .label{color:#51455f!important}
+#app #asset #assetStats .value.asset-evaluation{color:#49385f!important}
+/* 7: header-only tokens; comic cards retain their own paper and ink. */
+#app #procrastination .pb-header .pb-eyebrow{color:var(--text-primary)!important}
+#app #procrastination .pb-header .pb-intro{color:color-mix(in srgb,var(--text-secondary) 96%,var(--text-primary))!important}
+/* 8: search controls match their adjacent buttons, without touching checkboxes. */
+#app #board .board-search input[type="search"],
+#app #drive .gdrive-search input[type="search"]{box-sizing:border-box;width:100%;min-height:44px!important;padding:10px 12px;line-height:1.4}
+#app #board .board-living-toolbar .btn,#app #drive .gdrive-search>.btn{min-height:44px}
+@media(max-width:700px){
+  /* 1: existing viewportBox/place clamps even a stored helper position above
+     the tallest composer (112px textarea + padding/border + safe inset).
+     Its parseFloat reader requires a plain px token, not calc()/env().
+     190px reserves up to 48px inset plus clearance. visualViewport already
+     subtracts keyboard height; never subtract it twice. */
+  body[data-view="intake"] #haniHelperBot{--helper-safe-bottom:190px}
+  #app #monthlyReportPending .monthly-report-empty-title{font-size:20px;line-height:1.45;word-break:keep-all}
+  #app #monthlyReportPending .monthly-report-empty-title>span{display:block}
+  /* 9: visual order only. DOM order, input ids and handlers stay canonical. */
+  #app #tasks>.grid>.card:has(#taskText){order:-1}
+  /* 10: shorten only the campaign masthead, keeping THAW and choice cards intact. */
+  #app #aura .aura-showroom{gap:14px}
+  #app #aura .aura-preview figcaption{padding:12px 12px 8px}
+  #app #aura .aura-preview h3{font-size:22px;line-height:1.2;margin:6px 0}
+  #app #aura .aura-campaign-cast{margin-top:6px}
+  #app #aura .aura-preview>.aura-campaign-artwork{height:132px;aspect-ratio:auto;object-fit:contain}
+  #app #aura .aura-poster-signature{padding:10px 12px;gap:4px}
+  #app #aura .aura-poster-signature .aura-wordmark{display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:8px}
+  #app #aura .aura-poster-signature .aura-wordmark>strong{font-size:24px}
+}

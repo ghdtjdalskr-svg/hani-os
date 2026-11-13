@@ -1,0 +1,34 @@
+[
+  {
+    "file": "artifacts/office-behavior/obr16-layout-node.json",
+    "action": "saved generated evidence and restored exact start bytes"
+  },
+  {
+    "file": "artifacts/office-behavior/obr17-layout-node.json",
+    "action": "saved generated evidence and restored exact start bytes"
+  },
+  {
+    "file": "artifacts/office-behavior/obr19-layout-node.json",
+    "action": "saved generated evidence and restored exact start bytes"
+  },
+  {
+    "file": "artifacts/office-drama/reachability.json",
+    "action": "saved generated evidence and restored exact start bytes"
+  },
+  {
+    "file": "artifacts/exam-popup-214/node-results.json",
+    "action": "moved new synthetic output into task evidence"
+  },
+  {
+    "file": "artifacts/history-226/unit.json",
+    "action": "moved new synthetic output into task evidence"
+  },
+  {
+    "file": "artifacts/office-219/label-unit-results.json",
+    "action": "moved new synthetic output into task evidence"
+  },
+  {
+    "file": "artifacts/street-journal-v1/package-check.json",
+    "action": "moved new synthetic output into task evidence"
+  }
+]

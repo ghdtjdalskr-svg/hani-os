@@ -8539,7 +8539,7 @@ function renderMonthlyReport(){
   pending.hidden=false;
   const failure=monthlyReportGenerationFailure?.month===monthlyReportMonth?monthlyReportGenerationFailure.reason:"";
   renderChibiNote("monthlyReportChibiNote",pending,"hani-point","하니 · 회장님, 보고할 달의 기록을 살펴봐요.",!failure&&!monthlyReportGeneration,true);
-  pending.innerHTML=`<h4>${esc(heading)}</h4><p>${esc(description)}</p><p role="status" data-monthly-generation-status>${esc(failure|| (monthlyReportGeneration?"원본 연결을 확인하고 보고서를 준비하고 있습니다. 잠시 기다려 주세요.":""))}</p><button type="button" id="monthlyReportGenerateBtn" ${hasRecords&&!monthlyReportGeneration?"":"disabled"}>${monthlyReportGeneration?"확인 중…":stored?"보고서 다시 생성":"보고서 생성"}</button>`;
+  pending.innerHTML=`${stored?`<h4>${esc(heading)}</h4>`:`<h4 class="monthly-report-empty-title"><span>${esc(monthlyReportMonth)}</span> <span>${esc(heading.slice(monthlyReportMonth.length+1))}</span></h4>`}<p>${esc(description)}</p><p role="status" data-monthly-generation-status>${esc(failure|| (monthlyReportGeneration?"원본 연결을 확인하고 보고서를 준비하고 있습니다. 잠시 기다려 주세요.":""))}</p><button type="button" id="monthlyReportGenerateBtn" ${hasRecords&&!monthlyReportGeneration?"":"disabled"}>${monthlyReportGeneration?"확인 중…":stored?"보고서 다시 생성":"보고서 생성"}</button>`;
   $("monthlyReportGenerateBtn").onclick=()=>monthlyReportGenerate(monthlyReportMonth);
 }
 

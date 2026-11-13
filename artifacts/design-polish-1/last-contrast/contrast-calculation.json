@@ -1,0 +1,2413 @@
+{
+  "result": "PASS",
+  "method": "Calculation using preserved pre-change PNG text-free pixels; actual new browser rendering remains unverified",
+  "threshold": 4.5,
+  "secondaryWeight": 0.96,
+  "combinations": 24,
+  "viewports": [
+    390,
+    1440
+  ],
+  "combinationMeasurements": 48,
+  "screenCases": 4,
+  "evidenceSha256": "e16d092be90c830ab65337c1f6c88ea0580e9c7fa3041a57b9af09192b6d1271",
+  "cssSha256": "d9a6401c68bfed89de8edb68c41b5d8caae40778eb1cd7b019f88fe288839eb4",
+  "minimumBefore": 4.49764603001045,
+  "minimumAfter": 4.658863132887,
+  "minimumConservative": 4.632649872414945,
+  "regressions": 0,
+  "results": [
+    {
+      "finish": "porcelain-cream",
+      "season": "spring",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-porcelain-cream-spring-procrastination-contrast-1.png",
+      "pngSha256": "787d338d0ce633ca2ee8ef2fc80092cfd1b406906d9307c8cb8b83c8129a5d2c",
+      "samples": 6060,
+      "secondary": [
+        98,
+        100,
+        107
+      ],
+      "primary": [
+        41,
+        42,
+        45
+      ],
+      "mixed": [
+        95.72,
+        97.68,
+        104.52
+      ],
+      "conservative": [
+        96,
+        98,
+        105
+      ],
+      "before": 5.157028506277181,
+      "after": 5.341953025497807,
+      "conservativeRatio": 5.315688991029857,
+      "worst": {
+        "x": 342.5,
+        "y": 946.5,
+        "background": [
+          246,
+          239,
+          223,
+          1
+        ],
+        "foreground": [
+          95.72,
+          97.68,
+          104.52
+        ]
+      }
+    },
+    {
+      "finish": "porcelain-cream",
+      "season": "summer",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-porcelain-cream-summer-procrastination-contrast-1.png",
+      "pngSha256": "787d338d0ce633ca2ee8ef2fc80092cfd1b406906d9307c8cb8b83c8129a5d2c",
+      "samples": 6060,
+      "secondary": [
+        98,
+        100,
+        107
+      ],
+      "primary": [
+        41,
+        42,
+        45
+      ],
+      "mixed": [
+        95.72,
+        97.68,
+        104.52
+      ],
+      "conservative": [
+        96,
+        98,
+        105
+      ],
+      "before": 5.157028506277181,
+      "after": 5.341953025497807,
+      "conservativeRatio": 5.315688991029857,
+      "worst": {
+        "x": 342.5,
+        "y": 946.5,
+        "background": [
+          246,
+          239,
+          223,
+          1
+        ],
+        "foreground": [
+          95.72,
+          97.68,
+          104.52
+        ]
+      }
+    },
+    {
+      "finish": "porcelain-cream",
+      "season": "autumn",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-porcelain-cream-autumn-procrastination-contrast-1.png",
+      "pngSha256": "787d338d0ce633ca2ee8ef2fc80092cfd1b406906d9307c8cb8b83c8129a5d2c",
+      "samples": 6060,
+      "secondary": [
+        98,
+        100,
+        107
+      ],
+      "primary": [
+        41,
+        42,
+        45
+      ],
+      "mixed": [
+        95.72,
+        97.68,
+        104.52
+      ],
+      "conservative": [
+        96,
+        98,
+        105
+      ],
+      "before": 5.157028506277181,
+      "after": 5.341953025497807,
+      "conservativeRatio": 5.315688991029857,
+      "worst": {
+        "x": 342.5,
+        "y": 946.5,
+        "background": [
+          246,
+          239,
+          223,
+          1
+        ],
+        "foreground": [
+          95.72,
+          97.68,
+          104.52
+        ]
+      }
+    },
+    {
+      "finish": "porcelain-cream",
+      "season": "winter",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-porcelain-cream-winter-procrastination-contrast-1.png",
+      "pngSha256": "787d338d0ce633ca2ee8ef2fc80092cfd1b406906d9307c8cb8b83c8129a5d2c",
+      "samples": 6060,
+      "secondary": [
+        98,
+        100,
+        107
+      ],
+      "primary": [
+        41,
+        42,
+        45
+      ],
+      "mixed": [
+        95.72,
+        97.68,
+        104.52
+      ],
+      "conservative": [
+        96,
+        98,
+        105
+      ],
+      "before": 5.157028506277181,
+      "after": 5.341953025497807,
+      "conservativeRatio": 5.315688991029857,
+      "worst": {
+        "x": 342.5,
+        "y": 946.5,
+        "background": [
+          246,
+          239,
+          223,
+          1
+        ],
+        "foreground": [
+          95.72,
+          97.68,
+          104.52
+        ]
+      }
+    },
+    {
+      "finish": "pure-white",
+      "season": "spring",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-pure-white-spring-procrastination-contrast-1.png",
+      "pngSha256": "1d19051aacd5f0ce9f4b892ce5bd7910488e02560da0205d4a0456431c4357f2",
+      "samples": 6060,
+      "secondary": [
+        85,
+        93,
+        112
+      ],
+      "primary": [
+        41,
+        45,
+        57
+      ],
+      "mixed": [
+        83.24,
+        91.08,
+        109.8
+      ],
+      "conservative": [
+        84,
+        92,
+        110
+      ],
+      "before": 6.256987143498138,
+      "after": 6.444131114406668,
+      "conservativeRatio": 6.362815093949177,
+      "worst": {
+        "x": 342.5,
+        "y": 946.5,
+        "background": [
+          248,
+          249,
+          251,
+          1
+        ],
+        "foreground": [
+          83.24,
+          91.08,
+          109.8
+        ]
+      }
+    },
+    {
+      "finish": "pure-white",
+      "season": "summer",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-pure-white-summer-procrastination-contrast-1.png",
+      "pngSha256": "1d19051aacd5f0ce9f4b892ce5bd7910488e02560da0205d4a0456431c4357f2",
+      "samples": 6060,
+      "secondary": [
+        85,
+        93,
+        112
+      ],
+      "primary": [
+        41,
+        45,
+        57
+      ],
+      "mixed": [
+        83.24,
+        91.08,
+        109.8
+      ],
+      "conservative": [
+        84,
+        92,
+        110
+      ],
+      "before": 6.256987143498138,
+      "after": 6.444131114406668,
+      "conservativeRatio": 6.362815093949177,
+      "worst": {
+        "x": 342.5,
+        "y": 946.5,
+        "background": [
+          248,
+          249,
+          251,
+          1
+        ],
+        "foreground": [
+          83.24,
+          91.08,
+          109.8
+        ]
+      }
+    },
+    {
+      "finish": "pure-white",
+      "season": "autumn",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-pure-white-autumn-procrastination-contrast-1.png",
+      "pngSha256": "1d19051aacd5f0ce9f4b892ce5bd7910488e02560da0205d4a0456431c4357f2",
+      "samples": 6060,
+      "secondary": [
+        85,
+        93,
+        112
+      ],
+      "primary": [
+        41,
+        45,
+        57
+      ],
+      "mixed": [
+        83.24,
+        91.08,
+        109.8
+      ],
+      "conservative": [
+        84,
+        92,
+        110
+      ],
+      "before": 6.256987143498138,
+      "after": 6.444131114406668,
+      "conservativeRatio": 6.362815093949177,
+      "worst": {
+        "x": 342.5,
+        "y": 946.5,
+        "background": [
+          248,
+          249,
+          251,
+          1
+        ],
+        "foreground": [
+          83.24,
+          91.08,
+          109.8
+        ]
+      }
+    },
+    {
+      "finish": "pure-white",
+      "season": "winter",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-pure-white-winter-procrastination-contrast-1.png",
+      "pngSha256": "1d19051aacd5f0ce9f4b892ce5bd7910488e02560da0205d4a0456431c4357f2",
+      "samples": 6060,
+      "secondary": [
+        85,
+        93,
+        112
+      ],
+      "primary": [
+        41,
+        45,
+        57
+      ],
+      "mixed": [
+        83.24,
+        91.08,
+        109.8
+      ],
+      "conservative": [
+        84,
+        92,
+        110
+      ],
+      "before": 6.256987143498138,
+      "after": 6.444131114406668,
+      "conservativeRatio": 6.362815093949177,
+      "worst": {
+        "x": 342.5,
+        "y": 946.5,
+        "background": [
+          248,
+          249,
+          251,
+          1
+        ],
+        "foreground": [
+          83.24,
+          91.08,
+          109.8
+        ]
+      }
+    },
+    {
+      "finish": "titanium-graphite",
+      "season": "spring",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-titanium-graphite-spring-procrastination-contrast-1.png",
+      "pngSha256": "8aae616a2eaf43da86c4fbd25ea4ce308a756c82e997fbf2c20f0e57dcc385e0",
+      "samples": 6060,
+      "secondary": [
+        184,
+        183,
+        178
+      ],
+      "primary": [
+        241,
+        240,
+        237
+      ],
+      "mixed": [
+        186.28,
+        185.28000000000003,
+        180.36
+      ],
+      "conservative": [
+        186,
+        185,
+        180
+      ],
+      "before": 7.059535579397373,
+      "after": 7.238849375892863,
+      "conservativeRatio": 7.216285782113272,
+      "worst": {
+        "x": 342.5,
+        "y": 946.5,
+        "background": [
+          41,
+          43,
+          47,
+          1
+        ],
+        "foreground": [
+          186.28,
+          185.28000000000003,
+          180.36
+        ]
+      }
+    },
+    {
+      "finish": "titanium-graphite",
+      "season": "summer",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-titanium-graphite-summer-procrastination-contrast-1.png",
+      "pngSha256": "8aae616a2eaf43da86c4fbd25ea4ce308a756c82e997fbf2c20f0e57dcc385e0",
+      "samples": 6060,
+      "secondary": [
+        184,
+        183,
+        178
+      ],
+      "primary": [
+        241,
+        240,
+        237
+      ],
+      "mixed": [
+        186.28,
+        185.28000000000003,
+        180.36
+      ],
+      "conservative": [
+        186,
+        185,
+        180
+      ],
+      "before": 7.059535579397373,
+      "after": 7.238849375892863,
+      "conservativeRatio": 7.216285782113272,
+      "worst": {
+        "x": 342.5,
+        "y": 946.5,
+        "background": [
+          41,
+          43,
+          47,
+          1
+        ],
+        "foreground": [
+          186.28,
+          185.28000000000003,
+          180.36
+        ]
+      }
+    },
+    {
+      "finish": "titanium-graphite",
+      "season": "autumn",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-titanium-graphite-autumn-procrastination-contrast-1.png",
+      "pngSha256": "8aae616a2eaf43da86c4fbd25ea4ce308a756c82e997fbf2c20f0e57dcc385e0",
+      "samples": 6060,
+      "secondary": [
+        184,
+        183,
+        178
+      ],
+      "primary": [
+        241,
+        240,
+        237
+      ],
+      "mixed": [
+        186.28,
+        185.28000000000003,
+        180.36
+      ],
+      "conservative": [
+        186,
+        185,
+        180
+      ],
+      "before": 7.059535579397373,
+      "after": 7.238849375892863,
+      "conservativeRatio": 7.216285782113272,
+      "worst": {
+        "x": 342.5,
+        "y": 946.5,
+        "background": [
+          41,
+          43,
+          47,
+          1
+        ],
+        "foreground": [
+          186.28,
+          185.28000000000003,
+          180.36
+        ]
+      }
+    },
+    {
+      "finish": "titanium-graphite",
+      "season": "winter",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-titanium-graphite-winter-procrastination-contrast-1.png",
+      "pngSha256": "8aae616a2eaf43da86c4fbd25ea4ce308a756c82e997fbf2c20f0e57dcc385e0",
+      "samples": 6060,
+      "secondary": [
+        184,
+        183,
+        178
+      ],
+      "primary": [
+        241,
+        240,
+        237
+      ],
+      "mixed": [
+        186.28,
+        185.28000000000003,
+        180.36
+      ],
+      "conservative": [
+        186,
+        185,
+        180
+      ],
+      "before": 7.059535579397373,
+      "after": 7.238849375892863,
+      "conservativeRatio": 7.216285782113272,
+      "worst": {
+        "x": 342.5,
+        "y": 946.5,
+        "background": [
+          41,
+          43,
+          47,
+          1
+        ],
+        "foreground": [
+          186.28,
+          185.28000000000003,
+          180.36
+        ]
+      }
+    },
+    {
+      "finish": "midnight-black",
+      "season": "spring",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-midnight-black-spring-procrastination-contrast-1.png",
+      "pngSha256": "7695a474ae3373e3ca281137e8eb9216910ce0252eb103ba22fc47f3a2bf6c65",
+      "samples": 6060,
+      "secondary": [
+        185,
+        186,
+        192
+      ],
+      "primary": [
+        245,
+        242,
+        237
+      ],
+      "mixed": [
+        187.4,
+        188.24,
+        193.8
+      ],
+      "conservative": [
+        187,
+        188,
+        193
+      ],
+      "before": 9.598156527174678,
+      "after": 9.833975085092895,
+      "conservativeRatio": 9.800536309317366,
+      "worst": {
+        "x": 342.5,
+        "y": 946.5,
+        "background": [
+          17,
+          19,
+          24,
+          1
+        ],
+        "foreground": [
+          187.4,
+          188.24,
+          193.8
+        ]
+      }
+    },
+    {
+      "finish": "midnight-black",
+      "season": "summer",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-midnight-black-summer-procrastination-contrast-1.png",
+      "pngSha256": "7695a474ae3373e3ca281137e8eb9216910ce0252eb103ba22fc47f3a2bf6c65",
+      "samples": 6060,
+      "secondary": [
+        185,
+        186,
+        192
+      ],
+      "primary": [
+        245,
+        242,
+        237
+      ],
+      "mixed": [
+        187.4,
+        188.24,
+        193.8
+      ],
+      "conservative": [
+        187,
+        188,
+        193
+      ],
+      "before": 9.598156527174678,
+      "after": 9.833975085092895,
+      "conservativeRatio": 9.800536309317366,
+      "worst": {
+        "x": 342.5,
+        "y": 946.5,
+        "background": [
+          17,
+          19,
+          24,
+          1
+        ],
+        "foreground": [
+          187.4,
+          188.24,
+          193.8
+        ]
+      }
+    },
+    {
+      "finish": "midnight-black",
+      "season": "autumn",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-midnight-black-autumn-procrastination-contrast-1.png",
+      "pngSha256": "7695a474ae3373e3ca281137e8eb9216910ce0252eb103ba22fc47f3a2bf6c65",
+      "samples": 6060,
+      "secondary": [
+        185,
+        186,
+        192
+      ],
+      "primary": [
+        245,
+        242,
+        237
+      ],
+      "mixed": [
+        187.4,
+        188.24,
+        193.8
+      ],
+      "conservative": [
+        187,
+        188,
+        193
+      ],
+      "before": 9.598156527174678,
+      "after": 9.833975085092895,
+      "conservativeRatio": 9.800536309317366,
+      "worst": {
+        "x": 342.5,
+        "y": 946.5,
+        "background": [
+          17,
+          19,
+          24,
+          1
+        ],
+        "foreground": [
+          187.4,
+          188.24,
+          193.8
+        ]
+      }
+    },
+    {
+      "finish": "midnight-black",
+      "season": "winter",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-midnight-black-winter-procrastination-contrast-1.png",
+      "pngSha256": "7695a474ae3373e3ca281137e8eb9216910ce0252eb103ba22fc47f3a2bf6c65",
+      "samples": 6060,
+      "secondary": [
+        185,
+        186,
+        192
+      ],
+      "primary": [
+        245,
+        242,
+        237
+      ],
+      "mixed": [
+        187.4,
+        188.24,
+        193.8
+      ],
+      "conservative": [
+        187,
+        188,
+        193
+      ],
+      "before": 9.598156527174678,
+      "after": 9.833975085092895,
+      "conservativeRatio": 9.800536309317366,
+      "worst": {
+        "x": 342.5,
+        "y": 946.5,
+        "background": [
+          17,
+          19,
+          24,
+          1
+        ],
+        "foreground": [
+          187.4,
+          188.24,
+          193.8
+        ]
+      }
+    },
+    {
+      "finish": "sakura-pink",
+      "season": "spring",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-sakura-pink-spring-procrastination-contrast-1.png",
+      "pngSha256": "dc0206894e30ef47ae22a724ddbd82129681850da9163466bad43a7c6f81350b",
+      "samples": 6060,
+      "secondary": [
+        110,
+        98,
+        105
+      ],
+      "primary": [
+        48,
+        42,
+        46
+      ],
+      "mixed": [
+        107.52,
+        95.76,
+        102.64
+      ],
+      "conservative": [
+        108,
+        96,
+        103
+      ],
+      "before": 4.7840568270567205,
+      "after": 4.953487518300939,
+      "conservativeRatio": 4.93061484892876,
+      "worst": {
+        "x": 342.5,
+        "y": 946.5,
+        "background": [
+          245,
+          229,
+          235,
+          1
+        ],
+        "foreground": [
+          107.52,
+          95.76,
+          102.64
+        ]
+      }
+    },
+    {
+      "finish": "sakura-pink",
+      "season": "summer",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-sakura-pink-summer-procrastination-contrast-1.png",
+      "pngSha256": "dc0206894e30ef47ae22a724ddbd82129681850da9163466bad43a7c6f81350b",
+      "samples": 6060,
+      "secondary": [
+        110,
+        98,
+        105
+      ],
+      "primary": [
+        48,
+        42,
+        46
+      ],
+      "mixed": [
+        107.52,
+        95.76,
+        102.64
+      ],
+      "conservative": [
+        108,
+        96,
+        103
+      ],
+      "before": 4.7840568270567205,
+      "after": 4.953487518300939,
+      "conservativeRatio": 4.93061484892876,
+      "worst": {
+        "x": 342.5,
+        "y": 946.5,
+        "background": [
+          245,
+          229,
+          235,
+          1
+        ],
+        "foreground": [
+          107.52,
+          95.76,
+          102.64
+        ]
+      }
+    },
+    {
+      "finish": "sakura-pink",
+      "season": "autumn",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-sakura-pink-autumn-procrastination-contrast-1.png",
+      "pngSha256": "dc0206894e30ef47ae22a724ddbd82129681850da9163466bad43a7c6f81350b",
+      "samples": 6060,
+      "secondary": [
+        110,
+        98,
+        105
+      ],
+      "primary": [
+        48,
+        42,
+        46
+      ],
+      "mixed": [
+        107.52,
+        95.76,
+        102.64
+      ],
+      "conservative": [
+        108,
+        96,
+        103
+      ],
+      "before": 4.7840568270567205,
+      "after": 4.953487518300939,
+      "conservativeRatio": 4.93061484892876,
+      "worst": {
+        "x": 342.5,
+        "y": 946.5,
+        "background": [
+          245,
+          229,
+          235,
+          1
+        ],
+        "foreground": [
+          107.52,
+          95.76,
+          102.64
+        ]
+      }
+    },
+    {
+      "finish": "sakura-pink",
+      "season": "winter",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-sakura-pink-winter-procrastination-contrast-1.png",
+      "pngSha256": "dc0206894e30ef47ae22a724ddbd82129681850da9163466bad43a7c6f81350b",
+      "samples": 6060,
+      "secondary": [
+        110,
+        98,
+        105
+      ],
+      "primary": [
+        48,
+        42,
+        46
+      ],
+      "mixed": [
+        107.52,
+        95.76,
+        102.64
+      ],
+      "conservative": [
+        108,
+        96,
+        103
+      ],
+      "before": 4.7840568270567205,
+      "after": 4.953487518300939,
+      "conservativeRatio": 4.93061484892876,
+      "worst": {
+        "x": 342.5,
+        "y": 946.5,
+        "background": [
+          245,
+          229,
+          235,
+          1
+        ],
+        "foreground": [
+          107.52,
+          95.76,
+          102.64
+        ]
+      }
+    },
+    {
+      "finish": "alpine-blue",
+      "season": "spring",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-alpine-blue-spring-procrastination-contrast-1.png",
+      "pngSha256": "0c6b73ea4f104c7e84b101962309bb8659ecd08a51cb406be70e4ec67e3ce839",
+      "samples": 6060,
+      "secondary": [
+        96,
+        109,
+        123
+      ],
+      "primary": [
+        41,
+        49,
+        58
+      ],
+      "mixed": [
+        93.8,
+        106.60000000000001,
+        120.4
+      ],
+      "conservative": [
+        94,
+        107,
+        121
+      ],
+      "before": 4.579422889933556,
+      "after": 4.743571265825186,
+      "conservativeRatio": 4.716881392005738,
+      "worst": {
+        "x": 342.5,
+        "y": 946.5,
+        "background": [
+          230,
+          240,
+          248,
+          1
+        ],
+        "foreground": [
+          93.8,
+          106.60000000000001,
+          120.4
+        ]
+      }
+    },
+    {
+      "finish": "alpine-blue",
+      "season": "summer",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-alpine-blue-summer-procrastination-contrast-1.png",
+      "pngSha256": "0c6b73ea4f104c7e84b101962309bb8659ecd08a51cb406be70e4ec67e3ce839",
+      "samples": 6060,
+      "secondary": [
+        96,
+        109,
+        123
+      ],
+      "primary": [
+        41,
+        49,
+        58
+      ],
+      "mixed": [
+        93.8,
+        106.60000000000001,
+        120.4
+      ],
+      "conservative": [
+        94,
+        107,
+        121
+      ],
+      "before": 4.579422889933556,
+      "after": 4.743571265825186,
+      "conservativeRatio": 4.716881392005738,
+      "worst": {
+        "x": 342.5,
+        "y": 946.5,
+        "background": [
+          230,
+          240,
+          248,
+          1
+        ],
+        "foreground": [
+          93.8,
+          106.60000000000001,
+          120.4
+        ]
+      }
+    },
+    {
+      "finish": "alpine-blue",
+      "season": "autumn",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-alpine-blue-autumn-procrastination-contrast-1.png",
+      "pngSha256": "0c6b73ea4f104c7e84b101962309bb8659ecd08a51cb406be70e4ec67e3ce839",
+      "samples": 6060,
+      "secondary": [
+        96,
+        109,
+        123
+      ],
+      "primary": [
+        41,
+        49,
+        58
+      ],
+      "mixed": [
+        93.8,
+        106.60000000000001,
+        120.4
+      ],
+      "conservative": [
+        94,
+        107,
+        121
+      ],
+      "before": 4.579422889933556,
+      "after": 4.743571265825186,
+      "conservativeRatio": 4.716881392005738,
+      "worst": {
+        "x": 342.5,
+        "y": 946.5,
+        "background": [
+          230,
+          240,
+          248,
+          1
+        ],
+        "foreground": [
+          93.8,
+          106.60000000000001,
+          120.4
+        ]
+      }
+    },
+    {
+      "finish": "alpine-blue",
+      "season": "winter",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-alpine-blue-winter-procrastination-contrast-1.png",
+      "pngSha256": "0c6b73ea4f104c7e84b101962309bb8659ecd08a51cb406be70e4ec67e3ce839",
+      "samples": 6060,
+      "secondary": [
+        96,
+        109,
+        123
+      ],
+      "primary": [
+        41,
+        49,
+        58
+      ],
+      "mixed": [
+        93.8,
+        106.60000000000001,
+        120.4
+      ],
+      "conservative": [
+        94,
+        107,
+        121
+      ],
+      "before": 4.579422889933556,
+      "after": 4.743571265825186,
+      "conservativeRatio": 4.716881392005738,
+      "worst": {
+        "x": 342.5,
+        "y": 946.5,
+        "background": [
+          230,
+          240,
+          248,
+          1
+        ],
+        "foreground": [
+          93.8,
+          106.60000000000001,
+          120.4
+        ]
+      }
+    },
+    {
+      "finish": "porcelain-cream",
+      "season": "spring",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-porcelain-cream-spring-procrastination-contrast-1.png",
+      "pngSha256": "441b84187aa01ae0afcb013bf5353d0edaf97bb23394dad999c7bc696d323a5b",
+      "samples": 7751,
+      "secondary": [
+        98,
+        100,
+        107
+      ],
+      "primary": [
+        41,
+        42,
+        45
+      ],
+      "mixed": [
+        95.72,
+        97.68,
+        104.52
+      ],
+      "conservative": [
+        96,
+        98,
+        105
+      ],
+      "before": 5.0783245544731495,
+      "after": 5.26042684953302,
+      "conservativeRatio": 5.234563643429782,
+      "worst": {
+        "x": 24.5,
+        "y": 458.5,
+        "background": [
+          245,
+          237,
+          222,
+          1
+        ],
+        "foreground": [
+          95.72,
+          97.68,
+          104.52
+        ]
+      }
+    },
+    {
+      "finish": "porcelain-cream",
+      "season": "summer",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-porcelain-cream-summer-procrastination-contrast-1.png",
+      "pngSha256": "94678ae9aae69f1388954cada899adf500ee48255f0163d928d1ecf5d6a6e97f",
+      "samples": 7751,
+      "secondary": [
+        98,
+        100,
+        107
+      ],
+      "primary": [
+        41,
+        42,
+        45
+      ],
+      "mixed": [
+        95.72,
+        97.68,
+        104.52
+      ],
+      "conservative": [
+        96,
+        98,
+        105
+      ],
+      "before": 5.061219283965123,
+      "after": 5.242708205660664,
+      "conservativeRatio": 5.216932114339449,
+      "worst": {
+        "x": 374.5,
+        "y": 470.5,
+        "background": [
+          243,
+          237,
+          223,
+          1
+        ],
+        "foreground": [
+          95.72,
+          97.68,
+          104.52
+        ]
+      }
+    },
+    {
+      "finish": "porcelain-cream",
+      "season": "autumn",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-porcelain-cream-autumn-procrastination-contrast-1.png",
+      "pngSha256": "07b5aad73fa229f5a9f020f8c95d54081c6ec28150244b0e3dc89306bf9a792e",
+      "samples": 7751,
+      "secondary": [
+        98,
+        100,
+        107
+      ],
+      "primary": [
+        41,
+        42,
+        45
+      ],
+      "mixed": [
+        95.72,
+        97.68,
+        104.52
+      ],
+      "conservative": [
+        96,
+        98,
+        105
+      ],
+      "before": 5.065222929701402,
+      "after": 5.246855417068922,
+      "conservativeRatio": 5.221058935732509,
+      "worst": {
+        "x": 374.5,
+        "y": 470.5,
+        "background": [
+          244,
+          237,
+          221,
+          1
+        ],
+        "foreground": [
+          95.72,
+          97.68,
+          104.52
+        ]
+      }
+    },
+    {
+      "finish": "porcelain-cream",
+      "season": "winter",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-porcelain-cream-winter-procrastination-contrast-1.png",
+      "pngSha256": "330fa9308bfa048f2554388b0909d485ac9021d3155d8cd93a87ce61566e96e9",
+      "samples": 7751,
+      "secondary": [
+        98,
+        100,
+        107
+      ],
+      "primary": [
+        41,
+        42,
+        45
+      ],
+      "mixed": [
+        95.72,
+        97.68,
+        104.52
+      ],
+      "conservative": [
+        96,
+        98,
+        105
+      ],
+      "before": 5.05819289733599,
+      "after": 5.239573296635022,
+      "conservativeRatio": 5.213812618283241,
+      "worst": {
+        "x": 378.5,
+        "y": 458.5,
+        "background": [
+          243,
+          237,
+          222,
+          1
+        ],
+        "foreground": [
+          95.72,
+          97.68,
+          104.52
+        ]
+      }
+    },
+    {
+      "finish": "pure-white",
+      "season": "spring",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-pure-white-spring-procrastination-contrast-1.png",
+      "pngSha256": "8b9c3be5e40a4d155b6f3ad18c3097f6427787b0094a8ae718b9311bd3ffe68b",
+      "samples": 7751,
+      "secondary": [
+        85,
+        93,
+        112
+      ],
+      "primary": [
+        41,
+        45,
+        57
+      ],
+      "mixed": [
+        83.24,
+        91.08,
+        109.8
+      ],
+      "conservative": [
+        84,
+        92,
+        110
+      ],
+      "before": 6.164390923250133,
+      "after": 6.348765378423547,
+      "conservativeRatio": 6.268652741634153,
+      "worst": {
+        "x": 24.5,
+        "y": 458.5,
+        "background": [
+          247,
+          247,
+          250,
+          1
+        ],
+        "foreground": [
+          83.24,
+          91.08,
+          109.8
+        ]
+      }
+    },
+    {
+      "finish": "pure-white",
+      "season": "summer",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-pure-white-summer-procrastination-contrast-1.png",
+      "pngSha256": "12fac0b00b77ca9562b920b1167258cf7214ccb9ab672c95957d66c9e8afc443",
+      "samples": 7751,
+      "secondary": [
+        85,
+        93,
+        112
+      ],
+      "primary": [
+        41,
+        45,
+        57
+      ],
+      "mixed": [
+        83.24,
+        91.08,
+        109.8
+      ],
+      "conservative": [
+        84,
+        92,
+        110
+      ],
+      "before": 6.1416864064057455,
+      "after": 6.325381778604819,
+      "conservativeRatio": 6.2455642104984594,
+      "worst": {
+        "x": 364.5,
+        "y": 458.5,
+        "background": [
+          245,
+          247,
+          250,
+          1
+        ],
+        "foreground": [
+          83.24,
+          91.08,
+          109.8
+        ]
+      }
+    },
+    {
+      "finish": "pure-white",
+      "season": "autumn",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-pure-white-autumn-procrastination-contrast-1.png",
+      "pngSha256": "008f9b2728b056f9284b7815a99a57ed89df37e31f15ef549bf2bd7576a6ff1c",
+      "samples": 7751,
+      "secondary": [
+        85,
+        93,
+        112
+      ],
+      "primary": [
+        41,
+        45,
+        57
+      ],
+      "mixed": [
+        83.24,
+        91.08,
+        109.8
+      ],
+      "conservative": [
+        84,
+        92,
+        110
+      ],
+      "before": 6.145172709278539,
+      "after": 6.328972355395464,
+      "conservativeRatio": 6.249109479176874,
+      "worst": {
+        "x": 378.5,
+        "y": 458.5,
+        "background": [
+          246,
+          247,
+          248,
+          1
+        ],
+        "foreground": [
+          83.24,
+          91.08,
+          109.8
+        ]
+      }
+    },
+    {
+      "finish": "pure-white",
+      "season": "winter",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-pure-white-winter-procrastination-contrast-1.png",
+      "pngSha256": "37d6d539b7a341a03108fa2f09e4ccfa0262647d8d80eb2e76d7002ef2779ce7",
+      "samples": 7751,
+      "secondary": [
+        85,
+        93,
+        112
+      ],
+      "primary": [
+        41,
+        45,
+        57
+      ],
+      "mixed": [
+        83.24,
+        91.08,
+        109.8
+      ],
+      "conservative": [
+        84,
+        92,
+        110
+      ],
+      "before": 6.099465750735509,
+      "after": 6.281898320091091,
+      "conservativeRatio": 6.202629453080239,
+      "worst": {
+        "x": 378.5,
+        "y": 458.5,
+        "background": [
+          245,
+          246,
+          249,
+          1
+        ],
+        "foreground": [
+          83.24,
+          91.08,
+          109.8
+        ]
+      }
+    },
+    {
+      "finish": "titanium-graphite",
+      "season": "spring",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-titanium-graphite-spring-procrastination-contrast-1.png",
+      "pngSha256": "dc312a95b732dc5e151a2bfde2a9ee1fc0405d99d6c8e89cfefbdd69aa0238a2",
+      "samples": 7751,
+      "secondary": [
+        184,
+        183,
+        178
+      ],
+      "primary": [
+        241,
+        240,
+        237
+      ],
+      "mixed": [
+        186.28,
+        185.28000000000003,
+        180.36
+      ],
+      "conservative": [
+        186,
+        185,
+        180
+      ],
+      "before": 6.866905665639384,
+      "after": 7.041326618864085,
+      "conservativeRatio": 7.019378706254304,
+      "worst": {
+        "x": 11.5,
+        "y": 457.5,
+        "background": [
+          43,
+          45,
+          49,
+          1
+        ],
+        "foreground": [
+          186.28,
+          185.28000000000003,
+          180.36
+        ]
+      }
+    },
+    {
+      "finish": "titanium-graphite",
+      "season": "summer",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-titanium-graphite-summer-procrastination-contrast-1.png",
+      "pngSha256": "3940e60f7c1d8da350a41033a0336fc73166a7d2f1ee7dde4b817a4ff756799a",
+      "samples": 7751,
+      "secondary": [
+        184,
+        183,
+        178
+      ],
+      "primary": [
+        241,
+        240,
+        237
+      ],
+      "mixed": [
+        186.28,
+        185.28000000000003,
+        180.36
+      ],
+      "conservative": [
+        186,
+        185,
+        180
+      ],
+      "before": 6.866905665639384,
+      "after": 7.041326618864085,
+      "conservativeRatio": 7.019378706254304,
+      "worst": {
+        "x": 361.5,
+        "y": 457.5,
+        "background": [
+          43,
+          45,
+          49,
+          1
+        ],
+        "foreground": [
+          186.28,
+          185.28000000000003,
+          180.36
+        ]
+      }
+    },
+    {
+      "finish": "titanium-graphite",
+      "season": "autumn",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-titanium-graphite-autumn-procrastination-contrast-1.png",
+      "pngSha256": "fb347293e6ec40c18e104270181a62fd2e4645b58c3e674cddc028f835825ff5",
+      "samples": 7751,
+      "secondary": [
+        184,
+        183,
+        178
+      ],
+      "primary": [
+        241,
+        240,
+        237
+      ],
+      "mixed": [
+        186.28,
+        185.28000000000003,
+        180.36
+      ],
+      "conservative": [
+        186,
+        185,
+        180
+      ],
+      "before": 6.866905665639384,
+      "after": 7.041326618864085,
+      "conservativeRatio": 7.019378706254304,
+      "worst": {
+        "x": 361.5,
+        "y": 457.5,
+        "background": [
+          43,
+          45,
+          49,
+          1
+        ],
+        "foreground": [
+          186.28,
+          185.28000000000003,
+          180.36
+        ]
+      }
+    },
+    {
+      "finish": "titanium-graphite",
+      "season": "winter",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-titanium-graphite-winter-procrastination-contrast-1.png",
+      "pngSha256": "3d2b13fc9d876c4ae43574cd974626a2a423214783b32c05f56cd7dcdd4e3947",
+      "samples": 7751,
+      "secondary": [
+        184,
+        183,
+        178
+      ],
+      "primary": [
+        241,
+        240,
+        237
+      ],
+      "mixed": [
+        186.28,
+        185.28000000000003,
+        180.36
+      ],
+      "conservative": [
+        186,
+        185,
+        180
+      ],
+      "before": 6.866905665639384,
+      "after": 7.041326618864085,
+      "conservativeRatio": 7.019378706254304,
+      "worst": {
+        "x": 11.5,
+        "y": 457.5,
+        "background": [
+          43,
+          45,
+          49,
+          1
+        ],
+        "foreground": [
+          186.28,
+          185.28000000000003,
+          180.36
+        ]
+      }
+    },
+    {
+      "finish": "midnight-black",
+      "season": "spring",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-midnight-black-spring-procrastination-contrast-1.png",
+      "pngSha256": "b8681e536f7ca25e0e74b9ee9dca92315a9c67dafe832e81dfb83a0aa339e290",
+      "samples": 7751,
+      "secondary": [
+        185,
+        186,
+        192
+      ],
+      "primary": [
+        245,
+        242,
+        237
+      ],
+      "mixed": [
+        187.4,
+        188.24,
+        193.8
+      ],
+      "conservative": [
+        187,
+        188,
+        193
+      ],
+      "before": 9.433724481882912,
+      "after": 9.665503084036034,
+      "conservativeRatio": 9.632637168921534,
+      "worst": {
+        "x": 11.5,
+        "y": 457.5,
+        "background": [
+          19,
+          21,
+          26,
+          1
+        ],
+        "foreground": [
+          187.4,
+          188.24,
+          193.8
+        ]
+      }
+    },
+    {
+      "finish": "midnight-black",
+      "season": "summer",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-midnight-black-summer-procrastination-contrast-1.png",
+      "pngSha256": "8aba001d08ff0148f4a41eb8b7c8dd0c36e17f2fe9548a478002a251df82550e",
+      "samples": 7751,
+      "secondary": [
+        185,
+        186,
+        192
+      ],
+      "primary": [
+        245,
+        242,
+        237
+      ],
+      "mixed": [
+        187.4,
+        188.24,
+        193.8
+      ],
+      "conservative": [
+        187,
+        188,
+        193
+      ],
+      "before": 9.433724481882912,
+      "after": 9.665503084036034,
+      "conservativeRatio": 9.632637168921534,
+      "worst": {
+        "x": 361.5,
+        "y": 457.5,
+        "background": [
+          19,
+          21,
+          26,
+          1
+        ],
+        "foreground": [
+          187.4,
+          188.24,
+          193.8
+        ]
+      }
+    },
+    {
+      "finish": "midnight-black",
+      "season": "autumn",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-midnight-black-autumn-procrastination-contrast-1.png",
+      "pngSha256": "2c4b072144aebca8b8e417ab013f94845e88bb84cfb2da5104a793db5b8fa8db",
+      "samples": 7751,
+      "secondary": [
+        185,
+        186,
+        192
+      ],
+      "primary": [
+        245,
+        242,
+        237
+      ],
+      "mixed": [
+        187.4,
+        188.24,
+        193.8
+      ],
+      "conservative": [
+        187,
+        188,
+        193
+      ],
+      "before": 9.433724481882912,
+      "after": 9.665503084036034,
+      "conservativeRatio": 9.632637168921534,
+      "worst": {
+        "x": 361.5,
+        "y": 457.5,
+        "background": [
+          19,
+          21,
+          26,
+          1
+        ],
+        "foreground": [
+          187.4,
+          188.24,
+          193.8
+        ]
+      }
+    },
+    {
+      "finish": "midnight-black",
+      "season": "winter",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-midnight-black-winter-procrastination-contrast-1.png",
+      "pngSha256": "aacff32087f7806fbb663a307d12e159aadc602a28cc0380a1c3d2d48635fd87",
+      "samples": 7751,
+      "secondary": [
+        185,
+        186,
+        192
+      ],
+      "primary": [
+        245,
+        242,
+        237
+      ],
+      "mixed": [
+        187.4,
+        188.24,
+        193.8
+      ],
+      "conservative": [
+        187,
+        188,
+        193
+      ],
+      "before": 9.433724481882912,
+      "after": 9.665503084036034,
+      "conservativeRatio": 9.632637168921534,
+      "worst": {
+        "x": 11.5,
+        "y": 457.5,
+        "background": [
+          19,
+          21,
+          26,
+          1
+        ],
+        "foreground": [
+          187.4,
+          188.24,
+          193.8
+        ]
+      }
+    },
+    {
+      "finish": "sakura-pink",
+      "season": "spring",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-sakura-pink-spring-procrastination-contrast-1.png",
+      "pngSha256": "4ea9ca3f44b7603b9b2e0255af0622aae268568c5c15fe198a891cd029dd3e95",
+      "samples": 7751,
+      "secondary": [
+        110,
+        98,
+        105
+      ],
+      "primary": [
+        48,
+        42,
+        46
+      ],
+      "mixed": [
+        107.52,
+        95.76,
+        102.64
+      ],
+      "conservative": [
+        108,
+        96,
+        103
+      ],
+      "before": 4.710041441478171,
+      "after": 4.8768508264974395,
+      "conservativeRatio": 4.85433202613309,
+      "worst": {
+        "x": 24.5,
+        "y": 458.5,
+        "background": [
+          244,
+          227,
+          234,
+          1
+        ],
+        "foreground": [
+          107.52,
+          95.76,
+          102.64
+        ]
+      }
+    },
+    {
+      "finish": "sakura-pink",
+      "season": "summer",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-sakura-pink-summer-procrastination-contrast-1.png",
+      "pngSha256": "f4a64f12af15686c21ceb517d0a3118e2bb47f4a1c4a2f6290931d30958f7cba",
+      "samples": 7751,
+      "secondary": [
+        110,
+        98,
+        105
+      ],
+      "primary": [
+        48,
+        42,
+        46
+      ],
+      "mixed": [
+        107.52,
+        95.76,
+        102.64
+      ],
+      "conservative": [
+        108,
+        96,
+        103
+      ],
+      "before": 4.723900067326022,
+      "after": 4.8912002651934605,
+      "conservativeRatio": 4.868615206467551,
+      "worst": {
+        "x": 364.5,
+        "y": 458.5,
+        "background": [
+          242,
+          228,
+          235,
+          1
+        ],
+        "foreground": [
+          107.52,
+          95.76,
+          102.64
+        ]
+      }
+    },
+    {
+      "finish": "sakura-pink",
+      "season": "autumn",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-sakura-pink-autumn-procrastination-contrast-1.png",
+      "pngSha256": "2049e89de0b7992be5ce85ebb6148d0a161c10b353e7eaaf667ae21208ab5a81",
+      "samples": 7751,
+      "secondary": [
+        110,
+        98,
+        105
+      ],
+      "primary": [
+        48,
+        42,
+        46
+      ],
+      "mixed": [
+        107.52,
+        95.76,
+        102.64
+      ],
+      "conservative": [
+        108,
+        96,
+        103
+      ],
+      "before": 4.706869333066592,
+      "after": 4.873566375665964,
+      "conservativeRatio": 4.851062741214047,
+      "worst": {
+        "x": 16.5,
+        "y": 458.5,
+        "background": [
+          244,
+          227,
+          233,
+          1
+        ],
+        "foreground": [
+          107.52,
+          95.76,
+          102.64
+        ]
+      }
+    },
+    {
+      "finish": "sakura-pink",
+      "season": "winter",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-sakura-pink-winter-procrastination-contrast-1.png",
+      "pngSha256": "e0d09e1eb01c8be7b63e8d9c429a3bf0f4e95869733b311c91ac0a453500b2e0",
+      "samples": 7751,
+      "secondary": [
+        110,
+        98,
+        105
+      ],
+      "primary": [
+        48,
+        42,
+        46
+      ],
+      "mixed": [
+        107.52,
+        95.76,
+        102.64
+      ],
+      "conservative": [
+        108,
+        96,
+        103
+      ],
+      "before": 4.690348828482198,
+      "after": 4.856460785951391,
+      "conservativeRatio": 4.834036136355398,
+      "worst": {
+        "x": 378.5,
+        "y": 458.5,
+        "background": [
+          242,
+          227,
+          234,
+          1
+        ],
+        "foreground": [
+          107.52,
+          95.76,
+          102.64
+        ]
+      }
+    },
+    {
+      "finish": "alpine-blue",
+      "season": "spring",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-alpine-blue-spring-procrastination-contrast-1.png",
+      "pngSha256": "1107fdd5f054fa50d9eda4c276d9fedb916eca3b420ada35d7189dc97ed0e0b2",
+      "samples": 7751,
+      "secondary": [
+        96,
+        109,
+        123
+      ],
+      "primary": [
+        41,
+        49,
+        58
+      ],
+      "mixed": [
+        93.8,
+        106.60000000000001,
+        120.4
+      ],
+      "conservative": [
+        94,
+        107,
+        121
+      ],
+      "before": 4.509009530784836,
+      "after": 4.670633955771922,
+      "conservativeRatio": 4.644354466342833,
+      "worst": {
+        "x": 24.5,
+        "y": 458.5,
+        "background": [
+          229,
+          238,
+          247,
+          1
+        ],
+        "foreground": [
+          93.8,
+          106.60000000000001,
+          120.4
+        ]
+      }
+    },
+    {
+      "finish": "alpine-blue",
+      "season": "summer",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-alpine-blue-summer-procrastination-contrast-1.png",
+      "pngSha256": "16995a96860b8ee348f311390d57aaab449fdd81d406caf3b708400d231adbd6",
+      "samples": 7751,
+      "secondary": [
+        96,
+        109,
+        123
+      ],
+      "primary": [
+        41,
+        49,
+        58
+      ],
+      "mixed": [
+        93.8,
+        106.60000000000001,
+        120.4
+      ],
+      "conservative": [
+        94,
+        107,
+        121
+      ],
+      "before": 4.5007476203994035,
+      "after": 4.662075899080694,
+      "conservativeRatio": 4.635844561864448,
+      "worst": {
+        "x": 364.5,
+        "y": 458.5,
+        "background": [
+          228,
+          238,
+          247,
+          1
+        ],
+        "foreground": [
+          93.8,
+          106.60000000000001,
+          120.4
+        ]
+      }
+    },
+    {
+      "finish": "alpine-blue",
+      "season": "autumn",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-alpine-blue-autumn-procrastination-contrast-1.png",
+      "pngSha256": "df5696ca09b78e2e7a3c0eccf98df2ffc25198c8f4d4f11fae5b9004b30981be",
+      "samples": 7751,
+      "secondary": [
+        96,
+        109,
+        123
+      ],
+      "primary": [
+        41,
+        49,
+        58
+      ],
+      "mixed": [
+        93.8,
+        106.60000000000001,
+        120.4
+      ],
+      "conservative": [
+        94,
+        107,
+        121
+      ],
+      "before": 4.50282300441017,
+      "after": 4.66422567476109,
+      "conservativeRatio": 4.637982241754893,
+      "worst": {
+        "x": 374.5,
+        "y": 470.5,
+        "background": [
+          229,
+          238,
+          245,
+          1
+        ],
+        "foreground": [
+          93.8,
+          106.60000000000001,
+          120.4
+        ]
+      }
+    },
+    {
+      "finish": "alpine-blue",
+      "season": "winter",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-alpine-blue-winter-procrastination-contrast-1.png",
+      "pngSha256": "972d52c29ab8c888599097ecfa4c3166c32cf342aa22da93a6e057d797fbdeca",
+      "samples": 7751,
+      "secondary": [
+        96,
+        109,
+        123
+      ],
+      "primary": [
+        41,
+        49,
+        58
+      ],
+      "mixed": [
+        93.8,
+        106.60000000000001,
+        120.4
+      ],
+      "conservative": [
+        94,
+        107,
+        121
+      ],
+      "before": 4.49764603001045,
+      "after": 4.658863132887,
+      "conservativeRatio": 4.632649872414945,
+      "worst": {
+        "x": 378.5,
+        "y": 458.5,
+        "background": [
+          228,
+          238,
+          246,
+          1
+        ],
+        "foreground": [
+          93.8,
+          106.60000000000001,
+          120.4
+        ]
+      }
+    },
+    {
+      "finish": "porcelain-cream",
+      "season": "autumn (screen case)",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-porcelain-cream-procrastination-contrast-1.png",
+      "pngSha256": "cd43dc346b5c9506b1b3b3746c326168d0931430f04675d7885a1932bdf6d739",
+      "samples": 7249,
+      "secondary": [
+        98,
+        100,
+        107
+      ],
+      "primary": [
+        41,
+        42,
+        45
+      ],
+      "mixed": [
+        95.72,
+        97.68,
+        104.52
+      ],
+      "conservative": [
+        96,
+        98,
+        105
+      ],
+      "before": 4.7090918819624195,
+      "after": 4.877953960420523,
+      "conservativeRatio": 4.853971205361082,
+      "worst": {
+        "x": 432.5,
+        "y": 240.5,
+        "background": [
+          241,
+          228,
+          207,
+          1
+        ],
+        "foreground": [
+          95.72,
+          97.68,
+          104.52
+        ]
+      }
+    },
+    {
+      "finish": "midnight-black",
+      "season": "autumn (screen case)",
+      "width": 1440,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-1440-midnight-black-procrastination-contrast-1.png",
+      "pngSha256": "a042b66ce47d2817f9350fa6649f2ab31ed62ff846401c6b01e76a5f7b0ac990",
+      "samples": 7249,
+      "secondary": [
+        185,
+        186,
+        192
+      ],
+      "primary": [
+        245,
+        242,
+        237
+      ],
+      "mixed": [
+        187.4,
+        188.24,
+        193.8
+      ],
+      "conservative": [
+        187,
+        188,
+        193
+      ],
+      "before": 8.569250195299393,
+      "after": 8.779789398090529,
+      "conservativeRatio": 8.749935203169478,
+      "worst": {
+        "x": 431.5,
+        "y": 237.5,
+        "background": [
+          32,
+          30,
+          30,
+          1
+        ],
+        "foreground": [
+          187.4,
+          188.24,
+          193.8
+        ]
+      }
+    },
+    {
+      "finish": "porcelain-cream",
+      "season": "autumn (screen case)",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-porcelain-cream-procrastination-contrast-1.png",
+      "pngSha256": "1fe78d559c2dacf8cd2c2ad6bc57627348bc1da605a46db92ffb0c300de745f7",
+      "samples": 9296,
+      "secondary": [
+        98,
+        100,
+        107
+      ],
+      "primary": [
+        41,
+        42,
+        45
+      ],
+      "mixed": [
+        95.72,
+        97.68,
+        104.52
+      ],
+      "conservative": [
+        96,
+        98,
+        105
+      ],
+      "before": 4.557967455284818,
+      "after": 4.721410402956301,
+      "conservativeRatio": 4.698197303745451,
+      "worst": {
+        "x": 16.5,
+        "y": 174.5,
+        "background": [
+          240,
+          224,
+          200,
+          1
+        ],
+        "foreground": [
+          95.72,
+          97.68,
+          104.52
+        ]
+      }
+    },
+    {
+      "finish": "midnight-black",
+      "season": "autumn (screen case)",
+      "width": 390,
+      "png": "artifacts/design-polish-1/last-contrast/input/after-390-midnight-black-procrastination-contrast-1.png",
+      "pngSha256": "43e9cd7d27a5295e9054778e80ab7163899929d015e56cce399adfff199f40f9",
+      "samples": 9968,
+      "secondary": [
+        185,
+        186,
+        192
+      ],
+      "primary": [
+        245,
+        242,
+        237
+      ],
+      "mixed": [
+        187.4,
+        188.24,
+        193.8
+      ],
+      "conservative": [
+        187,
+        188,
+        193
+      ],
+      "before": 7.903015140375588,
+      "after": 8.097185513439696,
+      "conservativeRatio": 8.069652398045982,
+      "worst": {
+        "x": 375.5,
+        "y": 175.5,
+        "background": [
+          37,
+          37,
+          39,
+          1
+        ],
+        "foreground": [
+          187.4,
+          188.24,
+          193.8
+        ]
+      }
+    }
+  ]
+}

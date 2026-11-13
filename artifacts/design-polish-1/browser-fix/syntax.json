@@ -1,0 +1,30 @@
+[
+  {
+    "file": "scripts/hani-design-polish-1.browser.mjs",
+    "exitCode": 0
+  },
+  {
+    "file": "scripts/hani-design-polish-1-contrast.mjs",
+    "exitCode": 0
+  },
+  {
+    "file": "scripts/hani-design-polish-1-contrast.test.mjs",
+    "exitCode": 0
+  },
+  {
+    "file": "scripts/hani-design-polish-1-source.cjs",
+    "exitCode": 0
+  },
+  {
+    "file": "artifacts/design-polish-1/browser-fix/helper-setup-check.cjs",
+    "exitCode": 0
+  },
+  {
+    "file": "artifacts/design-polish-1/browser-fix/verify.cjs",
+    "exitCode": 0
+  },
+  {
+    "file": "artifacts/design-polish-1/browser-fix/restore-test-outputs.cjs",
+    "exitCode": 0
+  }
+]

@@ -1,0 +1,38 @@
+{
+  "base": "cb119351ff7b0a01b77fdc04d6f0b1ba0c2b54dc",
+  "existingChanged": [
+    "artifacts/office-behavior/obr16-layout-node.json",
+    "artifacts/office-behavior/obr17-layout-node.json",
+    "artifacts/office-behavior/obr19-layout-node.json",
+    "artifacts/office-drama/reachability.json",
+    "hani-design-system.css",
+    "hani-main.js",
+    "scripts/hani-release-version-layers.cjs",
+    "scripts/hani-theme-thaw-source.cjs"
+  ],
+  "restored": [
+    "artifacts/office-behavior/obr16-layout-node.json",
+    "artifacts/office-behavior/obr17-layout-node.json",
+    "artifacts/office-behavior/obr19-layout-node.json",
+    "artifacts/office-drama/reachability.json"
+  ],
+  "moved": [
+    "artifacts/exam-popup-214/node-results.json",
+    "artifacts/history-226/unit.json",
+    "artifacts/office-219/label-unit-results.json",
+    "artifacts/street-journal-v1/package-check.json"
+  ],
+  "problems": [],
+  "existingFixtureCount": 111,
+  "fixtureDrift": [],
+  "runtimeChanged": [
+    "hani-design-system.css",
+    "hani-main.js"
+  ],
+  "allowedExisting": [
+    "hani-design-system.css",
+    "hani-main.js",
+    "scripts/hani-release-version-layers.cjs",
+    "scripts/hani-theme-thaw-source.cjs"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "base": "cb119351ff7b0a01b77fdc04d6f0b1ba0c2b54dc",
+  "head": "cb119351ff7b0a01b77fdc04d6f0b1ba0c2b54dc",
+  "localMain": "cb119351ff7b0a01b77fdc04d6f0b1ba0c2b54dc",
+  "changedExisting": [
+    "docs/development-history/CURRENT.md",
+    "docs/development-history/handoffs/2026-11-14-design-polish-1.md",
+    "hani-design-system.css",
+    "hani-main.js",
+    "scripts/hani-release-version-layers.cjs",
+    "scripts/hani-theme-thaw-source.cjs"
+  ],
+  "unexpected": [],
+  "missing": [],
+  "existingTestFiles": 305,
+  "existingTestsByteUnchanged": true,
+  "fixtureFiles": 111,
+  "fixturesByteUnchanged": true,
+  "priorCurrentBytesPreserved": true
+}

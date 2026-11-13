@@ -1,0 +1,15 @@
+{
+  "command": "node --require ./scripts/hani-design-polish-1-preload.cjs scripts/hani-helper-bot.test.mjs",
+  "pass": 25,
+  "fail": 4,
+  "skipped": 1,
+  "failures": [
+    "KST rotation: roster 20 vs expected 19",
+    "per-view help: procrastination fallback",
+    "explicit crop: missing ieum",
+    "legacy closure: 169 vs expected 159"
+  ],
+  "boundary": "Existing helper test and runtime helper/roster/style08 unchanged from follow-up start; design inverse projects CSS/main to independently identified cb11935 bytes. Broader historical failures retained, not repaired or suppressed.",
+  "focusedPublicSetup": "helper-setup.json",
+  "browser": "not run"
+}

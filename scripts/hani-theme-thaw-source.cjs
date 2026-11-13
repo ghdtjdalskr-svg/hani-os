@@ -1,4 +1,5 @@
 // Test-only outer THAW inverse. Full-byte pins precede all frozen main layers.
+require('./hani-design-polish-1-preload.cjs');
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
 const bytes=readRawFileSync(path.join(__dirname,'fixtures/theme-thaw-main293-delta.json'));
@@ -17,6 +18,7 @@ function restore(source,file){
  return buffer?Buffer.from(text):text;
 }
 function project(source,file){
+ source=require('./hani-design-polish-1-source.cjs').project(source,file);
  // Legacy fs adapters also see Node loading this dispatcher and its fixtures.
  // Only runtime version owners may enter it; module reads must stay raw.
  if(['index.html','hani-main.js','assets/data/hani-history-releases-v1.json'].includes(file))

@@ -1,0 +1,12 @@
+{
+  "result": "PASS",
+  "checks": [
+    "visible fading gate hides helper",
+    "CSS-only gate completion can leave stale login reason",
+    "public update after hidden gate shows helper",
+    "external modal still hides helper",
+    "closing modal + public update restores helper",
+    "zero storage writes"
+  ],
+  "note": "Actual owner + existing DOM fixture; CSS painting/Edge remains unverified."
+}

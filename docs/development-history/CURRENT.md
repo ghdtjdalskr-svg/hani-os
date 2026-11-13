@@ -1,3 +1,15 @@
+# 2026-11-14 ? ??? ??? 1? ? ??? ?? 1? (?? / Codex)
+
+`hani/design-polish-1` / base `cb11935`??? origin/main `5396c9f`(?? ?????? ? ?? ??). **pb-intro ?? CSS1??? secondary96%+primary4%? ??, ?? delta/source pin/patch? ??. 24???2?+??4?=52 clip ??4.497646?4.658863??????4.632650???0(??).** ???6/6???4/4, ??80??77???????3/852PASS, office ?Git46??610PASS?THAW/294PASS. ??fixture111?????306?????????274 ????????0. ?? ? ???? ??? ?? ??? ??. Git?Edge???/cache?merge??? ??. Notion append? ?? ?? never ??? ???. [??? ??? ?](../../artifacts/design-polish-1/REPORT.md#???-??-1?) ? [????](handoffs/2026-11-14-design-polish-1-last-contrast.md). ?? ?? ?? ??.
+
+# 2026-11-14 · 디자인 다듬기 1차 · 브라우저 실패 정리 (도연 / Codex)
+
+`hani/design-polish-1` / HEAD·base `cb11935`, 로컬 origin/main `5396c9f`(치비2 미참조 그림1개 추가, 대상 원문 동일·자동 통합 없음·원격 새 조회 없음). **대비96건은 clip PNG 텍스트 제외 최악 픽셀 측정(4.5 유지), helper2건은 로그인 전환 후 공개 update setup, Drive2건은 기존40px!important 충돌을 검색44px!important로 보정.** 운영 후속diff는 CSS !important1곳, 기존 JS·시험306·하위fixture111·최초FAIL100/PNG80 보존. **회귀80파일77성공·기존실패3/852PASS·office46파일610PASS·신규4/4·기존디자인6/6·helper관련4/4·setup재현 저장0.** 별도 광범위 helper 기존실패4도 미수정 기록. 부산물JSON4복원/신규4이관·범위밖변경0. 실제 Edge/새clip/100건해소·Git27 미검증, 서윤 재실행 대기. Git·Edge·버전 증가·merge·배포 없음. Notion 착수 append 자동 승인 never 거절로 미반영. [보고서 후속 절](../../artifacts/design-polish-1/REPORT.md#브라우저-실패-정리) · [인수인계](handoffs/2026-11-14-design-polish-1-browser-fix.md). 아래 최초 개발/타 담당 기록 보존.
+
+# 2026-11-14 · 디자인 다듬기 1차 (도연 / Codex)
+
+`hani/design-polish-1` / 로컬 HEAD·origin/main `cb11935`(파일·객체 읽기만, 원격 새 조회 없음). **CSS 끝1블록+월간 빈 제목1곳으로 쉬운 개선10개 구현·표시/cache294 유지. 신규6/6·JS syntax10/10·79파일76성공/기존실패3·office 비Git46파일610PASS/0FAIL/skip1.** design exact inverse→294/THAW/293 이하 연결, 기존fixture111개·저장/Cloud/이벤트/타이머 원문 보존, raw171→168→164/누락0. Git27파일·실제Edge80PNG/24조합 대비·Preview/배포 미실행, 서윤 검증·커밋 인계. 기존 뉴스룸 시험 기본 Edge 시도1회는 spawn EPERM 차단 후 --node 재실행 성공. 선택 공통 helper 확대는 보류. Notion 착수 기록 추가는 자동 승인 never 거절로 미반영. [보고서](../../artifacts/design-polish-1/REPORT.md) · [인수인계](handoffs/2026-11-14-design-polish-1.md). 아래 과거·타 담당 기록 보존.
+
 # 2026-11-14 · tooling-294 · 294 배포 후속 시험 층 (도연 / Codex)
 
 `hani/tooling-294` / 착수 HEAD·로컬 origin/main `846e8d2`(객체 읽기만, 원격 새 조회 없음). **294 version/history → frozen THAW → 293/치비/292 이하 exact inverse 연결. 지정99파일 중 비Git72파일829PASS/0FAIL/skip1·Git27파일 목록만, office46파일610PASS/0FAIL/skip1.** raw171→168→164/누락0·기존fixture110/하위행/단언·운영 파일 보존. 생성JSON7 증거 이관·기존4 원문복원. Git·Edge·commit/push·버전 증가·merge·배포 없음, 서윤 검증·커밋 인계. 루트JSON은 후속 정리 후보로만 기록. Notion 기록 추가는 자동 승인 never 거절로 미반영. [짧은 보고서](../../artifacts/theme-thaw/TOOLING-294.md) · [인수인계](handoffs/2026-11-14-tooling-294.md). 아래 기존 기록 보존.
