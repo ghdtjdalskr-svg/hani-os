@@ -1,4 +1,5 @@
-import {readReviewedReleaseBaseline as readBranchBaseline,readReviewedCurrentSource} from './hani-reviewed-release-baseline.mjs';
+import {readSettingsQaBaseline} from './hani-stale39-reviewed-source.mjs';
+import {readReviewedReleaseBaseline as readBranchBaseline,readReviewedCurrentSource} from './hani-stale39-reviewed-source.mjs';
 // Real index + existing renderers/handlers, isolated synthetic origin. No account or external IO.
 // node scripts/hani-settings-225.test.mjs [playwright/index.mjs] [Edge executable]
 import {withoutHeroRestore} from './hani-hero-restore-preservation.mjs';
@@ -43,7 +44,7 @@ for(const [a,b]of [['id="resetBtn"','id="lostReset"'],['Local / Cloud 원본 보
 }
 check(await verifySettingsStatusProjection(read('hani-main.js'),read('hani-drive-vault.js')));
 check(verifySettingsMarkup(read('index.html'),withoutSettings225('index.html',read('index.html')),plan));
-check(verifySettingsQaGuard(fs.readFileSync(path.join(root,'hani-main.js'),'utf8'),readBranchBaseline('hani-main.js'),fs.readFileSync(path.join(root,'index.html'),'utf8'),plan));
+check(verifySettingsQaGuard(fs.readFileSync(path.join(root,'hani-main.js'),'utf8'),readSettingsQaBaseline(),fs.readFileSync(path.join(root,'index.html'),'utf8'),plan));
 if(process.argv.includes('--static')){
  console.log('PASS (Node only): '+result.checks.join('\nPASS: ')+'\nBrowser checks not run');
  process.exit(0);

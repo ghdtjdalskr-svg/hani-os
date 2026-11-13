@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import {execFileSync} from 'node:child_process';
+import repository from './hani-test-repository-evidence.cjs';
 export const root=path.resolve(import.meta.dirname,'..');
-const git=(...args)=>execFileSync(process.env.HANI_GIT_PATH||process.env.HANI_GIT||'git',args,{cwd:root,encoding:'utf8',maxBuffer:64*1024*1024});
+const git=(...args)=>repository.readOnly(args);
 let fork;
 // Feature branches retain their release version until the release train. Compare
 // their unchanged bytes with the shared ancestor, rather than a later main bump.

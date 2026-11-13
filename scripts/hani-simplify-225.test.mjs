@@ -5,7 +5,7 @@ import vm from 'node:vm';
 import crypto from 'node:crypto';
 import {delta as originalDelta,withoutSimplify225} from './hani-simplify-225-preservation.mjs';
 import {withoutSettings225} from './hani-settings-225-preservation.mjs';
-import {readReviewedReleaseBaseline,readReviewedCurrentSource} from './hani-reviewed-release-baseline.mjs';
+import {readReviewedReleaseBaseline,readReviewedCurrentSource} from './hani-stale39-reviewed-source.mjs';
 // Oracle starts at release225; later changes are individually allow-listed.
 const delta={...originalDelta,files:Object.fromEntries(Object.entries(originalDelta.files).map(([file,entry])=>{
  const source=withoutSettings225(file,withoutHeroRestore(file,readReviewedReleaseBaseline(file)));

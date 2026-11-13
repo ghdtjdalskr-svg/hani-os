@@ -3,7 +3,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import {execFileSync} from 'node:child_process';
+import repository from './hani-test-repository-evidence.cjs';
 import {discoverMergedReleaseChain,advanceMergedReleaseFile} from './hani-merged-release-chain.mjs';
 const root=path.resolve(import.meta.dirname,'..');
 export const guardedRelease='776752c971f2ce48edf376a707eb345ae57da98c';
@@ -55,7 +55,7 @@ export const pendingApprovedConnections=[];
 let mergedReleases,mergedReleaseBase;
 export function readMergedReleaseChain(){
  if(!mergedReleases){
-  const git=args=>execFileSync(process.env.HANI_GIT_PATH||process.env.HANI_GIT||'git',args,{cwd:root,encoding:'utf8',maxBuffer:64*1024*1024});
+  const git=repository.readOnly;
   // The shared base selects a prefix of main's releases; it never supplies expected bytes.
   mergedReleaseBase=git(['merge-base','HEAD','origin/main']).trim();
   assert.match(mergedReleaseBase,/^[0-9a-f]{40}$/,'full shared main base identity');
@@ -78,11 +78,15 @@ export function normalizeReviewedCurrentSource(file,source){
 export function readReviewedCurrentSource(file){
  return normalizeReviewedCurrentSource(file,fs.readFileSync(path.join(root,file),'utf8'));
 }
+const post233SourceOrigins={
+ 'hani-procrastination-board.css':{sha:'a28918df50ba5fef3e7dab498eaa5eec4a27a103',version:'2.9.283'},
+ 'hani-procrastination-board.js':{sha:'a28918df50ba5fef3e7dab498eaa5eec4a27a103',version:'2.9.283'}
+};
 const cache=new Map();
 export function readReleaseSource(ref,file){
  const key=ref+':'+file;
  if(!cache.has(key)){
-  cache.set(key,execFileSync(process.env.HANI_GIT_PATH||process.env.HANI_GIT||'git',['show',key],{cwd:root,encoding:'utf8',maxBuffer:64*1024*1024}));
+  cache.set(key,repository.readOnly(['show',key]));
  }
  return cache.get(key);
 }
@@ -128,14 +132,16 @@ export function readReviewedReleaseBaseline(file){
  const releases=readMergedReleaseChain();
  // Previously unguarded runtime owners start at the fixed approved 233 tree.
  // Missing origins fail closed; new source origins require explicit review.
- let expected=historicalFiles.has(file)?readReviewedRelease233Baseline(file):readReleaseSource(released233Sha,file);
+ const origin=post233SourceOrigins[file];
+ if(origin)assert.ok(releases.some(r=>r.sha===origin.sha&&r.version===origin.version),'fixed introduced owner release must be on main');
+ let expected=origin?readReleaseSource(origin.sha,file):historicalFiles.has(file)?readReviewedRelease233Baseline(file):readReleaseSource(released233Sha,file);
  for(const release of releasedOfficeConnections){
   if(!release.connections.some(c=>c.file===file))continue;
   let historical=readReleaseSource(release.sha,file);
   for(const c of release.connections)if(c.file===file)historical=normalizeReviewedConnection(c,historical);
   assert.equal(historical,readReleaseSource(release.previous,file),file+' released office fixture retains exact prior bytes');
  }
- expected=advanceMergedReleaseFile(file,expected,releases,readReleaseSource,mergedReleaseBase);
+ expected=advanceMergedReleaseFile(file,expected,origin?releases.filter(r=>Number(r.version.split('.').at(-1))>Number(origin.version.split('.').at(-1))):releases,readReleaseSource,mergedReleaseBase);
  const main=fs.readFileSync(path.join(root,'hani-main.js'),'utf8');
  const version=main.match(/const HANI_DISPLAY_VERSION="(2\.9\.\d+)";/)?.[1];
  assert.ok(version,'canonical display version');

@@ -2,6 +2,38 @@
   "schema": 1,
   "layers": [
     {
+      "from": "2.9.290",
+      "to": "2.9.291",
+      "files": {
+        "index.html": {
+          "count": 60,
+          "after": "4f688c28f5d2112b3da9da9541c1d36c686cebbef8a703c346f86511ef57f774",
+          "before": "f243ba2c64f97ab961e7abd9321dde2ee682ea36315368f90d85f648370d40b0"
+        },
+        "hani-main.js": {
+          "count": 1,
+          "after": "ca886c8dd080935bc238917e9bafcf8a3e652b4fc5c782c99405d11b98a97ba6",
+          "before": "b28b57d2356a636073183eb61c172537913702779d6d4230e1280ca2fa108009"
+        },
+        "assets/data/hani-history-releases-v1.json": {
+          "count": 1,
+          "after": "5af30e0f92c68935306266bbfbeffbeca4a1001164e7a56ecef45b2e7c7f4d11",
+          "before": "d0b200f010d879f1ef58bebe333760c6edffcbac501e88b12dd90c028b3ccc72",
+          "replacements": [
+            {
+              "before": "      \"id\": \"v2.9.290\",\n      \"date\": \"2026-11-13\",\n      \"status\": \"released\",\n      \"title\": \"신입 이음 사원 입사\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.290 신입 이음 사원 입사\"\n",
+              "after": "      \"id\": \"v2.9.291\",\n      \"date\": \"2026-11-13\",\n      \"status\": \"released\",\n      \"title\": \"어두운 테마 글자색 잘 보이게 수정\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.291 어두운 테마 글자색 잘 보이게 수정\"\n      }\n    },\n    {\n      \"id\": \"v2.9.290\",\n      \"date\": \"2026-11-13\",\n      \"status\": \"released\",\n      \"title\": \"신입 이음 사원 입사\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"9e3fe97f5e58cb7a5ebc1f5796f6b523d417e5a1\",\n        \"subject\": \"release: v2.9.290 신입 이음 사원 입사 (#492)\"\n"
+            }
+          ]
+        }
+      },
+      "feature": {
+        "module": "./hani-contrast-291-source.cjs",
+        "fixture": "./fixtures/contrast-291-delta.json",
+        "restore": "restore"
+      }
+    },
+    {
       "from": "2.9.289",
       "to": "2.9.290",
       "files": {

@@ -3,14 +3,14 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import path from 'node:path';
-import {execFileSync} from 'node:child_process';
+import repository from './hani-test-repository-evidence.cjs';
 import {createHistoryHarness} from './hani-history-226.test.mjs';
 const read=file=>fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
 const main=read('hani-main.js'),hub=read('hani-organization-hub.js');
 // Shared runners pass Playwright/browser paths; preservation fixtures are separate.
 const firstArg=process.argv[2]?.startsWith('--')?null:process.argv[2],browserHarness=firstArg&&path.basename(firstArg)==='index.mjs';
 const baseDir=path.resolve((!browserHarness&&firstArg)||process.env.HANI_UI203B_TEST_BASELINE||path.join(import.meta.dirname,'../.ai-budget-private/ui-203b/base'));
-const baselineFile=file=>fs.existsSync(path.join(baseDir,file))?fs.readFileSync(path.join(baseDir,file),'utf8'):execFileSync('git',['show','origin/main:'+file],{encoding:'utf8',maxBuffer:64*1024*1024});
+const baselineFile=file=>fs.existsSync(path.join(baseDir,file))?fs.readFileSync(path.join(baseDir,file),'utf8'):repository.read(repository.reference('origin/main'),file);
 const nav=main.slice(main.indexOf('const NAV_NEW_DATES='),main.indexOf('function renderNavNewBadges'));
 const ctx=vm.createContext({});vm.runInContext(nav,ctx);
 for(const id of ['investmentCommittee','board','organization','aura','aiBudget']){
@@ -26,6 +26,8 @@ const groups=[['board','organization'],['aiBudget']].map(ids=>({head:label(),but
 const aura={dataset:{view:'aura'},label:label(),querySelector(){return this.label}},navButtons=[...groups.flatMap(g=>g.buttons),aura];
 let created=0;
 ctx.window={};
+ctx.$=()=>null;
+vm.runInContext(main.slice(main.indexOf('function updateHomeNewsCount(){'),main.indexOf('function renderHaniCareHome(){')),ctx);
 ctx.document={querySelectorAll:s=>s==='#sidebar .group-head .nav-new-pill'?[]:navButtons,createElement:()=>{created++;return {className:'',textContent:'',hidden:false,classList:{contains:name=>name==='nav-new-pill'}}}};
 let timerId=0;const timers=new Map();ctx.setTimeout=(fn,delay)=>{timers.set(++timerId,{fn,delay});return timerId};ctx.clearTimeout=id=>timers.delete(id);
 vm.runInContext(main.slice(main.indexOf('function renderNavNewBadges'),main.indexOf('renderNavNewBadges();',main.indexOf('function renderNavNewBadges'))),ctx);
@@ -84,6 +86,13 @@ for(const file of ['hani-main.js','index.html']){
   for(const text of ambiguous)oldByText.delete(text);
   for(const line of newLines){const text=line.replace(/\r?\n$/,'');if(oldByText.has(text))assert.equal(line,oldByText.get(text),file+' retained line ending: '+text.slice(0,50))}
 }
-const diff=fs.existsSync(path.join(baseDir,'diff.txt'))?fs.readFileSync(path.join(baseDir,'diff.txt'),'utf8'):execFileSync('git',['diff','--unified=0','--','hani-main.js','hani-organization-hub.js','index.html'],{encoding:'utf8',maxBuffer:64*1024*1024});
-assert.doesNotMatch(diff.split('\n').filter(line=>line.startsWith('+')&&!line.startsWith('+++')).join('\n'),/localStorage\.(?:setItem|removeItem)|\.clear\(|writeProtectedState\(|\bcommit\(/);
+if(fs.existsSync(path.join(baseDir,'diff.txt'))){
+ const diff=fs.readFileSync(path.join(baseDir,'diff.txt'),'utf8');
+ assert.doesNotMatch(diff.split('\n').filter(line=>line.startsWith('+')&&!line.startsWith('+++')).join('\n'),/localStorage\.(?:setItem|removeItem)|\.clear\(|writeProtectedState\(|\bcommit\(/);
+}else{
+ // Keep order and multiplicity, so an added/duplicated/changed write cannot
+ // disappear in a set. Compare committed evidence without spawning Git.
+ const writes=s=>s.split('\n').filter(line=>/localStorage\.(?:setItem|removeItem)|\.clear\(|writeProtectedState\(|\bcommit\(/.test(line));
+ for(const file of ['hani-main.js','hani-organization-hub.js','index.html'])assert.deepEqual(writes(read(file)),writes(baselineFile(file)),file+' unchanged write lines/order/count');
+}
 console.log('PASS 203b: KST seven-day boundaries; read-only overview, monthly public activity, missing data, release filtering, source immutability, preserved EOL, no added writes');

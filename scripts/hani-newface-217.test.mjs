@@ -43,9 +43,15 @@ for(const id of Object.keys(variants)){
  assert.equal(images.canonicalProfileImages[id],full(id));assert.equal(images.sidebarAgentImages[id],thumb(id,256));
  const c=data.characters.find(c=>c.id===id);assert.equal(c.image,full(id));assert.ok(refs(album.detail(c)).includes(full(id)));assert.ok(refs(album.page()).includes(full(id)));
 }
-for(const id of ['daon','yoonseul']){assert.equal(roster.people.find(p=>p.id===id).status,'active');assert.equal(building.homeSeat(id),undefined);assert.ok(!building.floors.flatMap(f=>f.residents).includes(id));}
+// v232 / 4ac6b6c formally admits Daon/Yoonseul; v233 / d19aa0b seeds their occupied desks.
+for(const id of ['daon','yoonseul']){
+ const person=assets.canon.people.find(p=>p.id===id),seat=building.homeSeat(id);
+ assert.equal(roster.people.find(p=>p.id===id).status,'active');assert.ok(person&&seat,id+' admitted home seat');
+ assert.equal(seat.owner,id);assert.equal(seat.anchor,person.homeAnchor);
+ const homes=building.floors.filter(f=>f.residents.includes(id));assert.equal(homes.length,1);assert.equal(homes[0].id,building.anchors.get(person.homeAnchor).floor);
+}
 assert.deepEqual(refs(boardAvatar('unknown-staff')),[]);assert.deepEqual(refs(ilboAvatar('unknown-staff')),[]);
-report.groups.push('executed registry/sidebar, 19 roster portraits, board/ilbo avatars, office badges and album detail/grid; joined staff retain planned office seats; unknown author fallback preserved');
+report.groups.push('executed registry/sidebar, 19 roster portraits, board/ilbo avatars, office badges and album detail/grid; joined staff own canonical seats on exactly one floor; unknown author fallback preserved');
 // Run the real image loading and pose paths with the unchanged live manifest.
 const office=read('hani-office-live.js'),spriteFns=office.slice(office.indexOf('  function spriteId('),office.indexOf('  function addActor('));
 // Only select the contiguous spriteId/pose/loadSprite definitions, stopping before unrelated actor creation.
@@ -57,13 +63,20 @@ for(const id of ['daon','yoonseul']){
  const entry=assets.sprites.entries.find(e=>e.id===id),hdEntry=hd.entries.find(e=>e.id===id),file=`./assets/sprites-v2/${id}-v2.webp`,hdFile=`./assets/sprites-v3/${id}.webp`;
  for(const mode of ['hd','missing-hd','missing-manifest','both-fail']){
   const sprite={style:{backgroundImage:'legacy-art'}},actor={dataset:{person:id,pose:'standing',avatar:'chibi'},style:{setProperty(k,v){this[k]=v}},querySelector:()=>sprite},requested=[];
-  const context=vm.createContext({HaniBuildingScene:building,visualIdentity:{},spriteEntries:new Map([[id,entry]]),hdEntries:new Map(mode==='missing-manifest'?[]:[[id,hdEntry]]),spriteCache:new Map(),Image:class{set src(url){requested.push(url);if(mode==='both-fail'||(mode==='missing-hd'&&url===hdFile))this.onerror();else this.onload();}}});
+  // v242 / 39ce4a1 separates logical pose/applyPose; keep loader/atlas/pivot assertions on that owner.
+  const context=vm.createContext({HaniBuildingScene:building,reduced:true,visualIdentity:{},spriteEntries:new Map([[id,entry]]),hdEntries:new Map(mode==='missing-manifest'?[]:[[id,hdEntry]]),spriteCache:new Map(),Image:class{set src(url){requested.push(url);if(mode==='both-fail'||(mode==='missing-hd'&&url===hdFile))this.onerror();else this.onload();}}});
   vm.runInContext(spriteCode+';globalThis.load=loadSprite;globalThis.setPose=pose;',context);context.load(actor);await flush();
   assert.deepEqual(requested,mode==='hd'?[hdFile]:mode==='missing-manifest'?[file]:[hdFile,file],id+' '+mode+' request order');
   if(mode==='both-fail'){assert.equal(actor.dataset.avatar,'chibi');assert.equal(sprite.style.backgroundImage,'legacy-art','failed HD/v2 preserve existing fallback');continue;}
   const scale=mode==='hd'?3:1,loadedFile=scale===3?hdFile:file;
   assert.equal(sprite.style.backgroundImage,`url("${loadedFile}")`);assert.equal(actor.dataset.avatar,'v2');assert.equal(actor.dataset.spriteScale,String(scale));assert.equal(actor.style['--sprite-ratio'],'0.75');assert.equal(sprite.style.backgroundSize,'800% 800%');
-  for(const frame of entry.frames){context.setPose(actor,frame.name);assert.equal(actor.dataset.pose,frame.name);assert.equal(actor.style.transform,'translate(-50%,-95.3125%)');assert.ok(!sprite.style.backgroundPosition.includes('NaN'));}
+  for(const frame of entry.frames){
+   context.setPose(actor,frame.name);assert.equal(actor.dataset.pose,frame.name);
+   const loaded=mode==='hd'?hdEntry:entry,f=loaded.frames.find(f=>f.name===frame.name);
+   assert.equal(actor.style['--actor-pivot-x'],String(-f.pivot[0]/loaded.cell[0]));assert.equal(actor.style['--actor-pivot-y'],String(-f.pivot[1]/loaded.cell[1]));
+   assert.deepEqual(Array.from(actor.officePivot),[f.pivot[0]/loaded.cell[0],f.pivot[1]/loaded.cell[1]]);
+   assert.ok(!sprite.style.backgroundPosition.includes('NaN'));
+  }
  }
  const b=fs.readFileSync(path.join(root,file)),meta=await sharp(b).metadata();assert.deepEqual([meta.width,meta.height],[384,512]);assert.ok(meta.hasAlpha);assert.ok(b.length<65000);
  const raw=await sharp(b).ensureAlpha().raw().toBuffer(),frameHashes=[];

@@ -1,6 +1,7 @@
 // node scripts/hani-fun-top3.test.mjs [--browser]
 // Real owner bodies in the existing exam DOM adapter; optional isolated Playwright layout QA.
 import assert from 'node:assert/strict';
+import legacy from './hani-stale39-source.cjs';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import path from 'node:path';
@@ -181,7 +182,7 @@ check('existing write/grading handlers, forbidden files, versions, data and asse
     const current=read(file),old=base(file);assert.equal(slice(current,a,b),slice(old,a,b),a);
   }
   // Release trains bump display versions and cache tags; the shell must otherwise stay as reviewed.
- const noVersion=x=>x.replace(/2\.9\.\d+/g,'2.9.x');assert.equal(noVersion(read('index.html')),noVersion(base('index.html')),'index.html');
+ const noVersion=x=>x.replace(/2\.9\.\d+/g,'2.9.x');assert.equal(noVersion(legacy.project(read('index.html'),'index.html','fun-shell')),noVersion(base('index.html')),'index.html');
   assert.equal(writes,0);
 });
 console.log('Fun touches:',checks,'PASS; native toggling above is modeled, CSS layout requires --browser.');

@@ -61,7 +61,7 @@ function monthlyContext(){
  const state={monthlyReports:[],books:[{id:'original',title:'원본'}]};
  const c=vm.createContext({...dom,window:{HANI_GOAL_PROGRESS:{read:()=>null}},state,esc,console,
   monthlyReportMonth:'2026-09',monthlyReportRenderBoard:()=>{},monthlyReportKoreaDate:()=> '2026-11-01',monthlyReportAvailableMonths:()=>['2026-09'],monthlyReportPrevMonth:()=> '2026-10',monthlyReportDate:x=>/^\d{4}-\d{2}-\d{2}$/.test(x)?x:'',monthlyReportSnapshot:()=>({recordCount:1}),formatDateTime:String,
-  monthlyReportBuildCurrent:()=>true,save:()=>{writes++;return {ok:true}},dataHubRefresh:async()=>{refreshes++},confirm:()=>{confirms++;return true},toast:()=>{},
+  renderHaniCareHome:()=>{},monthlyReportBuildCurrent:()=>true,save:()=>{writes++;return {ok:true}},dataHubRefresh:async()=>{refreshes++},confirm:()=>{confirms++;return true},toast:()=>{},
   monthlyReportOwners:{finance:{key:'hani',name:'하니',role:'INVESTMENT LEAD'}},agentImages:{hani:'hani.webp'}});
  vm.runInContext(between(main,'function monthlyReportDomainCard(','function monthlyReportRenderBoard(')+between(main,'function monthlyReportStored(','\n\n\nfunction renderAll()'),c);
  c.renderMonthlyReport();

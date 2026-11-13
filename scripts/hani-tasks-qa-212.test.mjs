@@ -8,7 +8,7 @@ import {pathToFileURL} from 'node:url';
 const root=path.resolve(import.meta.dirname,'..');
 const main=fs.readFileSync(path.join(root,'hani-main.js'),'utf8'),study=fs.readFileSync(path.join(root,'hani-study-v02984.js'),'utf8');
 const modelSource=main.slice(main.indexOf('function taskIsDerived('),main.indexOf('function renderTasks()'));
-const careSource=main.slice(main.indexOf('function renderHaniCareHome()'),main.indexOf('function renderHome(){'));
+const careSource=main.slice(main.indexOf('function updateHomeNewsCount()'),main.indexOf('function renderHome(){'));
 const single=name=>main.split('\n').find(x=>x.startsWith('function '+name+'('));
 const plain=x=>JSON.parse(JSON.stringify(x));
 class Element{
@@ -23,10 +23,11 @@ class Element{
 }
 function fixture(){
  const state={tasks:[],learningProjects:[],learningQuizzes:[],learningWrongAnswers:[],ledgerMonths:[],investmentBrokerSnapshots:[],body:[]};
- const nodes=Object.fromEntries(['home','taskCalendarHub','taskList','taskCount'].map(id=>[id,new Element()])),grid=new Element(),card=new Element();grid.appendChild(nodes.taskCalendarHub);card.appendChild(nodes.taskList);
+ const nodes=Object.fromEntries(['home','homeActions','taskCalendarHub','taskList','taskCount'].map(id=>[id,new Element()])),grid=new Element(),card=new Element();grid.appendChild(nodes.taskCalendarHub);card.appendChild(nodes.taskList);
+ nodes.home.appendChild(nodes.homeActions);
  let writes=0;const failWrite=()=>{writes++;throw Error('Unexpected write')};
  const DateAt=class extends Date{constructor(...args){super(...(args.length?args:['2026-10-15T03:00:00Z']))}static now(){return new Date('2026-10-15T03:00:00Z').getTime()}};
- const context=vm.createContext({state,window:{},document:{querySelector:()=>null,querySelectorAll:()=>[],createElement:tag=>new Element(tag)},Date:DateAt,Intl,console,structuredClone,crypto:{randomUUID:()=> 'fixture'},commit:failWrite,save:failWrite,localStorage:{setItem:failWrite,removeItem:failWrite},$:id=>nodes[id],esc:s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('"','&quot;'),monthlyReportKoreaDate:()=> '2026-10-15',monthlyReportDate:d=>/^\d{4}-\d\d-\d\d$/.test(d)?d:'',ledgerSettlementPeriod:()=>({periodStart:'2026-09-19',periodEnd:'2026-10-18'}),haniCareNotice(){},renderHaniCareCards(){},showView:id=>context.lastView=id,taskCalendarActionHtml:()=>'',taskDisplayText:t=>t.text,taskScheduleLabel:t=>t.due||'',requestAnimationFrame(){}});
+ const context=vm.createContext({state,window:{},document:{querySelector:()=>null,querySelectorAll:()=>[],createElement:tag=>new Element(tag)},Date:DateAt,Intl,console,structuredClone,crypto:{randomUUID:()=> 'fixture'},commit:failWrite,save:failWrite,localStorage:{setItem:failWrite,removeItem:failWrite},$:id=>nodes[id],esc:s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('"','&quot;'),monthlyReportKoreaDate:()=> '2026-10-15',monthlyReportDate:d=>/^\d{4}-\d\d-\d\d$/.test(d)?d:'',ledgerSettlementPeriod:()=>({periodStart:'2026-09-19',periodEnd:'2026-10-18'}),haniCareNotice(){},renderHaniCareCards(){},renderSettlementCheck(){},showView:id=>context.lastView=id,taskCalendarActionHtml:()=>'',taskDisplayText:t=>t.text,taskScheduleLabel:t=>t.due||'',requestAnimationFrame(){}});
  vm.runInContext(study.replace(/\r?\n  boot\(\);/,'\n  // fixture excludes boot'),context);
  vm.runInContext(single('validRenderRecordId')+'\n'+single('recordIdAttributes')+'\n'+single('careKoreaPeriod')+'\n'+single('haniCareMemory')+'\n'+single('haniCareChecklist')+'\n'+main.slice(main.indexOf('function careDateAt('),main.indexOf('function careWeekStart('))+'\n'+modelSource+'\n'+careSource,context);
  return {state,nodes,grid,context,api:context.window.HANI_STUDY_V02984_TEST,writes:()=>writes};
