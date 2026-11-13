@@ -1,11 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import layers from './hani-release-version-layers.cjs';
+import releases from './hani-release-version-layers.cjs';
 import thaw from './hani-theme-thaw-source.cjs';
 import repository from './hani-test-repository-evidence.cjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
-const {hash,readRawFileSync:read}=layers;
+// This frozen 294 contract receives only the exact 295 version + chibi2 inverse.
+const layers={...releases,layers:releases.layers.slice(releases.layers.indexOf(releases.getLayer('2.9.294')))};
+const {hash}=layers,read=releases.createReleaseReader('2.9.294');
 const raw=file=>read(new URL('../'+file,import.meta.url),'utf8');
 const release='846e8d2dbda63be75822f9b56c1d85e6bf5c8b6d';
 

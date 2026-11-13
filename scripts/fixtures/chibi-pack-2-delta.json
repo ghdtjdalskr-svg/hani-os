@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "base": "cb119351ff7b0a01b77fdc04d6f0b1ba0c2b54dc",
+  "files": {
+    "hani-main.js": {
+      "beforeSha256": "0730c64fd4073d5eb756348041d9e933d178710d99724802a603f0f872a93912",
+      "afterSha256": "3da828c5e71904d01ecb27a2c41b8267bb3ca3470dc2a4dc4caa741d901a3d6c",
+      "edits": [
+        {
+          "before": "function renderReading(){\r\n  renderActivityTrend(\"readingActivityTrend\",\"reading\");",
+          "after": "function renderReading(){\r\n  renderActivityTrend(\"readingActivityTrend\",\"reading\");\r\n  renderChibiNote(\"readingChibiNote\",$(\"wishBooks\"),\"yoonseul-bookmark\",\"윤슬 · 첫 책 한 권부터 적어 볼까요?\",state.books.length===0);"
+        },
+        {
+          "before": "function renderTravelDetailLists(t){\r\n  $(\"travelStopCount\").textContent=`${t.itinerary.length}개`;",
+          "after": "function renderTravelDetailLists(t){\r\n  $(\"travelStopCount\").textContent=`${t.itinerary.length}개`;\r\n  renderChibiNote(\"travelScheduleChibiNote\",$(\"travelStopList\"),\"sooyeon-map\",\"수연 · 일정은 천천히 적어 봐요.\",t.itinerary.length===0);"
+        },
+        {
+          "before": "  $(\"travelTripCount\").textContent=`${trips.length}회`;",
+          "after": "  const chibiAnchor=tab===\"wish\"?$(\"travelWishGrid\"):$(\"travelTripGrid\"),chibiVisible=tab===\"trips\"&&!trips.length||tab===\"wish\"&&!wish.length;\r\n  renderChibiNote(\"travelChibiNote\",chibiAnchor,\"sooyeon-map\",tab===\"wish\"?\"수연 · 가고 싶은 곳부터 적어 봐요!\":\"수연 · 여행 기록을 천천히 남겨 봐요.\",chibiVisible);\r\n  const chibiNote=$(\"travelChibiNote\");if(chibiNote&&chibiVisible)chibiAnchor.before(chibiNote);\r\n  $(\"travelTripCount\").textContent=`${trips.length}회`;"
+        }
+      ]
+    },
+    "hani-study-v02984.js": {
+      "beforeSha256": "77a03d403c6f188c3c3081ed79d2874fc3da658ca893bce84fd52ce6f07d6777",
+      "afterSha256": "648bd9b7ee443a492d05a25205006dc99bed73806e53309e361b9b9c93e2acff",
+      "edits": [
+        {
+          "before": "    const main = q('#studyMainPanel');\r\n    if (!main) return;",
+          "after": "    const main = q('#studyMainPanel');\r\n    if (!main) return;\r\n    // Preserve the decoration node while the existing owner replaces its result markup.\r\n    const chibiNote=q('#quizResultChibiNote');\r\n    if(chibiNote){chibiNote.hidden=true;main.before(chibiNote);}"
+        },
+        {
+          "before": "      ${renderQuizDetail(project, activeQuiz)}`;",
+          "after": "      ${renderQuizDetail(project, activeQuiz)}`;\r\n\r\n    const resultHead=q('.study-exam-head',main),correct=activeQuiz?.status==='completed'?quizRegradeCount(activeQuiz):null;\r\n    const resultVisible=Number.isInteger(correct)&&activeQuiz.questions.length>0&&correct>=0&&correct<=activeQuiz.questions.length;\r\n    const allCorrect=resultVisible&&correct===activeQuiz.questions.length;\r\n    renderChibiNote(\"quizResultChibiNote\",resultHead,allCorrect?\"hina-cheer\":\"hina-review\",allCorrect?\"히나 · 잘했어요!\":\"히나 · 틀린 문제, 다시 같이 봐요.\",resultVisible,true);\r\n    const resultNote=q('#quizResultChibiNote');if(resultHead&&resultNote&&!resultNote.hidden)resultHead.after(resultNote);"
+        }
+      ]
+    },
+    "hani-street-journal.css": {
+      "beforeSha256": "58ff4221c8d5f2b3daf37a68e19d8795a026f55ef1b0c9a73f1a1549e4d5c66c",
+      "afterSha256": "0710d461eacfeab9d62d89d2effa6644602bd4376b2765de2cce7b02c5077b17",
+      "edits": [
+        {
+          "before": "@media print{.hani-chibi-note{display:none!important}}\r\n",
+          "after": "@media print{.hani-chibi-note{display:none!important}}\r\n\n/* Chibi pack 2: one transparent 2x2 sheet; share the existing 72px/56px slots. */\n.hani-chibi-note .hsj-p-yoonseul-bookmark,.hani-chibi-note .hsj-p-hina-cheer,.hani-chibi-note .hsj-p-hina-review,.hani-chibi-note .hsj-p-sooyeon-map{background-image:url(\"./assets/street-journal/chibi-sheet-v2.webp\");background-size:200% 200%}\n.hani-chibi-note .hsj-p-yoonseul-bookmark{background-position:0% 0%}\n.hani-chibi-note .hsj-p-hina-cheer{background-position:100% 0%}\n.hani-chibi-note .hsj-p-hina-review{background-position:0% 100%}\n.hani-chibi-note .hsj-p-sooyeon-map{background-position:100% 100%}\n@media(prefers-reduced-motion:reduce){.hani-chibi-note,.hani-chibi-note-art{animation:none!important;transition:none!important}}\n"
+        }
+      ]
+    }
+  }
+}

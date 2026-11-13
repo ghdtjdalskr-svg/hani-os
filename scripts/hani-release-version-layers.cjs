@@ -1,8 +1,12 @@
 // Test-only exact outer layers. Add releases newest first in the JSON manifest.
+require('./hani-chibi-pack-2-preload.cjs');
 // Each release removes its version bytes, then its optional frozen feature delta.
 const thaw=require('./hani-theme-thaw-source.cjs');
 const assert=require('node:assert/strict');
-const readRawFileSync=require('node:fs').readFileSync.bind(require('node:fs'));
+// Capture disk bytes before the legacy chibi2 fs adapter; current release tests
+// and future manifest rows must see the outermost deployed bytes.
+const chibi2=require('./hani-chibi-pack-2-source.cjs');
+const {readRawFileSync}=chibi2;
 const {createHash}=require('node:crypto');
 const manifest=require('./fixtures/release-version-layers.json');
 const outer=require('./hani-save-guard-source.cjs');
@@ -51,14 +55,20 @@ function restoreVersionLayer(source,file,version){
  assert.equal(hash(before),row.before,'exact release-'+number(layer.from)+' output '+file);
  return before;
 }
-// 294 version/history -> THAW -> 293 version/history -> frozen chibi -> 292 version/office -> 291 contrast
+// 295 version/history -> frozen chibi2 -> 294 version/history -> THAW
+// -> 293 version/history -> frozen chibi -> 292 version/office -> 291 contrast
 // -> 290 Ieum -> frozen 289/288. Each step retains full input/output pins.
 // Newest exact version bytes precede their feature inverse. The 289 adapter
 // first removes 290 + Ieum, then reaches the unchanged 289/288 contracts.
 // Unknown input remains for strict callers to reject.
 function projectPreRelease294Source(source,file){
+ source=project(source,file,'2.9.294',true);
  const row=getLayer('2.9.294').files[file];
  return row&&hash(source)===row.after?restoreVersionLayer(source,file,'2.9.294'):source;
+}
+function projectPreRelease295Source(source,file){
+ const row=getLayer('2.9.295').files[file];
+ return row&&hash(source)===row.after?restoreVersionLayer(source,file,'2.9.295'):source;
 }
 function projectPreRelease290Source(source,file){
  source=project(source,file,'2.9.290',true);
@@ -103,7 +113,19 @@ function project(source,file,target,features,keepFeature=false){
  }
  return source;
 }
-module.exports={layers,hash,getLayer,restoreVersionLayer,readRawFileSync,projectPreRelease288Source,projectPreRelease289Source,projectPreRelease290Source,projectPreRelease294Source,
+// Frozen tests choose an explicit release boundary without altering assertions,
+// fixture pins or the strict inverses. Reads always start at unadapted disk bytes.
+function createReleaseReader(version,keepFeature=false){
+ const path=require('node:path'),{fileURLToPath}=require('node:url'),root=path.resolve(__dirname,'..');
+ return (file,...args)=>{
+  const source=readRawFileSync(file,...args);
+  if(typeof file!=='string'&&!(file instanceof URL))return source;
+  const name=path.relative(root,file instanceof URL?fileURLToPath(file):path.resolve(file)).replaceAll('\\','/');
+  return project(source,name,version,true,keepFeature);
+ };
+}
+module.exports={layers,hash,getLayer,restoreVersionLayer,readRawFileSync,projectPreRelease288Source,projectPreRelease289Source,projectPreRelease290Source,projectPreRelease294Source,projectPreRelease295Source,
+ createReleaseReader,
  projectVersionSource:(source,file,target)=>project(source,file,target,false),
  projectReleaseSource:(source,file,target)=>project(source,file,target,true),
  // Leave this feature raw, peeling all newer releases and their features first.
