@@ -2,6 +2,42 @@
   "schema": 1,
   "layers": [
     {
+      "from": "2.9.291",
+      "to": "2.9.292",
+      "files": {
+        "index.html": {
+          "count": 60,
+          "after": "1970db3ec39c1f075c14eb0d74884f150ab7268d3c9655cd0e28c4a9d0a47f0e",
+          "before": "4f688c28f5d2112b3da9da9541c1d36c686cebbef8a703c346f86511ef57f774"
+        },
+        "hani-main.js": {
+          "count": 1,
+          "after": "80d95272189f7aafc2c23c24b9532139e71c6294248a94e487d50ab8f0a36d0d",
+          "before": "ca886c8dd080935bc238917e9bafcf8a3e652b4fc5c782c99405d11b98a97ba6"
+        },
+        "assets/data/hani-history-releases-v1.json": {
+          "count": 2,
+          "after": "13cf49ad70c305870532d9d185af80e6e545a963bb6d6f2789b48a552eea6730",
+          "before": "5af30e0f92c68935306266bbfbeffbeca4a1001164e7a56ecef45b2e7c7f4d11",
+          "replacements": [
+            {
+              "before": "  \"entries\": [\n    {\n      \"id\": \"v2.9.291\",\n      \"date\": \"2026-11-13\",\n",
+              "after": "  \"entries\": [\n    {\n      \"id\": \"v2.9.292\",\n      \"date\": \"2026-11-13\",\n      \"status\": \"released\",\n      \"title\": \"사무실 직원을 눌러도 말풍선이 가끔 안 뜨던 문제 수정\",\n      \"category\": \"화면·기능\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.292 사무실 직원 탭 말풍선 수정\"\n      }\n    },\n    {\n      \"id\": \"v2.9.291\",\n      \"date\": \"2026-11-13\",\n"
+            },
+            {
+              "before": "      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.291 어두운 테마 글자색 잘 보이게 수정\"\n      }\n    },\n",
+              "after": "      \"credits\": [],\n      \"source\": {\n        \"commit\": \"55942f120fc06a87649009c21776a572fb8081e6\",\n        \"subject\": \"release: v2.9.291 (#497)\"\n      }\n    },\n"
+            }
+          ]
+        }
+      },
+      "feature": {
+        "module": "./hani-release-292-source.cjs",
+        "fixture": "./fixtures/release-292-delta.json",
+        "restore": "restore"
+      }
+    },
+    {
       "from": "2.9.290",
       "to": "2.9.291",
       "files": {

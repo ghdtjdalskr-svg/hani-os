@@ -1,3 +1,5 @@
+// Peel only the exact chibi delta before the canonical main release reader.
+import './hani-chibi-pack-1-preload.cjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

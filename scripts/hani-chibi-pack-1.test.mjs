@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import fs from 'node:fs';
 import inverse from './hani-chibi-pack-1-source.cjs';
+import releases from './hani-release-version-layers.cjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
 const {readChibiRawFileSync:read,delta,hash,restoreChibiPack1Source:restore}=inverse;
 const source=read(new URL('../hani-main.js',import.meta.url),'utf8');
@@ -42,7 +43,7 @@ function harness(){
 
 test('exact outer inverse restores all original bytes; rejects drift, partial/duplicate edits and a second inverse',()=>{
   for(const [file,row]of Object.entries(delta.files)){
-    const raw=read(new URL('../'+file,import.meta.url),'utf8'),before=restore(raw,file);assert.equal(hash(before),row.beforeSha256);
+    const raw=inverse.projectFrozenChibiSource(read(new URL('../'+file,import.meta.url),'utf8'),file),before=restore(raw,file);assert.equal(hash(before),row.beforeSha256);
     assert.deepEqual(restore(Buffer.from(raw),file),Buffer.from(before));let forward=before;
     for(const edit of row.edits)forward=forward.replace(edit.before,()=>edit.after);assert.equal(forward,raw);
     for(const bad of [raw+'\n',raw.slice(1),before,raw+raw,raw.replace(row.edits[0].after,()=>row.edits[0].before)])assert.throws(()=>restore(bad,file),/exact chibi-pack-1 input/);
@@ -51,7 +52,7 @@ test('exact outer inverse restores all original bytes; rejects drift, partial/du
 });
 test('supplied release 289 projects exactly to independently frozen 288 bytes without relaxing lower pins',()=>{
   for(const [file,row]of Object.entries(delta.baseline289)){
-    const raw=read(new URL('../'+file,import.meta.url),'utf8'),source=inverse.projectPreChibiPack1Source(raw,file),before=inverse.restoreBaseline289Source(source,file);
+    const raw=read(new URL('../'+file,import.meta.url),'utf8'),source=releases.projectReleaseSource(inverse.projectMain291Source(raw,file),file,'2.9.289'),before=inverse.restoreBaseline289Source(source,file);
     assert.equal(hash(before),row.beforeSha256);assert.deepEqual(inverse.restoreBaseline289Source(Buffer.from(source),file),Buffer.from(before));
     for(const bad of [source+'\n',source.slice(1),source+source,before]){assert.throws(()=>inverse.restoreBaseline289Source(bad,file),/exact release-289 input/);assert.equal(inverse.projectLegacySource(bad,file),bad);}
   }
@@ -103,6 +104,6 @@ test('only existing sprite coordinates are shared; responsive art is 72px/56px, 
   assert.match(css,/#monthlyReportChibiNote\{justify-content:flex-start;flex-direction:row-reverse\}/);
   assert.match(css,/@media print\{\.hani-chibi-note\{display:none!important\}\}/);
 });
-test('raw runtime closure remains 164 files with no missing asset and the existing sheet included',async()=>{
-  const root=new URL('../',import.meta.url);const closure=await resolveRuntimeClosure({exists:f=>fs.existsSync(new URL(f,root)),read:f=>read(new URL(f,root))});assert.equal(closure.files.length,164);assert.deepEqual(closure.missing,[]);assert.ok(closure.files.includes('assets/street-journal/chibi-sheet-v1.webp'));
+test('exact newer-release projection preserves the frozen 164-file closure with no missing asset and the existing sheet included',async()=>{
+  const root=new URL('../',import.meta.url);const closure=await resolveRuntimeClosure({exists:f=>fs.existsSync(new URL(f,root)),read:f=>releases.projectReleaseSource(inverse.projectMain291Source(read(new URL(f,root)),f),f,'2.9.289')});assert.equal(closure.files.length,164);assert.deepEqual(closure.missing,[]);assert.ok(closure.files.includes('assets/street-journal/chibi-sheet-v1.webp'));
 });
