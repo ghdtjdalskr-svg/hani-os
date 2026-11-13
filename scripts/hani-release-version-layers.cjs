@@ -5,6 +5,8 @@ const readRawFileSync=require('node:fs').readFileSync.bind(require('node:fs'));
 const {createHash}=require('node:crypto');
 const manifest=require('./fixtures/release-version-layers.json');
 const outer=require('./hani-save-guard-source.cjs');
+// Loaded eagerly, before any legacy preload installs its reader hook.
+const {projectPreTapBubbleSource}=require('./hani-office-tap-bubble-source.cjs');
 const hash=source=>createHash('sha256').update(source).digest('hex');
 assert.equal(manifest.schema,1,'known release layer schema');
 const layers=manifest.layers;
@@ -72,7 +74,7 @@ function projectPreRelease288Source(source,file){
 // strict lower-layer assertion to reject. It never normalizes arbitrary versions.
 function project(source,file,target,features,keepFeature=false){
  // Unreleased tap-bubble fix (newest office bytes): peel its exact pair first.
- source=require('./hani-office-tap-bubble-source.cjs').projectPreTapBubbleSource(source,file);
+ source=projectPreTapBubbleSource(source,file);
  const boundary=number(target);
  assert.ok(layers.some(row=>row.from===target||row.to===target),'known release target '+target);
  for(const layer of layers){
