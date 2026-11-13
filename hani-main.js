@@ -1977,6 +1977,7 @@ function selectSettingsTab(tab){
 }
 const INVESTMENT_COMMITTEE_VIEW='investmentCommittee';
 function showView(id){
+  if(id==="home"||id==="aura")syncThemeCollections();
   window.HANI_GOAL_PROGRESS?.syncGoalEditor?.(id);
   if(typeof renderNavNewBadges==="function")renderNavNewBadges();
   const ORGANIZATION_VIEW_ID='organization',SETTINGS_VIEW_ID='settings';
@@ -2217,6 +2218,115 @@ const SEASON_COLLECTION_ARTWORK={
   autumn:{src:"./assets/seasonal-collection/autumn-v2.webp",title:"함께 만드는 가을 저녁",cast:"나은 · 하니 · 히나 · 유나",alt:"비 오는 가을날 함께 요리하는 나은·하니·히나·유나"},
   winter:{src:"./assets/seasonal-collection/winter-v2.webp",title:"후드 뒤집어쓰고, 눈싸움!",cast:"하루 · 민지 · 지은 · 수아",alt:"패딩 후드를 쓰고 눈싸움하는 하루·민지·지은·수아"}
 };
+// Quarterly collections exhibit existing Finish × Season choices. No edition IDs
+// enter storage; the collection JSON is the single collection/artwork definition.
+const THEME_COLLECTIONS=[];
+const themeCollectionMemory={dismissed:new Set(),rows:new Map(),home:null,dialog:null};
+async function loadThemeCollections(read=()=>fetch("./assets/theme-collections/collections.json")){
+  try{
+    const response=await read();if(!response.ok)return false;
+    const collections=await response.json();
+    if(!Array.isArray(collections)||collections.some(item=>!item.id||!SEASON_THEMES[item.season]||!Number.isFinite(Date.parse(item.launch))||!Array.isArray(item.palette)))return false;
+    const jsonUrl=response.url||new URL("./assets/theme-collections/collections.json",document.baseURI).href;
+    const resolved=collections.map(collection=>({...collection,art:new URL(collection.art,jsonUrl).href,mobileArt:new URL(collection.mobileArt,jsonUrl).href}));
+    THEME_COLLECTIONS.splice(0,THEME_COLLECTIONS.length,...resolved);
+    syncThemeCollections();return true;
+  }catch(_){return false} // Unavailable campaign data never affects saved themes.
+}
+function themeCollectionPhase(collection,now=Date.now()){
+  const time=Number(new Date(now)),launch=Date.parse(collection.launch);
+  const phase=!Number.isFinite(time)||time<Date.parse(collection.teaserStart)?"before":time<launch?"teaser":time<Date.parse(collection.promoEnd)?"launch":"after";
+  // Calendar days in KST, not rounded 24-hour durations (09:00 release).
+  const day=value=>Math.floor((value+9*3600000)/86400000);
+  return {phase,locked:!Number.isFinite(time)||time<launch,days:Math.max(0,day(launch)-day(time))};
+}
+function themeCollectionPicture(collection){
+  return `<picture><source media="(max-width:600px)" srcset="${esc(collection.mobileArt)}"><img src="${esc(collection.art)}" width="1536" height="1024" alt="" loading="lazy"></picture>`;
+}
+function themeCollectionPalette(collection){
+  return collection.palette.map(color=>`<span class="theme-collection-color"><i style="background:${esc(color.hex)}" aria-hidden="true"></i><span>${esc(color.name)} <small>${esc(color.hex)}</small></span></span>`).join("");
+}
+function themeCollectionDate(collection){
+  return new Intl.DateTimeFormat("ko-KR",{timeZone:"Asia/Seoul",year:"numeric",month:"long",day:"numeric",hour:"numeric",minute:"2-digit",hour12:false}).format(new Date(collection.launch))+" KST";
+}
+function themeCollectionStudio(){
+  showView("aura");
+  document.querySelector('#aura [data-panel="auraSeasons"]')?.click();
+}
+function applyThemeCollection(id,now=Date.now()){
+  const collection=THEME_COLLECTIONS.find(item=>item.id===id);
+  if(!collection||themeCollectionPhase(collection,now).locked)return false;
+  // Only this explicit user action persists the two canonical preference IDs.
+  applySignatureFinish(collection.finish,true);
+  applySeasonTheme(collection.season,true);
+  syncThemeCollections(now);
+  return true;
+}
+function openThemeCollection(id,now=Date.now()){
+  const collection=THEME_COLLECTIONS.find(item=>item.id===id);
+  if(!collection||themeCollectionPhase(collection,now).locked)return false;
+  let dialog=themeCollectionMemory.dialog;
+  if(!dialog){
+    dialog=document.createElement("dialog");dialog.id="themeCollectionDialog";dialog.className="theme-collection-dialog";
+    dialog.setAttribute("aria-labelledby","themeCollectionDialogTitle");
+    dialog.innerHTML='<form method="dialog"><button type="submit" class="theme-collection-close" aria-label="발표 닫기">×</button></form><div data-collection-reveal></div><div class="theme-collection-keynote"><p class="theme-collection-kicker">HANI OS · 신제품 발표</p><h2 id="themeCollectionDialogTitle"></h2><p data-collection-story></p><div class="theme-collection-palette" data-collection-palette></div><p class="theme-collection-combination"></p><button type="button" class="btn" data-collection-studio>테마 스튜디오에서 써보기 →</button></div>';
+    dialog.querySelector("[data-collection-studio]").onclick=()=>{dialog.close();themeCollectionStudio()};
+    dialog.onclick=event=>{if(event.target===dialog){const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close()}};
+    document.body.appendChild(dialog);themeCollectionMemory.dialog=dialog;
+  }
+  if(dialog.dataset.collection!==id){
+    dialog.dataset.collection=id;
+    dialog.querySelector("[data-collection-reveal]").innerHTML=themeCollectionPicture(collection);
+    dialog.querySelector("h2").textContent=collection.name;
+    dialog.querySelector("[data-collection-story]").textContent=`하니 전무 · “${collection.story}”`;
+    dialog.querySelector("[data-collection-palette]").innerHTML=themeCollectionPalette(collection);
+    dialog.querySelector(".theme-collection-combination").textContent=`${collection.finish.replaceAll("-"," ").toUpperCase()} × ${collection.season.toUpperCase()} · 직접 골라 적용해 보세요.`;
+  }
+  if(!dialog.open)dialog.showModal();
+  return true;
+}
+function syncThemeCollections(now=Date.now()){
+  const studio=$("auraSeasons");
+  if(studio){
+    let list=$("themeCollectionChoices");
+    if(!list){list=document.createElement("div");list.id="themeCollectionChoices";list.className="theme-collection-list";list.setAttribute("aria-label","분기 컬렉션");studio.appendChild(list)}
+    for(const collection of THEME_COLLECTIONS){
+      let row=themeCollectionMemory.rows.get(collection.id);
+      if(!row){
+        row=document.createElement("article");row.className="theme-collection-choice";row.dataset.collection=collection.id;
+        row.innerHTML=`${themeCollectionPicture(collection)}<div><p class="theme-collection-kicker">${esc(collection.edition)} · QUARTERLY COLLECTION</p><h4>${esc(collection.name)}</h4><p>${esc(themeCollectionDate(collection))}</p><div class="theme-collection-palette">${themeCollectionPalette(collection)}</div><p data-collection-status role="status"></p><div class="theme-collection-actions"><button type="button" class="btn" data-collection-apply></button><button type="button" class="btn" data-collection-replay>발표 다시보기</button></div></div>`;
+        row.querySelector("[data-collection-apply]").onclick=()=>applyThemeCollection(collection.id);
+        row.querySelector("[data-collection-replay]").onclick=()=>openThemeCollection(collection.id);
+        list.appendChild(row);themeCollectionMemory.rows.set(collection.id,row);
+      }
+      const state=themeCollectionPhase(collection,now),button=row.querySelector("[data-collection-apply]");
+      row.dataset.phase=state.phase;button.disabled=state.locked;
+      button.textContent=state.locked?"Coming soon · 출시 예정":"이 조합 적용";
+      row.querySelector("[data-collection-replay]").hidden=state.locked;
+      const selected=document.documentElement.dataset.finish===collection.finish&&document.documentElement.dataset.season===collection.season;
+      const combination=`${collection.finish.replaceAll("-"," ").toUpperCase()} × ${collection.season.toUpperCase()}`;
+      row.querySelector("[data-collection-status]").textContent=state.locked?"출시일에 열려요. 지금 선택한 테마는 그대로 유지됩니다.":combination+(selected?" · 이 조합 적용 중":" 추천");
+    }
+  }
+  const collection=THEME_COLLECTIONS.find(item=>["teaser","launch"].includes(themeCollectionPhase(item,now).phase)&&!themeCollectionMemory.dismissed.has(item.id));
+  let card=themeCollectionMemory.home;
+  if(!collection){if(card)card.hidden=true;return}
+  if(!card){
+    const anchor=$("homeActions");if(!anchor)return;
+    card=document.createElement("aside");card.id="themeCollectionHome";card.className="theme-collection-home";card.setAttribute("aria-label","테마 스튜디오 소식");
+    card.innerHTML='<div data-collection-art></div><div class="theme-collection-home-copy"><p class="theme-collection-kicker" data-collection-label></p><h3 data-collection-title></h3><p data-collection-date></p><p class="theme-collection-countdown" data-collection-countdown></p><button type="button" class="btn" data-collection-open></button></div><button type="button" class="theme-collection-close" data-collection-dismiss aria-label="이번 접속 동안 테마 소식 닫기">×</button>';
+    card.querySelector("[data-collection-dismiss]").onclick=()=>{themeCollectionMemory.dismissed.add(card.dataset.collection);card.hidden=true};
+    card.querySelector("[data-collection-open]").onclick=()=>{const current=THEME_COLLECTIONS.find(item=>item.id===card.dataset.collection);if(!current)return;if(themeCollectionPhase(current).phase==="teaser")themeCollectionStudio();else if(themeCollectionPhase(current).phase==="launch")openThemeCollection(current.id);else syncThemeCollections()};
+    anchor.after(card);themeCollectionMemory.home=card;
+  }
+  if(card.dataset.collection!==collection.id){card.dataset.collection=collection.id;card.querySelector("[data-collection-art]").innerHTML=themeCollectionPicture(collection);const [title,...subtitle]=collection.name.split(" · ");card.querySelector("[data-collection-title]").innerHTML=`${esc(title)}<small>${esc(subtitle.join(" · "))}</small>`}
+  const state=themeCollectionPhase(collection,now),teaser=state.phase==="teaser";
+  card.hidden=false;card.dataset.phase=state.phase;
+  card.querySelector("[data-collection-label]").textContent=teaser?`Coming soon · ${collection.name.split(" · ")[0]}`:"HANI OS · 신제품 발표";
+  card.querySelector("[data-collection-date]").textContent=themeCollectionDate(collection);
+  card.querySelector("[data-collection-countdown]").textContent=teaser?(state.days?`D-${state.days}`:"오늘 오전 9시 공개"):"A new season, together.";
+  card.querySelector("[data-collection-open]").textContent=teaser?"테마 스튜디오 미리보기 →":"신제품 발표 보기 →";
+}
 function syncSeasonCollection(){
   const season=document.documentElement.dataset.season,meta=SEASON_THEMES[season];
   if(!meta)return;
@@ -2314,6 +2424,7 @@ $("theme").onclick=()=>{
   const order=["spring","summer","autumn","winter"],current=document.documentElement.dataset.season||"spring";
   applySeasonTheme(order[(order.indexOf(current)+1)%order.length],true);
 };
+void loadThemeCollections();
 
 const LOGIN_GATE_LINES={
   hani:"오늘도 기록 하나면 충분해. 갓생은 누적이야.",
@@ -5294,6 +5405,7 @@ function renderHaniCareHome(){
   slot.querySelectorAll("[data-hani-care-view]").forEach(b=>b.onclick=()=>showView(b.dataset.haniCareView));
 }
 function renderHome(){
+  syncThemeCollections();
   renderHomeDialogue();const official=officialBrokerSorted(),latest=official.at(-1)||null,latestCalc=latest?brokerCalc(latest):null;
   renderHaniCareHome();
   // Canonical Data Hub owns the Dashboard analysis; account mix remains in Finance.
@@ -7552,7 +7664,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.293";
+const HANI_DISPLAY_VERSION="2.9.294";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
