@@ -1,3 +1,5 @@
+// The canonical dispatcher owns 293 version -> chibi -> 292/office ordering.
+// Keep its reader raw so this test exercises every outer release as well.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

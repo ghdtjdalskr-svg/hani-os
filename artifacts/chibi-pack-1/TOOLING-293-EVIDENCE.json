@@ -1,0 +1,1447 @@
+{
+  "dateKst": "2026-11-13",
+  "agent": "도연 / Codex",
+  "branch": "hani/tooling-293",
+  "base": "9d6ecdd389186e467143f5dde05d14cfae67042d",
+  "remoteFreshness": "not checked: Git prohibited",
+  "coreSummary": {
+    "files": 14,
+    "pass": 116,
+    "fail": 0,
+    "skip": 0,
+    "blockedCases": 0,
+    "otherFailures": 0
+  },
+  "core": [
+    {
+      "file": "hani-app-216-audit.test.cjs",
+      "pass": 7,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "exit": 0
+    },
+    {
+      "file": "hani-chibi-pack-1.test.mjs",
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "exit": 0
+    },
+    {
+      "file": "hani-chibi-pack-1-layers.test.mjs",
+      "pass": 6,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "exit": 0
+    },
+    {
+      "file": "hani-chibi-pack-1-release293.test.mjs",
+      "pass": 3,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "exit": 0
+    },
+    {
+      "file": "hani-join-ieum.test.mjs",
+      "pass": 17,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "exit": 0
+    },
+    {
+      "file": "hani-life-bundle-source.test.mjs",
+      "pass": 5,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "exit": 0
+    },
+    {
+      "file": "hani-newsroom-285-source.test.mjs",
+      "pass": 2,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "exit": 0
+    },
+    {
+      "file": "hani-newsroom-4cut-288.test.mjs",
+      "pass": 7,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "exit": 0
+    },
+    {
+      "file": "hani-qa-easy-cleanup.test.mjs",
+      "pass": 12,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "exit": 0
+    },
+    {
+      "file": "hani-release-version-layers.test.mjs",
+      "pass": 11,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "exit": 0
+    },
+    {
+      "file": "hani-save-guard.test.mjs",
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "exit": 0
+    },
+    {
+      "file": "hani-seoyun-m9.test.mjs",
+      "pass": 15,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "exit": 0
+    },
+    {
+      "file": "hani-street-journal.test.cjs",
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "exit": 0
+    },
+    {
+      "file": "hani-street-journal-closure.test.mjs",
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "exit": 0
+    }
+  ],
+  "historyUnit": {
+    "passed": true,
+    "output": "PASS history226 unit: real releases/months/milestones/counts, source unchanged, persistent slots, canonical click, boundary toggles/approval, escaping, unavailable catalog, no writes\r\n"
+  },
+  "officeSummary": {
+    "files": 73,
+    "pass": 796,
+    "fail": 34,
+    "skip": 3,
+    "blockedCases": 33,
+    "otherFailures": 1
+  },
+  "office": [
+    {
+      "file": "hani-office-219.test.mjs",
+      "pass": 6,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-actions-216.test.mjs",
+      "pass": 14,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 7 - approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-actions-221.test.mjs",
+      "pass": 20,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-affinity-274-pins.test.mjs",
+      "pass": 2,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 3 - 274 base commit independently proves the entire original JS/CSS/helper blobs",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-affinity-cap.test.mjs",
+      "pass": 19,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-affinity-storage.test.mjs",
+      "pass": 3,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-affinity.test.mjs",
+      "pass": 21,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-barista-night-273-pins.test.mjs",
+      "pass": 4,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 5 - 273: fixed Git release blobs independently prove every baseline pin and complete diff",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-barista-night.test.mjs",
+      "pass": 13,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-barista.test.mjs",
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-behavior.test.mjs",
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-bori-m9.test.mjs",
+      "pass": 2,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-bori-stroll.test.mjs",
+      "pass": 13,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 8 - stroll inverse independently matches the fixed Git base",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-bubble-close.test.mjs",
+      "pass": 17,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-cafe-rest.test.mjs",
+      "pass": 2,
+      "fail": 2,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 1 - cafe route uses clear lower-right floor, retains the lounge and sign mounting surface",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        },
+        {
+          "test": "not ok 4 - first full daily plan stays below the unchanged 400ms limit, chairman absent and present",
+          "kind": "failure",
+          "error": "'{\"chairmanPresent\":true,\"samples\":[451.9670000000001,470.7377999999994,423.9923999999992]}'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-chairman-234.test.mjs",
+      "pass": 6,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-chairman-patrol-278-pins.test.mjs",
+      "pass": 6,
+      "fail": 6,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 2 - 278 independent fixed Git blobs prove pre-patrol bytes",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        },
+        {
+          "test": "not ok 4 - 278 kids extension independently matches its fixed Git base",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        },
+        {
+          "test": "not ok 6 - 278 visit extension independently matches fixed Git base",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        },
+        {
+          "test": "not ok 8 - 278 staff-chat extension independently matches fixed Git base",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        },
+        {
+          "test": "not ok 10 - 278 bubble placement extension independently matches fixed Git base",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        },
+        {
+          "test": "not ok 12 - 278 optimization extension independently matches fixed Git base",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-chairman-patrol.test.mjs",
+      "pass": 15,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-companion-homes.test.mjs",
+      "pass": 15,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 8 - home extension independently matches the specified fixed Git base",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-companions-276-pins.test.mjs",
+      "pass": 2,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 2 - 276 fixed Git base independently proves every original blob",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-companions.test.mjs",
+      "pass": 17,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-consult.test.mjs",
+      "pass": 19,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 14 - consult: sofa wording, counter words, safety owners and runtime timers",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-crowded-labels.test.mjs",
+      "pass": 19,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-drama.test.mjs",
+      "pass": 20,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-fix-218.test.mjs",
+      "pass": 6,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-floor-bubble.test.mjs",
+      "pass": 21,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-hd-224.test.mjs",
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-icons.test.mjs",
+      "pass": 14,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 14 - icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-kids-286-source.test.mjs",
+      "pass": 3,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-kids-lively.test.mjs",
+      "pass": 15,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-kids-merge.test.mjs",
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-kids-pose-b.test.mjs",
+      "pass": 13,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-kids-visit.test.mjs",
+      "pass": 16,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-kids-weekday.test.mjs",
+      "pass": 19,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-labels-qa.test.mjs",
+      "pass": 17,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-lively-v2.test.mjs",
+      "pass": 7,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 6 - obr2: deterministic query order, reduced motion and frozen spatial bytes",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-lively.test.mjs",
+      "pass": 13,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-mascot-label.test.mjs",
+      "pass": 9,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 7 - outer exact inverse independently restores fixed affinity HEAD and rejects partial/duplicate/unrelated edits",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-motion-1.test.mjs",
+      "pass": 16,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-motion-2.test.mjs",
+      "pass": 24,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr10.test.mjs",
+      "pass": 4,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr12.test.mjs",
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 1 - C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tool293\\\\scripts\\\\hani-office-obr12.test.mjs",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr14.test.mjs",
+      "pass": 4,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 1 - 235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr15.test.mjs",
+      "pass": 13,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 7 - obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr16.test.mjs",
+      "pass": 12,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr17.test.mjs",
+      "pass": 3,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr18.test.mjs",
+      "pass": 12,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr19.test.mjs",
+      "pass": 3,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr21.test.mjs",
+      "pass": 4,
+      "fail": 2,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 4 - obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        },
+        {
+          "test": "not ok 5 - obr21 cached gathering/index decisions equal full index rebuilds",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr3.test.mjs",
+      "pass": 5,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr4.test.mjs",
+      "pass": 8,
+      "fail": 2,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 7 - obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        },
+        {
+          "test": "not ok 8 - obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr6.test.mjs",
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 1 - C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tool293\\\\scripts\\\\hani-office-obr6.test.mjs",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr7.test.mjs",
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 1 - C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tool293\\\\scripts\\\\hani-office-obr7.test.mjs",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr8.test.mjs",
+      "pass": 2,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 1 - obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr9.test.mjs",
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 1 - C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\tool293\\\\scripts\\\\hani-office-obr9.test.mjs",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-pet-bori-272-pins.test.mjs",
+      "pass": 3,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 4 - 272: fixed Git release blobs independently prove every baseline pin and complete diff",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-pet-bori.test.mjs",
+      "pass": 14,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-pets-268-pins.test.mjs",
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 1 - v2.9.268: exact fixture pairs are the complete diff from pinned origin/main, with no other source edits",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-pets-bubble.test.mjs",
+      "pass": 21,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 13 - resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-props.test.mjs",
+      "pass": 11,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-release-projection.test.mjs",
+      "pass": 2,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "pass": 49,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-seats-215.test.mjs",
+      "pass": 12,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-snack.test.mjs",
+      "pass": 26,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-staff-chat.test.mjs",
+      "pass": 17,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-tap-lines.test.mjs",
+      "pass": 15,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-tlayout.test.mjs",
+      "pass": 13,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-top-labels.test.mjs",
+      "pass": 7,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-v2-215.test.mjs",
+      "pass": 17,
+      "fail": 1,
+      "skip": 2,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 7 - frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-visitors-cafe.test.mjs",
+      "pass": 5,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-xmas-269-pins.test.mjs",
+      "pass": 1,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 2 - v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-xmas.test.mjs",
+      "pass": 13,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": []
+    },
+    {
+      "file": "hani-office-zoom.test.mjs",
+      "pass": 12,
+      "fail": 0,
+      "skip": 1,
+      "blocked": false,
+      "failures": []
+    }
+  ],
+  "reported": [
+    {
+      "file": "hani-ilbo-banner-215.test.mjs",
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": true,
+      "failures": [],
+      "pre499": {
+        "pass": 1,
+        "fail": 0,
+        "blocked": true,
+        "exit": 1
+      }
+    },
+    {
+      "file": "hani-office-barista-night-273-pins.test.mjs",
+      "pass": 4,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 5 - 273: fixed Git release blobs independently prove every baseline pin and complete diff",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ],
+      "pre499": {
+        "pass": 4,
+        "fail": 1,
+        "blocked": true,
+        "exit": 1
+      }
+    },
+    {
+      "file": "hani-office-barista-night.test.mjs",
+      "pass": 13,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "pre499": {
+        "pass": 13,
+        "fail": 0,
+        "blocked": false,
+        "exit": 0
+      }
+    },
+    {
+      "file": "hani-office-bori-stroll.test.mjs",
+      "pass": 13,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 8 - stroll inverse independently matches the fixed Git base",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ],
+      "pre499": {
+        "pass": 13,
+        "fail": 1,
+        "blocked": true,
+        "exit": 1
+      }
+    },
+    {
+      "file": "hani-office-companion-homes.test.mjs",
+      "pass": 15,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 8 - home extension independently matches the specified fixed Git base",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ],
+      "pre499": {
+        "pass": 15,
+        "fail": 1,
+        "blocked": true,
+        "exit": 1
+      }
+    },
+    {
+      "file": "hani-office-kids-286-source.test.mjs",
+      "pass": 3,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "pre499": {
+        "pass": 3,
+        "fail": 0,
+        "blocked": false,
+        "exit": 0
+      }
+    },
+    {
+      "file": "hani-office-kids-merge.test.mjs",
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "pre499": {
+        "pass": 10,
+        "fail": 0,
+        "blocked": false,
+        "exit": 0
+      }
+    },
+    {
+      "file": "hani-office-kids-visit.test.mjs",
+      "pass": 16,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "pre499": {
+        "pass": 16,
+        "fail": 0,
+        "blocked": false,
+        "exit": 0
+      }
+    },
+    {
+      "file": "hani-office-kids-weekday.test.mjs",
+      "pass": 19,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "pre499": {
+        "pass": 19,
+        "fail": 0,
+        "blocked": false,
+        "exit": 0
+      }
+    },
+    {
+      "file": "hani-office-pet-bori-272-pins.test.mjs",
+      "pass": 3,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 4 - 272: fixed Git release blobs independently prove every baseline pin and complete diff",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ],
+      "pre499": {
+        "pass": 3,
+        "fail": 1,
+        "blocked": true,
+        "exit": 1
+      }
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "pass": 49,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "pre499": {
+        "pass": 49,
+        "fail": 0,
+        "blocked": false,
+        "exit": 0
+      }
+    },
+    {
+      "file": "hani-office-staff-chat.test.mjs",
+      "pass": 17,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "pre499": {
+        "pass": 17,
+        "fail": 0,
+        "blocked": false,
+        "exit": 0
+      }
+    },
+    {
+      "file": "hani-office-xmas-269-pins.test.mjs",
+      "pass": 1,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 2 - v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ],
+      "pre499": {
+        "pass": 1,
+        "fail": 1,
+        "blocked": true,
+        "exit": 1
+      }
+    },
+    {
+      "file": "hani-office-xmas.test.mjs",
+      "pass": 13,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "pre499": {
+        "pass": 13,
+        "fail": 0,
+        "blocked": false,
+        "exit": 0
+      }
+    }
+  ],
+  "pre499Summary": {
+    "files": 14,
+    "pass": 177,
+    "fail": 5,
+    "skip": 0,
+    "blockedCases": 5,
+    "otherFailures": 0
+  },
+  "pre499": [
+    {
+      "file": "hani-ilbo-banner-215.test.mjs",
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": true,
+      "failures": [],
+      "exit": 1
+    },
+    {
+      "file": "hani-office-barista-night-273-pins.test.mjs",
+      "pass": 4,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 5 - 273: fixed Git release blobs independently prove every baseline pin and complete diff",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ],
+      "exit": 1
+    },
+    {
+      "file": "hani-office-barista-night.test.mjs",
+      "pass": 13,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "exit": 0
+    },
+    {
+      "file": "hani-office-bori-stroll.test.mjs",
+      "pass": 13,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 8 - stroll inverse independently matches the fixed Git base",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ],
+      "exit": 1
+    },
+    {
+      "file": "hani-office-companion-homes.test.mjs",
+      "pass": 15,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 8 - home extension independently matches the specified fixed Git base",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ],
+      "exit": 1
+    },
+    {
+      "file": "hani-office-kids-286-source.test.mjs",
+      "pass": 3,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "exit": 0
+    },
+    {
+      "file": "hani-office-kids-merge.test.mjs",
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "exit": 0
+    },
+    {
+      "file": "hani-office-kids-visit.test.mjs",
+      "pass": 16,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "exit": 0
+    },
+    {
+      "file": "hani-office-kids-weekday.test.mjs",
+      "pass": 19,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "exit": 0
+    },
+    {
+      "file": "hani-office-pet-bori-272-pins.test.mjs",
+      "pass": 3,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 4 - 272: fixed Git release blobs independently prove every baseline pin and complete diff",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ],
+      "exit": 1
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "pass": 49,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "exit": 0
+    },
+    {
+      "file": "hani-office-staff-chat.test.mjs",
+      "pass": 17,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "exit": 0
+    },
+    {
+      "file": "hani-office-xmas-269-pins.test.mjs",
+      "pass": 1,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true,
+      "failures": [
+        {
+          "test": "not ok 2 - v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit",
+          "kind": "process-blocked",
+          "error": "'TOOL293_PROCESS_BLOCKED: Git/browser process delegated to Seoyun'"
+        }
+      ],
+      "exit": 1
+    },
+    {
+      "file": "hani-office-xmas.test.mjs",
+      "pass": 13,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false,
+      "failures": [],
+      "exit": 0
+    }
+  ],
+  "blockedFiles": [
+    "hani-office-actions-216.test.mjs",
+    "hani-office-affinity-274-pins.test.mjs",
+    "hani-office-barista-night-273-pins.test.mjs",
+    "hani-office-bori-stroll.test.mjs",
+    "hani-office-cafe-rest.test.mjs",
+    "hani-office-chairman-patrol-278-pins.test.mjs",
+    "hani-office-companion-homes.test.mjs",
+    "hani-office-companions-276-pins.test.mjs",
+    "hani-office-consult.test.mjs",
+    "hani-office-icons.test.mjs",
+    "hani-office-lively-v2.test.mjs",
+    "hani-office-mascot-label.test.mjs",
+    "hani-office-obr12.test.mjs",
+    "hani-office-obr14.test.mjs",
+    "hani-office-obr15.test.mjs",
+    "hani-office-obr21.test.mjs",
+    "hani-office-obr4.test.mjs",
+    "hani-office-obr6.test.mjs",
+    "hani-office-obr7.test.mjs",
+    "hani-office-obr8.test.mjs",
+    "hani-office-obr9.test.mjs",
+    "hani-office-pet-bori-272-pins.test.mjs",
+    "hani-office-pets-268-pins.test.mjs",
+    "hani-office-pets-bubble.test.mjs",
+    "hani-office-v2-215.test.mjs",
+    "hani-office-xmas-269-pins.test.mjs",
+    "hani-ilbo-banner-215.test.mjs"
+  ],
+  "audit": {
+    "runtime": {
+      "files": 504,
+      "changed": []
+    },
+    "pre499Control": {
+      "commit": "213ffc80714f6331199035de2ca984327815737d",
+      "changedOwners": [
+        "assets/data/hani-history-releases-v1.json",
+        "hani-main.js",
+        "hani-office-live.js",
+        "hani-street-journal.css",
+        "index.html"
+      ],
+      "otherRuntimeBytesEqual": true
+    },
+    "fixtures": {
+      "files": 109,
+      "changed": [],
+      "oldManifestBytesExact": true
+    },
+    "closure": {
+      "raw": 168,
+      "projected": 164,
+      "missing": []
+    },
+    "syntax": {
+      "passed": 8,
+      "total": 8
+    }
+  },
+  "notion": {
+    "status": "pending",
+    "reason": "Automatic approval review rejected insert_content: approval policy is never"
+  },
+  "git": false,
+  "edge": false,
+  "productionChanges": false,
+  "performanceRecheck": {
+    "pass": 1,
+    "fail": 0,
+    "limitMs": 400,
+    "log": "cafe cold plan {\n  chairmanPresent: false,\n  samples: [ 334.2701, 310.94430000000006, 313.121 ]\n}\ncafe cold plan {\n  chairmanPresent: true,\n  samples: [ 323.8138999999999, 308.6661999999999, 305.8742000000002 ]\n}\nTAP version 13\n# Subtest: first full daily plan stays below the unchanged 400ms limit, chairman absent and present\nok 1 - first full daily plan stays below the unchanged 400ms limit, chairman absent and present\n  ---\n  duration_ms: 2025.7497\n  type: 'test'\n  ...\n1..1\n# tests 1\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 2083.2029",
+    "note": "isolated after all parallel batches; do not sum with office batch"
+  },
+  "localIdentity": {
+    "head": "9d6ecdd389186e467143f5dde05d14cfae67042d",
+    "originMainLocalRef": "9d6ecdd389186e467143f5dde05d14cfae67042d",
+    "branch": "hani/tooling-293",
+    "displayVersion": "2.9.293",
+    "uiScript": "hani-ui-v02992.js?v=2.9.293",
+    "browserLoadingVerified": false
+  },
+  "execution": {
+    "node": "v24.20.0",
+    "officeShards": 4,
+    "externalSourcePreload": false,
+    "processDenyGuard": "scripts/hani-tooling-293-deny-process.cjs",
+    "pre499Control": "artifacts/chibi-pack-1/tool293-pre499.cjs",
+    "excludedOriginalFailures": "20 families listed in ../tool293-task.md; not directly executed or modified"
+  },
+  "cleanup": {
+    "restoredOriginalJson": 4,
+    "removedNewGeneratedJson": 4,
+    "temporaryLogsAndSnapshots": "removed after aggregation",
+    "unexpectedOriginalFileChanges": []
+  },
+  "originalFileChanges": [
+    "docs/development-history/CURRENT.md",
+    "docs/development-history/handoffs/2026-11-13-tooling-293.md",
+    "scripts/fixtures/release-version-layers.json",
+    "scripts/hani-chibi-pack-1-layers.test.mjs",
+    "scripts/hani-chibi-pack-1-source.cjs",
+    "scripts/hani-chibi-pack-1.test.mjs",
+    "scripts/hani-release-version-layers.cjs",
+    "scripts/hani-release-version-layers.test.mjs"
+  ],
+  "addedTaskFiles": [
+    "scripts/hani-chibi-pack-1-release293.test.mjs",
+    "scripts/hani-tooling-293-deny-process.cjs",
+    "artifacts/chibi-pack-1/tool293-run.ps1",
+    "artifacts/chibi-pack-1/tool293-pre499.cjs",
+    "artifacts/chibi-pack-1/TOOLING-293.md",
+    "artifacts/chibi-pack-1/TOOLING-293-EVIDENCE.json",
+    "artifacts/chibi-pack-1/TOOLING-293-AUDIT.json",
+    "docs/development-history/handoffs/2026-11-13-tooling-293.md"
+  ]
+}

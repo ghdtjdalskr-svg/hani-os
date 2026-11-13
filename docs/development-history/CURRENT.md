@@ -1,3 +1,11 @@
+# 2026-11-13 · tooling-293 · 292/293 배포 후속 시험 층 (도연 / Codex)
+
+hani/tooling-293 / HEAD·로컬 origin/main 9d6ecdd(2.9.293, ref/객체 읽기·원격 새 조회 없음). **293 버전/연혁 → frozen 치비 → 기존292 사무실 inverse → 291 이하 합성, 기존 단언·핀 보존. 핵심14파일116PASS·history unit PASS, office73파일796PASS/33Git차단/성능1FAIL/3skip·성능 단독1PASS(400ms 유지).** 요청14개는 #499 전213ffc8 대조177PASS/5Git차단·브라우저차단1파일, 비Git 기능 실패0·293과 동일. 운영504·기존fixture109·기존manifest 바이트 보존·raw168→투영164/누락0·syntax8/8. Git·Edge·commit/push·배포 없음, 서윤 인계. Notion HANI-88 append 자동 승인 never 거절로 미반영. [보고서](../../artifacts/chibi-pack-1/TOOLING-293.md) · [인수인계](handoffs/2026-11-13-tooling-293.md). 아래 과거·타 담당 기록 보존.
+
+# 2026-11-13 · 치비 1탄 시험 층 정리 (도연 / Codex · ch292)
+
+`hani/chibi-pack-1` / HEAD `4a28193` / 전달·로컬 main `a8b1a09`(실제292, Git 명령·원격 조회 없음). **291/292 치비 exact inverse·중앙292 층 추가·289 동등성 증명 후 위임, 기존 frozen106개/하위행·운영504파일 보존. 핵심15파일119PASS+history unit·syntax11/11, office73파일797PASS/33Git차단/3skip·기능실패0.** raw168→exact164/누락0. 확장168파일1241PASS/50FAIL/6skip은 Git39·main 원문재현8·입력/의존성3으로 분리, 별도PWA Playwright 부재. 부산물4복원·신규9정리. Git·Edge·commit/push·배포 없음, 서윤 인계. Notion 착수 쓰기 자동 승인 never 거절로 갱신 대기. [보고서](../../artifacts/chibi-pack-1/TOOLING-292.md) · [인수인계](handoffs/2026-11-13-chibi-tooling-292.md). 아래 과거·타 담당 기록 보존.
+
 # 2026-11-13 · tooling-290b · frozen JSON 입력 추가 보정 (도연 / Codex)
 
 `hani/tooling-290` / base `5ab007b`(HEAD/ref 파일 읽기만, 원격 최신성 미확인). **onboarding spatial helper·obr6 places 입력에 기존 이음 project만 적용, 단언·해시·숫자 보존. 비 Git 5파일 54PASS·syntax2/2·JSON7핀 일치.** 검색56시험에서 추가 누락 미발견, 기존 shared fixture 경로 정상 입력 확인. 지정2개 포함 Git 필요16시험·Edge는 미실행/서윤 인계, office-219 기존 실패 미수정. 운영·버전·Git 명령·배포 없음. Notion HANI-86 쓰기는 자동 승인 never 거절로 갱신 대기. [추가 수정 보고서](../../artifacts/join-ieum/TOOLING-290.md) · [인수인계](handoffs/2026-11-13-tooling-290.md). 아래 과거 결과 보존.

@@ -1,3 +1,5 @@
+// Keep default execution on the same exact outer chain as legacy regression.
+import './hani-chibi-pack-1-preload.cjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

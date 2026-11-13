@@ -1,5 +1,6 @@
 // Explicit outer layer for frozen assertions; compose before m9-link-preload.
 // Read order: release versions -> chibitoon -> 283 -> life -> polish -> link.
+require('./hani-chibi-pack-1-preload.cjs');
 require('./hani-join-ieum-preload.cjs');
 require('./hani-life-bundle-preload.mjs');
 require('./hani-pb-chibitoon-legacy-preload.mjs');
