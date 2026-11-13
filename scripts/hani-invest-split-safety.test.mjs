@@ -4,8 +4,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import repository from './hani-test-repository-evidence.cjs';
+import releases from './hani-release-version-layers.cjs';
 const root=path.resolve(fileURLToPath(new URL('../',import.meta.url))),base=process.argv[2];
-const read=(dir,file)=>dir?fs.readFileSync(path.join(dir,file),'utf8'):repository.read(repository.baseline,file);
+const read=(dir,file)=>{if(!dir)return repository.read(repository.baseline,file);const raw=fs.readFileSync(path.join(dir,file),'utf8');return !base&&dir===root?releases.projectReleaseSource(raw,file,'2.9.289'):raw;};
 const before=read(base,'hani-main.js'),after=read(root,'hani-main.js');
 function region(source,name){let start=source.indexOf('function '+name+'(');if(start<0)start=source.indexOf('const '+name+'=');assert.ok(start>=0,name);const end=source.indexOf('\nfunction ',start+1);return source.slice(start,end<0?source.length:end);}
 const owners=['save','commit','writeProtectedState','removeProtectedState','calculate','brokerCalc','brokerHoldingCalc','saveBroker','saveMonthlySnapshot','renderPortfolio','renderAssets','normalizeBrokerHolding','normalizeBrokerAccount','normalizeBrokerSnapshot','cloudPushLocalRow','cloudReadRow','cloudApplyRemoteRow','cloudSyncCycle','cloudSyncFingerprintState','buildBackupPayload','migrateV22','freshState','validateStoredRecords','normalizeState','cloudHasMeaningfulLocalData'];

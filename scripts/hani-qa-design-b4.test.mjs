@@ -4,10 +4,12 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import {approvedRuntimeClosure} from './hani-retire6-approved.mjs';
+import releases from './hani-release-version-layers.cjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
 import {createHistoryHarness} from './hani-history-226.test.mjs';
 
-const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
+// Registered exact inverses expose the unchanged approved v289 test boundary.
+const read=f=>releases.projectReleaseSource(releases.readRawFileSync(new URL('../'+f,import.meta.url),'utf8'),f,'2.9.289');
 const main=read('hani-main.js'),html=read('index.html'),css=read('hani-design-system.css');
 const cut=(s,a,b)=>{const x=s.indexOf(a),y=s.indexOf(b,x);assert.ok(x>=0&&y>x,a);return s.slice(x,y);};
 const plain=x=>JSON.parse(JSON.stringify(x));

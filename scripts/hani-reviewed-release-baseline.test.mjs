@@ -64,6 +64,18 @@ test('a release delta permits its Git bytes only; intervening, trailing, unliste
  assert.equal(advanceMergedReleaseFile(file,before,[...releases,next],ref=>ref===releases[0].sha+'^'?before:ref===releases[0].sha||ref===next.sha+'^'?after:future),future);
 });
 
+test('approved title-only 291 requires its exact SHA, subject, PR and display identity',()=>{
+ const actual=readMergedReleaseChain().map(r=>({...r}));
+ const approved=actual.find(r=>r.version==='2.9.291');assert.ok(approved);
+ assert.equal(approved.sha,'55942f120fc06a87649009c21776a572fb8081e6');
+ assert.equal(approved.subject,'release: v2.9.291 (#497)');
+ assert.equal(discoverMergedReleaseChain(releaseHistoryHarness(actual)).find(r=>r.sha===approved.sha).version,'2.9.291');
+ for(const patch of [{sha:'e'.repeat(40)},{subject:'release: v2.9.291 (#498)'},{subject:'release: v2.9.292 (#497)'},{subject:'release: v2.9.291'},{subject:'release: v2.9.291 (#497) '},{version:'2.9.290'}]){
+  const forged=actual.map(r=>r===approved?{...r,...patch}:r);
+  assert.throws(()=>discoverMergedReleaseChain(releaseHistoryHarness(forged)),{code:'ERR_ASSERTION'});
+ }
+});
+
 test('release225 plus only named later release changes reproduces current source bytes',()=>{
  for(const file of reviewedReleaseFiles()){
   assertReviewedReleaseSource(file,fs.readFileSync(new URL('../'+file,import.meta.url),'utf8'));

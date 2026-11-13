@@ -24,6 +24,9 @@ function restore(source,file,target){
 }
 function project(source,file,target){
  const layer=manifest.layers[target];assert.ok(layer,'registered historical layer');
+ // Even owners without a historical edit (for example helper UI) may carry a
+ // newer registered feature. Expose 289 before selecting the historical row.
+ source=releases.projectReleaseSource(source,file,'2.9.289');
  const row=layer.files[file];if(!row)return source;
  if(hash(source)===row.beforeSha256)return source;
  return restore(source,file,target);

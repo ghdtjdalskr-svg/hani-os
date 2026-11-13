@@ -7,7 +7,8 @@ import vm from 'node:vm';
 import http from 'node:http';
 import repository from './hani-test-repository-evidence.cjs';
 import {readApprovedSource} from './hani-retire6-approved.mjs';
-import {readReviewedCurrentSource,readReviewedReleaseBaseline} from './hani-reviewed-release-baseline.mjs';
+import releases from './hani-release-version-layers.cjs';
+import {normalizeReviewedCurrentSource,readReviewedReleaseBaseline} from './hani-reviewed-release-baseline.mjs';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 
 const root=fileURLToPath(new URL('../',import.meta.url)),out=path.join(root,'artifacts/office-219');
@@ -22,7 +23,8 @@ const git=(...args)=>{
  assert.equal(args[0],'show');assert.equal(args.length,2);const at=args[1].indexOf(':');
  return Buffer.from(repository.read(args[1].slice(0,at),args[1].slice(at+1)));
 };
-const read=f=>fs.readFileSync(path.join(root,f),'utf8');
+// Keep this historical 19-person contract at its fixed approved v289 boundary.
+const read=f=>releases.projectReleaseSource(releases.readRawFileSync(path.join(root,f),'utf8'),f,'2.9.289');
 const before='60db7b5',base='974fa64df67a3c0060bdf0eda951aafeaf5a9b11';
 const old=f=>git('show',before+':'+f).toString('utf8');
 const times=['10:00','15:40','21:00','00:30'],widths=[390,412,884,1440],floors=['1f','2f','3f','4f','5f'];
@@ -97,7 +99,7 @@ for(const time of [...times,'02:00']){
  report.static.push(`${time}: ${people.length} staff, unique seats, speech present; night presence retained`);
 }
 // index.html follows main's reviewed-release baseline (version/cache projection); the rest stays exact.
-for(const f of ['index.html','assets/sprites-v2/manifest.json'])assert.equal(f==='index.html'?readReviewedCurrentSource(f):read(f),f==='index.html'?readReviewedReleaseBaseline(f):git('show',base+':'+f).toString('utf8'),f+' preserved against fixed released bytes');
+for(const f of ['index.html','assets/sprites-v2/manifest.json'])assert.equal(f==='index.html'?normalizeReviewedCurrentSource(f,releases.readRawFileSync(path.join(root,f),'utf8')):read(f),f==='index.html'?readReviewedReleaseBaseline(f):git('show',base+':'+f).toString('utf8'),f+' preserved against fixed released bytes');
 const priorCanon=JSON.parse(readApprovedSource('data/hani-building/spatial-contract.json'));
 assert.deepEqual(assets.canon.people,priorCanon.people);assert.deepEqual(assets.canon.floors,priorCanon.floors);
 for(const oldAnchor of priorCanon.anchors)assert.deepEqual(assets.canon.anchors.find(a=>a.id===oldAnchor.id),oldAnchor);
@@ -201,7 +203,7 @@ try{
    const name=decodeURIComponent(u.pathname).replace(/^\//,'')||'index.html',file=path.resolve(root,name);
    if(!file.startsWith(root)||name.split('/').some(p=>p.startsWith('.'))||!['217','218','patched'].includes(revision)){res.writeHead(403).end();return;}
    let body;
-   if(revision==='patched')body=fs.readFileSync(file);
+   if(revision==='patched')body=releases.readRawFileSync(file);
    else{const key=revision+':'+name;if(!blobs.has(key))blobs.set(key,git('show',(revision==='217'?before:base)+':'+name));body=blobs.get(key);}
    res.setHeader('Content-Type',({'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json','.webp':'image/webp','.png':'image/png','.svg':'image/svg+xml'})[path.extname(name)]||'application/octet-stream');res.end(body);
   }catch{res.writeHead(404).end();}

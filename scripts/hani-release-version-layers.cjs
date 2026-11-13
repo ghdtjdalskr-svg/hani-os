@@ -8,6 +8,13 @@ const outer=require('./hani-save-guard-source.cjs');
 const hash=source=>createHash('sha256').update(source).digest('hex');
 assert.equal(manifest.schema,1,'known release layer schema');
 const layers=manifest.layers;
+// Read fixture JSON through the captured raw reader. Legacy fs adapters can
+// invoke this dispatcher while Node is itself loading a JSON/module file.
+const featureManifests=new Map();
+function featureFiles(fixture){
+ if(!featureManifests.has(fixture))featureManifests.set(fixture,JSON.parse(readRawFileSync(require('node:path').resolve(__dirname,fixture),'utf8')).files);
+ return featureManifests.get(fixture);
+}
 const number=version=>{
  assert.match(version,/^2\.9\.\d+$/,'exact release version');
  return Number(version.split('.')[2]);
@@ -47,6 +54,7 @@ function restoreVersionLayer(source,file,version){
 // first removes 290 + Ieum, then reaches the unchanged 289/288 contracts.
 // Unknown input remains for strict callers to reject.
 function projectPreRelease290Source(source,file){
+ source=project(source,file,'2.9.290',true);
  const row=getLayer('2.9.290').files[file];
  return row&&hash(source)===row.after?restoreVersionLayer(source,file,'2.9.290'):source;
 }
@@ -74,7 +82,7 @@ function project(source,file,target,features,keepFeature=false){
   const row=layer.files[file];
   if(row&&hash(source)===row.after)source=restoreVersionLayer(source,file,layer.to);
   if(features&&layer.feature&&!(keepFeature&&version===boundary)){
-   const files=require(layer.feature.fixture).files;
+   const files=featureFiles(layer.feature.fixture);
    const delta=Array.isArray(files)?files.find(row=>row.file===file):files[file];
    if(delta&&hash(source)===delta.afterSha256){
     const buffer=Buffer.isBuffer(source);

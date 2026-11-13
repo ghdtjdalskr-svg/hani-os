@@ -273,3 +273,68 @@ node scripts/hani-office-219.test.mjs --browser $pw $chrome
 - 여섯 파일의 최종 Node 검사에서 새 운영 버그 후보는 남지 않았습니다. 실제 화면에 문제가 없는지는 아직 모릅니다. 위 1차 보고서의 라운지 번들·책상 장식·공통 미룬 일 voice/helper 등 기존 후보를 해결했다고 주장하지 않습니다.
 - Notion 현황판/Markdown 규격 읽기는 성공했습니다. 착수 진행 요약 `insert_content`는 **자동 승인 검토가 `MCP tool call requires approval, but approval policy is never`로 거절**했습니다. 갱신·연결 완료가 아닙니다. 같은 쓰기 우회를 시도하지 않았습니다. 서윤이 현황판에 날짜/담당·branch/base·이번 3줄 요약·표의 결과·Chrome BLOCKED·v290 차이·다음 행동·이 원문/PR #496을 기록한 뒤 읽어 확인해야 합니다.
 - 다음 행동: 서윤이 이 절과 변경 시험6개·`hani-retire6-approved.mjs` 검토 → 권한 있는 브라우저 재검사 및 v290 영향 검토 → 허용된 범위의 커밋·push. 시험 삭제/운영 수정/배포 승인은 이 인계에 포함되지 않습니다. CURRENT/DECISIONS는 지시 범위 때문에 수정하지 않았습니다.
+
+## 290·291 재정렬 (3차)
+
+세 시험이 승인된 290·291 변경만 벗겨 기존 289 기준을 정확히 검사하도록 맞췄습니다.
+대상 세 시험과 지정 회귀 43개, 이전 PASS 목록 23파일이 통과했고 색상·목록·저장 변조 6건도 모두 거부했습니다.
+운영 파일과 Git은 그대로이며, 시험 부산물은 정리했고 실제 화면은 Chrome 실행 차단으로 확인하지 못했습니다.
+
+### 작업 식별·승인 범위
+
+- 작업 ID: repin291 / 담당 Codex / 검토·커밋·push 서윤. 갱신: 2026-11-13 08:42 KST.
+- 상태: 시험 정렬·Node 검증 완료 / 브라우저 BLOCKED / 서윤 인계 대기. candidate SHA는 미커밋이므로 없습니다.
+- worktree: `HANI_OS_DEV_CLAUDE/stale39`, branch `hani/stale-tests-refresh`. base·HEAD `5cb97b16183c982557cac065e18b7f79f0bdb2ff`, 로컬 origin/main `55942f120fc06a87649009c21776a572fb8081e6`. HEAD/ref·검증 객체 읽기만 했으며 원격 네트워크 최신성은 미확인입니다.
+- 승인: `../repin291-task.md` 전체를 UTF-8로 읽고 한글 정상 확인. 수정은 `scripts/`와 이 보고서만 허용됩니다. 운영·버전·데이터·Cloud/schema·Git 명령·커밋·push·merge·배포는 수행하지 않았습니다.
+- `START-HERE.md`, `CURRENT.md`, 기존 2차 보고서, 두 도우미와 CODEMAP을 확인했습니다. 이 역사 시험의 상세 anchor가 없어 `CODEMAP_MISS`로 실제 import와 고정 fixture 주변을 확인했습니다.
+- 승인 근거: v290 `9e3fe97f5e58cb7a5ebc1f5796f6b523d417e5a1`, v291 `55942f120fc06a87649009c21776a572fb8081e6`와 그 parent `46cb7a69c4beeff3cce3bbe788be6f952e7b99e9`. 객체의 길이·SHA를 검증하는 기존 reader를 사용했습니다. HEAD/worktree를 기대 원문으로 승격하지 않았습니다.
+- 표시 소스는 `HANI_DISPLAY_VERSION="2.9.291"`, HTML 마지막 local script는 `./hani-launch-greeting.js`입니다. 실제 운영 화면·네트워크 로딩 확인과 구분합니다.
+
+### 변경과 결과
+
+파일 열의 시험명은 `scripts/hani-<시험명>.test.mjs`입니다.
+
+| 대상 | 원인과 조치 | 보존한 검사 | 최종 결과 |
+|---|---|---|---|
+| office-219 | raw 이음 20명과 옛 19명 기준 충돌. Node 입력만 중앙 registered inverse로 v289에 맞춤. index 보존 검사는 raw v291을 기존 reviewed oracle과 계속 비교하고, 브라우저 서버도 captured raw reader 사용 | 명단·좌석 정확 비교, 단일 actor/status, 이벤트·타이머·중복 방지, 무쓰기, 정적 AA ≥4.5:1 | 소스·모델·이벤트 PASS + import engine 6/6. 실제 화면 BLOCKED |
+| qa-design-b4 | 이음으로 한마디 20명·closure 168개가 됨. registered v291 대비 CSS → v290 이음/버전 층을 벗겨 frozen v289 기준 노출 | 19명 전체 한마디·중복 없음, 승인 closure 164개 **전체 배열** 일치·누락0·상한200, 6테마 AA, 건강·캘린더·저장 횟수 | 24/24 PASS |
+| helper-275-pins | v291 index/main 층 누락 + historical 행이 없는 UI에서 이음 층이 남음. `hani-stale39-source.cjs`가 행 선택 전에 중앙 inverse를 적용 | 시험 파일·275 fixture 무수정. 모든 원래 fragment·해시·Git blob·순서·중복·미등록 바이트 거부 유지 | 4/4 PASS |
+| release-version-layers / stale39-source / save-guard / reviewed-release-baseline | 291 등록, no-row owner 회귀, 승인 객체·음성 검사 추가. 설명 없는 v291 release 제목은 **정확한 SHA+subject+PR 조합만** 허용 | 기존 parent/current byte·EOL·저장 보호, 연속 버전·고유 PR·display 일치, 위조 metadata 거부, 미래 등록 release 합성 | 지정 명령 43/43 PASS (각각 11·4·10·18) |
+| 기존 PASS 중 나머지 13파일 | 아래 명령 목록 재실행. 기본 oracle이 v289인 safety 3개의 현재 입력에도 같은 중앙층 연결; 외부 baseline 인자를 주면 raw 비교 유지 | 원래 write·version/cache·보호 owner·EOL·DOM 단언 유지 | 13파일 Node 종료0. dash-218 선택 브라우저 1건 skip |
+| 2차 정리 나머지 4파일 + 추가 관련 6파일 | ai-budget-antigravity, brand-heroes-218, mascots-poster, newface-217 및 labels/affinity/newsroom/ai-budget 재실행 | 원래 인원·이미지·퀸 액자·무쓰기·상한·렌더러 검사 유지 | 10파일 Node 종료0. mascots 22/22, labels 17/17, cap 19/19 |
+| raw 이음 통합 | `hani-join-ieum.test.mjs`: 실제 20명 명단·4F 좌석·manifest-v3·이음 4파일 추가 확인 | 투영 전 raw 실행, 쓰기 거부, closure 제한·누락 없음 | 17/17 PASS |
+| 외부 baseline / M9 preload 호환 | 승인 v291 객체로 flat/nested baseline 공급 + 기존 지정 M9 명령 | 기존 인자 경로와 엄격 비교 유지 | baseline 3명령 PASS / M9 15/15 PASS |
+| 음성 검사 / 문법 | 운영을 쓰지 않고 fs 반환 문자열만 변조. 이름표 흰색, 친밀도 키 변경, closure 파일 추가, safety3 저장 owner 변조 | 각 해당 assertion이 변조 거부 | 6/6 예상 종료1 / 변경 JS·MJS·CJS syntax 12/12 PASS |
+
+- 중앙 manifest는 기존 290 이하 행을 그대로 보존하고 291 행 하나만 앞에 등록했습니다. index/main 버전 및 history의 입력·출력 해시는 고정 승인 객체와 직접 대조했습니다.
+- 새 `hani-contrast-291-source.cjs`와 `fixtures/contrast-291-delta.json`은 승인 CSS 추가 2063바이트만 역변환합니다. fixture SHA256은 `b4e41a368d08457723db009809730ef526e37c99a5527a924ce807590e3e4aa6`입니다. 전체 입력/출력 해시와 유일한 완전 fragment를 확인하고 누락·중복·EOL·색상 변조를 거부합니다.
+- `projectPreRelease290Source`는 더 최신인 등록 층을 먼저 벗깁니다. legacy fs preload가 JSON/module을 읽는 중 다시 dispatcher를 호출하는 충돌은 fixture를 captured raw reader로 읽어 해결했습니다. 기존 strict inverse와 fixture pin은 그대로입니다.
+- 수정 전 대상 세 파일의 실패를 각각 재현했습니다(20≠19, 한마디19≠20/전체 목록 차이, helper pair 및 index hash). 지정 회귀 중 발견한 title-only release 거부와 이전 PASS safety3의 raw291/v289 불일치도 해결했습니다. 검사 범위의 최종 미해결 Node 실패는 0이며, 저장소 전체 시험 결과를 주장하지 않습니다.
+
+### 재실행 명령·범위
+
+환경은 Node `v24.20.0` / Windows PowerShell입니다. 개별 파일은 각각 별도 Node 실행이며, 아래 모든 명령에 저장소 밖 임시 `no-git.cjs`를 `--require`하여 하위 Git executable도 거부했습니다. Git 명령 실행0입니다.
+
+```powershell
+node scripts/hani-office-219.test.mjs
+node scripts/hani-qa-design-b4.test.mjs
+node scripts/hani-helper-275-pins.test.mjs
+node --test --test-isolation=none scripts/hani-release-version-layers.test.mjs scripts/hani-stale39-source.test.mjs scripts/hani-save-guard.test.mjs scripts/hani-reviewed-release-baseline.test.mjs
+
+# 기존 PASS 중 나머지 13파일 + 2차 정리4파일 + 추가 관련6파일
+$names = @('boardroom-routing','building-206-safety','building-206','dash-218','hero-restore','invest-split-safety','polish-205-safety','qa-210','qa-report-fixes','seoyun-m9','settings-225-qa-guard','simplify-225','ui-203b','ai-budget-antigravity','brand-heroes-218','mascots-poster','newface-217','office-labels-qa','office-affinity-cap','office-affinity-storage','newsroom-4cut-288','ai-budget','ai-budget-plan')
+foreach ($name in $names) { node "scripts/hani-$name.test.mjs" }
+node scripts/hani-join-ieum.test.mjs
+node --require ./scripts/hani-m9-polish-preload.cjs --require ./scripts/hani-m9-link-preload.cjs --test --test-isolation=none scripts/hani-seoyun-m9.test.mjs
+```
+
+- 범위 대조: 착수 snapshot 2035개 기존 파일과 비교했습니다. 운영 관련 511파일은 바이트 동일하고, `scripts/` 및 이 보고서 외 기존 파일 변경·누락0입니다. 기존 scripts 12파일 수정과 새 scripts/helper·fixture 2파일, 이 보고서만 남겼습니다. 290 이하 manifest 행과 기존 fixture·`hani-retire6-approved.mjs`·helper-275-pins 시험 원문도 그대로입니다.
+- 부산물: 새 `artifacts/newface-217/validation.json`, office의 `label-results.json`·`label-unit-results.json`, `artifacts/qa-210/node-evidence.json` 4개 제거. 기존 artifacts/qa-evidence 파일은 보고서 외 바이트 동일합니다. 실패한 Chrome의 빈 임시 profile도 제거했습니다.
+
+### 미검증·다음 담당에게
+
+- Chrome `--browser`는 `browserType.launch: spawn EPERM`, checks0/screenshots0, 종료1로 **BLOCKED**입니다. Node PASS와 구분합니다. raw v291 화면의 픽셀 AA·PC/폰 기하·넘침·실제 클릭은 미검증이며, dash의 선택 브라우저 1건도 skip입니다. 권한 있는 환경에서 2차 절의 Chrome 명령으로 다시 확인해야 합니다.
+- 이 작업은 frozen v289 의미를 보존하는 역사 시험 정렬입니다. raw 이음 통합 17개는 추가 통과했지만, raw v291의 모든 화면·실서비스를 검증했다는 뜻은 아닙니다. 1차 보고서의 기존 문제 후보·브라우저 차단 항목을 해결 완료로 바꾸지 않았습니다.
+- Notion 현황판과 Markdown 규격 읽기는 성공했습니다. 이번 착수 `insert_content`는 **자동 승인 검토가 `MCP tool call requires approval, but approval policy is never`로 거절**하여 미반영입니다. 재시도 우회는 하지 않았습니다. 서윤이 날짜/담당·branch/base·3줄 요약·위 결과표·Chrome BLOCKED·다음 행동·이 원문 링크를 기록하고 읽어 확인해야 합니다.
+- 다음 한 가지 행동: 서윤이 이 절 → 중앙 291 등록/fixture → 변경 시험을 검토하고 커밋·push합니다. 브라우저/Git 제한 없는 재검사는 서윤 인계입니다. 사용자에게 수동 코드 수정을 요구하지 않습니다.
+- CURRENT/DECISIONS는 scripts/보고서 한정 지시로 수정하지 않았습니다. main 병합·Pages·최신 JS 실제 로딩·운영 기능 read-back은 모두 미수행이며, Full Build·One-Pass·HINA·버전 증가·Preview·PR·배포는 시험/도구 전용 범위로 N/A입니다.

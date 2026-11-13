@@ -7,6 +7,8 @@ import outer from './hani-save-guard-source.cjs';
 import {restoreNewsroom288Source} from './hani-newsroom-288-source.cjs';
 import layers from './hani-release-version-layers.cjs';
 import joinInverse from './hani-join-ieum-source.cjs';
+import contrast from './hani-contrast-291-source.cjs';
+import repository from './hani-test-repository-evidence.cjs';
 import {pbDelta,restoreChibitoonSource} from './hani-pb-chibitoon-source.mjs';
 const {hash,readRawFileSync:read,restoreVersionLayer:restore,projectVersionSource,projectReleaseSource}=layers;
 const raw=file=>read(new URL('../'+file,import.meta.url),'utf8');
@@ -76,7 +78,7 @@ test('290 outer version/history inverse precedes the unchanged Ieum delta and re
  const layer=layers.getLayer('2.9.290'),join=JSON.parse(read(new URL('./fixtures/join-ieum-delta.json',import.meta.url),'utf8'));
  assert.deepEqual(Object.keys(layer.files).sort(),['assets/data/hani-history-releases-v1.json','hani-main.js','index.html']);
  for(const [file,row]of Object.entries(layer.files)){
-  const disk=read(new URL('../'+file,import.meta.url)),source=raw(file),before=restore(source,file,'2.9.290');
+  const disk=read(new URL('../'+file,import.meta.url)),source=projectReleaseSource(raw(file),file,'2.9.290'),before=restore(source,file,'2.9.290');
   const feature=join.files.find(row=>row.file===file);
   assert.equal(hash(before),feature?feature.afterSha256:layers.getLayer('2.9.289').files[file].after,'independent frozen feature/289 pin');
   assert.equal(layers.projectPreRelease290Source(source,file),before);
@@ -101,6 +103,42 @@ test('290 outer version/history inverse precedes the unchanged Ieum delta and re
   assert.deepEqual(read(new URL('../'+file,import.meta.url)),disk);
  }
  assert.equal(layers.projectPreRelease290Source('unknown bytes','not-an-owner'),'unknown bytes');
+});
+
+test('291 approved objects independently prove version/history and contrast inverses, preserving the frozen 290/289 pins',()=>{
+ const release='55942f120fc06a87649009c21776a572fb8081e6',parent='46cb7a69c4beeff3cce3bbe788be6f952e7b99e9';
+ assert.equal(contrast.delta.release,release);assert.equal(contrast.delta.parent,parent);
+ assert.deepEqual(Object.keys(contrast.delta.files),['hani-design-system.css']);
+ assert.deepEqual(Object.keys(layers.getLayer('2.9.291').files).sort(),['assets/data/hani-history-releases-v1.json','hani-main.js','index.html']);
+ for(const [file,row]of Object.entries(layers.getLayer('2.9.291').files)){
+  const current=repository.read(release,file),before=repository.read(parent,file);
+  assert.equal(hash(current),row.after);assert.equal(hash(before),row.before);
+  assert.equal(restore(current,file,'2.9.291'),before);
+  assert.deepEqual(restore(Buffer.from(current),file,'2.9.291'),Buffer.from(before));
+  assert.equal(hash(before),layers.getLayer('2.9.290').files[file].after,'independent frozen 290 input');
+  assert.equal(projectReleaseSource(current,file,'2.9.290'),before);
+  if(file.endsWith('.json')){
+   const now=JSON.parse(current),old=JSON.parse(before);
+   assert.equal(now.entries[0].id,'v2.9.291');assert.equal(old.entries[0].id,'v2.9.290');
+   assert.equal(now.entries[1].source.commit,'9e3fe97f5e58cb7a5ebc1f5796f6b523d417e5a1');
+   assert.deepEqual(now.entries.slice(2),old.entries.slice(1));
+  }
+ }
+ for(const [file,row]of Object.entries(contrast.delta.files)){
+  const current=repository.read(release,file),before=repository.read(parent,file);
+  assert.equal(hash(current),row.afterSha256);assert.equal(hash(before),row.beforeSha256);
+  assert.equal(contrast.restore(current,file),before);
+  assert.deepEqual(contrast.restore(Buffer.from(current),file),Buffer.from(before));
+  assert.equal(projectReleaseSource(current,file,'2.9.290'),before);
+  assert.equal(projectReleaseSource(current,file,'2.9.291'),current,'current contrast remains at its release boundary');
+  assert.equal(hash(projectReleaseSource(raw(file),file,'2.9.289')),hash(repository.read('49096deb9ca99790c48106bbff7ec275273b1b52',file)));
+  for(const bad of [current+'\n',current.slice(1),current+current,before,current.replace(/\r?\n/,m=>m==='\n'?'\r\n':'\n'),current.replace('color:var(--text-primary);background:var(--surface-panel)!important','color:#ffffff;background:var(--surface-panel)!important')]){
+   assert.notEqual(bad,current);
+   assert.throws(()=>contrast.restore(bad,file),/exact contrast-291 input/);
+   assert.equal(projectReleaseSource(bad,file,'2.9.290'),bad,'unapproved colour/byte drift cannot be blessed');
+  }
+ }
+ assert.throws(()=>contrast.restore('unknown','index.html'),/known contrast-291 owner/);
 });
 
 test('283 pins still equal the independently frozen feature manifest',()=>{

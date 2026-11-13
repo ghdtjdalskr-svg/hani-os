@@ -34,6 +34,15 @@ test('repository evidence rejects unknown objects, refs, paths and mutating comm
  assert.throws(()=>evidence.readOnly(['reset','--hard']),/Unsupported read-only/);
  assert.equal(evidence.reference('49096de'),manifest.base);
 });
+
+test('registered outer features are projected even when a historical layer has no edit for that owner',()=>{
+ const file='hani-ui-v02992.js';assert.equal(manifest.layers.helper275.files[file],undefined);
+ const approved=evidence.read(manifest.base,file),disk=releases.readRawFileSync(new URL('../'+file,import.meta.url),'utf8');
+ assert.notEqual(disk,approved,'Ieum deliberately changed the helper owner');
+ assert.equal(project(disk,file,'helper275'),approved);
+ assert.deepEqual(project(Buffer.from(disk),file,'helper275'),Buffer.from(approved));
+ assert.equal(project(disk+'\n',file,'helper275'),disk+'\n','unknown bytes cannot acquire approved identity');
+});
 test('a future registered release composes with frozen historical layers without refreshing their pins',()=>{
  const current=releases.layers[0].to,next='2.9.'+(Number(current.split('.').at(-1))+1),files={},futureFiles={};
  for(const file of ['index.html','hani-main.js']){
