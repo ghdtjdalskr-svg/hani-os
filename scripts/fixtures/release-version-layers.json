@@ -2,6 +2,38 @@
   "schema": 1,
   "layers": [
     {
+      "from": "2.9.293",
+      "to": "2.9.294",
+      "files": {
+        "index.html": {
+          "count": 60,
+          "after": "63ee4c3ad3891ff6c1baa4148e1b37cbc305fd3fabc74a53b0f373454a0ffd20",
+          "before": "73d7844a2e28fe00091111d801e6f5df294dbb637760e3e4855a543848869d79"
+        },
+        "hani-main.js": {
+          "count": 1,
+          "after": "0730c64fd4073d5eb756348041d9e933d178710d99724802a603f0f872a93912",
+          "before": "0455b9b264da756e16d29c78b5077551bc8b8c9701684142b54b1f28829e92cf"
+        },
+        "assets/data/hani-history-releases-v1.json": {
+          "count": 1,
+          "after": "7a0bc180f87bb54a07984ee11f8a4a58941627d30ab7fd6792afbd1b1a88e141",
+          "before": "8a2b67957d6112182c4878d30284c9f0d1e9b50039f7a1ddf4d23a160b08f0dc",
+          "replacements": [
+            {
+              "after": "4\",\n      \"date\": \"2026-11-13\",\n      \"status\": \"released\",\n      \"title\": \"THAW · 해빙의 정원 예고\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.294 THAW · 해빙의 정원 예고\"\n      }\n    },\n    {\n      \"id\": \"v2.9.293\",\n      \"date\": \"2026-11-13\",\n      \"status\": \"released\",\n      \"title\": \"빈 화면에 하니 치비 그림 1탄\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"9d6ecdd389186e467143f5dde05d14cfae67042d\",\n        \"subject\": \"release: v2.9.293 빈 화면에 하니 치비 그림 1탄 (#500)",
+              "before": "3\",\n      \"date\": \"2026-11-13\",\n      \"status\": \"released\",\n      \"title\": \"빈 화면에 하니 치비 그림 1탄\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.293 빈 화면에 하니 치비 그림 1탄"
+            }
+          ]
+        }
+      },
+      "feature": {
+        "module": "./hani-theme-thaw-source.cjs",
+        "fixture": "./fixtures/theme-thaw-main293-delta.json",
+        "restore": "restore"
+      }
+    },
+    {
       "from": "2.9.292",
       "to": "2.9.293",
       "files": {

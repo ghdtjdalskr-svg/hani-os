@@ -1,5 +1,6 @@
 // Test-only exact outer layers. Add releases newest first in the JSON manifest.
 // Each release removes its version bytes, then its optional frozen feature delta.
+const thaw=require('./hani-theme-thaw-source.cjs');
 const assert=require('node:assert/strict');
 const readRawFileSync=require('node:fs').readFileSync.bind(require('node:fs'));
 const {createHash}=require('node:crypto');
@@ -50,11 +51,15 @@ function restoreVersionLayer(source,file,version){
  assert.equal(hash(before),row.before,'exact release-'+number(layer.from)+' output '+file);
  return before;
 }
-// 293 version/history -> frozen chibi -> 292 version/office -> 291 contrast
+// 294 version/history -> THAW -> 293 version/history -> frozen chibi -> 292 version/office -> 291 contrast
 // -> 290 Ieum -> frozen 289/288. Each step retains full input/output pins.
 // Newest exact version bytes precede their feature inverse. The 289 adapter
 // first removes 290 + Ieum, then reaches the unchanged 289/288 contracts.
 // Unknown input remains for strict callers to reject.
+function projectPreRelease294Source(source,file){
+ const row=getLayer('2.9.294').files[file];
+ return row&&hash(source)===row.after?restoreVersionLayer(source,file,'2.9.294'):source;
+}
 function projectPreRelease290Source(source,file){
  source=project(source,file,'2.9.290',true);
  const row=getLayer('2.9.290').files[file];
@@ -78,6 +83,9 @@ function project(source,file,target,features,keepFeature=false){
  for(const layer of layers){
   const version=number(layer.to);
   if(version<boundary)break;
+  // THAW is inside the deployed 294 bytes. Its frozen history metadata already
+  // includes the released 293 commit; 294 owns that complete history edit once.
+  if(version<=293)source=thaw.project(source,file);
   // Release 287 wraps the guarded 286 bytes. Peel the guard only at 286.
   if(version<=286)source=outer.projectPreSaveGuard286Source(source,file);
   if(version<boundary||version===boundary&&!keepFeature)break;
@@ -95,7 +103,7 @@ function project(source,file,target,features,keepFeature=false){
  }
  return source;
 }
-module.exports={layers,hash,getLayer,restoreVersionLayer,readRawFileSync,projectPreRelease288Source,projectPreRelease289Source,projectPreRelease290Source,
+module.exports={layers,hash,getLayer,restoreVersionLayer,readRawFileSync,projectPreRelease288Source,projectPreRelease289Source,projectPreRelease290Source,projectPreRelease294Source,
  projectVersionSource:(source,file,target)=>project(source,file,target,false),
  projectReleaseSource:(source,file,target)=>project(source,file,target,true),
  // Leave this feature raw, peeling all newer releases and their features first.
