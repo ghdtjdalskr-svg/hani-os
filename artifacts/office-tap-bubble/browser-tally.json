@@ -1,0 +1,52 @@
+{
+  "runs": 10,
+  "tally": {
+    "4f:hani": {
+      "ok": 10,
+      "n": 10,
+      "misses": []
+    },
+    "4f:gaeun": {
+      "ok": 10,
+      "n": 10,
+      "misses": []
+    },
+    "4f:mir": {
+      "ok": 10,
+      "n": 10,
+      "misses": []
+    },
+    "3f:arin": {
+      "ok": 10,
+      "n": 10,
+      "misses": []
+    },
+    "3f:dohyun": {
+      "ok": 10,
+      "n": 10,
+      "misses": []
+    },
+    "2f:daon": {
+      "ok": 10,
+      "n": 10,
+      "misses": []
+    },
+    "2f:haru": {
+      "ok": 10,
+      "n": 10,
+      "misses": []
+    },
+    "5f:seoyun": {
+      "ok": 10,
+      "n": 10,
+      "misses": []
+    },
+    "5f:yuri": {
+      "ok": 10,
+      "n": 10,
+      "misses": []
+    }
+  },
+  "errors": [],
+  "writes": []
+}

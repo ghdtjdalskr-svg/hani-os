@@ -4616,7 +4616,7 @@
   // Exactly one new listener: a visible unload may have no visibilitychange.
   globalThis.addEventListener?.('pagehide',()=>affinity.flush(true));
   new MutationObserver(syncVisibility).observe(root.closest(".view"),{attributes:true,attributeFilter:["class","hidden","style"]});
-  if(typeof IntersectionObserver==='function')new IntersectionObserver(entries=>{mapOnScreen=entries[0].isIntersecting;syncVisibility()}).observe(map);
+  if(typeof IntersectionObserver==='function')new IntersectionObserver(entries=>{mapOnScreen=entries[entries.length-1].isIntersecting;syncVisibility()}).observe(map);
   if(typeof ResizeObserver==='function')new ResizeObserver(()=>{fitStatusLabels();fitBubble()}).observe(map);
   document.fonts?.ready.then(()=>{fitStatusLabels();fitBubble()});
   updateBuilding(true);syncVisibility();

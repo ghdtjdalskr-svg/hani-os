@@ -71,6 +71,8 @@ function projectPreRelease288Source(source,file){
 // Projection dispatch accepts only pinned inputs; drift is left for the caller's
 // strict lower-layer assertion to reject. It never normalizes arbitrary versions.
 function project(source,file,target,features,keepFeature=false){
+ // Unreleased tap-bubble fix (newest office bytes): peel its exact pair first.
+ source=require('./hani-office-tap-bubble-source.cjs').projectPreTapBubbleSource(source,file);
  const boundary=number(target);
  assert.ok(layers.some(row=>row.from===target||row.to===target),'known release target '+target);
  for(const layer of layers){
