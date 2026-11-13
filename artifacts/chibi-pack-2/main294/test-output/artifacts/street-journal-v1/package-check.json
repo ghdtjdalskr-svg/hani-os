@@ -1,0 +1,16 @@
+{
+  "scope": "pre-mascot working tree closure + package byte roundtrip; mascot packaging unverified; not frozen release candidate",
+  "files": 169,
+  "totalBytes": 19590150,
+  "limits": {
+    "max_files": 200,
+    "max_total_bytes": 25000000,
+    "max_single_file_bytes": 5000000
+  },
+  "journal": [
+    "hani-street-journal.js",
+    "hani-street-journal.css",
+    "assets/street-journal/chibi-sheet-v1.webp"
+  ],
+  "missing": []
+}

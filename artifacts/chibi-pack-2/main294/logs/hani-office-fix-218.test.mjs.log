@@ -1,0 +1,46 @@
+TAP version 13
+# Subtest: real metadata/bootstrap + fake Date at Sunday 19:31 KST
+ok 1 - real metadata/bootstrap + fake Date at Sunday 19:31 KST
+  ---
+  duration_ms: 370.3678
+  type: 'test'
+  ...
+# Subtest: real metadata/bootstrap + fake Date at Sunday 23:00 KST
+ok 2 - real metadata/bootstrap + fake Date at Sunday 23:00 KST
+  ---
+  duration_ms: 329.5104
+  type: 'test'
+  ...
+# Subtest: real metadata/bootstrap + fake Date at Sunday 07:00 KST
+ok 3 - real metadata/bootstrap + fake Date at Sunday 07:00 KST
+  ---
+  duration_ms: 315.0044
+  type: 'test'
+  ...
+# Subtest: real metadata/bootstrap + fake Date at Sunday 12:30 KST
+ok 4 - real metadata/bootstrap + fake Date at Sunday 12:30 KST
+  ---
+  duration_ms: 299.9353
+  type: 'test'
+  ...
+# Subtest: real metadata/bootstrap + fake Date at Sunday 02:00 KST
+ok 5 - real metadata/bootstrap + fake Date at Sunday 02:00 KST
+  ---
+  duration_ms: 300.1854
+  type: 'test'
+  ...
+# Subtest: 01/07/18 boundaries, weekday behaviour, presence exclusions and chairman
+ok 6 - 01/07/18 boundaries, weekday behaviour, presence exclusions and chairman
+  ---
+  duration_ms: 534.0544
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2222.4129

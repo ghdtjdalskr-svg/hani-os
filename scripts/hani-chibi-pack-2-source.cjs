@@ -3,7 +3,7 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
 const {createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
 const bytes=readRawFileSync(path.join(__dirname,'fixtures/chibi-pack-2-delta.json'));
-assert.equal(hash(bytes),'f30dba189a6e65d541d0e7edd3771429ee3773b145cb3ae84defb646f38ba410','frozen chibi-pack-2 inverse fixture');
+assert.equal(hash(bytes),'c85dac85e9e979538af367fb176f349f7d71da8ec18574631e69e608bb47b86c','frozen chibi-pack-2 inverse fixture');
 const delta=JSON.parse(bytes);
 function restore(source,file){
  const row=delta.files[file];assert.ok(row,'known chibi-pack-2 owner');

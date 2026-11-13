@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: parser: block, prose, fences, smart quotes, empty object and failures with readable location
+ok 1 - parser: block, prose, fences, smart quotes, empty object and failures with readable location
+  ---
+  duration_ms: 1.3702
+  type: 'test'
+  ...
+# Subtest: No data distinguishes missing, null, whitespace, false, objects, and zero; changes use symbols and bp
+ok 2 - No data distinguishes missing, null, whitespace, false, objects, and zero; changes use symbols and bp
+  ---
+  duration_ms: 2.163
+  type: 'test'
+  ...
+# Subtest: poses: cover, market moods, macro and temperature threshold
+ok 3 - poses: cover, market moods, macro and temperature threshold
+  ---
+  duration_ms: 0.3416
+  type: 'test'
+  ...
+# Subtest: all user strings escaped; links restricted to http(s); enum status whitelist
+ok 4 - all user strings escaped; links restricted to http(s); enum status whitelist
+  ---
+  duration_ms: 0.3002
+  type: 'test'
+  ...
+# Subtest: read/render/parse failure writes zero; only the approved key is ever read or written
+ok 5 - read/render/parse failure writes zero; only the approved key is ever read or written
+  ---
+  duration_ms: 0.3641
+  type: 'test'
+  ...
+# Subtest: overwrite and delete require confirmation; cancel preserves exact bytes
+ok 6 - overwrite and delete require confirmation; cancel preserves exact bytes
+  ---
+  duration_ms: 0.1823
+  type: 'test'
+  ...
+# Subtest: 400 ceiling refuses new date without deleting; existing replacement permitted
+ok 7 - 400 ceiling refuses new date without deleting; existing replacement permitted
+  ---
+  duration_ms: 2.4267
+  type: 'test'
+  ...
+# Subtest: damaged/denied archive stays untouched while parsing and preview work; invalid dates refuse storage
+ok 8 - damaged/denied archive stays untouched while parsing and preview work; invalid dates refuse storage
+  ---
+  duration_ms: 0.7312
+  type: 'test'
+  ...
+# Subtest: actual public openResearch body: unique ticker/name only, no cards/history/snapshot changes
+ok 9 - actual public openResearch body: unique ticker/name only, no cards/history/snapshot changes
+  ---
+  duration_ms: 1.1415
+  type: 'test'
+  ...
+# Subtest: journal has no life key, commit/save/cloud calls, observer or other storage operations
+ok 10 - journal has no life key, commit/save/cloud calls, observer or other storage operations
+  ---
+  duration_ms: 0.4269
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 23.3871

@@ -6,7 +6,9 @@ import releases from './hani-release-version-layers.cjs';
 import chibi from './hani-chibi-pack-1-source.cjs';
 import office from './hani-release-292-source.cjs';
 import repository from './hani-test-repository-evidence.cjs';
-const raw=file=>fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
+// Explicit outer feature projection; all deployed 293 assertions remain frozen.
+import thaw from './hani-theme-thaw-source.cjs';
+const raw=file=>thaw.project(fs.readFileSync(new URL('../'+file,import.meta.url),'utf8'),file);
 const current='9d6ecdd389186e467143f5dde05d14cfae67042d',parent=chibi.main292.base;
 
 test('293 version/history inverse matches independent release and parent+chibi bytes with Buffer parity and drift rejection',()=>{

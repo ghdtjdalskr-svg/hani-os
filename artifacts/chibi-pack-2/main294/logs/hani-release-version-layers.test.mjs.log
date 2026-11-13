@@ -1,0 +1,76 @@
+TAP version 13
+# Subtest: 287 outer projection matches the supplied 286 baselines without accepting drift or changing strict guard inverses
+ok 1 - 287 outer projection matches the supplied 286 baselines without accepting drift or changing strict guard inverses
+  ---
+  duration_ms: 705.0288
+  type: 'test'
+  ...
+# Subtest: 288 outer projection peels exact deployed versions/history before the unchanged newsroom inverse
+ok 2 - 288 outer projection peels exact deployed versions/history before the unchanged newsroom inverse
+  ---
+  duration_ms: 650.3797
+  type: 'test'
+  ...
+# Subtest: 289 outer projection peels only exact deployed versions/history to the pinned 288 bytes
+ok 3 - 289 outer projection peels only exact deployed versions/history to the pinned 288 bytes
+  ---
+  duration_ms: 561.5856
+  type: 'test'
+  ...
+# Subtest: 290 outer version/history inverse precedes the unchanged Ieum delta and rejects every drift
+ok 4 - 290 outer version/history inverse precedes the unchanged Ieum delta and rejects every drift
+  ---
+  duration_ms: 528.4348
+  type: 'test'
+  ...
+# Subtest: 291 approved objects independently prove version/history and contrast inverses, preserving the frozen 290/289 pins
+ok 5 - 291 approved objects independently prove version/history and contrast inverses, preserving the frozen 290/289 pins
+  ---
+  duration_ms: 107.3257
+  type: 'test'
+  ...
+# Subtest: 283 pins still equal the independently frozen feature manifest
+ok 6 - 283 pins still equal the independently frozen feature manifest
+  ---
+  duration_ms: 0.1734
+  type: 'test'
+  ...
+# Subtest: every version and history owner restores full bytes and rejects drift and repeated inverse
+ok 7 - every version and history owner restores full bytes and rejects drift and repeated inverse
+  ---
+  duration_ms: 2233.8868
+  type: 'test'
+  ...
+# Subtest: token counts, edit uniqueness and output SHA256 are independent guards
+ok 8 - token counts, edit uniqueness and output SHA256 are independent guards
+  ---
+  duration_ms: 48.648
+  type: 'test'
+  ...
+# Subtest: ordered dispatch composes versions and feature inverses, refusing wrong order
+ok 9 - ordered dispatch composes versions and feature inverses, refusing wrong order
+  ---
+  duration_ms: 712.3048
+  type: 'test'
+  ...
+# Subtest: a future release and feature need one manifest row without editing legacy tests
+ok 10 - a future release and feature need one manifest row without editing legacy tests
+  ---
+  duration_ms: 809.9782
+  type: 'test'
+  ...
+# Subtest: save-guard outer inverse preserves the exact 286 layer, Buffer bytes and strict drift rejection
+ok 11 - save-guard outer inverse preserves the exact 286 layer, Buffer bytes and strict drift rejection
+  ---
+  duration_ms: 913.8969
+  type: 'test'
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 7296.176

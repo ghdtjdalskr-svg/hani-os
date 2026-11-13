@@ -1,5 +1,6 @@
 // Test-only exact outer inverse. Never loaded by index.html or browser QA.
 require('./hani-chibi-pack-2-preload.cjs');
+const thaw=require('./hani-theme-thaw-source.cjs');
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const {createHash}=require('node:crypto');
 const readChibiRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
@@ -42,6 +43,7 @@ function restoreFrozenChibiPack1Source(source,file){
 // Only the pinned outer 293 version/history bytes can expose frozen 292+chibi.
 // Keep the strict chibi inverse itself unchanged.
 function projectPreRelease293Source(source,file){
+  source=thaw.project(source,file);
   if(!['index.html','hani-main.js','assets/data/hani-history-releases-v1.json'].includes(file))return source;
   const releases=require('./hani-release-version-layers.cjs'),row=releases.getLayer('2.9.293').files[file];
   return row&&hash(source)===row.after?releases.restoreVersionLayer(source,file,'2.9.293'):source;

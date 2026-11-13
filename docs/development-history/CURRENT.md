@@ -1,3 +1,19 @@
+# 2026-11-14 · tooling-294 · 294 배포 후속 시험 층 (도연 / Codex)
+
+`hani/tooling-294` / 착수 HEAD·로컬 origin/main `846e8d2`(객체 읽기만, 원격 새 조회 없음). **294 version/history → frozen THAW → 293/치비/292 이하 exact inverse 연결. 지정99파일 중 비Git72파일829PASS/0FAIL/skip1·Git27파일 목록만, office46파일610PASS/0FAIL/skip1.** raw171→168→164/누락0·기존fixture110/하위행/단언·운영 파일 보존. 생성JSON7 증거 이관·기존4 원문복원. Git·Edge·commit/push·버전 증가·merge·배포 없음, 서윤 검증·커밋 인계. 루트JSON은 후속 정리 후보로만 기록. Notion 기록 추가는 자동 승인 never 거절로 미반영. [짧은 보고서](../../artifacts/theme-thaw/TOOLING-294.md) · [인수인계](handoffs/2026-11-14-tooling-294.md). 아래 기존 기록 보존.
+
+# 2026-11-13 · THAW JSON 위치 이동 (도연 / Codex)
+
+`hani/theme-thaw` / 착수 HEAD `0e8f385` / 전달·로컬 main `bcc588b`(#502, 객체 읽기만·원격 새 조회 없음). **assets/theme-collections/collections.json 추가·JSON 기준 그림 URL 해석·294 연혁 title/subject 축약. raw171→171/JSON1+WebP2/누락0, main293 168·frozen289 164. 지정87파일 중 비Git60파일 729PASS/실패0/skip1·Git27파일 목록만, office 비Git46파일610PASS.** 다른 시험281·fixture110·루트JSON·그림·게이트·표시/cache293·저장/Cloud 보존, 부산물4복원·새street증거이관. Git·Edge·commit/push·main 재병합·배포 없음. 서윤 실제 Git/Edge 확인·커밋 인계. Notion 착수 append는 자동 승인 never 거절로 미반영. [보고서 JSON 위치 이동 절](../../artifacts/theme-thaw/REPORT-294.md#json-위치-이동) · [인수인계](handoffs/2026-11-13-theme-thaw-move.md). 아래 기존 기록 보존.
+
+# 2026-11-13 · THAW main293 재정비 (도연 / Codex)
+
+`hani/theme-thaw` / HEAD `4701b58` / 전달·로컬 main `e1f3ac7`(ref/객체 확인만). **운영 수정0·THAW exact inverse → 293 이하 기존 시험 층 연결, 단언·숫자·hash 보존. 99파일956PASS/31Git차단/skip4·비Git실패0, office73파일791PASS. raw171→168→164/누락0·기존fixture110 보존.** 11~12월 홈 홍보는 없으나 SEASON에는 잠긴 THAW 행이 보임. 4시점×1280/390 browser 실행기 준비, 실제 Edge/PNG 미실행. Git 명령·commit/push·버전 증가·merge·배포 없음, 서윤 검증 인계. Notion append는 자동 승인 never 거절로 갱신 대기. [보고서](../../artifacts/theme-thaw/REPORT-294.md) · [인수인계](handoffs/2026-11-13-theme-thaw-294.md). 아래 기존·타 담당 기록 보존.
+
+# 2026-11-14 · 치비 2탄 main294 재정비 (도연 / Codex · ch2)
+
+`hani/chibi-pack-2` / 착수 HEAD `ab5204a` / 지정·로컬 origin/main `cb11935`(#505, 원격 새 조회 없음). **충돌2개 양쪽 의도 보존, 치비2 inverse → 294 version/history → THAW → 293 → 치비1 → 292 이하 연결. 총98파일 중 비Git71파일824PASS·0FAIL·skip1, Git27파일 목록만; office46파일610PASS.** 기존fixture111·기존시험/단언·운영 파일·표시/cache294 유지, raw172→171→168→164/누락0·syntax9+runtime2PASS. QA JSON4 착수 원문복원. Git·Edge·commit/push·merge index 처리·배포 없음. 브라우저 실행기 원문/합성자료 VM 점검, 서윤 실제Git·Edge 인계. Notion HANI-90 기록 추가는 자동 승인 never 거절로 갱신 대기. [보고서](../../artifacts/chibi-pack-2/REPORT.md#main-cb11935-재정비) · [인수인계](handoffs/2026-11-14-chibi-pack-2-main294.md). 아래 치비2 기존 기록과 타 담당·과거 기록 보존.
+
 # 2026-11-13 · 치비 2탄 · 독서·퀴즈·여행 (도연 / Codex · ch2)
 
 `hani/chibi-pack-2` / base·로컬 origin/main ref `e1f3ac7` / 표시·캐시2.9.293 유지. **독서 윤슬·퀴즈 히나2표정·여행 수연, 투명1024시트1장204.45KiB·persistent slot·기존 판정/쓰기 보존. 신규7·총99파일1009PASS, office73파일791PASS·Git29항목+시작5파일 차단·skip3, 기존 학습자료 fixture 오류1은 수정전 재현.** 기존 fixture110·단언/핀 보존, syntax11·closure169/200·누락0. Git·Edge·push·버전 증가·배포 없음, 서윤 실제1440/390·Git 재검증·THAW 결합 대기. Notion HANI-90 착수 생성/read-back 성공, 이후 insert_content는 자동 승인 never 거절로 갱신 대기. [보고서](../../artifacts/chibi-pack-2/REPORT.md) · [인수인계](handoffs/2026-11-13-chibi-pack-2.md). 아래 타 담당·과거 기록 보존.
@@ -68,6 +84,9 @@ hani/kids-visit-pose-b / 지정 main5c375d9(v2.9.284), Git 명령0. **파일 충
 # 2026-11-08 · 서윤 M9 2단계 연결 (Codex / m9-link)
 
 `hani/m9-stage2-link` / base·HEAD `2bc9368` / 표시·cache2.9.280 유지. 별도 호외·보이는 캡션6개·꼬마 수연/수현, 특별 카드/기존 상세 기념 컷 연결. 기능·보존9PASS, package 포함1FAIL(목록·JSON·그림2개 수집 밖). 기존 일보11그룹·history/archive unit·nav/login45·M9 15/15·기존closure3/3 PASS. 사무실67파일717PASS·Git EPERM34차단·skip3·그 외 실패0. 정기1~4 원문/렌더·저장/Cloud·새timer/listener·gate/서버 보존. Edge EPERM으로 PC/폰 PNG0, Git index.lock 권한 거부로 미커밋. push/merge/버전/배포 변경 없음, 원격 최신성·Production 미확인. Notion 자동 승인 never 거절로 갱신 대기. [짧은 보고서](../../artifacts/m9-link/REPORT.md) · [인수인계](handoffs/2026-11-08-m9-link.md). 아래 타 담당·과거 기록 보존.
+# 2026-11-08 · THAW 해빙의 정원 (Codex / theme-thaw)
+
+`hani/theme-thaw` / base·HEAD·GitHub main `70c5d5d` / 표시·cache2.9.280 유지. 승인 B안 WebP2개·단일 컬렉션 JSON·기존 SEASON 안 잠금/명시 적용·persistent 홈 티저/발표·native dialog. 최신 결정 **1/8 D-31 → 2/8 출시 → 2/15 홍보 종료**. **전용10/10·Edge1280/390×4시점8조건/20PNG·저장/Cloud 호출·17318줄EOL PASS, 기존13묶음9통과/원본HEAD동일실패4/신규0, closure161→164(+JSON1/WebP2)/누락0**. 직접 적용 외 캠페인write0, 보호키/내부버전 보존. **git add index.lock 권한 거절로 미커밋**, push/merge/버전변경/배포 없음. Notion 착수 저장/read-back 성공·후속 갱신 never 거절로 대기. [보고서](../../artifacts/theme-thaw/REPORT.md) · [인수인계](handoffs/2026-11-08-theme-thaw.md). 아래 다른 담당·과거 기록 보존.
 
 # 2026-11-08 ? ?? ?? + ?? M9 ?? ?? ?? (Codex / bori-m9)
 

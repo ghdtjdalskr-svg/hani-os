@@ -1,0 +1,125 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 26.5161
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 14.3648
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 32.7776
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 16.6271
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 77.3358
+  type: 'test'
+  ...
+QA18 coverage {
+  authoredStrings: 2999,
+  generatedSentences: 46375,
+  stateCounts: { work: 2736, rest: 257, meeting: 4, moving: 0, night: 2 }
+}
+node.exe : Office affinity storage unavailable or malformed; using memory only.
+At C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\ch2\artifacts\chibi-pack-2\rebase294-run.ps1:29 char:9
++         & node @testArgs *> $logPath
++         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Office affinity...ng memory only.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Office affinity storage unavailable or malformed; using memory only.
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 247.8143
+  type: 'test'
+  ...
+# Subtest: QA18/19: every vocabulary sentence has a display state and whole phone <=6 / wide <=8 phrases
+ok 7 - QA18/19: every vocabulary sentence has a display state and whole phone <=6 / wide <=8 phrases
+  ---
+  duration_ms: 4480.4684
+  type: 'test'
+  ...
+# Subtest: QA18: unknown sentences use state fallbacks; used set selects whole alternatives
+ok 8 - QA18: unknown sentences use state fallbacks; used set selects whole alternatives
+  ---
+  duration_ms: 0.6672
+  type: 'test'
+  ...
+# Subtest: QA19: real single status owner maps work/rest/play/meeting/moving/night to AA CSS colours
+ok 9 - QA19: real single status owner maps work/rest/play/meeting/moving/night to AA CSS colours
+  ---
+  duration_ms: 0.6519
+  type: 'test'
+  ...
+# Subtest: QA19: leisure at desks and rest seats is yellow; four overlapping work phrases stay white
+ok 10 - QA19: leisure at desks and rest seats is yellow; four overlapping work phrases stay white
+  ---
+  duration_ms: 0.898
+  type: 'test'
+  ...
+# Subtest: QA18: wide chooses spaced phrases, phones choose space-free phrases including food votes
+ok 11 - QA18: wide chooses spaced phrases, phones choose space-free phrases including food votes
+  ---
+  duration_ms: 5.0833
+  type: 'test'
+  ...
+# Subtest: QA3: persistent names use canonical roster team/rank/colours; chairman has no nickname or duplicated rank
+ok 12 - QA3: persistent names use canonical roster team/rank/colours; chairman has no nickname or duplicated rank
+  ---
+  duration_ms: 322.3337
+  type: 'test'
+  ...
+# Subtest: QA18: real desktop/phone label keeps full title/aria/roster and delegated tap/keyboard bubble without writes
+ok 13 - QA18: real desktop/phone label keeps full title/aria/roster and delegated tap/keyboard bubble without writes
+  ---
+  duration_ms: 95.6683
+  type: 'test'
+  ...
+# Subtest: QA18: label fitting keeps batched reads; existing steady frames do not add layout measurements
+ok 14 - QA18: label fitting keeps batched reads; existing steady frames do not add layout measurements
+  ---
+  duration_ms: 104.2328
+  type: 'test'
+  ...
+# Subtest: label review: real weekly desk notes and stamp doodle keep their literal meaning
+ok 15 - label review: real weekly desk notes and stamp doodle keep their literal meaning
+  ---
+  duration_ms: 212.1755
+  type: 'test'
+  ...
+# Subtest: label review: consultation schedule is work and travel precedes destination rules
+ok 16 - label review: consultation schedule is work and travel precedes destination rules
+  ---
+  duration_ms: 230.4855
+  type: 'test'
+  ...
+# Subtest: label review: actual everyday scenes use rest labels while scheduler meeting and real meetings stay intact
+ok 17 - label review: actual everyday scenes use rest labels while scheduler meeting and real meetings stay intact
+  ---
+  duration_ms: 492.5438
+  type: 'test'
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 17
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 6478.509

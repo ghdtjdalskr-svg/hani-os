@@ -1,0 +1,88 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 25.2309
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 15.9029
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 22.8427
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 15.9495
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 79.0311
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 247.1798
+  type: 'test'
+  ...
+# Subtest: B outer inverse restores fixed base, rejects every incomplete/duplicate/unrelated mutation, and retains the older inverse chain
+ok 7 - B outer inverse restores fixed base, rejects every incomplete/duplicate/unrelated mutation, and retains the older inverse chain
+  ---
+  duration_ms: 276.32
+  type: 'test'
+  ...
+# Subtest: atlas keeps every old frame rectangle and pivot, adds direction-specific B frames within the exact 4-column grid
+ok 8 - atlas keeps every old frame rectangle and pivot, adds direction-specific B frames within the exact 4-column grid
+  ---
+  duration_ms: 42.6097
+  type: 'test'
+  ...
+# Subtest: B sheet decodes with alpha, complete nonempty cells, transparent gutters and exactly preserved visible original pixels
+ok 9 - B sheet decodes with alpha, complete nonempty cells, transparent gutters and exactly preserved visible original pixels
+  ---
+  duration_ms: 65.0466
+  type: 'test'
+  ...
+# Subtest: actual weekend snapshots use every B pose, cling only safely beside idle chairman, keep walks, reduced motion, pets and weekdays
+ok 10 - actual weekend snapshots use every B pose, cling only safely beside idle chairman, keep walks, reduced motion, pets and weekdays
+  ---
+  duration_ms: 2976.1053
+  type: 'test'
+  ...
+# Subtest: real mounted persistent slots select B atlas frames through original tick, preserve taps and floor changes, zero new writes/timers/listeners
+ok 11 - real mounted persistent slots select B atlas frames through original tick, preserve taps and floor changes, zero new writes/timers/listeners
+  ---
+  duration_ms: 2084.8855
+  type: 'test'
+  ...
+# Subtest: actual scheduled 4F idle stop produces sister cling after staff visits, then resumes ordinary walking
+ok 12 - actual scheduled 4F idle stop produces sister cling after staff visits, then resumes ordinary walking
+  ---
+  duration_ms: 5123.4894
+  type: 'test'
+  ...
+# Subtest: runtime closure has only the intended atlas replacement and no missing files
+ok 13 - runtime closure has only the intended atlas replacement and no missing files
+  ---
+  duration_ms: 480.7557
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 11564.4347

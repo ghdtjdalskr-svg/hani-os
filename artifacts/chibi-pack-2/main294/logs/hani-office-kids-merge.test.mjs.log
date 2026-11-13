@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 29.5343
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 15.1632
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 20.5922
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 15.6835
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 78.1943
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 247.108
+  type: 'test'
+  ...
+# Subtest: 284 exact version inverse retains all 283 pins and rejects unrelated, partial, duplicated and EOL edits
+ok 7 - 284 exact version inverse retains all 283 pins and rejects unrelated, partial, duplicated and EOL edits
+  ---
+  duration_ms: 4201.6045
+  type: 'test'
+  ...
+# Subtest: full kids inverse recovers pinned main; affinity owner, storage keys, Cloud and timer/listener owners remain byte-identical
+ok 8 - full kids inverse recovers pinned main; affinity owner, storage keys, Cloud and timer/listener owners remain byte-identical
+  ---
+  duration_ms: 22.0921
+  type: 'test'
+  ...
+# Subtest: raw 284 closure keeps life bundle and launch assets; only kids atlas changes against pinned main
+ok 9 - raw 284 closure keeps life bundle and launch assets; only kids atlas changes against pinned main
+  ---
+  duration_ms: 322.4436
+  type: 'test'
+  ...
+# Subtest: same mounted weekday scene retains B visitor, mascot metadata and daily two-point cap on PC/phone without a persistence flush
+ok 10 - same mounted weekday scene retains B visitor, mascot metadata and daily two-point cap on PC/phone without a persistence flush
+  ---
+  duration_ms: 1323.5272
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 6337.1736

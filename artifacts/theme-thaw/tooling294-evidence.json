@@ -1,0 +1,1700 @@
+{
+  "base": "846e8d2",
+  "method": "Per-file default execution; Git/process-dependent files listed only; child-process deny guard; history --unit-only",
+  "selected": [
+    "hani-app-216-audit.test.cjs",
+    "hani-chibi-pack-1-layers.test.mjs",
+    "hani-chibi-pack-1-release293.test.mjs",
+    "hani-chibi-pack-1.test.mjs",
+    "hani-history-226.test.mjs",
+    "hani-join-ieum.test.mjs",
+    "hani-learning-quiz-quality.test.mjs",
+    "hani-learning-quiz-v04.test.mjs",
+    "hani-life-bundle-source.test.mjs",
+    "hani-newsroom-285-source.test.mjs",
+    "hani-newsroom-4cut-288.test.mjs",
+    "hani-office-219.test.mjs",
+    "hani-office-actions-216.test.mjs",
+    "hani-office-actions-221.test.mjs",
+    "hani-office-affinity-274-pins.test.mjs",
+    "hani-office-affinity-cap.test.mjs",
+    "hani-office-affinity-storage.test.mjs",
+    "hani-office-affinity.test.mjs",
+    "hani-office-barista-night-273-pins.test.mjs",
+    "hani-office-barista-night.test.mjs",
+    "hani-office-barista.test.mjs",
+    "hani-office-behavior.test.mjs",
+    "hani-office-bori-m9.test.mjs",
+    "hani-office-bori-stroll.test.mjs",
+    "hani-office-bubble-close.test.mjs",
+    "hani-office-cafe-rest.test.mjs",
+    "hani-office-chairman-234.test.mjs",
+    "hani-office-chairman-patrol-278-pins.test.mjs",
+    "hani-office-chairman-patrol.test.mjs",
+    "hani-office-companion-homes.test.mjs",
+    "hani-office-companions-276-pins.test.mjs",
+    "hani-office-companions.test.mjs",
+    "hani-office-consult.test.mjs",
+    "hani-office-crowded-labels.test.mjs",
+    "hani-office-drama.test.mjs",
+    "hani-office-fix-218.test.mjs",
+    "hani-office-floor-bubble.test.mjs",
+    "hani-office-hd-224.test.mjs",
+    "hani-office-icons.test.mjs",
+    "hani-office-kids-286-source.test.mjs",
+    "hani-office-kids-lively.test.mjs",
+    "hani-office-kids-merge.test.mjs",
+    "hani-office-kids-pose-b.test.mjs",
+    "hani-office-kids-visit.test.mjs",
+    "hani-office-kids-weekday.test.mjs",
+    "hani-office-labels-qa.test.mjs",
+    "hani-office-lively-v2.test.mjs",
+    "hani-office-lively.test.mjs",
+    "hani-office-mascot-label.test.mjs",
+    "hani-office-motion-1.test.mjs",
+    "hani-office-motion-2.test.mjs",
+    "hani-office-obr10.test.mjs",
+    "hani-office-obr12.test.mjs",
+    "hani-office-obr14.test.mjs",
+    "hani-office-obr15.test.mjs",
+    "hani-office-obr16.test.mjs",
+    "hani-office-obr17.test.mjs",
+    "hani-office-obr18.test.mjs",
+    "hani-office-obr19.test.mjs",
+    "hani-office-obr21.test.mjs",
+    "hani-office-obr3.test.mjs",
+    "hani-office-obr4.test.mjs",
+    "hani-office-obr6.test.mjs",
+    "hani-office-obr7.test.mjs",
+    "hani-office-obr8.test.mjs",
+    "hani-office-obr9.test.mjs",
+    "hani-office-pet-bori-272-pins.test.mjs",
+    "hani-office-pet-bori.test.mjs",
+    "hani-office-pets-268-pins.test.mjs",
+    "hani-office-pets-bubble.test.mjs",
+    "hani-office-props.test.mjs",
+    "hani-office-release-projection.test.mjs",
+    "hani-office-residents.test.mjs",
+    "hani-office-seats-215.test.mjs",
+    "hani-office-snack.test.mjs",
+    "hani-office-staff-chat.test.mjs",
+    "hani-office-tap-lines.test.mjs",
+    "hani-office-tlayout.test.mjs",
+    "hani-office-top-labels.test.mjs",
+    "hani-office-v2-215.test.mjs",
+    "hani-office-visitors-cafe.test.mjs",
+    "hani-office-xmas-269-pins.test.mjs",
+    "hani-office-xmas.test.mjs",
+    "hani-office-zoom.test.mjs",
+    "hani-qa-easy-cleanup.test.mjs",
+    "hani-quiz-autogen-216.test.mjs",
+    "hani-quiz-client-209.test.cjs",
+    "hani-quiz-qa-212.test.cjs",
+    "hani-quiz-quality-210.test.mjs",
+    "hani-release-294.test.mjs",
+    "hani-release-version-layers.test.mjs",
+    "hani-save-guard.test.mjs",
+    "hani-seoyun-m9.test.mjs",
+    "hani-street-journal-closure.test.mjs",
+    "hani-street-journal.test.cjs",
+    "hani-study-retry.test.mjs",
+    "hani-study-tutor-215.test.mjs",
+    "hani-theme-thaw-source.test.mjs",
+    "hani-theme-thaw.test.mjs"
+  ],
+  "gitRequired": [
+    "hani-office-actions-216.test.mjs",
+    "hani-office-affinity-274-pins.test.mjs",
+    "hani-office-barista-night-273-pins.test.mjs",
+    "hani-office-bori-stroll.test.mjs",
+    "hani-office-cafe-rest.test.mjs",
+    "hani-office-chairman-234.test.mjs",
+    "hani-office-chairman-patrol-278-pins.test.mjs",
+    "hani-office-companion-homes.test.mjs",
+    "hani-office-companions-276-pins.test.mjs",
+    "hani-office-consult.test.mjs",
+    "hani-office-icons.test.mjs",
+    "hani-office-lively-v2.test.mjs",
+    "hani-office-mascot-label.test.mjs",
+    "hani-office-obr12.test.mjs",
+    "hani-office-obr14.test.mjs",
+    "hani-office-obr15.test.mjs",
+    "hani-office-obr21.test.mjs",
+    "hani-office-obr4.test.mjs",
+    "hani-office-obr6.test.mjs",
+    "hani-office-obr7.test.mjs",
+    "hani-office-obr8.test.mjs",
+    "hani-office-obr9.test.mjs",
+    "hani-office-pet-bori-272-pins.test.mjs",
+    "hani-office-pets-268-pins.test.mjs",
+    "hani-office-pets-bubble.test.mjs",
+    "hani-office-v2-215.test.mjs",
+    "hani-office-xmas-269-pins.test.mjs"
+  ],
+  "summary": {
+    "selected": 99,
+    "executed": 72,
+    "passedFiles": 72,
+    "failedFiles": 0,
+    "gitListedOnly": 27,
+    "pass": 829,
+    "fail": 0,
+    "skip": 1,
+    "office": {
+      "files": 46,
+      "pass": 610,
+      "fail": 0,
+      "skip": 1
+    }
+  },
+  "results": [
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-app-216-audit.test.cjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-app-216-audit.test.cjs.log",
+      "ms": 1310,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 7,
+      "skip": 0,
+      "file": "hani-app-216-audit.test.cjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-chibi-pack-1-layers.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-chibi-pack-1-layers.test.mjs.log",
+      "ms": 1126,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 6,
+      "skip": 0,
+      "file": "hani-chibi-pack-1-layers.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-chibi-pack-1-release293.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-chibi-pack-1-release293.test.mjs.log",
+      "ms": 442,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 3,
+      "skip": 0,
+      "file": "hani-chibi-pack-1-release293.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-chibi-pack-1.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-chibi-pack-1.test.mjs.log",
+      "ms": 907,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 10,
+      "skip": 0,
+      "file": "hani-chibi-pack-1.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "scripts/hani-history-226.test.mjs",
+        "--unit-only"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-history-226.test.mjs.log",
+      "ms": 134,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 0,
+      "skip": 0,
+      "file": "hani-history-226.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-join-ieum.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-join-ieum.test.mjs.log",
+      "ms": 2723,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 17,
+      "skip": 0,
+      "file": "hani-join-ieum.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-learning-quiz-quality.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-learning-quiz-quality.test.mjs.log",
+      "ms": 117,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 13,
+      "skip": 0,
+      "file": "hani-learning-quiz-quality.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-learning-quiz-v04.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-learning-quiz-v04.test.mjs.log",
+      "ms": 56,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 1,
+      "skip": 0,
+      "file": "hani-learning-quiz-v04.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-life-bundle-source.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-life-bundle-source.test.mjs.log",
+      "ms": 4704,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 5,
+      "skip": 0,
+      "file": "hani-life-bundle-source.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-newsroom-285-source.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-newsroom-285-source.test.mjs.log",
+      "ms": 652,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 2,
+      "skip": 0,
+      "file": "hani-newsroom-285-source.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-newsroom-4cut-288.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-newsroom-4cut-288.test.mjs.log",
+      "ms": 160,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 7,
+      "skip": 0,
+      "file": "hani-newsroom-4cut-288.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-219.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-219.test.mjs.log",
+      "ms": 3306,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 6,
+      "skip": 0,
+      "file": "hani-office-219.test.mjs"
+    },
+    {
+      "file": "hani-office-actions-216.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [],
+      "executed": false
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-actions-221.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-actions-221.test.mjs.log",
+      "ms": 4619,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 20,
+      "skip": 0,
+      "file": "hani-office-actions-221.test.mjs"
+    },
+    {
+      "file": "hani-office-affinity-274-pins.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [
+        "scripts/hani-office-affinity-274-pins.test.mjs"
+      ],
+      "executed": false
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-affinity-cap.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-affinity-cap.test.mjs.log",
+      "ms": 6370,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 19,
+      "skip": 0,
+      "file": "hani-office-affinity-cap.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-affinity-storage.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-affinity-storage.test.mjs.log",
+      "ms": 194,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 3,
+      "skip": 0,
+      "file": "hani-office-affinity-storage.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-affinity.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-affinity.test.mjs.log",
+      "ms": 9610,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 21,
+      "skip": 0,
+      "file": "hani-office-affinity.test.mjs"
+    },
+    {
+      "file": "hani-office-barista-night-273-pins.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [
+        "scripts/hani-office-barista-night-273-pins.test.mjs"
+      ],
+      "executed": false
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-barista-night.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-barista-night.test.mjs.log",
+      "ms": 16628,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 13,
+      "skip": 0,
+      "file": "hani-office-barista-night.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-barista.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-barista.test.mjs.log",
+      "ms": 7208,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 10,
+      "skip": 0,
+      "file": "hani-office-barista.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-behavior.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-behavior.test.mjs.log",
+      "ms": 47060,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 10,
+      "skip": 0,
+      "file": "hani-office-behavior.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-bori-m9.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-bori-m9.test.mjs.log",
+      "ms": 64782,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 2,
+      "skip": 0,
+      "file": "hani-office-bori-m9.test.mjs"
+    },
+    {
+      "file": "hani-office-bori-stroll.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [
+        "scripts/hani-office-bori-stroll.test.mjs"
+      ],
+      "executed": false
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-bubble-close.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-bubble-close.test.mjs.log",
+      "ms": 7669,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 17,
+      "skip": 0,
+      "file": "hani-office-bubble-close.test.mjs"
+    },
+    {
+      "file": "hani-office-cafe-rest.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [],
+      "executed": false
+    },
+    {
+      "file": "hani-office-chairman-234.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [],
+      "executed": false
+    },
+    {
+      "file": "hani-office-chairman-patrol-278-pins.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [
+        "scripts/hani-office-chairman-patrol-278-pins.test.mjs"
+      ],
+      "executed": false
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-chairman-patrol.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-chairman-patrol.test.mjs.log",
+      "ms": 10052,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 15,
+      "skip": 0,
+      "file": "hani-office-chairman-patrol.test.mjs"
+    },
+    {
+      "file": "hani-office-companion-homes.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [
+        "scripts/hani-office-companion-homes.test.mjs"
+      ],
+      "executed": false
+    },
+    {
+      "file": "hani-office-companions-276-pins.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [
+        "scripts/hani-office-companions-276-pins.test.mjs"
+      ],
+      "executed": false
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-companions.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-companions.test.mjs.log",
+      "ms": 9450,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 17,
+      "skip": 0,
+      "file": "hani-office-companions.test.mjs"
+    },
+    {
+      "file": "hani-office-consult.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [],
+      "executed": false
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-crowded-labels.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-crowded-labels.test.mjs.log",
+      "ms": 892,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 19,
+      "skip": 0,
+      "file": "hani-office-crowded-labels.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-drama.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-drama.test.mjs.log",
+      "ms": 17350,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 20,
+      "skip": 0,
+      "file": "hani-office-drama.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-fix-218.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-fix-218.test.mjs.log",
+      "ms": 2304,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 6,
+      "skip": 0,
+      "file": "hani-office-fix-218.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-floor-bubble.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-floor-bubble.test.mjs.log",
+      "ms": 1733,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 21,
+      "skip": 0,
+      "file": "hani-office-floor-bubble.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-hd-224.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-hd-224.test.mjs.log",
+      "ms": 2595,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 10,
+      "skip": 0,
+      "file": "hani-office-hd-224.test.mjs"
+    },
+    {
+      "file": "hani-office-icons.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [],
+      "executed": false
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-kids-286-source.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-kids-286-source.test.mjs.log",
+      "ms": 964,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 3,
+      "skip": 0,
+      "file": "hani-office-kids-286-source.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-kids-lively.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-kids-lively.test.mjs.log",
+      "ms": 13582,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 15,
+      "skip": 0,
+      "file": "hani-office-kids-lively.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-kids-merge.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-kids-merge.test.mjs.log",
+      "ms": 6307,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 10,
+      "skip": 0,
+      "file": "hani-office-kids-merge.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-kids-pose-b.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-kids-pose-b.test.mjs.log",
+      "ms": 11360,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 13,
+      "skip": 0,
+      "file": "hani-office-kids-pose-b.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-kids-visit.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-kids-visit.test.mjs.log",
+      "ms": 37616,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 16,
+      "skip": 0,
+      "file": "hani-office-kids-visit.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-kids-weekday.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-kids-weekday.test.mjs.log",
+      "ms": 80575,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 19,
+      "skip": 0,
+      "file": "hani-office-kids-weekday.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-labels-qa.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-labels-qa.test.mjs.log",
+      "ms": 6304,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 17,
+      "skip": 0,
+      "file": "hani-office-labels-qa.test.mjs"
+    },
+    {
+      "file": "hani-office-lively-v2.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [],
+      "executed": false
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-lively.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-lively.test.mjs.log",
+      "ms": 23085,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 13,
+      "skip": 0,
+      "file": "hani-office-lively.test.mjs"
+    },
+    {
+      "file": "hani-office-mascot-label.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [
+        "scripts/hani-office-mascot-label.test.mjs"
+      ],
+      "executed": false
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-motion-1.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-motion-1.test.mjs.log",
+      "ms": 3391,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 16,
+      "skip": 0,
+      "file": "hani-office-motion-1.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-motion-2.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-motion-2.test.mjs.log",
+      "ms": 1233,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 24,
+      "skip": 0,
+      "file": "hani-office-motion-2.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-obr10.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-obr10.test.mjs.log",
+      "ms": 2276,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 4,
+      "skip": 0,
+      "file": "hani-office-obr10.test.mjs"
+    },
+    {
+      "file": "hani-office-obr12.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [],
+      "executed": false
+    },
+    {
+      "file": "hani-office-obr14.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [],
+      "executed": false
+    },
+    {
+      "file": "hani-office-obr15.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [],
+      "executed": false
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-obr16.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-obr16.test.mjs.log",
+      "ms": 7374,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 12,
+      "skip": 0,
+      "file": "hani-office-obr16.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-obr17.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-obr17.test.mjs.log",
+      "ms": 2396,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 3,
+      "skip": 0,
+      "file": "hani-office-obr17.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-obr18.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-obr18.test.mjs.log",
+      "ms": 5780,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 12,
+      "skip": 0,
+      "file": "hani-office-obr18.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-obr19.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-obr19.test.mjs.log",
+      "ms": 3820,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 3,
+      "skip": 0,
+      "file": "hani-office-obr19.test.mjs"
+    },
+    {
+      "file": "hani-office-obr21.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [],
+      "executed": false
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-obr3.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-obr3.test.mjs.log",
+      "ms": 2460,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 5,
+      "skip": 0,
+      "file": "hani-office-obr3.test.mjs"
+    },
+    {
+      "file": "hani-office-obr4.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [],
+      "executed": false
+    },
+    {
+      "file": "hani-office-obr6.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [],
+      "executed": false
+    },
+    {
+      "file": "hani-office-obr7.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [],
+      "executed": false
+    },
+    {
+      "file": "hani-office-obr8.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [],
+      "executed": false
+    },
+    {
+      "file": "hani-office-obr9.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [],
+      "executed": false
+    },
+    {
+      "file": "hani-office-pet-bori-272-pins.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [
+        "scripts/hani-office-pet-bori-272-pins.test.mjs"
+      ],
+      "executed": false
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-pet-bori.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-pet-bori.test.mjs.log",
+      "ms": 42741,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 14,
+      "skip": 0,
+      "file": "hani-office-pet-bori.test.mjs"
+    },
+    {
+      "file": "hani-office-pets-268-pins.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [
+        "scripts/hani-office-pets-268-pins.test.mjs"
+      ],
+      "executed": false
+    },
+    {
+      "file": "hani-office-pets-bubble.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [],
+      "executed": false
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-props.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-props.test.mjs.log",
+      "ms": 4212,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 11,
+      "skip": 0,
+      "file": "hani-office-props.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-release-projection.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-release-projection.test.mjs.log",
+      "ms": 103,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 2,
+      "skip": 0,
+      "file": "hani-office-release-projection.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-residents.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-residents.test.mjs.log",
+      "ms": 70493,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 49,
+      "skip": 0,
+      "file": "hani-office-residents.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-seats-215.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-seats-215.test.mjs.log",
+      "ms": 841,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 12,
+      "skip": 0,
+      "file": "hani-office-seats-215.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-snack.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-snack.test.mjs.log",
+      "ms": 17278,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 26,
+      "skip": 0,
+      "file": "hani-office-snack.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-staff-chat.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-staff-chat.test.mjs.log",
+      "ms": 71446,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 17,
+      "skip": 0,
+      "file": "hani-office-staff-chat.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-tap-lines.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-tap-lines.test.mjs.log",
+      "ms": 2272,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 15,
+      "skip": 0,
+      "file": "hani-office-tap-lines.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-tlayout.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-tlayout.test.mjs.log",
+      "ms": 14412,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 13,
+      "skip": 0,
+      "file": "hani-office-tlayout.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-top-labels.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-top-labels.test.mjs.log",
+      "ms": 121,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 7,
+      "skip": 0,
+      "file": "hani-office-top-labels.test.mjs"
+    },
+    {
+      "file": "hani-office-v2-215.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [],
+      "executed": false
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-visitors-cafe.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-visitors-cafe.test.mjs.log",
+      "ms": 3975,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 5,
+      "skip": 0,
+      "file": "hani-office-visitors-cafe.test.mjs"
+    },
+    {
+      "file": "hani-office-xmas-269-pins.test.mjs",
+      "gitRequired": true,
+      "processDependencies": [
+        "scripts/hani-office-xmas-269-pins.test.mjs"
+      ],
+      "executed": false
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-xmas.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-xmas.test.mjs.log",
+      "ms": 2867,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 13,
+      "skip": 0,
+      "file": "hani-office-xmas.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-office-zoom.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-office-zoom.test.mjs.log",
+      "ms": 12132,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 12,
+      "skip": 1,
+      "file": "hani-office-zoom.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-qa-easy-cleanup.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-qa-easy-cleanup.test.mjs.log",
+      "ms": 541,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 12,
+      "skip": 0,
+      "file": "hani-qa-easy-cleanup.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-quiz-autogen-216.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-quiz-autogen-216.test.mjs.log",
+      "ms": 135,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 8,
+      "skip": 0,
+      "file": "hani-quiz-autogen-216.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-quiz-client-209.test.cjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-quiz-client-209.test.cjs.log",
+      "ms": 230,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 7,
+      "skip": 0,
+      "file": "hani-quiz-client-209.test.cjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-quiz-qa-212.test.cjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-quiz-qa-212.test.cjs.log",
+      "ms": 236,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 10,
+      "skip": 0,
+      "file": "hani-quiz-qa-212.test.cjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-quiz-quality-210.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-quiz-quality-210.test.mjs.log",
+      "ms": 174,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 16,
+      "skip": 0,
+      "file": "hani-quiz-quality-210.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-release-294.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-release-294.test.mjs.log",
+      "ms": 545,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 2,
+      "skip": 0,
+      "file": "hani-release-294.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-release-version-layers.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-release-version-layers.test.mjs.log",
+      "ms": 6956,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 11,
+      "skip": 0,
+      "file": "hani-release-version-layers.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-save-guard.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-save-guard.test.mjs.log",
+      "ms": 348,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 10,
+      "skip": 0,
+      "file": "hani-save-guard.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-seoyun-m9.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-seoyun-m9.test.mjs.log",
+      "ms": 5526,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 15,
+      "skip": 0,
+      "file": "hani-seoyun-m9.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-street-journal-closure.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-street-journal-closure.test.mjs.log",
+      "ms": 156,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 1,
+      "skip": 0,
+      "file": "hani-street-journal-closure.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-street-journal.test.cjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-street-journal.test.cjs.log",
+      "ms": 70,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 10,
+      "skip": 0,
+      "file": "hani-street-journal.test.cjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-study-retry.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-study-retry.test.mjs.log",
+      "ms": 665,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 26,
+      "skip": 0,
+      "file": "hani-study-retry.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-study-tutor-215.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-study-tutor-215.test.mjs.log",
+      "ms": 59,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 3,
+      "skip": 0,
+      "file": "hani-study-tutor-215.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-theme-thaw-source.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-theme-thaw-source.test.mjs.log",
+      "ms": 681,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 4,
+      "skip": 0,
+      "file": "hani-theme-thaw-source.test.mjs"
+    },
+    {
+      "args": [
+        "--require",
+        "./scripts/hani-tooling-293-deny-process.cjs",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "scripts/hani-theme-thaw.test.mjs"
+      ],
+      "blocked": false,
+      "log": "tooling294-logs/hani-theme-thaw.test.mjs.log",
+      "ms": 294,
+      "exit": 0,
+      "executed": true,
+      "fail": 0,
+      "pass": 13,
+      "skip": 0,
+      "file": "hani-theme-thaw.test.mjs"
+    }
+  ]
+}

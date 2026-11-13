@@ -1,0 +1,46 @@
+TAP version 13
+# Subtest: main291 chibi inverse restores independent main bytes and rejects partial, duplicate, EOL, content drift and repeated inverse
+ok 1 - main291 chibi inverse restores independent main bytes and rejects partial, duplicate, EOL, content drift and repeated inverse
+  ---
+  duration_ms: 133.6472
+  type: 'test'
+  ...
+# Subtest: main292 chibi inverse restores independent main bytes and rejects partial, duplicate, EOL, content drift and repeated inverse
+ok 2 - main292 chibi inverse restores independent main bytes and rejects partial, duplicate, EOL, content drift and repeated inverse
+  ---
+  duration_ms: 148.8767
+  type: 'test'
+  ...
+# Subtest: already present release 292 restores independent 291 objects before canonical 291/290 layers
+ok 3 - already present release 292 restores independent 291 objects before canonical 291/290 layers
+  ---
+  duration_ms: 281.7623
+  type: 'test'
+  ...
+# Subtest: frozen legacy 289 implementation and canonical main layer restore identical bytes, buffers and strict pins
+ok 4 - frozen legacy 289 implementation and canonical main layer restore identical bytes, buffers and strict pins
+  ---
+  duration_ms: 192.3054
+  type: 'test'
+  ...
+# Subtest: canonical 292 dispatcher equals the independently pinned outer inverse, with strict feature/version order
+ok 5 - canonical 292 dispatcher equals the independently pinned outer inverse, with strict feature/version order
+  ---
+  duration_ms: 223.1192
+  type: 'test'
+  ...
+# Subtest: frozen chibi 289 inverse still restores its original full-byte pins
+ok 6 - frozen chibi 289 inverse still restores its original full-byte pins
+  ---
+  duration_ms: 127.016
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1130.7294

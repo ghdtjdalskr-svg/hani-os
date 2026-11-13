@@ -1,0 +1,34 @@
+TAP version 13
+# Subtest: THAW inverse restores independently identified main293 bytes, exact CSS suffix and four JS additions
+ok 1 - THAW inverse restores independently identified main293 bytes, exact CSS suffix and four JS additions
+  ---
+  duration_ms: 128.3822
+  type: 'test'
+  ...
+# Subtest: THAW release history metadata restores exact seeded main293 bytes without changing disk or older fixture pins
+ok 2 - THAW release history metadata restores exact seeded main293 bytes without changing disk or older fixture pins
+  ---
+  duration_ms: 5.3084
+  type: 'test'
+  ...
+# Subtest: exact source projection removes only the three new closure files, retaining all independent main file names
+ok 3 - exact source projection removes only the three new closure files, retaining all independent main file names
+  ---
+  duration_ms: 515.4779
+  type: 'test'
+  ...
+# Subtest: actual home and view owners retain canonical THAW slots on latest main without additional event layers
+ok 4 - actual home and view owners retain canonical THAW slots on latest main without additional event layers
+  ---
+  duration_ms: 28.6518
+  type: 'test'
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 4
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 696.7771

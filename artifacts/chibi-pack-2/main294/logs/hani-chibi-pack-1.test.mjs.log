@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: exact outer inverse restores all original bytes; rejects drift, partial/duplicate edits and a second inverse
+ok 1 - exact outer inverse restores all original bytes; rejects drift, partial/duplicate edits and a second inverse
+  ---
+  duration_ms: 179.6967
+  type: 'test'
+  ...
+# Subtest: supplied release 289 projects exactly to independently frozen 288 bytes without relaxing lower pins
+ok 2 - supplied release 289 projects exactly to independently frozen 288 bytes without relaxing lower pins
+  ---
+  duration_ms: 425.7945
+  type: 'test'
+  ...
+# Subtest: ledger: one persistent note only for the selected month without entries; filter misses and zero-valued entries are distinct
+ok 3 - ledger: one persistent note only for the selected month without entries; filter misses and zero-valued entries are distinct
+  ---
+  duration_ms: 2.6116
+  type: 'test'
+  ...
+# Subtest: investment and asset: missing records show Jieun once, confirmed zero records and existing transactions hide her
+ok 4 - investment and asset: missing records show Jieun once, confirmed zero records and existing transactions hide her
+  ---
+  duration_ms: 3.2002
+  type: 'test'
+  ...
+# Subtest: movie: one Minji for the entirely empty archive, no first-record note for wishes, watched items or filter misses
+ok 5 - movie: one Minji for the entirely empty archive, no first-record note for wishes, watched items or filter misses
+  ---
+  duration_ms: 1.6023
+  type: 'test'
+  ...
+# Subtest: settlement: one persistent slot and content wrapper; date hiding preserves both and existing instructions
+ok 6 - settlement: one persistent slot and content wrapper; date hiding preserves both and existing instructions
+  ---
+  duration_ms: 1.2201
+  type: 'test'
+  ...
+# Subtest: monthly: cover note never masks record availability, retry errors, generation status or stored report description
+ok 7 - monthly: cover note never masks record availability, retry errors, generation status or stored report description
+  ---
+  duration_ms: 1.3759
+  type: 'test'
+  ...
+# Subtest: new UI edits have no storage, network, state writes, new event bindings or timers; old storage/event bytes fully restore
+ok 8 - new UI edits have no storage, network, state writes, new event bindings or timers; old storage/event bytes fully restore
+  ---
+  duration_ms: 59.0836
+  type: 'test'
+  ...
+# Subtest: only existing sprite coordinates are shared; responsive art is 72px/56px, hidden slots have no layout
+ok 9 - only existing sprite coordinates are shared; responsive art is 72px/56px, hidden slots have no layout
+  ---
+  duration_ms: 0.3823
+  type: 'test'
+  ...
+# Subtest: exact newer-release projection preserves the frozen 164-file closure with no missing asset and the existing sheet included
+ok 10 - exact newer-release projection preserves the frozen 164-file closure with no missing asset and the existing sheet included
+  ---
+  duration_ms: 186.7714
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 922.4512

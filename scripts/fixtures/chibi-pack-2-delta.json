@@ -1,10 +1,10 @@
 {
   "schema": 1,
-  "base": "e1f3ac7e944484b09fe102464b22ef6e66204d9a",
+  "base": "cb119351ff7b0a01b77fdc04d6f0b1ba0c2b54dc",
   "files": {
     "hani-main.js": {
-      "beforeSha256": "1da83e7330a6b7073a517438700c075e243f7208b0947b0563dc28fe2bcd4c92",
-      "afterSha256": "716d46a6b95a14ceb1908b3a82661249873b8815452918c6a2a67d124398f01b",
+      "beforeSha256": "0730c64fd4073d5eb756348041d9e933d178710d99724802a603f0f872a93912",
+      "afterSha256": "3da828c5e71904d01ecb27a2c41b8267bb3ca3470dc2a4dc4caa741d901a3d6c",
       "edits": [
         {
           "before": "function renderReading(){\r\n  renderActivityTrend(\"readingActivityTrend\",\"reading\");",

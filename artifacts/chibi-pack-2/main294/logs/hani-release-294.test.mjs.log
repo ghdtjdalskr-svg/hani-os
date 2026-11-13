@@ -1,0 +1,22 @@
+TAP version 13
+# Subtest: 294 version/history exact inverse independently matches deployed bytes and every unchanged inner pin
+ok 1 - 294 version/history exact inverse independently matches deployed bytes and every unchanged inner pin
+  ---
+  duration_ms: 215.3735
+  type: 'test'
+  ...
+# Subtest: 294 CSS feature boundary, raw171 -> main293 168 -> frozen289 164 closure, and root JSON preservation
+ok 2 - 294 CSS feature boundary, raw171 -> main293 168 -> frozen289 164 closure, and root JSON preservation
+  ---
+  duration_ms: 348.472
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 588.5005

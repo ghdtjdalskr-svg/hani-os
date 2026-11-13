@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: phone head touching floor top gets a legal adjacent pill and keeps its slot
+ok 1 - phone head touching floor top gets a legal adjacent pill and keeps its slot
+  ---
+  duration_ms: 1.9279
+  type: 'test'
+  ...
+# Subtest: top-edge pill can go below when both sides are blocked
+ok 2 - top-edge pill can go below when both sides are blocked
+  ---
+  duration_ms: 0.4019
+  type: 'test'
+  ...
+# Subtest: a wide top-edge guest pill uses a legal side lane beyond the old centre search bound
+ok 3 - a wide top-edge guest pill uses a legal side lane beyond the old centre search bound
+  ---
+  duration_ms: 0.2647
+  type: 'test'
+  ...
+# Subtest: wider top-edge allowance rejects a pill nearer a neighbour and still prioritizes dialogue
+ok 4 - wider top-edge allowance rejects a pill nearer a neighbour and still prioritizes dialogue
+  ---
+  duration_ms: 0.6808
+  type: 'test'
+  ...
+# Subtest: ordinary actors keep head reach; top-edge fully blocked space uses a dot
+ok 5 - ordinary actors keep head reach; top-edge fully blocked space uses a dot
+  ---
+  duration_ms: 2.9911
+  type: 'test'
+  ...
+# Subtest: a legal empty side lane belonging to the neighbour cannot receive the top actor pill
+ok 6 - a legal empty side lane belonging to the neighbour cannot receive the top actor pill
+  ---
+  duration_ms: 8.6661
+  type: 'test'
+  ...
+# Subtest: browser distant check accepts only the top-edge nearest-sprite exception, never an ordinary actor or dot
+ok 7 - browser distant check accepts only the top-edge nearest-sprite exception, never an ordinary actor or dot
+  ---
+  duration_ms: 3.7358
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 74.3676

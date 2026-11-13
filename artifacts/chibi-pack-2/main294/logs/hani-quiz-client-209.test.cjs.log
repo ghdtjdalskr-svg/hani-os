@@ -1,0 +1,61 @@
+node.exe : (node:34992) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any ti
+me
+At C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\ch2\artifacts\chibi-pack-2\rebase294-run.ps1:29 char:9
++         & node @testArgs *> $logPath
++         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ((node:34992) Ex...nge at any time:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+(Use `node --trace-warnings ...` to show where the warning was created)
+TAP version 13
+# Subtest: client basic detection and quota match server; explicit advanced and unrelated levels remain unchanged
+ok 1 - client basic detection and quota match server; explicit advanced and unrelated levels remain unchanged
+  ---
+  duration_ms: 36.7311
+  type: 'test'
+  ...
+# Subtest: actual client and server accept basic 20 with five news and fifteen concepts without writes
+ok 2 - actual client and server accept basic 20 with five news and fifteen concepts without writes
+  ---
+  duration_ms: 30.6031
+  type: 'test'
+  ...
+# Subtest: supported smaller basic sets use rounded-down news and rounded-up core coverage
+ok 3 - supported smaller basic sets use rounded-down news and rounded-up core coverage
+  ---
+  duration_ms: 19.3457
+  type: 'test'
+  ...
+# Subtest: actual client/server advanced quota stays seven; five news still fail
+ok 4 - actual client/server advanced quota stays seven; five news still fail
+  ---
+  duration_ms: 25.5676
+  type: 'test'
+  ...
+# Subtest: partial retry preserves basic level and caps one-question request at zero news
+ok 5 - partial retry preserves basic level and caps one-question request at zero news
+  ---
+  duration_ms: 10.6714
+  type: 'test'
+  ...
+# Subtest: basic excess-news responses cannot fill the set, including fallback; state stays intact
+ok 6 - basic excess-news responses cannot fill the set, including fallback; state stays intact
+  ---
+  duration_ms: 5.0632
+  type: 'test'
+  ...
+# Subtest: no sources warn before generation, JLPT still works; guide reflects basic versus other levels
+ok 7 - no sources warn before generation, JLPT still works; guide reflects basic versus other levels
+  ---
+  duration_ms: 31.8071
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 187.8444

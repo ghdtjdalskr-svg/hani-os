@@ -1,0 +1,106 @@
+{
+  "base": "cb119351ff7b0a01b77fdc04d6f0b1ba0c2b54dc",
+  "gitCommands": 0,
+  "edgeLaunches": 0,
+  "runtime": [
+    {
+      "file": "hani-main.js",
+      "sha256": "3da828c5e71904d01ecb27a2c41b8267bb3ca3470dc2a4dc4caa741d901a3d6c",
+      "unchanged": true
+    },
+    {
+      "file": "hani-study-v02984.js",
+      "sha256": "648bd9b7ee443a492d05a25205006dc99bed73806e53309e361b9b9c93e2acff",
+      "unchanged": true
+    },
+    {
+      "file": "hani-street-journal.css",
+      "sha256": "0710d461eacfeab9d62d89d2effa6644602bd4376b2765de2cce7b02c5077b17",
+      "unchanged": true
+    },
+    {
+      "file": "assets/street-journal/chibi-sheet-v2.webp",
+      "sha256": "ec6e810334fcb96f91c3fa0c42c2da54c46316f852e655a2d7e25466e6dd8ecb",
+      "unchanged": true
+    },
+    {
+      "file": "index.html",
+      "sha256": "63ee4c3ad3891ff6c1baa4148e1b37cbc305fd3fabc74a53b0f373454a0ffd20",
+      "unchanged": true
+    },
+    {
+      "file": "hani-design-system.css",
+      "sha256": "38e127ac1cb59fca96575a65d2ebe64004ffd4c33c0696858da2cfdf7db2205c",
+      "unchanged": true
+    },
+    {
+      "file": "hani-theme-collections.json",
+      "sha256": "1e7797401b2d5bc6c60cdd0e0cf88de00e0368378ce491863b947e1312901061",
+      "unchanged": true
+    },
+    {
+      "file": "assets/theme-collections/collections.json",
+      "sha256": "d12ce25ee16ecf92ab562eb548e2d6624a284de224e610702b7d24b68e07ceb9",
+      "unchanged": true
+    },
+    {
+      "file": "assets/data/hani-history-releases-v1.json",
+      "sha256": "7a0bc180f87bb54a07984ee11f8a4a58941627d30ab7fd6792afbd1b1a88e141",
+      "unchanged": true
+    }
+  ],
+  "sourceBaseline": {
+    "displayVersion": "2.9.294",
+    "lastUI": "./hani-ui-v02992.js?v=2.9.294",
+    "lastScript": "./hani-launch-greeting.js",
+    "liveReadBack": "NOT RUN"
+  },
+  "frozenFixtures": {
+    "checked": 111,
+    "changed": 0
+  },
+  "chibi2EditsUnchanged": true,
+  "mainAdaptersMatchAfterRemovingOnlyChibi2Preload": true,
+  "browserFixture": [
+    {
+      "name": "quiz-correct",
+      "correct": 5,
+      "questions": 5,
+      "details": true
+    },
+    {
+      "name": "quiz-wrong",
+      "correct": 4,
+      "questions": 5,
+      "details": true
+    }
+  ],
+  "browser": {
+    "scriptUnchanged": true,
+    "cases": 6,
+    "widths": [
+      1440,
+      390
+    ],
+    "plannedScreenshots": 12,
+    "actualScreenshots": 0,
+    "actualUI": "NOT RUN: Edge delegated to Seoyun",
+    "normalizerAndQuizOwnerVM": "PASS"
+  },
+  "runtimeSyntax": "PASS",
+  "currentBothSidesPreserved": true,
+  "filePreservation": {
+    "checkedOriginals": 2085,
+    "changed": [
+      "artifacts/chibi-pack-2/REPORT.md",
+      "docs/development-history/CURRENT.md",
+      "scripts/fixtures/chibi-pack-2-delta.json",
+      "scripts/hani-chibi-pack-1-source.cjs",
+      "scripts/hani-chibi-pack-2-source.cjs",
+      "scripts/hani-theme-thaw-source.cjs"
+    ],
+    "deleted": [],
+    "existingTestsUnchanged": 287,
+    "outOfScopeChanges": 0
+  }
+}

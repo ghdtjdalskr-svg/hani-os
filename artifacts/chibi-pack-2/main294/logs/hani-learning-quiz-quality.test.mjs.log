@@ -1,0 +1,97 @@
+node.exe : (node:15392) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any ti
+me
+At C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\ch2\artifacts\chibi-pack-2\rebase294-run.ps1:29 char:9
++         & node @testArgs *> $logPath
++         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ((node:15392) Ex...nge at any time:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+(Use `node --trace-warnings ...` to show where the warning was created)
+TAP version 13
+# Subtest: economy builder includes Serin gloss, premise, misconceptions and tempting-wrong-option explanation
+ok 1 - economy builder includes Serin gloss, premise, misconceptions and tempting-wrong-option explanation
+  ---
+  duration_ms: 0.7941
+  type: 'test'
+  ...
+# Subtest: basic project detection works with current client name/goal/focus fields and explicit level
+ok 2 - basic project detection works with current client name/goal/focus fields and explicit level
+  ---
+  duration_ms: 0.3067
+  type: 'test'
+  ...
+# Subtest: basic quotas clamp legacy client minima and reserve a third for all six core concept groups
+ok 3 - basic quotas clamp legacy client minima and reserve a third for all six core concept groups
+  ---
+  duration_ms: 0.6289
+  type: 'test'
+  ...
+# Subtest: no-source and retry prompts retain fallback and add basic core coverage without current-news invention
+ok 4 - no-source and retry prompts retain fallback and add basic core coverage without current-news invention
+  ---
+  duration_ms: 0.0789
+  type: 'test'
+  ...
+# Subtest: macro sources at seven days are preferred to dated older indicators without mutating archive input
+ok 5 - macro sources at seven days are preferred to dated older indicators without mutating archive input
+  ---
+  duration_ms: 1.2875
+  type: 'test'
+  ...
+# Subtest: diagnostics and actual news count accept whitespace/newline variations for articles and briefings
+ok 6 - diagnostics and actual news count accept whitespace/newline variations for articles and briefings
+  ---
+  duration_ms: 0.8932
+  type: 'test'
+  ...
+# Subtest: incorrect dates, text, source identity, URLs and briefing labels are still rejected
+ok 7 - incorrect dates, text, source identity, URLs and briefing labels are still rejected
+  ---
+  duration_ms: 0.8972
+  type: 'test'
+  ...
+# Subtest: canonical context tolerates formatting, preserves question focus and never repairs a mismatched source
+ok 8 - canonical context tolerates formatting, preserves question focus and never repairs a mismatched source
+  ---
+  duration_ms: 0.4054
+  type: 'test'
+  ...
+# Subtest: canonical context keeps the news summary to a full sentence and stays inside the prompt limit
+ok 9 - canonical context keeps the news summary to a full sentence and stays inside the prompt limit
+  ---
+  duration_ms: 0.4915
+  type: 'test'
+  ...
+# Subtest: actual server accepts five formatted news questions for basic twenty-question set instead of returning 502
+ok 10 - actual server accepts five formatted news questions for basic twenty-question set instead of returning 502
+  ---
+  duration_ms: 8.7783
+  type: 'test'
+  ...
+# Subtest: actual server keeps non-basic news minimum and rejects missing dates with useful diagnostics
+ok 11 - actual server keeps non-basic news minimum and rejects missing dates with useful diagnostics
+  ---
+  duration_ms: 2.7801
+  type: 'test'
+  ...
+# Subtest: actual server filters sources past 21 days/future and sends recent macro first with dated older fallback
+ok 12 - actual server filters sources past 21 days/future and sends recent macro first with dated older fallback
+  ---
+  duration_ms: 2.708
+  type: 'test'
+  ...
+# Subtest: older macro fallback requires its explicit reference date even with whitespace variations
+ok 13 - older macro fallback requires its explicit reference date even with whitespace variations
+  ---
+  duration_ms: 0.1588
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 66.2411
