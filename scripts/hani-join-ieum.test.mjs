@@ -1,4 +1,6 @@
 // Raw runtime integration: no preservation projection or user data.
+// Preserve raw Ieum integration; remove only the unrelated exact chibi delta.
+import './hani-chibi-pack-1-preload.cjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

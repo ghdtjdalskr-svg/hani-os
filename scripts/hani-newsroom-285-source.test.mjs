@@ -1,3 +1,4 @@
+import './hani-chibi-pack-1-preload.cjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import inverse from './hani-newsroom-285-source.cjs';

@@ -50,6 +50,8 @@ function restoreVersionLayer(source,file,version){
  assert.equal(hash(before),row.before,'exact release-'+number(layer.from)+' output '+file);
  return before;
 }
+// 293 version/history -> frozen chibi -> 292 version/office -> 291 contrast
+// -> 290 Ieum -> frozen 289/288. Each step retains full input/output pins.
 // Newest exact version bytes precede their feature inverse. The 289 adapter
 // first removes 290 + Ieum, then reaches the unchanged 289/288 contracts.
 // Unknown input remains for strict callers to reject.
