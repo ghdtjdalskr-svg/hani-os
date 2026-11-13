@@ -6,6 +6,11 @@
       "n": 10,
       "misses": []
     },
+    "4f:ieum": {
+      "ok": 10,
+      "n": 10,
+      "misses": []
+    },
     "4f:gaeun": {
       "ok": 10,
       "n": 10,
@@ -36,12 +41,7 @@
       "n": 10,
       "misses": []
     },
-    "5f:seoyun": {
-      "ok": 10,
-      "n": 10,
-      "misses": []
-    },
-    "5f:yuri": {
+    "5f:yuna": {
       "ok": 10,
       "n": 10,
       "misses": []

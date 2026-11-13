@@ -8,6 +8,12 @@ import http from 'node:http';
 import path from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {fixture} from './hani-building-206-engine.test.mjs';
+import releases from './hani-release-version-layers.cjs';
+import tapBubble from './hani-office-tap-bubble-source.cjs';
+// The shared office fixture reads legacy-projected bytes (pre-Ieum, pre-fix).
+// Re-apply only this exact fix pair so the unit runs the fixed observer callback.
+const withFix=source=>{assert.equal(source.split(tapBubble.delta.before).length-1,1,'one legacy observer line');return source.replace(tapBubble.delta.before,()=>tapBubble.delta.after)};
+const readRaw=releases.readRawFileSync;
 
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const flush=async()=>{for(let i=0;i<20;i++)await Promise.resolve()};
@@ -17,7 +23,7 @@ async function mounted(){
   const f=fixture('10:00',false,null,null,{
     IntersectionObserver:class{constructor(fn){intersection=fn}observe(){}},
     setTimeout(fn,ms){const id=++next;pending.set(id,{fn,ms});return id},clearTimeout(id){pending.delete(id)}
-  });
+  },withFix);
   f.ids.set('app',{classList:{contains:()=>false}});
   await flush();assert.equal(typeof intersection,'function','map visibility observer is registered');
   const panel=f.root.querySelector('.hani-office-character-bubble');
@@ -51,7 +57,7 @@ const RUNS=10,FLOORS=[['4f',['hani','ieum']],['3f',[]],['2f',[]],['5f',[]]],EXTR
 
 test('real browser: each tapped staff bubble shows 10/10 after a floor switch',{skip:browserReady?false:'Playwright/Edge not found',timeout:900000},async()=>{
   const {chromium}=await import(pathToFileURL(runtime).href);
-  const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+decodeURIComponent(new URL(req.url,'http://local').pathname.replace(/^\/$/,'/index.html')));if(!file.startsWith(root+path.sep)||!fs.existsSync(file)||!fs.statSync(file).isFile()){res.writeHead(404).end();return}res.setHeader('Content-Type',({'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css','.json':'application/json','.webp':'image/webp','.png':'image/png'})[path.extname(file)]||'application/octet-stream');res.end(fs.readFileSync(file))});
+  const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+decodeURIComponent(new URL(req.url,'http://local').pathname.replace(/^\/$/,'/index.html')));if(!file.startsWith(root+path.sep)||!fs.existsSync(file)||!fs.statSync(file).isFile()){res.writeHead(404).end();return}res.setHeader('Content-Type',({'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css','.json':'application/json','.webp':'image/webp','.png':'image/png'})[path.extname(file)]||'application/octet-stream');res.end(readRaw(file))});
   await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin='http://127.0.0.1:'+server.address().port;
   const browser=await chromium.launch({headless:true,executablePath:edge});
   const tally={},errors=[],writes=[];
