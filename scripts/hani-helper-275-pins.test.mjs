@@ -2,11 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
-import {execFileSync} from 'node:child_process';
+import repository from './hani-test-repository-evidence.cjs';
+import legacy from './hani-stale39-source.cjs';
 import {helper275Delta as delta,restoreHelper275Source} from './hani-helper-275-source.mjs';
 import {affinity274Delta,restoreAffinity274Source} from './hani-office-affinity-274-source.mjs';
 import {normalizeReleaseVersion} from './hani-reviewed-release-baseline.mjs';
-const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
+const read=f=>legacy.project(fs.readFileSync(new URL('../'+f,import.meta.url),'utf8'),f,'helper275');
 const hash=x=>createHash('sha256').update(x).digest('hex');
 test('275 exact complete ordered disjoint pairs reject missing, duplicate and unlisted bytes',()=>{
  assert.equal(delta.version,'2.9.275');
@@ -48,8 +49,8 @@ test('275 index/main retain fixed 507c344 bytes allowing only canonical release 
 test('275 fixed Git base independently proves complete UI/CSS diffs and unchanged release owners',()=>{
  const opts={cwd:new URL('../',import.meta.url),encoding:'utf8',maxBuffer:32*1024*1024};
  for(const row of delta.files){
-  const before=execFileSync('git',['show',delta.baseCommit+':'+row.file],opts);assert.equal(hash(before),row.beforeSha256);assert.equal(restoreHelper275Source(read(row.file),row.file),before);
+  const before=repository.read(delta.baseCommit,row.file);assert.equal(hash(before),row.beforeSha256);assert.equal(restoreHelper275Source(read(row.file),row.file),before);
   let forward=before;for(const r of row.replacements){assert.equal(forward.split(r.before).length-1,1);forward=forward.replace(r.before,()=>r.after);}assert.equal(forward,read(row.file));
  }
- for(const row of delta.unchangedRuntime){const before=execFileSync('git',['show',delta.baseCommit+':'+row.file],opts);assert.equal(hash(before),row.sha256);assert.equal(normalizeReleaseVersion(read(row.file),'2.9.274'),normalizeReleaseVersion(before,'2.9.274'));}
+ for(const row of delta.unchangedRuntime){const before=repository.read(delta.baseCommit,row.file);assert.equal(hash(before),row.sha256);assert.equal(normalizeReleaseVersion(read(row.file),'2.9.274'),normalizeReleaseVersion(before,'2.9.274'));}
 });

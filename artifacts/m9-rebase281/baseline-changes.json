@@ -1,0 +1,122 @@
+[
+  {
+    "layer": "polish",
+    "file": "hani-character-archive.js",
+    "oldBefore": "11e9fe7d32a5f95e1527d9612dad8af0cc48ce64fa97005452e01415d22f6400",
+    "newBefore": "11e9fe7d32a5f95e1527d9612dad8af0cc48ce64fa97005452e01415d22f6400",
+    "oldAfter": "f2be5380d4dbf9c24438cb29a5f255c0deeab8bc7aa3c4a9bee754a9208e1977",
+    "newAfter": "f2be5380d4dbf9c24438cb29a5f255c0deeab8bc7aa3c4a9bee754a9208e1977"
+  },
+  {
+    "layer": "polish",
+    "file": "hani-organization-hub.js",
+    "oldBefore": "b069a059ad8d3cb5db7d052a0ae7058956ebd67a1dbf1e7a9ec193ec970e93db",
+    "newBefore": "b069a059ad8d3cb5db7d052a0ae7058956ebd67a1dbf1e7a9ec193ec970e93db",
+    "oldAfter": "44f81ffcd628abfa4560c7cb26957d1667793a509e7964bb5110e2029f9033ac",
+    "newAfter": "44f81ffcd628abfa4560c7cb26957d1667793a509e7964bb5110e2029f9033ac"
+  },
+  {
+    "layer": "polish",
+    "file": "hani-character-archive.css",
+    "oldBefore": "c2b9282afdabe46135378d48560fd8fb7a4ee1dba09bfa7d174a5fef2ccccd8a",
+    "newBefore": "c2b9282afdabe46135378d48560fd8fb7a4ee1dba09bfa7d174a5fef2ccccd8a",
+    "oldAfter": "df18535bcb3cdb2f58eae54f1b694978fc99a2c29a1fc225a5f9a3994f9a23d2",
+    "newAfter": "df18535bcb3cdb2f58eae54f1b694978fc99a2c29a1fc225a5f9a3994f9a23d2"
+  },
+  {
+    "layer": "link",
+    "file": "hani-ilbo.js",
+    "oldBefore": "0c0f6285854c785173825de7cedc7444d62e08b6b7988b171600f558f7be9d38",
+    "newBefore": "0c0f6285854c785173825de7cedc7444d62e08b6b7988b171600f558f7be9d38",
+    "oldAfter": "7133e79d6e4bca0afa010a3074ca2db04116bd541ed6e97c409c1497a44d8ba0",
+    "newAfter": "7133e79d6e4bca0afa010a3074ca2db04116bd541ed6e97c409c1497a44d8ba0"
+  },
+  {
+    "layer": "link",
+    "file": "hani-ilbo.css",
+    "oldBefore": "4e3074d1fa1fcc2debad6ccbd78801a55d967cd131f8b12f28da05338ce61598",
+    "newBefore": "4e3074d1fa1fcc2debad6ccbd78801a55d967cd131f8b12f28da05338ce61598",
+    "oldAfter": "da66929ada85f3054d99d7b7f478f91b817219bf99a7336e274b1f083fcdafb5",
+    "newAfter": "da66929ada85f3054d99d7b7f478f91b817219bf99a7336e274b1f083fcdafb5"
+  },
+  {
+    "layer": "link",
+    "file": "hani-character-archive.js",
+    "oldBefore": "c733f76d845caa38c71358b1056fac3a932bf505de99e350d1eb49f13081d370",
+    "newBefore": "c733f76d845caa38c71358b1056fac3a932bf505de99e350d1eb49f13081d370",
+    "oldAfter": "11e9fe7d32a5f95e1527d9612dad8af0cc48ce64fa97005452e01415d22f6400",
+    "newAfter": "11e9fe7d32a5f95e1527d9612dad8af0cc48ce64fa97005452e01415d22f6400"
+  },
+  {
+    "layer": "link",
+    "file": "hani-organization-hub.js",
+    "oldBefore": "c2cd9d329789bcae2d57b23d54638c1bb0770b56cd4a7a1ef14ae6b2061f5e70",
+    "newBefore": "c2cd9d329789bcae2d57b23d54638c1bb0770b56cd4a7a1ef14ae6b2061f5e70",
+    "oldAfter": "b069a059ad8d3cb5db7d052a0ae7058956ebd67a1dbf1e7a9ec193ec970e93db",
+    "newAfter": "b069a059ad8d3cb5db7d052a0ae7058956ebd67a1dbf1e7a9ec193ec970e93db"
+  },
+  {
+    "layer": "link",
+    "file": "hani-organization-hub.css",
+    "oldBefore": "cb7821ba3d0b89360cb990fe964d0c454705108a7de020305ac4c45292026182",
+    "newBefore": "cb7821ba3d0b89360cb990fe964d0c454705108a7de020305ac4c45292026182",
+    "oldAfter": "a33af6a6a113c4b7ddfe37961ee5255a7271618df349d739fa652115b3afc185",
+    "newAfter": "a33af6a6a113c4b7ddfe37961ee5255a7271618df349d739fa652115b3afc185"
+  },
+  {
+    "layer": "link",
+    "file": "data/hani-ilbo/issues.json",
+    "oldBefore": "e58ed1e34d4808779ee6ed9dc4d1cd0955133ff6c6c3554f04e287fcda5e80bc",
+    "newBefore": "e58ed1e34d4808779ee6ed9dc4d1cd0955133ff6c6c3554f04e287fcda5e80bc",
+    "oldAfter": "1721e1bc5fd0660aa20e3a5570b0ed5b75bf667159417854e115539209d3c304",
+    "newAfter": "1721e1bc5fd0660aa20e3a5570b0ed5b75bf667159417854e115539209d3c304"
+  },
+  {
+    "layer": "seoyun",
+    "file": "hani-character-archive.js",
+    "oldBefore": "2be502120f48931ddd08dd6874b9bb23216c70a822f734a94af399fa69e5e4ed",
+    "newBefore": "2be502120f48931ddd08dd6874b9bb23216c70a822f734a94af399fa69e5e4ed",
+    "oldAfter": "c733f76d845caa38c71358b1056fac3a932bf505de99e350d1eb49f13081d370",
+    "newAfter": "c733f76d845caa38c71358b1056fac3a932bf505de99e350d1eb49f13081d370"
+  },
+  {
+    "layer": "seoyun",
+    "file": "hani-organization-hub.js",
+    "oldBefore": "15405b43ae95c1935640c5413e8875398a4f0f7addbb21ed2dd441cd59f2426f",
+    "newBefore": "15405b43ae95c1935640c5413e8875398a4f0f7addbb21ed2dd441cd59f2426f",
+    "oldAfter": "c2cd9d329789bcae2d57b23d54638c1bb0770b56cd4a7a1ef14ae6b2061f5e70",
+    "newAfter": "c2cd9d329789bcae2d57b23d54638c1bb0770b56cd4a7a1ef14ae6b2061f5e70"
+  },
+  {
+    "layer": "seoyun",
+    "file": "hani-office-live.js",
+    "oldBefore": "6085c14f506f8cba92470409e97d19889646d748f71752b6abb0ba4a5975480c",
+    "newBefore": "a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673",
+    "oldAfter": "880f8bef93ea20fbcb4bcf7cf5205d72c9e62c40b09d56606ab47f13b84826cb",
+    "newAfter": "8d2db07921446cca8a234acfff4f026a2d44f0fdb2dedcea241dba6f462cd54e"
+  },
+  {
+    "layer": "artifacts/seoyun-m9/originals.json",
+    "file": "hani-main.js",
+    "oldBefore": "c0ae237d62e2adb2b2749f177fdc915985214b3c34b25362004a18a911125ae3",
+    "newBefore": "dc6179502d75971335ef273dc3656e97757daace14ac0df70b4a73c7efa671d9"
+  },
+  {
+    "layer": "artifacts/seoyun-m9/originals.json",
+    "file": "index.html",
+    "oldBefore": "42df58715adf49c00c1319acd43698bda5bdcc77c0d819bb41fa13bea7f6a889",
+    "newBefore": "7026bb911aa9d39f45bb54311b1f2dd0793d89764382daa90f8045065ea357b5"
+  },
+  {
+    "layer": "artifacts/m9-link/preservation-baseline.json",
+    "file": "hani-main.js",
+    "oldBefore": "c0ae237d62e2adb2b2749f177fdc915985214b3c34b25362004a18a911125ae3",
+    "newBefore": "dc6179502d75971335ef273dc3656e97757daace14ac0df70b4a73c7efa671d9"
+  },
+  {
+    "layer": "artifacts/m9-link/preservation-baseline.json",
+    "file": "index.html",
+    "oldBefore": "42df58715adf49c00c1319acd43698bda5bdcc77c0d819bb41fa13bea7f6a889",
+    "newBefore": "7026bb911aa9d39f45bb54311b1f2dd0793d89764382daa90f8045065ea357b5"
+  }
+]

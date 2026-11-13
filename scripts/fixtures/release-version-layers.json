@@ -1,0 +1,344 @@
+{
+  "schema": 1,
+  "layers": [
+    {
+      "from": "2.9.292",
+      "to": "2.9.293",
+      "files": {
+        "index.html": {
+          "count": 60,
+          "after": "73d7844a2e28fe00091111d801e6f5df294dbb637760e3e4855a543848869d79",
+          "before": "1970db3ec39c1f075c14eb0d74884f150ab7268d3c9655cd0e28c4a9d0a47f0e"
+        },
+        "hani-main.js": {
+          "count": 1,
+          "after": "1da83e7330a6b7073a517438700c075e243f7208b0947b0563dc28fe2bcd4c92",
+          "before": "87e22f5d179e1561e59f632c6d8ccfb7e2fcef3e4d13b13e613ddb59b963373d"
+        },
+        "assets/data/hani-history-releases-v1.json": {
+          "count": 2,
+          "after": "8a2b67957d6112182c4878d30284c9f0d1e9b50039f7a1ddf4d23a160b08f0dc",
+          "before": "13cf49ad70c305870532d9d185af80e6e545a963bb6d6f2789b48a552eea6730",
+          "replacements": [
+            {
+              "after": "  \"entries\": [\n    {\n      \"id\": \"v2.9.293\",\n      \"date\": \"2026-11-13\",\n      \"status\": \"released\",\n      \"title\": \"빈 화면에 하니 치비 그림 1탄\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.293 빈 화면에 하니 치비 그림 1탄\"\n      }\n    },\n",
+              "before": "  \"entries\": [\n"
+            },
+            {
+              "after": "\"commit\": \"99bedbe2d694f3c81fd33e9d1540eb38cc57957c\",\n        \"subject\": \"release: v2.9.292 사무실 직원 탭 말풍선 수정 (#499)\"",
+              "before": "\"commit\": \"\",\n        \"subject\": \"release: v2.9.292 사무실 직원 탭 말풍선 수정\""
+            }
+          ]
+        }
+      },
+      "feature": {
+        "module": "./hani-chibi-pack-1-source.cjs",
+        "fixture": "./fixtures/chibi-pack-1-main292-delta.json",
+        "restore": "restoreChibiPack1Source"
+      }
+    },
+    {
+      "from": "2.9.291",
+      "to": "2.9.292",
+      "files": {
+        "index.html": {
+          "count": 60,
+          "after": "1970db3ec39c1f075c14eb0d74884f150ab7268d3c9655cd0e28c4a9d0a47f0e",
+          "before": "4f688c28f5d2112b3da9da9541c1d36c686cebbef8a703c346f86511ef57f774"
+        },
+        "hani-main.js": {
+          "count": 1,
+          "after": "80d95272189f7aafc2c23c24b9532139e71c6294248a94e487d50ab8f0a36d0d",
+          "before": "ca886c8dd080935bc238917e9bafcf8a3e652b4fc5c782c99405d11b98a97ba6"
+        },
+        "assets/data/hani-history-releases-v1.json": {
+          "count": 2,
+          "after": "13cf49ad70c305870532d9d185af80e6e545a963bb6d6f2789b48a552eea6730",
+          "before": "5af30e0f92c68935306266bbfbeffbeca4a1001164e7a56ecef45b2e7c7f4d11",
+          "replacements": [
+            {
+              "before": "  \"entries\": [\n    {\n      \"id\": \"v2.9.291\",\n      \"date\": \"2026-11-13\",\n",
+              "after": "  \"entries\": [\n    {\n      \"id\": \"v2.9.292\",\n      \"date\": \"2026-11-13\",\n      \"status\": \"released\",\n      \"title\": \"사무실 직원을 눌러도 말풍선이 가끔 안 뜨던 문제 수정\",\n      \"category\": \"화면·기능\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.292 사무실 직원 탭 말풍선 수정\"\n      }\n    },\n    {\n      \"id\": \"v2.9.291\",\n      \"date\": \"2026-11-13\",\n"
+            },
+            {
+              "before": "      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.291 어두운 테마 글자색 잘 보이게 수정\"\n      }\n    },\n",
+              "after": "      \"credits\": [],\n      \"source\": {\n        \"commit\": \"55942f120fc06a87649009c21776a572fb8081e6\",\n        \"subject\": \"release: v2.9.291 (#497)\"\n      }\n    },\n"
+            }
+          ]
+        }
+      },
+      "feature": {
+        "module": "./hani-release-292-source.cjs",
+        "fixture": "./fixtures/release-292-delta.json",
+        "restore": "restore"
+      }
+    },
+    {
+      "from": "2.9.290",
+      "to": "2.9.291",
+      "files": {
+        "index.html": {
+          "count": 60,
+          "after": "4f688c28f5d2112b3da9da9541c1d36c686cebbef8a703c346f86511ef57f774",
+          "before": "f243ba2c64f97ab961e7abd9321dde2ee682ea36315368f90d85f648370d40b0"
+        },
+        "hani-main.js": {
+          "count": 1,
+          "after": "ca886c8dd080935bc238917e9bafcf8a3e652b4fc5c782c99405d11b98a97ba6",
+          "before": "b28b57d2356a636073183eb61c172537913702779d6d4230e1280ca2fa108009"
+        },
+        "assets/data/hani-history-releases-v1.json": {
+          "count": 1,
+          "after": "5af30e0f92c68935306266bbfbeffbeca4a1001164e7a56ecef45b2e7c7f4d11",
+          "before": "d0b200f010d879f1ef58bebe333760c6edffcbac501e88b12dd90c028b3ccc72",
+          "replacements": [
+            {
+              "before": "      \"id\": \"v2.9.290\",\n      \"date\": \"2026-11-13\",\n      \"status\": \"released\",\n      \"title\": \"신입 이음 사원 입사\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.290 신입 이음 사원 입사\"\n",
+              "after": "      \"id\": \"v2.9.291\",\n      \"date\": \"2026-11-13\",\n      \"status\": \"released\",\n      \"title\": \"어두운 테마 글자색 잘 보이게 수정\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.291 어두운 테마 글자색 잘 보이게 수정\"\n      }\n    },\n    {\n      \"id\": \"v2.9.290\",\n      \"date\": \"2026-11-13\",\n      \"status\": \"released\",\n      \"title\": \"신입 이음 사원 입사\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"9e3fe97f5e58cb7a5ebc1f5796f6b523d417e5a1\",\n        \"subject\": \"release: v2.9.290 신입 이음 사원 입사 (#492)\"\n"
+            }
+          ]
+        }
+      },
+      "feature": {
+        "module": "./hani-contrast-291-source.cjs",
+        "fixture": "./fixtures/contrast-291-delta.json",
+        "restore": "restore"
+      }
+    },
+    {
+      "from": "2.9.289",
+      "to": "2.9.290",
+      "files": {
+        "index.html": {
+          "count": 60,
+          "after": "f243ba2c64f97ab961e7abd9321dde2ee682ea36315368f90d85f648370d40b0",
+          "before": "1b0c8de6452df6c02578e8619760216c2978a7332c782504368946ef7f1dd719"
+        },
+        "hani-main.js": {
+          "count": 1,
+          "after": "b28b57d2356a636073183eb61c172537913702779d6d4230e1280ca2fa108009",
+          "before": "791d27609d1b227f0efea4e4e15152aa50c268621bd85d2e68acb76715129c0f"
+        },
+        "assets/data/hani-history-releases-v1.json": {
+          "count": 1,
+          "after": "d0b200f010d879f1ef58bebe333760c6edffcbac501e88b12dd90c028b3ccc72",
+          "before": "5eceffd9104bccd581e1c10e02ed5708828384a3db0a18bd5a09d42e75e03fbc",
+          "replacements": [
+            {
+              "after": "    {\n      \"id\": \"v2.9.290\",\n      \"date\": \"2026-11-13\",\n      \"status\": \"released\",\n      \"title\": \"신입 이음 사원 입사\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.290 신입 이음 사원 입사\"\n      }\n    },\n    {\n      \"id\": \"v2.9.289\",\n      \"date\": \"2026-11-12\",\n      \"status\": \"released\",\n      \"title\": \"예산 화면 Codex 보조 칸 정리\",\n      \"category\": \"하니 그룹\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"91d4943d2386a25d7ed49dc56de25c4d1ab5bd8f\",\n        \"subject\": \"release: v2.9.289 예산 화면 Codex 보조 칸 정리 (#487)\"\n      }\n    },\n",
+              "before": "    {\n      \"id\": \"v2.9.289\",\n      \"date\": \"2026-11-12\",\n      \"status\": \"released\",\n      \"title\": \"예산 화면 Codex 보조 칸 정리\",\n      \"category\": \"하니 그룹\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.289 예산 화면 Codex 보조 칸 정리\"\n      }\n    },\n"
+            }
+          ]
+        }
+      },
+      "feature": {
+        "module": "./hani-join-ieum-source.cjs",
+        "fixture": "./fixtures/join-ieum-delta.json",
+        "restore": "restore"
+      }
+    },
+    {
+      "from": "2.9.288",
+      "to": "2.9.289",
+      "files": {
+        "index.html": {
+          "count": 60,
+          "after": "1dcf2866e037ce20d73a7e2f2990b2bd02a079e06f206684834d99d7f468d625",
+          "before": "93bc09ba5d8d168c040e58a6afacd2cf3822c49a98c885e9a908c6959fed68d0"
+        },
+        "hani-main.js": {
+          "count": 1,
+          "after": "f4b9282a03bddce87e39b677fa95a477bbba6b514b4a41c40e21a82f80301812",
+          "before": "541dd283d48e0fbbe1c6906ab997a69105def4079639f10e8b8b75fc9211baa5"
+        },
+        "assets/data/hani-history-releases-v1.json": {
+          "count": 1,
+          "after": "5eceffd9104bccd581e1c10e02ed5708828384a3db0a18bd5a09d42e75e03fbc",
+          "before": "6446f456178734ba4f372acea6710cebed5714c3e2e4a284eef18e30909b35cc",
+          "replacements": [
+            {
+              "after": "9\",\n      \"date\": \"2026-11-12\",\n      \"status\": \"released\",\n      \"title\": \"예산 화면 Codex 보조 칸 정리\",\n      \"category\": \"하니 그룹\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.289 예산 화면 Codex 보조 칸 정리\"\n      }\n    },\n    {\n      \"id\": \"v2.9.288\",\n      \"date\": \"2026-11-12\",\n      \"status\": \"released\",\n      \"title\": \"뉴스룸 4컷 PC 크기와 오른쪽 요약\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"98e21fab1bd0e7838e8245dd36423aca3fdeedd6\",\n        \"subject\": \"release: v2.9.288 뉴스룸 4컷 PC 크기와 오른쪽 요약 (#486)",
+              "before": "8\",\n      \"date\": \"2026-11-12\",\n      \"status\": \"released\",\n      \"title\": \"뉴스룸 4컷 PC 크기와 오른쪽 요약\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.288 뉴스룸 4컷 PC 크기와 오른쪽 요약"
+            }
+          ]
+        }
+      },
+      "feature": {
+        "module": "./hani-budget-289-source.cjs",
+        "fixture": "./fixtures/budget-289-delta.json",
+        "restore": "restoreBudget289Source"
+      }
+    },
+    {
+      "from": "2.9.287",
+      "to": "2.9.288",
+      "files": {
+        "index.html": {
+          "count": 60,
+          "after": "93bc09ba5d8d168c040e58a6afacd2cf3822c49a98c885e9a908c6959fed68d0",
+          "before": "af3a9dcf2b6eafb48b6a3bb698cbff441105227e2546c89060d71decbf8c5a17"
+        },
+        "hani-main.js": {
+          "count": 1,
+          "after": "541dd283d48e0fbbe1c6906ab997a69105def4079639f10e8b8b75fc9211baa5",
+          "before": "abfa747c378aa826be9f286d60482d10dc12acfe5fcbab035122f5a0269d62fd"
+        },
+        "assets/data/hani-history-releases-v1.json": {
+          "count": 1,
+          "after": "6446f456178734ba4f372acea6710cebed5714c3e2e4a284eef18e30909b35cc",
+          "before": "cb3f7452361139780d45671764a2135fb638e42d177c90beb382f5a833c3af26",
+          "replacements": [
+            {
+              "after": "    {\n      \"id\": \"v2.9.288\",\n      \"date\": \"2026-11-12\",\n      \"status\": \"released\",\n      \"title\": \"뉴스룸 4컷 PC 크기와 오른쪽 요약\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.288 뉴스룸 4컷 PC 크기와 오른쪽 요약\"\n      }\n    },\n    {\n      \"id\": \"v2.9.287\",\n      \"date\": \"2026-11-11\",\n      \"status\": \"released\",\n      \"title\": \"다른 창 저장 덮어쓰기 방지\",\n      \"category\": \"기록·보호\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"4086b9d1855e097c8551425e2a78f3f45ab5e598\",\n        \"subject\": \"release: v2.9.287 다른 창 저장 덮어쓰기 방지 (#483)\"\n      }\n    },\n",
+              "before": "    {\n      \"id\": \"v2.9.287\",\n      \"date\": \"2026-11-11\",\n      \"status\": \"released\",\n      \"title\": \"다른 창 저장 덮어쓰기 방지\",\n      \"category\": \"기록·보호\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.287 다른 창 저장 덮어쓰기 방지\"\n      }\n    },\n"
+            }
+          ]
+        }
+      },
+      "feature": {
+        "module": "./hani-newsroom-288-source.cjs",
+        "fixture": "./fixtures/newsroom-288-delta.json",
+        "restore": "restoreNewsroom288Source"
+      }
+    },
+    {
+      "from": "2.9.286",
+      "to": "2.9.287",
+      "files": {
+        "index.html": {
+          "count": 60,
+          "after": "9891fd175fe50b280f921a275ae2c9f17bceeca553ac6f8d8861c3ded7722b62",
+          "before": "fe7d00e8ad34b0095872144c434e6d299df240f6b4e89f46da29ff2bdc59e72c"
+        },
+        "hani-main.js": {
+          "count": 1,
+          "after": "abfa747c378aa826be9f286d60482d10dc12acfe5fcbab035122f5a0269d62fd",
+          "before": "9e672c5d5926c5ea384ede9dab9f4c1e3e3e27a91b0eb2839e0e14b704bded4d"
+        },
+        "assets/data/hani-history-releases-v1.json": {
+          "count": 1,
+          "after": "cb3f7452361139780d45671764a2135fb638e42d177c90beb382f5a833c3af26",
+          "before": "bad8ec62479c9f4d05322c76ec21299d33b7045ebacf0b73e138ee1036d512ff",
+          "replacements": [
+            {
+              "after": "7\",\n      \"date\": \"2026-11-11\",\n      \"status\": \"released\",\n      \"title\": \"다른 창 저장 덮어쓰기 방지\",\n      \"category\": \"기록·보호\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.287 다른 창 저장 덮어쓰기 방지\"\n      }\n    },\n    {\n      \"id\": \"v2.9.286\",\n      \"date\": \"2026-11-09\",\n      \"status\": \"released\",\n      \"title\": \"꼬마 남매 평일 매일 방문\",\n      \"category\": \"하니 그룹\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"5f40eb405cc057a16dc8f30ebc195ff5aed8d77c\",\n        \"subject\": \"release: v2.9.286 꼬마 남매 평일 저녁 방문 (#481)",
+              "before": "6\",\n      \"date\": \"2026-11-09\",\n      \"status\": \"released\",\n      \"title\": \"꼬마 남매 평일 매일 방문\",\n      \"category\": \"하니 그룹\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.286 꼬마 남매 평일 매일 방문"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "from": "2.9.285",
+      "to": "2.9.286",
+      "files": {
+        "index.html": {
+          "count": 60,
+          "after": "fe7d00e8ad34b0095872144c434e6d299df240f6b4e89f46da29ff2bdc59e72c",
+          "before": "78ad579c21526aa39fef2dc89e320b98724d11457b4bc8bb9d413b459b5dd18a"
+        },
+        "hani-main.js": {
+          "count": 1,
+          "after": "8d5e861e7a076b012e8eafc93b94258945659122dac9ec5cb92be687897a8773",
+          "before": "1b245194f5fc6dfc4184e44c187f08b071870efca7989cbf8ed28c94425efbf2"
+        },
+        "assets/data/hani-history-releases-v1.json": {
+          "count": 1,
+          "after": "bad8ec62479c9f4d05322c76ec21299d33b7045ebacf0b73e138ee1036d512ff",
+          "before": "4859f87461dfb78db3f72a1da2fab07d0ba2b95c806dccbc6e685732b2defd01",
+          "replacements": [
+            {
+              "after": "6\",\n      \"date\": \"2026-11-09\",\n      \"status\": \"released\",\n      \"title\": \"꼬마 남매 평일 매일 방문\",\n      \"category\": \"하니 그룹\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.286 꼬마 남매 평일 매일 방문\"\n      }\n    },\n    {\n      \"id\": \"v2.9.285\",\n      \"date\": \"2026-11-09\",\n      \"status\": \"released\",\n      \"title\": \"뉴스룸 4컷 2호와 지난 호 보기\",\n      \"category\": \"뉴스·학습\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"b5f54978226bc209ee60ec7f10cd3d92474bfa05\",\n        \"subject\": \"release: v2.9.285 뉴스룸 4컷 2호와 지난 호 보기 (#477)",
+              "before": "5\",\n      \"date\": \"2026-11-09\",\n      \"status\": \"released\",\n      \"title\": \"뉴스룸 4컷 2호와 지난 호 보기\",\n      \"category\": \"뉴스·학습\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.285 뉴스룸 4컷 2호와 지난 호 보기"
+            }
+          ]
+        }
+      },
+      "feature": {
+        "module": "./hani-office-kids-286-source.cjs",
+        "restore": "restoreKids286Source",
+        "fixture": "./fixtures/office-kids-286-delta.json"
+      }
+    },
+    {
+      "from": "2.9.284",
+      "to": "2.9.285",
+      "files": {
+        "index.html": {
+          "count": 60,
+          "after": "78ad579c21526aa39fef2dc89e320b98724d11457b4bc8bb9d413b459b5dd18a",
+          "before": "02aba01325adb688c61a933740532dad303dc1b3ff1b870a55e44ac26c7561c5"
+        },
+        "hani-main.js": {
+          "count": 1,
+          "after": "1b245194f5fc6dfc4184e44c187f08b071870efca7989cbf8ed28c94425efbf2",
+          "before": "9b9cd783236aaf6d5941a3575ef92cf1e49e0ffd084e5ef54cfa6d4ac5cdf1e9"
+        },
+        "assets/data/hani-history-releases-v1.json": {
+          "count": 1,
+          "after": "4859f87461dfb78db3f72a1da2fab07d0ba2b95c806dccbc6e685732b2defd01",
+          "before": "9534ab3375488f6ddd01d7e2f65b8c68cac8b2f0bf718cdbe78f9965061d00a5",
+          "replacements": [
+            {
+              "after": "5\",\n      \"date\": \"2026-11-09\",\n      \"status\": \"released\",\n      \"title\": \"뉴스룸 4컷 2호와 지난 호 보기\",\n      \"category\": \"뉴스·학습\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.285 뉴스룸 4컷 2호와 지난 호 보기\"\n      }\n    },\n    {\n      \"id\": \"v2.9.284\",\n      \"date\": \"2026-11-08\",\n      \"status\": \"released\",\n      \"title\": \"미룬 일 치비툰\",\n      \"category\": \"생활·공부\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"5c375d970065b1ee44946aa82dcd9c9d27d02d7d\",\n        \"subject\": \"release: v2.9.284 미룬 일 치비툰 (#473)",
+              "before": "4\",\n      \"date\": \"2026-11-08\",\n      \"status\": \"released\",\n      \"title\": \"미룬 일 치비툰\",\n      \"category\": \"생활·공부\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.284 미룬 일 치비툰"
+            }
+          ]
+        }
+      },
+      "feature": {
+        "module": "./hani-newsroom-285-source.cjs",
+        "restore": "restoreNewsroom285Source",
+        "fixture": "./fixtures/newsroom-285-delta.json"
+      }
+    },
+    {
+      "from": "2.9.283",
+      "to": "2.9.284",
+      "files": {
+        "index.html": {
+          "count": 60,
+          "after": "02aba01325adb688c61a933740532dad303dc1b3ff1b870a55e44ac26c7561c5",
+          "before": "15226a2f3e63b350865ef24d296c7ce34a44e36307f17b77449e5cb8494a0c59"
+        },
+        "hani-main.js": {
+          "count": 1,
+          "after": "9b9cd783236aaf6d5941a3575ef92cf1e49e0ffd084e5ef54cfa6d4ac5cdf1e9",
+          "before": "636a4ac932bbbc99960135c2583d2430353b68eed2e13714be916f36e22bdd31"
+        },
+        "assets/data/hani-history-releases-v1.json": {
+          "count": 1,
+          "after": "9534ab3375488f6ddd01d7e2f65b8c68cac8b2f0bf718cdbe78f9965061d00a5",
+          "before": "3765a564fb8e113c516877e345ff9a7c423be7accd51cf3724034cc6b778347c",
+          "replacements": [
+            {
+              "after": "4\",\n      \"date\": \"2026-11-08\",\n      \"status\": \"released\",\n      \"title\": \"미룬 일 치비툰\",\n      \"category\": \"생활·공부\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.284 미룬 일 치비툰\"\n      }\n    },\n    {\n      \"id\": \"v2.9.283\",\n      \"date\": \"2026-11-08\",\n      \"status\": \"released\",\n      \"title\": \"학습 재시도·미룬 일 보드·위시 링크\",\n      \"category\": \"생활·공부\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"a28918df50ba5fef3e7dab498eaa5eec4a27a103\",\n        \"subject\": \"release: v2.9.283 학습 재시도·미룬 일 보드·위시 링크 (#470)",
+              "before": "3\",\n      \"date\": \"2026-11-08\",\n      \"status\": \"released\",\n      \"title\": \"학습 재시도·미룬 일 보드·위시 링크\",\n      \"category\": \"생활·공부\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.283 학습 재시도·미룬 일 보드·위시 링크"
+            }
+          ]
+        }
+      },
+      "feature": {
+        "module": "./hani-pb-chibitoon-source.mjs",
+        "restore": "restoreChibitoonSource",
+        "fixture": "./fixtures/pb-chibitoon-delta.json"
+      }
+    },
+    {
+      "from": "2.9.282",
+      "to": "2.9.283",
+      "files": {
+        "index.html": {
+          "count": 60,
+          "after": "15226a2f3e63b350865ef24d296c7ce34a44e36307f17b77449e5cb8494a0c59",
+          "before": "93f4ad567faa2858a881f33bfd473b5b2be971d97160f4a1aea830e082d4752b"
+        },
+        "hani-main.js": {
+          "count": 1,
+          "after": "636a4ac932bbbc99960135c2583d2430353b68eed2e13714be916f36e22bdd31",
+          "before": "4cab375b51ac3895d6f7e3697dcbeaa17254dcaf8040f1e08b7dfc9fc7c860c1"
+        }
+      }
+    }
+  ]
+}

@@ -1,8 +1,10 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';
+import {readRawLifeFile} from './hani-life-bundle-source.mjs';
+import outer284 from './hani-save-guard-source.cjs';
 import {projectPrePatrolSource} from './hani-office-chairman-patrol-278-source.mjs';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';import {assets}from './hani-office-v2-fixture.mjs';
-import {restoreVisits278Source,projectPreStaffChatSource}from './hani-office-chairman-patrol-278-source.mjs';import {resolveRuntimeClosure}from './hani-runtime-closure.mjs';
+import {restoreVisits278Source,projectPreStaffChatSource}from './hani-office-chairman-patrol-278-source.mjs';import {resolveRuntimeClosure}from './hani-office-kids-pose-b-closure.mjs';
 const {scene,table}=loadScene(),r=scene.residents,day='2026-11-07',plain=x=>JSON.parse(JSON.stringify(x)),options={chairmanPresent:true};
 function frame(sec,staff=scene.snapshot(at(day,sec),options),reduced=false){const now=at(day,sec),existing=r.snapshot(now,staff),states=[...existing,...r.companionSnapshot(now,staff,true,reduced,existing)];return {now,staff,states}}
 const targets=new Set(),visits=[];
@@ -56,6 +58,6 @@ test('moving target cancels speech and retraces the furniture-safe approach; cha
 test('raw runtime preserves timer/listener/storage/cloud counts, all scheduler bytes, CSS/index/main and <=200 closure files',async()=>{
  const source=fs.readFileSync('hani-office-live.js','utf8'),base=restoreVisits278Source(source),count=(s,re)=>[...s.matchAll(re)].length;
  for(const re of [/\bsetInterval\s*\(/g,/\bsetTimeout\s*\(/g,/\baddEventListener\s*\(/g,/\b(?:localStorage|sessionStorage)\b/g,/\bsupabase\b/g])assert.equal(count(source,re),count(base,re));
- const scheduler=s=>{s=projectPreStaffChatSource(s);return s.slice(s.indexOf('  function createScheduler('),s.indexOf('  function snapshot(now=new Date(),options={})'))};assert.equal(scheduler(source),scheduler(base));for(const file of ['hani-office-live.css','index.html','hani-main.js'])assert.deepEqual(file==='hani-office-live.css'?Buffer.from(projectPrePatrolSource(fs.readFileSync(file,'utf8'),file)):fs.readFileSync(file),fs.readFileSync('artifacts/kids-visit/baseline/'+file));
- const read=f=>fs.readFileSync(f),closure=await resolveRuntimeClosure({exists:fs.existsSync,read}),prior=await resolveRuntimeClosure({exists:fs.existsSync,read:f=>f==='hani-office-live.js'?base:read(f)});assert.deepEqual(closure.files,prior.files);assert.deepEqual(closure.missing,[]);assert.ok(closure.files.length<=200);console.log('closure '+closure.files.length);
+ const scheduler=s=>{s=projectPreStaffChatSource(s);return s.slice(s.indexOf('  function createScheduler('),s.indexOf('  function snapshot(now=new Date(),options={})'))};assert.equal(scheduler(source),scheduler(base));for(const file of ['hani-office-live.css','index.html','hani-main.js'])assert.deepEqual(file==='hani-office-live.css'?Buffer.from(projectPrePatrolSource(fs.readFileSync(file,'utf8'),file)):Buffer.from(outer284.projectPreSaveGuard286Source(readRawLifeFile(file).toString('utf8'),file)),fs.readFileSync('artifacts/kids-visit/baseline/'+file));
+ const read=f=>readRawLifeFile(f),closure=await resolveRuntimeClosure({exists:fs.existsSync,read}),prior=await resolveRuntimeClosure({exists:fs.existsSync,read:f=>f==='hani-office-live.js'?base:read(f)});assert.deepEqual(closure.files,prior.files);assert.deepEqual(closure.missing,[]);assert.ok(closure.files.length<=200);console.log('closure '+closure.files.length);
 });

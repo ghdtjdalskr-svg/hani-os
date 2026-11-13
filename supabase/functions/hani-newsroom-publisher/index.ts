@@ -22,6 +22,16 @@ function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json; charset=utf-8" } });
 }
 function cleanText(value: unknown, max = 1000) { return String(value ?? "").trim().slice(0, max); }
+// Comment tone is rendered as a CSS class on the client, so only the generation enum values are archived.
+const NEWS_COMMENT_TONES = ["ANALYSIS","POSITIVE","SKEPTICAL","QUESTION","REACTION","LIGHT","COUNTERPOINT","CHECK","SHORT","PRACTICAL","LIFE","TREND","BANTER","COUNTER","CAUTION"];
+function newsCommentTone(value: unknown) { const tone = cleanText(value, 30).toUpperCase(); return NEWS_COMMENT_TONES.includes(tone) ? tone : ""; }
+// Same server-only owner allowlist policy as hani-learning-quiz / hani-second-opinion.
+function ownerAccess(user: { id?: string } | null, configuredId: string | undefined) {
+  const allowedId = (configuredId || "").trim();
+  if (!allowedId) return { ok: false, status: 503, error: "OWNER_ACCESS_NOT_CONFIGURED" };
+  if (!user?.id || user.id !== allowedId) return { ok: false, status: 403, error: "OWNER_ACCESS_DENIED" };
+  return { ok: true, status: 200, error: "" };
+}
 function asObject(value: unknown): Record<string, any> { return value && typeof value === "object" && !Array.isArray(value) ? value as Record<string, any> : {}; }
 function arr(value: unknown): any[] { return Array.isArray(value) ? value : []; }
 
@@ -180,7 +190,7 @@ async function archiveWeekly(admin:any,userId:string,news:any,anchor=new Date())
 }
 async function archiveInterest(admin:any,userId:string,news:any){
   const rows:any[]=[];
-  for(const eRaw of arr(news?.entities)){const e=asObject(eRaw),ticker=cleanText(e.ticker,40).toUpperCase(),name=cleanText(e.name,120);for(const iRaw of arr(e.news)){const item=asObject(iRaw),title=cleanText(item.title,240);if(!title)continue;const can=canonicalUrl(item.source_url),dateKey=cleanText(item.published_at,64).slice(0,10),fingerprint=await sha256(can||`${ticker||name}|${title.toLowerCase().replace(/\s+/g," ")}|${dateKey}`),dedupe=`interest:${ticker||name}:${fingerprint}`;rows.push({user_id:userId,post_type:"INTEREST",period_key:null,title,entity_name:name,ticker:ticker||null,market:normalizeMarket(e.market),sentiment:["POSITIVE","NEUTRAL","NEGATIVE","MIXED"].includes(String(item.sentiment))?String(item.sentiment):"NEUTRAL",source_grade:["OFFICIAL","MEDIA","BROKER","RUMOR"].includes(String(item.source_grade))?String(item.source_grade):"MEDIA",importance:Math.max(1,Math.min(5,Math.round(Number(item.importance)||1))),event_at:safeIso(item.published_at),published_at:safeIso(item.published_at)||safeIso(news?.generated_at)||new Date().toISOString(),source_name:cleanText(item.source_name,200)||null,source_url:can||null,source_verified:item.source_verified===true&&!!can,summary:cleanText(item.summary,1800),why_it_matters:cleanText(item.why_it_matters,1200),hani_view:cleanText(item.hani_view,1400),comments:arr(item.comments).slice(0,7).map((c:any)=>({agent_key:cleanText(c?.agent_key,30),agent_name:cleanText(c?.agent_name,50),tone:cleanText(c?.tone,30),comment:cleanText(c?.comment,500)})).filter((c:any)=>c.comment),payload:{event_type:cleanText(item.event_type,100),scope:cleanText(item.scope,40),entity_summary:cleanText(e.summary,1200),watch_point:cleanText(e.watch_point,900),issuer_name:cleanText(e.issuer_name,120),issuer_ticker:cleanText(e.issuer_ticker,40),security_type:cleanText(e.security_type,30),signal:cleanText(e.signal,30),model:cleanText(news?.model,80)},dedupe_key:dedupe,updated_at:new Date().toISOString()});}}
+  for(const eRaw of arr(news?.entities)){const e=asObject(eRaw),ticker=cleanText(e.ticker,40).toUpperCase(),name=cleanText(e.name,120);for(const iRaw of arr(e.news)){const item=asObject(iRaw),title=cleanText(item.title,240);if(!title)continue;const can=canonicalUrl(item.source_url),dateKey=cleanText(item.published_at,64).slice(0,10),fingerprint=await sha256(can||`${ticker||name}|${title.toLowerCase().replace(/\s+/g," ")}|${dateKey}`),dedupe=`interest:${ticker||name}:${fingerprint}`;rows.push({user_id:userId,post_type:"INTEREST",period_key:null,title,entity_name:name,ticker:ticker||null,market:normalizeMarket(e.market),sentiment:["POSITIVE","NEUTRAL","NEGATIVE","MIXED"].includes(String(item.sentiment))?String(item.sentiment):"NEUTRAL",source_grade:["OFFICIAL","MEDIA","BROKER","RUMOR"].includes(String(item.source_grade))?String(item.source_grade):"MEDIA",importance:Math.max(1,Math.min(5,Math.round(Number(item.importance)||1))),event_at:safeIso(item.published_at),published_at:safeIso(item.published_at)||safeIso(news?.generated_at)||new Date().toISOString(),source_name:cleanText(item.source_name,200)||null,source_url:can||null,source_verified:item.source_verified===true&&!!can,summary:cleanText(item.summary,1800),why_it_matters:cleanText(item.why_it_matters,1200),hani_view:cleanText(item.hani_view,1400),comments:arr(item.comments).slice(0,7).map((c:any)=>({agent_key:cleanText(c?.agent_key,30),agent_name:cleanText(c?.agent_name,50),tone:newsCommentTone(c?.tone),comment:cleanText(c?.comment,500)})).filter((c:any)=>c.comment),payload:{event_type:cleanText(item.event_type,100),scope:cleanText(item.scope,40),entity_summary:cleanText(e.summary,1200),watch_point:cleanText(e.watch_point,900),issuer_name:cleanText(e.issuer_name,120),issuer_ticker:cleanText(e.issuer_ticker,40),security_type:cleanText(e.security_type,30),signal:cleanText(e.signal,30),model:cleanText(news?.model,80)},dedupe_key:dedupe,updated_at:new Date().toISOString()});}}
   if(!rows.length)return {interest_new:0};
   const {data,error}=await admin.from("hani_newsroom_posts").upsert(rows,{onConflict:"user_id,dedupe_key",ignoreDuplicates:true}).select("id");
   if(error){
@@ -214,6 +224,7 @@ Deno.serve(async(req)=>{
   }
 
   const auth=await getAuthenticatedUser(req,supabaseUrl,publishableKey); if(!auth.user)return json({ok:false,error:"INVALID_SESSION",message:auth.error},401);
+  const access=ownerAccess(auth.user,Deno.env.get("HANI_OWNER_USER_ID")); if(!access.ok)return json({ok:false,error:access.error},access.status);
   if(action==="health"){
     const probe=await admin.from("hani_newsroom_posts").select("id",{count:"exact",head:true}).eq("user_id",auth.user.id);
     return json({

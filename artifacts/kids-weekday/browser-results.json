@@ -1,0 +1,148 @@
+{
+  "result": "pass",
+  "date": "2026-11-08",
+  "source": "local actual office section/runtime/assets, isolated fresh context",
+  "checks": [
+    {
+      "file": "office-1280-2026-01-02-kid-suhyeon-1600.png",
+      "width": 1280,
+      "clock": "2026-01-02T07:00:00.000Z",
+      "overflow": false,
+      "kids": [
+        {
+          "id": "kid-suhyeon",
+          "pose": "seat-b",
+          "facing": "right",
+          "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+          "frame": "33.3333% 71.4286%",
+          "position": [
+            13.648325358851674,
+            21.623804463336874
+          ]
+        }
+      ],
+      "writes": [],
+      "arrivals": [
+        {
+          "id": "kid-suhyeon",
+          "selection": {
+            "speaker": "kid-suhyeon",
+            "line": "…지나가다 들른 거야, 아빠.",
+            "resident": true,
+            "weekdayArrival": true
+          }
+        }
+      ]
+    },
+    {
+      "file": "office-1280-2026-01-06-kid-suyeon-1600.png",
+      "width": 1280,
+      "clock": "2026-01-06T07:00:00.000Z",
+      "overflow": false,
+      "kids": [
+        {
+          "id": "kid-suyeon",
+          "pose": "seat-b",
+          "facing": "right",
+          "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+          "frame": "33.3333% 100%",
+          "position": [
+            16.638755980861244,
+            21.623804463336874
+          ]
+        }
+      ],
+      "writes": [],
+      "arrivals": [
+        {
+          "id": "kid-suyeon",
+          "selection": {
+            "speaker": "kid-suyeon",
+            "line": "아빠아! 오늘은 내가 깜짝 선물이야!",
+            "resident": true,
+            "weekdayArrival": true
+          }
+        }
+      ]
+    },
+    {
+      "file": "office-390-2026-01-02-kid-suhyeon-1600.png",
+      "width": 390,
+      "clock": "2026-01-02T07:00:00.000Z",
+      "overflow": false,
+      "kids": [
+        {
+          "id": "kid-suhyeon",
+          "pose": "seat-b",
+          "facing": "right",
+          "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+          "frame": "33.3333% 71.4286%",
+          "position": [
+            13.648325358851674,
+            21.623804463336874
+          ]
+        }
+      ],
+      "writes": [],
+      "arrivals": [
+        {
+          "id": "kid-suhyeon",
+          "selection": {
+            "speaker": "kid-suhyeon",
+            "line": "…지나가다 들른 거야, 아빠.",
+            "resident": true,
+            "weekdayArrival": true
+          }
+        }
+      ]
+    },
+    {
+      "file": "office-390-2026-01-06-kid-suyeon-1600.png",
+      "width": 390,
+      "clock": "2026-01-06T07:00:00.000Z",
+      "overflow": false,
+      "kids": [
+        {
+          "id": "kid-suyeon",
+          "pose": "seat-b",
+          "facing": "right",
+          "source": "url(\"./assets/office-companions/kids-v2.webp\")",
+          "frame": "33.3333% 100%",
+          "position": [
+            16.638755980861244,
+            21.623804463336874
+          ]
+        }
+      ],
+      "writes": [],
+      "arrivals": [
+        {
+          "id": "kid-suyeon",
+          "selection": {
+            "speaker": "kid-suyeon",
+            "line": "아빠아! 오늘은 내가 깜짝 선물이야!",
+            "resident": true,
+            "weekdayArrival": true
+          }
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "writes": [],
+  "visitDates": [
+    {
+      "id": "kid-suhyeon",
+      "day": "2026-01-02",
+      "time": 1767337200000,
+      "floor": "4f"
+    },
+    {
+      "id": "kid-suyeon",
+      "day": "2026-01-06",
+      "time": 1767682800000,
+      "floor": "4f"
+    }
+  ],
+  "browser": "157.0.4341.42"
+}

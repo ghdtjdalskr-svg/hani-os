@@ -18,7 +18,7 @@ function extract(name,text=normalized){
   if(line.endsWith('}'))return line;
   const end=rest.indexOf('\n}');assert.ok(end>=0,name+' end');return rest.slice(0,end+2);
 }
-const names=['cloudOutageError','cloudShowOutage','cloudScheduleOutageProbe','cloudNoteReadFailure','cloudReadFetch','cloudProbeOutage','cloudFetchMeta','cloudReadRow','cloudStopAutoSync','cloudStartPolling','cloudRetryAfterNetwork','cloudIsNetworkFailure','cloudIsLifecycleCheck','cloudShouldFetchFullState','cloudCanUseVerifiedRemote','cloudRememberVerifiedRemote','cloudRevisionNumber','cloudSyncDecision','cloudSyncSelfTest','cloudSyncCycle','cloudBindLifecycle','loginGateEnterApp','investmentNewsArchiveContext','investmentNewsArchiveCursor','investmentNewsArchiveLoad','investmentNewsArchiveDetail','investmentNewsArchivePosts'];
+const names=['validateStoredRecords','validateCloudRecords','cloudOutageError','cloudShowOutage','cloudScheduleOutageProbe','cloudNoteReadFailure','cloudReadFetch','cloudProbeOutage','cloudFetchMeta','cloudReadRow','cloudStopAutoSync','cloudStartPolling','cloudRetryAfterNetwork','cloudIsNetworkFailure','cloudIsLifecycleCheck','cloudShouldFetchFullState','cloudCanUseVerifiedRemote','cloudRememberVerifiedRemote','cloudRevisionNumber','cloudSyncDecision','cloudSyncSelfTest','cloudSyncCycle','cloudBindLifecycle','loginGateEnterApp','investmentNewsArchiveContext','investmentNewsArchiveCursor','investmentNewsArchiveLoad','investmentNewsArchiveDetail','investmentNewsArchivePosts'];
 let cases=0;const counts=[];
 function fixture(){
   let now=100000;let timerId=0;const timers=new Map(),events=new Map(),requests=[],writes=[];

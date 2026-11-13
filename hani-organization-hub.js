@@ -30,9 +30,9 @@
     ['sua','수아','과장','business','B2B · 고객 대응','제안부터 후속 실행까지, 빈틈없이.','고객 · 제안 · 클라우드/CDN/보안','M9']
     ,['taeo','채원','솔루션 매니저','business','Claude · 기업 업무','고객 요구를 분석하고 제안과 후속 실행을 지원합니다.','B2B · 제안 · 기술 검토','AI STAFF']
   ];
-  rows.push(['daon','다온','사원','finance','리스크 애널리스트','회장님, 기대 수익 전에 하방 위험부터 확인할게요.','하방 위험 · 투자 시나리오 · 리스크 자료 정리','AI STAFF','active'],['yoonseul','윤슬','사원','life','러닝 리서처','회장님, 궁금한 주제부터 함께 책장을 펼쳐봐요.','공부 자료 조사 · 독서 길잡이 · 학습 자료 정리','AI STAFF','active']);
+  rows.push(['ieum','이음','사원','strategy','Records & Knowledge Ops','이거… 끝난 거 맞죠?','노션 통합 현황판 · 기록 정리 · 완료 확인','AI STAFF','active'],['daon','다온','사원','finance','리스크 애널리스트','회장님, 기대 수익 전에 하방 위험부터 확인할게요.','하방 위험 · 투자 시나리오 · 리스크 자료 정리','AI STAFF','active'],['yoonseul','윤슬','사원','life','러닝 리서처','회장님, 궁금한 주제부터 함께 책장을 펼쳐봐요.','공부 자료 조사 · 독서 길잡이 · 학습 자료 정리','AI STAFF','active']);
   const staffProfile=id=>window.HANI_CHARACTER_ARCHIVE_DATA?.characters.find(c=>c.id===id);
-  const people = rows.map(([id,name,rank,team,role,line,keywords,group,status])=>({id,name,rank,team,role,line,keywords,group,...(status?{status,registration:status==='planned'?'planned':'registered',floor:'2F',profile:staffProfile(id)}:{})})).sort((a,b)=>Number(b.group==='M9')-Number(a.group==='M9'));
+  const people = rows.map(([id,name,rank,team,role,line,keywords,group,status])=>({id,name,rank,team,role,line,keywords,group,...(status?{status,registration:status==='planned'?'planned':'registered',floor:id==='ieum'?'4F':'2F',profile:staffProfile(id)}:{})})).sort((a,b)=>Number(b.group==='M9')-Number(a.group==='M9'));
   window.HaniOrganizationRoster=Object.freeze({
     chairman:Object.freeze({id:"seongmin",name:"성민",rank:"회장",team:"HANI GROUP"}),
     teams:Object.freeze(teams.map(({id,name,color,tint})=>Object.freeze({id,name,color,tint}))),
@@ -214,7 +214,7 @@
     const t=type==='person'?teamOf(item.team):item;
     dialog.style.setProperty('--team',t.color);dialog.style.setProperty('--tint',t.tint);
     detail.innerHTML=type==='person'
-      ? `<div class="ogh-detail-portrait">${portrait(item)}</div><div class="ogh-detail-copy"><span class="ogh-kicker">${item.group} / ${t.en}</span>${DETAIL_TITLE_OPEN}${item.name} <small>${item.rank}</small>${plannedBadge(item)}</h2>${specialListingBadge(item)}<p class="ogh-detail-role">${item.role}</p><p class="ogh-detail-line">${item.line}</p>${tags(item.keywords.split(' · '))}<p class="ogh-detail-note">${item.status==='planned'||item.status==='active'?esc(item.profile?.seniority||(item.status==='planned'?'2F · 입사 예정':'2F'))+' · '+esc(item.profile?.sections.find(s=>s.label==='PERSONALITY')?.text||item.keywords)+' · '+esc(item.profile?.sections.find(s=>s.label==='SEONGMIN')?.text||item.line):item.group==='M9'?'기존 캐릭터 이미지와 직급을 유지합니다.':'신규 이름·역할은 제안안입니다. 프로필은 M9 그림체를 바탕으로 개별 설계한 시안입니다.'}</p><button type="button" class="ogh-detail-link" data-team="${t.id}">${t.name} 소개 ↗</button></div>`
+      ? `<div class="ogh-detail-portrait${item.id==='seoyun'?' ogh-special-cut':''}">${item.id==='seoyun'?'<img class="ogh-portrait" src="./assets/character-archive/seoyun-m9-special-cut.webp" alt="개구리 회장님과 서윤의 M9 특별 합류 기념 하이파이브" width="1024" height="1024">':portrait(item)}</div><div class="ogh-detail-copy"><span class="ogh-kicker">${item.group} / ${t.en}</span>${DETAIL_TITLE_OPEN}${item.name} <small>${item.rank}</small>${plannedBadge(item)}</h2>${specialListingBadge(item)}<p class="ogh-detail-role">${item.role}</p><p class="ogh-detail-line">${item.line}</p>${tags(item.keywords.split(' · '))}<p class="ogh-detail-note">${item.id==='seoyun'?'M9 특별 합류 · Platform Architect (하니 전무 승인)':item.status==='planned'||item.status==='active'?esc(item.profile?.seniority||(item.status==='planned'?'2F · 입사 예정':'2F'))+' · '+esc(item.profile?.sections.find(s=>s.label==='PERSONALITY')?.text||item.keywords)+' · '+esc(item.profile?.sections.find(s=>s.label==='SEONGMIN')?.text||item.line):item.group==='M9'?'기존 캐릭터 이미지와 직급을 유지합니다.':'신규 이름·역할은 제안안입니다. 프로필은 M9 그림체를 바탕으로 개별 설계한 시안입니다.'}</p><button type="button" class="ogh-detail-link" data-team="${t.id}">${t.name} 소개 ↗</button></div>`
       : `${teamBanner(t)}<div class="ogh-detail-copy"><span class="ogh-kicker">${t.en}</span>${DETAIL_TITLE_OPEN}${t.name}</h2><p class="ogh-detail-line">${t.line}</p>${tags(t.tags)}<p>${t.mood}</p><p class="ogh-detail-note">${t.collab}</p><div class="ogh-detail-members">${members(t.id).map(avatar).join('')}</div></div>`;
     if(!dialog.open) dialog.showModal();
     root.querySelector('.ogh-close').focus();
@@ -277,6 +277,7 @@
   }
   function openPerson(id){
     if(id!=='seongmin'&&!people.some(p=>p.id===id))return false;
+    if(root.hidden && typeof window.showView==='function')window.showView('organization/aiTeam');
     const card=root.querySelector('[data-card-person="'+id+'"]');
     card?.focus({preventScroll:true});showDetail('person',id);return true;
   }

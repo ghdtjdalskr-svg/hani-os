@@ -1,0 +1,149 @@
+{
+  "sourceSize": [
+    724,
+    2172
+  ],
+  "atlasSize": [
+    384,
+    1152
+  ],
+  "cell": [
+    96,
+    144
+  ],
+  "pivot": [
+    48,
+    135
+  ],
+  "original16PixelIdentical": true,
+  "frames": [
+    {
+      "row": 4,
+      "col": 0,
+      "left": 18,
+      "top": 607,
+      "width": 60,
+      "height": 104
+    },
+    {
+      "row": 4,
+      "col": 1,
+      "left": 115,
+      "top": 607,
+      "width": 58,
+      "height": 104
+    },
+    {
+      "row": 4,
+      "col": 2,
+      "left": 210,
+      "top": 607,
+      "width": 59,
+      "height": 104
+    },
+    {
+      "row": 4,
+      "col": 3,
+      "left": 307,
+      "top": 607,
+      "width": 57,
+      "height": 104
+    },
+    {
+      "row": 5,
+      "col": 0,
+      "left": 17,
+      "top": 751,
+      "width": 62,
+      "height": 104
+    },
+    {
+      "row": 5,
+      "col": 1,
+      "left": 115,
+      "top": 751,
+      "width": 58,
+      "height": 104
+    },
+    {
+      "row": 5,
+      "col": 2,
+      "left": 210,
+      "top": 751,
+      "width": 59,
+      "height": 104
+    },
+    {
+      "row": 5,
+      "col": 3,
+      "left": 308,
+      "top": 751,
+      "width": 56,
+      "height": 104
+    },
+    {
+      "row": 6,
+      "col": 0,
+      "left": 14,
+      "top": 907,
+      "width": 68,
+      "height": 92
+    },
+    {
+      "row": 6,
+      "col": 1,
+      "left": 110,
+      "top": 917,
+      "width": 68,
+      "height": 82
+    },
+    {
+      "row": 6,
+      "col": 2,
+      "left": 206,
+      "top": 895,
+      "width": 67,
+      "height": 104
+    },
+    {
+      "row": 6,
+      "col": 3,
+      "left": 302,
+      "top": 909,
+      "width": 68,
+      "height": 90
+    },
+    {
+      "row": 7,
+      "col": 0,
+      "left": 14,
+      "top": 1050,
+      "width": 68,
+      "height": 93
+    },
+    {
+      "row": 7,
+      "col": 1,
+      "left": 110,
+      "top": 1064,
+      "width": 68,
+      "height": 79
+    },
+    {
+      "row": 7,
+      "col": 2,
+      "left": 206,
+      "top": 1040,
+      "width": 68,
+      "height": 103
+    },
+    {
+      "row": 7,
+      "col": 3,
+      "left": 302,
+      "top": 1052,
+      "width": 68,
+      "height": 91
+    }
+  ]
+}

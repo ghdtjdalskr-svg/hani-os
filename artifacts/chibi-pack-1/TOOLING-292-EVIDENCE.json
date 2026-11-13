@@ -1,0 +1,1694 @@
+{
+  "dateKst": "2026-11-13",
+  "agent": "?? / Codex ??",
+  "branch": "hani/chibi-pack-1",
+  "head": "4a281931d8b658e91749a0590bd08ba7ed6b8ce6",
+  "base": "a8b1a096f1c6ffae9fcbe2e799958da75b1af1ae",
+  "baselineNote": "???? 291?? ?? main a8b1a09? ?? 292. Git ??/?? ?? ??. ??? ?? ??? ??.",
+  "runtimeAudit": {
+    "files": 504,
+    "changed": []
+  },
+  "fixtureAudit": {
+    "originalFixtureFiles": 106,
+    "changed": [],
+    "oldReleaseRowsExact": true,
+    "m9PreloadUnchanged": true,
+    "oldManifestBytesExact": true
+  },
+  "mainRuntimeEvidence": {
+    "base": "a8b1a096f1c6ffae9fcbe2e799958da75b1af1ae",
+    "runtimeFiles": 504,
+    "rawDifferences": [
+      "hani-main.js",
+      "hani-street-journal.css"
+    ],
+    "afterChibiInverseDifferences": []
+  },
+  "broadSummary": {
+    "files": 168,
+    "exit0": 124,
+    "pass": 1241,
+    "fail": 50,
+    "skip": 6
+  },
+  "officeSummary": {
+    "files": 73,
+    "exit0": 47,
+    "pass": 797,
+    "fail": 33,
+    "skip": 3,
+    "gitBlockedFiles": 26,
+    "gitFailedCases": 33,
+    "otherFailedCases": 0
+  },
+  "broadFailureClasses": {
+    "gitBlockedFiles": 35,
+    "gitFailedCases": 39,
+    "baselineReproducedCases": 8,
+    "unavailableStartupCases": 3,
+    "additionalUnavailableExitFiles": [
+      "hani-pwa-213.test.mjs"
+    ],
+    "baselineReproducedFiles": [
+      {
+        "file": "hani-character-archive.test.cjs",
+        "status": 1,
+        "pass": 0,
+        "fail": 1
+      },
+      {
+        "file": "hani-history-unify.test.mjs",
+        "status": 1,
+        "pass": 10,
+        "fail": 4
+      },
+      {
+        "file": "hani-ic-polish-205.test.cjs",
+        "status": 1,
+        "pass": 10,
+        "fail": 1
+      },
+      {
+        "file": "hani-m9-link.test.mjs",
+        "status": 1,
+        "pass": 9,
+        "fail": 1
+      },
+      {
+        "file": "hani-newstaff-215.test.mjs",
+        "status": 1,
+        "pass": 0,
+        "fail": 1
+      }
+    ]
+  },
+  "broadResults": [
+    {
+      "file": "hani-ai-work-status.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-annual-report-ui-test.mjs",
+      "status": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-app-216-audit.test.cjs",
+      "status": 0,
+      "pass": 7,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-app-216-practical.test.cjs",
+      "status": 0,
+      "pass": 12,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-app-216.test.cjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-asset-intake-v2-AB.test.mjs",
+      "status": 0,
+      "pass": 9,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-asset-intake-v2-C.test.mjs",
+      "status": 0,
+      "pass": 13,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-asset-intake-v2-ease.test.mjs",
+      "status": 0,
+      "pass": 6,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-board-guard.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-board.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-boardroom-live-meeting.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-boardroom-recovery.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-building-206-safety.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-character-archive.test.cjs",
+      "status": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-chibi-pack-1-layers.test.mjs",
+      "status": 0,
+      "pass": 5,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-chibi-pack-1.test.mjs",
+      "status": 0,
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-cloud-conflict-choice.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-cloud-egress-save-sim.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-cloud-egress-sync.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-cloud-first.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-dashboard-period.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-deploy-package-intake-test.mjs",
+      "status": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-dev-report-generate.test.mjs",
+      "status": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-drive-vault.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-egress-fix.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-existing-pr-qa-test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-fix-208.test.mjs",
+      "status": 0,
+      "pass": 7,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-fixes-213-oauth.test.mjs",
+      "status": 0,
+      "pass": 7,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-gemini-reports-build.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-goal-media-budget.test.mjs",
+      "status": 0,
+      "pass": 3,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-goal-period-view.test.mjs",
+      "status": 0,
+      "pass": 4,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-goal-period.test.mjs",
+      "status": 0,
+      "pass": 20,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-google-drive-212.test.mjs",
+      "status": 0,
+      "pass": 11,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-hana-intake-224.test.mjs",
+      "status": 0,
+      "pass": 15,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-helper-275-pins.test.mjs",
+      "status": 0,
+      "pass": 4,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-history-226.test.mjs",
+      "status": 0,
+      "pass": 0,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-history-unify.test.mjs",
+      "status": 1,
+      "pass": 10,
+      "fail": 4,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-ic-polish-205.test.cjs",
+      "status": 1,
+      "pass": 10,
+      "fail": 1,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-ic-report-205.test.cjs",
+      "status": 0,
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-ilbo-banner-215.test.mjs",
+      "status": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-intake-audit-206.test.cjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-invest-basis.test.cjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-invest-split-safety.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-invest-split.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-investment-committee.test.cjs",
+      "status": 0,
+      "pass": 8,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-investment-research-safety.test.cjs",
+      "status": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-investment-research.test.cjs",
+      "status": 0,
+      "pass": 15,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-join-ieum.test.mjs",
+      "status": 0,
+      "pass": 17,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-kiwoom-code-224.test.mjs",
+      "status": 0,
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-life-bundle-source.test.mjs",
+      "status": 0,
+      "pass": 5,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-login-a-204.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-lounge-ai-213.test.mjs",
+      "status": 0,
+      "pass": 12,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-lounge-billboard.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-m9-link.test.mjs",
+      "status": 1,
+      "pass": 9,
+      "fail": 1,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-media-c-controls.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-media-core.test.mjs",
+      "status": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-meeting-engine-v2-batch1.test.mjs",
+      "status": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-meeting-engine-v2-client.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-milestones-v1.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-mission-203a.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-mobile-intake-206.test.cjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-monthly-report-aggregation-test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-navlogin.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-newface-217.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-newsroom-285-source.test.mjs",
+      "status": 0,
+      "pass": 2,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-newsroom-4cut-230.test.mjs",
+      "status": 1,
+      "pass": 8,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-newsroom-4cut-288.test.mjs",
+      "status": 0,
+      "pass": 7,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-newstaff-215.test.mjs",
+      "status": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-ocr-accuracy-224.test.mjs",
+      "status": 0,
+      "pass": 14,
+      "fail": 0,
+      "skip": 1,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-219.test.mjs",
+      "status": 0,
+      "pass": 6,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-actions-216.test.mjs",
+      "status": 1,
+      "pass": 14,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-actions-221.test.mjs",
+      "status": 0,
+      "pass": 20,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-affinity-274-pins.test.mjs",
+      "status": 1,
+      "pass": 2,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-affinity-cap.test.mjs",
+      "status": 0,
+      "pass": 19,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-affinity-storage.test.mjs",
+      "status": 0,
+      "pass": 3,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-affinity.test.mjs",
+      "status": 0,
+      "pass": 21,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-barista-night-273-pins.test.mjs",
+      "status": 1,
+      "pass": 4,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-barista-night.test.mjs",
+      "status": 0,
+      "pass": 13,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-barista.test.mjs",
+      "status": 0,
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-behavior.test.mjs",
+      "status": 0,
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-bori-m9.test.mjs",
+      "status": 0,
+      "pass": 2,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-bori-stroll.test.mjs",
+      "status": 1,
+      "pass": 13,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-bubble-close.test.mjs",
+      "status": 0,
+      "pass": 17,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-cafe-rest.test.mjs",
+      "status": 1,
+      "pass": 3,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-chairman-234.test.mjs",
+      "status": 0,
+      "pass": 6,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-chairman-patrol-278-pins.test.mjs",
+      "status": 1,
+      "pass": 6,
+      "fail": 6,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-chairman-patrol.test.mjs",
+      "status": 0,
+      "pass": 15,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-companion-homes.test.mjs",
+      "status": 1,
+      "pass": 15,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-companions-276-pins.test.mjs",
+      "status": 1,
+      "pass": 2,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-companions.test.mjs",
+      "status": 0,
+      "pass": 17,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-consult.test.mjs",
+      "status": 1,
+      "pass": 19,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-crowded-labels.test.mjs",
+      "status": 0,
+      "pass": 19,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-drama.test.mjs",
+      "status": 0,
+      "pass": 20,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-fix-218.test.mjs",
+      "status": 0,
+      "pass": 6,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-floor-bubble.test.mjs",
+      "status": 0,
+      "pass": 21,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-hd-224.test.mjs",
+      "status": 0,
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-icons.test.mjs",
+      "status": 1,
+      "pass": 14,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-kids-286-source.test.mjs",
+      "status": 0,
+      "pass": 3,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-kids-lively.test.mjs",
+      "status": 0,
+      "pass": 15,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-kids-merge.test.mjs",
+      "status": 0,
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-kids-pose-b.test.mjs",
+      "status": 0,
+      "pass": 13,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-kids-visit.test.mjs",
+      "status": 0,
+      "pass": 16,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-kids-weekday.test.mjs",
+      "status": 0,
+      "pass": 19,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-labels-qa.test.mjs",
+      "status": 0,
+      "pass": 17,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-lively-v2.test.mjs",
+      "status": 1,
+      "pass": 7,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-lively.test.mjs",
+      "status": 0,
+      "pass": 13,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-mascot-label.test.mjs",
+      "status": 1,
+      "pass": 9,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-motion-1.test.mjs",
+      "status": 0,
+      "pass": 16,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-motion-2.test.mjs",
+      "status": 0,
+      "pass": 24,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-obr10.test.mjs",
+      "status": 0,
+      "pass": 4,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-obr12.test.mjs",
+      "status": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-obr14.test.mjs",
+      "status": 1,
+      "pass": 4,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-obr15.test.mjs",
+      "status": 1,
+      "pass": 13,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-obr16.test.mjs",
+      "status": 0,
+      "pass": 12,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-obr17.test.mjs",
+      "status": 0,
+      "pass": 3,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-obr18.test.mjs",
+      "status": 0,
+      "pass": 12,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-obr19.test.mjs",
+      "status": 0,
+      "pass": 3,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-obr21.test.mjs",
+      "status": 1,
+      "pass": 4,
+      "fail": 2,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-obr3.test.mjs",
+      "status": 0,
+      "pass": 5,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-obr4.test.mjs",
+      "status": 1,
+      "pass": 8,
+      "fail": 2,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-obr6.test.mjs",
+      "status": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-obr7.test.mjs",
+      "status": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-obr8.test.mjs",
+      "status": 1,
+      "pass": 2,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-obr9.test.mjs",
+      "status": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-pet-bori-272-pins.test.mjs",
+      "status": 1,
+      "pass": 3,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-pet-bori.test.mjs",
+      "status": 0,
+      "pass": 14,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-pets-268-pins.test.mjs",
+      "status": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-pets-bubble.test.mjs",
+      "status": 1,
+      "pass": 21,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-props.test.mjs",
+      "status": 0,
+      "pass": 11,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-release-projection.test.mjs",
+      "status": 0,
+      "pass": 2,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "status": 0,
+      "pass": 49,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-seats-215.test.mjs",
+      "status": 0,
+      "pass": 12,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-snack.test.mjs",
+      "status": 0,
+      "pass": 26,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-staff-chat.test.mjs",
+      "status": 0,
+      "pass": 17,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-tap-lines.test.mjs",
+      "status": 0,
+      "pass": 15,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-tlayout.test.mjs",
+      "status": 0,
+      "pass": 13,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-top-labels.test.mjs",
+      "status": 0,
+      "pass": 7,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-v2-215.test.mjs",
+      "status": 1,
+      "pass": 17,
+      "fail": 1,
+      "skip": 2,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-visitors-cafe.test.mjs",
+      "status": 0,
+      "pass": 5,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-xmas-269-pins.test.mjs",
+      "status": 1,
+      "pass": 1,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-office-xmas.test.mjs",
+      "status": 0,
+      "pass": 13,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-office-zoom.test.mjs",
+      "status": 0,
+      "pass": 12,
+      "fail": 0,
+      "skip": 1,
+      "blocked": false
+    },
+    {
+      "file": "hani-offline-transport-223.test.mjs",
+      "status": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-owner-verification-diagnostic.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-photo-backup-222.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-polish-205-safety.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-polish-215.test.mjs",
+      "status": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-positions-only-test.cjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-post-audit-investment.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-proactive-204.test.mjs",
+      "status": 1,
+      "pass": 20,
+      "fail": 1,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-procrastination-board.test.mjs",
+      "status": 0,
+      "pass": 6,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-pwa-213.test.mjs",
+      "status": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-pwa-release-paths.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-qa-easy-cleanup.test.mjs",
+      "status": 0,
+      "pass": 12,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-release-version-layers.test.mjs",
+      "status": 0,
+      "pass": 11,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-remote-card-224.test.mjs",
+      "status": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": true
+    },
+    {
+      "file": "hani-runtime-closure-ilbo.test.mjs",
+      "status": 0,
+      "pass": 3,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-save-guard.test.mjs",
+      "status": 0,
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-seoyun-m9.test.mjs",
+      "status": 0,
+      "pass": 15,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-server-owner-guard.test.mjs",
+      "status": 0,
+      "pass": 13,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-simplify-218.test.cjs",
+      "status": 0,
+      "pass": 4,
+      "fail": 0,
+      "skip": 1,
+      "blocked": false
+    },
+    {
+      "file": "hani-stale39-source.test.mjs",
+      "status": 0,
+      "pass": 4,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-street-journal-closure.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-street-journal.test.cjs",
+      "status": 0,
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-tasks-qa-212.test.mjs",
+      "status": 0,
+      "pass": 7,
+      "fail": 0,
+      "skip": 1,
+      "blocked": false
+    },
+    {
+      "file": "hani-toss-intake-224.test.mjs",
+      "status": 0,
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-transaction-date.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    },
+    {
+      "file": "hani-wishlist-quick-add.test.mjs",
+      "status": 0,
+      "pass": 7,
+      "fail": 0,
+      "skip": 0,
+      "blocked": false
+    }
+  ],
+  "finalTargeted": [
+    {
+      "file": "hani-chibi-pack-1.test.mjs",
+      "status": 0,
+      "pass": 10,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "file": "hani-chibi-pack-1-layers.test.mjs",
+      "status": 0,
+      "pass": 6,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "file": "hani-release-version-layers.test.mjs",
+      "status": 0,
+      "pass": 11,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "file": "hani-save-guard.test.mjs",
+      "status": 0,
+      "pass": 10,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "file": "hani-join-ieum.test.mjs",
+      "status": 0,
+      "pass": 17,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "file": "hani-newsroom-285-source.test.mjs",
+      "status": 0,
+      "pass": 2,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "file": "hani-newsroom-4cut-288.test.mjs",
+      "status": 0,
+      "pass": 7,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "file": "hani-life-bundle-source.test.mjs",
+      "status": 0,
+      "pass": 5,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "file": "hani-qa-easy-cleanup.test.mjs",
+      "status": 0,
+      "pass": 12,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "file": "hani-app-216-audit.test.cjs",
+      "status": 0,
+      "pass": 7,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "file": "hani-street-journal.test.cjs",
+      "status": 0,
+      "pass": 10,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "file": "hani-street-journal-closure.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "file": "hani-seoyun-m9.test.mjs",
+      "status": 0,
+      "pass": 15,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "file": "hani-office-219.test.mjs",
+      "status": 0,
+      "pass": 6,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "file": "hani-history-226.test.mjs",
+      "status": 0,
+      "pass": 0,
+      "fail": 0,
+      "skip": 0
+    }
+  ],
+  "finalTargetedSummary": {
+    "files": 15,
+    "exit0": 15,
+    "pass": 119,
+    "fail": 0,
+    "skip": 0
+  },
+  "syntax": [
+    {
+      "file": "scripts/hani-chibi-pack-1-preload.cjs",
+      "status": 0
+    },
+    {
+      "file": "scripts/hani-chibi-pack-1-source.cjs",
+      "status": 0
+    },
+    {
+      "file": "scripts/hani-chibi-pack-1.test.mjs",
+      "status": 0
+    },
+    {
+      "file": "scripts/hani-join-ieum.test.mjs",
+      "status": 0
+    },
+    {
+      "file": "scripts/hani-life-bundle-source.test.mjs",
+      "status": 0
+    },
+    {
+      "file": "scripts/hani-newsroom-285-source.test.mjs",
+      "status": 0
+    },
+    {
+      "file": "scripts/hani-qa-easy-cleanup.test.mjs",
+      "status": 0
+    },
+    {
+      "file": "scripts/hani-release-version-layers.test.mjs",
+      "status": 0
+    },
+    {
+      "file": "scripts/hani-save-guard.test.mjs",
+      "status": 0
+    },
+    {
+      "file": "scripts/hani-chibi-pack-1-layers.test.mjs",
+      "status": 0
+    },
+    {
+      "file": "scripts/hani-release-292-source.cjs",
+      "status": 0
+    }
+  ],
+  "gitBlockedFiles": [
+    "hani-dev-report-generate.test.mjs",
+    "hani-ilbo-banner-215.test.mjs",
+    "hani-media-core.test.mjs",
+    "hani-meeting-engine-v2-batch1.test.mjs",
+    "hani-newsroom-4cut-230.test.mjs",
+    "hani-office-actions-216.test.mjs",
+    "hani-office-affinity-274-pins.test.mjs",
+    "hani-office-barista-night-273-pins.test.mjs",
+    "hani-office-bori-stroll.test.mjs",
+    "hani-office-cafe-rest.test.mjs",
+    "hani-office-chairman-patrol-278-pins.test.mjs",
+    "hani-office-companion-homes.test.mjs",
+    "hani-office-companions-276-pins.test.mjs",
+    "hani-office-consult.test.mjs",
+    "hani-office-icons.test.mjs",
+    "hani-office-lively-v2.test.mjs",
+    "hani-office-mascot-label.test.mjs",
+    "hani-office-obr12.test.mjs",
+    "hani-office-obr14.test.mjs",
+    "hani-office-obr15.test.mjs",
+    "hani-office-obr21.test.mjs",
+    "hani-office-obr4.test.mjs",
+    "hani-office-obr6.test.mjs",
+    "hani-office-obr7.test.mjs",
+    "hani-office-obr8.test.mjs",
+    "hani-office-obr9.test.mjs",
+    "hani-office-pet-bori-272-pins.test.mjs",
+    "hani-office-pets-268-pins.test.mjs",
+    "hani-office-pets-bubble.test.mjs",
+    "hani-office-v2-215.test.mjs",
+    "hani-office-xmas-269-pins.test.mjs",
+    "hani-offline-transport-223.test.mjs",
+    "hani-polish-215.test.mjs",
+    "hani-proactive-204.test.mjs",
+    "hani-remote-card-224.test.mjs"
+  ],
+  "cleanup": {
+    "restoredExistingArtifactFiles": 4,
+    "removedNewArtifactFiles": 9
+  },
+  "notion": {
+    "readSucceeded": true,
+    "writeSucceeded": false,
+    "reason": "MCP tool call requires approval, but approval policy is never"
+  },
+  "commands": {
+    "broad": "node --require ./scripts/hani-chibi-pack-1-preload.cjs --test --test-isolation=none --test-reporter=tap scripts/<file>",
+    "history": "node scripts/hani-history-226.test.mjs --unit-only",
+    "seoyunBrowser": "node scripts/hani-chibi-pack-1.browser.mjs"
+  },
+  "evidenceReuse": "? 292 fixture? sparse edits? ?? ? ?? before/after pin ?? ? ?? dispatcher ??? ??. ??? ?? ?? 15?? ???. office ?? ?? ?????? ??.",
+  "closure": {
+    "rawFiles": 168,
+    "rawMissing": [],
+    "projectedFiles": 164,
+    "projectedMissing": [],
+    "removedReferences": [
+      "assets/profiles/hani-profile-ieum.webp",
+      "assets/profiles/thumb/hani-profile-ieum-128.webp",
+      "assets/profiles/thumb/hani-profile-ieum-256.webp",
+      "assets/sprites-v3/ieum.webp"
+    ],
+    "existingSheetIncluded": true
+  },
+  "finalScope": {
+    "changed": [
+      "docs/development-history/CURRENT.md",
+      "scripts/fixtures/release-version-layers.json",
+      "scripts/hani-chibi-pack-1-preload.cjs",
+      "scripts/hani-chibi-pack-1-source.cjs",
+      "scripts/hani-chibi-pack-1.test.mjs",
+      "scripts/hani-join-ieum.test.mjs",
+      "scripts/hani-life-bundle-source.test.mjs",
+      "scripts/hani-newsroom-285-source.test.mjs",
+      "scripts/hani-qa-easy-cleanup.test.mjs",
+      "scripts/hani-release-version-layers.test.mjs",
+      "scripts/hani-save-guard.test.mjs"
+    ],
+    "created": [
+      "artifacts/chibi-pack-1/TOOLING-292-EVIDENCE.json",
+      "artifacts/chibi-pack-1/TOOLING-292.md",
+      "docs/development-history/handoffs/2026-11-13-chibi-tooling-292.md",
+      "scripts/fixtures/chibi-pack-1-main291-delta.json",
+      "scripts/fixtures/chibi-pack-1-main292-delta.json",
+      "scripts/fixtures/release-292-delta.json",
+      "scripts/hani-chibi-pack-1-layers.test.mjs",
+      "scripts/hani-release-292-source.cjs"
+    ],
+    "missing": []
+  },
+  "finalLocalRefs": {
+    "head": "4a281931d8b658e91749a0590bd08ba7ed6b8ce6",
+    "originMain": "a8b1a096f1c6ffae9fcbe2e799958da75b1af1ae",
+    "remoteFreshnessVerified": false
+  },
+  "fixtureSha256": {
+    "chibi-pack-1-delta.json": "bc93a92852cbb16be626471fe792978a0d1c3232fe2f69bedbf441b743c0452d",
+    "chibi-pack-1-main291-delta.json": "93a260247f3260033f55df63513e6c1db5a1d45c61437503fc6c2b881abd3ae6",
+    "chibi-pack-1-main292-delta.json": "09d8882ba0343d6c153b1ecef8ac25a5631d94d2a782622eba41013d4afef82b",
+    "release-292-delta.json": "2cd40f87808f90114e254a2925212c1d1a992db90030ac4137cf9c2ef45e704a"
+  }
+}

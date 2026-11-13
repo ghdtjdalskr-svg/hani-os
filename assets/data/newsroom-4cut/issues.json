@@ -7,6 +7,16 @@
       "image": "001",
       "title": "금리 동결과 빅테크 실적에 출렁인 한 주",
       "alt": "10월 5주차 주간 시황 4컷. 미 금리 동결과 한국 3분기 GDP 1.0% 성장 속 코스피는 한 주 3.25% 오른 5,730.74, 코스닥은 3.63% 내린 724.38에 마감했다. S&P500은 0.57%, 나스닥은 2.00% 내렸고 원/달러 환율은 1,334.3원을 기록했다.",
+      "facts": [
+        {
+          "label": "원/달러",
+          "value": "1,334.3원"
+        },
+        {
+          "label": "한국 3분기 GDP 성장률",
+          "value": "1.0%"
+        }
+      ],
       "sources": [
         {"label": "아시아경제 · 코스피, 외국인 1.6조 순매도에 하락…5730선 마감", "url": "https://view.asiae.co.kr/article/2026103016084854064"},
         {"label": "서울파이낸스 · 원·달러 환율 1334.3원 마감", "url": "https://www.seoulfn.com/news/articleView.html?idxno=641491"},
@@ -14,6 +24,89 @@
         {"label": "CNBC · Fed holds rates steady", "url": "https://www.cnbc.com/2026/10/28/fed-interest-rate-decision-october-2026.html"},
         {"label": "한국일보 · 3분기 GDP 1.0% '깜짝 성장'", "url": "https://www.hankookilbo.com/news/article/A2026102707580003481"},
         {"label": "미국 노동통계국 · 고용보고서 발표 일정", "url": "https://www.bls.gov/schedule/news_release/empsit.htm"}
+      ]
+    },
+    {
+      "number": 2,
+      "publishDate": "2026-11-08",
+      "week": "2026-11-02~11-06",
+      "image": "002",
+      "title": "AI 규제 우려에 흔들린 한 주",
+      "alt": "11월 1주차(2026-11-02~11-06) 주간 시황 4컷. 미국 중간선거 뒤 AI 데이터센터 규제 우려 속 코스피는 한 주 11.71% 내린 5,059.69, 코스닥은 11.06% 내린 644.27에 마감했다. S&P500은 2.68%, 나스닥은 3.37% 내렸고 금요일 종가는 각각 7,376.86과 24,579.42다. 주간 등락은 10/30 금요일 대비 11/6 금요일 기준이다. 원/달러 환율은 11/6 서울 주간거래 15:30 종가 1,356.6원이다. 11/6 발표된 미국 10월 비농업 고용은 165,000명(16만 5천 명) 증가했고 실업률은 4.1%다. 하니가 서킷브레이커 경고 전광판 앞에서 놀라는 클로즈업, 지은이 급락 미끄럼틀 끝 난간을 붙잡는 전신 장면, 민지가 미국과 한국의 낙폭을 비교하는 지도 부감 장면, 따뜻한 조명 아래 세 기자가 고용 지표와 다음 주를 준비하는 어깨 너머 장면이다. 회장님은 등장하지 않는다. 정보 정리용이며 투자 권유가 아니다.",
+      "facts": [
+        {
+          "label": "원/달러",
+          "value": "1,356.6원",
+          "note": "11/6 서울 15:30 종가"
+        },
+        {
+          "label": "미국 10월 비농업 고용",
+          "value": "+165,000명"
+        },
+        {
+          "label": "미국 10월 실업률",
+          "value": "4.1%"
+        }
+      ],
+      "cuts": [
+        {
+          "reporter": "하니",
+          "scene": "서킷브레이커 경고 전광판 앞 클로즈업"
+        },
+        {
+          "reporter": "지은",
+          "scene": "급락 미끄럼틀 끝 난간을 붙잡는 전신"
+        },
+        {
+          "reporter": "민지",
+          "scene": "미국과 한국의 낙폭을 비교하는 지도 부감"
+        },
+        {
+          "reporter": "하니 · 지은 · 민지",
+          "scene": "따뜻한 조명 아래 고용 지표와 다음 주 준비"
+        }
+      ],
+      "sources": [
+        {
+          "label": "이투데이 · 국내 지수 금요일 종가·주간 등락 (11/7)",
+          "url": "https://www.etoday.co.kr/news/view/2645176"
+        },
+        {
+          "label": "연합뉴스 · 코스피 -11.71%·코스닥 -11.06% (11/8)",
+          "url": "https://www.yna.co.kr/amp/view/AKR20261106189100008"
+        },
+        {
+          "label": "뉴스핌 · 국내 지수·원/달러 15:30 마감 (11/6)",
+          "url": "https://www.newspim.com/news/view/20261106000988"
+        },
+        {
+          "label": "아시아경제 · 원/달러 1,356.6원 주간거래 종가 (11/6)",
+          "url": "https://www.asiae.co.kr/article/2026110615362639023"
+        },
+        {
+          "label": "Stock Rover · 미국 지수 종가·주간 등락 (11/6)",
+          "url": "https://www.stockrover.com/blog/rovers-weekly-market-brief-11-06-2026/"
+        },
+        {
+          "label": "NeQuit · 미국 지수 종가·주간 등락 교차 확인 (11/7)",
+          "url": "https://www.nequitco.com/blog-articles/market-intelligence-report---week-ending-november-6-2026"
+        },
+        {
+          "label": "AP · 미국 주요 지수 금요일 종가 (11/6)",
+          "url": "https://apnews.com/article/806f71d95105bc7efbc760b194dd8cad"
+        },
+        {
+          "label": "STL.News · AI 규제 우려·미국 10월 고용 (11/7)",
+          "url": "https://www.stl.news/stock-market-weekly-update-november-6-2026/"
+        },
+        {
+          "label": "Reuters · 미국 고용 165,000명 증가·실업률 4.1% (11/6)",
+          "url": "https://finance.yahoo.com/economy/policy/articles/strong-october-jobs-report-sends-134858909.html"
+        },
+        {
+          "label": "BLS 원문 · 10월 고용보고서 (11/6 08:30 EST)",
+          "url": "https://www.dol.gov/newsroom/economicdata/empsit_11062026.pdf"
+        }
       ]
     }
   ]

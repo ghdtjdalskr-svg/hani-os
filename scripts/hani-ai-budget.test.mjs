@@ -118,7 +118,7 @@ const ui=vm.createContext({window:{HaniAiBudgetCore:core},document:{getElementBy
 let uiPayload={schemaVersion:1,accounts:[transcriptAccount,gemini],collectorStatus:'ready'};
 uiPayload.accounts[0].transcriptUsage.fourWeekMaxFiveHourTokens=80;
 vm.runInContext(await readFile(new URL('../hani-ai-budget.js',import.meta.url),'utf8'),ui);
-assert.match(node('aiBudgetCards').innerHTML,/Codex 주력/);assert.match(node('aiBudgetCards').innerHTML,/Codex 보조/);
+assert.match(node('aiBudgetCards').innerHTML,/Codex 주력/);assert.doesNotMatch(node('aiBudgetCards').innerHTML,/Codex 보조|data-budget-slot="codex-2"/);assert.doesNotMatch(node('aiBudgetAccount').innerHTML,/codex-2/);
 await node('aiBudgetRefresh').handlers.click();
 const card=id=>node('aiBudgetCards').innerHTML.match(new RegExp(`<article[^>]*data-budget-slot="${id}"[\\s\\S]*?</article>`))[0];
 assert.match(card('claude-1'),/최근 5시간/);assert.match(card('claude-1'),/입력 \+ 캐시 <strong>30<\/strong> 토큰 · 출력 <strong>10<\/strong>/);

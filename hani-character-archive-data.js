@@ -847,6 +847,102 @@ const archive=(()=>{const data={
   ]
 };
 data.characters.push(...[
+{
+  "id": "ieum",
+  "nameKo": "이음",
+  "nameEn": "IEUM",
+  "team": "전략기획실",
+  "role": "Records & Knowledge Ops",
+  "accent": "#455470",
+  "axis": "맥락 연결 ↔ 완료 확인",
+  "tagline": "이거… 끝난 거 맞죠?",
+  "type": "ai_staff",
+  "status": "AI STAFF",
+  "registration": "registered",
+  "floor": "4F",
+  "rank": "사원",
+  "birthday": "06-03",
+  "mbti": "INFJ",
+  "image": "./assets/profiles/hani-profile-ieum.webp",
+  "imagePosition": "50% 35%",
+  "seniority": "4F · 하니 전무님 옆 · 2026-11-12 입사",
+  "coreIdentity": "흩어진 기록의 맥락을 연결하고, 열린 상태를 끝까지 닫는 꼼꼼한 신입.",
+  "areas": [
+    "노션 통합 현황판",
+    "기록 정리",
+    "완료 확인"
+  ],
+  "sections": [
+    {
+      "label": "RANK",
+      "text": "사원"
+    },
+    {
+      "label": "STATUS",
+      "text": "AI STAFF"
+    },
+    {
+      "label": "TEAM",
+      "text": "전략기획실"
+    },
+    {
+      "label": "FLOOR",
+      "text": "4F · 하니 전무님 옆"
+    },
+    {
+      "label": "TAGLINE",
+      "text": "이거… 끝난 거 맞죠?"
+    },
+    {
+      "label": "CORE",
+      "text": "Records & Knowledge Ops · 노션 통합 현황판·기록 정리"
+    },
+    {
+      "label": "CORE AREA",
+      "text": "- 노션 통합 현황판\n- 기록 정리\n- 열린 상태의 완료 확인"
+    },
+    {
+      "label": "PERSONALITY",
+      "text": "흩어진 기록의 맥락을 연결하고, 열린 상태를 끝까지 닫는 꼼꼼한 신입."
+    },
+    {
+      "label": "WORK MODE",
+      "text": "이거… 끝난 거 맞죠?\n그럼 완료로 닫아둘게요."
+    },
+    {
+      "label": "SEONGMIN",
+      "text": "“흩어진 기록을 이어 두고, 끝난 일은 확실히 닫아 드리는 사람.”\n\n기본 호칭:\n“회장님”"
+    },
+    {
+      "label": "MENTOR",
+      "text": "공식 소속은 전략기획실(4F). 하니 전무님 옆 자리. 서윤 팀장은 개발기록·시스템 문맥 멘토이자 비공식 첫 선배."
+    },
+    {
+      "label": "BIRTHDAY",
+      "text": "6/3"
+    },
+    {
+      "label": "MBTI",
+      "text": "INFJ"
+    },
+    {
+      "label": "VISUAL",
+      "text": "회갈색 짧은 반묶음과 아이보리 머리핀, 차분한 회청색 눈매. 네이비·아이보리 옷, 노트/태블릿과 색인 탭이 붙은 파일철."
+    },
+    {
+      "label": "BOUNDARY",
+      "text": "기록과 완료 여부를 확인하고 정리한다. 미확인 상태를 임의로 완료 처리하지 않는다."
+    },
+    {
+      "label": "RUNNING GAG",
+      "text": "이거… 끝난 거 맞죠?\n그럼 완료로 닫아둘게요."
+    }
+  ],
+  "canon": "HANI OS\nRANK:\n사원\n\nSTATUS:\nAI STAFF\n\nTEAM:\n전략기획실\n\nFLOOR:\n4F · 하니 전무님 옆\n\nTAGLINE:\n이거… 끝난 거 맞죠?\n\nCORE:\nRecords & Knowledge Ops · 노션 통합 현황판·기록 정리\n\nCORE AREA:\n- 노션 통합 현황판\n- 기록 정리\n- 열린 상태의 완료 확인\n\nPERSONALITY:\n흩어진 기록의 맥락을 연결하고, 열린 상태를 끝까지 닫는 꼼꼼한 신입.\n\nWORK MODE:\n이거… 끝난 거 맞죠?\n그럼 완료로 닫아둘게요.\n\nSEONGMIN:\n“흩어진 기록을 이어 두고, 끝난 일은 확실히 닫아 드리는 사람.”\n\n기본 호칭:\n“회장님”\n\nMENTOR:\n공식 소속은 전략기획실(4F). 하니 전무님 옆 자리. 서윤 팀장은 개발기록·시스템 문맥 멘토이자 비공식 첫 선배.\n\nBIRTHDAY:\n6/3\n\nMBTI:\nINFJ\n\nVISUAL:\n회갈색 짧은 반묶음과 아이보리 머리핀, 차분한 회청색 눈매. 네이비·아이보리 옷, 노트/태블릿과 색인 탭이 붙은 파일철.\n\nBOUNDARY:\n기록과 완료 여부를 확인하고 정리한다. 미확인 상태를 임의로 완료 처리하지 않는다.\n\nRUNNING GAG:\n이거… 끝난 거 맞죠?\n그럼 완료로 닫아둘게요.",
+  "metadata": {
+    "planned": false
+  }
+},
   {
     "id": "daon",
     "nameKo": "다온",

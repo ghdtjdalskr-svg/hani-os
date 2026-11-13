@@ -1,18 +1,27 @@
+// Connect the existing exact outer chain for default execution as well.
+import './hani-m9-polish-preload.cjs';
+import './hani-m9-link-preload.cjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import {createRequire} from 'node:module';
 import inverse from './hani-seoyun-m9-source.cjs';
+import capInverse from './hani-office-affinity-cap-source.cjs';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
 const require=createRequire(import.meta.url),{delta,hash,restoreSeoyunM9Source:restore}=inverse;
-const read=f=>fs.readFileSync(f,'utf8'),plain=x=>JSON.parse(JSON.stringify(x));
+const read=f=>capInverse.projectPreAffinityCapSource(fs.readFileSync(f,'utf8'),f),plain=x=>JSON.parse(JSON.stringify(x));
+const readBytes=f=>capInverse.delta.file===f||f==='hani-office-live.css'?Buffer.from(read(f)):fs.readFileSync(f);
 const originalBytes=fs.readFileSync('artifacts/seoyun-m9/originals.json');
 // 2.9.280 release advanced only the index.html/hani-main.js version strings; their pinned digests were refreshed to main 985cc15.
-assert.equal(hash(originalBytes),'e017475524a537091092a70bde1d68a4146fb6da310eb390143cdce561b68306');
+// 2.9.281 release likewise advanced only those version strings; digests refreshed to main 43eda9e.
+// 2.9.282 release likewise advanced only those version strings; digests refreshed to main 86feee3.
+// 2.9.283 + life-bundle are exact outer inverses installed by the polish
+// preload. Keep these lower-layer pins and the 161-file closure assertion.
+assert.equal(hash(originalBytes),'358c6a3db4d1bea61751d7ed4d62d44c63c50103802c5125e9007f382162aa1a');
 const original=JSON.parse(originalBytes),ui=require('../hani-character-archive.js'),data=require('../hani-character-archive-data.js');
 const lines=["M9 합류했어요. 시가총액은… 천천히 따라갈게요 💜","전무님이 '아직?'이라고 하셨어요. 무기한이래요…","M9에 온 걸 환영해요, 서윤아♡ 시총은 천천히 따라오세요.","M9 합류 확인. 검증 결과 PASS입니다.","M10 개편 비용 0원. 좋은 결정이었어요.","신규상장 첫 표정, 아직 제 폴더에 있어요📸","서윤 언니~♡ 이제 M9이야? 축하해!","…서윤 이모, 축하해요. 그냥 하는 말 아니에요.","박스 공급 조건은 유지됩니다.","…멍. (꼬리를 툭 한 번)"];
 const {scene,table}=loadScene();
@@ -31,7 +40,7 @@ test('one special presentation card follows all nine unchanged M9 cards; MIR and
  assert.deepEqual(cards.filter(c=>!special.includes(c)),original.cards);assert.match(cards[10],/data-character-card="mir"/);assert.match(cards[10],/ca-cover-number">10</);
  for(const text of ['M9 특별 합류 · Platform Architect','M9 SPECIAL LISTING','Technology Integration · Architecture · Delivery','회장님의 아이디어와 M9의 전문성을 실제로 작동하는 시스템으로 연결하는 기술 파트너.','AI STAFF · AI플랫폼개발실 · 팀장'])assert.ok(special[0].includes(text));
  assert.match(special[0],/src="\.\/assets\/profiles\/hani-profile-seoyun.webp"/);
- for(const [file,digest]of Object.entries({...original.assets,...original.files}))assert.equal(hash(fs.readFileSync(file)),digest,file+' unchanged');
+ for(const [file,digest]of Object.entries({...original.assets,...original.files}))assert.equal(hash(readBytes(file)),digest,file+' unchanged');
 });
 
 function organization(){

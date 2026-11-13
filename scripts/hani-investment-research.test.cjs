@@ -152,13 +152,13 @@ test('new runtime has no direct storage/Cloud writes, destructive calls, seed, o
 test('actual commit/save owner persists cards/history with read-back; existing failure guard rolls back', () => {
   const stored = new Map(), writes = [], source = blank(); source.meta = {lastSavedAt: ''}; source.ledgerMonths = [{month: '2026-10', original: true}];
   const context = vm.createContext({state:source, VERSION:'2.9.15-safe-baseline-bootstrap', STORAGE_KEY:'existing-protected-key',
-    loadRecovery:{active:false}, lastLoadError:'protected', cloudApplyingRemote:false, cloudQueues:0, rendered:0,
+    loadRecovery:{active:false}, lastLoadError:'protected', cloudApplyingRemote:false, cloudQueues:0, rendered:0, storageLoadedRaw:null, storageTabConflict:false,
     freshState:()=>({meta:{lastSavedAt:''}}), serializedBytes:s=>Buffer.byteLength(s), updateStorageStatus(){}, isQuotaError:()=>true,
     cloudQueueSync(){context.cloudQueues++;}, renderAll(){context.rendered++;}, toast(){}, alert(){}, console:{error(){}},
     localStorage:{getItem:k=>stored.get(k)??null,setItem(k,v){if(context.failWrite)throw Error('QuotaExceededError');writes.push(k);stored.set(k,v);}}, Date});
   const save = main.slice(main.indexOf('function save('), main.indexOf('// Goal Registry:'));
   const commit = main.slice(main.indexOf('function commit('), main.indexOf('// =========================================================', main.indexOf('function commit(')));
-  vm.runInContext(fn('writeProtectedState') + '\n' + save + '\n' + commit, context);
+  vm.runInContext(main.match(/const STORAGE_TAB_MESSAGE=[^\n]+/)[0] + '\n' + fn('showStorageTabConflict') + '\n' + fn('assertStorageTabCurrent') + '\n' + fn('writeProtectedState') + '\n' + save + '\n' + commit, context);
   C.applyBatch(source, [{card:baseCard()}], ()=>context.commit('test'), options());
   assert.deepEqual(writes,['existing-protected-key']); assert.equal(context.cloudQueues,1); assert.equal(context.rendered,1);
   const persisted = JSON.parse(stored.get('existing-protected-key'));

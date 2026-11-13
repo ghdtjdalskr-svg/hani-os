@@ -1,0 +1,15 @@
+{
+  "purpose": "Exact inverse of only the Calendar owner guard additions; the pre-existing core SHA-256 assertion stays unchanged.",
+  "edits": [
+    {
+      "name": "ownerAccess helper at clients/userFromRequest boundary",
+      "before": "  };\n}\nasync function userFromRequest(",
+      "after": "  };\n}\n// Same server-only owner allowlist policy as hani-learning-quiz / hani-second-opinion.\nfunction ownerAccess(user: { id?: string } | null, configuredId: string | undefined) {\n  const allowedId = (configuredId || \"\").trim();\n  if (!allowedId) return { ok: false, status: 503, error: \"OWNER_ACCESS_NOT_CONFIGURED\" };\n  if (!user?.id || user.id !== allowedId) return { ok: false, status: 403, error: \"OWNER_ACCESS_DENIED\" };\n  return { ok: true, status: 200, error: \"\" };\n}\n\nasync function userFromRequest("
+    },
+    {
+      "name": "post-auth owner check before JSON parsing",
+      "before": "    const user = await userFromRequest(req, admin);\n    const body = await req.json().catch(() => ({}));",
+      "after": "    const user = await userFromRequest(req, admin);\n    const access = ownerAccess(user, Deno.env.get(\"HANI_OWNER_USER_ID\"));\n    if (!access.ok) return json(req, { ok: false, error: access.error }, access.status);\n    const body = await req.json().catch(() => ({}));"
+    }
+  ]
+}

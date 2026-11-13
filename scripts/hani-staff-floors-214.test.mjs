@@ -9,6 +9,7 @@ import http from 'node:http';
 import vm from 'node:vm';
 import {fileURLToPath, pathToFileURL} from 'node:url';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
+import repository from './hani-test-repository-evidence.cjs';
 import {withoutDeskMascots} from './hani-desk-mascots-preservation.mjs';
 import {fixture as officeFixture} from './hani-building-206-engine.test.mjs';
 
@@ -54,7 +55,7 @@ test('28 art files exist, have the expected WebP dimensions and bounded sizes', 
 
 test('existing organization, board, remote and office render paths resolve every staff portrait', () => {
   // Execute the unchanged owner helpers with canonical roster input, without mounting or saving.
-  const portraitLine=read('hani-organization-hub.js').split('\n').filter(s=>s.includes('const portraitFiles=')||s.includes('const portrait =')).join('\n');
+  const portraitLine=read('hani-organization-hub.js').split('\n').filter(s=>s.includes('const portraitFiles=')||s.includes('const portraitSource=')||s.includes('const portrait =')).join('\n');
   const portrait=vm.runInNewContext(portraitLine+'; portrait;');
   const board=read('hani-board.js'), start=board.indexOf('  function avatar('), end=board.indexOf('  function authorCard(',start);
   const avatar=vm.runInNewContext(board.slice(start,end)+'; avatar;',{
@@ -91,7 +92,8 @@ test('pre-mascot runtime closure has no missing references; dynamic art also exi
   const union=new Set([...closure.files,...assets.map(a=>a.file)]);
   const bytes=[...union].reduce((n,file)=>n+fs.statSync(path.join(root,file)).size,0);
   const contract=JSON.parse(read('dev-center/one-pass-gate-contract.json'));
-  assert.equal(contract.contract_version,'2.0.9');
+  assert.deepEqual(contract,JSON.parse(repository.read(repository.baseline,'dev-center/one-pass-gate-contract.json')),'exact approved current gate contract');
+  assert.equal(contract.contract_version,'2.0.11');
   assert.equal(contract.limits.max_total_bytes,25000000);
   assert.ok(bytes<=contract.limits.max_total_bytes);
   assert.ok(closure.files.length<=contract.limits.max_files);
@@ -105,7 +107,7 @@ test('actual office renderer applies 217 plate-free backgrounds without mismatch
   for(const floor of ['4f','3f','2f','1f','5f','4f']) {
     f.click(floor);
     await new Promise(resolve=>setImmediate(resolve));
-    const src=['1f','2f','4f','5f'].includes(floor)?`./assets/building/floor-${floor}-217.webp`:`./assets/building/floor-${floor}-215.webp`;
+    const src=['1f','2f','4f','5f'].includes(floor)?`./assets/building/floor-${floor}-217.webp`:`./assets/building/floor-${floor}-218.webp`;
     assert.equal(f.map.dataset.art,'floor');
     assert.equal(f.map.querySelector('.hani-office-background').src,src);
     const patches=f.map.querySelectorAll('.hani-office-foreground').filter(image=>!image.hidden);
@@ -173,7 +175,7 @@ test('real browser: 217 plate-free backgrounds, staff portraits and no overflow 
       const host=await page.locator('#haniOfficeMap').elementHandle();
       for(const floor of ['4f','3f','2f','1f','5f']) {
         await page.locator(`[data-building-floor="${floor}"]`).click();
-        await page.waitForFunction(f=>{const map=document.querySelector('#haniOfficeMap'),img=map.querySelector('.hani-office-background');return map.dataset.floor===f&&map.dataset.art==='floor'&&['none','interior'].includes(map.dataset.mask)&&img.getAttribute('src')===(['1f','2f','4f','5f'].includes(f)?`./assets/building/floor-${f}-217.webp`:`./assets/building/floor-${f}-215.webp`)&&img.complete&&img.naturalWidth===1672;},floor);
+        await page.waitForFunction(f=>{const map=document.querySelector('#haniOfficeMap'),img=map.querySelector('.hani-office-background');return map.dataset.floor===f&&map.dataset.art==='floor'&&['none','interior'].includes(map.dataset.mask)&&img.getAttribute('src')===(['1f','2f','4f','5f'].includes(f)?`./assets/building/floor-${f}-217.webp`:`./assets/building/floor-${f}-218.webp`)&&img.complete&&img.naturalWidth===1672;},floor);
         assert.equal(await host.evaluate(node=>node===document.querySelector('#haniOfficeMap')),true,'persistent map slot');
         await page.locator('#haniOfficeMap .hani-office-foreground:visible').evaluateAll(images=>Promise.all(images.map(img=>img.decode())));
         await page.locator('#haniOfficeActors .hani-office-avatar:visible').evaluateAll(images=>Promise.all(images.map(img=>img.decode())));

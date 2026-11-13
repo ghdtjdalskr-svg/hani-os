@@ -81,14 +81,23 @@
 .hsj-sheet .hsj-badge{flex:none}
 .hsj-sheet .hsj-temp .hsj-score:has(.hsj-nodata){font-size:12px}
 /* One 5x2 sheet keeps the release inside the 128-file package contract. */
-.hsj-sheet [class*="hsj-p-"]{background-image:url("./assets/street-journal/chibi-sheet-v1.webp");background-size:500% 200%}
-.hsj-sheet .hsj-p-hani-point{background-position:0% 0%}
+.hsj-sheet [class*="hsj-p-"],.hani-chibi-note-art{background-image:url("./assets/street-journal/chibi-sheet-v1.webp");background-size:500% 200%}
+.hsj-sheet .hsj-p-hani-point,.hani-chibi-note .hsj-p-hani-point{background-position:0% 0%}
 .hsj-sheet .hsj-p-hani-cheer{background-position:25% 0%}
 .hsj-sheet .hsj-p-hani-think{background-position:50% 0%}
 .hsj-sheet .hsj-p-jieun-worried{background-position:75% 0%}
 .hsj-sheet .hsj-p-jieun-cheer{background-position:100% 0%}
-.hsj-sheet .hsj-p-jieun-think{background-position:0% 100%}
+.hsj-sheet .hsj-p-jieun-think,.hani-chibi-note .hsj-p-jieun-think{background-position:0% 100%}
 .hsj-sheet .hsj-p-minji-worried{background-position:25% 100%}
 .hsj-sheet .hsj-p-minji-cheer{background-position:50% 100%}
-.hsj-sheet .hsj-p-minji-think{background-position:75% 100%}
+.hsj-sheet .hsj-p-minji-think,.hani-chibi-note .hsj-p-minji-think{background-position:75% 100%}
 .hsj-sheet .hsj-p-seoyun-point{background-position:100% 100%}
+
+/* Chibi pack 1: existing sheet/coordinates, in-flow read-only owner slots. */
+.hani-chibi-note{display:flex;align-items:center;gap:10px;max-width:100%;margin:8px 0;color:var(--text);font-size:13px;line-height:1.5}
+.hani-chibi-note[hidden]{display:none!important}
+.hani-chibi-note-art{display:block;flex:0 0 72px;width:72px;height:72px;background-repeat:no-repeat}
+.hani-chibi-note-text{min-width:0;overflow-wrap:anywhere}
+#monthlyReportChibiNote{justify-content:flex-start;flex-direction:row-reverse}
+@media(max-width:600px){.hani-chibi-note{gap:8px;font-size:12px}.hani-chibi-note-art{flex-basis:56px;width:56px;height:56px}}
+@media print{.hani-chibi-note{display:none!important}}

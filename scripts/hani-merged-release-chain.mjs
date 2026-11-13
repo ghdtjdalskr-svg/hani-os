@@ -16,7 +16,10 @@ export function discoverMergedReleaseChain(git,baseSha){
  const prs=new Set();
  for(const row of history.slice(tip,anchor).reverse()){
   if(!/^release:/.test(row.subject))continue;
-  const match=row.subject.match(/^release: v(2\.9\.(\d+)) .+ \(#([1-9]\d*)\)$/);
+  // Approved 291 shipped without a description. Authorize only this exact
+  // commit/subject pair; unknown title-only releases still fail closed.
+  const match=row.subject.match(/^release: v(2\.9\.(\d+)) .+ \(#([1-9]\d*)\)$/)||
+   (row.sha==='55942f120fc06a87649009c21776a572fb8081e6'&&row.subject==='release: v2.9.291 (#497)'?['','2.9.291','291','497']:null);
   assert.ok(match,'release must identify a merged release PR: '+row.sha);
   assert.equal(Number(match[2]),next++,'merged releases must be contiguous and unique');
   const version=match[1];

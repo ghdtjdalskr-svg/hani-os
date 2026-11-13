@@ -1,0 +1,1713 @@
+{
+  "task": "tooling-287",
+  "dateKST": "2026-11-11",
+  "branch": "hani/tooling-287",
+  "designatedBase": "4086b9d",
+  "remoteFreshness": "not fetched; Git commands prohibited",
+  "node": "v24.20.0",
+  "legacyViewParity": {
+    "files": [
+      "index.html",
+      "hani-main.js",
+      "assets/data/hani-history-releases-v1.json",
+      "hani-office-live.js",
+      "hani-office-live.css",
+      "assets/data/newsroom-4cut/issues.json",
+      "hani-design-system.css",
+      "hani-newsroom-4cut.js",
+      "hani-procrastination-board.js",
+      "hani-procrastination-board.css"
+    ],
+    "comparisons": 300,
+    "pass": true
+  },
+  "status": "tooling verified; Git-dependent cases remain unverified",
+  "gitCommands": 0,
+  "runtimeFilesPreserved": 79,
+  "changedFiles": [
+    {
+      "file": "scripts/fixtures/release-version-layers.json",
+      "before": "9d8ba4e14a8fe8eba5ec54710ad1f946a68e19d7538edb0ef9406bf001d03ec2",
+      "after": "28e0390677753fdb8fbacc98212d1bc34a04e16837adb54d8bb633aa0e4f6792"
+    },
+    {
+      "file": "scripts/hani-office-kids-286-source.test.mjs",
+      "before": "3501e289acb6db6afcf4ec2e593c83009088b1304783edd6236355f6c9f10784",
+      "after": "ef26e1ee8ea031e1e1b29c84ff81c0023211d4f085a1c9751034e027b80be7ca"
+    },
+    {
+      "file": "scripts/hani-release-version-layers.cjs",
+      "before": "f57829fe4415a23b214a54aaa1f06c395bcbbee4ad12aec88caf565501dbe6d4",
+      "after": "fe9a2cda20c971f942644147e85df20abd8cf4912bd9d44ce0514b0becd57d24"
+    },
+    {
+      "file": "scripts/hani-release-version-layers.test.mjs",
+      "before": "7f2259091455e42e66eb1ebb5b4b9078e83136d435f9829cd66517bcdde794ed",
+      "after": "748e036a8c58ad9d668a4b45012657d3397909e687a426a933ef54141ab8b95b"
+    },
+    {
+      "file": "scripts/hani-save-guard-source.cjs",
+      "before": "de2765f20ddcc800cf30931b5578dd764aacf146004909f2001edb4e5a636087",
+      "after": "53633ae78810e2522bf755a41306bbeb8e3282e6f3bbe62a5b8874dfa5b2fe51"
+    },
+    {
+      "file": "scripts/hani-save-guard.test.mjs",
+      "before": "8d917d9ac9193ec917c6204912b0d797f29a12f4f12e92d6c8aa1fc2c0a23cef",
+      "after": "20bb1e02cda362082dcb5f9d6eedf4cad0589c2c0e829af2015d31d72962bf91"
+    }
+  ],
+  "summary": {
+    "office": {
+      "files": 73,
+      "passedFiles": 45,
+      "tests": 828,
+      "pass": 790,
+      "gitBlocked": 35,
+      "otherFailures": 0,
+      "skipped": 3
+    },
+    "related": {
+      "files": 15,
+      "passedFiles": 14,
+      "tests": 90,
+      "pass": 89,
+      "gitBlocked": 1,
+      "otherFailures": 0,
+      "skipped": 0
+    },
+    "m9": {
+      "files": 1,
+      "passedFiles": 1,
+      "tests": 15,
+      "pass": 15,
+      "gitBlocked": 0,
+      "otherFailures": 0,
+      "skipped": 0
+    }
+  },
+  "tests": {
+    "office": [
+      {
+        "file": "hani-office-219.test.mjs",
+        "exit": 1,
+        "seconds": 0.36,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-219.test.mjs",
+        "counts": {
+          "fail": 1,
+          "pass": 0,
+          "skipped": 0,
+          "tests": 1
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 1 - scripts\\\\hani-office-219.test.mjs",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "a3d16e3f1135d4be4ccbc51d7aa272809ca1a68ec7ae596f5c47d83d4ac80664"
+      },
+      {
+        "file": "hani-office-actions-216.test.mjs",
+        "exit": 1,
+        "seconds": 51.16,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-actions-216.test.mjs",
+        "counts": {
+          "fail": 1,
+          "pass": 14,
+          "skipped": 0,
+          "tests": 15
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 7 - approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "fdb729a07f94d48943e4619b58b14c64503ddd3f9db46501273e9f21a8a94cf6"
+      },
+      {
+        "file": "hani-office-actions-221.test.mjs",
+        "exit": 0,
+        "seconds": 6.62,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-actions-221.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 20,
+          "skipped": 0,
+          "tests": 20
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "ca13e8062c34fddb5d2240e9c6df64c388c3f1e1da7d6a28eff5406d12da4d1e"
+      },
+      {
+        "file": "hani-office-affinity-274-pins.test.mjs",
+        "exit": 1,
+        "seconds": 0.88,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-affinity-274-pins.test.mjs",
+        "counts": {
+          "fail": 1,
+          "pass": 2,
+          "skipped": 0,
+          "tests": 3
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 3 - 274 base commit independently proves the entire original JS/CSS/helper blobs",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "d82406201262356be65319ede0065fca1f61b61b1c62dd2cdccd4d794460530f"
+      },
+      {
+        "file": "hani-office-affinity-cap.test.mjs",
+        "exit": 0,
+        "seconds": 8.5,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-affinity-cap.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 19,
+          "skipped": 0,
+          "tests": 19
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "80dfa44d27f62b12cd460ed540ea8c866e54b645be4ecf5c12d8f32d290b46b5"
+      },
+      {
+        "file": "hani-office-affinity-storage.test.mjs",
+        "exit": 0,
+        "seconds": 0.22,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-affinity-storage.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 3,
+          "skipped": 0,
+          "tests": 3
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "59a3bee769b52a361aaba48e880f94899df3b3fef44b181d756d7be0717115ed"
+      },
+      {
+        "file": "hani-office-affinity.test.mjs",
+        "exit": 0,
+        "seconds": 13.38,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-affinity.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 21,
+          "skipped": 0,
+          "tests": 21
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "7a51f5ef78f70a58b3a1581325f82dc9725c8f3a2d196d72d72c7f82de0fba83"
+      },
+      {
+        "file": "hani-office-barista-night-273-pins.test.mjs",
+        "exit": 1,
+        "seconds": 0.92,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-barista-night-273-pins.test.mjs",
+        "counts": {
+          "fail": 1,
+          "pass": 4,
+          "skipped": 0,
+          "tests": 5
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 5 - 273: fixed Git release blobs independently prove every baseline pin and complete diff",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "11bf968c3a3bde94d6584610893083344bd03fd71225ae6cc6e709e7100dc36b"
+      },
+      {
+        "file": "hani-office-barista-night.test.mjs",
+        "exit": 0,
+        "seconds": 21.66,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-barista-night.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 13,
+          "skipped": 0,
+          "tests": 13
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "72c94ec89317ef1c38957cb8b1859fb1ce4a56ec1795061d35e4b7403753e6b8"
+      },
+      {
+        "file": "hani-office-barista.test.mjs",
+        "exit": 0,
+        "seconds": 9.54,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-barista.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 10,
+          "skipped": 0,
+          "tests": 10
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "7f79c87dfbed5bf64c33a323b4a2f4961e452d9e65abb5b05a2cfbcd3cee59e9"
+      },
+      {
+        "file": "hani-office-behavior.test.mjs",
+        "exit": 0,
+        "seconds": 61.63,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-behavior.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 10,
+          "skipped": 0,
+          "tests": 10
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "1487f854d0adcc2f67d8d21d2539f79962bd90edf73874596f12eb88af443b4e"
+      },
+      {
+        "file": "hani-office-bori-m9.test.mjs",
+        "exit": 0,
+        "seconds": 85.44,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-bori-m9.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 2,
+          "skipped": 0,
+          "tests": 2
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "68ce9b7f5bae6d9d1a2c14d91d764fb003c2ec4c7fbdb8496d0bb9ac6a23f4fc"
+      },
+      {
+        "file": "hani-office-bori-stroll.test.mjs",
+        "exit": 1,
+        "seconds": 288.89,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-bori-stroll.test.mjs",
+        "counts": {
+          "fail": 1,
+          "pass": 13,
+          "skipped": 0,
+          "tests": 14
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 8 - stroll inverse independently matches the fixed Git base",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "39fa2c216a6ee4f300b56f38933aefdd7366107d6ccf9a330cdeb82977d591b9"
+      },
+      {
+        "file": "hani-office-bubble-close.test.mjs",
+        "exit": 0,
+        "seconds": 9.56,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-bubble-close.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 17,
+          "skipped": 0,
+          "tests": 17
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "c026ff4a75531e0f466817f91dd85e50c4a7737ef4694e0b08915882a653cc56"
+      },
+      {
+        "file": "hani-office-cafe-rest.test.mjs",
+        "exit": 1,
+        "seconds": 3.3,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-cafe-rest.test.mjs",
+        "counts": {
+          "fail": 1,
+          "pass": 3,
+          "skipped": 0,
+          "tests": 4
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 1 - cafe route uses clear lower-right floor, retains the lounge and sign mounting surface",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "09ea76d5ff75caec8d686cc476529be78be84a9b0b529b83a042a8171c2a67e4"
+      },
+      {
+        "file": "hani-office-chairman-234.test.mjs",
+        "exit": 0,
+        "seconds": 1.26,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-chairman-234.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 6,
+          "skipped": 0,
+          "tests": 6
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "92395d78300a73475525de85c7b8e7b22a5f2cec333be447b955a472e7e9f51e"
+      },
+      {
+        "file": "hani-office-chairman-patrol-278-pins.test.mjs",
+        "exit": 1,
+        "seconds": 2.18,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-chairman-patrol-278-pins.test.mjs",
+        "counts": {
+          "fail": 6,
+          "pass": 6,
+          "skipped": 0,
+          "tests": 12
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 2 - 278 independent fixed Git blobs prove pre-patrol bytes",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          },
+          {
+            "name": "not ok 4 - 278 kids extension independently matches its fixed Git base",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          },
+          {
+            "name": "not ok 6 - 278 visit extension independently matches fixed Git base",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          },
+          {
+            "name": "not ok 8 - 278 staff-chat extension independently matches fixed Git base",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          },
+          {
+            "name": "not ok 10 - 278 bubble placement extension independently matches fixed Git base",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          },
+          {
+            "name": "not ok 12 - 278 optimization extension independently matches fixed Git base",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "1f6116f9cedf5df856bbd5c37e21bae482155cc82ed52cc2e281b45b0205ac19"
+      },
+      {
+        "file": "hani-office-chairman-patrol.test.mjs",
+        "exit": 0,
+        "seconds": 12.71,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-chairman-patrol.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 15,
+          "skipped": 0,
+          "tests": 15
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "8d085950cb297b46c3723afca12559a1b199a6d1189a27bc69aa76d6388eb640"
+      },
+      {
+        "file": "hani-office-companion-homes.test.mjs",
+        "exit": 1,
+        "seconds": 92.13,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-companion-homes.test.mjs",
+        "counts": {
+          "fail": 1,
+          "pass": 15,
+          "skipped": 0,
+          "tests": 16
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 8 - home extension independently matches the specified fixed Git base",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "1debe27cc0180547b25873e8db672a4ceff9d7f6af5ecc9bd554d9733961f190"
+      },
+      {
+        "file": "hani-office-companions-276-pins.test.mjs",
+        "exit": 1,
+        "seconds": 0.88,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-companions-276-pins.test.mjs",
+        "counts": {
+          "fail": 1,
+          "pass": 2,
+          "skipped": 0,
+          "tests": 3
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 2 - 276 fixed Git base independently proves every original blob",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "0f43fb311b022a8c7dcaaf0ec6fdd8e302780368387dceac26bad1ca80b9bb9a"
+      },
+      {
+        "file": "hani-office-companions.test.mjs",
+        "exit": 0,
+        "seconds": 11.73,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-companions.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 17,
+          "skipped": 0,
+          "tests": 17
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "233f467fc16af85c91c18e8fdd0d08e294e32e4689c7a40dd88f34dbfc768ed2"
+      },
+      {
+        "file": "hani-office-consult.test.mjs",
+        "exit": 1,
+        "seconds": 33.4,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-consult.test.mjs",
+        "counts": {
+          "fail": 1,
+          "pass": 19,
+          "skipped": 0,
+          "tests": 20
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 14 - consult: sofa wording, counter words, safety owners and runtime timers",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "ce8d008b5467ab21cab6ac26e76a5682235430bba62aad648964671bac67d682"
+      },
+      {
+        "file": "hani-office-crowded-labels.test.mjs",
+        "exit": 0,
+        "seconds": 0.88,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-crowded-labels.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 19,
+          "skipped": 0,
+          "tests": 19
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "35b6844f521b15dbd11bc76c817a041264a402fafbe106e3e4b051a52bd21141"
+      },
+      {
+        "file": "hani-office-drama.test.mjs",
+        "exit": 0,
+        "seconds": 22.57,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-drama.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 20,
+          "skipped": 0,
+          "tests": 20
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "230601d21a5e2e6a9955260f1050078af015b26186bb693d5900621bdadd28d4"
+      },
+      {
+        "file": "hani-office-fix-218.test.mjs",
+        "exit": 0,
+        "seconds": 2.53,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-fix-218.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 6,
+          "skipped": 0,
+          "tests": 6
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "5c2ea6eba993ecf2a45d8ab648260204cc2e6189781e80c83fe039782c1ecf36"
+      },
+      {
+        "file": "hani-office-floor-bubble.test.mjs",
+        "exit": 0,
+        "seconds": 1.62,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-floor-bubble.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 21,
+          "skipped": 0,
+          "tests": 21
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "765bf77fa1021a707b236fc9f3cd652b363bd920b71577b68034db226bf326c2"
+      },
+      {
+        "file": "hani-office-hd-224.test.mjs",
+        "exit": 0,
+        "seconds": 2.61,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-hd-224.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 10,
+          "skipped": 0,
+          "tests": 10
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "6bf50796831edf56175ac7e7ea199a356b096ebda1297a1f14cc3aef98c272aa"
+      },
+      {
+        "file": "hani-office-icons.test.mjs",
+        "exit": 1,
+        "seconds": 11.77,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-icons.test.mjs",
+        "counts": {
+          "fail": 1,
+          "pass": 14,
+          "skipped": 0,
+          "tests": 15
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 14 - icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "3f57f765aff9a1ea11e0eb6f40af057154dc5860f887b992e59c32f9599dfce3"
+      },
+      {
+        "file": "hani-office-kids-286-source.test.mjs",
+        "exit": 0,
+        "seconds": 0.27,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-kids-286-source.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 3,
+          "skipped": 0,
+          "tests": 3
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "514c8c70a89cb6dd2795965619107abfecd4e51e5344e7f27190b554d20feb52"
+      },
+      {
+        "file": "hani-office-kids-lively.test.mjs",
+        "exit": 0,
+        "seconds": 17.32,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-kids-lively.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 15,
+          "skipped": 0,
+          "tests": 15
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "d67aa513081fa4be9750eb700a5aaad0d07229ab0ca747d552cd76cbbd507099"
+      },
+      {
+        "file": "hani-office-kids-merge.test.mjs",
+        "exit": 0,
+        "seconds": 2.52,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-kids-merge.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 10,
+          "skipped": 0,
+          "tests": 10
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "bef67833b4012c39c57068a06587095afa9fe30b5303191c80d07b8db64b2ef7"
+      },
+      {
+        "file": "hani-office-kids-pose-b.test.mjs",
+        "exit": 0,
+        "seconds": 14.48,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-kids-pose-b.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 13,
+          "skipped": 0,
+          "tests": 13
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "32c262e25ea037a10ee509a479595477192a5055e9e4110b6c5f0451e01de4d1"
+      },
+      {
+        "file": "hani-office-kids-visit.test.mjs",
+        "exit": 0,
+        "seconds": 48.74,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-kids-visit.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 16,
+          "skipped": 0,
+          "tests": 16
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "1c8c1710746b37dce66534635695f859cc0217a12e5a79e65915ac253b2dda82"
+      },
+      {
+        "file": "hani-office-kids-weekday.test.mjs",
+        "exit": 0,
+        "seconds": 108.81,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-kids-weekday.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 19,
+          "skipped": 0,
+          "tests": 19
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "9dbedff8a2faad913e75eafe769aca404460c76c6bf5fd7e2d88d47a1bd47304"
+      },
+      {
+        "file": "hani-office-labels-qa.test.mjs",
+        "exit": 0,
+        "seconds": 7.48,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-labels-qa.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 17,
+          "skipped": 0,
+          "tests": 17
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "a756334c5f974351514a94534861c41c21d24fa48bc623b1d3914ea697b764e1"
+      },
+      {
+        "file": "hani-office-lively-v2.test.mjs",
+        "exit": 1,
+        "seconds": 20.09,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-lively-v2.test.mjs",
+        "counts": {
+          "fail": 1,
+          "pass": 7,
+          "skipped": 0,
+          "tests": 8
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 6 - obr2: deterministic query order, reduced motion and frozen spatial bytes",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "498bfe44562f7a405c1e9d98163f6ce767853c386a90283852a7364f13e3f095"
+      },
+      {
+        "file": "hani-office-lively.test.mjs",
+        "exit": 0,
+        "seconds": 31.77,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-lively.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 13,
+          "skipped": 0,
+          "tests": 13
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "155009aee7d30f3c36426fd223a0f787e333178c8758130e3934da2b73f3efb7"
+      },
+      {
+        "file": "hani-office-mascot-label.test.mjs",
+        "exit": 1,
+        "seconds": 34.86,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-mascot-label.test.mjs",
+        "counts": {
+          "fail": 1,
+          "pass": 9,
+          "skipped": 0,
+          "tests": 10
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 7 - outer exact inverse independently restores fixed affinity HEAD and rejects partial/duplicate/unrelated edits",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "e724a269599c635ec7eea7c1521651193c580ecd8aaa4607efd87150246a55c3"
+      },
+      {
+        "file": "hani-office-motion-1.test.mjs",
+        "exit": 0,
+        "seconds": 3.94,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-motion-1.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 16,
+          "skipped": 0,
+          "tests": 16
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "d93a7303b922a5a1484a970bce34effced9cf8fb87397b1f4be95770393dd276"
+      },
+      {
+        "file": "hani-office-motion-2.test.mjs",
+        "exit": 0,
+        "seconds": 1.21,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-motion-2.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 24,
+          "skipped": 0,
+          "tests": 24
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "58636356a505d34068f866f504995f03682cc8e831b25c61b6cb46d4d702e544"
+      },
+      {
+        "file": "hani-office-obr10.test.mjs",
+        "exit": 0,
+        "seconds": 2.64,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr10.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 4,
+          "skipped": 0,
+          "tests": 4
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "a4f2031e1487a3f22d5b383603cee923dc0010a9267b073ccb2ca5d51aa86900"
+      },
+      {
+        "file": "hani-office-obr12.test.mjs",
+        "exit": 1,
+        "seconds": 0.23,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr12.test.mjs",
+        "counts": {
+          "fail": 1,
+          "pass": 0,
+          "skipped": 0,
+          "tests": 1
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 1 - scripts\\\\hani-office-obr12.test.mjs",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "abc6f70bce262ac45be26c27aa33932f4117ab46fee36fb19d5cb64c0def21b2"
+      },
+      {
+        "file": "hani-office-obr14.test.mjs",
+        "exit": 1,
+        "seconds": 118.43,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr14.test.mjs",
+        "counts": {
+          "fail": 1,
+          "pass": 4,
+          "skipped": 0,
+          "tests": 5
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 1 - 235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "16ec2b36ac094de448686a135d1fedc386e86c5bc6872a5282ebe4018efda76c"
+      },
+      {
+        "file": "hani-office-obr15.test.mjs",
+        "exit": 1,
+        "seconds": 13.75,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr15.test.mjs",
+        "counts": {
+          "fail": 1,
+          "pass": 13,
+          "skipped": 0,
+          "tests": 14
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 7 - obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "f00eedfaa085ab46555464007b2f6f35b70bb984da278ff665a8a0dadc934186"
+      },
+      {
+        "file": "hani-office-obr16.test.mjs",
+        "exit": 0,
+        "seconds": 7.81,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr16.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 12,
+          "skipped": 0,
+          "tests": 12
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "c3fce05b772a5630f20c580d214907f2ef77d01d763dc17160d572383c5977fe"
+      },
+      {
+        "file": "hani-office-obr17.test.mjs",
+        "exit": 0,
+        "seconds": 2.38,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr17.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 3,
+          "skipped": 0,
+          "tests": 3
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "220b5a959a88c65ee7fa3525c6ed5a0d3be579c80c4314b6d9ca0f869a09cbc5"
+      },
+      {
+        "file": "hani-office-obr18.test.mjs",
+        "exit": 0,
+        "seconds": 5.77,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr18.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 12,
+          "skipped": 0,
+          "tests": 12
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "977e08525dfbe8920224f5d0f0b77ee3c7e97444528083d28dd9b434e8193307"
+      },
+      {
+        "file": "hani-office-obr19.test.mjs",
+        "exit": 0,
+        "seconds": 4.83,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr19.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 3,
+          "skipped": 0,
+          "tests": 3
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "db0dc7d975d1f339cc58e4e67a7291de214fb297f150c6b37fb6fc898fd35f96"
+      },
+      {
+        "file": "hani-office-obr21.test.mjs",
+        "exit": 1,
+        "seconds": 33.66,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr21.test.mjs",
+        "counts": {
+          "fail": 2,
+          "pass": 4,
+          "skipped": 0,
+          "tests": 6
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 4 - obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          },
+          {
+            "name": "not ok 5 - obr21 cached gathering/index decisions equal full index rebuilds",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "011e86de4d4c482694dcba5ce85be5f68a2e92638295ff4a76ff907f5b997e1d"
+      },
+      {
+        "file": "hani-office-obr3.test.mjs",
+        "exit": 0,
+        "seconds": 2.84,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr3.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 5,
+          "skipped": 0,
+          "tests": 5
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "8759e8a19ed84f67462c77fc0071f6f7dfa283d35f4a74b21e9713a96bd5d0ab"
+      },
+      {
+        "file": "hani-office-obr4.test.mjs",
+        "exit": 1,
+        "seconds": 0.55,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr4.test.mjs",
+        "counts": {
+          "fail": 2,
+          "pass": 8,
+          "skipped": 0,
+          "tests": 10
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 7 - obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          },
+          {
+            "name": "not ok 8 - obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "2e7ba597bd8fd557c3f796314d32d27578945f418d80af54df1221c8904c3078"
+      },
+      {
+        "file": "hani-office-obr6.test.mjs",
+        "exit": 1,
+        "seconds": 0.87,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr6.test.mjs",
+        "counts": {
+          "fail": 1,
+          "pass": 0,
+          "skipped": 0,
+          "tests": 1
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 1 - scripts\\\\hani-office-obr6.test.mjs",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "15d2f526f589766d321c5fbc58de90dfc96072ad7eec5a65076dfc63aa7b7bfe"
+      },
+      {
+        "file": "hani-office-obr7.test.mjs",
+        "exit": 1,
+        "seconds": 0.24,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr7.test.mjs",
+        "counts": {
+          "fail": 1,
+          "pass": 0,
+          "skipped": 0,
+          "tests": 1
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 1 - scripts\\\\hani-office-obr7.test.mjs",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "15c992b369cc584fa0b0883170762aee43bc3aa33d94f611cdebbbc01d9c1025"
+      },
+      {
+        "file": "hani-office-obr8.test.mjs",
+        "exit": 1,
+        "seconds": 2.51,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr8.test.mjs",
+        "counts": {
+          "fail": 1,
+          "pass": 2,
+          "skipped": 0,
+          "tests": 3
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 1 - obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "ab89bbd4b21927a442931b3ebc48b14f78ef30eaa9d2dbfea732e16611cb5b3f"
+      },
+      {
+        "file": "hani-office-obr9.test.mjs",
+        "exit": 1,
+        "seconds": 0.22,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr9.test.mjs",
+        "counts": {
+          "fail": 1,
+          "pass": 0,
+          "skipped": 0,
+          "tests": 1
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 1 - scripts\\\\hani-office-obr9.test.mjs",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "0fa2d8eae472c26877dca5719b67145fb658dc55da019ae635d2c36622546b29"
+      },
+      {
+        "file": "hani-office-pet-bori-272-pins.test.mjs",
+        "exit": 1,
+        "seconds": 1.19,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-pet-bori-272-pins.test.mjs",
+        "counts": {
+          "fail": 1,
+          "pass": 3,
+          "skipped": 0,
+          "tests": 4
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 4 - 272: fixed Git release blobs independently prove every baseline pin and complete diff",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "f306aa622ddc3d98fc4ee5324a80592ef5b0ceccf96f6fb756755260b02892af"
+      },
+      {
+        "file": "hani-office-pet-bori.test.mjs",
+        "exit": 0,
+        "seconds": 58.06,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-pet-bori.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 14,
+          "skipped": 0,
+          "tests": 14
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "35f40bcb99843647fb594de4637f0461199d03d604e18b3cbd95dc80a893376d"
+      },
+      {
+        "file": "hani-office-pets-268-pins.test.mjs",
+        "exit": 1,
+        "seconds": 0.55,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-pets-268-pins.test.mjs",
+        "counts": {
+          "fail": 1,
+          "pass": 0,
+          "skipped": 0,
+          "tests": 1
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 1 - v2.9.268: exact fixture pairs are the complete diff from pinned origin/main, with no other source edits",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "621f8953b47ebf2f5bd235dd416f2ff06afd431ff2c83b3710832d4d0e8e0733"
+      },
+      {
+        "file": "hani-office-pets-bubble.test.mjs",
+        "exit": 1,
+        "seconds": 62.76,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-pets-bubble.test.mjs",
+        "counts": {
+          "fail": 1,
+          "pass": 21,
+          "skipped": 0,
+          "tests": 22
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 13 - resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "4eb3b166f7f9daac60fc37005d53c2963fd5c4a22894238b871cfd4351b5238d"
+      },
+      {
+        "file": "hani-office-props.test.mjs",
+        "exit": 0,
+        "seconds": 4.84,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-props.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 11,
+          "skipped": 0,
+          "tests": 11
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "0493250f1b5ca34ee9b07e94d94cddb52459882434a4b45926a0dedd5e1d3fc2"
+      },
+      {
+        "file": "hani-office-release-projection.test.mjs",
+        "exit": 0,
+        "seconds": 0.22,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-release-projection.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 2,
+          "skipped": 0,
+          "tests": 2
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "c32aad5f15c418c9d1e4b770e5a355b6fccd359df2223a29571adeec121cacd4"
+      },
+      {
+        "file": "hani-office-residents.test.mjs",
+        "exit": 0,
+        "seconds": 94.97,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-residents.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 49,
+          "skipped": 0,
+          "tests": 49
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "9e00b37a40b3bfa923ed9e8ed7c903192ff6fa0a9918dfd85c8dd936b53c3614"
+      },
+      {
+        "file": "hani-office-seats-215.test.mjs",
+        "exit": 0,
+        "seconds": 0.86,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-seats-215.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 12,
+          "skipped": 0,
+          "tests": 12
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "18141dd41f27360582bc78caafe0dfba6753c596234564f0fb126e9140215b96"
+      },
+      {
+        "file": "hani-office-snack.test.mjs",
+        "exit": 0,
+        "seconds": 22.36,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-snack.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 26,
+          "skipped": 0,
+          "tests": 26
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "30dd02d484957054b11f71765335cd157433a5789afe1cdf065e938c6066542a"
+      },
+      {
+        "file": "hani-office-staff-chat.test.mjs",
+        "exit": 0,
+        "seconds": 92.33,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-staff-chat.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 17,
+          "skipped": 0,
+          "tests": 17
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "a4f5bc356415d97f33f346d754f279ae1ac4025be702b8e19fe95beacf825c55"
+      },
+      {
+        "file": "hani-office-tap-lines.test.mjs",
+        "exit": 0,
+        "seconds": 2.51,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-tap-lines.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 15,
+          "skipped": 0,
+          "tests": 15
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "7d6656dc19d5bb69cb5561247c3fae6c42c6eeac6a171413ec9c5164fe6dd10d"
+      },
+      {
+        "file": "hani-office-tlayout.test.mjs",
+        "exit": 0,
+        "seconds": 18.33,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-tlayout.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 13,
+          "skipped": 0,
+          "tests": 13
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "574c582f9038535fea69f73650ec17aee326a8244f5515290796394926fb69ad"
+      },
+      {
+        "file": "hani-office-top-labels.test.mjs",
+        "exit": 0,
+        "seconds": 0.23,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-top-labels.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 7,
+          "skipped": 0,
+          "tests": 7
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "6aa45faa919766e66114172cff3e9e98faa2d4174d6f904df210ac702e1e90c9"
+      },
+      {
+        "file": "hani-office-v2-215.test.mjs",
+        "exit": 1,
+        "seconds": 0.88,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-v2-215.test.mjs",
+        "counts": {
+          "fail": 1,
+          "pass": 17,
+          "skipped": 2,
+          "tests": 20
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 7 - frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "bfaece6b6a7b6bdd89c714245d51b4a0f95519f4affd56ec15f7c202fe38f9d2"
+      },
+      {
+        "file": "hani-office-visitors-cafe.test.mjs",
+        "exit": 0,
+        "seconds": 4.89,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-visitors-cafe.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 5,
+          "skipped": 0,
+          "tests": 5
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "d63e93108d9cac22c8fd9c6babb156ac2782bcb39e609513c51f267090984c08"
+      },
+      {
+        "file": "hani-office-xmas-269-pins.test.mjs",
+        "exit": 1,
+        "seconds": 0.54,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-xmas-269-pins.test.mjs",
+        "counts": {
+          "fail": 1,
+          "pass": 1,
+          "skipped": 0,
+          "tests": 2
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 2 - v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "c57f7ed8474ee60b38f5a7b4ca3568387dc416e72c7704d49bf01b3bb2c789f4"
+      },
+      {
+        "file": "hani-office-xmas.test.mjs",
+        "exit": 1,
+        "seconds": 1.62,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-xmas.test.mjs",
+        "counts": {
+          "fail": 1,
+          "pass": 12,
+          "skipped": 0,
+          "tests": 13
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 12 - xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "36e56ad15b32811be585ff0423ae90b5eecb573dbdac4a0fe7b7babfd0e2ddf5"
+      },
+      {
+        "file": "hani-office-zoom.test.mjs",
+        "exit": 0,
+        "seconds": 16.32,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-zoom.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 12,
+          "skipped": 1,
+          "tests": 13
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "250dbc8bace228044a233df49f6778a92704e30d40a0b822fd8728e801c708c6"
+      }
+    ],
+    "related": [
+      {
+        "file": "hani-board.test.mjs",
+        "exit": 0,
+        "seconds": 0.11,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --test --test-isolation=none --test-reporter=tap scripts/hani-board.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 1,
+          "skipped": 0,
+          "tests": 1
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "aa920a4d684cef9df74aec177fa25ffe17df393b26b3cf3b93f392553dd798e8"
+      },
+      {
+        "file": "hani-cloud-conflict-choice.test.mjs",
+        "exit": 0,
+        "seconds": 0.08,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --test --test-isolation=none --test-reporter=tap scripts/hani-cloud-conflict-choice.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 1,
+          "skipped": 0,
+          "tests": 1
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "f143fdb37139db8df9003868eebf5a562c4651295fb717bbaffafa91e2c5023b"
+      },
+      {
+        "file": "hani-cloud-egress-save-sim.test.mjs",
+        "exit": 0,
+        "seconds": 0.12,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --test --test-isolation=none --test-reporter=tap scripts/hani-cloud-egress-save-sim.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 1,
+          "skipped": 0,
+          "tests": 1
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "2d46246000e5f5cf74b1c7bf04b0c7392c1ff68b4e8b81e5b4e8f7ed4e1746dc"
+      },
+      {
+        "file": "hani-cloud-first.test.mjs",
+        "exit": 0,
+        "seconds": 0.1,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --test --test-isolation=none --test-reporter=tap scripts/hani-cloud-first.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 1,
+          "skipped": 0,
+          "tests": 1
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "e779443eaddcc91baf9d888c223267029b1586653b09dcd9e3f3acebb0d4b88f"
+      },
+      {
+        "file": "hani-dev-report-generate.test.mjs",
+        "exit": 0,
+        "seconds": 0.38,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --test --test-isolation=none --test-reporter=tap scripts/hani-dev-report-generate.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 1,
+          "skipped": 0,
+          "tests": 1
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "internalGroups": 10,
+        "logSha256": "363518a6876ed9b104a368723f6767cc82e946ae0191b05319cf2f6c85b70af1"
+      },
+      {
+        "file": "hani-egress-fix.test.mjs",
+        "exit": 0,
+        "seconds": 0.38,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --test --test-isolation=none --test-reporter=tap scripts/hani-egress-fix.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 1,
+          "skipped": 0,
+          "tests": 1
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "4f384a917235e7953e4bd51308d025d6a1f1d420beba1bbc103f45d0c4201772"
+      },
+      {
+        "file": "hani-investment-research.test.cjs",
+        "exit": 0,
+        "seconds": 0.1,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --test --test-isolation=none --test-reporter=tap scripts/hani-investment-research.test.cjs",
+        "counts": {
+          "fail": 0,
+          "pass": 15,
+          "skipped": 0,
+          "tests": 15
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "80e8c0465654311988a53230b0d64341f08382952775f0feb0169ed74ca63fb7"
+      },
+      {
+        "file": "hani-life-bundle-source.test.mjs",
+        "exit": 0,
+        "seconds": 0.91,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --test --test-isolation=none --test-reporter=tap scripts/hani-life-bundle-source.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 5,
+          "skipped": 0,
+          "tests": 5
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "d6cde13c0a6a6c51bb0f442ec2fe06c4423f3660920bbd9c0b7f44dfbe41b19b"
+      },
+      {
+        "file": "hani-newsroom-285-source.test.mjs",
+        "exit": 0,
+        "seconds": 0.16,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --test --test-isolation=none --test-reporter=tap scripts/hani-newsroom-285-source.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 2,
+          "skipped": 0,
+          "tests": 2
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "ff2e0da7d831bd13414309943be9b32785e12bb36d5f916e68025f8bdbad5c36"
+      },
+      {
+        "file": "hani-newsroom-4cut-230.test.mjs",
+        "exit": 1,
+        "seconds": 0.13,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --test --test-isolation=none --test-reporter=tap scripts/hani-newsroom-4cut-230.test.mjs --node",
+        "counts": {
+          "fail": 1,
+          "pass": 7,
+          "skipped": 0,
+          "tests": 8
+        },
+        "gitBlocked": true,
+        "failures": [
+          {
+            "name": "not ok 8 - release closure literal, static lazy dimensions, canonical route and no new duplicate id literals",
+            "status": "git-blocked",
+            "error": "'USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified'"
+          }
+        ],
+        "logSha256": "f62e81c112fe90caa07d7040334b1485662c61f315626dc07c54ff77007c0096"
+      },
+      {
+        "file": "hani-pb-chibitoon.test.mjs",
+        "exit": 0,
+        "seconds": 0.56,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --test --test-isolation=none --test-reporter=tap scripts/hani-pb-chibitoon.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 5,
+          "skipped": 0,
+          "tests": 5
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "e4c67883478d13dd556625036834eac0d5b93701448ff299147b3ac415399662"
+      },
+      {
+        "file": "hani-procrastination-board.test.mjs",
+        "exit": 0,
+        "seconds": 0.59,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --test --test-isolation=none --test-reporter=tap scripts/hani-procrastination-board.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 6,
+          "skipped": 0,
+          "tests": 6
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "426b8f6a8bb3a6584bba0588473577392a1fc82ec4514579ea215bb2afbef915"
+      },
+      {
+        "file": "hani-release-version-layers.test.mjs",
+        "exit": 0,
+        "seconds": 1.04,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --test --test-isolation=none --test-reporter=tap scripts/hani-release-version-layers.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 7,
+          "skipped": 0,
+          "tests": 7
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "ae9055c3ea812b833de8fac022635798ec56e57277bef63095273d5c5cab92d9"
+      },
+      {
+        "file": "hani-save-guard.test.mjs",
+        "exit": 0,
+        "seconds": 0.17,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --test --test-isolation=none --test-reporter=tap scripts/hani-save-guard.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 10,
+          "skipped": 0,
+          "tests": 10
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "798461b6a9b3099ee20ae585fff98e036813249e435602ed78f02453c9eacd53"
+      },
+      {
+        "file": "hani-study-retry.test.mjs",
+        "exit": 0,
+        "seconds": 0.41,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --test --test-isolation=none --test-reporter=tap scripts/hani-study-retry.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 26,
+          "skipped": 0,
+          "tests": 26
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "81042ae689ad13f0c76c85f91acef01e109b9879a0ed76b8dfb13addaeb15f12"
+      }
+    ],
+    "m9": [
+      {
+        "file": "hani-seoyun-m9.test.mjs",
+        "exit": 0,
+        "seconds": 3.35,
+        "command": "node --require C:\\Users\\홍성민\\AppData\\Local\\Temp\\hani-tooling-287-JRr8oY/no-git.cjs --require ./scripts/hani-m9-polish-preload.cjs --require ./scripts/hani-m9-link-preload.cjs --test --test-isolation=none --test-reporter=tap scripts/hani-seoyun-m9.test.mjs",
+        "counts": {
+          "fail": 0,
+          "pass": 15,
+          "skipped": 0,
+          "tests": 15
+        },
+        "gitBlocked": false,
+        "failures": [],
+        "logSha256": "7027c187965172a6033c6594e8fade6a42689ed89a8d6ccbab72b916dfe18c9d"
+      }
+    ]
+  },
+  "preservation": {
+    "restored": [
+      "artifacts/office-behavior/obr16-layout-node.json",
+      "artifacts/office-behavior/obr17-layout-node.json",
+      "artifacts/office-behavior/obr19-layout-node.json",
+      "artifacts/office-drama/reachability.json"
+    ],
+    "removedGenerated": [],
+    "deletedSaveGuardFiles": [
+      "BROWSER-BLOCKED.md",
+      "child-process-probe.cjs",
+      "child-process-probe.json",
+      "closure-evidence.json",
+      "closure.mjs",
+      "finalize-evidence.py",
+      "finish.py",
+      "GIT-BLOCKED.md",
+      "life-final-results.json",
+      "life-results.json",
+      "no-git.cjs",
+      "office-final-results.json",
+      "office-results.json",
+      "prepatch-preload.cjs",
+      "prepatch-results.json",
+      "related-final-results.json",
+      "related-results.json",
+      "REPORT-286.md",
+      "REPORT-287.md",
+      "REPORT.md",
+      "reproduce-existing.ps1",
+      "RESULTS-286.json",
+      "RESULTS.md",
+      "retry-hani-office-bori-stroll.test.mjs-results.json",
+      "retry-hani-office-kids-visit.test.mjs-results.json",
+      "run-tests.ps1",
+      "runtime.diff",
+      "safety-final-results.json",
+      "safety-results.json",
+      "static-evidence.json",
+      "summary.json",
+      "syntax-results.json",
+      "unit-final.log",
+      "UNVERIFIED.md",
+      "verify.py",
+      "workspace-preservation.json"
+    ],
+    "retained": {
+      "browser-results.json": {
+        "sha256": "a1168d49fae2ba765f8abac3eee3ccfc0bd905a8f364719459758317a3245ee3",
+        "role": "supplied historical browser output: hani-save-guard.browser.mjs; not rerun in this task"
+      },
+      "conflict-1280.png": {
+        "sha256": "5f26f2800a90ad5935b8c9c28a64b1fa60daf89928821320481a6f6003e41f63",
+        "role": "supplied historical browser output: hani-save-guard.browser.mjs; not rerun in this task"
+      },
+      "conflict-390.png": {
+        "sha256": "5bc3ab6f77e5dead073fe2a7d51b4ecfe253c7abe7126dfa0a86231352257bd8",
+        "role": "supplied historical browser output: hani-save-guard.browser.mjs; not rerun in this task"
+      },
+      "baseline/hani-main.js": {
+        "sha256": "9e672c5d5926c5ea384ede9dab9f4c1e3e3e27a91b0eb2839e0e14b704bded4d",
+        "role": "test input: hani-release-version-layers.test.mjs"
+      },
+      "baseline/index.html": {
+        "sha256": "fe7d00e8ad34b0095872144c434e6d299df240f6b4e89f46da29ff2bdc59e72c",
+        "role": "test input: hani-release-version-layers.test.mjs"
+      }
+    },
+    "unexpectedChanges": []
+  },
+  "notion": "fetch succeeded; insert_content rejected by automatic approval review: MCP tool call requires approval, but approval policy is never",
+  "production": "not performed; tooling-only task"
+}

@@ -64,6 +64,18 @@ test('a release delta permits its Git bytes only; intervening, trailing, unliste
  assert.equal(advanceMergedReleaseFile(file,before,[...releases,next],ref=>ref===releases[0].sha+'^'?before:ref===releases[0].sha||ref===next.sha+'^'?after:future),future);
 });
 
+test('approved title-only 291 requires its exact SHA, subject, PR and display identity',()=>{
+ const actual=readMergedReleaseChain().map(r=>({...r}));
+ const approved=actual.find(r=>r.version==='2.9.291');assert.ok(approved);
+ assert.equal(approved.sha,'55942f120fc06a87649009c21776a572fb8081e6');
+ assert.equal(approved.subject,'release: v2.9.291 (#497)');
+ assert.equal(discoverMergedReleaseChain(releaseHistoryHarness(actual)).find(r=>r.sha===approved.sha).version,'2.9.291');
+ for(const patch of [{sha:'e'.repeat(40)},{subject:'release: v2.9.291 (#498)'},{subject:'release: v2.9.292 (#497)'},{subject:'release: v2.9.291'},{subject:'release: v2.9.291 (#497) '},{version:'2.9.290'}]){
+  const forged=actual.map(r=>r===approved?{...r,...patch}:r);
+  assert.throws(()=>discoverMergedReleaseChain(releaseHistoryHarness(forged)),{code:'ERR_ASSERTION'});
+ }
+});
+
 test('release225 plus only named later release changes reproduces current source bytes',()=>{
  for(const file of reviewedReleaseFiles()){
   assertReviewedReleaseSource(file,fs.readFileSync(new URL('../'+file,import.meta.url),'utf8'));
@@ -150,9 +162,9 @@ test('released newsroom bytes reject unlisted edits, including EOL and report da
   ['index.html','주간 시황 4컷','unlisted card'],
   ['index.html','./hani-newsroom-4cut.js','./unlisted-newsroom.js'],
   ['hani-main.js','HaniNewsroom4cut?.enter()','HaniNewsroom4cut?.enter(true)'],
-  ['hani-main.js','"catalog_version":7','"catalog_version":8'],
+  ['hani-main.js','"catalog_version":9','"catalog_version":10'],
   ['hani-design-system.css','/* Newsroom weekly comic:','/* altered comic:'],
-  ['hani-design-system.css','min-width:0;margin:0 0 20px','min-width:1px;margin:0 0 20px'],
+  ['hani-design-system.css','min-width:0;margin:0 0 16px','min-width:1px;margin:0 0 16px'],
   ['hani-design-system.css','#loginGateCloudTools #group-cloud>summary{display:none}','#loginGateCloudTools #group-cloud>summary{display:block}'],
   ['hani-main.js','localStorage.setItem','localStorage.removeItem'],
   ['index.html','id="resetBtn"','id="lostReset"'],

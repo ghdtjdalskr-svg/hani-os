@@ -86,7 +86,7 @@
         new Set(day.lines.map(row=>row?.staffId)).size===day.lines.length&&day.lines.every(row=>row&&ids.has(row.staffId)&&
           typeof row.floor==='string'&&/^[1-5]f$/.test(row.floor)&&typeof row.hidden==='boolean'&&text(row.line,40))));
   }
-  // Approved local-only affinity. This owner stores counts and nothing else.
+  // Approved local-only affinity: lifetime counts and KST daily allowance only.
   function createOfficeAffinity(){
     const key='hani_office_affinity_v1',names=['처음 만남','인사하는 사이','편한 동료','단짝','최애 콤비'];
     const secrets=Object.freeze({
@@ -116,25 +116,42 @@
       iseul:['회장님 오시는 소리에 컵부터 꺼냈어요.','제 앞치마 주머니엔 하트 스케치가 있어요.','한가한 카페에선 원두 소리가 더 다정해요.','이젠 하트 모양만 봐도 제 잔인 줄 아시죠.','우리 콤비 잔 받침은 나란히 놓아둘게요.'],
       eunha:['야간 카페 시계 소리가 은근히 좋아요.','회장님 오시면 조용한 밤도 반가워져요.','제 앞치마 별 자수는 밤에 더 잘 보여요.','이젠 졸린 인사도 알아들으시겠네요.','최애 콤비 자리는 작은 조명 아래예요.']
     });
-    const ids=new Set(Object.keys(secrets)),counts=Object.create(null),turns=new Map();
+    const ids=new Set(Object.keys(secrets)),counts=Object.create(null),turns=new Map(),notified=new Set();
+    let day=kstDay(),today=Object.create(null);
     let loaded=false,writable=true,warned=false,dirty=false,due=Infinity,lastWrite=-Infinity;
     function warn(){if(!warned){warned=true;console.warn('Office affinity storage unavailable or malformed; using memory only.')}}
+    function kstDay(){return new Date(Date.now()+9*60*60*1000).toISOString().slice(0,10)}
+    function rollover(){const next=kstDay();if(day!==next){day=next;today=Object.create(null);notified.clear()}}
+    function readStored(){
+      const raw=globalThis.localStorage.getItem(key);if(raw===null)return null;
+      const value=JSON.parse(raw),object=v=>v&&typeof v==='object'&&!Array.isArray(v);
+      if(!object(value)||![1,2].includes(value.v)||Object.keys(value).sort().join(',')!==(value.v===1?'counts,v':'counts,day,today,v')||!object(value.counts))throw Error('affinity format');
+      if(value.v===2&&(!/^\d{4}-\d{2}-\d{2}$/.test(value.day)||!Number.isFinite(Date.parse(value.day+'T00:00:00Z'))||new Date(value.day+'T00:00:00Z').toISOString().slice(0,10)!==value.day||!object(value.today)))throw Error('affinity day');
+      for(const count of Object.values(value.counts))if(!Number.isInteger(count)||count<0)throw Error('affinity count');
+      if(value.v===2)for(const [id,count]of Object.entries(value.today))if(!Number.isInteger(count)||count<0||count>2||count>(Object.hasOwn(value.counts,id)?value.counts[id]:0))throw Error('affinity today');
+      return value;
+    }
+    function merge(value){
+      if(!value)return;
+      for(const [id,count]of Object.entries(value.counts))if(ids.has(id))counts[id]=Math.max(counts[id]||0,Math.min(9999,count));
+      if(value.v===2&&value.day===day)for(const [id,count]of Object.entries(value.today))if(ids.has(id))today[id]=Math.max(today[id]||0,count);
+    }
     function load(){
       if(loaded)return;loaded=true;
       try{
-        const raw=globalThis.localStorage.getItem(key);if(raw===null)return;
-        const value=JSON.parse(raw);
-        if(!value||Array.isArray(value)||value.v!==1||Object.keys(value).sort().join(',')!=='counts,v'||!value.counts||typeof value.counts!=='object'||Array.isArray(value.counts))throw Error('affinity format');
-        for(const [id,count]of Object.entries(value.counts))if(ids.has(id)){
-          if(!Number.isInteger(count)||count<0)throw Error('affinity count');
-          counts[id]=Math.min(9999,count);
-        }
+        rollover();merge(readStored());
       }catch(_){for(const id of Object.keys(counts))delete counts[id];writable=false;warn()}
     }
-    function get(id){load();const count=ids.has(id)?counts[id]||0:0,level=1+[5,15,35,70].filter(n=>count>=n).length;return {count,level,name:names[level-1],hearts:'♥'.repeat(level)+'♡'.repeat(5-level)}}
+    function get(id){load();rollover();const count=ids.has(id)?counts[id]||0:0,level=1+[5,15,35,70].filter(n=>count>=n).length;return {count,level,name:names[level-1],hearts:'♥'.repeat(level)+'♡'.repeat(5-level)}}
     function tap(id,event){
       if(!ids.has(id)||event?.isTrusted!==true||!((event.type==='click')||(event.type==='keydown'&&event.key==='Enter'&&!event.repeat)))return null;
-      const before=get(id);if(before.count<9999){counts[id]=before.count+1;dirty=true;if(due===Infinity)due=Date.now()+2000}
+      const before=get(id),limited=(today[id]||0)>=2;
+      if(!limited&&before.count<9999){counts[id]=before.count+1;today[id]=(today[id]||0)+1;dirty=true;if(due===Infinity)due=Date.now()+2000}
+      if(limited&&!notified.has(id)){
+        notified.add(id);
+        const line=({hani:'오늘 친밀도는 여기까지예요♡ 내일 또 봐요!','pet-cat':'오늘 골골송은 여기까지다옹. 내일 또 와요.','pet-dog':'오늘도 신났어요! 내일 또 꼬리 흔들게요!','pet-rabbit':'오늘은 포근히 쉴게요. 내일 또 조용히 만나요.','pet-bori':'오늘은 제 옆에서 쉬어요. 내일 또 반겨줄게요, 멍.'})[id]||'오늘은 충분히 친해졌어요. 내일 또 만나요!';
+        return {...before,added:false,up:false,line};
+      }
       const info=get(id),turn=turns.get(id)||0;turns.set(id,turn+1);
       const pool=secrets[id].slice(0,info.level>=5?5:3),up=info.level>before.level;
       const suffix=id==='hina'?'회장님이랑 이제 '+info.name+'예용♡':id==='mir'?'회장님이랑 이제 '+info.name+'네, 헤헤.':id==='yuri'||id==='taeo'?'회장님과 이제 '+info.name+'입니다.':'회장님이랑 이제 '+info.name+'네요!';
@@ -142,7 +159,7 @@
     }
     function flush(lifecycle=false){
       const now=Date.now();if(!dirty||!writable||now-lastWrite<2000||(!lifecycle&&now<due))return;
-      try{globalThis.localStorage.setItem(key,JSON.stringify({v:1,counts}));dirty=false;due=Infinity;lastWrite=now}
+      try{rollover();merge(readStored());globalThis.localStorage.setItem(key,JSON.stringify({v:2,counts,day,today}));dirty=false;due=Infinity;lastWrite=now}
       catch(_){writable=false;warn()}
     }
     return Object.freeze({get,tap,flush});
@@ -372,6 +389,9 @@
   // All mutable state is disposable memory; no life records or data triggers enter here.
   // Approved staff dialogue is embedded beside existing dialogue data.
   const staffChatLines=Object.freeze([
+    {"id":"chat-ieum-hani","a":"이음","b":"하니","place":"desk","time":"day","lines":[{"speaker":"a","text":"하니 전무님, 이거… 끝난 거 맞죠?"},{"speaker":"b","text":"완료 근거까지 확인해 보자, 이음아♡"},{"speaker":"a","text":"네, 확인되면 완료로 닫아둘게요."}]},
+    {"id":"chat-ieum-seoyun","a":"이음","b":"서윤","place":"lounge","time":"day","lines":[{"speaker":"a","text":"서윤 선배, 개발기록은 어디부터 이어요?"},{"speaker":"b","text":"기준 기록과 아직 열린 이유부터 같이 보자."},{"speaker":"a","text":"아, 시스템 문맥을 먼저 잇는 거군요."}]},
+    {"id":"chat-ieum-close","a":"하니","b":"이음","place":"lounge","time":"evening","lines":[{"speaker":"a","text":"이음아, 아직 확인 못 한 건 남겨두면 돼♡"},{"speaker":"b","text":"네, 확인한 건만요. 그럼 완료로 닫아둘게요."},{"speaker":"a","text":"좋아, 다음 기록도 차근차근 이어보자♡"}]},
     {"id":"chat-01","a":"하니","b":"나은","place":"lounge","time":"morning","lines":[{"speaker":"a","text":"나은아, 오늘 안건 우선순위 다 잡았어!"},{"speaker":"b","text":"우선순위보다 아침밥 먹었는지가 먼저야!"},{"speaker":"a","text":"아메리카노 마셨는데 밥으로 안 쳐줘? 헤헤♡"},{"speaker":"b","text":"절대 안 되지! 팬트리에 구운 계란 챙겨놨어."}]},
     {"id":"chat-02","a":"하니","b":"히나","place":"desk","time":"day","lines":[{"speaker":"a","text":"히나야, 이번 학습 화면 검수 일정 괜찮아?"},{"speaker":"b","text":"만년 과장 히나 선생님한테 맡겨만 줘용! 🐰"},{"speaker":"a","text":"방금 칠판 예문 오타 난 건 못 본 척할게?"},{"speaker":"b","text":"あれ？😳 그건 Scope 밖이라 못 본 거예용!"}]},
     {"id":"chat-03","a":"나은","b":"히나","place":"pantry","time":"evening","lines":[{"speaker":"a","text":"히나야, 눈 반쯤 감겼는데 얼른 퇴근해야지."},{"speaker":"b","text":"언니이~ 저 하나도 안 졸려용, 문제 더 볼래용!"},{"speaker":"a","text":"잠깐, 펜 내려놔! 오늘은 회복이 먼저야."},{"speaker":"b","text":"헤헤♡ 언니 허브차 마시고 딱 정리할게용!"}]},
@@ -1320,7 +1340,7 @@
         people:[{id,home,seat,outbound,inbound,out,back,visitor:!!visitor}],resources:geometry.resources,floors:geometry.floors};
     }
     // Pure vocabulary shared by snapshots and the existing persistent label slot.
-    const workLines={hani:'기획안 정리 중',yuna:'요청 분류 중',jieun:'일정 조율 중',haru:'기록 정리 중',gaeun:'일정 확인 중',seoyun:'설계 검토 중',dohyun:'코드 수정 중',serin:'수치 분석 중',yuri:'품질 점검 중',arin:'화면 검토 중',hina:'검증 기록 중',daon:'콘텐츠 구상 중',yoonseul:'문장 다듬는 중',sua:'접수 확인 중',taeo:'안내 준비 중',minji:'업무 메모 중',mir:'흐름 살피는 중',seongmin:'결재 검토 중',sooyeon:'자료 대조 중',naeun:'예산 점검 중'};
+    const workLines={ieum:'기록 맥락 연결 중',hani:'기획안 정리 중',yuna:'요청 분류 중',jieun:'일정 조율 중',haru:'기록 정리 중',gaeun:'일정 확인 중',seoyun:'설계 검토 중',dohyun:'코드 수정 중',serin:'수치 분석 중',yuri:'품질 점검 중',arin:'화면 검토 중',hina:'검증 기록 중',daon:'콘텐츠 구상 중',yoonseul:'문장 다듬는 중',sua:'접수 확인 중',taeo:'안내 준비 중',minji:'업무 메모 중',mir:'흐름 살피는 중',seongmin:'결재 검토 중',sooyeon:'자료 대조 중',naeun:'예산 점검 중'};
     const shortWords=[[/고민/,'잠깐 고민 중'],[/퀴즈/,'퀴즈 푸는 중'],[/비용|예산/,'비용 살피는 중'],[/고생|인사/,'인사 나누는 중'],[/웃|미소/,'살짝 웃는 중'],[/도장|결재/,'결재 확인 중'],[/메일/,'메일 확인 중'],[/일정|약속/,'일정 확인 중'],[/노래|음악|플레이리스트/,'음악 고르는 중'],[/졸음|꾸벅/,'졸음 쫓는 중'],[/커피 주문/,'커피 주문 중'],[/메뉴 고르/,'메뉴 고르는 중'],[/커피/,'커피 한 모금'],[/택배/,'택배 확인 중'],[/배달/,'배달 확인 중'],[/게시판|소식/,'소식 읽는 중'],[/검증|테스트/,'결과 확인 중'],[/수다|이야기/,'이야기 나누는 중'],[/코드|버그/,'코드 살피는 중'],[/메모/,'메모 정리 중'],[/보고서/,'보고서 다듬는 중'],[/스트레칭|기지개/,'기지개 켜는 중'],[/고양이/,'고양이 영상 중'],[/인스타/,'인스타 보는 중'],[/간식/,'간식 살피는 중'],[/생각|아이디어/,'생각 정리 중'],[/창밖|풍경|별/,'풍경 보는 중'],[/쉬는|휴식|소파/,'잠깐 쉬는 중'],[/확인|체크/,'내용 확인 중'],[/정리/,'자료 정리 중'],[/읽|책|페이지/,'읽어 보는 중']];
     function fullShortLine(line){
       if(chairmanShort.has(line))return chairmanShort.get(line);
@@ -2377,21 +2397,32 @@
   ].map(p=>Object.freeze({...p,hours:Object.freeze(p.hours.map(Object.freeze)),places:Object.freeze(Object.fromEntries(Object.entries(p.places).map(([f,spots])=>[f,Object.freeze(spots)]))),lines:Object.freeze(p.lines)})));
   // Calendar-day companions are display-only residents; the existing 07:00 pet day is unchanged.
   const companionPeople=Object.freeze([
-    {id:'companion-frog',name:'아기 개구리',pet:true,atlasRow:0,lines:['회장님, 폴짝 따라갈게요!','회장님 옆이 제 연못이에요.','회장님, 잠깐 쉬어요!']},
-    {id:'companion-penguin',name:'꼬마 펭귄',pet:true,atlasRow:1,lines:['회장님, 순찰 완료예요!','회장님 일정은 제가 챙겨요!','회장님, 뒤뚱뒤뚱 갑니다!']},
-    {id:'companion-otter',name:'아기 수달',pet:true,atlasRow:2,lines:['회장님, 조개 선물이에요!','회장님 옆에서 냠냠해요.','회장님, 카페도 같이 가요!']},
-    {id:'companion-chick',name:'병아리',pet:true,atlasRow:3,lines:['회장님, 삐약 출근했어요!','회장님 따라 통통통!','회장님, 제 날개도 쉬어요.']},
-    {id:'companion-fox',name:'아기 여우',pet:true,atlasRow:4,lines:['회장님, 꼬리로 인사해요!','회장님 곁은 포근하네요.','회장님, 살금살금 갈게요!']},
-    {id:'kid-suhyeon',name:'수현',kid:true,atlasRow:0,lines:['…지금 말고.','가방? 그냥 들어 준 거야.','아빠, 얘 좀 떼 줘.','…거기 위험해.','옆에 있어 줄게. 책 읽으러 온 거지만.','이쪽이 조용해. 너도 와.']},
-    {id:'kid-suyeon',name:'수연',kid:true,atlasRow:1,lines:['아빠아아!','나 커서 아빠랑 결혼할 거야!','오빠는 맨날 아닌 척해!','아빠 손 꼭 잡고 갈래!','아빠랑 다니니까 제일 좋아!','아빠 여기여기! 나랑 같이 가!','아빠! 나 통통 뛰는 거 봐 봐!','저기까지 갔다가 꼭 돌아올게!','아빠 옆자리 찜! 내 자리야!','나 먼저 갈게! 아빠 오고 있지?']}
+    {id:'companion-frog',name:'아기 개구리',pet:true,mascot:'전략기획실 마스코트',atlasRow:0,lines:['회장님, 폴짝 따라갈게요!','회장님 옆이 제 연못이에요.','회장님, 잠깐 쉬어요!']},
+    {id:'companion-penguin',name:'꼬마 펭귄',pet:true,mascot:'개발실 마스코트',atlasRow:1,lines:['회장님, 순찰 완료예요!','회장님 일정은 제가 챙겨요!','회장님, 뒤뚱뒤뚱 갑니다!']},
+    {id:'companion-otter',name:'아기 수달',pet:true,mascot:'기업솔루션 마스코트',atlasRow:2,lines:['회장님, 조개 선물이에요!','회장님 옆에서 냠냠해요.','회장님, 카페도 같이 가요!']},
+    {id:'companion-chick',name:'병아리',pet:true,mascot:'라이프&엔터 마스코트',atlasRow:3,lines:['회장님, 삐약 출근했어요!','회장님 따라 통통통!','회장님, 제 날개도 쉬어요.']},
+    {id:'companion-fox',name:'아기 여우',pet:true,mascot:'재무실 마스코트',atlasRow:4,lines:['회장님, 꼬리로 인사해요!','회장님 곁은 포근하네요.','회장님, 살금살금 갈게요!']},
+    {id:'kid-suhyeon',name:'수현',kid:true,atlasRow:0,lines:['…지금 말고.','가방? 그냥 들어 준 거야.','아빠, 얘 좀 떼 줘.','…거기 위험해.','옆에 있어 줄게. 책 읽으러 온 거지만.','이쪽이 조용해. 너도 와.','아빠, 물 여기 뒀어. 그냥 보이길래.','…아빠 기다린 건 아니야. 책이 덜 끝나서.','아빠, 난 한 걸음 뒤에 있을게.','수연아, 뛰지 마. 가방은 내가 들게.','하니 이모한테 인사는 하고 가야지.','보리야, 여기 조용히 앉아 있어도 돼.']},
+    {id:'kid-suyeon',name:'수연',kid:true,atlasRow:1,lines:['아빠아아!','나 커서 아빠랑 결혼할 거야!','오빠는 맨날 아닌 척해!','아빠 손 꼭 잡고 갈래!','아빠랑 다니니까 제일 좋아!','아빠 여기여기! 나랑 같이 가!','아빠! 나 통통 뛰는 거 봐 봐!','저기까지 갔다가 꼭 돌아올게!','아빠 옆자리 찜! 내 자리야!','나 먼저 갈게! 아빠 오고 있지?','아빠! 오늘 학교에서 별 스티커 받았어!','아빠 보고 싶어서 발이 먼저 왔어!','아빠, 오늘도 내 옆자리 비워 뒀지?','하니 이모! 나 인사하러 왔어!','서윤 언니, 나도 축하 하트 줄게!','보리야! 아빠랑 같이 천천히 가자!']}
   ].map(p=>Object.freeze({...p,companion:true,sprite:p.id,lines:Object.freeze(p.lines)})));
+  const kidsWeekdayGreetings=Object.freeze({
+    'kid-suhyeon':Object.freeze(['…지나가다 들른 거야, 아빠.','아빠, 학교 끝났어. 잠깐만 있다 갈게.','…아빠, 책 읽을 데가 필요해서 온 거야.']),
+    'kid-suyeon':Object.freeze(['아빠! 학교 끝나고 왔어!','아빠아! 오늘은 내가 깜짝 선물이야!','아빠! 하교하자마자 보고 싶어서 왔어!'])
+  });
+  const kidsSiblingLines=Object.freeze([
+    Object.freeze(['…아빠 기다리는 동안만 같이 있어 줄게.','오빠, 아빠 보고 싶어서 온 거 다 알아!']),
+    Object.freeze(['수연아, 아빠 일할 땐 천천히 걸어.','응! 아빠 손 잡고 살금살금 갈게!']),
+    Object.freeze(['…네 가방은 내가 들게. 아빠한텐 비밀이야.','아빠! 오빠가 또 나 챙겨 줬어!'])
+  ]);
   const companionReactions=Object.freeze([
     {id:'hani',line:'어머, 수연이 왔어?'},{id:'hani',line:'수현이는 오늘도 든든하네.'},
     {id:'naeun',line:'남매 간식은 제가 챙길게요.'},{id:'hina',line:'수연아, 오빠랑 천천히 와.'},{id:'hina',line:'수현아, 무슨 책 읽고 있니?'}
   ].map(Object.freeze));
   function companionAtlas(person){
     const kid=!!person.kid,poses=kid?['standing','sitting','walk-a','walk-b']:['sitting','standing','walk-a','walk-b','sleep'];
-    return {id:person.id,officeCompanion:true,file:kid?'./assets/office-companions/kids-v1.webp':'./assets/office-companions/companions-v1.webp',scale:3,cell:[96,144],atlas:[kid?384:480,kid?576:1440],frames:['left','right'].flatMap((dir,row)=>poses.map((pose,col)=>({name:pose+'-'+dir,rect:[col*96,(person.atlasRow*2+row)*144,96,144],pivot:[48,135]})))};
+    const frames=['left','right'].flatMap((dir,row)=>poses.map((pose,col)=>({name:pose+'-'+dir,rect:[col*96,(person.atlasRow*2+row)*144,96,144],pivot:[48,135]})));
+    if(kid)for(const [row,dir]of ['left','right'].entries())for(const [col,pose]of ['wave','seat-b','startled','cling'].entries())frames.push({name:pose+'-'+dir,rect:[col*96,(4+person.atlasRow*2+row)*144,96,144],pivot:[48,135]});
+    return {id:person.id,officeCompanion:true,file:kid?'./assets/office-companions/kids-v2.webp':'./assets/office-companions/companions-v1.webp',scale:3,cell:[96,144],atlas:[kid?384:480,kid?1152:1440],frames};
   }
   function companionSafe(floor,v,kid=false){
     const x=v[0]*art.width/100,y=v[1]*art.height/100,half=kid?34:38,height=kid?104:80,items=art.floors[floor];
@@ -3157,7 +3188,7 @@
       active.positions=[];
       for(const [index,id]of ['kid-suyeon','kid-suhyeon'].entries()){
         const child=kids.find(p=>p.id===id),path=returning?(active.returnPaths?.[index]||active.paths[index].slice().reverse()):active.paths[index],progress=returning?(now.getTime()-returnAt)/1000/active.travel:(elapsed-index*.4)/active.travel;
-        child.position=sample(path,progress);active.positions.push(child.position);child.walking=!reduced&&progress>=0&&progress<1;child.pose=child.walking?Math.floor(elapsed*4)%2?'walk-a':'walk-b':'standing';child.facing=(path.at(-1)[0]-path[0][0])<0?'left':'right';delete child.scene;delete child.reaction;
+        child.position=sample(path,progress);active.positions.push(child.position);child.walking=!reduced&&progress>=0&&progress<1;child.pose=child.walking?Math.floor(elapsed*4)%2?'walk-a':'walk-b':'standing';child.facing=(path.at(-1)[0]-path[0][0])<0?'left':'right';delete child.artPose;delete child.scene;delete child.reaction;
         child.activity={...child.activity,kind:'hidden-visit',partnerId:active.actorId};child.visit={key:active.key,actorId:active.actorId,phase:returning?'return':active.line?'talk':'approach'};
         if(reduced)delete child.motion;else child.motion={bob:child.walking&&index===0?-Math.abs(Math.sin(elapsed*9))*3:0,lean:0,spin:0};
       }return active;
@@ -3174,11 +3205,15 @@
     if(!enabled||!canon||!art)return [];
     const date=koreaTime(now),weekday=date.getUTCDay(),weekend=weekday===0||weekday===6,day=date.toISOString().slice(0,10),seconds=date.getUTCHours()*3600+date.getUTCMinutes()*60+date.getUTCSeconds()+date.getUTCMilliseconds()/1000;
     const people=[...(staff?.floors?.flatMap(f=>f.people||[])||[]),...neighbors],chair=people.find(p=>p.id==='seongmin'&&floors.some(f=>f.id===p.floor)&&p.state!=='ABSENT'),center=chair&&(chair.position||[chair.seat?.x,chair.seat?.y]),states=[],usedStops=new Set(neighbors.flatMap(p=>p.stroll?.stops||[]));
-    const follows=person=>person.kid?weekend:!weekend&&person.atlasRow===weekday-1;
+    // Calendar-date seed is independent of the resident 07:00 day and refreshes.
+    // One weekday visitor replaces the one animal follower; siblings keep weekends.
+    const surprise=!weekend&&seconds>=18*3600&&seconds<22*3600;
+    const visitor=surprise?((residentSeed(day+'|kids-weekday-child')>>>8)%2?'kid-suyeon':'kid-suhyeon'):null;
+    const follows=person=>person.kid?weekend||person.id===visitor:!weekend&&!surprise&&person.atlasRow===weekday-1;
     // Reserve the chairman's companions first, then place department pets safely.
     for(const person of companionPeople.filter(follows).concat(companionPeople.filter(p=>!follows(p)))){
       const follow=follows(person);
-      if(person.kid&&!weekend||follow&&(!chair||!center?.every(Number.isFinite)))continue;
+      if(person.kid&&!weekend&&person.id!==visitor||follow&&(!chair||!center?.every(Number.isFinite)))continue;
       const seed=residentSeed(day+'|'+person.id),rhythm=residentRhythm(person.id,day,seconds),free=(floor,v)=>!people.concat(states).some(p=>{const at=p.position||[p.seat?.x,p.seat?.y];return p.floor===floor&&at.every(Number.isFinite)&&(Math.hypot((v[0]-at[0])*art.width/100,(v[1]-at[1])*art.height/100)<(p.id==='seongmin'?80:p.resident||p.pet?96:person.kid?90:70)||p.id==='pet-bori'&&p.stroll?.stops?.some((id,i,ids)=>{const a=residentSpot(id),b=residentSpot(ids[(i+1)%ids.length]),x=(v[0]-a.visual[0])*art.width/100,y=(v[1]-a.visual[1])*art.height/100,dx=(b.visual[0]-a.visual[0])*art.width/100,dy=(b.visual[1]-a.visual[1])*art.height/100,t=Math.max(0,Math.min(1,(x*dx+y*dy)/(dx*dx+dy*dy||1)));return Math.hypot(x-t*dx,y-t*dy)<108}))});
       let floor,position,point=[500,330],walking=false,facing='left',pose='standing',motion;
       if(follow){
@@ -3230,7 +3265,10 @@
     // positions. The brother can see where his sister actually went this frame.
     for(const id of ['kid-suyeon','kid-suhyeon']){
       const child=states.find(p=>p.id===id);
-      if(child)companionActivity(child,chair,people,states,day,seconds,reduced,now);
+      if(child){
+        companionActivity(child,chair,people,states,day,seconds,reduced,now);
+        if(surprise)child.weekdayArrival={day,line:kidsWeekdayGreetings[child.id][(residentSeed(day+'|kids-weekday-greeting')>>>8)%3]};
+      }
     }
     return states;
   }
@@ -3267,6 +3305,18 @@
       if(action==='check'&&other&&distance(home,other.position)>180){const d=distance(home,other.position);excursion([home[0]+(other.position[0]-home[0])*60/d,home[1]+(other.position[1]-home[1])*60/d]);line='…거기 위험해.';}
       else [offset(kind%2?50:-50,20),offset(0,45),offset(0,-45)].some(excursion);
     }
+    // B poses reuse this clock and route owner. Approach an idle chairman only
+    // through the same furniture/footprint checks; never attach to a moving one.
+    let cling=false;
+    if(sister&&!chair.walking&&kind===0){
+      const side=home[0]<center[0]?-1:1,start=Math.atan2((home[1]-center[1])*art.height,(home[0]-center[0])*art.width),radius=Math.max(86,distance(home,center));
+      for(const direction of [side,-side]){
+        const target=[center[0]+direction*84/art.width*100,center[1]+12/art.height*100],end=Math.atan2(12,direction*84),delta=Math.atan2(Math.sin(end-start),Math.cos(end-start));
+        if(clear(home,target)){route=[home,target];cling=true;break}
+        const approach=[home,...Array.from({length:13},(_,i)=>{const angle=start+delta*i/12;return [center[0]+Math.cos(angle)*radius/art.width*100,center[1]+Math.sin(angle)*radius/art.height*100]}),target];
+        if(approach.every((v,i)=>!i||clear(approach[i-1],v))){route=approach;cling=true;break}
+      }
+    }
     const duration=reduced?rhythm.period:Math.min(rhythm.period*.8,sister?6:9),progress=Math.min(1,rhythm.elapsed/duration),lengths=route.slice(1).map((v,i)=>distance(route[i],v)),length=lengths.reduce((a,b)=>a+b,0);
     let cursor=progress*length,position=home,from=home,to=home;
     for(let i=0;i<lengths.length;i++){if(cursor<=lengths[i]){from=route[i];to=route[i+1];const t=lengths[i]?cursor/lengths[i]:1,e=petEase(t);position=[from[0]+(to[0]-from[0])*e,from[1]+(to[1]-from[1])*e];break}cursor-=lengths[i];}
@@ -3277,12 +3327,25 @@
     if(!reduced&&sister)child.motion={bob:action==='bounce'||moving?-Math.abs(Math.sin(seconds*9))*3:0,lean:action==='wave'?Math.sin(seconds*6)*3:0,spin:0};
     if(reduced)delete child.motion;
     child.activity={key:day+'|kids|'+child.id+'|'+rhythm.beat,kind:action,period:rhythm.period,elapsed:rhythm.elapsed,partnerId:partner?.id};
+    // Preserve the logical walk/stop states; only the existing atlas selection
+    // varies during rests. Reduced motion uses quiet seats, never a cling jump.
+    if(!chair.walking&&!moving){
+      if(reduced)child.artPose='seat-b';
+      else if(cling){child.artPose='cling';child.facing=child.position[0]<center[0]?'right':'left';delete child.motion;}
+      else if(sister)child.artPose=action==='wave'?(rhythm.beat%2?'wave':'seat-b'):action==='bounce'&&rhythm.elapsed>rhythm.period-2?'startled':undefined;
+      else child.artPose=action==='book'?'seat-b':action==='check'&&rhythm.elapsed>rhythm.period-2?'startled':action==='beside'?'cling':undefined;
+    }
     // Preserve patrol arrival greetings/cocoa/flowers first, then use the same
     // pending bubble slot and tap cooldown for the children's short activities.
     if(!chair.patrol||!chair.walking&&seconds-chair.patrolArrival>=25){
       const animal={'companion-penguin':'펭귄','companion-frog':'개구리','companion-otter':'수달','companion-chick':'병아리','companion-fox':'여우','pet-cat':'치즈','pet-dog':'크림','pet-rabbit':'모찌','pet-bori':'보리'}[partner?.id];
       line=line||(animal?animal+(/[가-힣]/.test(animal)&&((animal.charCodeAt(animal.length-1)-44032)%28)?'이다!!':'다!!'):sister?['아빠! 나 통통 뛰는 거 봐 봐!','저기까지 갔다가 꼭 돌아올게!','아빠 옆자리 찜! 내 자리야!','아빠! 손 흔드는 거 보여?','나 왔어! 같이 놀자!','아빠 오고 있지?'][kind]:['이쪽이 조용해. 너도 와.','…거기 위험해.','옆에 있어 줄게. 책 읽으러 온 거지만.'][kind%3]);
       child.scene={key:child.activity.key,line,patrol:true,notBefore:now.getTime()-rhythm.elapsed*1000+1000};
+      const sibling=states.find(p=>p.kid&&p.id!==child.id),turn=Math.floor(seconds/180),elapsed=seconds%180;
+      if(sibling&&sibling.floor===floor&&!chair.walking&&distance(home,sibling.position)<300&&elapsed>=150&&elapsed<174){
+        const exchange=kidsSiblingLines[residentSeed(day+'|siblings|'+turn)%kidsSiblingLines.length];
+        child.scene={key:day+'|siblings|'+turn+'|'+child.id,line:exchange[sister?1:0],patrol:true,sibling:true,notBefore:now.getTime()+(150+(sister?4:1)-elapsed)*1000};
+      }
     }
     if(partner&&!partner.pet&&!partner.resident&&!partner.companion&&!partner.visitor&&progress>.25)child.reaction={id:partner.id,line:'수연아, 반가워! 천천히 다녀와.',key:child.activity.key+'|hello'};
   }
@@ -3453,7 +3516,7 @@
     ['resident_bori_lounge_a','2f',51,57,true],['resident_bori_lounge_b','2f',51,59,true],
     ['resident_bori_stroll_lobby','1f',79.5,83,true],['resident_bori_stroll_lounge','2f',51,71,true]
   ].map(([id,floor,vx,vy,pet],i)=>[id,Object.freeze({id,floor,x:/^resident_(rabbit|bori)_/.test(id)?500:100+i*40,y:330,visual:[vx,vy],pet:!!pet})]));
-  function residentBounds(id,pose){if(id.startsWith('companion-'))return [12,60,84,135];if(id.startsWith('kid-'))return [18,35,78,135];const pet=id.startsWith('pet-');if(id==='pet-bori')return [2,({sitting:52,standing:53,'walk-a':63,'walk-b':65,sleep:89})[pose]??52,94,135];if(id==='pet-rabbit')return [11,({sitting:61,standing:63,'hop-a':74,'hop-b':70,sleep:100})[pose]??61,85,135];const top=pet?(pose==='sleep'?102:({sitting: id==='pet-cat'?81:76,standing:id==='pet-cat'?83:75,'walk-a':id==='pet-cat'?87:82,'walk-b':id==='pet-cat'?90:83})[pose]):({standing:15,sitting:30,'walk-a':24,'walk-b':24})[pose];return [pet?13:9,top??15,pet?82:87,135]}
+  function residentBounds(id,pose){if(id.startsWith('companion-'))return [12,60,84,135];if(id.startsWith('kid-'))return ['wave','seat-b','startled','cling'].includes(pose)?[12,31,84,135]:[18,35,78,135];const pet=id.startsWith('pet-');if(id==='pet-bori')return [2,({sitting:52,standing:53,'walk-a':63,'walk-b':65,sleep:89})[pose]??52,94,135];if(id==='pet-rabbit')return [11,({sitting:61,standing:63,'hop-a':74,'hop-b':70,sleep:100})[pose]??61,85,135];const top=pet?(pose==='sleep'?102:({sitting: id==='pet-cat'?81:76,standing:id==='pet-cat'?83:75,'walk-a':id==='pet-cat'?87:82,'walk-b':id==='pet-cat'?90:83})[pose]):({standing:15,sitting:30,'walk-a':24,'walk-b':24})[pose];return [pet?13:9,top??15,pet?82:87,135]}
   const residentPaths=new Map();
   function residentSafe(floorId,point,visual,pet=true){
     const floor=canon?.floors.find(f=>f.id===floorId);if(!floor||!point||!visual)return false;
@@ -3702,6 +3765,8 @@
   motion.addEventListener?.('change',event=>{reduced=event.matches;if(reduced)for(const actor of actors.values()){finishTravel(actor);clearMotion(actor)}if(sceneVisible())updateBuilding(true,false)});
   const spriteEntries=new Map((assets?.sprites.entries||[]).map(e=>[e.id,e])),spriteCache=new Map();
   const hdEntries=new Map((assets?.spritesV3?.entries||[]).filter(e=>e.scale===3&&(e.frames?.length===4||['pet-cat','pet-dog'].includes(e.id)&&e.frames?.length===10)&&e.cell?.length===2&&e.atlas?.length===2).map(e=>[e.id,e]));
+  // Seed newly registered HD-only colleagues in the existing sprite registry.
+  for(const [id]of people)if(!spriteEntries.has(id)&&hdEntries.has(id))spriteEntries.set(id,hdEntries.get(id));
   const residentSlots=assets?.spritesV3?[...HaniBuildingScene.residents.people,...HaniBuildingScene.residents.companions]:[];
   for(const person of residentSlots)if(!spriteEntries.has(person.id))spriteEntries.set(person.id,(person.companion?HaniBuildingScene.residents.companionAtlas(person):HaniBuildingScene.residents.atlas(person)));
   const visualIdentity=HaniBuildingScene.scheduler?.identity||{seongmin:{entity:'human_user',role:'chairman',officeVisual:'ceo_frog',spriteId:'seongmin'}};
@@ -3785,7 +3850,13 @@
     const rows=visible.map(actor=>({actor,name:actor.querySelector('.hani-office-name'),status:actor.querySelector('.hani-office-status')}));
     const used=new Set();
     for(const {actor,name,status}of rows){
-      if(actor.dataset.resident){actor.dataset.labelMode='name';actor.officeCompact.textContent='';name.title=actor.dataset.name;name.setAttribute('aria-label',name.title);name.hidden=false;name.style.visibility='';name.style.setProperty('--name-x','0px');name.style.setProperty('--name-y','0px');status.hidden=true;status.style.visibility='hidden';continue}
+      if(actor.dataset.resident){
+        const mascot=residentSlots.find(p=>p.id===actor.dataset.person)?.mascot,following=actor.officeResidentState?.following;
+        const full=mascot?(following?'오늘의 동행 · ':'')+mascot:'',short=mascot?(following?(compact?'동행 · ':'오늘의 동행 · '):'')+mascot:'';
+        actor.dataset.labelMode='name';actor.officeCompact.textContent=short;actor.officeCompact.style.display=mascot?'block':'';
+        name.title=actor.dataset.name+(full?' · '+full:'');name.setAttribute('aria-label',name.title);if(mascot)actor.setAttribute('aria-label',name.title);
+        name.hidden=false;name.style.visibility='';name.style.setProperty('--name-x','0px');name.style.setProperty('--name-y','0px');status.hidden=true;status.style.visibility='hidden';continue
+      }
       statusDot(actor);
       actor.dataset.labelMode=compact?'pill':'separate';
       status.textContent=actor.querySelector('.hani-office-activity-icon').textContent+' '+HaniBuildingScene.labels.short(status.dataset.full,used,actor.dataset.status,compact);
@@ -4133,6 +4204,7 @@
   const dramaCaption=document.createElement('small'),dramaTitle=document.createElement('b'),dramaSummary=document.createElement('span');dramaCaption.className='hani-building-drama-caption';dramaCaption.hidden=true;dramaCaption.append(dramaTitle,dramaSummary);caption.append(dramaCaption);let tapCatalogStarted=false;
   // View-only snack overlay. The table is the sole copy-edit point (up to 3 lines per staff id).
   const snackLines={
+    ieum:["회장님, 간식 받았다고 적어둘게요.","파일철은 잠깐 덮고 잘 먹겠습니다.","회장님, 따뜻한 간식 감사해요."],
     hani:["회장님, 간식은 이번 Scope 안이네요♡","회장님, 당 충전 끝! 전략부터 잡을게요.","회장님 간식이라니, 헤헤 힘이 나네요♡"],
     gaeun:["회장님, 간식 타임도 일정에 넣어둘게요.","회장님 감사해요, 회의 준비도 마쳤어요.","회장님 덕분에 다음 일정도 든든하겠어요."],
     yuna:["회장님! 간식 접수는 제가 먼저 할게요!","감사합니다 회장님, 기운 내서 안내할게요!","회장님, 이 간식은 제 자리로 분류할게요!"],
@@ -4156,6 +4228,7 @@
   // One event/staff table; birthday pairs are [own thanks, colleague congratulations].
   const eventLines={snack:snackLines,
     coffee:{
+      ieum:["회장님, 커피와 함께 기록을 펼칠게요.","한 모금 쉬고 마지막 확인할게요.","회장님, 커피 감사해요."],
       hani:["회장님 커피라니, 오후 전략도 문제없어요♡","회장님, 커피로 팀 정렬 완료예요♡","회장님 센스 최고! 헤헤, 잘 마실게요♡"],
       gaeun:["회장님, 커피 타임도 일정에 반영해둘게요.","회장님 감사해요, 브리핑 준비도 마쳤어요.","회장님 덕분에 회의실 공기가 향긋해졌어요."],
       yuna:["회장님! 커피 배부는 제가 먼저 안내할게요!","감사합니다 회장님, 자리마다 잘 전달할게요!","회장님 커피 덕분에 안내 목소리가 밝아져요!"],
@@ -4177,6 +4250,7 @@
       taeo:["회장님, 정리하면 향·온도 모두 완벽합니다.","회장님, 커피 지원은 즉시 반영하겠습니다.","회장님, 잘 마시고 후속 미팅 정리할게요."]
     },
     applause:{
+      ieum:["회장님, 꼼꼼히 봐주셔서 감사해요.","열린 건 끝까지 챙겨볼게요.","완료 근거도 차근차근 확인할게요."],
       hani:["회장님 칭찬이라니, 헤헤 더 힘이 나네요♡","회장님, 우리 팀 호흡이 딱 맞아떨어졌어요♡","회장님 박수 덕분에 다음 전략도 든든해요♡"],
       gaeun:["회장님 칭찬 말씀도 회의록에 남겨둘게요.","회장님 감사해요, 후속 일정도 잘 챙길게요.","회장님 격려 덕분에 준비한 보람이 있어요."],
       yuna:["회장님! 칭찬 접수도 제가 일등으로 할게요!","회장님 박수 소리, 온 층에 안내할래요!","감사합니다 회장님! 더 밝게 연결해볼게요!"],
@@ -4198,6 +4272,7 @@
       taeo:["회장님, 정리하면 팀워크의 결과입니다.","회장님, 격려 말씀은 실행으로 잇겠습니다.","회장님, 긍정 피드백 확인. 후속 진행해요."]
     },
     cheer:{
+      ieum:["회장님, 오늘도 함께 화이팅이에요.","하니 전무님 옆에서 열심히 배울게요.","서윤 선배께 질문할 용기가 나요."],
       hani:["회장님도 오늘 하루 화이팅이에요, 헤헤♡","네 회장님! 오늘 우선순위도 힘차게 갈게요♡","회장님 응원 받고 전 부서 화이팅할게요♡"],
       gaeun:["회장님 화이팅이에요, 오늘 일정 시작할게요.","네 회장님, 오늘 요청도 잘 정리할게요.","회장님 응원 덕분에 오늘 브리핑도 힘나네요."],
       yuna:["회장님도 오늘 하루 활기차게 화이팅이에요!","네 회장님! 작은 요청도 씩씩하게 챙길게요!","회장님 화이팅! 오늘 안내도 기운 넘쳐요!"],
@@ -4219,6 +4294,7 @@
       taeo:["회장님, 정리하면 오늘도 준비 끝났습니다.","회장님도 화이팅입니다. 바로 실행할게요.","회장님, 응원은 결과로 번역하겠습니다."]
     },
     birthday:{
+      ieum:["회장님, 제 생일까지 챙겨주셔서 감사해요.","이음 사원님, 생일 축하해요!"],
       hani:["회장님, 생일 축하 고마워요! 헤헤♡","하니 전무님, 생일 진심으로 축하해요!"],
       gaeun:["회장님, 생일 축하도 일정에 담아둘게요.","가은 비서님, 생일 축하해요! 늘 든든해요!"],
       yuna:["회장님! 생일 축하 접수는 제가 일등이에요!","유나 사원님, 생일 축하해요! 오늘 주인공!"],
@@ -4247,7 +4323,7 @@
     cheer:{label:'📣 깜짝 응원',icon:'📣',status:'화이팅 외치는 중'},
     birthday:{label:'🎂 생일 축하',icon:'🎂',status:'생일 축하 중'}
   };
-  const staffBirthdays={hani:'01-17',gaeun:'09-25',yuna:'02-20',mir:'05-14',seoyun:'03-12',dohyun:'06-18',serin:'07-23',yuri:'09-11',arin:'04-24',jieun:'04-09',haru:'05-29',daon:'11-21',naeun:'07-08',hina:'08-21',minji:'10-08',sooyeon:'11-06',yoonseul:'03-26',sua:'12-12',taeo:'02-06'};
+  const staffBirthdays={ieum:'06-03',hani:'01-17',gaeun:'09-25',yuna:'02-20',mir:'05-14',seoyun:'03-12',dohyun:'06-18',serin:'07-23',yuri:'09-11',arin:'04-24',jieun:'04-09',haru:'05-29',daon:'11-21',naeun:'07-08',hina:'08-21',minji:'10-08',sooyeon:'11-06',yoonseul:'03-26',sua:'12-12',taeo:'02-06'};
   const eventButton=document.createElement('button');eventButton.id='haniOfficeEvents';eventButton.type='button';eventButton.className='btn hani-office-events';eventButton.textContent='🎉 회장님 이벤트';eventButton.hidden=true;eventButton.setAttribute('aria-expanded','false');eventButton.setAttribute('aria-controls','haniOfficeEventPanel');caption.append(eventButton);
   const eventPanel=document.createElement('div');eventPanel.id='haniOfficeEventPanel';eventPanel.className='hani-office-event-panel';eventPanel.hidden=true;eventPanel.setAttribute('role','group');eventPanel.setAttribute('aria-label','회장님 이벤트');caption.append(eventPanel);
   const eventButtons=new Map();
@@ -4444,6 +4520,7 @@
   }
   const kidsVisits=building.residents.createKidsVisits();
   const staffChats=building.scheduler?.createStaffChats();
+  const weekdayGreetings=new Set();
   function updateResidents(now){
     if(!residentSlots.length)return;
     const existing=building.residents.snapshot(now,floorSnapshot,true,reduced),states=[...existing,...building.residents.companionSnapshot(now,floorSnapshot,true,reduced,existing)];let changed=false;
@@ -4451,17 +4528,17 @@
     for(const person of residentSlots){
       const actor=actors.get(person.id),state=states.find(p=>p.id===person.id&&p.floor===activeFloor),wasVisible=!actor.hidden;
       if(!state){delete actor.officePetFloor;delete actor.officeKidReaction;if(wasVisible){actor.hidden=true;clearMotion(actor);if(bubblePerson===person.id)closeBubble();changed=true}continue}
-      const prior=actor.officeResidentState,walking=String(state.walking),moved=!prior||prior.position[0]!==state.position[0]||prior.position[1]!==state.position[1],turned=!prior||prior.facing!==state.facing,posed=!prior||prior.pose!==state.pose;
+      const prior=actor.officeResidentState,walking=String(state.walking),moved=!prior||prior.position[0]!==state.position[0]||prior.position[1]!==state.position[1],turned=!prior||prior.facing!==state.facing,posed=!prior||prior.pose!==state.pose||prior.artPose!==state.artPose;
       if(person.pet&&state.pose==='sleep'&&(!wasVisible||prior?.pose!=='sleep'))clearMotion(actor);
       if(!wasVisible){actor.hidden=false;changed=true}
-      if(!prior||prior.walking!==state.walking||prior.anchor!==state.anchor)changed=true;
+      if(!prior||prior.walking!==state.walking||prior.anchor!==state.anchor||prior.following!==state.following)changed=true;
       if(sceneVisible())loadSprite(actor,fitStatusLabels);
       if(!prior){actor.officeRow.hidden=true;actor.dataset.activity='resident';actor.dataset.status='resident';actor.dataset.line=person.lines[0];const status=actor.querySelector('.hani-office-status');status.dataset.full=actor.dataset.line;status.hidden=true;actor.setAttribute('aria-label',actor.dataset.name)}
       if(turned)actor.dataset.facing=state.facing;
       if(!prior||prior.walking!==state.walking)actor.dataset.walking=walking;
       if(!prior||prior.anchor!==state.anchor)actor.officeAnchor=state.anchor;
       if(moved)place(actor,state.position);
-      if(posed||turned)applyPose(actor,state.pose);
+      if(posed||turned)applyPose(actor,state.artPose||state.pose);
       if(person.pet||person.kid){
         // One entrance greeting uses the existing reaction queue and clock.
         // Walking defers it until arrival; hidden floors never consume it.
@@ -4480,8 +4557,15 @@
         else delete actor.dataset.affection;
         if(affection?.bubble&&!staffChats?.current()&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)showBubble(actor,{speaker:person.id,line:affection.line,resident:true},3000,true);
       }
+      // Consume only a visible, actually shown arrival. Floor changes, other
+      // speech and user taps leave it pending; memory alone remembers the day.
+      const arrival=state.weekdayArrival;
+      if(arrival&&!weekdayGreetings.has(arrival.day)&&sceneVisible()&&!document.hidden&&!meeting&&!activeEvent&&!visit&&!staffChats?.current()&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000){
+        weekdayGreetings.add(arrival.day);
+        showBubble(actor,{speaker:person.id,line:arrival.line,resident:true,weekdayArrival:true},3000,true);
+      }
       const line=affection?.line||state.scene?.line||person.lines[0];
-      if(actor.dataset.line!==line){actor.dataset.line=line;actor.querySelector('.hani-office-status').dataset.full=line;if(bubblePerson===person.id&&!bubbleSelection?.affinity&&!bubbleSelection?.kidsVisit&&!bubbleSelection?.staffChat&&(!person.companion||autoBubbleEntry)){bubbleSelection={speaker:person.id,line,resident:true};bubbleLine.textContent=bubbleText(actor)}}
+      if(actor.dataset.line!==line){actor.dataset.line=line;actor.querySelector('.hani-office-status').dataset.full=line;if(bubblePerson===person.id&&!bubbleSelection?.affinity&&!bubbleSelection?.kidsVisit&&!bubbleSelection?.staffChat&&!bubbleSelection?.weekdayArrival&&(!person.companion||autoBubbleEntry)){bubbleSelection={speaker:person.id,line,resident:true};bubbleLine.textContent=bubbleText(actor)}}
       // Patrol greetings and siblings take turns on this same slot; a busy bubble
       // leaves each child's line pending instead of consuming it unseen.
       if(person.kid&&state.reaction?.key.includes('|kids|')&&root.officeCompanionReaction!==state.reaction.key&&actor.officeKidReaction?.key!==state.reaction.key)actor.officeKidReaction={...state.reaction,floor:activeFloor,expires:now.getTime()+20000};
@@ -4532,7 +4616,7 @@
   // Exactly one new listener: a visible unload may have no visibilitychange.
   globalThis.addEventListener?.('pagehide',()=>affinity.flush(true));
   new MutationObserver(syncVisibility).observe(root.closest(".view"),{attributes:true,attributeFilter:["class","hidden","style"]});
-  if(typeof IntersectionObserver==='function')new IntersectionObserver(entries=>{mapOnScreen=entries[0].isIntersecting;syncVisibility()}).observe(map);
+  if(typeof IntersectionObserver==='function')new IntersectionObserver(entries=>{mapOnScreen=entries[entries.length-1].isIntersecting;syncVisibility()}).observe(map);
   if(typeof ResizeObserver==='function')new ResizeObserver(()=>{fitStatusLabels();fitBubble()}).observe(map);
   document.fonts?.ready.then(()=>{fitStatusLabels();fitBubble()});
   updateBuilding(true);syncVisibility();

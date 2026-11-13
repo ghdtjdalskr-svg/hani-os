@@ -1,0 +1,31 @@
+{
+  "runtime": {
+    "files": 504,
+    "changed": []
+  },
+  "pre499Control": {
+    "commit": "213ffc80714f6331199035de2ca984327815737d",
+    "changedOwners": [
+      "assets/data/hani-history-releases-v1.json",
+      "hani-main.js",
+      "hani-office-live.js",
+      "hani-street-journal.css",
+      "index.html"
+    ],
+    "otherRuntimeBytesEqual": true
+  },
+  "fixtures": {
+    "files": 109,
+    "changed": [],
+    "oldManifestBytesExact": true
+  },
+  "closure": {
+    "raw": 168,
+    "projected": 164,
+    "missing": []
+  },
+  "syntax": {
+    "passed": 8,
+    "total": 8
+  }
+}
