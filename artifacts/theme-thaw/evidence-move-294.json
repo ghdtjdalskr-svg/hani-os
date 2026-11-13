@@ -1,0 +1,953 @@
+{
+    "base":  "bcc588ba634cc28ca9922210153f1cffec6d9e91",
+    "head":  "0e8f385df27d9518620e65e8a03150ff1c61b077",
+    "method":  "Direct per-file execution; unchanged Git-dependent files listed only; Git/Edge guard; history --unit-only",
+    "summary":  {
+                    "selected":  87,
+                    "executed":  60,
+                    "passedFiles":  60,
+                    "failedFiles":  0,
+                    "gitListedOnly":  27,
+                    "pass":  729,
+                    "fail":  0,
+                    "skip":  1,
+                    "office":  {
+                                   "pass":  610,
+                                   "selected":  73,
+                                   "executed":  46
+                               },
+                    "forbiddenAttempts":  0
+                },
+    "gitRequired":  [
+                        "hani-office-actions-216.test.mjs",
+                        "hani-office-affinity-274-pins.test.mjs",
+                        "hani-office-barista-night-273-pins.test.mjs",
+                        "hani-office-bori-stroll.test.mjs",
+                        "hani-office-cafe-rest.test.mjs",
+                        "hani-office-chairman-234.test.mjs",
+                        "hani-office-chairman-patrol-278-pins.test.mjs",
+                        "hani-office-companion-homes.test.mjs",
+                        "hani-office-companions-276-pins.test.mjs",
+                        "hani-office-consult.test.mjs",
+                        "hani-office-icons.test.mjs",
+                        "hani-office-lively-v2.test.mjs",
+                        "hani-office-mascot-label.test.mjs",
+                        "hani-office-obr12.test.mjs",
+                        "hani-office-obr14.test.mjs",
+                        "hani-office-obr15.test.mjs",
+                        "hani-office-obr21.test.mjs",
+                        "hani-office-obr4.test.mjs",
+                        "hani-office-obr6.test.mjs",
+                        "hani-office-obr7.test.mjs",
+                        "hani-office-obr8.test.mjs",
+                        "hani-office-obr9.test.mjs",
+                        "hani-office-pet-bori-272-pins.test.mjs",
+                        "hani-office-pets-268-pins.test.mjs",
+                        "hani-office-pets-bubble.test.mjs",
+                        "hani-office-v2-215.test.mjs",
+                        "hani-office-xmas-269-pins.test.mjs"
+                    ],
+    "results":  [
+                    {
+                        "file":  "hani-app-216-audit.test.cjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-app-216-audit.test.cjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  7,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-app-216-audit.test.cjs.log"
+                    },
+                    {
+                        "file":  "hani-chibi-pack-1.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-chibi-pack-1.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  10,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-chibi-pack-1.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-chibi-pack-1-layers.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-chibi-pack-1-layers.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  6,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-chibi-pack-1-layers.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-chibi-pack-1-release293.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-chibi-pack-1-release293.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  3,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-chibi-pack-1-release293.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-history-226.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-history-226.test.mjs",
+                                        "--unit-only"
+                                    ],
+                        "exit":  0,
+                        "pass":  0,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-history-226.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-join-ieum.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-join-ieum.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  17,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-join-ieum.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-219.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-219.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  6,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-219.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-actions-221.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-actions-221.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  20,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-actions-221.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-affinity.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-affinity.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  21,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-affinity.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-affinity-cap.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-affinity-cap.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  19,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-affinity-cap.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-affinity-storage.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-affinity-storage.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  3,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-affinity-storage.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-barista.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-barista.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  10,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-barista.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-barista-night.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-barista-night.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  13,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-barista-night.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-behavior.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-behavior.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  10,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-behavior.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-bori-m9.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-bori-m9.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  2,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-bori-m9.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-bubble-close.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-bubble-close.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  17,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-bubble-close.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-chairman-patrol.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-chairman-patrol.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  15,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-chairman-patrol.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-companions.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-companions.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  17,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-companions.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-crowded-labels.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-crowded-labels.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  19,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-crowded-labels.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-drama.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-drama.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  20,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-drama.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-fix-218.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-fix-218.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  6,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-fix-218.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-floor-bubble.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-floor-bubble.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  21,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-floor-bubble.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-hd-224.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-hd-224.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  10,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-hd-224.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-kids-286-source.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-kids-286-source.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  3,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-kids-286-source.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-kids-lively.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-kids-lively.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  15,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-kids-lively.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-kids-merge.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-kids-merge.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  10,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-kids-merge.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-kids-pose-b.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-kids-pose-b.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  13,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-kids-pose-b.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-kids-visit.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-kids-visit.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  16,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-kids-visit.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-kids-weekday.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-kids-weekday.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  19,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-kids-weekday.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-labels-qa.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-labels-qa.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  17,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-labels-qa.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-lively.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-lively.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  13,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-lively.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-motion-1.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-motion-1.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  16,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-motion-1.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-motion-2.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-motion-2.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  24,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-motion-2.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-obr10.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-obr10.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  4,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-obr10.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-obr16.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-obr16.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  12,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-obr16.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-obr17.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-obr17.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  3,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-obr17.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-obr18.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-obr18.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  12,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-obr18.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-obr19.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-obr19.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  3,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-obr19.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-obr3.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-obr3.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  5,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-obr3.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-pet-bori.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-pet-bori.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  14,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-pet-bori.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-props.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-props.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  11,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-props.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-release-projection.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-release-projection.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  2,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-release-projection.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-residents.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-residents.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  49,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-residents.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-seats-215.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-seats-215.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  12,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-seats-215.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-snack.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-snack.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  26,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-snack.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-staff-chat.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-staff-chat.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  17,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-staff-chat.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-tap-lines.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-tap-lines.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  15,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-tap-lines.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-tlayout.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-tlayout.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  13,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-tlayout.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-top-labels.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-top-labels.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  7,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-top-labels.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-visitors-cafe.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-visitors-cafe.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  5,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-visitors-cafe.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-xmas.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-xmas.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  13,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-xmas.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-office-zoom.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-office-zoom.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  12,
+                        "fail":  0,
+                        "skip":  1,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-office-zoom.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-qa-easy-cleanup.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-qa-easy-cleanup.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  12,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-qa-easy-cleanup.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-release-version-layers.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-release-version-layers.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  11,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-release-version-layers.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-save-guard.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-save-guard.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  10,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-save-guard.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-seoyun-m9.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-seoyun-m9.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  15,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-seoyun-m9.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-street-journal.test.cjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-street-journal.test.cjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  10,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-street-journal.test.cjs.log"
+                    },
+                    {
+                        "file":  "hani-street-journal-closure.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-street-journal-closure.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  1,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-street-journal-closure.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-theme-thaw.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-theme-thaw.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  13,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-theme-thaw.test.mjs.log"
+                    },
+                    {
+                        "file":  "hani-theme-thaw-source.test.mjs",
+                        "command":  [
+                                        "node",
+                                        "--require",
+                                        "./artifacts/theme-thaw/no-git-edge-294.cjs",
+                                        "scripts/hani-theme-thaw-source.test.mjs"
+                                    ],
+                        "exit":  0,
+                        "pass":  4,
+                        "fail":  0,
+                        "skip":  0,
+                        "forbiddenAttempt":  false,
+                        "log":  "logs-move-294/hani-theme-thaw-source.test.mjs.log"
+                    }
+                ]
+}
