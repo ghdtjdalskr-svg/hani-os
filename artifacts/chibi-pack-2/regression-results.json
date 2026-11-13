@@ -1,0 +1,1457 @@
+{
+  "base": "e1f3ac7e944484b09fe102464b22ef6e66204d9a",
+  "displayVersion": "2.9.293",
+  "gitAndEdgeExecuted": false,
+  "browserStatus": "not run; explicitly delegated to Seoyun",
+  "summary": {
+    "files": 99,
+    "commandSuccess": 71,
+    "pass": 1009,
+    "fail": 29,
+    "skipped": 3,
+    "blockedBeforeTests": 5,
+    "blockedTestCases": 29,
+    "otherFailedTests": []
+  },
+  "groups": {
+    "chibi2": {
+      "files": 1,
+      "commandSuccess": 1,
+      "pass": 7,
+      "fail": 0,
+      "skipped": 0,
+      "blockedBeforeTests": 0,
+      "blockedTestCases": 0,
+      "otherFailedTests": []
+    },
+    "chibi1": {
+      "files": 3,
+      "commandSuccess": 3,
+      "pass": 19,
+      "fail": 0,
+      "skipped": 0,
+      "blockedBeforeTests": 0,
+      "blockedTestCases": 0,
+      "otherFailedTests": []
+    },
+    "office": {
+      "files": 73,
+      "commandSuccess": 46,
+      "pass": 791,
+      "fail": 29,
+      "skipped": 3,
+      "blockedBeforeTests": 5,
+      "blockedTestCases": 29,
+      "otherFailedTests": []
+    },
+    "studyQuiz": {
+      "files": 9,
+      "commandSuccess": 8,
+      "pass": 83,
+      "fail": 0,
+      "skipped": 0,
+      "blockedBeforeTests": 0,
+      "blockedTestCases": 0,
+      "otherFailedTests": []
+    },
+    "other": {
+      "files": 13,
+      "commandSuccess": 13,
+      "pass": 109,
+      "fail": 0,
+      "skipped": 0,
+      "blockedBeforeTests": 0,
+      "blockedTestCases": 0,
+      "otherFailedTests": []
+    }
+  },
+  "results": [
+    {
+      "file": "hani-app-216-audit.test.cjs",
+      "status": 0,
+      "pass": 7,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-app-216-audit.test.cjs"
+    },
+    {
+      "file": "hani-chibi-pack-1.test.mjs",
+      "status": 0,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-chibi-pack-1.test.mjs"
+    },
+    {
+      "file": "hani-chibi-pack-1-layers.test.mjs",
+      "status": 0,
+      "pass": 6,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-chibi-pack-1-layers.test.mjs"
+    },
+    {
+      "file": "hani-chibi-pack-1-release293.test.mjs",
+      "status": 0,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-chibi-pack-1-release293.test.mjs"
+    },
+    {
+      "file": "hani-chibi-pack-2.test.mjs",
+      "status": 0,
+      "pass": 7,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-chibi-pack-2.test.mjs"
+    },
+    {
+      "file": "hani-history-226.test.mjs",
+      "status": 0,
+      "pass": 0,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "outputWithoutTap": [
+        "PASS history226 unit: real releases/months/milestones/counts, source unchanged, persistent slots, canonical click, boundary toggles/approval, escaping, unavailable catalog, no writes"
+      ],
+      "command": "node scripts/hani-history-226.test.mjs --unit-only"
+    },
+    {
+      "file": "hani-join-ieum.test.mjs",
+      "status": 0,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-join-ieum.test.mjs"
+    },
+    {
+      "file": "hani-learning-quiz-quality.test.mjs",
+      "status": 0,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-learning-quiz-quality.test.mjs"
+    },
+    {
+      "file": "hani-learning-quiz-v04.test.mjs",
+      "status": 0,
+      "pass": 0,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "outputWithoutTap": [
+        "PASS: economy acceptance, dynamic category rotation, JLPT diversity, read-only Edge Function"
+      ],
+      "command": "node scripts/hani-learning-quiz-v04.test.mjs"
+    },
+    {
+      "file": "hani-life-bundle-source.test.mjs",
+      "status": 0,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-life-bundle-source.test.mjs"
+    },
+    {
+      "file": "hani-newsroom-285-source.test.mjs",
+      "status": 0,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-newsroom-285-source.test.mjs"
+    },
+    {
+      "file": "hani-newsroom-4cut-288.test.mjs",
+      "status": 0,
+      "pass": 7,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-newsroom-4cut-288.test.mjs"
+    },
+    {
+      "file": "hani-office-219.test.mjs",
+      "status": 0,
+      "pass": 6,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-219.test.mjs"
+    },
+    {
+      "file": "hani-office-actions-216.test.mjs",
+      "status": 1,
+      "pass": 14,
+      "fail": 1,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [
+        {
+          "title": "✖ approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract (39.3654ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        }
+      ],
+      "command": "node scripts/hani-office-actions-216.test.mjs"
+    },
+    {
+      "file": "hani-office-actions-221.test.mjs",
+      "status": 0,
+      "pass": 20,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-actions-221.test.mjs"
+    },
+    {
+      "file": "hani-office-affinity.test.mjs",
+      "status": 0,
+      "pass": 21,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-affinity.test.mjs"
+    },
+    {
+      "file": "hani-office-affinity-274-pins.test.mjs",
+      "status": 1,
+      "pass": 2,
+      "fail": 1,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [
+        {
+          "title": "✖ 274 base commit independently proves the entire original JS/CSS/helper blobs (0.2834ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        }
+      ],
+      "command": "node scripts/hani-office-affinity-274-pins.test.mjs"
+    },
+    {
+      "file": "hani-office-affinity-cap.test.mjs",
+      "status": 0,
+      "pass": 19,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-affinity-cap.test.mjs"
+    },
+    {
+      "file": "hani-office-affinity-storage.test.mjs",
+      "status": 0,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-affinity-storage.test.mjs"
+    },
+    {
+      "file": "hani-office-barista.test.mjs",
+      "status": 0,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-barista.test.mjs"
+    },
+    {
+      "file": "hani-office-barista-night.test.mjs",
+      "status": 0,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-barista-night.test.mjs"
+    },
+    {
+      "file": "hani-office-barista-night-273-pins.test.mjs",
+      "status": 1,
+      "pass": 4,
+      "fail": 1,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [
+        {
+          "title": "✖ 273: fixed Git release blobs independently prove every baseline pin and complete diff (0.3233ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        }
+      ],
+      "command": "node scripts/hani-office-barista-night-273-pins.test.mjs"
+    },
+    {
+      "file": "hani-office-behavior.test.mjs",
+      "status": 0,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-behavior.test.mjs"
+    },
+    {
+      "file": "hani-office-bori-m9.test.mjs",
+      "status": 0,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-bori-m9.test.mjs"
+    },
+    {
+      "file": "hani-office-bori-stroll.test.mjs",
+      "status": 1,
+      "pass": 13,
+      "fail": 1,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [
+        {
+          "title": "✖ stroll inverse independently matches the fixed Git base (0.2608ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        }
+      ],
+      "command": "node scripts/hani-office-bori-stroll.test.mjs"
+    },
+    {
+      "file": "hani-office-bubble-close.test.mjs",
+      "status": 0,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-bubble-close.test.mjs"
+    },
+    {
+      "file": "hani-office-cafe-rest.test.mjs",
+      "status": 1,
+      "pass": 3,
+      "fail": 1,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [
+        {
+          "title": "✖ cafe route uses clear lower-right floor, retains the lounge and sign mounting surface (0.7547ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        }
+      ],
+      "command": "node scripts/hani-office-cafe-rest.test.mjs"
+    },
+    {
+      "file": "hani-office-chairman-234.test.mjs",
+      "status": 7,
+      "pass": 0,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [],
+      "outputWithoutTap": [
+        "    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {",
+        "  code: 'TASK_GIT_BLOCKED'",
+        "}",
+        "Node.js v24.20.0"
+      ],
+      "command": "node scripts/hani-office-chairman-234.test.mjs"
+    },
+    {
+      "file": "hani-office-chairman-patrol.test.mjs",
+      "status": 0,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-chairman-patrol.test.mjs"
+    },
+    {
+      "file": "hani-office-chairman-patrol-278-pins.test.mjs",
+      "status": 1,
+      "pass": 6,
+      "fail": 6,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [
+        {
+          "title": "✖ 278 independent fixed Git blobs prove pre-patrol bytes (0.2521ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        },
+        {
+          "title": "✖ 278 kids extension independently matches its fixed Git base (96.4976ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        },
+        {
+          "title": "✖ 278 visit extension independently matches fixed Git base (87.3313ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        },
+        {
+          "title": "✖ 278 staff-chat extension independently matches fixed Git base (78.0054ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        },
+        {
+          "title": "✖ 278 bubble placement extension independently matches fixed Git base (67.5896ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        },
+        {
+          "title": "✖ 278 optimization extension independently matches fixed Git base (59.5031ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        }
+      ],
+      "command": "node scripts/hani-office-chairman-patrol-278-pins.test.mjs"
+    },
+    {
+      "file": "hani-office-companion-homes.test.mjs",
+      "status": 1,
+      "pass": 15,
+      "fail": 1,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [
+        {
+          "title": "✖ home extension independently matches the specified fixed Git base (0.2605ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        }
+      ],
+      "command": "node scripts/hani-office-companion-homes.test.mjs"
+    },
+    {
+      "file": "hani-office-companions.test.mjs",
+      "status": 0,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-companions.test.mjs"
+    },
+    {
+      "file": "hani-office-companions-276-pins.test.mjs",
+      "status": 1,
+      "pass": 2,
+      "fail": 1,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [
+        {
+          "title": "✖ 276 fixed Git base independently proves every original blob (0.2684ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        }
+      ],
+      "command": "node scripts/hani-office-companions-276-pins.test.mjs"
+    },
+    {
+      "file": "hani-office-consult.test.mjs",
+      "status": 1,
+      "pass": 19,
+      "fail": 1,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [
+        {
+          "title": "✖ consult: sofa wording, counter words, safety owners and runtime timers (8.1802ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        }
+      ],
+      "command": "node scripts/hani-office-consult.test.mjs"
+    },
+    {
+      "file": "hani-office-crowded-labels.test.mjs",
+      "status": 0,
+      "pass": 19,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-crowded-labels.test.mjs"
+    },
+    {
+      "file": "hani-office-drama.test.mjs",
+      "status": 0,
+      "pass": 20,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-drama.test.mjs"
+    },
+    {
+      "file": "hani-office-fix-218.test.mjs",
+      "status": 0,
+      "pass": 6,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-fix-218.test.mjs"
+    },
+    {
+      "file": "hani-office-floor-bubble.test.mjs",
+      "status": 0,
+      "pass": 21,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-floor-bubble.test.mjs"
+    },
+    {
+      "file": "hani-office-hd-224.test.mjs",
+      "status": 0,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-hd-224.test.mjs"
+    },
+    {
+      "file": "hani-office-icons.test.mjs",
+      "status": 1,
+      "pass": 14,
+      "fail": 1,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [
+        {
+          "title": "✖ icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc (112.9602ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        }
+      ],
+      "command": "node scripts/hani-office-icons.test.mjs"
+    },
+    {
+      "file": "hani-office-kids-286-source.test.mjs",
+      "status": 0,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-kids-286-source.test.mjs"
+    },
+    {
+      "file": "hani-office-kids-lively.test.mjs",
+      "status": 0,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-kids-lively.test.mjs"
+    },
+    {
+      "file": "hani-office-kids-merge.test.mjs",
+      "status": 0,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-kids-merge.test.mjs"
+    },
+    {
+      "file": "hani-office-kids-pose-b.test.mjs",
+      "status": 0,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-kids-pose-b.test.mjs"
+    },
+    {
+      "file": "hani-office-kids-visit.test.mjs",
+      "status": 0,
+      "pass": 16,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-kids-visit.test.mjs"
+    },
+    {
+      "file": "hani-office-kids-weekday.test.mjs",
+      "status": 0,
+      "pass": 19,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-kids-weekday.test.mjs"
+    },
+    {
+      "file": "hani-office-labels-qa.test.mjs",
+      "status": 0,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-labels-qa.test.mjs"
+    },
+    {
+      "file": "hani-office-lively.test.mjs",
+      "status": 0,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-lively.test.mjs"
+    },
+    {
+      "file": "hani-office-lively-v2.test.mjs",
+      "status": 1,
+      "pass": 7,
+      "fail": 1,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [
+        {
+          "title": "✖ obr2: deterministic query order, reduced motion and frozen spatial bytes (0.5402ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        }
+      ],
+      "command": "node scripts/hani-office-lively-v2.test.mjs"
+    },
+    {
+      "file": "hani-office-mascot-label.test.mjs",
+      "status": 1,
+      "pass": 9,
+      "fail": 1,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [
+        {
+          "title": "✖ outer exact inverse independently restores fixed affinity HEAD and rejects partial/duplicate/unrelated edits (0.3743ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        }
+      ],
+      "command": "node scripts/hani-office-mascot-label.test.mjs"
+    },
+    {
+      "file": "hani-office-motion-1.test.mjs",
+      "status": 0,
+      "pass": 16,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-motion-1.test.mjs"
+    },
+    {
+      "file": "hani-office-motion-2.test.mjs",
+      "status": 0,
+      "pass": 24,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-motion-2.test.mjs"
+    },
+    {
+      "file": "hani-office-obr10.test.mjs",
+      "status": 0,
+      "pass": 4,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-obr10.test.mjs"
+    },
+    {
+      "file": "hani-office-obr12.test.mjs",
+      "status": 1,
+      "pass": 0,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [],
+      "outputWithoutTap": [
+        "    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {",
+        "  code: 'TASK_GIT_BLOCKED'",
+        "}",
+        "Node.js v24.20.0"
+      ],
+      "command": "node scripts/hani-office-obr12.test.mjs"
+    },
+    {
+      "file": "hani-office-obr14.test.mjs",
+      "status": 1,
+      "pass": 4,
+      "fail": 1,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [
+        {
+          "title": "✖ 235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism (701.199ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        }
+      ],
+      "command": "node scripts/hani-office-obr14.test.mjs"
+    },
+    {
+      "file": "hani-office-obr15.test.mjs",
+      "status": 1,
+      "pass": 13,
+      "fail": 1,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [
+        {
+          "title": "✖ obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately (692.6589ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        }
+      ],
+      "command": "node scripts/hani-office-obr15.test.mjs"
+    },
+    {
+      "file": "hani-office-obr16.test.mjs",
+      "status": 0,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-obr16.test.mjs"
+    },
+    {
+      "file": "hani-office-obr17.test.mjs",
+      "status": 0,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-obr17.test.mjs"
+    },
+    {
+      "file": "hani-office-obr18.test.mjs",
+      "status": 0,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-obr18.test.mjs"
+    },
+    {
+      "file": "hani-office-obr19.test.mjs",
+      "status": 0,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-obr19.test.mjs"
+    },
+    {
+      "file": "hani-office-obr21.test.mjs",
+      "status": 1,
+      "pass": 4,
+      "fail": 2,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [
+        {
+          "title": "✖ obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation (0.8042ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        },
+        {
+          "title": "✖ obr21 cached gathering/index decisions equal full index rebuilds (0.2996ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        }
+      ],
+      "command": "node scripts/hani-office-obr21.test.mjs"
+    },
+    {
+      "file": "hani-office-obr3.test.mjs",
+      "status": 0,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-obr3.test.mjs"
+    },
+    {
+      "file": "hani-office-obr4.test.mjs",
+      "status": 1,
+      "pass": 8,
+      "fail": 2,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [
+        {
+          "title": "✖ obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows (0.5733ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        },
+        {
+          "title": "✖ obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats (0.2529ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        }
+      ],
+      "command": "node scripts/hani-office-obr4.test.mjs"
+    },
+    {
+      "file": "hani-office-obr6.test.mjs",
+      "status": 1,
+      "pass": 0,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [],
+      "outputWithoutTap": [
+        "    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {",
+        "  code: 'TASK_GIT_BLOCKED'",
+        "}",
+        "Node.js v24.20.0"
+      ],
+      "command": "node scripts/hani-office-obr6.test.mjs"
+    },
+    {
+      "file": "hani-office-obr7.test.mjs",
+      "status": 1,
+      "pass": 0,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [],
+      "outputWithoutTap": [
+        "    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {",
+        "  code: 'TASK_GIT_BLOCKED'",
+        "}",
+        "Node.js v24.20.0"
+      ],
+      "command": "node scripts/hani-office-obr7.test.mjs"
+    },
+    {
+      "file": "hani-office-obr8.test.mjs",
+      "status": 1,
+      "pass": 2,
+      "fail": 1,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [
+        {
+          "title": "✖ obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words (731.2161ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        }
+      ],
+      "command": "node scripts/hani-office-obr8.test.mjs"
+    },
+    {
+      "file": "hani-office-obr9.test.mjs",
+      "status": 1,
+      "pass": 0,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [],
+      "outputWithoutTap": [
+        "    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {",
+        "  code: 'TASK_GIT_BLOCKED'",
+        "}",
+        "Node.js v24.20.0"
+      ],
+      "command": "node scripts/hani-office-obr9.test.mjs"
+    },
+    {
+      "file": "hani-office-pet-bori.test.mjs",
+      "status": 0,
+      "pass": 14,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-pet-bori.test.mjs"
+    },
+    {
+      "file": "hani-office-pet-bori-272-pins.test.mjs",
+      "status": 1,
+      "pass": 3,
+      "fail": 1,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [
+        {
+          "title": "✖ 272: fixed Git release blobs independently prove every baseline pin and complete diff (0.4108ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        }
+      ],
+      "command": "node scripts/hani-office-pet-bori-272-pins.test.mjs"
+    },
+    {
+      "file": "hani-office-pets-268-pins.test.mjs",
+      "status": 1,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [
+        {
+          "title": "✖ v2.9.268: exact fixture pairs are the complete diff from pinned origin/main, with no other source edits (305.7216ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        }
+      ],
+      "command": "node scripts/hani-office-pets-268-pins.test.mjs"
+    },
+    {
+      "file": "hani-office-pets-bubble.test.mjs",
+      "status": 1,
+      "pass": 21,
+      "fail": 1,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [
+        {
+          "title": "✖ resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections (0.5288ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        }
+      ],
+      "command": "node scripts/hani-office-pets-bubble.test.mjs"
+    },
+    {
+      "file": "hani-office-props.test.mjs",
+      "status": 0,
+      "pass": 11,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-props.test.mjs"
+    },
+    {
+      "file": "hani-office-release-projection.test.mjs",
+      "status": 0,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-release-projection.test.mjs"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "status": 0,
+      "pass": 49,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-residents.test.mjs"
+    },
+    {
+      "file": "hani-office-seats-215.test.mjs",
+      "status": 0,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-seats-215.test.mjs"
+    },
+    {
+      "file": "hani-office-snack.test.mjs",
+      "status": 0,
+      "pass": 26,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-snack.test.mjs"
+    },
+    {
+      "file": "hani-office-staff-chat.test.mjs",
+      "status": 0,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-staff-chat.test.mjs"
+    },
+    {
+      "file": "hani-office-tap-lines.test.mjs",
+      "status": 0,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-tap-lines.test.mjs"
+    },
+    {
+      "file": "hani-office-tlayout.test.mjs",
+      "status": 0,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-tlayout.test.mjs"
+    },
+    {
+      "file": "hani-office-top-labels.test.mjs",
+      "status": 0,
+      "pass": 7,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-top-labels.test.mjs"
+    },
+    {
+      "file": "hani-office-v2-215.test.mjs",
+      "status": 1,
+      "pass": 17,
+      "fail": 1,
+      "skipped": 2,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [
+        {
+          "title": "✖ frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture (0.6772ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        }
+      ],
+      "command": "node scripts/hani-office-v2-215.test.mjs"
+    },
+    {
+      "file": "hani-office-visitors-cafe.test.mjs",
+      "status": 0,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-visitors-cafe.test.mjs"
+    },
+    {
+      "file": "hani-office-xmas.test.mjs",
+      "status": 0,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-xmas.test.mjs"
+    },
+    {
+      "file": "hani-office-xmas-269-pins.test.mjs",
+      "status": 1,
+      "pass": 1,
+      "fail": 1,
+      "skipped": 0,
+      "gitBlocked": true,
+      "processBlocked": true,
+      "failureDetails": [
+        {
+          "title": "✖ v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit (0.2955ms)",
+          "reason": "Git delegated",
+          "excerpt": [
+            "Error: TASK_GIT_BLOCKED: Git belongs to Seoyun",
+            "code: 'TASK_GIT_BLOCKED'"
+          ]
+        }
+      ],
+      "command": "node scripts/hani-office-xmas-269-pins.test.mjs"
+    },
+    {
+      "file": "hani-office-zoom.test.mjs",
+      "status": 0,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 1,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-office-zoom.test.mjs"
+    },
+    {
+      "file": "hani-qa-easy-cleanup.test.mjs",
+      "status": 0,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-qa-easy-cleanup.test.mjs"
+    },
+    {
+      "file": "hani-quiz-autogen-216.test.mjs",
+      "status": 0,
+      "pass": 8,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-quiz-autogen-216.test.mjs"
+    },
+    {
+      "file": "hani-quiz-client-209.test.cjs",
+      "status": 0,
+      "pass": 7,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-quiz-client-209.test.cjs"
+    },
+    {
+      "file": "hani-quiz-qa-212.test.cjs",
+      "status": 0,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-quiz-qa-212.test.cjs"
+    },
+    {
+      "file": "hani-quiz-quality-210.test.mjs",
+      "status": 0,
+      "pass": 16,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-quiz-quality-210.test.mjs"
+    },
+    {
+      "file": "hani-release-version-layers.test.mjs",
+      "status": 0,
+      "pass": 11,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-release-version-layers.test.mjs"
+    },
+    {
+      "file": "hani-save-guard.test.mjs",
+      "status": 0,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-save-guard.test.mjs"
+    },
+    {
+      "file": "hani-seoyun-m9.test.mjs",
+      "status": 0,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-seoyun-m9.test.mjs"
+    },
+    {
+      "file": "hani-street-journal.test.cjs",
+      "status": 0,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-street-journal.test.cjs"
+    },
+    {
+      "file": "hani-street-journal-closure.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-street-journal-closure.test.mjs"
+    },
+    {
+      "file": "hani-study-retry.test.mjs",
+      "status": 0,
+      "pass": 26,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-study-retry.test.mjs"
+    },
+    {
+      "file": "hani-study-tutor-215.test.mjs",
+      "status": 0,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": false,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-study-tutor-215.test.mjs"
+    },
+    {
+      "file": "hani-app-216-practical.test.cjs",
+      "status": 0,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0,
+      "processBlocked": false,
+      "failureDetails": [],
+      "command": "node scripts/hani-app-216-practical.test.cjs"
+    },
+    {
+      "file": "hani-study-news-material.test.js",
+      "status": 1,
+      "pass": 0,
+      "fail": 0,
+      "skipped": 0,
+      "processBlocked": false,
+      "failureDetails": [],
+      "outputWithoutTap": [
+        "    + FullyQualifiedErrorId : NativeCommandError",
+        " ",
+        "    at Object.quizApi (evalmachine.<anonymous>:705:19)",
+        "    at async C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\ch2\\scripts\\hani-study-news-material.test.js:44:19"
+      ],
+      "command": "node scripts/hani-study-news-material.test.js",
+      "classification": "existing failure reproduced on captured pre-change bytes",
+      "baselineStatus": 1,
+      "baselineError": "ReferenceError: cloudReadFetch is not defined"
+    }
+  ],
+  "metric": "node:test case totals; standalone unit commands reported separately by exit status"
+}

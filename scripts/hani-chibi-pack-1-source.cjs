@@ -1,4 +1,5 @@
 // Test-only exact outer inverse. Never loaded by index.html or browser QA.
+require('./hani-chibi-pack-2-preload.cjs');
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const {createHash}=require('node:crypto');
 const readChibiRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');

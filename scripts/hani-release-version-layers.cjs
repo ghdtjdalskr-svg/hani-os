@@ -1,4 +1,5 @@
 // Test-only exact outer layers. Add releases newest first in the JSON manifest.
+require('./hani-chibi-pack-2-preload.cjs');
 // Each release removes its version bytes, then its optional frozen feature delta.
 const assert=require('node:assert/strict');
 const readRawFileSync=require('node:fs').readFileSync.bind(require('node:fs'));

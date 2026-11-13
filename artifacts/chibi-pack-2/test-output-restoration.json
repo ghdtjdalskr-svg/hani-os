@@ -1,0 +1,45 @@
+{
+  "restoredToSuppliedBase": [
+    {
+      "file": "artifacts/office-drama/reachability.json",
+      "savedOutput": "artifacts/chibi-pack-2/test-output/office-drama/reachability.json",
+      "baselineSha256": "6b00b9b08c6069cde4824553a5cb2aa72eeb667ec53b51782a10bd3fa29b1ef1",
+      "testOutputSha256": "d9f2fffd1c4d69ab4d903c26094bbbfbaa168887b1f3b7c5230cbd56ad0dd365"
+    },
+    {
+      "file": "artifacts/office-behavior/obr17-layout-node.json",
+      "savedOutput": "artifacts/chibi-pack-2/test-output/office-behavior/obr17-layout-node.json",
+      "baselineSha256": "e285500dfd36c5df258a68dd403f96aefc6f8cfe57edcaf36c64c4eb1800e901",
+      "testOutputSha256": "fcc9ad9299cff9a3136600e0b2cfd3156db660f5cf5ec337ea3420021809aba6"
+    },
+    {
+      "file": "artifacts/office-behavior/obr16-layout-node.json",
+      "savedOutput": "artifacts/chibi-pack-2/test-output/office-behavior/obr16-layout-node.json",
+      "baselineSha256": "b93abb61e8c8fc727c86669c9c2d1658c7585439a2ed2a6c2d94b5091298709b",
+      "testOutputSha256": "f7be9182e1c1842007e3e07b7f404de341c38c16b78e7159b701d6ae7479dfe6"
+    },
+    {
+      "file": "artifacts/office-behavior/obr19-layout-node.json",
+      "savedOutput": "artifacts/chibi-pack-2/test-output/office-behavior/obr19-layout-node.json",
+      "baselineSha256": "e38623b7b44eacd000361cfc7a5a7f53679cbd17882dbb18faca3ee54e85f8c8",
+      "testOutputSha256": "5b97ff47fb37ae7ef35bc3867bd38a5da0b55a9a63053da56ebff1def39ea7f1"
+    }
+  ],
+  "alreadyEqualToBase": [
+    "artifacts/night-actions-221/targeted.json",
+    "artifacts/l216-2/simulation-status.json",
+    "artifacts/l216-2/reachability-status.json",
+    "artifacts/bori-fix/daily-evidence.json",
+    "artifacts/bori-fix/tour-evidence.json",
+    "artifacts/bori-fix/dom-40x.json",
+    "artifacts/fix-218/clock-results.json",
+    "artifacts/office-behavior/obr19-vocabulary.json",
+    "artifacts/office-behavior/obr21-stationary.json",
+    "artifacts/pet-bori-live/schedule-evidence.json",
+    "artifacts/office-tlayout-apply/phone-boxes.json"
+  ],
+  "notRestoredWithoutIndependentBase": [
+    "artifacts/office-219/label-unit-results.json",
+    "artifacts/history-226/unit.json"
+  ]
+}

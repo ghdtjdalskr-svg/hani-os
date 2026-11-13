@@ -1,0 +1,19 @@
+{
+  "file": "assets/street-journal/chibi-sheet-v2.webp",
+  "size": [
+    1024,
+    1024
+  ],
+  "bytes": 209358,
+  "KiB": 204.45,
+  "alpha": [
+    0,
+    255
+  ],
+  "cellOrder": [
+    "yoonseul-bookmark",
+    "hina-cheer",
+    "hina-review",
+    "sooyeon-map"
+  ]
+}

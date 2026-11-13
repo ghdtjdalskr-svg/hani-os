@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "baselineFiles": 1664,
+  "baselineChanged": [
+    "docs/development-history/CURRENT.md",
+    "docs/development-history/handoffs/2026-11-13-chibi-pack-2.md",
+    "hani-main.js",
+    "hani-street-journal.css",
+    "hani-study-v02984.js",
+    "scripts/hani-chibi-pack-1-source.cjs",
+    "scripts/hani-quiz-autogen-216.test.mjs",
+    "scripts/hani-quiz-client-209.test.cjs",
+    "scripts/hani-release-version-layers.cjs",
+    "scripts/hani-study-retry-source.cjs"
+  ],
+  "baselineMissing": [],
+  "oldFixtureFilesPreserved": 110,
+  "rawSyntax": 8,
+  "cssAddedBalanced": true,
+  "versionAndCachePreserved": true,
+  "protectedWriteAndEventPathsExactlyPreserved": true,
+  "newRuntimeAsset": {
+    "file": "assets/street-journal/chibi-sheet-v2.webp",
+    "bytes": 209358,
+    "sha256": "ec6e810334fcb96f91c3fa0c42c2da54c46316f852e655a2d7e25466e6dd8ecb"
+  },
+  "moduleSyntax": 3,
+  "totalSyntax": 11,
+  "runtimeClosure": {
+    "raw": 169,
+    "projectedBase": 168,
+    "limit": 200,
+    "missing": [],
+    "added": [
+      "assets/street-journal/chibi-sheet-v2.webp"
+    ]
+  }
+}
