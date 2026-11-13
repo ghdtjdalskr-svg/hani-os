@@ -56,6 +56,15 @@ test('KST exact boundaries, calendar D-day, launch +7 days, no invalid-date unlo
   assert.equal(Date.parse(collection.promoEnd)-Date.parse(collection.launch),7*86400000);
   assert.equal(c.themeCollectionPhase(collection,'invalid').locked,true);
 });
+for(const now of ['2026-11-13T12:00:00+09:00','2026-12-20T12:00:00+09:00'])test(now+': before teaser hides home, while SEASON exhibits the locked collection without saving',()=>{
+  const h=harness(now),c=h.context;c.syncThemeCollections();
+  assert.equal(c.themeCollectionPhase(c.collections[0]).phase,'before');
+  assert.equal(c.memory.home,null);
+  const row=c.memory.rows.get('thaw-2027q1');assert.ok(row);assert.equal(row.hidden,false);
+  assert.match(row.innerHTML,/THAW/);assert.equal(row.querySelector('[data-collection-apply]').disabled,true);
+  assert.equal(row.querySelector('[data-collection-replay]').hidden,true);
+  assert.equal(c.openThemeCollection('thaw-2027q1'),false);assert.deepEqual(h.writes,[]);
+});
 test('catalog loader uses injected read, keeps themes on failure, and reuses rows',async()=>{
   const h=harness(times[2]),c=h.context;c.syncThemeCollections();const row=c.memory.rows.get('thaw-2027q1');
   assert.equal(await c.loadThemeCollections(async()=>({ok:true,json:async()=>definitions})),true);

@@ -1,3 +1,7 @@
+# 2026-11-13 · THAW main293 재정비 (도연 / Codex)
+
+`hani/theme-thaw` / HEAD `4701b58` / 전달·로컬 main `e1f3ac7`(ref/객체 확인만). **운영 수정0·THAW exact inverse → 293 이하 기존 시험 층 연결, 단언·숫자·hash 보존. 99파일956PASS/31Git차단/skip4·비Git실패0, office73파일791PASS. raw171→168→164/누락0·기존fixture110 보존.** 11~12월 홈 홍보는 없으나 SEASON에는 잠긴 THAW 행이 보임. 4시점×1280/390 browser 실행기 준비, 실제 Edge/PNG 미실행. Git 명령·commit/push·버전 증가·merge·배포 없음, 서윤 검증 인계. Notion append는 자동 승인 never 거절로 갱신 대기. [보고서](../../artifacts/theme-thaw/REPORT-294.md) · [인수인계](handoffs/2026-11-13-theme-thaw-294.md). 아래 기존·타 담당 기록 보존.
+
 # 2026-11-13 · tooling-293 · 292/293 배포 후속 시험 층 (도연 / Codex)
 
 hani/tooling-293 / HEAD·로컬 origin/main 9d6ecdd(2.9.293, ref/객체 읽기·원격 새 조회 없음). **293 버전/연혁 → frozen 치비 → 기존292 사무실 inverse → 291 이하 합성, 기존 단언·핀 보존. 핵심14파일116PASS·history unit PASS, office73파일796PASS/33Git차단/성능1FAIL/3skip·성능 단독1PASS(400ms 유지).** 요청14개는 #499 전213ffc8 대조177PASS/5Git차단·브라우저차단1파일, 비Git 기능 실패0·293과 동일. 운영504·기존fixture109·기존manifest 바이트 보존·raw168→투영164/누락0·syntax8/8. Git·Edge·commit/push·배포 없음, 서윤 인계. Notion HANI-88 append 자동 승인 never 거절로 미반영. [보고서](../../artifacts/chibi-pack-1/TOOLING-293.md) · [인수인계](handoffs/2026-11-13-tooling-293.md). 아래 과거·타 담당 기록 보존.

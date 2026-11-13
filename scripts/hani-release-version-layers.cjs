@@ -1,5 +1,6 @@
 // Test-only exact outer layers. Add releases newest first in the JSON manifest.
 // Each release removes its version bytes, then its optional frozen feature delta.
+const thaw=require('./hani-theme-thaw-source.cjs');
 const assert=require('node:assert/strict');
 const readRawFileSync=require('node:fs').readFileSync.bind(require('node:fs'));
 const {createHash}=require('node:crypto');
@@ -50,7 +51,7 @@ function restoreVersionLayer(source,file,version){
  assert.equal(hash(before),row.before,'exact release-'+number(layer.from)+' output '+file);
  return before;
 }
-// 293 version/history -> frozen chibi -> 292 version/office -> 291 contrast
+// THAW -> 293 version/history -> frozen chibi -> 292 version/office -> 291 contrast
 // -> 290 Ieum -> frozen 289/288. Each step retains full input/output pins.
 // Newest exact version bytes precede their feature inverse. The 289 adapter
 // first removes 290 + Ieum, then reaches the unchanged 289/288 contracts.
@@ -76,6 +77,7 @@ function project(source,file,target,features,keepFeature=false){
  const boundary=number(target);
  assert.ok(layers.some(row=>row.from===target||row.to===target),'known release target '+target);
  for(const layer of layers){
+  source=thaw.project(source,file);
   const version=number(layer.to);
   if(version<boundary)break;
   // Release 287 wraps the guarded 286 bytes. Peel the guard only at 286.

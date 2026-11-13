@@ -1,0 +1,444 @@
+{
+  "base": "e1f3ac7e944484b09fe102464b22ef6e66204d9a",
+  "head": "4701b5853bd289df7ce5febea38fd8da32b3cea9",
+  "identity": {
+    "index.html": "73d7844a2e28fe00091111d801e6f5df294dbb637760e3e4855a543848869d79",
+    "hani-main.js": "ecf1d2d6a625dc313c75bfe2d65addffdc739796babc1bbde868c1954ac186b5",
+    "hani-design-system.css": "38e127ac1cb59fca96575a65d2ebe64004ffd4c33c0696858da2cfdf7db2205c",
+    "hani-theme-collections.json": "1e7797401b2d5bc6c60cdd0e0cf88de00e0368378ce491863b947e1312901061"
+  },
+  "viewports": [
+    {
+      "width": 1280,
+      "phase": "before",
+      "now": "2026-12-20T12:00:00+09:00",
+      "passiveWrites": 0,
+      "studioPassiveWrites": 0,
+      "studioVisible": true,
+      "homeVisible": false,
+      "art": "http://127.0.0.1:9867/assets/theme-collections/thaw-2027q1/teaser-wide.webp",
+      "lifePreserved": true
+    },
+    {
+      "width": 1280,
+      "phase": "teaser",
+      "now": "2027-01-10T12:00:00+09:00",
+      "passiveWrites": 0,
+      "studioPassiveWrites": 0,
+      "studioVisible": true,
+      "homeVisible": true,
+      "art": "http://127.0.0.1:9867/assets/theme-collections/thaw-2027q1/teaser-wide.webp",
+      "lifePreserved": true
+    },
+    {
+      "width": 1280,
+      "phase": "launch",
+      "now": "2027-02-09T12:00:00+09:00",
+      "passiveWrites": 0,
+      "studioPassiveWrites": 0,
+      "studioVisible": true,
+      "homeVisible": true,
+      "art": "http://127.0.0.1:9867/assets/theme-collections/thaw-2027q1/teaser-wide.webp",
+      "lifePreserved": true
+    },
+    {
+      "width": 1280,
+      "phase": "after",
+      "now": "2027-02-20T12:00:00+09:00",
+      "passiveWrites": 0,
+      "studioPassiveWrites": 0,
+      "studioVisible": true,
+      "homeVisible": false,
+      "art": "http://127.0.0.1:9867/assets/theme-collections/thaw-2027q1/teaser-wide.webp",
+      "lifePreserved": true
+    },
+    {
+      "width": 390,
+      "phase": "before",
+      "now": "2026-12-20T12:00:00+09:00",
+      "passiveWrites": 0,
+      "studioPassiveWrites": 0,
+      "studioVisible": true,
+      "homeVisible": false,
+      "art": "http://127.0.0.1:9867/assets/theme-collections/thaw-2027q1/teaser-mobile.webp",
+      "lifePreserved": true
+    },
+    {
+      "width": 390,
+      "phase": "teaser",
+      "now": "2027-01-10T12:00:00+09:00",
+      "passiveWrites": 0,
+      "studioPassiveWrites": 0,
+      "studioVisible": true,
+      "homeVisible": true,
+      "art": "http://127.0.0.1:9867/assets/theme-collections/thaw-2027q1/teaser-mobile.webp",
+      "lifePreserved": true
+    },
+    {
+      "width": 390,
+      "phase": "launch",
+      "now": "2027-02-09T12:00:00+09:00",
+      "passiveWrites": 0,
+      "studioPassiveWrites": 0,
+      "studioVisible": true,
+      "homeVisible": true,
+      "art": "http://127.0.0.1:9867/assets/theme-collections/thaw-2027q1/teaser-mobile.webp",
+      "lifePreserved": true
+    },
+    {
+      "width": 390,
+      "phase": "after",
+      "now": "2027-02-20T12:00:00+09:00",
+      "passiveWrites": 0,
+      "studioPassiveWrites": 0,
+      "studioVisible": true,
+      "homeVisible": false,
+      "art": "http://127.0.0.1:9867/assets/theme-collections/thaw-2027q1/teaser-mobile.webp",
+      "lifePreserved": true
+    }
+  ],
+  "screenshots": [
+    "294-1280-before-home.png",
+    "294-1280-before-studio.png",
+    "294-1280-teaser-home.png",
+    "294-1280-teaser-studio.png",
+    "294-1280-launch-home.png",
+    "294-1280-launch-dialog.png",
+    "294-1280-launch-studio.png",
+    "294-1280-after-home.png",
+    "294-1280-after-studio.png",
+    "294-1280-after-dialog.png",
+    "294-390-before-home.png",
+    "294-390-before-studio.png",
+    "294-390-teaser-home.png",
+    "294-390-teaser-studio.png",
+    "294-390-launch-home.png",
+    "294-390-launch-dialog.png",
+    "294-390-launch-studio.png",
+    "294-390-after-home.png",
+    "294-390-after-studio.png",
+    "294-390-after-dialog.png"
+  ],
+  "errors": [],
+  "cases": [
+    {
+      "width": 1280,
+      "phase": "launch",
+      "combinations": 24,
+      "combinationColors": {
+        "porcelain-cream": [
+          "#eee5d5",
+          "#fffaf0",
+          "#292a2d",
+          "#62646b"
+        ],
+        "pure-white": [
+          "#f4f5f8",
+          "#ffffff",
+          "#292d39",
+          "#555d70"
+        ],
+        "titanium-graphite": [
+          "#242528",
+          "#2d2f33",
+          "#f1f0ed",
+          "#b8b7b2"
+        ],
+        "midnight-black": [
+          "#0e0f12",
+          "#15171c",
+          "#f5f2ed",
+          "#b9bac0"
+        ],
+        "sakura-pink": [
+          "#eed7e0",
+          "#fff5f8",
+          "#302a2e",
+          "#6e6269"
+        ],
+        "alpine-blue": [
+          "#d6e6f3",
+          "#f5faff",
+          "#29313a",
+          "#606d7b"
+        ]
+      },
+      "explicitWrites": [
+        [
+          "setItem",
+          "hani_os_signature_finish_v1",
+          "alpine-blue"
+        ],
+        [
+          "setItem",
+          "hani_os_season_theme_v1",
+          "spring"
+        ]
+      ]
+    },
+    {
+      "width": 1280,
+      "phase": "after",
+      "combinations": 24,
+      "combinationColors": {
+        "porcelain-cream": [
+          "#eee5d5",
+          "#fffaf0",
+          "#292a2d",
+          "#62646b"
+        ],
+        "pure-white": [
+          "#f4f5f8",
+          "#ffffff",
+          "#292d39",
+          "#555d70"
+        ],
+        "titanium-graphite": [
+          "#242528",
+          "#2d2f33",
+          "#f1f0ed",
+          "#b8b7b2"
+        ],
+        "midnight-black": [
+          "#0e0f12",
+          "#15171c",
+          "#f5f2ed",
+          "#b9bac0"
+        ],
+        "sakura-pink": [
+          "#eed7e0",
+          "#fff5f8",
+          "#302a2e",
+          "#6e6269"
+        ],
+        "alpine-blue": [
+          "#d6e6f3",
+          "#f5faff",
+          "#29313a",
+          "#606d7b"
+        ]
+      },
+      "explicitWrites": [
+        [
+          "setItem",
+          "hani_os_signature_finish_v1",
+          "alpine-blue"
+        ],
+        [
+          "setItem",
+          "hani_os_season_theme_v1",
+          "spring"
+        ]
+      ]
+    },
+    {
+      "width": 390,
+      "phase": "launch",
+      "combinations": 24,
+      "combinationColors": {
+        "porcelain-cream": [
+          "#eee5d5",
+          "#fffaf0",
+          "#292a2d",
+          "#62646b"
+        ],
+        "pure-white": [
+          "#f4f5f8",
+          "#ffffff",
+          "#292d39",
+          "#555d70"
+        ],
+        "titanium-graphite": [
+          "#242528",
+          "#2d2f33",
+          "#f1f0ed",
+          "#b8b7b2"
+        ],
+        "midnight-black": [
+          "#0e0f12",
+          "#15171c",
+          "#f5f2ed",
+          "#b9bac0"
+        ],
+        "sakura-pink": [
+          "#eed7e0",
+          "#fff5f8",
+          "#302a2e",
+          "#6e6269"
+        ],
+        "alpine-blue": [
+          "#d6e6f3",
+          "#f5faff",
+          "#29313a",
+          "#606d7b"
+        ]
+      },
+      "explicitWrites": [
+        [
+          "setItem",
+          "hani_os_signature_finish_v1",
+          "alpine-blue"
+        ],
+        [
+          "setItem",
+          "hani_os_season_theme_v1",
+          "spring"
+        ]
+      ]
+    },
+    {
+      "width": 390,
+      "phase": "after",
+      "combinations": 24,
+      "combinationColors": {
+        "porcelain-cream": [
+          "#eee5d5",
+          "#fffaf0",
+          "#292a2d",
+          "#62646b"
+        ],
+        "pure-white": [
+          "#f4f5f8",
+          "#ffffff",
+          "#292d39",
+          "#555d70"
+        ],
+        "titanium-graphite": [
+          "#242528",
+          "#2d2f33",
+          "#f1f0ed",
+          "#b8b7b2"
+        ],
+        "midnight-black": [
+          "#0e0f12",
+          "#15171c",
+          "#f5f2ed",
+          "#b9bac0"
+        ],
+        "sakura-pink": [
+          "#eed7e0",
+          "#fff5f8",
+          "#302a2e",
+          "#6e6269"
+        ],
+        "alpine-blue": [
+          "#d6e6f3",
+          "#f5faff",
+          "#29313a",
+          "#606d7b"
+        ]
+      },
+      "explicitWrites": [
+        [
+          "setItem",
+          "hani_os_signature_finish_v1",
+          "alpine-blue"
+        ],
+        [
+          "setItem",
+          "hani_os_season_theme_v1",
+          "spring"
+        ]
+      ]
+    }
+  ],
+  "fetches": [
+    {
+      "width": 1280,
+      "phase": "before",
+      "path": "/hani-theme-collections.json",
+      "status": 200
+    },
+    {
+      "width": 1280,
+      "phase": "before",
+      "path": "/assets/theme-collections/thaw-2027q1/teaser-wide.webp",
+      "status": 200
+    },
+    {
+      "width": 1280,
+      "phase": "teaser",
+      "path": "/hani-theme-collections.json",
+      "status": 200
+    },
+    {
+      "width": 1280,
+      "phase": "teaser",
+      "path": "/assets/theme-collections/thaw-2027q1/teaser-wide.webp",
+      "status": 200
+    },
+    {
+      "width": 1280,
+      "phase": "launch",
+      "path": "/hani-theme-collections.json",
+      "status": 200
+    },
+    {
+      "width": 1280,
+      "phase": "launch",
+      "path": "/assets/theme-collections/thaw-2027q1/teaser-wide.webp",
+      "status": 200
+    },
+    {
+      "width": 1280,
+      "phase": "after",
+      "path": "/hani-theme-collections.json",
+      "status": 200
+    },
+    {
+      "width": 1280,
+      "phase": "after",
+      "path": "/assets/theme-collections/thaw-2027q1/teaser-wide.webp",
+      "status": 200
+    },
+    {
+      "width": 390,
+      "phase": "before",
+      "path": "/hani-theme-collections.json",
+      "status": 200
+    },
+    {
+      "width": 390,
+      "phase": "before",
+      "path": "/assets/theme-collections/thaw-2027q1/teaser-mobile.webp",
+      "status": 200
+    },
+    {
+      "width": 390,
+      "phase": "teaser",
+      "path": "/hani-theme-collections.json",
+      "status": 200
+    },
+    {
+      "width": 390,
+      "phase": "teaser",
+      "path": "/assets/theme-collections/thaw-2027q1/teaser-mobile.webp",
+      "status": 200
+    },
+    {
+      "width": 390,
+      "phase": "launch",
+      "path": "/hani-theme-collections.json",
+      "status": 200
+    },
+    {
+      "width": 390,
+      "phase": "launch",
+      "path": "/assets/theme-collections/thaw-2027q1/teaser-mobile.webp",
+      "status": 200
+    },
+    {
+      "width": 390,
+      "phase": "after",
+      "path": "/hani-theme-collections.json",
+      "status": 200
+    },
+    {
+      "width": 390,
+      "phase": "after",
+      "path": "/assets/theme-collections/thaw-2027q1/teaser-mobile.webp",
+      "status": 200
+    }
+  ],
+  "result": "PASS"
+}
