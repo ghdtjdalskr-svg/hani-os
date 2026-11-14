@@ -1,0 +1,22 @@
+{
+  "result": "static-passed-browser-not-run",
+  "base": "974fa64df67a3c0060bdf0eda951aafeaf5a9b11",
+  "baseline": "60db7b5",
+  "checks": [],
+  "screenshots": [],
+  "errors": [],
+  "static": [
+    "resolved real CSS variables: all team/resident names, five data-status palettes, compact lines and speech AA >=4.5:1",
+    "approved home foot pivots, unchanged atlas metadata, exact approved pose/pivot and HD actor CSS",
+    "10:00: 19 staff, unique seats, speech present; night presence retained",
+    "15:40: 19 staff, unique seats, speech present; night presence retained",
+    "21:00: 19 staff, unique seats, speech present; night presence retained",
+    "00:30: 19 staff, unique seats, speech present; night presence retained",
+    "02:00: 5 staff, unique seats, speech present; night presence retained",
+    "version/cache bytes, approved canon coordinates/floors/people/anchors/edges and action table preserved; exact approved affinity owner, no other office storage/Cloud APIs",
+    "real renderer: four clocks/five floor clicks retain actor/status slots and update full speech/title/roster",
+    "delegated name/dot tap: one persistent full status panel, 3000ms, latest tap wins, floor change closes",
+    "216 scheduled activity: active emoji updates inside persistent name slot",
+    "constrained boxes/actual owner: compact tags stagger without overlap; desktop speech > meeting > status, no name collisions, hidden pills recover"
+  ]
+}

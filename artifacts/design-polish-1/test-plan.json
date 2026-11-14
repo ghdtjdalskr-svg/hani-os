@@ -1,0 +1,1431 @@
+{
+  "base": "cb11935",
+  "requested": 90,
+  "cssReaders": 30,
+  "cssReferences": [
+    {
+      "file": "scripts/hani-annual-report-ui-test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-app-216-audit.test.cjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-app-216-practical-safety.cjs",
+      "inPlan": false,
+      "role": "historical safety CLI requires separate baseline"
+    },
+    {
+      "file": "scripts/hani-app-216-practical.test.cjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-app-216-safety.cjs",
+      "inPlan": false,
+      "role": "historical safety CLI requires separate baseline"
+    },
+    {
+      "file": "scripts/hani-brand-heroes-218.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-chart-toss-212.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-design-polish-1-preload.cjs",
+      "inPlan": false,
+      "role": "adapter/helper"
+    },
+    {
+      "file": "scripts/hani-design-polish-1.browser.mjs",
+      "inPlan": false,
+      "role": "browser delegated"
+    },
+    {
+      "file": "scripts/hani-design-polish-1.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-design-system-phase1-qa.mjs",
+      "inPlan": false,
+      "role": "browser delegated"
+    },
+    {
+      "file": "scripts/hani-exam-popup-214.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-fun-top3.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-google-drive-212-safety.mjs",
+      "inPlan": false,
+      "role": "historical safety CLI requires separate baseline"
+    },
+    {
+      "file": "scripts/hani-google-drive-212.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-hero-restore.browser.mjs",
+      "inPlan": false,
+      "role": "browser delegated"
+    },
+    {
+      "file": "scripts/hani-hero-restore.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-history-226.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-mascots-poster.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-milestones-v1.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-mission-203a-safety.cjs",
+      "inPlan": false,
+      "role": "historical safety CLI requires separate baseline"
+    },
+    {
+      "file": "scripts/hani-mission-203a.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-nav-groups.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-newsroom-4cut-230.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-newsroom-4cut-preservation.mjs",
+      "inPlan": false,
+      "role": "adapter/helper"
+    },
+    {
+      "file": "scripts/hani-office-234-export-requests.mjs",
+      "inPlan": false,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-office-hd-224.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-office-obr14.browser.mjs",
+      "inPlan": false,
+      "role": "browser delegated"
+    },
+    {
+      "file": "scripts/hani-office-obr15.browser.mjs",
+      "inPlan": false,
+      "role": "browser delegated"
+    },
+    {
+      "file": "scripts/hani-owner-verification-ui.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-qa-1st-safety.mjs",
+      "inPlan": false,
+      "role": "historical safety CLI requires separate baseline"
+    },
+    {
+      "file": "scripts/hani-qa-210.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-qa-design-b4.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-qa-easy-cleanup.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-qa-report-fixes.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-release-294.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-release-version-layers.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-reviewed-release-baseline.mjs",
+      "inPlan": false,
+      "role": "adapter/helper"
+    },
+    {
+      "file": "scripts/hani-reviewed-release-baseline.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-simplify-218.test.cjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-simplify-225.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-theme-thaw-source.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-theme-white-215.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    },
+    {
+      "file": "scripts/hani-ui-203b.test.mjs",
+      "inPlan": true,
+      "role": "support/export utility"
+    }
+  ],
+  "knownFailures": [
+    "settings-225",
+    "ilbo-banner-215",
+    "study-news-material",
+    "pb-chibitoon",
+    "brand-heroes-218",
+    "dash-218",
+    "fun-top3",
+    "hero-restore",
+    "ilbo-213",
+    "invest-split-ui",
+    "investment-research-ui",
+    "mascots-poster",
+    "nav-groups",
+    "owner-verification-ui",
+    "qa-210",
+    "qa-design-b4",
+    "qa-report-fixes",
+    "remote-media-219",
+    "reviewed-release-baseline",
+    "simplify-225",
+    "theme-white-215",
+    "ui-203b"
+  ],
+  "plan": [
+    {
+      "file": "scripts/hani-annual-report-ui-test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": false,
+      "status": "BROWSER_DELEGATED",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-app-216-audit.test.cjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-app-216-practical.test.cjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-brand-heroes-218.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-chart-toss-212.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": false,
+      "status": "BROWSER_DELEGATED",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-chibi-pack-1-layers.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-chibi-pack-1-release293.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-chibi-pack-1.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-design-polish-1-contrast.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-design-polish-1.test.mjs",
+      "args": [],
+      "preload": false,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-exam-popup-214.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-fun-top3.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-google-drive-212.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-hero-restore.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-history-226.test.mjs",
+      "args": [
+        "--unit-only"
+      ],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-join-ieum.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-mascots-poster.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-milestones-v1.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": false,
+      "status": "BROWSER_DELEGATED",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-mission-203a.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-nav-groups.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-newsroom-4cut-230.test.mjs",
+      "args": [
+        "--node"
+      ],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-219.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-actions-216.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-actions-221.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-affinity-274-pins.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-affinity-274-pins.test.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-affinity-cap.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-affinity-storage.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-affinity.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-barista-night-273-pins.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-barista-night-273-pins.test.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-barista-night.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-barista.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-behavior.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-bori-m9.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-bori-stroll.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-bori-stroll.test.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-bubble-close.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-cafe-rest.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-chairman-234.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-chairman-patrol-278-pins.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-chairman-patrol-278-pins.test.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-chairman-patrol.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-companion-homes.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-companion-homes.test.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-companions-276-pins.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-companions-276-pins.test.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-companions.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-consult.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-crowded-labels.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-drama.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-fix-218.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-floor-bubble.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-hd-224.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": true,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-icons.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-kids-286-source.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-kids-lively.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-kids-merge.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-kids-pose-b.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-kids-visit.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-kids-weekday.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-labels-qa.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-lively-v2.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-lively.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-mascot-label.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-mascot-label.test.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-motion-1.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-motion-2.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-obr10.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-obr12.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-obr14.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-obr15.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-obr16.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-obr17.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-obr18.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-obr19.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-obr21.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-obr3.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-obr4.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-obr6.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-obr7.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-obr8.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-obr9.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-pet-bori-272-pins.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-pet-bori-272-pins.test.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-pet-bori.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-pets-268-pins.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-pets-268-pins.test.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-pets-bubble.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-props.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-release-projection.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-residents.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-seats-215.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-snack.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-staff-chat.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-tap-lines.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-tlayout.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-top-labels.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-v2-215.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-visitors-cafe.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-xmas-269-pins.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-xmas-269-pins.test.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-xmas.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-zoom.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": true,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-owner-verification-ui.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": true,
+      "status": "BROWSER_DELEGATED",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-qa-210.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-qa-design-b4.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-qa-easy-cleanup.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-qa-report-fixes.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-release-294.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-release-version-layers.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-reviewed-release-baseline.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-save-guard.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-seoyun-m9.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-simplify-218.test.cjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-simplify-225.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-street-journal-closure.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-street-journal.test.cjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-theme-thaw-source.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-theme-thaw.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": false,
+      "knownFailure": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-theme-white-215.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": true,
+      "status": "BROWSER_DELEGATED",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-ui-203b.test.mjs",
+      "args": [],
+      "preload": true,
+      "office": false,
+      "cssReader": true,
+      "knownFailure": true,
+      "status": "READY",
+      "gitOwners": []
+    }
+  ]
+}

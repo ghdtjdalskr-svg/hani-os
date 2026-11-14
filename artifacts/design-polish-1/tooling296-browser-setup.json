@@ -1,0 +1,20 @@
+{
+  "result": "PASS_SETUP_ONLY",
+  "base": "dfe81946aab6147c829ed0ee0a1c9f239c364d03",
+  "sourceHashes": {
+    "hani-main.js": {
+      "before": "fbee5583f06e693fca30f2ea235034fcf6991aa1b001d866804ff74f95939212",
+      "after": "38ae1865e1b9423eecf7ec5da09b37a5becc9e39e976f2c70c22f55a0e51526e"
+    },
+    "hani-design-system.css": {
+      "before": "38e127ac1cb59fca96575a65d2ebe64004ffd4c33c0696858da2cfdf7db2205c",
+      "after": "d9a6401c68bfed89de8edb68c41b5d8caae40778eb1cd7b019f88fe288839eb4"
+    }
+  },
+  "out": "C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\tool296\\artifacts\\design-polish-1\\tooling296-local\\browser",
+  "finishes": 6,
+  "seasons": 4,
+  "cases": 9,
+  "edge": "NOT_RUN",
+  "pixels": "NOT_RUN"
+}

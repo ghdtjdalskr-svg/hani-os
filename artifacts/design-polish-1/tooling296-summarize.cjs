@@ -1,0 +1,14 @@
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
+const rows=JSON.parse(fs.readFileSync(path.join(__dirname,'tooling296-local/results.json'),'utf8'));
+const plan=JSON.parse(fs.readFileSync(path.join(__dirname,'tooling296-plan.json'),'utf8')).plan;
+assert.deepEqual(rows.map(r=>r.file).sort(),plan.filter(r=>r.status==='READY').map(r=>r.file).sort(),'every runnable requested file accounted for');
+assert.ok(rows.every(r=>r.exit===0&&!r.blocked),'no failure or process-blocked result accepted');
+const sum=(data,key)=>data.reduce((n,r)=>n+r[key],0),office=rows.filter(r=>r.office);
+const summary={files:rows.length,pass:sum(rows,'pass'),fail:sum(rows,'fail'),skip:sum(rows,'skip'),office:{files:office.length,pass:sum(office,'pass'),fail:sum(office,'fail'),skip:sum(office,'skip')},gitListed:plan.filter(r=>r.status==='GIT_REQUIRED').length,knownExcluded:plan.filter(r=>r.status==='KNOWN_FAILURE_UNTOUCHED').map(r=>r.file),note:'Per-file default Node execution, separate process per file, process guard and generated-output routing only. history --unit-only and quiz-v04 are each counted as one successful CLI test wrapper. No external inverse preload; no Edge or Git process.'};
+assert.equal(summary.fail,0);
+fs.writeFileSync(path.join(__dirname,'tooling296-summary.json'),JSON.stringify(summary,null,2)+'\n');
+fs.writeFileSync(path.join(__dirname,'TOOLING-296-TESTS.md'),'# tooling296 지정 시험 결과\n\n'+`비Git ${summary.files}파일 / ${summary.pass} PASS / ${summary.fail} FAIL / ${summary.skip} skip. office ${office.length}파일 / ${summary.office.pass} PASS. Git ${summary.gitListed}파일은 목록만. history unit과 quiz-v04 CLI는 각각 wrapper 1건으로 집계.\n\n`+'| 파일 | PASS | FAIL | skip | exit |\n|---|---:|---:|---:|---:|\n'+rows.map(r=>`| [${path.basename(r.file)}](${r.log.replace('artifacts/design-polish-1/','')}) | ${r.pass} | ${r.fail} | ${r.skip} | ${r.exit} |`).join('\n')+'\n');
+const inputs=['scripts/hani-release-296-source.cjs','scripts/hani-release-296.test.mjs','scripts/hani-release-295-input.cjs','scripts/hani-release-version-layers.cjs','scripts/fixtures/release-version-layers.json','scripts/hani-theme-thaw-source.cjs','scripts/hani-chibi-pack-2-source.cjs',...fs.readdirSync(path.resolve(__dirname,'../../scripts')).filter(f=>f.startsWith('hani-design-polish-1')).map(f=>'scripts/'+f),'scripts/fixtures/design-polish-1-delta.json','scripts/fixtures/design-polish-1-main295-delta.json','hani-main.js','hani-design-system.css','index.html'];
+const inputHashes=Object.fromEntries(inputs.map(f=>[f,createHash('sha256').update(fs.readFileSync(path.resolve(__dirname,'../..',f))).digest('hex')]));
+fs.writeFileSync(path.join(__dirname,'tooling296-input-hashes.json'),JSON.stringify({state:'uncommitted integration; no candidate/package',base:'56c3105391cec207d9c55a4a3bbf76906749a0a4',files:inputHashes},null,2)+'\n');
+console.log(JSON.stringify(summary));

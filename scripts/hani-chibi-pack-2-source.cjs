@@ -1,4 +1,5 @@
 // Test-only outer exact inverse. This file is never loaded by the application.
+require('./hani-design-polish-1-preload.cjs');
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const {createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
