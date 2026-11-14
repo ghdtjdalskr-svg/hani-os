@@ -1,4 +1,7 @@
+require('./hani-design-polish-2-preload.cjs'); // Preserve deployed297 pins beneath design2.
 // Standalone test-only outer inverse. Capture deployed bytes before legacy adapters.
+require('./hani-release-298-preload.cjs');
+require('./hani-helper-toggle-preload.cjs');
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
 const layer=JSON.parse(readRawFileSync(path.join(__dirname,'fixtures/release-version-layers.json'),'utf8')).layers.find(r=>r.to==='2.9.297');

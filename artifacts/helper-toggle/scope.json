@@ -1,0 +1,15 @@
+{
+  "base": "7a91982de08a54452f6b9057f906d651f63a65ca",
+  "checkedExistingFiles": 2167,
+  "changedExistingFiles": [
+    "docs/development-history/CURRENT.md",
+    "hani-style-08.css",
+    "hani-ui-v02992.js",
+    "scripts/hani-design-polish-1-source.cjs",
+    "scripts/hani-fun-chat-fortune.test.mjs",
+    "scripts/hani-helper-bot.test.mjs",
+    "scripts/hani-release-296-source.cjs"
+  ],
+  "unexpected": [],
+  "originalCurrentBytes": "preserved"
+}

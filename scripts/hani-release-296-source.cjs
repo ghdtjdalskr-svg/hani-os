@@ -1,4 +1,5 @@
 // Standalone test-only outer inverse. No fs adapter, runtime import or Git process.
+require('./hani-design-polish-2-preload.cjs'); // Outermost exact design2 input.
 require('./hani-chibi-pack-3-preload.cjs');
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');

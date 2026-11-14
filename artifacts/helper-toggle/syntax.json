@@ -1,0 +1,42 @@
+[
+    {
+        "exit":  0,
+        "file":  "hani-ui-v02992.js"
+    },
+    {
+        "exit":  0,
+        "file":  "scripts/hani-helper-toggle-source.cjs"
+    },
+    {
+        "exit":  0,
+        "file":  "scripts/hani-helper-toggle-preload.cjs"
+    },
+    {
+        "exit":  0,
+        "file":  "scripts/hani-helper-toggle-fixture.mjs"
+    },
+    {
+        "exit":  0,
+        "file":  "scripts/hani-helper-toggle.test.mjs"
+    },
+    {
+        "exit":  0,
+        "file":  "scripts/hani-helper-toggle.browser.mjs"
+    },
+    {
+        "exit":  0,
+        "file":  "scripts/hani-release-296-source.cjs"
+    },
+    {
+        "exit":  0,
+        "file":  "scripts/hani-design-polish-1-source.cjs"
+    },
+    {
+        "exit":  0,
+        "file":  "scripts/hani-helper-bot.test.mjs"
+    },
+    {
+        "exit":  0,
+        "file":  "scripts/hani-fun-chat-fortune.test.mjs"
+    }
+]
