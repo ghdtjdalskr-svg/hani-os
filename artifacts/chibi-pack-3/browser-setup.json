@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "cases": [
+    {
+      "name": "home-birthday-1121",
+      "view": "home",
+      "id": "homeBirthdayChibiNote"
+    },
+    {
+      "name": "home-nonbirthday-1122",
+      "view": "home",
+      "id": "homeBirthdayChibiNote"
+    },
+    {
+      "name": "diary-empty",
+      "view": "diary",
+      "id": "diaryChibiNote"
+    },
+    {
+      "name": "movie-empty",
+      "view": "movie",
+      "id": "movieChibiNote"
+    },
+    {
+      "name": "monthly-empty",
+      "view": "monthlyReport",
+      "id": "monthlyReportChibiNote"
+    }
+  ],
+  "screenshotsPlanned": 10,
+  "actualEdge": false
+}

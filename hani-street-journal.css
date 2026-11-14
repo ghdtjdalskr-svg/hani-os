@@ -109,3 +109,14 @@
 .hani-chibi-note .hsj-p-hina-review{background-position:0% 100%}
 .hani-chibi-note .hsj-p-sooyeon-map{background-position:100% 100%}
 @media(prefers-reduced-motion:reduce){.hani-chibi-note,.hani-chibi-note-art{animation:none!important;transition:none!important}}
+
+/* Chibi pack 3: existing owner slots, four transparent 512px scenes. */
+.hani-chibi-note .hsj-p-birthday-cake,.hani-chibi-note .hsj-p-yoonseul-notebook,.hani-chibi-note .hsj-p-haru-popcorn,.hani-chibi-note .hsj-p-jieun-binder{background-image:url("./assets/street-journal/chibi-sheet-v3.webp");background-size:200% 200%}
+.hani-chibi-note .hsj-p-birthday-cake{background-position:0% 0%}
+.hani-chibi-note .hsj-p-yoonseul-notebook{background-position:100% 0%}
+.hani-chibi-note .hsj-p-haru-popcorn{background-position:0% 100%}
+.hani-chibi-note .hsj-p-jieun-binder{background-position:100% 100%}
+#homeBirthdayChibiNote{padding:8px 12px;border:1px solid var(--border-strong,var(--ds-line));border-radius:12px;background:var(--surface-raised,var(--ds-paper));flex-wrap:wrap}
+.hani-birthday-portraits{display:flex;gap:4px;flex-wrap:wrap;max-width:100%}
+.hani-birthday-person{display:grid;place-items:center;flex:0 0 32px;width:32px;height:32px;border-radius:50%;background:var(--surface-raised,var(--ds-paper)) center/cover no-repeat;color:var(--text);border:1px solid var(--border-strong,var(--ds-line))}
+.hani-birthday-person[hidden]{display:none!important}

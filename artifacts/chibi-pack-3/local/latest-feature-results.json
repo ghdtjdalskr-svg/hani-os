@@ -1,0 +1,10 @@
+{
+    "blocked":  false,
+    "log":  "artifacts/chibi-pack-3/local/test-logs/hani-chibi-pack-3.test.mjs.log",
+    "skip":  0,
+    "file":  "scripts/hani-chibi-pack-3.test.mjs",
+    "pass":  9,
+    "fail":  0,
+    "office":  false,
+    "exit":  0
+}

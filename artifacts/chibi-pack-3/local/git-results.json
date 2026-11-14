@@ -1,0 +1,272 @@
+[
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-obr4.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-obr4.test.mjs",
+        "pass":  10,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-obr6.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-obr6.test.mjs",
+        "pass":  4,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-obr7.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-obr7.test.mjs",
+        "pass":  2,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-obr14.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-obr14.test.mjs",
+        "pass":  5,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-obr15.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-obr15.test.mjs",
+        "pass":  14,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-obr21.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-obr21.test.mjs",
+        "pass":  6,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-obr8.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-obr8.test.mjs",
+        "pass":  3,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-pets-bubble.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-pets-bubble.test.mjs",
+        "pass":  22,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-v2-215.test.mjs.log",
+        "skip":  2,
+        "file":  "scripts/hani-office-v2-215.test.mjs",
+        "pass":  18,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-xmas-269-pins.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-xmas-269-pins.test.mjs",
+        "pass":  2,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-obr9.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-obr9.test.mjs",
+        "pass":  1,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-pet-bori-272-pins.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-pet-bori-272-pins.test.mjs",
+        "pass":  4,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-pets-268-pins.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-pets-268-pins.test.mjs",
+        "pass":  1,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-obr12.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-obr12.test.mjs",
+        "pass":  5,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-bori-stroll.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-bori-stroll.test.mjs",
+        "pass":  14,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-cafe-rest.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-cafe-rest.test.mjs",
+        "pass":  4,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-chairman-234.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-chairman-234.test.mjs",
+        "pass":  15,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-actions-216.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-actions-216.test.mjs",
+        "pass":  15,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-affinity-274-pins.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-affinity-274-pins.test.mjs",
+        "pass":  3,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-barista-night-273-pins.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-barista-night-273-pins.test.mjs",
+        "pass":  5,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-chairman-patrol-278-pins.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-chairman-patrol-278-pins.test.mjs",
+        "pass":  12,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-icons.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-icons.test.mjs",
+        "pass":  15,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-lively-v2.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-lively-v2.test.mjs",
+        "pass":  8,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-mascot-label.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-mascot-label.test.mjs",
+        "pass":  10,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-companion-homes.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-companion-homes.test.mjs",
+        "pass":  16,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-companions-276-pins.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-companions-276-pins.test.mjs",
+        "pass":  3,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    },
+    {
+        "blocked":  false,
+        "log":  "artifacts/chibi-pack-3/local/test-logs/hani-office-consult.test.mjs.log",
+        "skip":  0,
+        "file":  "scripts/hani-office-consult.test.mjs",
+        "pass":  20,
+        "fail":  0,
+        "office":  true,
+        "exit":  0
+    }
+]
