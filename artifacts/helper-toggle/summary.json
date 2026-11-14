@@ -1,13 +1,13 @@
 {
-  "base": "7a91982de08a54452f6b9057f906d651f63a65ca",
-  "total": 95,
+  "base": "22fedb33cbd67923cc499ba99f55e8902a66ecb2",
+  "total": 121,
   "nonGit": {
-    "files": 66,
-    "pass": 769,
+    "files": 85,
+    "pass": 908,
     "fail": 6,
     "skip": 3
   },
-  "passingFiles": 64,
+  "passingFiles": 83,
   "originalFailureFiles": [
     "scripts/hani-helper-bot.test.mjs",
     "scripts/hani-fun-chat-fortune.test.mjs"
@@ -27,8 +27,23 @@
   },
   "gitDelegated": 27,
   "knownExcluded": [
+    "scripts/hani-qa-design-b4.test.mjs",
+    "scripts/hani-qa-report-fixes.test.mjs",
     "scripts/hani-settings-225-qa-guard.test.mjs",
-    "scripts/hani-settings-225.test.mjs"
+    "scripts/hani-settings-225.test.mjs",
+    "scripts/hani-study-news-material.test.js"
   ],
-  "note": "The two failing files reproduce exact main296 subtest statuses/counts. No old assertion, number or hash was relaxed. Edge/PNG not run."
+  "note": "The two failing files reproduce exact main297+#513 subtest statuses/counts. No old assertion, number or hash was relaxed. Edge/PNG not run.",
+  "tooling297": {
+    "files": 81,
+    "pass": 868,
+    "fail": 0,
+    "skip": 1
+  },
+  "browserDelegated": [
+    "scripts/hani-monthly-report-smoke.mjs",
+    "scripts/hani-proactive-204-ui.test.mjs",
+    "scripts/hani-proactive-care-ui.test.mjs",
+    "scripts/hani-tasks-qa-212.test.mjs"
+  ]
 }

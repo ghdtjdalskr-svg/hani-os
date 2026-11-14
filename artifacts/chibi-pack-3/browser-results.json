@@ -1,0 +1,186 @@
+{
+  "status": "PASS",
+  "screenshots": 10,
+  "results": [
+    {
+      "width": 1440,
+      "count": 1,
+      "sameNode": true,
+      "visible": true,
+      "stateUnchanged": true,
+      "writes": 0,
+      "text": "🎂 오늘은 다온 님 생일이에요! · 하니 · 다 같이 축하해요.",
+      "artWidth": "72px",
+      "artHeight": "72px",
+      "sheet": "url(\"http://127.0.0.1:9792/assets/street-journal/chibi-sheet-v3.webp\")",
+      "withinViewport": true,
+      "faces": [
+        {
+          "id": "daon",
+          "image": "url(\"http://127.0.0.1:9792/assets/profiles/thumb/hani-profile-daon-v2-256.webp\")"
+        }
+      ],
+      "titleSpans": true,
+      "name": "home-birthday-1121"
+    },
+    {
+      "width": 1440,
+      "count": 1,
+      "sameNode": true,
+      "visible": false,
+      "stateUnchanged": true,
+      "writes": 0,
+      "text": "🎂 오늘은 다온 님 생일이에요! · 하니 · 다 같이 축하해요.",
+      "artWidth": "72px",
+      "artHeight": "72px",
+      "sheet": "url(\"http://127.0.0.1:9792/assets/street-journal/chibi-sheet-v3.webp\")",
+      "withinViewport": true,
+      "faces": [
+        {
+          "id": "daon",
+          "image": "url(\"http://127.0.0.1:9792/assets/profiles/thumb/hani-profile-daon-v2-256.webp\")"
+        }
+      ],
+      "titleSpans": true,
+      "name": "home-nonbirthday-1122"
+    },
+    {
+      "width": 1440,
+      "count": 1,
+      "sameNode": true,
+      "visible": true,
+      "stateUnchanged": true,
+      "writes": 0,
+      "text": "윤슬 · 오늘 한 줄부터 남겨 볼까요?",
+      "artWidth": "72px",
+      "artHeight": "72px",
+      "sheet": "url(\"http://127.0.0.1:9792/assets/street-journal/chibi-sheet-v3.webp\")",
+      "withinViewport": true,
+      "faces": [],
+      "titleSpans": true,
+      "name": "diary-empty"
+    },
+    {
+      "width": 1440,
+      "count": 1,
+      "sameNode": true,
+      "visible": true,
+      "stateUnchanged": true,
+      "writes": 0,
+      "text": "하루 · 첫 작품 기록을 기다리고 있어요!",
+      "artWidth": "72px",
+      "artHeight": "72px",
+      "sheet": "url(\"http://127.0.0.1:9792/assets/street-journal/chibi-sheet-v3.webp\")",
+      "withinViewport": true,
+      "faces": [],
+      "titleSpans": true,
+      "name": "movie-empty"
+    },
+    {
+      "width": 1440,
+      "count": 1,
+      "sameNode": true,
+      "visible": true,
+      "stateUnchanged": true,
+      "writes": 0,
+      "text": "지은 · 이번 달 보고가 생기면 여기 모아 둘게요.",
+      "artWidth": "72px",
+      "artHeight": "72px",
+      "sheet": "url(\"http://127.0.0.1:9792/assets/street-journal/chibi-sheet-v3.webp\")",
+      "withinViewport": true,
+      "faces": [],
+      "titleSpans": true,
+      "name": "monthly-empty"
+    },
+    {
+      "width": 390,
+      "count": 1,
+      "sameNode": true,
+      "visible": true,
+      "stateUnchanged": true,
+      "writes": 0,
+      "text": "🎂 오늘은 다온 님 생일이에요! · 하니 · 다 같이 축하해요.",
+      "artWidth": "56px",
+      "artHeight": "56px",
+      "sheet": "url(\"http://127.0.0.1:9792/assets/street-journal/chibi-sheet-v3.webp\")",
+      "withinViewport": true,
+      "faces": [
+        {
+          "id": "daon",
+          "image": "url(\"http://127.0.0.1:9792/assets/profiles/thumb/hani-profile-daon-v2-256.webp\")"
+        }
+      ],
+      "titleSpans": true,
+      "name": "home-birthday-1121"
+    },
+    {
+      "width": 390,
+      "count": 1,
+      "sameNode": true,
+      "visible": false,
+      "stateUnchanged": true,
+      "writes": 0,
+      "text": "🎂 오늘은 다온 님 생일이에요! · 하니 · 다 같이 축하해요.",
+      "artWidth": "56px",
+      "artHeight": "56px",
+      "sheet": "url(\"http://127.0.0.1:9792/assets/street-journal/chibi-sheet-v3.webp\")",
+      "withinViewport": true,
+      "faces": [
+        {
+          "id": "daon",
+          "image": "url(\"http://127.0.0.1:9792/assets/profiles/thumb/hani-profile-daon-v2-256.webp\")"
+        }
+      ],
+      "titleSpans": true,
+      "name": "home-nonbirthday-1122"
+    },
+    {
+      "width": 390,
+      "count": 1,
+      "sameNode": true,
+      "visible": true,
+      "stateUnchanged": true,
+      "writes": 0,
+      "text": "윤슬 · 오늘 한 줄부터 남겨 볼까요?",
+      "artWidth": "56px",
+      "artHeight": "56px",
+      "sheet": "url(\"http://127.0.0.1:9792/assets/street-journal/chibi-sheet-v3.webp\")",
+      "withinViewport": true,
+      "faces": [],
+      "titleSpans": true,
+      "name": "diary-empty"
+    },
+    {
+      "width": 390,
+      "count": 1,
+      "sameNode": true,
+      "visible": true,
+      "stateUnchanged": true,
+      "writes": 0,
+      "text": "하루 · 첫 작품 기록을 기다리고 있어요!",
+      "artWidth": "56px",
+      "artHeight": "56px",
+      "sheet": "url(\"http://127.0.0.1:9792/assets/street-journal/chibi-sheet-v3.webp\")",
+      "withinViewport": true,
+      "faces": [],
+      "titleSpans": true,
+      "name": "movie-empty"
+    },
+    {
+      "width": 390,
+      "count": 1,
+      "sameNode": true,
+      "visible": true,
+      "stateUnchanged": true,
+      "writes": 0,
+      "text": "지은 · 이번 달 보고가 생기면 여기 모아 둘게요.",
+      "artWidth": "56px",
+      "artHeight": "56px",
+      "sheet": "url(\"http://127.0.0.1:9792/assets/street-journal/chibi-sheet-v3.webp\")",
+      "withinViewport": true,
+      "faces": [],
+      "titleSpans": true,
+      "name": "monthly-empty"
+    }
+  ]
+}

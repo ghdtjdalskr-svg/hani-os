@@ -1,8 +1,8 @@
-// Independent main296 comparator for the two pre-existing failing legacy suites.
+// Independent main297+#513 comparator for the two pre-existing failing legacy suites.
 // Reads the fixed repository objects directly, without the new inverse or Git process.
 const fs=require('node:fs'),path=require('node:path'),{fileURLToPath}=require('node:url');
 const repository=require('../../scripts/hani-test-repository-evidence.cjs');
-const base='7a91982de08a54452f6b9057f906d651f63a65ca',root=path.resolve(__dirname,'../..');
+const base='22fedb33cbd67923cc499ba99f55e8902a66ecb2',root=path.resolve(__dirname,'../..');
 const owners=new Map(['hani-ui-v02992.js','hani-style-08.css'].map(f=>[f,repository.read(base,f)]));
 const sync=fs.readFileSync,callback=fs.readFile,promise=fs.promises.readFile;
 function apply(file,value){

@@ -1,0 +1,11 @@
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const dir=__dirname,{plan,base}=require('./tooling297-plan.json');
+const result=JSON.parse(fs.readFileSync(path.join(dir,'tooling297-local/results.json'),'utf8'));
+const latest=new Map((Array.isArray(result)?result:[result]).map(r=>[r.file,r]));
+const rows=plan.filter(r=>r.status==='READY').map(r=>latest.get(r.file)||{file:r.file,missing:true});
+const sum=rows=>({files:rows.length,pass:rows.reduce((s,r)=>s+(r.pass||0),0),fail:rows.reduce((s,r)=>s+(r.fail||0),0),skip:rows.reduce((s,r)=>s+(r.skip||0),0)});
+const summary={base,status:rows.some(r=>r.missing||r.exit!==0)?'INCOMPLETE':'PASS',...sum(rows),office:sum(rows.filter(r=>r.office)),chibi3:sum(rows.filter(r=>r.file.includes('chibi-pack-3'))),release297:sum(rows.filter(r=>r.file.includes('release-297'))),missing:rows.filter(r=>r.missing),failed:rows.filter(r=>!r.missing&&r.exit!==0),gitDelegated:plan.filter(r=>r.status==='GIT_REQUIRED'),browserDelegated:plan.filter(r=>r.status==='BROWSER_DELEGATED'),knownUntouched:plan.filter(r=>r.status==='KNOWN_FAILURE_UNTOUCHED'),rows};
+fs.writeFileSync(path.join(dir,'tooling297-summary.json'),JSON.stringify(summary,null,2)+'\n');
+fs.writeFileSync(path.join(dir,'TOOLING-297-TESTS.md'),'# tooling-297 지정 시험 결과\n\n각 파일 별도 Node 프로세스. 기본 명령에서 inverse preload 없음; 자식 프로세스 차단 및 출력 경로 보존 preload만 사용. Git 필요 시험은 목록만.\n\n| 파일 | PASS | FAIL | SKIP | exit |\n| --- | ---: | ---: | ---: | ---: |\n'+rows.map(r=>'| '+r.file+' | '+(r.pass||0)+' | '+(r.fail||0)+' | '+(r.skip||0)+' | '+(r.exit??'미실행')+' |').join('\n')+'\n\n브라우저 전용 미실행:\n\n'+summary.browserDelegated.map(r=>'- `'+r.file+'`').join('\n')+'\n\n지정 기존 실패는 미실행·미수정:\n\n'+summary.knownUntouched.map(r=>'- `'+r.file+'`').join('\n')+'\n');
+console.log({...summary,rows:undefined,missing:summary.missing.map(r=>r.file),failed:summary.failed.map(r=>r.file),gitDelegated:summary.gitDelegated.length,browserDelegated:summary.browserDelegated.length,knownUntouched:summary.knownUntouched.length});
+assert.equal(summary.status,'PASS');

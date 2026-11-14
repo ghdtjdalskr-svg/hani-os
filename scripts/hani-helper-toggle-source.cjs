@@ -1,4 +1,5 @@
-// Test-only outer exact inverse: main296 + helper toggle -> exact main296.
+// Test-only outer exact inverse: main297 + helper toggle -> exact main297.
+// The two owner bytes equal pinned main296; keep its provenance and all pins.
 // No runtime imports, Git processes or lower-layer assertion changes.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');

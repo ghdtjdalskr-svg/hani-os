@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import release296 from './hani-release-296-source.cjs';
-import layers from './hani-release-version-layers.cjs';
+import layers from './hani-release-296-input.cjs';
 import design from './hani-design-polish-1-main295-source.cjs';
 import frozenDesign from './hani-design-polish-1-source.cjs';
 import chibi2 from './hani-chibi-pack-2-source.cjs';

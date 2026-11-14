@@ -10,14 +10,17 @@ function dependencies(file,seen=new Set()){
  return rows;
 }
 const tests=fs.readdirSync(path.join(root,'scripts')).filter(f=>/[.-]test\.[cm]?js$/.test(f));
+// Include the complete #513 non-Git scope in the same guarded run.
+const tooling=new Map(JSON.parse(fs.readFileSync(path.join(root,'artifacts/chibi-pack-3/tooling297-plan.json'),'utf8')).plan.map(r=>[path.basename(r.file),r]));
+for(const file of tooling.keys())if(!tests.includes(file))tests.push(file);
 const plan=tests.filter(f=>{
  const source=fs.readFileSync(path.join(root,'scripts',f),'utf8');
- return /haniHelperBot|hani_helper_pos_v1/.test(source)||/^hani-(office|helper|save-guard|release-296|design-polish-1|chibi-pack-[12]|theme-thaw|release-version-layers|seoyun-m9|settings)/.test(f)||['hani-app-216-audit.test.cjs','hani-qa-easy-cleanup.test.mjs'].includes(f);
+ return tooling.has(f)||/haniHelperBot|hani_helper_pos_v1/.test(source)||/^hani-(office|helper|save-guard|release-29[67]|design-polish-1|chibi-pack-[123]|theme-thaw|release-version-layers|seoyun-m9|settings)/.test(f)||['hani-app-216-audit.test.cjs','hani-qa-easy-cleanup.test.mjs'].includes(f);
 }).sort().map(file=>{
  const nodes=dependencies(path.join(root,'scripts',file));
  const git=nodes.filter(n=>/\b(?:execFileSync|execSync|spawnSync|execFile|spawn)\s*\(\s*['"`]git(?:['"`\s])/.test(n.source)).filter(n=>n.file!=='scripts/hani-office-lively-fixture.mjs'||nodes.filter(x=>x!==n).some(x=>/\breadAt\s*\([^\n]*,|\bloadScene\s*\(\s*\{\s*ref\b/.test(x.source)));
- return {file:'scripts/'+file,office:file.startsWith('hani-office'),status:known.some(k=>file.includes(k))?'KNOWN_FAILURE_UNTOUCHED':git.length?'GIT_REQUIRED':'READY',gitOwners:git.map(n=>n.file)};
+ return {file:'scripts/'+file,args:tooling.get(file)?.args||[],office:file.startsWith('hani-office'),status:known.some(k=>file.includes(k))?'KNOWN_FAILURE_UNTOUCHED':git.length?'GIT_REQUIRED':tooling.get(file)?.status==='BROWSER_DELEGATED'?'BROWSER_DELEGATED':'READY',gitOwners:git.map(n=>n.file)};
 });
-fs.writeFileSync(path.join(__dirname,'plan.json'),JSON.stringify({base:'7a91982',known,plan},null,2)+'\n');
+fs.writeFileSync(path.join(__dirname,'plan.json'),JSON.stringify({base:'22fedb33cbd67923cc499ba99f55e8902a66ecb2',known,plan},null,2)+'\n');
 fs.writeFileSync(path.join(__dirname,'GIT-TESTS.md'),'# 서윤 Git 필요 시험 · Codex 미실행\n\n'+plan.filter(r=>r.status==='GIT_REQUIRED').map(r=>'- `node '+r.file+'` · '+r.gitOwners.join(', ')).join('\n')+'\n');
 console.log(JSON.stringify({total:plan.length,ready:plan.filter(r=>r.status==='READY').length,git:plan.filter(r=>r.status==='GIT_REQUIRED').length,known:plan.filter(r=>r.status==='KNOWN_FAILURE_UNTOUCHED').length}));

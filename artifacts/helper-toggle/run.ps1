@@ -18,6 +18,7 @@ try {
   if($RetryFailed -and -not @($previous|Where-Object {$_.file -eq $row.file -and $_.exit -ne 0}).Count){continue}
   $argsForTest=@('--require','./scripts/hani-tooling-293-deny-process.cjs','--require','./artifacts/helper-toggle/output.cjs',
    '--test','--test-isolation=none','--test-reporter=tap',$row.file)
+  $argsForTest+=@($row.args)
   $logPath=Join-Path $logRoot ((Split-Path $row.file -Leaf)+'.log')
   if(($RetryFailed -or $Files) -and (Test-Path -LiteralPath $logPath)){
    $archive=Join-Path $PSScriptRoot 'local/initial-failures'

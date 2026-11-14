@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "base": "7a91982de08a54452f6b9057f906d651f63a65ca",
+  "boundary": "main296 + chibi3 -> main296",
+  "files": {
+    "hani-main.js": {
+      "beforeSha256": "38ae1865e1b9423eecf7ec5da09b37a5becc9e39e976f2c70c22f55a0e51526e",
+      "afterSha256": "c7665a1ae094587763ebe9a0d0f9e7a4d27db59184f4a38b5687190cf17e8bbf",
+      "edits": [
+        {
+          "before": "function renderHome(){\r\n",
+          "after": "// Chibi pack 3: approved birthdays; identity/ranks follow the organization roster.\nconst CHIBI_STAFF_BIRTHDAYS=Object.freeze([\n  [\"seoyun\",\"서윤\",\"개발 리드\",3,12],[\"dohyun\",\"도연\",\"개발 선임\",6,18],\n  [\"serin\",\"세린\",\"연구원\",7,23],[\"yuri\",\"유리\",\"QA 책임\",9,11],\n  [\"arin\",\"아린\",\"UI/UX 선임\",4,24],[\"gaeun\",\"뮤즈 · 가은\",\"회장 비서\",9,25],\n  [\"mir\",\"MIR · 미르\",\"AI 스페셜리스트\",5,14],[\"taeo\",\"채원\",\"솔루션 매니저\",2,6],\n  [\"daon\",\"다온\",\"사원\",11,21],[\"yoonseul\",\"윤슬\",\"사원\",3,26],\n  [\"hani\",\"하니\",\"전무\",1,17],[\"yuna\",\"유나\",\"사원\",2,20],\n  [\"jieun\",\"지은\",\"부장\",4,9],[\"haru\",\"하루\",\"대리\",5,29],\n  [\"naeun\",\"나은\",\"차장\",7,8],[\"hina\",\"히나\",\"과장\",8,21],\n  [\"minji\",\"민지\",\"대리\",10,8],[\"sooyeon\",\"수연\",\"주임\",11,6],\n  [\"sua\",\"수아\",\"과장\",12,12],[\"ieum\",\"이음\",\"사원\",6,3]\n].map(row=>Object.freeze(row)));\nfunction renderHomeBirthday(date=new Date(),birthdays=CHIBI_STAFF_BIRTHDAYS){\n  const day=new Date(date.getTime()+9*3600000),month=day.getUTCMonth()+1,dayOfMonth=day.getUTCDate();\n  const people=birthdays.filter(row=>row[3]===month&&row[4]===dayOfMonth);\n  const identity=row=>window.HaniOrganizationRoster?.people.find(person=>person.id===row[0])||{name:row[1],rank:row[2]};\n  renderChibiNote(\"homeBirthdayChibiNote\",$(\"homeActions\"),\"birthday-cake\",\"🎂 오늘은 \"+people.map(row=>identity(row).name+\" 님\").join(\", \")+\" 생일이에요! · 하니 · 다 같이 축하해요.\",people.length>0);\n  const slot=$(\"homeBirthdayChibiNote\");if(!slot||!people.length)return;\n  let portraits=slot.querySelector(\".hani-birthday-portraits\");\n  if(!portraits){\n    portraits=document.createElement(\"span\");portraits.className=\"hani-birthday-portraits\";portraits.setAttribute(\"aria-hidden\",\"true\");\n    slot.insertBefore(portraits,slot.lastElementChild);\n    for(const row of CHIBI_STAFF_BIRTHDAYS){\n      const face=document.createElement(\"span\"),person=identity(row);\n      face.className=\"hani-birthday-person\";face.dataset.person=row[0];face.title=person.name+\" · \"+person.rank;\n      const image=sidebarAgentImages[row[0]]||({\n        gaeun:\"./assets/profiles/thumb/hani-profile-gaeun-256.webp\",\n        mir:\"./assets/profiles/thumb/hani-profile-mir-256.webp\",\n        taeo:\"./assets/profiles/thumb/hani-profile-taeo-256.webp\"\n      })[row[0]];\n      if(image)face.style.backgroundImage='url(\"'+image+'\")';else face.textContent=person.name.slice(0,1);\n      portraits.append(face);\n    }\n  }\n  for(const face of portraits.children)face.hidden=!people.some(row=>row[0]===face.dataset.person);\n}\nfunction renderHome(){\r\n  renderHomeBirthday();\n"
+        },
+        {
+          "before": "function renderDiary(){\r\n",
+          "after": "function renderDiary(){\r\n  renderChibiNote(\"diaryChibiNote\",$(\"diaryList\"),\"yoonseul-notebook\",\"윤슬 · 오늘 한 줄부터 남겨 볼까요?\",!Array.isArray(state.diaries)||state.diaries.length===0);\n"
+        },
+        {
+          "before": "renderChibiNote(\"movieChibiNote\",$(\"watchedMovies\"),\"minji-think\",\"민지 · 회장님, 보고 싶은 작품부터 담아봐요.\",state.movies.length===0);",
+          "after": "renderChibiNote(\"movieChibiNote\",$(\"watchedMovies\"),\"haru-popcorn\",\"하루 · 첫 작품 기록을 기다리고 있어요!\",state.movies.length===0);"
+        },
+        {
+          "before": "renderChibiNote(\"monthlyReportChibiNote\",pending,\"hani-point\",\"하니 · 회장님, 보고할 달의 기록을 살펴봐요.\",!failure&&!monthlyReportGeneration,true);",
+          "after": "renderChibiNote(\"monthlyReportChibiNote\",pending,\"jieun-binder\",\"지은 · 이번 달 보고가 생기면 여기 모아 둘게요.\",!stored&&!failure&&!monthlyReportGeneration&&monthlyReportBoard===\"monthly\",true);"
+        }
+      ]
+    },
+    "hani-street-journal.css": {
+      "beforeSha256": "0710d461eacfeab9d62d89d2effa6644602bd4376b2765de2cce7b02c5077b17",
+      "afterSha256": "e764cc99c4f194bb66204d8cc8a36f58793965b55ee90009c35f5ca21eca8212",
+      "edits": [
+        {
+          "before": " .hsj-p-sooyeon-map{background-position:100% 100%}\n@media(prefers-reduced-motion:reduce){.hani-chibi-note,.hani-chibi-note-art{animation:none!important;transition:none!important}}\n",
+          "after": " .hsj-p-sooyeon-map{background-position:100% 100%}\n@media(prefers-reduced-motion:reduce){.hani-chibi-note,.hani-chibi-note-art{animation:none!important;transition:none!important}}\n\n/* Chibi pack 3: existing owner slots, four transparent 512px scenes. */\n.hani-chibi-note .hsj-p-birthday-cake,.hani-chibi-note .hsj-p-yoonseul-notebook,.hani-chibi-note .hsj-p-haru-popcorn,.hani-chibi-note .hsj-p-jieun-binder{background-image:url(\"./assets/street-journal/chibi-sheet-v3.webp\");background-size:200% 200%}\n.hani-chibi-note .hsj-p-birthday-cake{background-position:0% 0%}\n.hani-chibi-note .hsj-p-yoonseul-notebook{background-position:100% 0%}\n.hani-chibi-note .hsj-p-haru-popcorn{background-position:0% 100%}\n.hani-chibi-note .hsj-p-jieun-binder{background-position:100% 100%}\n#homeBirthdayChibiNote{padding:8px 12px;border:1px solid var(--border-strong,var(--ds-line));border-radius:12px;background:var(--surface-raised,var(--ds-paper));flex-wrap:wrap}\n.hani-birthday-portraits{display:flex;gap:4px;flex-wrap:wrap;max-width:100%}\n.hani-birthday-person{display:grid;place-items:center;flex:0 0 32px;width:32px;height:32px;border-radius:50%;background:var(--surface-raised,var(--ds-paper)) center/cover no-repeat;color:var(--text);border:1px solid var(--border-strong,var(--ds-line))}\n.hani-birthday-person[hidden]{display:none!important}\n"
+        }
+      ]
+    }
+  }
+}

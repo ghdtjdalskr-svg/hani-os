@@ -36,3 +36,24 @@ Notion 착수 기록 생성/read-back 완료. 진행 insert_content는 자동 �
 - 새 CSS에 맞춰 delta의 after 해시와 source의 바깥 fixture pin만 갱신. 독립 main296 원문 exact inverse 및 신규 시험 **8/8 PASS**, 기존 시험312개·fixture114개와 브라우저 시험 바이트 보존. JS/source·PowerShell 문법 및 raw serving/setup PASS.
 - `run.ps1` 첫 실행의 빈 결과 목록 dictionary 중복 키 오류를 배열 초기화 한 줄로 보완. 전체 재실행은 **비Git66파일 / 769PASS·기준선 동일6FAIL·skip3**, office46파일 **610PASS·0FAIL·skip1**. 기존6실패로 `run.ps1` exit1, `summarize.cjs`는 독립 main296 실패 목록·집계 일치를 확인해 **exit0 / 새 회귀0**. [요약](summary.json) · [보존·변경 근거](local/helperoff2-checks.json).
 - Git·Edge·PNG·버전/cache 증가·배포 없음. 실제 두 버튼 크기 및 390/1440 동작 재검증은 서윤 담당. Notion 후속 기록 추가도 자동 승인 검토의 `approval policy is never` 거절로 미반영이며 [helperoff2 인수인계](../../docs/development-history/handoffs/2026-11-14-helper-toggle-browser-fix.md)에 갱신 대기 보존.
+
+## helperoff3 (main297 재층)
+
+- 2026-11-14 KST / 도연·Codex. 로컬 main297+#513 `22fedb33cbd67923cc499ba99f55e8902a66ecb2`, 착수 HEAD `92e2fae663732a38bb8c8a10182900b2615407cf`(merge commit). Git 명령·원격 새 조회 없음.
+- **도우미 inverse → 297 version/history → 치비3 → 296 → 디자인1 → 295 이하**로 연결. 296/design source 두 파일의 충돌 본문은 main 치비3 연결로 복원, 297 source 앞에 도우미 preload 한 줄, helper/fun 시험은 297 preload 입구로 이동. 운영 delta 추가 수정·기존 단언 삭제/완화·숫자/hash 교체 없음.
+- 두 helper owner의 main297 원문이 frozen main296과 바이트 동일해 `helper-toggle-delta.json`과 source의 기존 base provenance·모든 pin을 유지. 별도 고정 #513 객체와 exact inverse/Buffer 결과 일치 확인. 기존 시험315개·fixture115개 원문/단언 보존, 신규 helper 시험·브라우저 원문도 보존. 운영511파일 착수 이후 추가 변경0, raw closure **173→173·누락0**. [297 보존 감사](helperoff3-audit.json).
+- **비Git85파일 / 908PASS·기존동일6FAIL·skip3·새 회귀0**. 독립 main297 원본 helper/fun을 실행해 모든 하위 시험 상태·집계를 대조. `run.ps1`은 기존6실패로 exit1, `summarize.cjs`와 `helperoff3-audit.mjs`는 exit0. #513 전체 비Git81파일 **868PASS·0FAIL·skip1**, office46파일 **610PASS·0FAIL·skip1**, `office-kids-weekday` **19/19**, 297 **6/6**, 치비3 **12/12**, helper toggle **8/8**. [집계](summary.json).
+- JS11파일 syntax·PowerShell2파일 parser PASS. Git27파일·브라우저 전용4파일은 실행하지 않음. Edge·새 PNG·Preview·Candidate·commit/push·배포·Production read-back 미실행, 표시/cache297 유지(버전 증가는 시험/도구 전용으로 N/A). 새 로그·독립 baseline 사본은 `local/`에만 저장, 기존 서윤의 390/1440 PASS·PNG는 보존하며 이번 297 재층의 실제 브라우저 PASS로 재사용하지 않음.
+- **서윤 후속:** 두 source의 본문은 해결했으나 Git index는 미조회·미처리. `docs/development-history/CURRENT.md`의 기존 양쪽 기록 충돌 마커는 별도로 남아 있고 원문을 수정하지 않음. 공통 현황 최종 병합과 Git 처리는 서윤 담당. 이전 `audit.mjs`·`baseline.json`은 main296 최초 기록이므로 이번 검증에는 아래 새297 감사를 사용.
+
+서윤 실행 명령(저장소 루트, Git·Edge 실행과 별도):
+
+```powershell
+node scripts/hani-helper-toggle.test.mjs
+& ./artifacts/helper-toggle/main297-baseline.ps1
+& ./artifacts/helper-toggle/run.ps1 # 기존 helper/fun 6실패 때문에 exit1 예상
+node artifacts/helper-toggle/summarize.cjs # 새 회귀0이면 exit0
+node artifacts/helper-toggle/helperoff3-audit.mjs
+```
+
+Notion 현황판·기존 helperoff 카드 읽기는 성공했으나 착수 추가가 자동 승인 검토의 `MCP tool call requires approval, but approval policy is never`로 거절되어 이번 결과는 미반영. [helperoff3 인수인계](../../docs/development-history/handoffs/2026-11-14-helper-toggle-main297.md)에 갱신 대기 내용 보존. 서버 Edge Function·설정 배포 의존성 없음.
