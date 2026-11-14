@@ -18,7 +18,8 @@ function projectTooling(source,file){
 function readFrozenFileSync(file,...args){
  let source=read(file,...args);if(typeof file!=='string'&&!(file instanceof URL))return source;
  const name=path.relative(root,file instanceof URL?fileURLToPath(file):path.resolve(file)).replaceAll('\\','/');
- source=projectTooling(source,name);
+ source=projectTooling(require('./hani-design-polish-2-main298-input.cjs').projectTooling(source,name),name);
+ source=require('./hani-helper-toggle-source.cjs').project(require('./hani-release-298-source.cjs').project(source,name),name);
  // CSS retains the actual design2 suffix; its existing strict restore proves it.
  return chibi3.project(release297.project(source,name),name);
 }

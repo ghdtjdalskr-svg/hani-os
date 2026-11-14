@@ -18,6 +18,8 @@ const file='hani-design-system.css',after=inverse.readRawFileSync(path.join(root
 assert.equal(before,repository.read(inverse.delta.base,file));
 const runtimeBase='22fedb33cbd67923cc499ba99f55e8902a66ecb2';
 assert.equal(before,repository.read(runtimeBase,file),'exact independent main297 CSS baseline');
+const outerRuntimeBase='98cc7debbf9bf365b5db97aabac9b616b2889d20';
+assert.equal(before,repository.read(outerRuntimeBase,file),'exact independent main298 CSS baseline');
 const cssBlock=inverse.delta.files[file].edits[0].after;
 const topRules=(()=>{let depth=0,count=0;for(const c of cssBlock.replace(/\/\*[\s\S]*?\*\//g,'')){if(c==='{'){if(depth===0)count++;depth++}else if(c==='}')depth--;}assert.equal(depth,0);return count})();
 const finishes=['porcelain-cream','pure-white','titanium-graphite','midnight-black','sakura-pink','alpine-blue'];
@@ -37,6 +39,7 @@ const contrasts={
 };
 const report={result:'NOT_RUN',base:inverse.delta.base,sourceHashes:{before:inverse.hash(before),after:inverse.hash(after)},cases:[],combinations:[],screenshots:[],failures:[],observations:[],errors:[],storage:[],helperPolicy:{profile:'no stored position',gate:'scroll zero: no control overlaps',cards:'report-only',scrolledOverlaps:'report-only'},note:'Synthetic disposable profile, external requests blocked. CSS passive apply must write zero and preserve state/protected bytes. Existing navigation-only writes are recorded separately. All contrast rows use text-free worst PNG pixels (first-pass sampler), threshold 4.5 without rounding. No claim of PASS for missing/hidden selectors.'};
 report.runtimeBase=runtimeBase;
+report.outerRuntimeBase=outerRuntimeBase;
 let phase='after',browser;
 const check=(ok,message,details)=>{if(!ok)report.failures.push({message,...details})};
 const server=http.createServer((req,res)=>{
@@ -119,7 +122,7 @@ try{
  if(process.argv.includes('--setup-only')){
   for(phase of ['before','after'])assert.equal(await (await fetch(origin+'/'+file)).text(),({before,after})[phase]);
   assert.equal(views.length,23);assert.equal(finishes.length*seasons.length,24);assert.equal(helpers.length,10);
-  console.log(JSON.stringify({result:'SETUP_PASS',views:views.length,beforeAfterShots:views.length*8,contrastCombinations:24*2*Object.keys(contrasts).length,base:inverse.delta.base,runtimeBase,browserLaunched:false}));
+  console.log(JSON.stringify({result:'SETUP_PASS',views:views.length,beforeAfterShots:views.length*8,contrastCombinations:24*2*Object.keys(contrasts).length,base:inverse.delta.base,runtimeBase,outerRuntimeBase,browserLaunched:false}));
  }else{
   fs.mkdirSync(out,{recursive:true});assert.ok(browserArgs[0]&&browserArgs[1],'Supply Playwright module and Edge executable paths, or --setup-only');
   const {chromium}=await import(pathToFileURL(path.resolve(browserArgs[0])).href);browser=await chromium.launch({headless:true,executablePath:browserArgs[1]});

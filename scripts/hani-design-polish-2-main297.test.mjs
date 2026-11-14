@@ -1,7 +1,7 @@
 // Current raw main297 + design2 contract; frozen suites use explicit lower inputs.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import inverse from './hani-design-polish-2-source.cjs';
+import inverse from './hani-design-polish-2-main298-input.cjs';
 import layers from './hani-release-version-layers.cjs';
 import frozen from './hani-design-polish-2-main297-input.cjs';
 import repository from './hani-test-repository-evidence.cjs';

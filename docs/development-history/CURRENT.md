@@ -1,3 +1,7 @@
+# 2026-11-14 · design2e · main298 재층 (도연 / Codex)
+
+전달 `hani/design-polish-2` / 착수`d23724d` / 고정 main298 `98cc7de`(#514), Git·원격 조회 없음. **디자인2→298 version/history→helper inverse→297→치비3→296→디자인1→295 이하, 기존 단언·숫자/hash 보존. 비Git93파일933PASS/기존exam오류1·새 회귀0, office46파일610PASS; helper-bot/fun-chat 기존6FAIL 동일.** 8/8+4/4·298신규7/7·syntax15/setup PASS, runtime532/fixture117/시험318·CSS delta/source·.gitignore 보존. 모든 무거운 출력 local/. Git·Edge/PNG·commit·299후보·배포는 서윤 인계. Notion 자동 승인 never 거절로 갱신 대기. [보고서](../../artifacts/design-polish-2/REPORT.md#design2e-main298-재층) · [인수인계](handoffs/2026-11-14-design-polish-2-main298.md). 아래 기존 기록 보존.
+
 # 2026-11-14 · design2d · main297 재층 (도연 / Codex)
 
 `hani/design-polish-2` / 로컬 기준 `22fedb3`(main297+#513), 기존 `247ddec`. **source3곳 충돌 해결·디자인2→297→치비3→296→디자인1→295 이하, 기존 pin/단언 보존. 기존8/8·현재4/4·비Git91파일90성공(918PASS+script0/skip2), 기준 입력과 새 회귀0·기존 exam-popup 오류1 동일. tooling81파일868PASS·office46파일610PASS.** 운영/데이터509·fixture115·기존시험315 보존, syntax14/PS2/setup PASS. PNG/로그/snapshot3935파일 hash보존 local/imported 이관, local commit 제외. Git·Edge·원격조회·index처리·commit/push·배포는 서윤 인계. Notion 자동 승인 never 거절로 갱신 대기. [보고서](../../artifacts/design-polish-2/REPORT.md#design2d-main297-재층) · [인수인계](handoffs/2026-11-14-design-polish-2-main297.md). 아래 양쪽 기록 보존.

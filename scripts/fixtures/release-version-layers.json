@@ -2,6 +2,38 @@
   "schema": 1,
   "layers": [
     {
+      "from": "2.9.297",
+      "to": "2.9.298",
+      "files": {
+        "index.html": {
+          "after": "0ff88654b225573ed1a549be70dc53f09ef1215fa13b94f310f17f11365843de",
+          "before": "a6889bdd5fb05ad75f7a794ecc372ff751869f0642aab1146cf64471082c656e",
+          "count": 60
+        },
+        "hani-main.js": {
+          "after": "fc285cf0901fdecb14457be2cc8f6549f12887f48218bfc17fccfefb90294ef2",
+          "before": "b204d3e234c09b549c073e5aa2654a99acee79de7c7194c715562f15dfaeeb33",
+          "count": 1
+        },
+        "assets/data/hani-history-releases-v1.json": {
+          "after": "d5acec06ecfd91195295f6fbbde089657125903c824e4cf089a395a990360806",
+          "before": "be8e96a05c1e5d092f9a91cf1adbfacdee38d44b78d34528637e13dfdec4f88e",
+          "count": 1,
+          "replacements": [
+            {
+              "before": "7\",\n      \"date\": \"2026-11-14\",\n      \"status\": \"released\",\n      \"title\": \"치비 3탄 생일·일기·시청\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.297 치비 3탄 생일·일기·시청",
+              "after": "8\",\n      \"date\": \"2026-11-14\",\n      \"status\": \"released\",\n      \"title\": \"도우미 끄기·켜기 스위치\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.298 도우미 끄기·켜기 스위치\"\n      }\n    },\n    {\n      \"id\": \"v2.9.297\",\n      \"date\": \"2026-11-14\",\n      \"status\": \"released\",\n      \"title\": \"치비 3탄 생일·일기·시청\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"bc3b22c8fdaab3bd786980a5e0ca61e28ee3acde\",\n        \"subject\": \"release: v2.9.297 치비 3탄 생일·일기·시청 (#512)"
+            }
+          ]
+        }
+      },
+      "feature": {
+        "module": "./hani-helper-toggle-source.cjs",
+        "fixture": "./fixtures/helper-toggle-delta.json",
+        "restore": "restore"
+      }
+    },
+    {
       "from": "2.9.296",
       "to": "2.9.297",
       "files": {

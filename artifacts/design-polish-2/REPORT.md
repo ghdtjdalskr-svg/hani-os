@@ -112,3 +112,23 @@ node scripts/hani-design-polish-2-regression.mjs --prepare-powershell
 node scripts/hani-design-polish-2.browser.mjs --setup-only
 node scripts/hani-design-polish-2.browser.mjs '<playwright/index.mjs>' '<msedge.exe>' --output-dir=artifacts/design-polish-2/local/browser-design2d
 ```
+
+## design2e (main298 재층)
+
+2026-11-14 KST · 도연 / Codex · 전달 branch `hani/design-polish-2`, 착수 `d23724d`, 고정 main298 `98cc7debbf9bf365b5db97aabac9b616b2889d20`(#514). Git·원격 새 조회 없음.
+
+- **재층:** 디자인2 → **298 version/history → 도우미 끄기 inverse → 297 → 치비3 → 296 → 디자인1 → 295 이하**. 298 manifest 행·source/preload·새 시험을 추가했습니다. 기존 시험 2개는 input import만 변경했고, exact tooling input으로 기존 단언·숫자·hash를 유지했습니다. 도우미 두 파일은 main298 → 독립 main297 원문 exact inverse이며 기존 pin 그대로입니다. 디자인2 CSS delta/source도 변경 없이 main298 exact inverse입니다.
+- **검증:** 디자인2 **8/8 + main297 입력 4/4**, helper-toggle **8/8**, release298 **7/7**, 297 **6/6**, 치비3 **12/12**, 296 **5/5**, 디자인1 **14/14**, release-version-layers **11/11**, office-kids-weekday **19/19**. 비Git 현재 **93파일·933 PASS/기존 오류1**, 기준 **91파일·921 PASS/동일 오류1**, skip2로 **새 회귀0**. 사무실 **46파일·610 PASS/0FAIL**. 별도 helper-bot **25 PASS/기존4 FAIL**·fun-chat-fortune **3 PASS/기존2 FAIL**도 양쪽 실패 이름·개수·종료 코드가 같습니다. exam-popup의 `renderChibiNote is not defined`는 기존 동일 오류이며 수정하지 않았습니다. syntax **JS12 + PowerShell3 PASS**, `--setup-only` **PASS**(23화면·480조합·Edge 실행0).
+- **보존/인계:** 운영·데이터 **532파일** main298 원문 일치(CSS suffix만 역변환), closure **173/누락0**, 기존 fixture117개 원문·manifest 이전 행/바이트·시험318개 단언·`.gitignore` 보존. [집계](local/design2e/test-summary.json)·[보존 감사](local/design2e/preservation-audit.json)·[도우미 비교](local/design2e/legacy-helper-results.json). 로그·snapshot·새 출력은 `local/`에만 저장했습니다. Git27·실제 Edge/PNG·Preview·commit/push·main/Pages/운영 read-back은 미실행/서윤 인계. 운영·버전/cache298·저장/Cloud/schema 변경0, 서버 동반 배포 없음. Notion 기록 추가는 자동 승인 검토의 `approval policy is never`로 거절되어 [인수인계](../../docs/development-history/handoffs/2026-11-14-design-polish-2-main298.md)에 갱신 대기를 보존했습니다.
+
+
+서윤 실행 명령(`local/` 전체 commit 제외, Git·Edge는 서윤 담당):
+
+```powershell
+node scripts/hani-design-polish-2-regression.mjs --prepare-powershell
+& artifacts/design-polish-2/local/design2e/run-regression.ps1
+node scripts/hani-helper-bot.test.mjs         # 기존 4 FAIL 유지
+node scripts/hani-fun-chat-fortune.test.mjs   # 기존 2 FAIL 유지
+node scripts/hani-design-polish-2.browser.mjs --setup-only --output-dir=artifacts/design-polish-2/local/browser-design2e
+node scripts/hani-design-polish-2.browser.mjs '<playwright/index.mjs>' '<msedge.exe>' --output-dir=artifacts/design-polish-2/local/browser-design2e
+```

@@ -1,10 +1,10 @@
-// Non-Git inventory: original design2 coverage UNION main297+#513 tooling coverage.
+// Non-Git inventory: original design2/tooling297 coverage plus deployed298/helper.
 // Each frozen suite runs in a fresh Node process through its normal input path.
 import fs from 'node:fs';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 const root=path.resolve(import.meta.dirname,'..'),task=path.join(root,'artifacts/design-polish-2');
-const out=path.join(task,'local/design2d'),base='22fedb33cbd67923cc499ba99f55e8902a66ecb2';
+const out=path.join(task,'local/design2e'),base='98cc7debbf9bf365b5db97aabac9b616b2889d20';
 fs.mkdirSync(out,{recursive:true});
 const original=JSON.parse(fs.readFileSync(path.join(task,'test-inventory.json'),'utf8'));
 const tooling=JSON.parse(fs.readFileSync(path.join(root,'artifacts/chibi-pack-3/tooling297-plan.json'),'utf8'));
@@ -16,6 +16,7 @@ for(const row of tooling.plan){
  else entries.push({file:row.file,args:row.args,office:row.office,reason,tooling:row.status==='READY'});
 }
 for(const name of fs.readdirSync(path.join(root,'scripts')).filter(f=>/^hani-design-polish-2.*\.test\.mjs$/.test(f))){if(!entries.some(e=>e.file==='scripts/'+name))entries.push({file:'scripts/'+name,args:[],office:false,reason:null,tooling:false});}
+for(const name of ['hani-release-298.test.mjs','hani-helper-toggle.test.mjs'])if(!entries.some(e=>e.file==='scripts/'+name))entries.push({file:'scripts/'+name,args:[],office:false,reason:null,tooling:false});
 entries.sort((a,b)=>a.file.localeCompare(b.file));
 fs.writeFileSync(path.join(out,'test-inventory.json'),JSON.stringify({base,entries},null,2)+'\n');
 if(process.argv.includes('--collect')){
@@ -42,7 +43,7 @@ try {
  foreach($phase in @('baseline','current')) {
   $logRoot=Join-Path $PSScriptRoot ($phase+'/test-logs')
   New-Item -ItemType Directory -Force -Path $logRoot|Out-Null
-  $env:DESIGN2_EVIDENCE_DIR='artifacts/design-polish-2/local/design2d/'+$phase
+  $env:DESIGN2_EVIDENCE_DIR='artifacts/design-polish-2/local/design2e/'+$phase
   $env:OFFICE_SOFT='1'
   $env:FORCE_COLOR='0'
   foreach($entry in $plan.entries) {
@@ -69,5 +70,5 @@ try {
 } finally {Remove-Item Env:DESIGN2_EVIDENCE_DIR -ErrorAction SilentlyContinue;Pop-Location}
 `;
  fs.writeFileSync(path.join(out,'run-regression.ps1'),'\ufeff'+ps);
- console.log('Prepared: & artifacts/design-polish-2/local/design2d/run-regression.ps1 (paired baseline/current; no Git or browser)');
+ console.log('Prepared: & artifacts/design-polish-2/local/design2e/run-regression.ps1 (paired baseline/current main298; no Git or browser)');
 }
