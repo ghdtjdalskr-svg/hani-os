@@ -2195,3 +2195,75 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
   #app #aura .aura-poster-signature .aura-wordmark{display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:8px}
   #app #aura .aura-poster-signature .aura-wordmark>strong{font-size:24px}
 }
+
+/* 2.9.29x 디자인 다듬기 2차 — read-only UI, canonical events/data unchanged. */
+/* Paired ink and surfaces: the light travel summaries intentionally stay light. */
+#app #travel .module-kpi{background:#fff!important;color:#28374c!important}
+#app #travel .module-kpi :is(small,.sub){color:#4d4660!important}
+#app #aiWork .ui26-member{background:#f6f4fa!important;color:#28374c!important}
+#app #aiWork .ui26-member :is(.member-role,.member-link,.member-copy p){color:#49385f!important;opacity:1}
+#app #aiWork .ui26-member .member-link:before{color:inherit}
+/* The inherited fadeUp animates the whole section, including paired text.
+   Honor reduced motion before any child geometry/opacity can be sampled. */
+@media(prefers-reduced-motion:reduce){#app #aiWork.view.active{animation:none}}
+#app #aiWork :is(.member-copy p,.ai-team-profile-sub,.ai-team-profile-quote,.ai-team-meta-card li){font-size:14px!important;line-height:1.65!important;word-break:keep-all}
+#app #board .board-tabs{background:#fff!important}
+#app #board .board-tabs .board-tab{color:#36465f;background:#fff!important;min-height:44px}
+#app #board .board-tabs .board-tab[data-board-filter="WORK"]{color:#275b96}
+#app #board .board-tabs .board-tab[data-board-filter="LIFE"]{color:#28664c}
+#app #investment :is(.investment-tabs-main,.investment-live,.broker-stats){background:#fff!important;color:#28374c!important}
+#app #investment .investment-tabs-main .tab:not(.active){color:#4d4660!important;background:#fff!important}
+#app #investment :is(.investment-live small,.broker-stats .label){color:#4d4660!important;background:#fff!important}
+#app #investment .investment-live small{display:inline-block;padding:6px 8px!important;line-height:1.5!important}
+#app #study .study-main-empty{background:#fff!important;color:#4d4660!important}
+#app #study .study-main-empty :is(b,p,span,.sub){color:#4d4660!important}
+#app #diary [data-diary-view]{background:#fff!important;color:#49385f!important}
+/* These index surfaces are owned here together, so season accents cannot lower contrast. */
+#app #newsroom .newsroom-4cut-context td.is-down{color:#2459b5!important;background:#fff!important}
+#app #ledger .ledger-jispi-card.jispi-c{--jispi-accent:#9ae0d9;background:#202633!important;color:#edf1fa!important}
+#app #ledger .jispi-c .ledger-breaker-line strong{color:#9ae0d9!important}
+#app #ledger .jispi-c .ledger-jispi-head{color:#9ae0d9!important;background:#202633!important;padding:6px 8px!important}
+#app #ledger .jispi-c .ledger-jispi-head span{color:inherit!important}
+#app :is(#diet,#certificate) .date-mode-toggle{color:#28374c!important;background:#fff!important;opacity:1;min-width:44px!important;min-height:44px!important;font-size:20px}
+#app :is(#diet,#certificate) input:is([type="date"],[type="month"]){color-scheme:light}
+/* Small metadata remains selectable and wraps instead of forcing overflow. */
+#app #dev :is(.hani-history-meta,.hani-history-meta span,.hani-history-meta time,.hani-history-row code){font-size:13px!important;line-height:1.5;overflow-wrap:anywhere}
+#app #dev .hani-history-row .activity-trend-info>summary{font-size:14px!important;min-height:44px!important;box-sizing:border-box;align-content:center}
+#app #game :is(.sports-league,.sports-home-identity small,.sports-home-recent small,.sports-home-foot>span,.sports-result>div:first-child>span){font-size:12px!important;line-height:1.5}
+/* The label owns the 44px hit area; the native checkbox keeps an 18px visual box. */
+#app #game .sports-home-recent{flex-wrap:wrap}
+#app #game .sports-home-recent>small{min-width:0;white-space:normal;word-break:keep-all}
+#app #game .sports-result>div:first-child{flex-wrap:wrap;gap:8px}
+#app #game .sports-home-foot>span{white-space:normal;overflow:visible;word-break:keep-all}
+#app #drive .gdrive-fulltext,#app #aura .launch-greeting-setting{display:flex;align-items:center;gap:10px;min-height:44px}
+#app #drive .gdrive-fulltext input[type="checkbox"],#app #aura #launchGreetingEnabled{appearance:auto!important;box-sizing:border-box!important;flex:0 0 18px!important;width:18px!important;height:18px!important;min-width:18px!important;min-height:18px!important;max-width:18px!important;max-height:18px!important;margin:0!important;padding:0!important;transform:none!important}
+#app #wishlist .empty,#app #ilbo :is(h1,h2,h3,.ilbo-headline),#app #milestones .ms-tier small{word-break:keep-all;overflow-wrap:break-word}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app #aiWork .ui26-member{background:#202633!important;color:#edf1fa!important}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app #aiWork .ui26-member :is(.member-role,.member-link,.member-copy p){color:#dce6f5!important}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app #board .board-tabs{background:#202633!important}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app #board .board-tabs .board-tab{color:#dce6f5;background:#202633!important}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app #board .board-tabs .board-tab[data-board-filter="WORK"]{color:#a8ceff}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app #board .board-tabs .board-tab[data-board-filter="LIFE"]{color:#9ae0c2}
+@media(max-width:700px){
+  /* Plain px values are consumed by the existing parseFloat viewport clamp.
+     At 390x844 scroll zero, keep the helper on the inert banner area.
+     Sports has a 30px shorter top offset. Scrolled overlaps are reported.
+     No saved position rewrite, transform, listener or new positioning owner. */
+  body:is([data-view="certificate"],[data-view="ledger"],[data-view="tasks"],[data-view="investmentCommittee"],[data-view="investmentIntake"],[data-view="settings"],[data-view="travel"],[data-view="diet"],[data-view="exercise"]) #haniHelperBot{--helper-safe-bottom:580px}
+  body[data-view="game"] #haniHelperBot{--helper-safe-bottom:620px}
+  #app #game .sports-view-tabs{flex-wrap:wrap;overflow-x:visible;min-width:0;max-width:100%;box-sizing:border-box}
+  #app #game .sports-view-tabs button{flex:1 1 100px;min-width:0;min-height:44px!important;white-space:normal}
+  #app :is(#certificate,#ledger,#game,#tasks,#investmentCommittee,#investmentIntake,#settings,#travel,#diet,#exercise){padding-bottom:280px;scroll-margin-bottom:280px}
+  /* Shorter shared masthead; contain preserves the complete illustration frame.
+     Aura's independent showroom and the first-pass 132px artwork stay intact. */
+  #app .view>.ds-main-character-banner{min-height:168px;height:auto;--mcb-scene-width:100%;--mcb-scene-fit:contain;--mcb-scene-fit-mobile:contain!important;--mcb-scene-position-mobile:right center!important;--mcb-scene-position:right center;margin-bottom:12px}
+  #app .view>.ds-main-character-banner .ds-main-character-banner__copy{min-height:166px;padding:14px}
+  #app .view>.ds-main-character-banner .ds-main-character-banner__title{font-size:24px}
+  #app .view>.ds-main-character-banner .ds-main-character-banner__description{white-space:normal;word-break:keep-all}
+  #app #exercise #exerciseStats>.stat:nth-child(5){grid-column:1 / -1}
+  #app #board .board-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
+  #app #board .board-tabs .board-tab{min-width:0;padding-inline:6px;white-space:nowrap}
+  #app #milestones .ms-tier small{font-size:12px}
+  #app #ilbo :is(h1,h2,h3,.ilbo-headline){line-height:1.4}
+}
+#app #aiWork .ai-team-profile-role{color:#49385f!important;background:#f6f4fa!important;padding:6px 8px!important;line-height:1.5!important}
