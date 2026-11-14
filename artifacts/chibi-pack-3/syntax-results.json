@@ -1,0 +1,93 @@
+{
+  "status": "PASS",
+  "scriptChecks": [
+    {
+      "file": "hani-main.js",
+      "status": "PASS",
+      "method": "vm.Script"
+    },
+    {
+      "file": "scripts/hani-chibi-pack-3-source.cjs",
+      "status": "PASS",
+      "method": "vm.Script"
+    },
+    {
+      "file": "scripts/hani-chibi-pack-3-preload.cjs",
+      "status": "PASS",
+      "method": "vm.Script"
+    },
+    {
+      "file": "scripts/hani-release-296-source.cjs",
+      "status": "PASS",
+      "method": "vm.Script"
+    },
+    {
+      "file": "scripts/hani-design-polish-1-source.cjs",
+      "status": "PASS",
+      "method": "vm.Script"
+    },
+    {
+      "file": "scripts/hani-design-polish-1-main295-source.cjs",
+      "status": "PASS",
+      "method": "vm.Script"
+    },
+    {
+      "file": "artifacts/chibi-pack-3/audit.cjs",
+      "status": "PASS",
+      "method": "vm.Script"
+    },
+    {
+      "file": "artifacts/chibi-pack-3/make-browser.cjs",
+      "status": "PASS",
+      "method": "vm.Script"
+    },
+    {
+      "file": "artifacts/chibi-pack-3/output.cjs",
+      "status": "PASS",
+      "method": "vm.Script"
+    },
+    {
+      "file": "artifacts/chibi-pack-3/patch.cjs",
+      "status": "PASS",
+      "method": "vm.Script"
+    },
+    {
+      "file": "artifacts/chibi-pack-3/plan.cjs",
+      "status": "PASS",
+      "method": "vm.Script"
+    },
+    {
+      "file": "artifacts/chibi-pack-3/prepare.cjs",
+      "status": "PASS",
+      "method": "vm.Script"
+    },
+    {
+      "file": "artifacts/chibi-pack-3/summarize.cjs",
+      "status": "PASS",
+      "method": "vm.Script"
+    }
+  ],
+  "moduleChecks": [
+    {
+      "file": "scripts/hani-chibi-pack-3.test.mjs",
+      "status": "PASS",
+      "method": "node --check",
+      "exit": 0
+    },
+    {
+      "file": "scripts/hani-chibi-pack-3-layers.test.mjs",
+      "status": "PASS",
+      "method": "node --check",
+      "exit": 0
+    },
+    {
+      "file": "scripts/hani-chibi-pack-3.browser.mjs",
+      "status": "PASS",
+      "method": "node --check",
+      "exit": 0
+    }
+  ],
+  "total": 16,
+  "cssBraces": "PASS",
+  "powershellParser": "PASS"
+}

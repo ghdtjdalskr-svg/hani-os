@@ -1,0 +1,17 @@
+{
+  "file": "assets/street-journal/chibi-sheet-v3.webp",
+  "bytes": 228068,
+  "KiB": 222.72265625,
+  "width": 1024,
+  "height": 1024,
+  "hasAlpha": true,
+  "fullyTransparentPixels": 544394,
+  "nontransparentPixelsPerCell": [
+    177622,
+    103369,
+    116025,
+    107166
+  ],
+  "webpQuality": 82,
+  "alphaQuality": 100
+}
