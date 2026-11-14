@@ -7669,7 +7669,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.295";
+const HANI_DISPLAY_VERSION="2.9.296";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
@@ -8544,7 +8544,7 @@ function renderMonthlyReport(){
   pending.hidden=false;
   const failure=monthlyReportGenerationFailure?.month===monthlyReportMonth?monthlyReportGenerationFailure.reason:"";
   renderChibiNote("monthlyReportChibiNote",pending,"hani-point","하니 · 회장님, 보고할 달의 기록을 살펴봐요.",!failure&&!monthlyReportGeneration,true);
-  pending.innerHTML=`<h4>${esc(heading)}</h4><p>${esc(description)}</p><p role="status" data-monthly-generation-status>${esc(failure|| (monthlyReportGeneration?"원본 연결을 확인하고 보고서를 준비하고 있습니다. 잠시 기다려 주세요.":""))}</p><button type="button" id="monthlyReportGenerateBtn" ${hasRecords&&!monthlyReportGeneration?"":"disabled"}>${monthlyReportGeneration?"확인 중…":stored?"보고서 다시 생성":"보고서 생성"}</button>`;
+  pending.innerHTML=`${stored?`<h4>${esc(heading)}</h4>`:`<h4 class="monthly-report-empty-title"><span>${esc(monthlyReportMonth)}</span> <span>${esc(heading.slice(monthlyReportMonth.length+1))}</span></h4>`}<p>${esc(description)}</p><p role="status" data-monthly-generation-status>${esc(failure|| (monthlyReportGeneration?"원본 연결을 확인하고 보고서를 준비하고 있습니다. 잠시 기다려 주세요.":""))}</p><button type="button" id="monthlyReportGenerateBtn" ${hasRecords&&!monthlyReportGeneration?"":"disabled"}>${monthlyReportGeneration?"확인 중…":stored?"보고서 다시 생성":"보고서 생성"}</button>`;
   $("monthlyReportGenerateBtn").onclick=()=>monthlyReportGenerate(monthlyReportMonth);
 }
 

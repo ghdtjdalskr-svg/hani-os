@@ -26,6 +26,18 @@
   ],
   "entries": [
     {
+      "id": "v2.9.296",
+      "date": "2026-11-14",
+      "status": "released",
+      "title": "디자인 다듬기 1차",
+      "category": "화면·디자인",
+      "credits": [],
+      "source": {
+        "commit": "",
+        "subject": "release: v2.9.296 디자인 다듬기 1차"
+      }
+    },
+    {
       "id": "v2.9.295",
       "date": "2026-11-14",
       "status": "released",
@@ -33,8 +45,8 @@
       "category": "화면·디자인",
       "credits": [],
       "source": {
-        "commit": "",
-        "subject": "release: v2.9.295 치비 2탄 독서·퀴즈·여행"
+        "commit": "396511a28ca227e1f77c9bcba96965af7d077478",
+        "subject": "release: v2.9.295 치비 2탄 독서·퀴즈·여행 (#507)"
       }
     },
     {
