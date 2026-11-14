@@ -1,4 +1,5 @@
 // Test-only outer exact inverse. No browser/runtime imports or response rewriting.
+require('./hani-design-polish-2-preload.cjs'); // Exact outer input; all frozen design1 assertions stay unchanged.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
 const bytes=readRawFileSync(path.join(__dirname,'fixtures/design-polish-1-delta.json'));
@@ -16,5 +17,5 @@ function restore(source,file){
  assert.equal(hash(text),row.beforeSha256,'exact pre-design-polish-1 output '+file);
  return buffer?Buffer.from(text):text;
 }
-function project(source,file){const row=delta.files[file];if(!row)return source;source=require('./hani-release-296-source.cjs').project(source,file);source=require('./hani-design-polish-1-main295-source.cjs').project(source,file);return hash(source)===row.afterSha256?restore(source,file):source;}
+function project(source,file){source=require('./hani-design-polish-2-source.cjs').project(source,file);const row=delta.files[file];if(!row)return source;source=require('./hani-release-296-source.cjs').project(source,file);source=require('./hani-design-polish-1-main295-source.cjs').project(source,file);return hash(source)===row.afterSha256?restore(source,file):source;}
 module.exports={delta,hash,restore,project,readRawFileSync};

@@ -1,0 +1,7 @@
+{
+  "hani-design-system.css": "a5e054f162bf7ae140e5e28067b6bbedad9fc707e861e832c7659a2a3a99e16f",
+  "scripts/hani-design-polish-2.browser.mjs": "b401d71c03bdf5a3ab81cf84c6fde9432045a78d93d4c87065f5dad7ec391337",
+  "scripts/hani-design-polish-2.test.mjs": "6cf3f720100df44057601086b2ca43d6a106cc4e12556ee1ad0769265510482b",
+  "scripts/hani-design-polish-2-source.cjs": "8e6e9327bd9e17a80627395978e465f5fb82baba66e6898f09e51d8e565ab59c",
+  "scripts/fixtures/design-polish-2-delta.json": "69ef5ab3254e35961ab330ff3579afdc8bc65fb085136cb204a7a7026ba628a6"
+}

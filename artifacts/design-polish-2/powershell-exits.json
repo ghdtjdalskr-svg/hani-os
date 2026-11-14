@@ -1,0 +1,342 @@
+﻿[
+    {
+        "file":  "scripts/hani-app-216-audit.test.cjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-app-216-practical.test.cjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-chart-toss-212.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-chibi-pack-1-layers.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-chibi-pack-1-release293.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-chibi-pack-1.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-chibi-pack-2-layers.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-chibi-pack-2.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-design-polish-1-contrast.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-design-polish-1-main295.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-design-polish-1.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-design-polish-2.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-exam-popup-214.test.mjs",
+        "exit":  1
+    },
+    {
+        "file":  "scripts/hani-google-drive-212.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-history-226.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-join-ieum.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-learning-quiz-quality.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-learning-quiz-v04.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-milestones-v1.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-mission-203a.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-newsroom-4cut-230.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-219.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-actions-221.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-affinity-cap.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-affinity-storage.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-affinity.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-barista-night.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-barista.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-behavior.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-bori-m9.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-bubble-close.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-chairman-patrol.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-companions.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-crowded-labels.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-drama.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-fix-218.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-floor-bubble.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-hd-224.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-kids-286-source.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-kids-lively.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-kids-merge.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-kids-pose-b.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-kids-visit.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-kids-weekday.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-labels-qa.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-lively.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-motion-1.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-motion-2.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-obr10.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-obr16.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-obr17.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-obr18.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-obr19.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-obr3.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-pet-bori.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-props.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-release-projection.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-residents.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-seats-215.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-snack.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-staff-chat.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-tap-lines.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-tlayout.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-top-labels.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-visitors-cafe.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-xmas.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-zoom.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-qa-easy-cleanup.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-quiz-autogen-216.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-quiz-client-209.test.cjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-quiz-qa-212.test.cjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-quiz-quality-210.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-release-294.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-release-295.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-release-296.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-release-version-layers.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-save-guard.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-seoyun-m9.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-simplify-218.test.cjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-street-journal-closure.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-street-journal.test.cjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-study-retry.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-study-tutor-215.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-theme-thaw-source.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-theme-thaw.test.mjs",
+        "exit":  0
+    }
+]

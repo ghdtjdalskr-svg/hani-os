@@ -1,3 +1,15 @@
+# 2026-11-14 · design2c · 마지막 브라우저 실패 1건 수정 (도연 / Codex)
+
+전달 `hani/design-polish-2` / base `7a91982`(Git·원격 조회·Edge 없음). **AI 업무 SECTION의 fadeUp 280ms가 모션 감소 환경에서도 실행되는 원인: CSS 끝 2차 블록에 reduced-motion animation:none 1규칙, delta/source pin 정합. 신규8/8·syntax4/4·setup PASS·비Git85파일84성공/889 PASS+script5/skip2·office46파일610 PASS, design2b 대비 새 회귀0.** 기존 exam-popup fixture 시작 오류1 동일. 소스771 비교에서 CSS·delta·pin 외 변경0·기존fixture114/QA JSON172/측정기/원본 browser JSON 보존. 실제 마지막 1건 해소·새 CSSOM/PNG/픽셀 대비는 서윤 `browser-design2c` 재실행 대기. Git·버전·merge·배포 없음. Notion 착수 추가는 자동 승인 never 거절로 미반영/갱신 대기 보존. [보고서](../../artifacts/design-polish-2/REPORT.md#design2c) · [인수인계](handoffs/2026-11-14-design-polish-2-last-browser.md). 아래 기존 기록 보존.
+
+# 2026-11-14 · design2b · 디자인 다듬기 2차 브라우저 실패 정리 (도연 / Codex)
+
+전달 `hani/design-polish-2` / base `7a91982`(Git·원격 조회·Edge 없음). **CSS 끝 2차 블록·fixture/source 정합, 신규8/8·비Git85파일84성공(889 PASS+script5/skip2), 포함 office46파일610 PASS.** 기존 exam-popup renderChibiNote fixture 오류1은 main296 원문 일치/이전 재현과 동일. helper 첫 화면 scroll0·저장 위치 없음·입력/버튼 겹침0 gate, 카드/스크롤 겹침은 report-only. 9화면580px/game620px, dev summary44px·game wrap·실제 면/여백 보정. syntax4/4·browser setup PASS, 운영71파일 중 CSS만 변경·2차 prefix/기존fixture114/QA JSON172 보존. 최초 FAIL194/PNG 보존, 새 Edge·480픽셀 대비·무겹침·가로 폭은 서윤 재검증 대기. Git·버전·merge·배포 없음. Notion 기록 추가는 자동 승인 never 거절로 미반영/인수인계에 대기 원문 보존. [보고서](../../artifacts/design-polish-2/REPORT.md#브라우저-실패-정리) · [인수인계](handoffs/2026-11-14-design-polish-2-browser-fix.md). 아래 최초 개발·다른 담당·과거 기록 보존.
+
+# 2026-11-14 · design2 · 디자인 다듬기 2차 (도연 / Codex)
+
+`hani/design-polish-2` / 기준 `7a91982`(Git 명령·원격 조회 없음). **CSS 끝 한 블록으로 표시 개선 6항목, 신규6/6·최초 비Git87파일84성공(887 PASS+script5/skip2), office46파일610 PASS.** 최종 CSS 관련19파일18성공(102 PASS+script4/skip1), browser 의존성 차단2·exam-popup fixture 오류1은 main296 재현. 기존fixture114·원본JSON172 보존, runtime71/closure172 중 CSS만 변경·누락0, syntax10/10·browser setup PASS. 실제 Edge/PNG·24조합 픽셀 대비·무겹침0·Git27·push/탑승·배포는 서윤 대기. 임의 helper 저장 위치/스크롤은 CSS token만으로 무겹침 보장 불가. 표시/cache296·runtime JS·저장/Cloud 불변, main merge·배포 없음. Notion 착수 생성/read-back 완료·최종 갱신 자동 승인 거절로 미반영. [보고서](../../artifacts/design-polish-2/REPORT.md) · [인수인계](handoffs/2026-11-14-design-polish-2.md). 아래 타 담당·과거 기록 보존.
+
 # 2026-11-14 · tooling-296 · 296 배포 후속 시험 층 (도연 / Codex)
 
 `hani/tooling-296` / 전달·고정 base `56c3105`(#509, 원격 새 조회 없음·Git 금지). **296 version/history → frozen 디자인1 → 295 → 치비2 → 294 → THAW 이하 exact inverse. 비Git76파일 848PASS/0FAIL/skip1, office46파일 610PASS·Git27파일 목록만.** 신규296 5/5·raw closure172→172→172→172→171→168→164/누락0. 운영510파일 원문 일치·수정0, 기존fixture113/하위 manifest/시험 단언 보존·시험2개는 input import만. syntax11/11·helper9/9·PowerShell1/1·browser setup PASS, 실제 Edge·PNG·Git·commit/push·merge·배포·운영 read-back은 서윤 인계. 로컬 부산물은 tooling296-local에만 저장. Notion 착수 카드 생성/read-back 완료·최종 결과 갱신은 자동 승인 never 거절로 미반영(인수인계에 갱신 대기 보존). [짧은 보고서](../../artifacts/design-polish-1/TOOLING-296.md) · [인수인계](handoffs/2026-11-14-tooling-296.md). 아래 타 담당·과거 기록 보존.

@@ -1,0 +1,51 @@
+{
+  "base": "7a91982de08a54452f6b9057f906d651f63a65ca",
+  "rootRuntimeFiles": 71,
+  "changed": [
+    "hani-design-system.css"
+  ],
+  "secondBlockPrefixUnchanged": true,
+  "originalBrowser": {
+    "sha256": "f35b9dcf7de12638ad9b753547192781cc947624d8eb1477785776579dc3317c",
+    "result": "FAIL",
+    "failures": 194
+  },
+  "cssSha256": "3b6d001a8e63b6130055c61601c4edfb3b694cfea1f70ee1247eb87b61872d0e",
+  "fixtureSha256": "1c32aac4ab712e9d57c17a8ab5183157f3eec997fcc7e9a5481d8b3b6a251b9a",
+  "syntax": {
+    "files": 4,
+    "result": "PASS"
+  },
+  "browserSetup": {
+    "result": "PASS",
+    "launched": false,
+    "views": 23,
+    "contrastCombinations": 480
+  },
+  "actualBrowser": "NOT_RUN_DELEGATED_TO_SEOYUN",
+  "regression": {
+    "files": 85,
+    "passedFiles": 84,
+    "failedFiles": [
+      {
+        "file": "scripts/hani-exam-popup-214.test.mjs",
+        "exit": 1
+      }
+    ],
+    "pass": 889,
+    "scriptPass": 5,
+    "skip": 2,
+    "office": {
+      "files": 46,
+      "pass": 610,
+      "failedFiles": 0
+    }
+  },
+  "originalBrowserStillUnchanged": true,
+  "cssStillSame": true,
+  "examTestMatchesMain296": true,
+  "originalQaJson": {
+    "files": 172,
+    "allRestored": true
+  }
+}

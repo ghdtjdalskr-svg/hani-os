@@ -1,0 +1,44 @@
+{
+  "changedOriginalFiles": [
+    "hani-design-system.css",
+    "scripts/hani-design-polish-1-main295-source.cjs",
+    "scripts/hani-design-polish-1-source.cjs",
+    "scripts/hani-release-296-source.cjs",
+    "scripts/hani-release-version-layers.cjs"
+  ],
+  "existingFixtureCount": 87,
+  "originalJsonChecked": 172,
+  "originalJsonDrift": [],
+  "existingFixtureRecursiveCount": 114,
+  "existingFixtureDrift": [],
+  "rootRuntimeCount": 71,
+  "rootRuntimeDrift": [
+    "hani-design-system.css"
+  ],
+  "rawClosureCount": 172,
+  "rawClosureDrift": [
+    "hani-design-system.css"
+  ],
+  "rawClosureMissing": [],
+  "currentPastBytesPreserved": true,
+  "finalCssSha256": "67abb708ec26c9b8f2e1b45d3d350c2f239f8d6eb495e580ecbfc547eebee6b6",
+  "finalFixtureSha256": "69ef5ab3254e35961ab330ff3579afdc8bc65fb085136cb204a7a7026ba628a6",
+  "finalScope": {
+    "runtime": [
+      "hani-design-system.css"
+    ],
+    "existingTestInputAdapters": [
+      "scripts/hani-design-polish-1-source.cjs",
+      "scripts/hani-design-polish-1-main295-source.cjs",
+      "scripts/hani-release-296-source.cjs",
+      "scripts/hani-release-version-layers.cjs"
+    ],
+    "docs": [
+      "docs/development-history/CURRENT.md",
+      "docs/development-history/handoffs/2026-11-14-design-polish-2.md"
+    ],
+    "gitCommands": 0,
+    "edgeLaunches": 0
+  },
+  "temporaryEvidenceCleanup": "Policy rejected recursive removal; original verification copies retained in input-evidence, not runtime inputs."
+}
