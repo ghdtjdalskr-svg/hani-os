@@ -101,3 +101,11 @@
 #monthlyReportChibiNote{justify-content:flex-start;flex-direction:row-reverse}
 @media(max-width:600px){.hani-chibi-note{gap:8px;font-size:12px}.hani-chibi-note-art{flex-basis:56px;width:56px;height:56px}}
 @media print{.hani-chibi-note{display:none!important}}
+
+/* Chibi pack 2: one transparent 2x2 sheet; share the existing 72px/56px slots. */
+.hani-chibi-note .hsj-p-yoonseul-bookmark,.hani-chibi-note .hsj-p-hina-cheer,.hani-chibi-note .hsj-p-hina-review,.hani-chibi-note .hsj-p-sooyeon-map{background-image:url("./assets/street-journal/chibi-sheet-v2.webp");background-size:200% 200%}
+.hani-chibi-note .hsj-p-yoonseul-bookmark{background-position:0% 0%}
+.hani-chibi-note .hsj-p-hina-cheer{background-position:100% 0%}
+.hani-chibi-note .hsj-p-hina-review{background-position:0% 100%}
+.hani-chibi-note .hsj-p-sooyeon-map{background-position:100% 100%}
+@media(prefers-reduced-motion:reduce){.hani-chibi-note,.hani-chibi-note-art{animation:none!important;transition:none!important}}

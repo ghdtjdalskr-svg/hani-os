@@ -16,5 +16,5 @@ function restore(source,file){
  assert.equal(hash(text),row.beforeSha256,'exact pre-design-polish-1 output '+file);
  return buffer?Buffer.from(text):text;
 }
-function project(source,file){const row=delta.files[file];return row&&hash(source)===row.afterSha256?restore(source,file):source;}
+function project(source,file){const row=delta.files[file];if(!row)return source;source=require('./hani-design-polish-1-main295-source.cjs').project(source,file);return hash(source)===row.afterSha256?restore(source,file):source;}
 module.exports={delta,hash,restore,project,readRawFileSync};

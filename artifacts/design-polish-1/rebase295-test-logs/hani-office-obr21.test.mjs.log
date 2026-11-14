@@ -1,0 +1,46 @@
+TAP version 13
+# Subtest: obr21 authored full absent/present plans and reverse snapshots match frozen delta
+ok 1 - obr21 authored full absent/present plans and reverse snapshots match frozen delta
+  ---
+  duration_ms: 12620.4694
+  type: 'test'
+  ...
+# Subtest: obr21 all 1F stationary intervals incl waits: independent phone sprite boxes do not overlap; formal catalog and fixed homes exempt
+ok 2 - obr21 all 1F stationary intervals incl waits: independent phone sprite boxes do not overlap; formal catalog and fixed homes exempt
+  ---
+  duration_ms: 3016.9984
+  type: 'test'
+  ...
+# Subtest: obr21 every report uses existing CEO floor >=170 art pixels away with reciprocal facing and safe phone boxes
+ok 3 - obr21 every report uses existing CEO floor >=170 art pixels away with reciprocal facing and safe phone boxes
+  ---
+  duration_ms: 688.5408
+  type: 'test'
+  ...
+# Subtest: obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation
+ok 4 - obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation
+  ---
+  duration_ms: 976.3553
+  type: 'test'
+  ...
+# Subtest: obr21 cached gathering/index decisions equal full index rebuilds
+ok 5 - obr21 cached gathering/index decisions equal full index rebuilds
+  ---
+  duration_ms: 3566.2857
+  type: 'test'
+  ...
+# Subtest: obr21 new desk gestures keep the phone envelope clear without moving fixed homes
+ok 6 - obr21 new desk gestures keep the phone envelope clear without moving fixed homes
+  ---
+  duration_ms: 9335.0907
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 30263.9255

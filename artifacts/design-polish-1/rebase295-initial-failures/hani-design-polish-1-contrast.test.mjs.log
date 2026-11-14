@@ -1,0 +1,34 @@
+TAP version 13
+# Subtest: gradient/image background takes the least contrast pixel, for either text polarity
+ok 1 - gradient/image background takes the least contrast pixel, for either text polarity
+  ---
+  duration_ms: 1.035
+  type: 'test'
+  ...
+# Subtest: text and its antialias margin are excluded with CSS/device scaling and clip offset
+ok 2 - text and its antialias margin are excluded with CSS/device scaling and clip offset
+  ---
+  duration_ms: 0.1385
+  type: 'test'
+  ...
+# Subtest: foreground alpha is composited per sampled pixel and unresolved samples fail closed
+ok 3 - foreground alpha is composited per sampled pixel and unresolved samples fail closed
+  ---
+  duration_ms: 0.1262
+  type: 'test'
+  ...
+# Subtest: clip capture preserves unresolved failures and attaches pixel evidence, without changing solid checks
+ok 4 - clip capture preserves unresolved failures and attaches pixel evidence, without changing solid checks
+  ---
+  duration_ms: 0.3832
+  type: 'test'
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 4
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 11.9699

@@ -1,0 +1,46 @@
+TAP version 13
+# Subtest: two runtime edits invert exactly to independently identified cb11935 bytes; drift is rejected
+ok 1 - two runtime edits invert exactly to independently identified cb11935 bytes; drift is rejected
+  ---
+  duration_ms: 153.7878
+  type: 'test'
+  ...
+# Subtest: month title uses real presentation expression: two phrases, stored title unchanged, escaping preserved
+ok 2 - month title uses real presentation expression: two phrases, stored title unchanged, escaping preserved
+  ---
+  duration_ms: 6.0528
+  type: 'test'
+  ...
+# Subtest: new paired colors exceed 4.5:1; existing contrast/THAW bytes, choices and handlers stay intact
+ok 3 - new paired colors exceed 4.5:1; existing contrast/THAW bytes, choices and handlers stay intact
+  ---
+  duration_ms: 0.2918
+  type: 'test'
+  ...
+# Subtest: actual helper viewport/clamp functions consume the CSS token and clear an expanded composer with keyboard viewport
+ok 4 - actual helper viewport/clamp functions consume the CSS token and clear an expanded composer with keyboard viewport
+  ---
+  duration_ms: 2.1323
+  type: 'test'
+  ...
+# Subtest: preload sync/callback/promise/ESM readers see the identical base without touching disk
+ok 5 - preload sync/callback/promise/ESM readers see the identical base without touching disk
+  ---
+  duration_ms: 186.3474
+  type: 'test'
+  ...
+# Subtest: outer dispatch preserves 294/THAW/293/legacy full pins and original closure counts
+ok 6 - outer dispatch preserves 294/THAW/293/legacy full pins and original closure counts
+  ---
+  duration_ms: 513.1395
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 922.4668

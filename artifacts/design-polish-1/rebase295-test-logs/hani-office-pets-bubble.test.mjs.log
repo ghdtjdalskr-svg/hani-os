@@ -1,0 +1,163 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 29.9393
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 15.2646
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 23.8963
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 15.2268
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 80.2796
+  type: 'test'
+  ...
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 247.0624
+  type: 'test'
+  ...
+# Subtest: mouse 1280: map/card/page/header/sidebar close; staff, pets, barista and event controls work
+ok 7 - mouse 1280: map/card/page/header/sidebar close; staff, pets, barista and event controls work
+  ---
+  duration_ms: 718.5683
+  type: 'test'
+  ...
+# Subtest: mouse 1920: map/card/page/header/sidebar close; staff, pets, barista and event controls work
+ok 8 - mouse 1920: map/card/page/header/sidebar close; staff, pets, barista and event controls work
+  ---
+  duration_ms: 619.9529
+  type: 'test'
+  ...
+# Subtest: existing pointer owner runs before a descendant stopPropagation, without adding document listeners
+ok 9 - existing pointer owner runs before a descendant stopPropagation, without adding document listeners
+  ---
+  duration_ms: 621.5559
+  type: 'test'
+  ...
+# Subtest: real cause: dismissing a manually opened pet trio cannot immediately trigger the automatic trio
+ok 10 - real cause: dismissing a manually opened pet trio cannot immediately trigger the automatic trio
+  ---
+  duration_ms: 681.4215
+  type: 'test'
+  ...
+# Subtest: pets: bounded idle motion fills pauses, preserves clock paths, and reduced/offscreen rules stop it
+ok 11 - pets: bounded idle motion fills pauses, preserves clock paths, and reduced/offscreen rules stop it
+  ---
+  duration_ms: 1279.1345
+  type: 'test'
+  ...
+# Subtest: staff scheduler/plan/blockPlan/snapshot and all staff model helpers stay byte identical; no extra loops, listeners or nodes
+ok 12 - staff scheduler/plan/blockPlan/snapshot and all staff model helpers stay byte identical; no extra loops, listeners or nodes
+  ---
+  duration_ms: 120.2528
+  type: 'test'
+  ...
+# Subtest: resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections
+ok 13 - resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections
+  ---
+  duration_ms: 180.4536
+  type: 'test'
+  ...
+# Subtest: round2: a manual pet tap takes priority over the pending entrance gesture
+ok 14 - round2: a manual pet tap takes priority over the pending entrance gesture
+  ---
+  duration_ms: 619.7272
+  type: 'test'
+  ...
+# Subtest: round2: sleeping pets do not greet automatically, but a manual tap still gets one hop
+ok 15 - round2: sleeping pets do not greet automatically, but a manual tap still gets one hop
+  ---
+  duration_ms: 616.5577
+  type: 'test'
+  ...
+# Subtest: round2: every visible pet starts a queued gesture within ten seconds of entering its floor
+ok 16 - round2: every visible pet starts a queued gesture within ten seconds of entering its floor
+  ---
+  duration_ms: 24031.8676
+  type: 'test'
+  ...
+# Subtest: round2: six-second gestures are staggered, use all four kinds and change existing atlas rows
+ok 17 - round2: six-second gestures are staggered, use all four kinds and change existing atlas rows
+  ---
+  duration_ms: 2274.8054
+  type: 'test'
+  ...
+# Subtest: round2: walks start within the new windows and every sampled body stays on existing safe routes
+ok 18 - round2: walks start within the new windows and every sampled body stays on existing safe routes
+  ---
+  duration_ms: 1285.7143
+  type: 'test'
+  ...
+# Subtest: round2: reduced motion fixes pets for a full minute and hidden floors retain no advancing state
+ok 19 - round2: reduced motion fixes pets for a full minute and hidden floors retain no advancing state
+  ---
+  duration_ms: 4188.2324
+  type: 'test'
+  ...
+# Subtest: round2: all three pets are present for at least 95 percent of working-day samples
+ok 20 - round2: all three pets are present for at least 95 percent of working-day samples
+  ---
+  duration_ms: 6054.6783
+  type: 'test'
+  ...
+# Subtest: round2: staff scheduler and snapshot source bytes stay identical; timer/listener/node/storage paths do not increase
+ok 21 - round2: staff scheduler and snapshot source bytes stay identical; timer/listener/node/storage paths do not increase
+  ---
+  duration_ms: 123.1729
+  type: 'test'
+  ...
+# Subtest: round2: the existing label packer reserves the full pet gesture envelope at PC and phone scale
+ok 22 - round2: the existing label packer reserves the full pet gesture envelope at PC and phone scale
+  ---
+  duration_ms: 1411.6355
+  type: 'test'
+  ...
+1..22
+# tests 22
+# suites 0
+# pass 22
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 45577.8422

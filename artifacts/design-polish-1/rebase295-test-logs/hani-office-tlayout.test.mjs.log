@@ -1,0 +1,88 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 25.2873
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 14.0808
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 21.9407
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 16.4212
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 76.4352
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 248.9553
+  type: 'test'
+  ...
+# Subtest: G image is the exact approved WebP; old background and other staff seats remain
+ok 7 - G image is the exact approved WebP; old background and other staff seats remain
+  ---
+  duration_ms: 1.4441
+  type: 'test'
+  ...
+# Subtest: every effective 3F edge avoids the 32px gap; lead walk goes around north and left
+ok 8 - every effective 3F edge avoids the 32px gap; lead walk goes around north and left
+  ---
+  duration_ms: 1.0066
+  type: 'test'
+  ...
+# Subtest: 360/390/416 phone boxes have zero overlap involving either new seat
+ok 9 - 360/390/416 phone boxes have zero overlap involving either new seat
+  ---
+  duration_ms: 0.7833
+  type: 'test'
+  ...
+# Subtest: real DOM owner seats all five at 10:00/12:00, carries lead facing and retains existing mask slot
+ok 10 - real DOM owner seats all five at 10:00/12:00, carries lead facing and retains existing mask slot
+  ---
+  duration_ms: 42.9062
+  type: 'test'
+  ...
+# Subtest: only the five pinned source fragments change; protected home and label owners are byte identical
+ok 11 - only the five pinned source fragments change; protected home and label owners are byte identical
+  ---
+  duration_ms: 164.5887
+  type: 'test'
+  ...
+# Subtest: 16 separately authored complete plan/outings/reverse-snapshot outputs have no exclusions
+ok 12 - 16 separately authored complete plan/outings/reverse-snapshot outputs have no exclusions
+  ---
+  duration_ms: 10159.489
+  type: 'test'
+  ...
+# Subtest: G keeps all five 3F resident stops, complete body routes and weekly resident separation
+ok 13 - G keeps all five 3F resident stops, complete body routes and weekly resident separation
+  ---
+  duration_ms: 3507.4427
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 14350.5447

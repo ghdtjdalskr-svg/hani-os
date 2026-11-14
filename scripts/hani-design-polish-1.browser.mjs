@@ -1,6 +1,6 @@
 // Seoyun: node scripts/hani-design-polish-1.browser.mjs <playwright/index.mjs> <msedge.exe>
 // Real app + real owners/CSS, synthetic empty data, disposable browser contexts.
-// No inverse preload. 'before' serves the two original cb11935 files; 'after' serves disk.
+// No inverse preload. 'before' serves exact main295 owners; 'after' serves disk.
 import fs from 'node:fs';
 import path from 'node:path';
 import http from 'node:http';
@@ -8,11 +8,13 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {pathToFileURL} from 'node:url';
 import repository from './hani-test-repository-evidence.cjs';
+import design295 from './hani-design-polish-1-main295-source.cjs';
 import {resolveScreenshotContrast} from './hani-design-polish-1-contrast.mjs';
-const root=path.resolve(import.meta.dirname,'..'),out=path.join(root,'artifacts/design-polish-1/browser-fixed');
+const root=path.resolve(import.meta.dirname,'..'),out=path.join(root,'artifacts/design-polish-1/browser-rebase295');
 const hash=b=>createHash('sha256').update(b).digest('hex'),base='cb119351ff7b0a01b77fdc04d6f0b1ba0c2b54dc';
+const comparisonBase=design295.delta.base;
 const owners=['hani-main.js','hani-design-system.css'];
-const sources=Object.fromEntries(owners.map(f=>[f,{before:repository.read(base,f),after:fs.readFileSync(path.join(root,f),'utf8')}]));
+const sources=Object.fromEntries(owners.map(f=>{const after=fs.readFileSync(path.join(root,f),'utf8'),before=design295.restore(after,f);assert.equal(before,repository.read(comparisonBase,f));return [f,{before,after}]}));
 const finishes=['porcelain-cream','pure-white','titanium-graphite','midnight-black','sakura-pink','alpine-blue'];
 const seasons=['spring','summer','autumn','winter'];
 const cases=[
@@ -28,6 +30,7 @@ const cases=[
 ];
 let phase='after',browser;
 const report={result:'NOT_RUN',base,sourceHashes:Object.fromEntries(owners.map(f=>[f,Object.fromEntries(['before','after'].map(p=>[p,hash(sources[f][p])]))])),cases:[],combinations:[],screenshots:[],errors:[],failures:[],navigationWrites:[],helperSetup:[],note:'Zero writes is measured for synchronous passive rendering/style operations. Existing navigation/scroll preference writes are separately recorded. No production/account data. Gradient/image contrast uses clipped PNG background pixels outside text boxes, taking the worst ratio; no 4.5 threshold change. Original failed evidence remains in the parent directory.'};
+report.base=comparisonBase;report.frozenDesignBase=base;
 fs.mkdirSync(out,{recursive:true});
 const server=http.createServer((req,res)=>{
  try{

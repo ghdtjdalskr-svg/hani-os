@@ -1,0 +1,72 @@
+(node:35692) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+TAP version 13
+# Subtest: unset/OTHER economy name and all six checked focus chips derive economy without changing stored fields
+ok 1 - unset/OTHER economy name and all six checked focus chips derive economy without changing stored fields
+  ---
+  duration_ms: 36.9094
+  type: 'test'
+  ...
+# Subtest: archive extraction includes all five FU channels, market and company; date bounds and reference verification remain enforced
+ok 2 - archive extraction includes all five FU channels, market and company; date bounds and reference verification remain enforced
+  ---
+  duration_ms: 10.2239
+  type: 'test'
+  ...
+# Subtest: weekly FU and market survive sixty newer interest posts via reserved archive query and round robin
+ok 3 - weekly FU and market survive sixty newer interest posts via reserved archive query and round robin
+  ---
+  duration_ms: 4.1428
+  type: 'test'
+  ...
+# Subtest: actual client→server rejects a zero-news set, retries and returns 20 with >=7 dated/source-backed news questions
+ok 4 - actual client→server rejects a zero-news set, retries and returns 20 with >=7 dated/source-backed news questions
+  ---
+  duration_ms: 33.8217
+  type: 'test'
+  ...
+# Subtest: server independently infers category and enforces focus quota even for absent/zero client contract
+ok 5 - server independently infers category and enforces focus quota even for absent/zero client contract
+  ---
+  duration_ms: 35.3147
+  type: 'test'
+  ...
+# Subtest: eight rejected generations stay bounded, preserve all records and never save theory-only replacements
+ok 6 - eight rejected generations stay bounded, preserve all records and never save theory-only replacements
+  ---
+  duration_ms: 22.7185
+  type: 'test'
+  ...
+# Subtest: explanation requires archive source name and date in addition to source ID and URL
+ok 7 - explanation requires archive source name and date in addition to source ID and URL
+  ---
+  duration_ms: 2.7042
+  type: 'test'
+  ...
+# Subtest: server refill with accepted news can ask for zero more news while retaining focus and basic difficulty
+ok 8 - server refill with accepted news can ask for zero more news while retaining focus and basic difficulty
+  ---
+  duration_ms: 3.2136
+  type: 'test'
+  ...
+# Subtest: empty/stale sources show newsroom refresh instruction in the actual failure UI before any model call or save
+ok 9 - empty/stale sources show newsroom refresh instruction in the actual failure UI before any model call or save
+  ---
+  duration_ms: 8.772
+  type: 'test'
+  ...
+# Subtest: canonical question renderer maps Korean chips and hides unknown values without changing historical questions
+ok 10 - canonical question renderer maps Korean chips and hides unknown values without changing historical questions
+  ---
+  duration_ms: 2.9849
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 185.2722

@@ -1,4 +1,4 @@
-// Legacy test readers see the exact cb11935 bytes. Never imported by runtime.
+// Legacy test readers see exact main295 before lower release layers. No runtime imports.
 const fs=require('node:fs'),path=require('node:path'),{fileURLToPath}=require('node:url');
 const {project}=require('./hani-design-polish-1-source.cjs'),root=path.resolve(__dirname,'..');
 const sync=fs.readFileSync,callbackRead=fs.readFile,promiseRead=fs.promises.readFile;

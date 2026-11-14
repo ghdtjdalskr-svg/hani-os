@@ -1,0 +1,100 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 26.6854
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 14.1303
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 23.3036
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 17.6906
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 77.8513
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 251.0875
+  type: 'test'
+  ...
+# Subtest: icons: actual consulting and candidate pairs retain exact phone text and purple state at both widths
+ok 7 - icons: actual consulting and candidate pairs retain exact phone text and purple state at both widths
+  ---
+  duration_ms: 620.4637
+  type: 'test'
+  ...
+# Subtest: icons: caught-out and reply lines keep the joke and are work, even at a lounge home
+ok 8 - icons: caught-out and reply lines keep the joke and are work, even at a lounge home
+  ---
+  duration_ms: 3.0137
+  type: 'test'
+  ...
+# Subtest: icons: ten frequent specific fallbacks have authored whole short phrases
+ok 9 - icons: ten frequent specific fallbacks have authored whole short phrases
+  ---
+  duration_ms: 0.3678
+  type: 'test'
+  ...
+# Subtest: icons: semantic work/rest classification also covers errands, deliveries and personal idle lines
+ok 10 - icons: semantic work/rest classification also covers errands, deliveries and personal idle lines
+  ---
+  duration_ms: 0.5297
+  type: 'test'
+  ...
+# Subtest: icons: special moment rules, combined-line precedence and existing performance emoji use the real helper
+ok 11 - icons: special moment rules, combined-line precedence and existing performance emoji use the real helper
+  ---
+  duration_ms: 1.2211
+  type: 'test'
+  ...
+# Subtest: icons: walking, live travel and outbound/return elevator waits suppress every head icon
+ok 12 - icons: walking, live travel and outbound/return elevator waits suppress every head icon
+  ---
+  duration_ms: 0.4833
+  type: 'test'
+  ...
+# Subtest: icons: actual repeated phone/desktop/reduced renderer updates reuse nodes and skip unchanged prop writes
+ok 13 - icons: actual repeated phone/desktop/reduced renderer updates reuse nodes and skip unchanged prop writes
+  ---
+  duration_ms: 2394.3722
+  type: 'test'
+  ...
+# Subtest: icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc
+ok 14 - icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc
+  ---
+  duration_ms: 224.5055
+  type: 'test'
+  ...
+# Subtest: icons: complete plan/blockPlan and sampled snapshot JSON match the approved G output
+ok 15 - icons: complete plan/blockPlan and sampled snapshot JSON match the approved G output
+  ---
+  duration_ms: 5900.7824
+  type: 'test'
+  ...
+1..15
+# tests 15
+# suites 0
+# pass 15
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 9634.3937

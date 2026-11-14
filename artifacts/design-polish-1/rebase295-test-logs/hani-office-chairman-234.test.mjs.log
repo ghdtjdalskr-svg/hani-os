@@ -1,0 +1,104 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 28.4585
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 13.3584
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 36.9622
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 16.2281
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 77.5163
+  type: 'test'
+  ...
+234 colleague visits { count: 637, minPx: 34.98575500413843 }
+234 long stay switches { checked: 400 }
+234 social place switches { count: 96 }
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 248.0962
+  type: 'test'
+  ...
+# Subtest: 234 frozen six full formal/outing ledgers and 84 snapshots preserve exact bytes and deep equality
+ok 7 - 234 frozen six full formal/outing ledgers and 84 snapshots preserve exact bytes and deep equality
+  ---
+  duration_ms: 4975.3373
+  type: 'test'
+  ...
+# Subtest: 234 actual owner renders and hides persistent chairman actor through the shared input/update path
+ok 8 - 234 actual owner renders and hides persistent chairman actor through the shared input/update path
+  ---
+  duration_ms: 1176.7129
+  type: 'test'
+  ...
+# Subtest: 234 presence: initial login/visibility, four shared passive input bindings, lock exclusion and external priority
+ok 9 - 234 presence: initial login/visibility, four shared passive input bindings, lock exclusion and external priority
+  ---
+  duration_ms: 33.316
+  type: 'test'
+  ...
+# Subtest: 234 presence: exact ten-minute idle expiry, hidden grace, renewed input, brief flicker and repeated reads
+ok 10 - 234 presence: exact ten-minute idle expiry, hidden grace, renewed input, brief flicker and repeated reads
+  ---
+  duration_ms: 0.4527
+  type: 'test'
+  ...
+# Subtest: 234 chairman: real 4F home and frog sprite identity; workday has all three signatures, base actions, affinity outings and safe reservations
+ok 11 - 234 chairman: real 4F home and frog sprite identity; workday has all three signatures, base actions, affinity outings and safe reservations
+  ---
+  duration_ms: 316.9646
+  type: 'test'
+  ...
+# Subtest: 234 colleague visits: >=32px from actual colleague and horizontal approach preference, other rest minima unchanged
+ok 12 - 234 colleague visits: >=32px from actual colleague and horizontal approach preference, other rest minima unchanged
+  ---
+  duration_ms: 814.1902
+  type: 'test'
+  ...
+# Subtest: 234 long solitary stays: exactly one deterministic switch within same place, no arrival speech while moving
+ok 13 - 234 long solitary stays: exactly one deterministic switch within same place, no arrival speech while moving
+  ---
+  duration_ms: 2624.3981
+  type: 'test'
+  ...
+# Subtest: 234 deterministic staff paths within each presence key, cache reuse across toggles and reordered snapshots
+ok 14 - 234 deterministic staff paths within each presence key, cache reuse across toggles and reordered snapshots
+  ---
+  duration_ms: 2133.5403
+  type: 'test'
+  ...
+# Subtest: 234 long social stays switch to another approved place phrase while retaining actual companion names
+ok 15 - 234 long social stays switch to another approved place phrase while retaining actual companion names
+  ---
+  duration_ms: 658.8598
+  type: 'test'
+  ...
+Office affinity storage unavailable or malformed; using memory only.
+1..15
+# tests 15
+# suites 0
+# pass 15
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 18090.0306

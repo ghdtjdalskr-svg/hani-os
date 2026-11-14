@@ -1,0 +1,182 @@
+{
+  "status": "PASS",
+  "releases": 98,
+  "newest": "v2.9.226",
+  "employees": 19,
+  "issues": 1,
+  "milestones": [
+    "v2.9.222",
+    "v2.9.215",
+    "v2.9.213",
+    "v2.9.135",
+    "v2.9.132",
+    "v2.9.120"
+  ],
+  "monthCounts": [
+    {
+      "month": "2026-10",
+      "total": 77,
+      "visible": 8,
+      "collapsed": 69
+    },
+    {
+      "month": "2026-09",
+      "total": 21,
+      "visible": 8,
+      "collapsed": 13
+    }
+  ],
+  "storageWrites": 0,
+  "tokenContrast": [
+    {
+      "finish": "pure-white",
+      "fg": "#111c32",
+      "paper": "#ffffff",
+      "ratio": 16.99037989810794
+    },
+    {
+      "finish": "pure-white",
+      "fg": "#526079",
+      "paper": "#ffffff",
+      "ratio": 6.348224964525563
+    },
+    {
+      "finish": "pure-white",
+      "fg": "#111c32",
+      "paper": "#f3f6fb",
+      "ratio": 15.684751003282079
+    },
+    {
+      "finish": "pure-white",
+      "fg": "#526079",
+      "paper": "#f3f6fb",
+      "ratio": 5.86039443959054
+    },
+    {
+      "finish": "porcelain-cream",
+      "fg": "#111c32",
+      "paper": "#ffffff",
+      "ratio": 16.99037989810794
+    },
+    {
+      "finish": "porcelain-cream",
+      "fg": "#526079",
+      "paper": "#ffffff",
+      "ratio": 6.348224964525563
+    },
+    {
+      "finish": "porcelain-cream",
+      "fg": "#111c32",
+      "paper": "#f3f6fb",
+      "ratio": 15.684751003282079
+    },
+    {
+      "finish": "porcelain-cream",
+      "fg": "#526079",
+      "paper": "#f3f6fb",
+      "ratio": 5.86039443959054
+    },
+    {
+      "finish": "sakura-pink",
+      "fg": "#111c32",
+      "paper": "#ffffff",
+      "ratio": 16.99037989810794
+    },
+    {
+      "finish": "sakura-pink",
+      "fg": "#526079",
+      "paper": "#ffffff",
+      "ratio": 6.348224964525563
+    },
+    {
+      "finish": "sakura-pink",
+      "fg": "#111c32",
+      "paper": "#f3f6fb",
+      "ratio": 15.684751003282079
+    },
+    {
+      "finish": "sakura-pink",
+      "fg": "#526079",
+      "paper": "#f3f6fb",
+      "ratio": 5.86039443959054
+    },
+    {
+      "finish": "alpine-blue",
+      "fg": "#111c32",
+      "paper": "#ffffff",
+      "ratio": 16.99037989810794
+    },
+    {
+      "finish": "alpine-blue",
+      "fg": "#526079",
+      "paper": "#ffffff",
+      "ratio": 6.348224964525563
+    },
+    {
+      "finish": "alpine-blue",
+      "fg": "#111c32",
+      "paper": "#f3f6fb",
+      "ratio": 15.684751003282079
+    },
+    {
+      "finish": "alpine-blue",
+      "fg": "#526079",
+      "paper": "#f3f6fb",
+      "ratio": 5.86039443959054
+    },
+    {
+      "finish": "midnight-black",
+      "fg": "#f5f2ed",
+      "paper": "#1b1e24",
+      "ratio": 14.951846952780262
+    },
+    {
+      "finish": "midnight-black",
+      "fg": "#b9bac0",
+      "paper": "#1b1e24",
+      "ratio": 8.62433583885987
+    },
+    {
+      "finish": "midnight-black",
+      "fg": "#f5f2ed",
+      "paper": "#15171c",
+      "ratio": 16.05706371265671
+    },
+    {
+      "finish": "midnight-black",
+      "fg": "#b9bac0",
+      "paper": "#15171c",
+      "ratio": 9.261833035160333
+    },
+    {
+      "finish": "titanium-graphite",
+      "fg": "#f1f0ed",
+      "paper": "#36383d",
+      "ratio": 10.294986096700383
+    },
+    {
+      "finish": "titanium-graphite",
+      "fg": "#b8b7b2",
+      "paper": "#36383d",
+      "ratio": 5.840711561632757
+    },
+    {
+      "finish": "titanium-graphite",
+      "fg": "#f1f0ed",
+      "paper": "#2d2f33",
+      "ratio": 11.76706724087351
+    },
+    {
+      "finish": "titanium-graphite",
+      "fg": "#b8b7b2",
+      "paper": "#2d2f33",
+      "ratio": 6.675875521804524
+    }
+  ],
+  "sourceHashes": {
+    "hani-organization-hub.js": "ff5b8201918ce95c44e97f794b1291d33a99610b513c1d2f60f163f43f1d210a",
+    "hani-organization-hub.css": "a33af6a6a113c4b7ddfe37961ee5255a7271618df349d739fa652115b3afc185",
+    "assets/data/hani-history-releases-v1.json": "7a0bc180f87bb54a07984ee11f8a4a58941627d30ab7fd6792afbd1b1a88e141",
+    "data/hani-ilbo/issues.json": "1721e1bc5fd0660aa20e3a5570b0ed5b75bf667159417854e115539209d3c304"
+  }
+}

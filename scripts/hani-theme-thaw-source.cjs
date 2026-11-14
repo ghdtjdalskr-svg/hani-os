@@ -1,5 +1,5 @@
 // Test-only outer THAW inverse. Full-byte pins precede all frozen main layers.
-require('./hani-design-polish-1-preload.cjs');
+require('./hani-chibi-pack-2-preload.cjs');
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
 const bytes=readRawFileSync(path.join(__dirname,'fixtures/theme-thaw-main293-delta.json'));

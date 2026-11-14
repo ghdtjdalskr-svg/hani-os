@@ -1,0 +1,17 @@
+PASS: economy acceptance, dynamic category rotation, JLPT diversity, read-only Edge Function
+TAP version 13
+# Subtest: scripts\\hani-learning-quiz-v04.test.mjs
+ok 1 - scripts\\hani-learning-quiz-v04.test.mjs
+  ---
+  duration_ms: 0.3543
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 9.5267

@@ -1,0 +1,34 @@
+TAP version 13
+# Subtest: 295 exact version/history bytes independently match release objects, then compose frozen chibi2 before 294
+ok 1 - 295 exact version/history bytes independently match release objects, then compose frozen chibi2 before 294
+  ---
+  duration_ms: 147.1141
+  type: 'test'
+  ...
+# Subtest: 295 history removes only its entry and restores the complete approved 294 source metadata
+ok 2 - 295 history removes only its entry and restores the complete approved 294 source metadata
+  ---
+  duration_ms: 1.3396
+  type: 'test'
+  ...
+# Subtest: 295 strict input, count, unique metadata and output pins reject drift and double inverse
+ok 3 - 295 strict input, count, unique metadata and output pins reject drift and double inverse
+  ---
+  duration_ms: 640.5723
+  type: 'test'
+  ...
+# Subtest: raw295 172 -> frozen chibi2 172 -> main294 171 -> main293 168 -> frozen289 164 closure has no missing files
+ok 4 - raw295 172 -> frozen chibi2 172 -> main294 171 -> main293 168 -> frozen289 164 closure has no missing files
+  ---
+  duration_ms: 518.1341
+  type: 'test'
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 4
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1331.3236

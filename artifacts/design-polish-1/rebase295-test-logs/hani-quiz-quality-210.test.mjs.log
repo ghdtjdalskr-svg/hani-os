@@ -1,0 +1,108 @@
+(node:7936) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+TAP version 13
+# Subtest: Q15 key ② contradicts named array-slot answer 駅の前に (④)
+ok 1 - Q15 key ② contradicts named array-slot answer 駅の前に (④)
+  ---
+  duration_ms: 1.7862
+  type: 'test'
+  ...
+# Subtest: Q10 has both ように and ために: matching key alone cannot pass
+ok 2 - Q10 has both ように and ために: matching key alone cannot pass
+  ---
+  duration_ms: 0.8466
+  type: 'test'
+  ...
+# Subtest: Q3 honorific pair and Q4 stem pair flagged by independent all-choice check
+ok 3 - Q3 honorific pair and Q4 stem pair flagged by independent all-choice check
+  ---
+  duration_ms: 0.9171
+  type: 'test'
+  ...
+# Subtest: answer assertions support number, circled/fullwidth label and named choice
+ok 4 - answer assertions support number, circled/fullwidth label and named choice
+  ---
+  duration_ms: 1.4186
+  type: 'test'
+  ...
+# Subtest: malformed choices and missing/duplicate independent results fail closed
+ok 5 - malformed choices and missing/duplicate independent results fail closed
+  ---
+  duration_ms: 0.6546
+  type: 'test'
+  ...
+# Subtest: JLPT language, N3 default and explicit project levels; below-level <=20% even in partial batches
+ok 6 - JLPT language, N3 default and explicit project levels; below-level <=20% even in partial batches
+  ---
+  duration_ms: 3.3114
+  type: 'test'
+  ...
+# Subtest: real handler runs blind pass without key/explanation and drops Q15/Q10 before returning
+ok 7 - real handler runs blind pass without key/explanation and drops Q15/Q10 before returning
+  ---
+  duration_ms: 5.8201
+  type: 'test'
+  ...
+# Subtest: verification outage, parse error, incomplete check and all rejected sets cannot be saved
+ok 8 - verification outage, parse error, incomplete check and all rejected sets cannot be saved
+  ---
+  duration_ms: 8.7153
+  type: 'test'
+  ...
+# Subtest: pending reasons preserve 15/20; accept Q10/Q15 gives 17/20 without overwriting original fields
+ok 9 - pending reasons preserve 15/20; accept Q10/Q15 gives 17/20 without overwriting original fields
+  ---
+  duration_ms: 9.8894
+  type: 'test'
+  ...
+# Subtest: accepted questions excluded from wrong drills and weakness source, with records preserved
+ok 10 - accepted questions excluded from wrong drills and weakness source, with records preserved
+  ---
+  duration_ms: 1.7773
+  type: 'test'
+  ...
+# Subtest: legacy normalization/reload preserves notes; original score-only records regrade correctly
+ok 11 - legacy normalization/reload preserves notes; original score-only records regrade correctly
+  ---
+  duration_ms: 1.4127
+  type: 'test'
+  ...
+# Subtest: save false/throw rolls back whole quiz, preserving pending note, wrong records and unrelated data
+ok 12 - save false/throw rolls back whole quiz, preserving pending note, wrong records and unrelated data
+  ---
+  duration_ms: 1.9112
+  type: 'test'
+  ...
+# Subtest: invalid/cancelled input and repeated acceptance never produce duplicate score or writes
+ok 13 - invalid/cancelled input and repeated acceptance never produce duplicate score or writes
+  ---
+  duration_ms: 0.9103
+  type: 'test'
+  ...
+# Subtest: result and tutor copy include pending/accepted status and escaped reason
+ok 14 - result and tutor copy include pending/accepted status and escaped reason
+  ---
+  duration_ms: 2.5399
+  type: 'test'
+  ...
+# Subtest: canonical UI binding validates reason, honors cancel and rolls back failed accept
+ok 15 - canonical UI binding validates reason, honors cancel and rolls back failed accept
+  ---
+  duration_ms: 3.1434
+  type: 'test'
+  ...
+# Subtest: actual client refills dropped questions and enforces whole-set lower-level quota across retries
+ok 16 - actual client refills dropped questions and enforces whole-set lower-level quota across retries
+  ---
+  duration_ms: 23.8311
+  type: 'test'
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 16
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 127.0824

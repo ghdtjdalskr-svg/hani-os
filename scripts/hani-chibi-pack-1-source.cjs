@@ -1,4 +1,5 @@
 // Test-only exact outer inverse. Never loaded by index.html or browser QA.
+require('./hani-chibi-pack-2-preload.cjs');
 const thaw=require('./hani-theme-thaw-source.cjs');
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const {createHash}=require('node:crypto');

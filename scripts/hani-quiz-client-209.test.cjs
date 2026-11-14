@@ -1,3 +1,4 @@
+require('./hani-chibi-pack-2-preload.cjs');
 const {installCloudTransport}=require('./hani-cloud-transport-fixture.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');

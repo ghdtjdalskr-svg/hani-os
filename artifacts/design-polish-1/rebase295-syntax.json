@@ -1,0 +1,61 @@
+{
+    "node":  [
+                 {
+                     "file":  "scripts/hani-chibi-pack-2-source.cjs",
+                     "exit":  0
+                 },
+                 {
+                     "file":  "scripts/hani-design-polish-1-preload.cjs",
+                     "exit":  0
+                 },
+                 {
+                     "file":  "scripts/hani-design-polish-1-source.cjs",
+                     "exit":  0
+                 },
+                 {
+                     "file":  "scripts/hani-design-polish-1-main295-source.cjs",
+                     "exit":  0
+                 },
+                 {
+                     "file":  "scripts/hani-design-polish-1-frozen-preload.cjs",
+                     "exit":  0
+                 },
+                 {
+                     "file":  "scripts/hani-design-polish-1-main295.test.mjs",
+                     "exit":  0
+                 },
+                 {
+                     "file":  "scripts/hani-design-polish-1.test.mjs",
+                     "exit":  0
+                 },
+                 {
+                     "file":  "scripts/hani-design-polish-1.browser.mjs",
+                     "exit":  0
+                 },
+                 {
+                     "file":  "scripts/hani-design-polish-1-contrast.mjs",
+                     "exit":  0
+                 },
+                 {
+                     "file":  "scripts/hani-design-polish-1-contrast.test.mjs",
+                     "exit":  0
+                 },
+                 {
+                     "file":  "scripts/hani-release-version-layers.cjs",
+                     "exit":  0
+                 },
+                 {
+                     "file":  "scripts/hani-theme-thaw-source.cjs",
+                     "exit":  0
+                 },
+                 {
+                     "file":  "scripts/hani-design-polish-1-baseline.mjs",
+                     "exit":  0
+                 },
+                 {
+                     "file":  "scripts/hani-theme-thaw.test.mjs",
+                     "exit":  0
+                 }
+             ],
+    "powershellErrors":  0
+}

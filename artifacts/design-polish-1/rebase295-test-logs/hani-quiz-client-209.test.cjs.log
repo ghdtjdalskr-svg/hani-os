@@ -1,0 +1,54 @@
+(node:12440) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+TAP version 13
+# Subtest: client basic detection and quota match server; explicit advanced and unrelated levels remain unchanged
+ok 1 - client basic detection and quota match server; explicit advanced and unrelated levels remain unchanged
+  ---
+  duration_ms: 36.6838
+  type: 'test'
+  ...
+# Subtest: actual client and server accept basic 20 with five news and fifteen concepts without writes
+ok 2 - actual client and server accept basic 20 with five news and fifteen concepts without writes
+  ---
+  duration_ms: 30.0992
+  type: 'test'
+  ...
+# Subtest: supported smaller basic sets use rounded-down news and rounded-up core coverage
+ok 3 - supported smaller basic sets use rounded-down news and rounded-up core coverage
+  ---
+  duration_ms: 18.5944
+  type: 'test'
+  ...
+# Subtest: actual client/server advanced quota stays seven; five news still fail
+ok 4 - actual client/server advanced quota stays seven; five news still fail
+  ---
+  duration_ms: 24.5839
+  type: 'test'
+  ...
+# Subtest: partial retry preserves basic level and caps one-question request at zero news
+ok 5 - partial retry preserves basic level and caps one-question request at zero news
+  ---
+  duration_ms: 11.0298
+  type: 'test'
+  ...
+# Subtest: basic excess-news responses cannot fill the set, including fallback; state stays intact
+ok 6 - basic excess-news responses cannot fill the set, including fallback; state stays intact
+  ---
+  duration_ms: 4.679
+  type: 'test'
+  ...
+# Subtest: no sources warn before generation, JLPT still works; guide reflects basic versus other levels
+ok 7 - no sources warn before generation, JLPT still works; guide reflects basic versus other levels
+  ---
+  duration_ms: 30.3405
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 205.2336

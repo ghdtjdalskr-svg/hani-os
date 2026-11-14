@@ -1,0 +1,113 @@
+TAP version 13
+# Subtest: raw roster, main card and archive use the confirmed canon and 4F strategy membership
+ok 1 - raw roster, main card and archive use the confirmed canon and 4F strategy membership
+  ---
+  duration_ms: 77.0381
+  type: 'test'
+  ...
+# Subtest: 4F home seat and connected route preserve all existing 326 contract anchors
+ok 2 - 4F home seat and connected route preserve all existing 326 contract anchors
+  ---
+  duration_ms: 7.9206
+  type: 'test'
+  ...
+# Subtest: raw organization chart, team, directory and person dialog render Ieum through the canonical owner
+ok 3 - raw organization chart, team, directory and person dialog render Ieum through the canonical owner
+  ---
+  duration_ms: 1.7456
+  type: 'test'
+  ...
+# Subtest: existing staff portraits, seats, tap pools and organization membership remain unchanged with no new persistence, timer or event path
+ok 4 - existing staff portraits, seats, tap pools and organization membership remain unchanged with no new persistence, timer or event path
+  ---
+  duration_ms: 797.0478
+  type: 'test'
+  ...
+# Subtest: existing scheduler really includes Ieum at work and in motion, in both action catalogs
+ok 5 - existing scheduler really includes Ieum at work and in motion, in both action catalogs
+  ---
+  duration_ms: 510.1657
+  type: 'test'
+  ...
+# Subtest: tap catalog validates and existing tap cursor emits both catchphrases
+ok 6 - tap catalog validates and existing tap cursor emits both catchphrases
+  ---
+  duration_ms: 3.8425
+  type: 'test'
+  ...
+# Subtest: three dialogue scenes resolve actual Hani/Seoyun/Ieum IDs in the canonical chat owner
+ok 7 - three dialogue scenes resolve actual Hani/Seoyun/Ieum IDs in the canonical chat owner
+  ---
+  duration_ms: 0.141
+  type: 'test'
+  ...
+# Subtest: existing board author/avatar and monthly poll builder accept the raw 20-person roster
+ok 8 - existing board author/avatar and monthly poll builder accept the raw 20-person roster
+  ---
+  duration_ms: 2.7679
+  type: 'test'
+  ...
+# Subtest: actual persistent actor, HD atlas and pose paths work without a legacy sprite
+ok 9 - actual persistent actor, HD atlas and pose paths work without a legacy sprite
+  ---
+  duration_ms: 41.7576
+  type: 'test'
+  ...
+# Subtest: June 3 birthday button and event execute through the existing owner path
+ok 10 - June 3 birthday button and event execute through the existing owner path
+  ---
+  duration_ms: 45.0978
+  type: 'test'
+  ...
+# Subtest: all four final image assets decode, match frame/pivot/alpha and existing size budgets
+ok 11 - all four final image assets decode, match frame/pivot/alpha and existing size budgets
+  ---
+  duration_ms: 39.3147
+  type: 'test'
+  ...
+raw closure files 168 contract max {"max_files":200,"max_total_bytes":25000000,"max_single_file_bytes":5000000}
+# Subtest: decoded sitting figures have zero alpha overlap at phone/PC widths using actual CSS sizing
+ok 12 - decoded sitting figures have zero alpha overlap at phone/PC widths using actual CSS sizing
+  ---
+  duration_ms: 207.7713
+  type: 'test'
+  ...
+# Subtest: exact inverse rejects mutation, duplicate fragments and repeated application for every owner
+ok 13 - exact inverse rejects mutation, duplicate fragments and repeated application for every owner
+  ---
+  duration_ms: 235.7015
+  type: 'test'
+  ...
+# Subtest: 290 projection composes the frozen inverse for every owner and never blesses unknown bytes
+ok 14 - 290 projection composes the frozen inverse for every owner and never blesses unknown bytes
+  ---
+  duration_ms: 1214.6636
+  type: 'test'
+  ...
+# Subtest: read-only changes preserve storage calls, internal baseline and release version
+ok 15 - read-only changes preserve storage calls, internal baseline and release version
+  ---
+  duration_ms: 268.5631
+  type: 'test'
+  ...
+# Subtest: pre-existing release 289 peels to independent 288 pins without relaxing older oracles
+ok 16 - pre-existing release 289 peels to independent 288 pins without relaxing older oracles
+  ---
+  duration_ms: 308.3924
+  type: 'test'
+  ...
+# Subtest: raw runtime closure stays within the gate file limit with no missing assets
+ok 17 - raw runtime closure stays within the gate file limit with no missing assets
+  ---
+  duration_ms: 341.6943
+  type: 'test'
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 17
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4145.0163

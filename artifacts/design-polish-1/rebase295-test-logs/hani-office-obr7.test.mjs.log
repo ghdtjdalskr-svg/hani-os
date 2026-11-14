@@ -1,0 +1,22 @@
+TAP version 13
+# Subtest: obr7 historical oracle: three day ledgers stay byte-identical; deterministic sampled snapshots change ONLY idle words, storage 0
+ok 1 - obr7 historical oracle: three day ledgers stay byte-identical; deterministic sampled snapshots change ONLY idle words, storage 0
+  ---
+  duration_ms: 5185.9221
+  type: 'test'
+  ...
+# Subtest: obr7: summon/cancel/reduced motion retain the original physical and event state
+ok 2 - obr7: summon/cancel/reduced motion retain the original physical and event state
+  ---
+  duration_ms: 1895.7204
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 7212.7567

@@ -1,0 +1,102 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 30.4408
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 15.6743
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 16.5103
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 17.0435
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 73.1147
+  type: 'test'
+  ...
+kids 60s evidence [{"label":"desk","brotherActions":2,"sisterActions":6,"positions":[10,7]},{"label":"patrol","brotherActions":2,"sisterActions":6,"positions":[36,37]}]
+Office affinity storage unavailable or malformed; using memory only.
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 247.203
+  type: 'test'
+  ...
+# Subtest: live 60s desk and patrol snapshots give sister >=5 real actions, brother >=1 and fewer; all safe and deterministic
+ok 7 - live 60s desk and patrol snapshots give sister >=5 real actions, brother >=1 and fewer; all safe and deterministic
+  ---
+  duration_ms: 3289.2759
+  type: 'test'
+  ...
+# Subtest: all six sister behaviors and brother caution execute using existing poses; excursion returns and routes avoid furniture
+ok 8 - all six sister behaviors and brother caution execute using existing poses; excursion returns and routes avoid furniture
+  ---
+  duration_ms: 956.745
+  type: 'test'
+  ...
+# Subtest: reduced motion has no bounce/lean/spin and retains slower continuous position changes
+ok 9 - reduced motion has no bounce/lean/spin and retains slower continuous position changes
+  ---
+  duration_ms: 769.2472
+  type: 'test'
+  ...
+# Subtest: live walking leads and looks back while brother follows, floor/presence remain authoritative and pets unchanged
+ok 10 - live walking leads and looks back while brother follows, floor/presence remain authoritative and pets unchanged
+  ---
+  duration_ms: 405.6651
+  type: 'test'
+  ...
+# Subtest: latest real patrol departure/transfer/arrival/return paths retain chairman ownership and safe siblings
+ok 11 - latest real patrol departure/transfer/arrival/return paths retain chairman ownership and safe siblings
+  ---
+  duration_ms: 1143.5304
+  type: 'test'
+  ...
+# Subtest: same-floor pet visit names the actual animal; staff visit gives the actual peer a short reaction
+ok 12 - same-floor pet visit names the actual animal; staff visit gives the actual peer a short reaction
+  ---
+  duration_ms: 790.8465
+  type: 'test'
+  ...
+# Subtest: latest mounted slots rotate every new dialogue, retain taps/bubble, reduced motion, zero writes/timer/listener additions
+ok 13 - latest mounted slots rotate every new dialogue, retain taps/bubble, reduced motion, zero writes/timer/listener additions
+  ---
+  duration_ms: 2839.8321
+  type: 'test'
+  ...
+# Subtest: kids add no runtime files or atlas/CSS bytes
+ok 14 - kids add no runtime files or atlas/CSS bytes
+  ---
+  duration_ms: 905.3683
+  type: 'test'
+  ...
+# Subtest: actual staff response survives the child bubble duration through the single mounted owner
+ok 15 - actual staff response survives the child bubble duration through the single mounted owner
+  ---
+  duration_ms: 2009.6578
+  type: 'test'
+  ...
+1..15
+# tests 15
+# suites 0
+# pass 15
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 13587.5139

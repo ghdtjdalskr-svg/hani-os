@@ -1,0 +1,175 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 28.4886
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 14.2442
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 24.6934
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 16.8252
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 77.743
+  type: 'test'
+  ...
+{
+  day: '2026-11-02',
+  counts: { client: 81, candidate: 37, courier: 172 },
+  hosted: { client: 41, candidate: 19 }
+}
+{
+  day: '2026-11-04',
+  counts: { client: 77, candidate: 37, courier: 180 },
+  hosted: { client: 39, candidate: 19 }
+}
+{
+  day: '2026-11-07',
+  counts: { client: 107, candidate: 0, courier: 184 },
+  hosted: { client: 54, candidate: 0 }
+}
+{
+  day: '2026-11-08',
+  counts: { client: 103, candidate: 0, courier: 184 },
+  hosted: { client: 52, candidate: 0 }
+}
+{
+  chairmanPresent: true,
+  outside: 3.4455555555555555,
+  lunch: 7.1,
+  rooftop: 0.5211111111111111
+}
+{
+  chairmanPresent: false,
+  outside: 3.418888888888889,
+  lunch: 6.7444444444444445,
+  rooftop: 0.5388888888888889
+}
+{
+  deskVisits: 31,
+  secretFirstReplies: 5,
+  lines: [ '회장님께 화면 설명 중', '급하게 인스타 끄는 중', '회장님 질문 듣는 중' ]
+}
+{
+  deskVisits: 317,
+  instagramFirstReplies: 21,
+  weeks: [
+    { week: '2026-11-02–08', visits: 192, instagram: 13 },
+    { week: '2026-11-09–13', visits: 125, instagram: 8 }
+  ]
+}
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 247.0797
+  type: 'test'
+  ...
+# Subtest: consult: sofa host coverage, real round trips and matching words 2026-11-02
+ok 7 - consult: sofa host coverage, real round trips and matching words 2026-11-02
+  ---
+  duration_ms: 1165.1218
+  type: 'test'
+  ...
+# Subtest: consult: sofa host coverage, real round trips and matching words 2026-11-04
+ok 8 - consult: sofa host coverage, real round trips and matching words 2026-11-04
+  ---
+  duration_ms: 1015.3806
+  type: 'test'
+  ...
+# Subtest: consult: sofa host coverage, real round trips and matching words 2026-11-07
+ok 9 - consult: sofa host coverage, real round trips and matching words 2026-11-07
+  ---
+  duration_ms: 813.8362
+  type: 'test'
+  ...
+# Subtest: consult: sofa host coverage, real round trips and matching words 2026-11-08
+ok 10 - consult: sofa host coverage, real round trips and matching words 2026-11-08
+  ---
+  duration_ms: 735.1939
+  type: 'test'
+  ...
+# Subtest: consult: weekday client and candidate host shares also stay at least half when chairman is absent
+ok 11 - consult: weekday client and candidate host shares also stay at least half when chairman is absent
+  ---
+  duration_ms: 512.3237
+  type: 'test'
+  ...
+# Subtest: consult: weekday rest means and rooftop minutes retain the existing bounds
+ok 12 - consult: weekday rest means and rooftop minutes retain the existing bounds
+  ---
+  duration_ms: 2668.5814
+  type: 'test'
+  ...
+# Subtest: consult: absent booth owners never make booth seats eligible, and guests without a host keep waiting
+ok 13 - consult: absent booth owners never make booth seats eligible, and guests without a host keep waiting
+  ---
+  duration_ms: 45.1787
+  type: 'test'
+  ...
+# Subtest: consult: sofa wording, counter words, safety owners and runtime timers
+ok 14 - consult: sofa wording, counter words, safety owners and runtime timers
+  ---
+  duration_ms: 672.0383
+  type: 'test'
+  ...
+# Subtest: consult: separately authored full plans and reverse snapshots retain exact identity in both presence states
+ok 15 - consult: separately authored full plans and reverse snapshots retain exact identity in both presence states
+  ---
+  duration_ms: 9539.4922
+  type: 'test'
+  ...
+# Subtest: consult: chairman desk visit replies only during a real visit, including a secret-play first reply
+ok 16 - consult: chairman desk visit replies only during a real visit, including a secret-play first reply
+  ---
+  duration_ms: 254.6121
+  type: 'test'
+  ...
+# Subtest: consult: November 2–13 real desk visits show 12–45 Instagram first replies, identical on reverse reads
+ok 17 - consult: November 2–13 real desk visits show 12–45 Instagram first replies, identical on reverse reads
+  ---
+  duration_ms: 5521.3753
+  type: 'test'
+  ...
+# Subtest: consult: actual desk reply path distinguishes an Instagram idle line from other secret play
+ok 18 - consult: actual desk reply path distinguishes an Instagram idle line from other secret play
+  ---
+  duration_ms: 1280.665
+  type: 'test'
+  ...
+# Subtest: consult: caught-out visit takes Instagram priority for secret and ordinary idle lines, then keeps the chairman reply
+ok 19 - consult: caught-out visit takes Instagram priority for secret and ordinary idle lines, then keeps the chairman reply
+  ---
+  duration_ms: 1262.162
+  type: 'test'
+  ...
+# Subtest: consult: existing persistent actor slots render both sides without another timer
+ok 20 - consult: existing persistent actor slots render both sides without another timer
+  ---
+  duration_ms: 616.7367
+  type: 'test'
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 20
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 26583.6943

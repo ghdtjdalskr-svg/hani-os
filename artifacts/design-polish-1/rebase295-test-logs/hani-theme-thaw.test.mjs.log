@@ -1,0 +1,88 @@
+TAP version 13
+# Subtest: before: real rendering, launch lock, preference preservation, zero passive writes
+ok 1 - before: real rendering, launch lock, preference preservation, zero passive writes
+  ---
+  duration_ms: 12.5588
+  type: 'test'
+  ...
+# Subtest: teaser: real rendering, launch lock, preference preservation, zero passive writes
+ok 2 - teaser: real rendering, launch lock, preference preservation, zero passive writes
+  ---
+  duration_ms: 1.0756
+  type: 'test'
+  ...
+# Subtest: launch: real rendering, launch lock, preference preservation, zero passive writes
+ok 3 - launch: real rendering, launch lock, preference preservation, zero passive writes
+  ---
+  duration_ms: 1.1168
+  type: 'test'
+  ...
+# Subtest: after: real rendering, launch lock, preference preservation, zero passive writes
+ok 4 - after: real rendering, launch lock, preference preservation, zero passive writes
+  ---
+  duration_ms: 0.9173
+  type: 'test'
+  ...
+# Subtest: KST exact boundaries, calendar D-day, launch +7 days, no invalid-date unlock
+ok 5 - KST exact boundaries, calendar D-day, launch +7 days, no invalid-date unlock
+  ---
+  duration_ms: 0.7253
+  type: 'test'
+  ...
+# Subtest: 2026-11-13T12:00:00+09:00: before teaser hides home, while SEASON exhibits the locked collection without saving
+ok 6 - 2026-11-13T12:00:00+09:00: before teaser hides home, while SEASON exhibits the locked collection without saving
+  ---
+  duration_ms: 0.9209
+  type: 'test'
+  ...
+# Subtest: 2026-12-20T12:00:00+09:00: before teaser hides home, while SEASON exhibits the locked collection without saving
+ok 7 - 2026-12-20T12:00:00+09:00: before teaser hides home, while SEASON exhibits the locked collection without saving
+  ---
+  duration_ms: 0.7885
+  type: 'test'
+  ...
+# Subtest: catalog loader uses injected read, keeps themes on failure, and reuses rows
+ok 8 - catalog loader uses injected read, keeps themes on failure, and reuses rows
+  ---
+  duration_ms: 1.3355
+  type: 'test'
+  ...
+# Subtest: literal fetch resolves both artwork paths from the JSON URL under a Pages prefix
+ok 9 - literal fetch resolves both artwork paths from the JSON URL under a Pages prefix
+  ---
+  duration_ms: 1.8609
+  type: 'test'
+  ...
+# Subtest: same persistent nodes through four phases; dismissal is session memory only
+ok 10 - same persistent nodes through four phases; dismissal is session memory only
+  ---
+  duration_ms: 1.8061
+  type: 'test'
+  ...
+# Subtest: explicit apply writes only canonical IDs; reload restores choices without new ID
+ok 11 - explicit apply writes only canonical IDs; reload restores choices without new ID
+  ---
+  duration_ms: 1.3106
+  type: 'test'
+  ...
+# Subtest: all existing 6 × 4 combinations survive passive campaign rendering and replay
+ok 12 - all existing 6 × 4 combinations survive passive campaign rendering and replay
+  ---
+  duration_ms: 2.8184
+  type: 'test'
+  ...
+# Subtest: canonical theme/storage owners and all pre-existing write expressions are byte-preserved
+ok 13 - canonical theme/storage owners and all pre-existing write expressions are byte-preserved
+  ---
+  duration_ms: 11.9638
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 59.3415

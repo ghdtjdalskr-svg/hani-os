@@ -1,0 +1,25 @@
+{
+  "state": "uncommitted integration; no candidate/package",
+  "base": "dfe81946aab6147c829ed0ee0a1c9f239c364d03",
+  "files": {
+    "scripts/hani-release-version-layers.cjs": "9c132e04c2f09c5f3d7055a987dfab2f9e090cb588d3287bcf376993104dacc2",
+    "scripts/fixtures/release-version-layers.json": "658fe8eb2a58f5bbecc4c824e86c768ae72a1a218f08f57355398c2063bd9edf",
+    "scripts/hani-theme-thaw-source.cjs": "10c5f7c41cb9660a1c0df7cd4fd6cd93cb16cb93aa3f2c407221423429800b06",
+    "scripts/hani-chibi-pack-2-source.cjs": "78e6a00003aecc3bcaabfb4878c289872ee46255d1e39907b0562dcc2241c15f",
+    "scripts/hani-design-polish-1-baseline.mjs": "f29026246cd3cc796b9d262f858ea52229baf16070fec62e5a7980a46f7525af",
+    "scripts/hani-design-polish-1-contrast.mjs": "fbd49e639fddbd24f7092e60bffb719199e47451d1b07b8d68ce764efb19b1d6",
+    "scripts/hani-design-polish-1-contrast.test.mjs": "3f1b81484307c0908c6c5d3320660b297286b3ea0ea5ad174c50f6647f9edeb8",
+    "scripts/hani-design-polish-1-frozen-preload.cjs": "966849595bdf441282fca057eae40cbd7fe645543f4b71395fefe6e959f2c5a8",
+    "scripts/hani-design-polish-1-main295-source.cjs": "f7921792f462d9bdc869ec1aca19924bf82ca59e03ecd75f9dd87f5a597585d2",
+    "scripts/hani-design-polish-1-main295.test.mjs": "184f042f99d034db4d50fdcdb5bdc10ad5dbef306a029abfafffbac1ff1c7c6b",
+    "scripts/hani-design-polish-1-preload.cjs": "1adaf8d0ff254e17fdb7f01c8ca6383348aee2b60e8ffe01021eef46306f5ec6",
+    "scripts/hani-design-polish-1-source.cjs": "c281120cee2826f838d51431d2c069cca13ca149d24e744652c65d1c1a84b0b6",
+    "scripts/hani-design-polish-1.browser.mjs": "04c9497e3a83c43bb3f91f8de557e39058055ba99bb3810d9b90602f2396d8c4",
+    "scripts/hani-design-polish-1.test.mjs": "ecf062740052beae3a6d6133033b6cc95ebd7b95911604ec419e7e19b7efd051",
+    "scripts/fixtures/design-polish-1-delta.json": "4d4221180ecc8671efbcabe7fae200e4df2b1dc385c3ca96e5e4486b5a9f646f",
+    "scripts/fixtures/design-polish-1-main295-delta.json": "5f445b8993a0830d13cb4628ecfb5caa53bb212716fe5ce4239afe0273a52445",
+    "hani-main.js": "624dc868f8f71c6ba6ac147d50956d32e921a2c7471b2bcace6ad7fa79ae48d2",
+    "hani-design-system.css": "d9a6401c68bfed89de8edb68c41b5d8caae40778eb1cd7b019f88fe288839eb4",
+    "index.html": "f337af984cf4fda806ac8f3359306edbc32067dbfb775db742437919da4828a4"
+  }
+}

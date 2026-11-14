@@ -1,0 +1,123 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 29.3911
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 14.8456
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 21.3228
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 16.0099
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 78.0639
+  type: 'test'
+  ...
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 248.3636
+  type: 'test'
+  ...
+# Subtest: bubble close: pointer/tap, profile, switch, Escape and expiry at 390px reduced=false
+ok 7 - bubble close: pointer/tap, profile, switch, Escape and expiry at 390px reduced=false
+  ---
+  duration_ms: 676.1625
+  type: 'test'
+  ...
+# Subtest: bubble close: pointer/tap, profile, switch, Escape and expiry at 390px reduced=true
+ok 8 - bubble close: pointer/tap, profile, switch, Escape and expiry at 390px reduced=true
+  ---
+  duration_ms: 608.0473
+  type: 'test'
+  ...
+# Subtest: bubble close: pointer/tap, profile, switch, Escape and expiry at 480px reduced=false
+ok 9 - bubble close: pointer/tap, profile, switch, Escape and expiry at 480px reduced=false
+  ---
+  duration_ms: 598.5947
+  type: 'test'
+  ...
+# Subtest: bubble close: pointer/tap, profile, switch, Escape and expiry at 480px reduced=true
+ok 10 - bubble close: pointer/tap, profile, switch, Escape and expiry at 480px reduced=true
+  ---
+  duration_ms: 557.3309
+  type: 'test'
+  ...
+# Subtest: bubble close: pointer/tap, profile, switch, Escape and expiry at 481px reduced=false
+ok 11 - bubble close: pointer/tap, profile, switch, Escape and expiry at 481px reduced=false
+  ---
+  duration_ms: 601.7602
+  type: 'test'
+  ...
+# Subtest: bubble close: pointer/tap, profile, switch, Escape and expiry at 481px reduced=true
+ok 12 - bubble close: pointer/tap, profile, switch, Escape and expiry at 481px reduced=true
+  ---
+  duration_ms: 563.2948
+  type: 'test'
+  ...
+# Subtest: bubble close: pointer/tap, profile, switch, Escape and expiry at 1280px reduced=false
+ok 13 - bubble close: pointer/tap, profile, switch, Escape and expiry at 1280px reduced=false
+  ---
+  duration_ms: 662.8957
+  type: 'test'
+  ...
+# Subtest: bubble close: pointer/tap, profile, switch, Escape and expiry at 1280px reduced=true
+ok 14 - bubble close: pointer/tap, profile, switch, Escape and expiry at 1280px reduced=true
+  ---
+  duration_ms: 560.8027
+  type: 'test'
+  ...
+# Subtest: bubble close: phone timeout drops deferred speech; explicit dismiss defeats async replay and action end
+ok 15 - bubble close: phone timeout drops deferred speech; explicit dismiss defeats async replay and action end
+  ---
+  duration_ms: 824.0025
+  type: 'test'
+  ...
+# Subtest: bubble close: barista shares close/timer, switch, persistent controls and no writes
+ok 16 - bubble close: barista shares close/timer, switch, persistent controls and no writes
+  ---
+  duration_ms: 1287.117
+  type: 'test'
+  ...
+# Subtest: bubble close: protected owner bytes, global listeners and timer allocations are unchanged
+ok 17 - bubble close: protected owner bytes, global listeners and timer allocations are unchanged
+  ---
+  duration_ms: 309.6214
+  type: 'test'
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 17
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 7705.9087

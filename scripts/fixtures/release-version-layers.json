@@ -2,6 +2,38 @@
   "schema": 1,
   "layers": [
     {
+      "from": "2.9.294",
+      "to": "2.9.295",
+      "files": {
+        "index.html": {
+          "count": 60,
+          "after": "f337af984cf4fda806ac8f3359306edbc32067dbfb775db742437919da4828a4",
+          "before": "63ee4c3ad3891ff6c1baa4148e1b37cbc305fd3fabc74a53b0f373454a0ffd20"
+        },
+        "hani-main.js": {
+          "count": 1,
+          "after": "fbee5583f06e693fca30f2ea235034fcf6991aa1b001d866804ff74f95939212",
+          "before": "3da828c5e71904d01ecb27a2c41b8267bb3ca3470dc2a4dc4caa741d901a3d6c"
+        },
+        "assets/data/hani-history-releases-v1.json": {
+          "count": 1,
+          "after": "012465be9a0bab8aac773cf5e8c868bfbfc5f09730079a26019974180438cfc4",
+          "before": "7a0bc180f87bb54a07984ee11f8a4a58941627d30ab7fd6792afbd1b1a88e141",
+          "replacements": [
+            {
+              "after": "5\",\n      \"date\": \"2026-11-14\",\n      \"status\": \"released\",\n      \"title\": \"치비 2탄 독서·퀴즈·여행\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.295 치비 2탄 독서·퀴즈·여행\"\n      }\n    },\n    {\n      \"id\": \"v2.9.294\",\n      \"date\": \"2026-11-13\",\n      \"status\": \"released\",\n      \"title\": \"THAW · 해빙의 정원 예고\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"846e8d2dbda63be75822f9b56c1d85e6bf5c8b6d\",\n        \"subject\": \"release: v2.9.294 THAW · 해빙의 정원 예고 (#504)",
+              "before": "4\",\n      \"date\": \"2026-11-13\",\n      \"status\": \"released\",\n      \"title\": \"THAW · 해빙의 정원 예고\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.294 THAW · 해빙의 정원 예고"
+            }
+          ]
+        }
+      },
+      "feature": {
+        "module": "./hani-chibi-pack-2-source.cjs",
+        "fixture": "./fixtures/chibi-pack-2-delta.json",
+        "restore": "restore"
+      }
+    },
+    {
       "from": "2.9.293",
       "to": "2.9.294",
       "files": {

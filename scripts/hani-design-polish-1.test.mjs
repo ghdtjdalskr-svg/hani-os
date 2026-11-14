@@ -1,4 +1,5 @@
-// Raw patch tests: deliberately no legacy fs preload in this process.
+// Frozen design294 input; every original assertion and pin below is unchanged.
+import './hani-design-polish-1-frozen-preload.cjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

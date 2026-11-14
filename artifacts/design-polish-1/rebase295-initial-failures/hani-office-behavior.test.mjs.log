@@ -1,0 +1,32 @@
+(node:5220) Warning: Accessing non-existent property 'project' of module exports inside circular dependency
+(Use `node --trace-warnings ...` to show where the warning was created)
+TAP version 13
+# Subtest: scripts\\hani-office-behavior.test.mjs
+not ok 1 - scripts\\hani-office-behavior.test.mjs
+  ---
+  duration_ms: 0.4509
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\design1\\scripts\\hani-office-behavior.test.mjs:1:1'
+  error: 'require(...).project is not a function'
+  name: 'TypeError'
+  stack: |-
+    Object.project (C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\design1\scripts\hani-design-polish-1-source.cjs:19:91)
+    project (C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\design1\scripts\hani-release-version-layers.cjs:92:54)
+    Object.projectPreRelease290Source (C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\design1\scripts\hani-release-version-layers.cjs:75:9)
+    project (C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\design1\scripts\hani-join-ieum-source.cjs:21:54)
+    project (C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\design1\scripts\hani-join-ieum-preload.cjs:10:9)
+    fs.readFileSync (C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\design1\scripts\hani-join-ieum-preload.cjs:12:47)
+    defaultLoadImpl (node:internal/modules/cjs/loader:1243:17)
+    loadSource (node:internal/modules/cjs/loader:1955:20)
+    node:internal/modules/cjs/loader:2053:44
+    Module._extensions..js (C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\design1\scripts\hani-join-ieum-preload.cjs:17:242)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 27.6562

@@ -1,3 +1,4 @@
+import './hani-chibi-pack-2-preload.cjs';
 import {installCloudTransport} from './hani-cloud-transport-fixture.cjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

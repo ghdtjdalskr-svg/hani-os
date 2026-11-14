@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: outer inverse matches independent supplied main bytes and retains all old fixture pins
+ok 1 - outer inverse matches independent supplied main bytes and retains all old fixture pins
+  ---
+  duration_ms: 86.9065
+  type: 'test'
+  ...
+# Subtest: reading: one persistent Yoonseul only for the wholly empty library, including return from wish/read/filter misses
+ok 2 - reading: one persistent Yoonseul only for the wholly empty library, including return from wish/read/filter misses
+  ---
+  duration_ms: 9.796
+  type: 'test'
+  ...
+# Subtest: travel: one shared list slot across tabs; archive/filter misses hide it and undated wish remains undated
+ok 3 - travel: one shared list slot across tabs; archive/filter misses hide it and undated wish remains undated
+  ---
+  duration_ms: 8.4815
+  type: 'test'
+  ...
+# Subtest: travel schedule: the persistent slot follows actual itinerary emptiness without inventing dates
+ok 4 - travel schedule: the persistent slot follows actual itinerary emptiness without inventing dates
+  ---
+  duration_ms: 7.8406
+  type: 'test'
+  ...
+# Subtest: quiz: one node survives owner innerHTML replacement, reflects actual regrade owner, hides on missing/pending/empty results
+ok 5 - quiz: one node survives owner innerHTML replacement, reflects actual regrade owner, hides on missing/pending/empty results
+  ---
+  duration_ms: 9.2205
+  type: 'test'
+  ...
+# Subtest: added code has zero storage, state writes, listeners, timers, requests and preserves grading/write/event bytes exactly
+ok 6 - added code has zero storage, state writes, listeners, timers, requests and preserves grading/write/event bytes exactly
+  ---
+  duration_ms: 35.4137
+  type: 'test'
+  ...
+# Subtest: sprite: exactly one new transparent WebP dependency, four 2x2 positions, existing responsive/print rules and reduced motion
+ok 7 - sprite: exactly one new transparent WebP dependency, four 2x2 positions, existing responsive/print rules and reduced motion
+  ---
+  duration_ms: 170.2909
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 372.2899

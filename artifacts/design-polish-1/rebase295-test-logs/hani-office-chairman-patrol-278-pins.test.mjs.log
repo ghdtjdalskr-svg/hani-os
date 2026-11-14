@@ -1,0 +1,82 @@
+TAP version 13
+# Subtest: 278 exact complete ordered replacements reject missing, duplicate, unrelated and baseline bytes
+ok 1 - 278 exact complete ordered replacements reject missing, duplicate, unrelated and baseline bytes
+  ---
+  duration_ms: 761.2789
+  type: 'test'
+  ...
+# Subtest: 278 independent fixed Git blobs prove pre-patrol bytes
+ok 2 - 278 independent fixed Git blobs prove pre-patrol bytes
+  ---
+  duration_ms: 241.2754
+  type: 'test'
+  ...
+# Subtest: 278 kids extension strictly restores every authored 1066c57 byte and rejects mutations
+ok 3 - 278 kids extension strictly restores every authored 1066c57 byte and rejects mutations
+  ---
+  duration_ms: 226.9158
+  type: 'test'
+  ...
+# Subtest: 278 kids extension independently matches its fixed Git base
+ok 4 - 278 kids extension independently matches its fixed Git base
+  ---
+  duration_ms: 181.8369
+  type: 'test'
+  ...
+# Subtest: 278 visit extension strictly restores 59db365 and rejects every partial, duplicate or unrelated byte
+ok 5 - 278 visit extension strictly restores 59db365 and rejects every partial, duplicate or unrelated byte
+  ---
+  duration_ms: 341.7175
+  type: 'test'
+  ...
+# Subtest: 278 visit extension independently matches fixed Git base
+ok 6 - 278 visit extension independently matches fixed Git base
+  ---
+  duration_ms: 159.1695
+  type: 'test'
+  ...
+# Subtest: 278 staff-chat extension strictly preserves ordered complete replacements and rejects mutations
+ok 7 - 278 staff-chat extension strictly preserves ordered complete replacements and rejects mutations
+  ---
+  duration_ms: 422.5754
+  type: 'test'
+  ...
+# Subtest: 278 staff-chat extension independently matches fixed Git base
+ok 8 - 278 staff-chat extension independently matches fixed Git base
+  ---
+  duration_ms: 171.4556
+  type: 'test'
+  ...
+# Subtest: 278 bubble placement extension strictly restores complete 0159d09 bytes and rejects all mutations
+ok 9 - 278 bubble placement extension strictly restores complete 0159d09 bytes and rejects all mutations
+  ---
+  duration_ms: 171.8405
+  type: 'test'
+  ...
+# Subtest: 278 bubble placement extension independently matches fixed Git base
+ok 10 - 278 bubble placement extension independently matches fixed Git base
+  ---
+  duration_ms: 139.6407
+  type: 'test'
+  ...
+# Subtest: 278 optimization extension preserves the entire previous contract and rejects all mutations
+ok 11 - 278 optimization extension preserves the entire previous contract and rejects all mutations
+  ---
+  duration_ms: 316.4016
+  type: 'test'
+  ...
+# Subtest: 278 optimization extension independently matches fixed Git base
+ok 12 - 278 optimization extension independently matches fixed Git base
+  ---
+  duration_ms: 134.6151
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3292.8645

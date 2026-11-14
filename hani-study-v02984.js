@@ -1231,6 +1231,9 @@
   function renderMain(autoGenerate = true) {
     const main = q('#studyMainPanel');
     if (!main) return;
+    // Preserve the decoration node while the existing owner replaces its result markup.
+    const chibiNote=q('#quizResultChibiNote');
+    if(chibiNote){chibiNote.hidden=true;main.before(chibiNote);}
     const project = projectById(activeProjectId);
     if (!project) {
       main.innerHTML = `<div class="study-card-v02984 study-main-empty"><div><b>학습 프로젝트를 선택해 주세요.</b><span>왼쪽에서 프로젝트를 만들면 Daily Quiz가 시작됩니다.</span></div></div>`;
@@ -1260,6 +1263,12 @@
         ${filteredQuizzes.length > QUIZ_ARCHIVE_PAGE_SIZE ? `<nav class="study-pagination" aria-label="문제세트 페이지"><button class="btn sm" id="studyArchivePrev" type="button" ${quizArchivePage<=1?'disabled':''}>이전</button><span><b>${quizArchivePage}</b> / ${archivePages}</span><button class="btn sm" id="studyArchiveNext" type="button" ${quizArchivePage>=archivePages?'disabled':''}>다음</button></nav>` : ''}
       </details>
       ${renderQuizDetail(project, activeQuiz)}`;
+
+    const resultHead=q('.study-exam-head',main),correct=activeQuiz?.status==='completed'?quizRegradeCount(activeQuiz):null;
+    const resultVisible=Number.isInteger(correct)&&activeQuiz.questions.length>0&&correct>=0&&correct<=activeQuiz.questions.length;
+    const allCorrect=resultVisible&&correct===activeQuiz.questions.length;
+    renderChibiNote("quizResultChibiNote",resultHead,allCorrect?"hina-cheer":"hina-review",allCorrect?"히나 · 잘했어요!":"히나 · 틀린 문제, 다시 같이 봐요.",resultVisible,true);
+    const resultNote=q('#quizResultChibiNote');if(resultHead&&resultNote&&!resultNote.hidden)resultHead.after(resultNote);
 
     q('#studyGenerateQuiz')?.addEventListener('click', () => todayQuiz ? selectQuiz(todayQuiz.id) : generateTodayQuiz(project));
     q('#studyProjectEdit')?.addEventListener('click', () => openProjectForm(project));

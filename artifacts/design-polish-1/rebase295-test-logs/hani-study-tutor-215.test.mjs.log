@@ -1,0 +1,28 @@
+TAP version 13
+# Subtest: finance categories select 지은; Japanese and other explicit categories preserve 히나
+ok 1 - finance categories select 지은; Japanese and other explicit categories preserve 히나
+  ---
+  duration_ms: 0.653
+  type: 'test'
+  ...
+# Subtest: single, wrong-note and complete-set copy use project tutor; finance has warm meticulous tone and disputes
+ok 2 - single, wrong-note and complete-set copy use project tutor; finance has warm meticulous tone and disputes
+  ---
+  duration_ms: 0.9777
+  type: 'test'
+  ...
+# Subtest: JLPT prompt and button copy keep the existing 히나 voice
+ok 3 - JLPT prompt and button copy keep the existing 히나 voice
+  ---
+  duration_ms: 0.1664
+  type: 'test'
+  ...
+1..3
+# tests 3
+# suites 0
+# pass 3
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 13.5331

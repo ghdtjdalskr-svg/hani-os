@@ -4,7 +4,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
-import {readBranchBaseline} from './hani-regression-baseline.mjs';
+import {readBranchBaseline} from './hani-design-polish-1-baseline.mjs';
 const source=fs.readFileSync(new URL('../hani-main.js',import.meta.url),'utf8');
 const definitions=JSON.parse(fs.readFileSync(new URL('../assets/theme-collections/collections.json',import.meta.url),'utf8'));
 const block=source.slice(source.indexOf('const THEME_COLLECTIONS='),source.indexOf('function syncSeasonCollection(){'));
