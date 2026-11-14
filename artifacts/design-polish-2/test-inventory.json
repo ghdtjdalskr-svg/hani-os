@@ -1,0 +1,768 @@
+[
+  {
+    "file": "scripts/hani-annual-report-ui-test.mjs",
+    "args": [],
+    "reason": "BROWSER_DELEGATED",
+    "office": false
+  },
+  {
+    "file": "scripts/hani-app-216-audit.test.cjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-app-216-practical.test.cjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-brand-heroes-218.test.mjs",
+    "args": [],
+    "reason": "ORIGINAL_FAILURE_DO_NOT_TOUCH",
+    "office": false
+  },
+  {
+    "file": "scripts/hani-chart-toss-212.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-chibi-pack-1-layers.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-chibi-pack-1-release293.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-chibi-pack-1.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-chibi-pack-2-layers.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-chibi-pack-2.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-design-polish-1-contrast.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-design-polish-1-main295.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-design-polish-1.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-design-polish-2.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-design-system-phase1-qa.mjs",
+    "args": [],
+    "reason": "BROWSER_DELEGATED",
+    "office": false
+  },
+  {
+    "file": "scripts/hani-exam-popup-214.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-fun-top3.test.mjs",
+    "args": [],
+    "reason": "ORIGINAL_FAILURE_DO_NOT_TOUCH",
+    "office": false
+  },
+  {
+    "file": "scripts/hani-google-drive-212.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-hero-restore.test.mjs",
+    "args": [],
+    "reason": "ORIGINAL_FAILURE_DO_NOT_TOUCH",
+    "office": false
+  },
+  {
+    "file": "scripts/hani-history-226.test.mjs",
+    "args": [
+      "--unit-only"
+    ],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-join-ieum.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-learning-quiz-quality.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-learning-quiz-v04.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-mascots-poster.test.mjs",
+    "args": [],
+    "reason": "ORIGINAL_FAILURE_DO_NOT_TOUCH",
+    "office": false
+  },
+  {
+    "file": "scripts/hani-milestones-v1.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-mission-203a.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-nav-groups.test.mjs",
+    "args": [],
+    "reason": "ORIGINAL_FAILURE_DO_NOT_TOUCH",
+    "office": false
+  },
+  {
+    "file": "scripts/hani-newsroom-4cut-230.test.mjs",
+    "args": [
+      "--node"
+    ],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-office-219.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-actions-216.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-actions-221.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-affinity-274-pins.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-affinity-cap.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-affinity-storage.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-affinity.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-barista-night-273-pins.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-barista-night.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-barista.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-behavior.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-bori-m9.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-bori-stroll.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-bubble-close.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-cafe-rest.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-chairman-234.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-chairman-patrol-278-pins.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-chairman-patrol.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-companion-homes.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-companions-276-pins.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-companions.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-consult.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-crowded-labels.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-drama.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-fix-218.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-floor-bubble.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-hd-224.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-icons.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-kids-286-source.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-kids-lively.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-kids-merge.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-kids-pose-b.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-kids-visit.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-kids-weekday.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-labels-qa.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-lively-v2.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-lively.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-mascot-label.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-motion-1.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-motion-2.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-obr10.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-obr12.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-obr14.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-obr15.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-obr16.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-obr17.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-obr18.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-obr19.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-obr21.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-obr3.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-obr4.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-obr6.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-obr7.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-obr8.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-obr9.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-pet-bori-272-pins.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-pet-bori.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-pets-268-pins.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-pets-bubble.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-props.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-release-projection.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-residents.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-seats-215.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-snack.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-staff-chat.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-tap-lines.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-tlayout.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-top-labels.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-v2-215.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-visitors-cafe.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-xmas-269-pins.test.mjs",
+    "args": [],
+    "reason": "GIT_DELEGATED",
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-xmas.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-office-zoom.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": true
+  },
+  {
+    "file": "scripts/hani-owner-verification-ui.test.mjs",
+    "args": [],
+    "reason": "ORIGINAL_FAILURE_DO_NOT_TOUCH",
+    "office": false
+  },
+  {
+    "file": "scripts/hani-qa-210.test.mjs",
+    "args": [],
+    "reason": "ORIGINAL_FAILURE_DO_NOT_TOUCH",
+    "office": false
+  },
+  {
+    "file": "scripts/hani-qa-design-b4.test.mjs",
+    "args": [],
+    "reason": "ORIGINAL_FAILURE_DO_NOT_TOUCH",
+    "office": false
+  },
+  {
+    "file": "scripts/hani-qa-easy-cleanup.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-qa-report-fixes.test.mjs",
+    "args": [],
+    "reason": "ORIGINAL_FAILURE_DO_NOT_TOUCH",
+    "office": false
+  },
+  {
+    "file": "scripts/hani-quiz-autogen-216.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-quiz-client-209.test.cjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-quiz-qa-212.test.cjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-quiz-quality-210.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-release-294.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-release-295.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-release-296.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-release-version-layers.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-reviewed-release-baseline.test.mjs",
+    "args": [],
+    "reason": "ORIGINAL_FAILURE_DO_NOT_TOUCH",
+    "office": false
+  },
+  {
+    "file": "scripts/hani-save-guard.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-seoyun-m9.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-simplify-218.test.cjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-simplify-225.test.mjs",
+    "args": [],
+    "reason": "ORIGINAL_FAILURE_DO_NOT_TOUCH",
+    "office": false
+  },
+  {
+    "file": "scripts/hani-street-journal-closure.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-street-journal.test.cjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-study-retry.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-study-tutor-215.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-theme-thaw-source.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-theme-thaw.test.mjs",
+    "args": [],
+    "reason": null,
+    "office": false
+  },
+  {
+    "file": "scripts/hani-theme-white-215.test.mjs",
+    "args": [],
+    "reason": "ORIGINAL_FAILURE_DO_NOT_TOUCH",
+    "office": false
+  },
+  {
+    "file": "scripts/hani-ui-203b.test.mjs",
+    "args": [],
+    "reason": "ORIGINAL_FAILURE_DO_NOT_TOUCH",
+    "office": false
+  }
+]

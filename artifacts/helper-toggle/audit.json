@@ -1,0 +1,33 @@
+{
+  "base": "7a91982de08a54452f6b9057f906d651f63a65ca",
+  "runtimeFiles": 510,
+  "runtimeChanges": [
+    "hani-style-08.css",
+    "hani-ui-v02992.js"
+  ],
+  "runtimeHashes": {
+    "hani-style-08.css": "f3d12144f169e4b76da3c44f325b254867aa456136d32ff676e670236de7038d",
+    "hani-ui-v02992.js": "bc88746447df91cb478fbf37a2952f21ae17eb224bba3da56b3472107ca6d140"
+  },
+  "existingTests": 312,
+  "testChanges": [
+    "hani-fun-chat-fortune.test.mjs",
+    "hani-helper-bot.test.mjs"
+  ],
+  "testBodies": "byte-identical except one input import each",
+  "existingFixtures": 114,
+  "fixtureDrift": [],
+  "preloadConnections": 2,
+  "protectedOwnerChanges": [],
+  "positionReadWrite": "byte-identical",
+  "newStoragePaths": 2,
+  "newStorageKey": "hani_helper_hidden_v1",
+  "listenersTimersCloudPatternChanges": 0,
+  "closure": {
+    "before": 172,
+    "after": 172,
+    "missing": []
+  },
+  "actualEdge": "NOT_RUN",
+  "production": "NOT_RUN"
+}

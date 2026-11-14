@@ -6,7 +6,7 @@ const assert=require('node:assert/strict');
 // Capture disk bytes before the legacy chibi2 fs adapter; current release tests
 // and future manifest rows must see the outermost deployed bytes.
 const chibi2=require('./hani-chibi-pack-2-source.cjs');
-const {readRawFileSync}=require('./hani-release-297-source.cjs');
+const {readRawFileSync}=require('./hani-release-299-source.cjs');
 const {createHash}=require('node:crypto');
 const manifest=require('./fixtures/release-version-layers.json');
 const outer=require('./hani-save-guard-source.cjs');
@@ -55,7 +55,8 @@ function restoreVersionLayer(source,file,version){
  assert.equal(hash(before),row.before,'exact release-'+number(layer.from)+' output '+file);
  return before;
 }
-// 297 version/history -> frozen chibi3 -> 296 version/history -> frozen design1
+// 299 version/history -> frozen design2 -> 298 -> frozen helper-toggle -> 297
+// -> frozen chibi3 -> 296 -> frozen design1
 // -> 295 version/history -> frozen chibi2 -> 294 -> THAW
 // -> 293 version/history -> frozen chibi -> 292 version/office -> 291 contrast
 // -> 290 Ieum -> frozen 289/288. Each step retains full input/output pins.
@@ -78,8 +79,19 @@ function projectPreRelease296Source(source,file){
  return row&&hash(source)===row.after?restoreVersionLayer(source,file,'2.9.296'):source;
 }
 function projectPreRelease297Source(source,file){
+ source=project(source,file,'2.9.297',true);
  const row=getLayer('2.9.297').files[file];
  return row&&hash(source)===row.after?restoreVersionLayer(source,file,'2.9.297'):source;
+}
+function projectPreRelease298Source(source,file){
+ source=project(source,file,'2.9.298',true);
+ const row=getLayer('2.9.298').files[file];
+ return row&&hash(source)===row.after?restoreVersionLayer(source,file,'2.9.298'):source;
+}
+function projectPreRelease299Source(source,file){
+ source=project(source,file,'2.9.299',true);
+ const row=getLayer('2.9.299').files[file];
+ return row&&hash(source)===row.after?restoreVersionLayer(source,file,'2.9.299'):source;
 }
 function projectPreRelease290Source(source,file){
  source=project(source,file,'2.9.290',true);
@@ -137,7 +149,7 @@ function createReleaseReader(version,keepFeature=false){
   return project(source,name,version,true,keepFeature);
  };
 }
-module.exports={layers,hash,getLayer,restoreVersionLayer,readRawFileSync,projectPreRelease288Source,projectPreRelease289Source,projectPreRelease290Source,projectPreRelease294Source,projectPreRelease295Source,projectPreRelease296Source,projectPreRelease297Source,
+module.exports={layers,hash,getLayer,restoreVersionLayer,readRawFileSync,projectPreRelease288Source,projectPreRelease289Source,projectPreRelease290Source,projectPreRelease294Source,projectPreRelease295Source,projectPreRelease296Source,projectPreRelease297Source,projectPreRelease298Source,projectPreRelease299Source,
  createReleaseReader,
  projectVersionSource:(source,file,target)=>project(source,file,target,false),
  projectReleaseSource:(source,file,target)=>project(source,file,target,true),

@@ -1,0 +1,174 @@
+{
+  "summary": {
+    "files": 19,
+    "passedFiles": 18,
+    "nonpass": [
+      {
+        "file": "scripts/hani-exam-popup-214.test.mjs",
+        "exit": 1,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0,
+        "scriptPass": 0
+      }
+    ],
+    "pass": 102,
+    "fail": 0,
+    "skip": 1,
+    "scriptPass": 4
+  },
+  "rows": [
+    {
+      "file": "scripts/hani-app-216-audit.test.cjs",
+      "exit": 0,
+      "pass": 7,
+      "fail": 0,
+      "skip": 0,
+      "scriptPass": 0
+    },
+    {
+      "file": "scripts/hani-app-216-practical.test.cjs",
+      "exit": 0,
+      "pass": 12,
+      "fail": 0,
+      "skip": 0,
+      "scriptPass": 0
+    },
+    {
+      "file": "scripts/hani-chart-toss-212.test.mjs",
+      "exit": 0,
+      "pass": 0,
+      "fail": 0,
+      "skip": 0,
+      "scriptPass": 1
+    },
+    {
+      "file": "scripts/hani-design-polish-1-main295.test.mjs",
+      "exit": 0,
+      "pass": 4,
+      "fail": 0,
+      "skip": 0,
+      "scriptPass": 0
+    },
+    {
+      "file": "scripts/hani-design-polish-1.test.mjs",
+      "exit": 0,
+      "pass": 6,
+      "fail": 0,
+      "skip": 0,
+      "scriptPass": 0
+    },
+    {
+      "file": "scripts/hani-design-polish-2.test.mjs",
+      "exit": 0,
+      "pass": 6,
+      "fail": 0,
+      "skip": 0,
+      "scriptPass": 0
+    },
+    {
+      "file": "scripts/hani-exam-popup-214.test.mjs",
+      "exit": 1,
+      "pass": 0,
+      "fail": 0,
+      "skip": 0,
+      "scriptPass": 0
+    },
+    {
+      "file": "scripts/hani-google-drive-212.test.mjs",
+      "exit": 0,
+      "pass": 11,
+      "fail": 0,
+      "skip": 0,
+      "scriptPass": 0
+    },
+    {
+      "file": "scripts/hani-history-226.test.mjs",
+      "exit": 0,
+      "pass": 0,
+      "fail": 0,
+      "skip": 0,
+      "scriptPass": 1
+    },
+    {
+      "file": "scripts/hani-milestones-v1.test.mjs",
+      "exit": 0,
+      "pass": 0,
+      "fail": 0,
+      "skip": 0,
+      "scriptPass": 1
+    },
+    {
+      "file": "scripts/hani-mission-203a.test.mjs",
+      "exit": 0,
+      "pass": 0,
+      "fail": 0,
+      "skip": 0,
+      "scriptPass": 1
+    },
+    {
+      "file": "scripts/hani-newsroom-4cut-230.test.mjs",
+      "exit": 0,
+      "pass": 8,
+      "fail": 0,
+      "skip": 0,
+      "scriptPass": 0
+    },
+    {
+      "file": "scripts/hani-office-hd-224.test.mjs",
+      "exit": 0,
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "scriptPass": 0
+    },
+    {
+      "file": "scripts/hani-qa-easy-cleanup.test.mjs",
+      "exit": 0,
+      "pass": 12,
+      "fail": 0,
+      "skip": 0,
+      "scriptPass": 0
+    },
+    {
+      "file": "scripts/hani-release-294.test.mjs",
+      "exit": 0,
+      "pass": 2,
+      "fail": 0,
+      "skip": 0,
+      "scriptPass": 0
+    },
+    {
+      "file": "scripts/hani-release-296.test.mjs",
+      "exit": 0,
+      "pass": 5,
+      "fail": 0,
+      "skip": 0,
+      "scriptPass": 0
+    },
+    {
+      "file": "scripts/hani-release-version-layers.test.mjs",
+      "exit": 0,
+      "pass": 11,
+      "fail": 0,
+      "skip": 0,
+      "scriptPass": 0
+    },
+    {
+      "file": "scripts/hani-simplify-218.test.cjs",
+      "exit": 0,
+      "pass": 4,
+      "fail": 0,
+      "skip": 1,
+      "scriptPass": 0
+    },
+    {
+      "file": "scripts/hani-theme-thaw-source.test.mjs",
+      "exit": 0,
+      "pass": 4,
+      "fail": 0,
+      "skip": 0,
+      "scriptPass": 0
+    }
+  ]
+}

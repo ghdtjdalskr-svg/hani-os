@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "base": "7a91982de08a54452f6b9057f906d651f63a65ca",
+  "files": {
+    "hani-ui-v02992.js": {
+      "beforeSha256": "112ca104c0c2ec60c738c9b60d81822f9bd47dce6d5caf4ea515b020370325fc",
+      "afterSha256": "bc88746447df91cb478fbf37a2952f21ae17eb224bba3da56b3472107ca6d140",
+      "edits": [
+        {
+          "before": "  const POSITION_KEY = 'hani_helper_pos_v1';",
+          "after": "  const POSITION_KEY = 'hani_helper_pos_v1';\n  const HIDDEN_KEY = 'hani_helper_hidden_v1';\n  let helperHidden = false;\n  function readHidden() {\n    try { return localStorage.getItem(HIDDEN_KEY) === '1'; } catch (_) { return false; }\n  }\n  function renderVisibilitySetting() {\n    const host = document.getElementById('group-display')?.querySelector('.settings-group-body');\n    if (!host) return;\n    let card = document.getElementById('haniHelperSettings');\n    if (!card) {\n      card = document.createElement('div'); card.id = 'haniHelperSettings'; card.setAttribute('class', 'card full');\n      card.innerHTML = '<div class=\"sh\"><h3 id=\"haniHelperVisibilityTitle\">도우미 표시</h3><button class=\"btn\" type=\"button\" role=\"switch\" aria-labelledby=\"haniHelperVisibilityTitle\" aria-describedby=\"haniHelperVisibilityHelp\" aria-checked=\"true\" data-helper-visibility>켜짐</button></div><p class=\"sub\" id=\"haniHelperVisibilityHelp\">이 기기에서 도우미를 표시해요. 꺼 둔 상태는 다음에도 기억해요.</p>';\n      host.append(card);\n    }\n    const button = card.querySelector('[data-helper-visibility]');\n    button.setAttribute('aria-checked', String(!helperHidden));\n    button.textContent = helperHidden ? '꺼짐' : '켜짐';\n  }\n  function setHidden(hidden) {\n    helperHidden = hidden;\n    try { localStorage.setItem(HIDDEN_KEY, hidden ? '1' : '0'); } catch (_) {}\n    renderVisibilitySetting(); place();\n  }"
+        },
+        {
+          "before": "    window.HaniFunPreview?.refresh();",
+          "after": "    renderVisibilitySetting();\n    window.HaniFunPreview?.refresh();"
+        },
+        {
+          "before": "root.dataset.helperReason = login ? 'login' : modal ? 'modal' : !duty(people()) ? 'no-duty' : 'shown';",
+          "after": "root.dataset.helperReason = login ? 'login' : helperHidden ? 'user-hidden' : modal ? 'modal' : !duty(people()) ? 'no-duty' : 'shown';"
+        },
+        {
+          "before": "    position = readPosition();",
+          "after": "    helperHidden = readHidden();\n    position = readPosition();"
+        },
+        {
+          "before": "      if (window.HaniFunPreview?.action(event.target))",
+          "after": "      if (event.target.closest('[data-helper-visibility]') && document.getElementById('haniHelperSettings')?.contains(event.target)) {\n        setHidden(!helperHidden); return;\n      }\n      if (event.target.closest('[data-helper-hide]') && root.contains(event.target)) {\n        setHidden(true);\n        if (typeof toast === 'function') toast('설정에서 다시 켤 수 있어요');\n        return;\n      }\n      if (window.HaniFunPreview?.action(event.target))"
+        },
+        {
+          "before": "    window.HaniFunPreview?.mount(root, panel);",
+          "after": "    window.HaniFunPreview?.mount(root, panel);\n    const hideButton = document.createElement('button'); hideButton.type = 'button'; hideButton.setAttribute('class', 'btn');\n    hideButton.dataset.helperHide = ''; hideButton.setAttribute('aria-label', '도우미 숨기기'); hideButton.textContent = '도우미 숨기기';\n    panel.querySelector('.hani-helper-home').append(hideButton);"
+        }
+      ]
+    },
+    "hani-style-08.css": {
+      "beforeSha256": "ce9fbb9e75549f581443a241178fe0fa1fce45c84a614b5bc6652fb622e4350f",
+      "afterSha256": "f3d12144f169e4b76da3c44f325b254867aa456136d32ff676e670236de7038d",
+      "edits": [
+        {
+          "before": "#haniHelperBot button{font-family:inherit;cursor:pointer}",
+          "after": "#haniHelperBot button{font-family:inherit;cursor:pointer}\r\n/* Helper visibility preference: existing card/button styling, 44px touch targets. */\r\n#haniHelperBot .btn[data-helper-hide]{display:block;min-height:44px;min-width:44px;margin-top:12px;width:100%}\r\n#app #haniHelperSettings .btn[data-helper-visibility]{min-height:44px!important;min-width:64px!important;touch-action:manipulation}\r\n#haniHelperSettings [data-helper-visibility]:focus-visible{outline:3px solid var(--primary,#725295);outline-offset:3px}"
+        }
+      ]
+    }
+  }
+}

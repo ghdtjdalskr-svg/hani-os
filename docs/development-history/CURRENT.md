@@ -1,3 +1,35 @@
+# 2026-11-14 · tooling-299 · 299 배포 후속 시험 층 (도연 / Codex)
+
+전달 `hani/tooling-299` / 고정 base `1881888`(#515), Git·원격 새 조회·Edge 실행 없음. **299 version/history→디자인2→298→helper→297→치비3→296→디자인1→295 이하 exact inverse. 비Git96파일968PASS/기존7FAIL·새 회귀0, office46파일610PASS·tooling81파일868PASS·새2997/7.** 기존 helper6실패·exam renderChibiNote 오류는 기준 입력과 동일. 운영513·fixture118·시험319 단언/숫자/hash·하위manifest·.gitignore 보존, syntax14PASS. Git27목록·실행기 준비, Git·Edge·commit/push·배포는 서윤 인계. 새 로그·snapshot·생성 출력은 tooling299-local 한 폴더/commit 제외. Notion 자동 승인 never 거절로 갱신 대기. [보고서](../../artifacts/design-polish-2/TOOLING-299.md) · [인수인계](handoffs/2026-11-14-tooling-299.md). 아래 기존 기록 보존.
+
+# 2026-11-14 · design2e · main298 재층 (도연 / Codex)
+
+전달 `hani/design-polish-2` / 착수`d23724d` / 고정 main298 `98cc7de`(#514), Git·원격 조회 없음. **디자인2→298 version/history→helper inverse→297→치비3→296→디자인1→295 이하, 기존 단언·숫자/hash 보존. 비Git93파일933PASS/기존exam오류1·새 회귀0, office46파일610PASS; helper-bot/fun-chat 기존6FAIL 동일.** 8/8+4/4·298신규7/7·syntax15/setup PASS, runtime532/fixture117/시험318·CSS delta/source·.gitignore 보존. 모든 무거운 출력 local/. Git·Edge/PNG·commit·299후보·배포는 서윤 인계. Notion 자동 승인 never 거절로 갱신 대기. [보고서](../../artifacts/design-polish-2/REPORT.md#design2e-main298-재층) · [인수인계](handoffs/2026-11-14-design-polish-2-main298.md). 아래 기존 기록 보존.
+
+# 2026-11-14 · design2d · main297 재층 (도연 / Codex)
+
+`hani/design-polish-2` / 로컬 기준 `22fedb3`(main297+#513), 기존 `247ddec`. **source3곳 충돌 해결·디자인2→297→치비3→296→디자인1→295 이하, 기존 pin/단언 보존. 기존8/8·현재4/4·비Git91파일90성공(918PASS+script0/skip2), 기준 입력과 새 회귀0·기존 exam-popup 오류1 동일. tooling81파일868PASS·office46파일610PASS.** 운영/데이터509·fixture115·기존시험315 보존, syntax14/PS2/setup PASS. PNG/로그/snapshot3935파일 hash보존 local/imported 이관, local commit 제외. Git·Edge·원격조회·index처리·commit/push·배포는 서윤 인계. Notion 자동 승인 never 거절로 갱신 대기. [보고서](../../artifacts/design-polish-2/REPORT.md#design2d-main297-재층) · [인수인계](handoffs/2026-11-14-design-polish-2-main297.md). 아래 양쪽 기록 보존.
+
+# 2026-11-14 · design2c · 마지막 브라우저 실패 1건 수정 (도연 / Codex)
+
+전달 `hani/design-polish-2` / base `7a91982`(Git·원격 조회·Edge 없음). **AI 업무 SECTION의 fadeUp 280ms가 모션 감소 환경에서도 실행되는 원인: CSS 끝 2차 블록에 reduced-motion animation:none 1규칙, delta/source pin 정합. 신규8/8·syntax4/4·setup PASS·비Git85파일84성공/889 PASS+script5/skip2·office46파일610 PASS, design2b 대비 새 회귀0.** 기존 exam-popup fixture 시작 오류1 동일. 소스771 비교에서 CSS·delta·pin 외 변경0·기존fixture114/QA JSON172/측정기/원본 browser JSON 보존. 실제 마지막 1건 해소·새 CSSOM/PNG/픽셀 대비는 서윤 `browser-design2c` 재실행 대기. Git·버전·merge·배포 없음. Notion 착수 추가는 자동 승인 never 거절로 미반영/갱신 대기 보존. [보고서](../../artifacts/design-polish-2/REPORT.md#design2c) · [인수인계](handoffs/2026-11-14-design-polish-2-last-browser.md). 아래 기존 기록 보존.
+
+# 2026-11-14 · design2b · 디자인 다듬기 2차 브라우저 실패 정리 (도연 / Codex)
+
+전달 `hani/design-polish-2` / base `7a91982`(Git·원격 조회·Edge 없음). **CSS 끝 2차 블록·fixture/source 정합, 신규8/8·비Git85파일84성공(889 PASS+script5/skip2), 포함 office46파일610 PASS.** 기존 exam-popup renderChibiNote fixture 오류1은 main296 원문 일치/이전 재현과 동일. helper 첫 화면 scroll0·저장 위치 없음·입력/버튼 겹침0 gate, 카드/스크롤 겹침은 report-only. 9화면580px/game620px, dev summary44px·game wrap·실제 면/여백 보정. syntax4/4·browser setup PASS, 운영71파일 중 CSS만 변경·2차 prefix/기존fixture114/QA JSON172 보존. 최초 FAIL194/PNG 보존, 새 Edge·480픽셀 대비·무겹침·가로 폭은 서윤 재검증 대기. Git·버전·merge·배포 없음. Notion 기록 추가는 자동 승인 never 거절로 미반영/인수인계에 대기 원문 보존. [보고서](../../artifacts/design-polish-2/REPORT.md#브라우저-실패-정리) · [인수인계](handoffs/2026-11-14-design-polish-2-browser-fix.md). 아래 최초 개발·다른 담당·과거 기록 보존.
+
+# 2026-11-14 · design2 · 디자인 다듬기 2차 (도연 / Codex)
+
+`hani/design-polish-2` / 기준 `7a91982`(Git 명령·원격 조회 없음). **CSS 끝 한 블록으로 표시 개선 6항목, 신규6/6·최초 비Git87파일84성공(887 PASS+script5/skip2), office46파일610 PASS.** 최종 CSS 관련19파일18성공(102 PASS+script4/skip1), browser 의존성 차단2·exam-popup fixture 오류1은 main296 재현. 기존fixture114·원본JSON172 보존, runtime71/closure172 중 CSS만 변경·누락0, syntax10/10·browser setup PASS. 실제 Edge/PNG·24조합 픽셀 대비·무겹침0·Git27·push/탑승·배포는 서윤 대기. 임의 helper 저장 위치/스크롤은 CSS token만으로 무겹침 보장 불가. 표시/cache296·runtime JS·저장/Cloud 불변, main merge·배포 없음. Notion 착수 생성/read-back 완료·최종 갱신 자동 승인 거절로 미반영. [보고서](../../artifacts/design-polish-2/REPORT.md) · [인수인계](handoffs/2026-11-14-design-polish-2.md). 아래 타 담당·과거 기록 보존.
+
+# 2026-11-14 · 도우미 터치 크기 후속 수정 · helperoff2 (도연 / Codex)
+
+`hani/helper-toggle` / 전달·고정 base `7a91982`(Git 금지·원격 새 조회 없음). 설정 스위치의 모바일 40px!important 충돌을 버튼 한정 CSS로 보정(44px 높이·64px 폭), 말풍선 숨기기도 최소44px 지정. delta/source pin 갱신·독립 main296 exact inverse 유지. 서윤의 로그인 대기 수정과 시험 단언·운영JS 원문 보존. **신규8/8·비Git66파일769PASS/기존동일6FAIL/skip3·새 회귀0, office610PASS/0FAIL**. run.ps1 빈 결과 배열 초기화1줄 보완 후 전체 재실행·summarize exit0. Git·Edge·버전/cache·배포 없음, 실제 크기 실측·브라우저 재검증은 서윤 담당. Notion 기록 추가는 자동 승인 never 거절로 갱신 대기. [보고서 후속 절](../../artifacts/helper-toggle/REPORT.md#브라우저-실패-정리) · [인수인계](handoffs/2026-11-14-helper-toggle-browser-fix.md). 아래 기존·타 담당 기록 보존.
+
+# 2026-11-14 · 도우미 숨김 기억 · helperoff (도연 / Codex)
+
+hani/helper-toggle / base·착수HEAD·로컬 origin/main 7a91982 (원격 새 조회 없음·Git 금지). 도우미 home 맨 아래 숨기기 + 설정의 표시 스위치, 승인된 hani_helper_hidden_v1 하나로 기기별 기억. 운영 JS/CSS2파일·기존 위임/place 경로, 위치/보호 키·Cloud·버전/cache2.9.296 유지. 신규8/8, 지정95파일 중 비Git66파일 769PASS·기준선 동일6FAIL·skip3·새 회귀0, office46파일610PASS/0FAIL/skip1·Git27파일 목록만·settings 기존실패2파일 제외. 고정 main296 exact inverse·독립 실패 대조, 기존시험312/fixture114 원문 보존·raw172→172/누락0·syntax10/10·browser setup PASS. 실제Edge390/1440·PNG·Git/commit/push·Preview·배포는 서윤 인계, 구현/검증만 완료. Notion 착수 생성/read-back 완료 후 진행 갱신은 자동 승인 never 거절로 미반영. [보고서](../../artifacts/helper-toggle/REPORT.md) · [인수인계](handoffs/2026-11-14-helper-toggle.md). 아래 타 담당·과거 기록 보존.
+
 # 2026-11-14 · tooling-297 · 297 배포 후속 시험 층 (도연 / Codex)
 
 `hani/tooling-297` / 전달·고정 base `bc3b22c`(#512, Git·원격 새 조회 없음). **297 version/history → frozen 치비3 → 296 → 디자인1 → 295 → 치비2 → 294 → THAW 이하 exact inverse. 비Git81파일868PASS/0FAIL/skip1·office46파일610PASS·297신규6/6·치비3 12PASS.** 운영·데이터511파일/기존fixture114/시험314단언/하위manifest 원문 보존, closure173→173→172→172→172→172→171→168→164/누락0·syntax15/PowerShell1/browser setup만 PASS. Git27목록·브라우저4·실제Edge/PNG10/Preview·Git커밋/push·배포/운영read-back은 서윤 인계. PNG·로그·snapshot·QA JSON은 tooling297-local 한 폴더(커밋 제외), 기존 비교PNG hash보존 이관. Notion 착수 insert_content 자동 승인 never 거절로 미반영·최종 갱신 대기는 인수인계 보존. [보고서](../../artifacts/chibi-pack-3/TOOLING-297.md) · [인수인계](handoffs/2026-11-14-tooling-297.md). 아래 타 담당·과거 기록 보존.

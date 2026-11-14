@@ -1,0 +1,94 @@
+{
+  "base": "22fedb33cbd67923cc499ba99f55e8902a66ecb2",
+  "headAtStart": "92e2fae663732a38bb8c8a10182900b2615407cf",
+  "runtimeFiles": 511,
+  "runtimeChangesSinceStart": 0,
+  "helperOwners": [
+    "hani-style-08.css",
+    "hani-ui-v02992.js"
+  ],
+  "deltaAndPins": "unchanged; exact main297 inverse independently verified",
+  "existingTests": 315,
+  "existingFixtures": 115,
+  "originalAssertions": "all preserved",
+  "outerOrder": "helper toggle -> 297 version/history -> chibi3 -> 296 -> design1 -> 295 -> lower layers",
+  "closure": {
+    "raw": 173,
+    "helperRestored": 173,
+    "missing": []
+  },
+  "independentMain297": [
+    {
+      "file": "scripts/hani-helper-bot.test.mjs",
+      "statuses": [
+        "ok 1 - affinity storage allowance accepts only approved position get/set and rejects every other call",
+        "ok 2 - affinity: duty getter updates the single panel line across levels and staff/pet days without storage",
+        "not ok 3 - KST midnight, deterministic fair 23-day rotation, 19 staff + 4 separated pets",
+        "ok 4 - five KST greeting bands; all staff voices, no private state dependency",
+        "ok 5 - pet voices, real species, five greetings, same help/routes and midnight return to staff",
+        "not ok 6 - per-view help follows canonical body view; unknown route has fallback",
+        "ok 7 - real release catalog + 24-hour boundaries + future/draft + birthdays",
+        "ok 8 - persistent root, click toggle, X, outside click, Escape, focus, four existing nav calls",
+        "ok 9 - midnight refresh on open, deferred mount, failed read has no false news dot",
+        "ok 10 - phone keeps fixed UI and focused input avoidance; no-space fallback stays shown",
+        "ok 11 - PC 1280x900: open / collapsed / hidden rail, ordinary cards, panel within column",
+        "ok 12 - PC 1280x900: Yuna, event button/panel, toast, focused input and mini rail controls",
+        "ok 13 - PC 1440x900: open / collapsed / hidden rail, ordinary cards, panel within column",
+        "ok 14 - PC 1440x900: Yuna, event button/panel, toast, focused input and mini rail controls",
+        "ok 15 - PC 1920x1080: open / collapsed / hidden rail, ordinary cards, panel within column",
+        "ok 16 - PC 1920x1080: Yuna, event button/panel, toast, focused input and mini rail controls",
+        "ok 17 - existing resize and open paths remeasure rail and viewport; phone geometry restored",
+        "ok 18 - PC without a rail uses viewport corner even over an ordinary full-screen card",
+        "ok 19 - crowded 390x844: in-flow controls cannot hide helper; fixed wall falls back",
+        "ok 20 - crowded 1280x900: in-flow controls cannot hide helper; fixed wall falls back",
+        "ok 21 - crowded 1920x1080: in-flow controls cannot hide helper; fixed wall falls back",
+        "ok 22 - visibility reasons follow login, external dialogs and duty; helper dialog never hides itself",
+        "not ok 23 - every canonical staff has an explicit crop; none paints the chairman frog",
+        "ok 24 - all four pet crops use approved profile art, never a frog or employee sheet",
+        "not ok 25 - asset closure <= 160, existing images only, CSS covers canonical staff and reduced motion",
+        "ok 26 - pointer threshold, capture, single save and click suppression, then ordinary tap",
+        "ok 27 - drag clamps all edges, survives resize/reload, user position beats input and rail avoidance",
+        "ok 28 - cancel/lost capture rolls back without saving; secondary pointers cannot interfere",
+        "ok 29 - strict saved-position validation, default overwrite and unavailable storage stay usable",
+        "ok 30 - actual app screenshots and collision read-back # SKIP"
+      ],
+      "counts": [
+        "# pass 25",
+        "# fail 4",
+        "# skipped 1"
+      ]
+    },
+    {
+      "file": "scripts/hani-fun-chat-fortune.test.mjs",
+      "statuses": [
+        "not ok 1 - real pools: 30 complete conversations, 60 unique positive cards, public voices only",
+        "ok 2 - KST midnight, same day stable, all sliding 14-day windows unique across cycle seams",
+        "ok 3 - only elapsed messages at every timestamp edge; no future message text exposed in the DOM",
+        "ok 4 - persistent root/slot/message nodes, one click owner, back/X/Escape/outside and timer midnight refresh",
+        "not ok 5 - same duty as helper for every employee/pet; exact 159 originals plus three approved 283 dependencies",
+        "ok 6 - real browser 390x844 / 1280x900 screenshots, live rollover, read-only and reduced motion # SKIP"
+      ],
+      "counts": [
+        "# pass 3",
+        "# fail 2",
+        "# skipped 1"
+      ]
+    }
+  ],
+  "tooling297": {
+    "files": 81,
+    "pass": 868,
+    "fail": 0,
+    "skip": 1
+  },
+  "office": {
+    "files": 46,
+    "pass": 610,
+    "fail": 0,
+    "skip": 1
+  },
+  "git": "NOT_RUN",
+  "edge": "NOT_RUN",
+  "production": "NOT_RUN",
+  "currentDocument": "pre-existing conflict markers; unchanged; Seoyun handoff"
+}
