@@ -1,4 +1,5 @@
 // node scripts/hani-fun-chat-fortune.test.mjs
+import './hani-helper-toggle-preload.cjs';
 // Optional real app evidence: append <playwright/index.mjs> <browser.exe>.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

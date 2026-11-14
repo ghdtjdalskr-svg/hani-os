@@ -1,0 +1,34 @@
+{
+  "base": "7a91982de08a54452f6b9057f906d651f63a65ca",
+  "total": 95,
+  "nonGit": {
+    "files": 66,
+    "pass": 769,
+    "fail": 6,
+    "skip": 3
+  },
+  "passingFiles": 64,
+  "originalFailureFiles": [
+    "scripts/hani-helper-bot.test.mjs",
+    "scripts/hani-fun-chat-fortune.test.mjs"
+  ],
+  "newRegressions": 0,
+  "office": {
+    "files": 46,
+    "pass": 610,
+    "fail": 0,
+    "skip": 1
+  },
+  "newToggle": {
+    "files": 1,
+    "pass": 8,
+    "fail": 0,
+    "skip": 0
+  },
+  "gitDelegated": 27,
+  "knownExcluded": [
+    "scripts/hani-settings-225-qa-guard.test.mjs",
+    "scripts/hani-settings-225.test.mjs"
+  ],
+  "note": "The two failing files reproduce exact main296 subtest statuses/counts. No old assertion, number or hash was relaxed. Edge/PNG not run."
+}

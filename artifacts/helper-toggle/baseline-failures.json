@@ -1,0 +1,30 @@
+[
+  {
+    "file": "helper",
+    "identicalSubtestStatuses": true,
+    "failures": [
+      "not ok 3 - KST midnight, deterministic fair 23-day rotation, 19 staff + 4 separated pets",
+      "not ok 6 - per-view help follows canonical body view; unknown route has fallback",
+      "not ok 23 - every canonical staff has an explicit crop; none paints the chairman frog",
+      "not ok 25 - asset closure <= 160, existing images only, CSS covers canonical staff and reduced motion"
+    ],
+    "counts": [
+      "# pass 25",
+      "# fail 4",
+      "# skipped 1"
+    ]
+  },
+  {
+    "file": "fun",
+    "identicalSubtestStatuses": true,
+    "failures": [
+      "not ok 1 - real pools: 30 complete conversations, 60 unique positive cards, public voices only",
+      "not ok 5 - same duty as helper for every employee/pet; exact 159 originals plus three approved 283 dependencies"
+    ],
+    "counts": [
+      "# pass 3",
+      "# fail 2",
+      "# skipped 1"
+    ]
+  }
+]

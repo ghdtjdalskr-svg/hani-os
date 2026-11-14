@@ -1,0 +1,653 @@
+{
+  "base": "7a91982",
+  "known": [
+    "settings-225",
+    "ilbo-banner-215",
+    "study-news-material",
+    "pb-chibitoon",
+    "brand-heroes-218",
+    "dash-218",
+    "fun-top3",
+    "hero-restore",
+    "ilbo-213",
+    "invest-split-ui",
+    "investment-research-ui",
+    "mascots-poster",
+    "nav-groups",
+    "owner-verification-ui",
+    "qa-210",
+    "qa-design-b4",
+    "qa-report-fixes",
+    "remote-media-219",
+    "reviewed-release-baseline",
+    "simplify-225",
+    "theme-white-215",
+    "ui-203b"
+  ],
+  "plan": [
+    {
+      "file": "scripts/hani-app-216-audit.test.cjs",
+      "office": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-chibi-pack-1-layers.test.mjs",
+      "office": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-chibi-pack-1-release293.test.mjs",
+      "office": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-chibi-pack-1.test.mjs",
+      "office": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-chibi-pack-2-layers.test.mjs",
+      "office": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-chibi-pack-2.test.mjs",
+      "office": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-design-polish-1-contrast.test.mjs",
+      "office": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-design-polish-1-main295.test.mjs",
+      "office": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-design-polish-1.test.mjs",
+      "office": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-fun-chat-fortune.test.mjs",
+      "office": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-helper-275-pins.test.mjs",
+      "office": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-helper-bot.test.mjs",
+      "office": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-helper-toggle.test.mjs",
+      "office": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-219.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-actions-216.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-actions-221.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-affinity-274-pins.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-affinity-274-pins.test.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-affinity-cap.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-affinity-storage.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-affinity.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-barista-night-273-pins.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-barista-night-273-pins.test.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-barista-night.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-barista.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-behavior.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-bori-m9.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-bori-stroll.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-bori-stroll.test.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-bubble-close.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-cafe-rest.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-chairman-234.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-chairman-patrol-278-pins.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-chairman-patrol-278-pins.test.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-chairman-patrol.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-companion-homes.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-companion-homes.test.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-companions-276-pins.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-companions-276-pins.test.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-companions.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-consult.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-crowded-labels.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-drama.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-fix-218.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-floor-bubble.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-hd-224.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-icons.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-kids-286-source.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-kids-lively.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-kids-merge.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-kids-pose-b.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-kids-visit.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-kids-weekday.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-labels-qa.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-lively-v2.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-lively.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-mascot-label.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-mascot-label.test.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-motion-1.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-motion-2.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-obr10.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-obr12.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-obr14.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-obr15.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-obr16.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-obr17.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-obr18.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-obr19.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-obr21.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-obr3.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-obr4.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-obr6.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-obr7.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-obr8.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-obr9.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-pet-bori-272-pins.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-pet-bori-272-pins.test.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-pet-bori.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-pets-268-pins.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-pets-268-pins.test.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-pets-bubble.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-props.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-release-projection.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-residents.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-seats-215.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-snack.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-staff-chat.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-tap-lines.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-tlayout.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-top-labels.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-v2-215.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-lively-fixture.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-visitors-cafe.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-xmas-269-pins.test.mjs",
+      "office": true,
+      "status": "GIT_REQUIRED",
+      "gitOwners": [
+        "scripts/hani-office-xmas-269-pins.test.mjs"
+      ]
+    },
+    {
+      "file": "scripts/hani-office-xmas.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-office-zoom.test.mjs",
+      "office": true,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-qa-easy-cleanup.test.mjs",
+      "office": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-release-296.test.mjs",
+      "office": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-release-version-layers.test.mjs",
+      "office": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-save-guard.test.mjs",
+      "office": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-seoyun-m9.test.mjs",
+      "office": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-settings-225-qa-guard.test.mjs",
+      "office": false,
+      "status": "KNOWN_FAILURE_UNTOUCHED",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-settings-225.test.mjs",
+      "office": false,
+      "status": "KNOWN_FAILURE_UNTOUCHED",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-theme-thaw-source.test.mjs",
+      "office": false,
+      "status": "READY",
+      "gitOwners": []
+    },
+    {
+      "file": "scripts/hani-theme-thaw.test.mjs",
+      "office": false,
+      "status": "READY",
+      "gitOwners": []
+    }
+  ]
+}

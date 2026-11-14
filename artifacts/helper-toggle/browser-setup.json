@@ -1,0 +1,11 @@
+{
+  "result": "SETUP_PASS",
+  "sourceHashes": {
+    "hani-ui-v02992.js": "bc88746447df91cb478fbf37a2952f21ae17eb224bba3da56b3472107ca6d140",
+    "hani-style-08.css": "f3d12144f169e4b76da3c44f325b254867aa456136d32ff676e670236de7038d"
+  },
+  "rawServing": "byte-identical",
+  "setupSyntax": "PASS",
+  "edge": "NOT_RUN",
+  "png": "NOT_RUN"
+}

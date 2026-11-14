@@ -1,4 +1,5 @@
 // Node: node scripts/hani-helper-bot.test.mjs
+import './hani-helper-toggle-preload.cjs';
 // Real app/screenshots: append <playwright/index.mjs> <browser.exe>.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

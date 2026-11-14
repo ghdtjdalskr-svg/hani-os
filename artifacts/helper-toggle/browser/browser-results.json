@@ -1,0 +1,417 @@
+{
+  "result": "PASS",
+  "base": "7a91982de08a54452f6b9057f906d651f63a65ca",
+  "sourceHashes": {
+    "hani-ui-v02992.js": "bc88746447df91cb478fbf37a2952f21ae17eb224bba3da56b3472107ca6d140",
+    "hani-style-08.css": "f3d12144f169e4b76da3c44f325b254867aa456136d32ff676e670236de7038d"
+  },
+  "cases": [
+    {
+      "width": 390,
+      "height": 900,
+      "steps": [
+        {
+          "name": "default-on",
+          "hidden": false,
+          "reason": "shown",
+          "preference": null,
+          "position": "{\"x\":0.2,\"y\":0.3,\"v\":1}",
+          "checked": "true",
+          "left": "78px",
+          "top": "270px",
+          "writes": [
+            {
+              "area": "local",
+              "method": "setItem",
+              "key": "hani_os_investment_baseline_reset_v250_rc23"
+            },
+            {
+              "area": "local",
+              "method": "setItem",
+              "key": "hani_os_navigation_v1"
+            }
+          ],
+          "lifePresent": false
+        },
+        {
+          "name": "hide",
+          "hidden": true,
+          "reason": "user-hidden",
+          "preference": "1",
+          "position": "{\"x\":0.2,\"y\":0.3,\"v\":1}",
+          "checked": "false",
+          "left": "78px",
+          "top": "270px",
+          "writes": [
+            {
+              "area": "local",
+              "method": "setItem",
+              "key": "hani_helper_hidden_v1",
+              "value": "1"
+            }
+          ],
+          "lifePresent": false
+        },
+        {
+          "name": "hidden-after-reload",
+          "hidden": true,
+          "reason": "user-hidden",
+          "preference": "1",
+          "position": "{\"x\":0.2,\"y\":0.3,\"v\":1}",
+          "checked": "false",
+          "left": "",
+          "top": "",
+          "writes": [
+            {
+              "area": "local",
+              "method": "setItem",
+              "key": "hani_os_navigation_v1"
+            }
+          ],
+          "lifePresent": false
+        },
+        {
+          "name": "settings-on",
+          "hidden": false,
+          "reason": "shown",
+          "preference": "0",
+          "position": "{\"x\":0.2,\"y\":0.3,\"v\":1}",
+          "checked": "true",
+          "left": "78px",
+          "top": "270px",
+          "writes": [
+            {
+              "area": "local",
+              "method": "setItem",
+              "key": "hani_helper_hidden_v1",
+              "value": "0"
+            }
+          ],
+          "lifePresent": false
+        },
+        {
+          "name": "on-after-reload",
+          "hidden": false,
+          "reason": "shown",
+          "preference": "0",
+          "position": "{\"x\":0.2,\"y\":0.3,\"v\":1}",
+          "checked": "true",
+          "left": "78px",
+          "top": "270px",
+          "writes": [
+            {
+              "area": "local",
+              "method": "setItem",
+              "key": "hani_os_navigation_v1"
+            }
+          ],
+          "lifePresent": false
+        }
+      ],
+      "actionWrites": [
+        {
+          "name": "hide",
+          "writes": [
+            {
+              "area": "local",
+              "method": "setItem",
+              "key": "hani_helper_hidden_v1",
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "name": "settings-on",
+          "writes": [
+            {
+              "area": "local",
+              "method": "setItem",
+              "key": "hani_helper_hidden_v1",
+              "value": "0"
+            }
+          ]
+        }
+      ],
+      "externalRequests": [
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        }
+      ],
+      "errors": [],
+      "screenshots": [
+        "390-default-on.png",
+        "390-hidden.png",
+        "390-hidden-after-reload.png",
+        "390-settings-on.png",
+        "390-on-after-reload.png"
+      ],
+      "writeKeys": [
+        "hani_os_investment_baseline_reset_v250_rc23",
+        "hani_os_navigation_v1",
+        "hani_helper_hidden_v1"
+      ],
+      "result": "PASS"
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "steps": [
+        {
+          "name": "default-on",
+          "hidden": false,
+          "reason": "shown",
+          "preference": null,
+          "position": "{\"x\":0.2,\"y\":0.3,\"v\":1}",
+          "checked": "true",
+          "left": "288px",
+          "top": "270px",
+          "writes": [
+            {
+              "area": "local",
+              "method": "setItem",
+              "key": "hani_os_investment_baseline_reset_v250_rc23"
+            },
+            {
+              "area": "local",
+              "method": "setItem",
+              "key": "hani_os_navigation_v1"
+            }
+          ],
+          "lifePresent": false
+        },
+        {
+          "name": "hide",
+          "hidden": true,
+          "reason": "user-hidden",
+          "preference": "1",
+          "position": "{\"x\":0.2,\"y\":0.3,\"v\":1}",
+          "checked": "false",
+          "left": "288px",
+          "top": "270px",
+          "writes": [
+            {
+              "area": "local",
+              "method": "setItem",
+              "key": "hani_helper_hidden_v1",
+              "value": "1"
+            }
+          ],
+          "lifePresent": false
+        },
+        {
+          "name": "hidden-after-reload",
+          "hidden": true,
+          "reason": "user-hidden",
+          "preference": "1",
+          "position": "{\"x\":0.2,\"y\":0.3,\"v\":1}",
+          "checked": "false",
+          "left": "",
+          "top": "",
+          "writes": [
+            {
+              "area": "local",
+              "method": "setItem",
+              "key": "hani_os_navigation_v1"
+            }
+          ],
+          "lifePresent": false
+        },
+        {
+          "name": "settings-on",
+          "hidden": false,
+          "reason": "shown",
+          "preference": "0",
+          "position": "{\"x\":0.2,\"y\":0.3,\"v\":1}",
+          "checked": "true",
+          "left": "288px",
+          "top": "270px",
+          "writes": [
+            {
+              "area": "local",
+              "method": "setItem",
+              "key": "hani_helper_hidden_v1",
+              "value": "0"
+            }
+          ],
+          "lifePresent": false
+        },
+        {
+          "name": "on-after-reload",
+          "hidden": false,
+          "reason": "shown",
+          "preference": "0",
+          "position": "{\"x\":0.2,\"y\":0.3,\"v\":1}",
+          "checked": "true",
+          "left": "288px",
+          "top": "270px",
+          "writes": [
+            {
+              "area": "local",
+              "method": "setItem",
+              "key": "hani_os_navigation_v1"
+            }
+          ],
+          "lifePresent": false
+        }
+      ],
+      "actionWrites": [
+        {
+          "name": "hide",
+          "writes": [
+            {
+              "area": "local",
+              "method": "setItem",
+              "key": "hani_helper_hidden_v1",
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "name": "settings-on",
+          "writes": [
+            {
+              "area": "local",
+              "method": "setItem",
+              "key": "hani_helper_hidden_v1",
+              "value": "0"
+            }
+          ]
+        }
+      ],
+      "externalRequests": [
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        },
+        {
+          "method": "GET",
+          "origin": "https://cdn.jsdelivr.net"
+        }
+      ],
+      "errors": [],
+      "screenshots": [
+        "1440-default-on.png",
+        "1440-hidden.png",
+        "1440-hidden-after-reload.png",
+        "1440-settings-on.png",
+        "1440-on-after-reload.png"
+      ],
+      "writeKeys": [
+        "hani_os_investment_baseline_reset_v250_rc23",
+        "hani_os_navigation_v1",
+        "hani_helper_hidden_v1"
+      ],
+      "result": "PASS"
+    }
+  ],
+  "failures": []
+}

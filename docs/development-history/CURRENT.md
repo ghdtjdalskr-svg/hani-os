@@ -1,3 +1,11 @@
+# 2026-11-14 · 도우미 터치 크기 후속 수정 · helperoff2 (도연 / Codex)
+
+`hani/helper-toggle` / 전달·고정 base `7a91982`(Git 금지·원격 새 조회 없음). 설정 스위치의 모바일 40px!important 충돌을 버튼 한정 CSS로 보정(44px 높이·64px 폭), 말풍선 숨기기도 최소44px 지정. delta/source pin 갱신·독립 main296 exact inverse 유지. 서윤의 로그인 대기 수정과 시험 단언·운영JS 원문 보존. **신규8/8·비Git66파일769PASS/기존동일6FAIL/skip3·새 회귀0, office610PASS/0FAIL**. run.ps1 빈 결과 배열 초기화1줄 보완 후 전체 재실행·summarize exit0. Git·Edge·버전/cache·배포 없음, 실제 크기 실측·브라우저 재검증은 서윤 담당. Notion 기록 추가는 자동 승인 never 거절로 갱신 대기. [보고서 후속 절](../../artifacts/helper-toggle/REPORT.md#브라우저-실패-정리) · [인수인계](handoffs/2026-11-14-helper-toggle-browser-fix.md). 아래 기존·타 담당 기록 보존.
+
+# 2026-11-14 · 도우미 숨김 기억 · helperoff (도연 / Codex)
+
+hani/helper-toggle / base·착수HEAD·로컬 origin/main 7a91982 (원격 새 조회 없음·Git 금지). 도우미 home 맨 아래 숨기기 + 설정의 표시 스위치, 승인된 hani_helper_hidden_v1 하나로 기기별 기억. 운영 JS/CSS2파일·기존 위임/place 경로, 위치/보호 키·Cloud·버전/cache2.9.296 유지. 신규8/8, 지정95파일 중 비Git66파일 769PASS·기준선 동일6FAIL·skip3·새 회귀0, office46파일610PASS/0FAIL/skip1·Git27파일 목록만·settings 기존실패2파일 제외. 고정 main296 exact inverse·독립 실패 대조, 기존시험312/fixture114 원문 보존·raw172→172/누락0·syntax10/10·browser setup PASS. 실제Edge390/1440·PNG·Git/commit/push·Preview·배포는 서윤 인계, 구현/검증만 완료. Notion 착수 생성/read-back 완료 후 진행 갱신은 자동 승인 never 거절로 미반영. [보고서](../../artifacts/helper-toggle/REPORT.md) · [인수인계](handoffs/2026-11-14-helper-toggle.md). 아래 타 담당·과거 기록 보존.
+
 # 2026-11-14 · tooling-296 · 296 배포 후속 시험 층 (도연 / Codex)
 
 `hani/tooling-296` / 전달·고정 base `56c3105`(#509, 원격 새 조회 없음·Git 금지). **296 version/history → frozen 디자인1 → 295 → 치비2 → 294 → THAW 이하 exact inverse. 비Git76파일 848PASS/0FAIL/skip1, office46파일 610PASS·Git27파일 목록만.** 신규296 5/5·raw closure172→172→172→172→171→168→164/누락0. 운영510파일 원문 일치·수정0, 기존fixture113/하위 manifest/시험 단언 보존·시험2개는 input import만. syntax11/11·helper9/9·PowerShell1/1·browser setup PASS, 실제 Edge·PNG·Git·commit/push·merge·배포·운영 read-back은 서윤 인계. 로컬 부산물은 tooling296-local에만 저장. Notion 착수 카드 생성/read-back 완료·최종 결과 갱신은 자동 승인 never 거절로 미반영(인수인계에 갱신 대기 보존). [짧은 보고서](../../artifacts/design-polish-1/TOOLING-296.md) · [인수인계](handoffs/2026-11-14-tooling-296.md). 아래 타 담당·과거 기록 보존.
