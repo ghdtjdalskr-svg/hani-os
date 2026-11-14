@@ -1,0 +1,12 @@
+[
+  "hani-main.js",
+  "scripts/hani-theme-thaw-source.cjs",
+  "scripts/hani-release-version-layers.cjs",
+  "scripts/hani-design-polish-1-source.cjs",
+  "scripts/hani-design-polish-1-preload.cjs",
+  "scripts/hani-design-polish-1.test.mjs",
+  "scripts/hani-design-polish-1.browser.mjs",
+  "artifacts/design-polish-1/plan.cjs",
+  "artifacts/design-polish-1/audit.cjs",
+  "artifacts/design-polish-1/summarize.cjs"
+]

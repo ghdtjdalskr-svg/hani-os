@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "base": "dfe81946aab6147c829ed0ee0a1c9f239c364d03",
+  "files": {
+    "hani-design-system.css": {
+      "beforeSha256": "38e127ac1cb59fca96575a65d2ebe64004ffd4c33c0696858da2cfdf7db2205c",
+      "afterSha256": "d9a6401c68bfed89de8edb68c41b5d8caae40778eb1cd7b019f88fe288839eb4",
+      "edits": [
+        {
+          "before": "",
+          "after": "\r\n/* 2.9.29x 디자인 다듬기 1차 — read-only UI; existing owners keep events/data. */\r\n/* 2,3: the heading owns a row; the filter label never competes with its select. */\r\n#app #investmentCommittee .ic-header{flex-direction:column;align-items:stretch;gap:10px}\r\n#app #investmentCommittee .ic-header h2{word-break:keep-all;overflow-wrap:normal}\r\n#app #investmentCommittee .ic-filter{white-space:nowrap;flex-wrap:wrap}\r\n#app #investmentCommittee .ic-filter select{flex:0 1 220px;min-width:0}\r\n/* 4: each phrase is an indivisible visual unit, including narrow phone widths. */\r\n#app #monthlyReportPending .monthly-report-empty-title>span{display:inline-block;white-space:nowrap}\r\n/* 5,6: explicit ink/surface pairs on the existing light panels, in every Finish. */\r\n#app #intake .yuna-desk #yunaTargetHelp{color:#4d4660!important;background:#fff}\r\n#app #asset #assetStats .stat:has(.asset-evaluation){background:#f4f1fa!important}\r\n#app #asset #assetStats .stat:has(.asset-evaluation) .label{color:#51455f!important}\r\n#app #asset #assetStats .value.asset-evaluation{color:#49385f!important}\r\n/* 7: header-only tokens; comic cards retain their own paper and ink. */\r\n#app #procrastination .pb-header .pb-eyebrow{color:var(--text-primary)!important}\r\n#app #procrastination .pb-header .pb-intro{color:color-mix(in srgb,var(--text-secondary) 96%,var(--text-primary))!important}\r\n/* 8: search controls match their adjacent buttons, without touching checkboxes. */\r\n#app #board .board-search input[type=\"search\"],\r\n#app #drive .gdrive-search input[type=\"search\"]{box-sizing:border-box;width:100%;min-height:44px!important;padding:10px 12px;line-height:1.4}\r\n#app #board .board-living-toolbar .btn,#app #drive .gdrive-search>.btn{min-height:44px}\r\n@media(max-width:700px){\r\n  /* 1: existing viewportBox/place clamps even a stored helper position above\r\n     the tallest composer (112px textarea + padding/border + safe inset).\r\n     Its parseFloat reader requires a plain px token, not calc()/env().\r\n     190px reserves up to 48px inset plus clearance. visualViewport already\r\n     subtracts keyboard height; never subtract it twice. */\r\n  body[data-view=\"intake\"] #haniHelperBot{--helper-safe-bottom:190px}\r\n  #app #monthlyReportPending .monthly-report-empty-title{font-size:20px;line-height:1.45;word-break:keep-all}\r\n  #app #monthlyReportPending .monthly-report-empty-title>span{display:block}\r\n  /* 9: visual order only. DOM order, input ids and handlers stay canonical. */\r\n  #app #tasks>.grid>.card:has(#taskText){order:-1}\r\n  /* 10: shorten only the campaign masthead, keeping THAW and choice cards intact. */\r\n  #app #aura .aura-showroom{gap:14px}\r\n  #app #aura .aura-preview figcaption{padding:12px 12px 8px}\r\n  #app #aura .aura-preview h3{font-size:22px;line-height:1.2;margin:6px 0}\r\n  #app #aura .aura-campaign-cast{margin-top:6px}\r\n  #app #aura .aura-preview>.aura-campaign-artwork{height:132px;aspect-ratio:auto;object-fit:contain}\r\n  #app #aura .aura-poster-signature{padding:10px 12px;gap:4px}\r\n  #app #aura .aura-poster-signature .aura-wordmark{display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:8px}\r\n  #app #aura .aura-poster-signature .aura-wordmark>strong{font-size:24px}\r\n}\r\n"
+        }
+      ]
+    },
+    "hani-main.js": {
+      "beforeSha256": "fbee5583f06e693fca30f2ea235034fcf6991aa1b001d866804ff74f95939212",
+      "afterSha256": "624dc868f8f71c6ba6ac147d50956d32e921a2c7471b2bcace6ad7fa79ae48d2",
+      "edits": [
+        {
+          "before": "pending.innerHTML=`<h4>${esc(heading)}</h4><p>${esc(description)}</p>",
+          "after": "pending.innerHTML=`${stored?`<h4>${esc(heading)}</h4>`:`<h4 class=\"monthly-report-empty-title\"><span>${esc(monthlyReportMonth)}</span> <span>${esc(heading.slice(monthlyReportMonth.length+1))}</span></h4>`}<p>${esc(description)}</p>"
+        }
+      ]
+    }
+  }
+}

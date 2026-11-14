@@ -1,0 +1,37 @@
+[
+  {
+    "file": "artifacts/history-226/unit.json",
+    "action": "moved new test output",
+    "sha256": "61d8da246095fc32ebc16a821f83bfc50a9fcd1df01f28f0b723cbf910fd04d7"
+  },
+  {
+    "file": "artifacts/office-219/label-unit-results.json",
+    "action": "moved new test output",
+    "sha256": "b286a2aa49d255dcf9008ce677d31b1d321ddb4cd100575be0fc02ceba7da5c2"
+  },
+  {
+    "file": "artifacts/office-drama/reachability.json",
+    "action": "archived and restored starting bytes",
+    "sha256": "d9f2fffd1c4d69ab4d903c26094bbbfbaa168887b1f3b7c5230cbd56ad0dd365"
+  },
+  {
+    "file": "artifacts/office-behavior/obr16-layout-node.json",
+    "action": "archived and restored starting bytes",
+    "sha256": "87e853a6efc0c44da77e2bbce7cd216e6129e3bc2652282cd80a0f0cd8491d90"
+  },
+  {
+    "file": "artifacts/office-behavior/obr17-layout-node.json",
+    "action": "archived and restored starting bytes",
+    "sha256": "a00ed08f5a1652f5acfdd89dd93e7a08c87448b7c54bbcc50045fd188c7245c7"
+  },
+  {
+    "file": "artifacts/office-behavior/obr19-layout-node.json",
+    "action": "archived and restored starting bytes",
+    "sha256": "c4dcba6624ef1b96d77bafcb487418a3868f65759ef8b078a8c1b47f162223e5"
+  },
+  {
+    "file": "artifacts/street-journal-v1/package-check.json",
+    "action": "moved new test output",
+    "sha256": "2b91bab7d0b94b639d9b178249f8b76aaf33b9c6d13bd52117a7949c0f90ddcd"
+  }
+]

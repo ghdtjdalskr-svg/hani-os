@@ -1,0 +1,36 @@
+{
+  "base": "cb119351ff7b0a01b77fdc04d6f0b1ba0c2b54dc",
+  "runtimeHashes": {
+    "hani-design-system.css": "e36c492c4f25874268dc9d1f29089003b544ed53714768d94cdaf57bc3c2c826",
+    "hani-main.js": "774378ee763a90b651249271c4a197229ddbc9fe20e0f48fd72207952abd7001"
+  },
+  "version": "2.9.294",
+  "lastScript": "./hani-launch-greeting.js",
+  "protectedKeyUnchanged": true,
+  "paths": {
+    "storage": {
+      "same": true,
+      "count": 26
+    },
+    "events": {
+      "same": true,
+      "count": 68
+    },
+    "timers": {
+      "same": true,
+      "count": 47
+    },
+    "cloudCalls": {
+      "same": true,
+      "count": 31
+    },
+    "cache": {
+      "same": true,
+      "count": 0
+    },
+    "internal": {
+      "same": true,
+      "count": 10
+    }
+  }
+}

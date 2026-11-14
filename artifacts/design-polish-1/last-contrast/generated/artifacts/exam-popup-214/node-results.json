@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "checks": [
+    "응시하기 and actual Remote handler open one reusable dialog without writes",
+    "selection uses persistQuizAnswer exactly once; failed save rolls back and cannot submit",
+    "keyboard 1–4, arrows, OMR jump, close/resume and normalized reload",
+    "Tab trap, Esc/cancel close, focus return, modifier/repeat shortcuts ignored",
+    "submit calls existing gradeQuiz once, shows stamp, then existing copy/dispute result",
+    "grading failure keeps dialog/answers and supports one successful retry",
+    "new UI has no ID literals/direct storage/Cloud writes; reduced-motion and AA token fallbacks"
+  ],
+  "environment": "Node VM DOM adapter; actual owner renderers/handlers; no layout claims"
+}

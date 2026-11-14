@@ -1,0 +1,17 @@
+{
+  "files": 76,
+  "pass": 848,
+  "fail": 0,
+  "skip": 1,
+  "office": {
+    "files": 46,
+    "pass": 610,
+    "fail": 0,
+    "skip": 1
+  },
+  "gitListed": 27,
+  "knownExcluded": [
+    "scripts/hani-study-news-material.test.js"
+  ],
+  "note": "Per-file default Node execution, separate process per file, process guard and generated-output routing only. history --unit-only and quiz-v04 are each counted as one successful CLI test wrapper. No external inverse preload; no Edge or Git process."
+}

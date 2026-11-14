@@ -6,7 +6,7 @@ const assert=require('node:assert/strict');
 // Capture disk bytes before the legacy chibi2 fs adapter; current release tests
 // and future manifest rows must see the outermost deployed bytes.
 const chibi2=require('./hani-chibi-pack-2-source.cjs');
-const {readRawFileSync}=chibi2;
+const {readRawFileSync}=require('./hani-design-polish-1-source.cjs');
 const {createHash}=require('node:crypto');
 const manifest=require('./fixtures/release-version-layers.json');
 const outer=require('./hani-save-guard-source.cjs');
@@ -55,7 +55,7 @@ function restoreVersionLayer(source,file,version){
  assert.equal(hash(before),row.before,'exact release-'+number(layer.from)+' output '+file);
  return before;
 }
-// 295 version/history -> frozen chibi2 -> 294 version/history -> THAW
+// 296 version/history -> frozen design1 -> 295 version/history -> frozen chibi2 -> 294 -> THAW
 // -> 293 version/history -> frozen chibi -> 292 version/office -> 291 contrast
 // -> 290 Ieum -> frozen 289/288. Each step retains full input/output pins.
 // Newest exact version bytes precede their feature inverse. The 289 adapter
@@ -67,8 +67,13 @@ function projectPreRelease294Source(source,file){
  return row&&hash(source)===row.after?restoreVersionLayer(source,file,'2.9.294'):source;
 }
 function projectPreRelease295Source(source,file){
+ source=project(source,file,'2.9.295',true);
  const row=getLayer('2.9.295').files[file];
  return row&&hash(source)===row.after?restoreVersionLayer(source,file,'2.9.295'):source;
+}
+function projectPreRelease296Source(source,file){
+ const row=getLayer('2.9.296').files[file];
+ return row&&hash(source)===row.after?restoreVersionLayer(source,file,'2.9.296'):source;
 }
 function projectPreRelease290Source(source,file){
  source=project(source,file,'2.9.290',true);
@@ -93,6 +98,8 @@ function project(source,file,target,features,keepFeature=false){
  for(const layer of layers){
   const version=number(layer.to);
   if(version<boundary)break;
+  // Older unversioned design inputs still enter their unchanged strict inverse.
+  if(version<=295)source=require('./hani-design-polish-1-source.cjs').project(source,file);
   // THAW is inside the deployed 294 bytes. Its frozen history metadata already
   // includes the released 293 commit; 294 owns that complete history edit once.
   if(version<=293)source=thaw.project(source,file);
@@ -124,7 +131,7 @@ function createReleaseReader(version,keepFeature=false){
   return project(source,name,version,true,keepFeature);
  };
 }
-module.exports={layers,hash,getLayer,restoreVersionLayer,readRawFileSync,projectPreRelease288Source,projectPreRelease289Source,projectPreRelease290Source,projectPreRelease294Source,projectPreRelease295Source,
+module.exports={layers,hash,getLayer,restoreVersionLayer,readRawFileSync,projectPreRelease288Source,projectPreRelease289Source,projectPreRelease290Source,projectPreRelease294Source,projectPreRelease295Source,projectPreRelease296Source,
  createReleaseReader,
  projectVersionSource:(source,file,target)=>project(source,file,target,false),
  projectReleaseSource:(source,file,target)=>project(source,file,target,true),

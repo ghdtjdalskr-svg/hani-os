@@ -18,6 +18,7 @@ function restore(source,file){
  return buffer?Buffer.from(text):text;
 }
 function project(source,file){
+ source=require('./hani-design-polish-1-source.cjs').project(source,file);
  // Legacy fs adapters also see Node loading this dispatcher and its fixtures.
  // Only runtime version owners may enter it; module reads must stay raw.
  if(['index.html','hani-main.js','assets/data/hani-history-releases-v1.json'].includes(file))
