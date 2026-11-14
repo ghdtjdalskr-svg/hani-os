@@ -14,6 +14,14 @@
 
 `hani/design-polish-2` / 기준 `7a91982`(Git 명령·원격 조회 없음). **CSS 끝 한 블록으로 표시 개선 6항목, 신규6/6·최초 비Git87파일84성공(887 PASS+script5/skip2), office46파일610 PASS.** 최종 CSS 관련19파일18성공(102 PASS+script4/skip1), browser 의존성 차단2·exam-popup fixture 오류1은 main296 재현. 기존fixture114·원본JSON172 보존, runtime71/closure172 중 CSS만 변경·누락0, syntax10/10·browser setup PASS. 실제 Edge/PNG·24조합 픽셀 대비·무겹침0·Git27·push/탑승·배포는 서윤 대기. 임의 helper 저장 위치/스크롤은 CSS token만으로 무겹침 보장 불가. 표시/cache296·runtime JS·저장/Cloud 불변, main merge·배포 없음. Notion 착수 생성/read-back 완료·최종 갱신 자동 승인 거절로 미반영. [보고서](../../artifacts/design-polish-2/REPORT.md) · [인수인계](handoffs/2026-11-14-design-polish-2.md). 아래 타 담당·과거 기록 보존.
 
+# 2026-11-14 · 도우미 터치 크기 후속 수정 · helperoff2 (도연 / Codex)
+
+`hani/helper-toggle` / 전달·고정 base `7a91982`(Git 금지·원격 새 조회 없음). 설정 스위치의 모바일 40px!important 충돌을 버튼 한정 CSS로 보정(44px 높이·64px 폭), 말풍선 숨기기도 최소44px 지정. delta/source pin 갱신·독립 main296 exact inverse 유지. 서윤의 로그인 대기 수정과 시험 단언·운영JS 원문 보존. **신규8/8·비Git66파일769PASS/기존동일6FAIL/skip3·새 회귀0, office610PASS/0FAIL**. run.ps1 빈 결과 배열 초기화1줄 보완 후 전체 재실행·summarize exit0. Git·Edge·버전/cache·배포 없음, 실제 크기 실측·브라우저 재검증은 서윤 담당. Notion 기록 추가는 자동 승인 never 거절로 갱신 대기. [보고서 후속 절](../../artifacts/helper-toggle/REPORT.md#브라우저-실패-정리) · [인수인계](handoffs/2026-11-14-helper-toggle-browser-fix.md). 아래 기존·타 담당 기록 보존.
+
+# 2026-11-14 · 도우미 숨김 기억 · helperoff (도연 / Codex)
+
+hani/helper-toggle / base·착수HEAD·로컬 origin/main 7a91982 (원격 새 조회 없음·Git 금지). 도우미 home 맨 아래 숨기기 + 설정의 표시 스위치, 승인된 hani_helper_hidden_v1 하나로 기기별 기억. 운영 JS/CSS2파일·기존 위임/place 경로, 위치/보호 키·Cloud·버전/cache2.9.296 유지. 신규8/8, 지정95파일 중 비Git66파일 769PASS·기준선 동일6FAIL·skip3·새 회귀0, office46파일610PASS/0FAIL/skip1·Git27파일 목록만·settings 기존실패2파일 제외. 고정 main296 exact inverse·독립 실패 대조, 기존시험312/fixture114 원문 보존·raw172→172/누락0·syntax10/10·browser setup PASS. 실제Edge390/1440·PNG·Git/commit/push·Preview·배포는 서윤 인계, 구현/검증만 완료. Notion 착수 생성/read-back 완료 후 진행 갱신은 자동 승인 never 거절로 미반영. [보고서](../../artifacts/helper-toggle/REPORT.md) · [인수인계](handoffs/2026-11-14-helper-toggle.md). 아래 타 담당·과거 기록 보존.
+
 # 2026-11-14 · tooling-297 · 297 배포 후속 시험 층 (도연 / Codex)
 
 `hani/tooling-297` / 전달·고정 base `bc3b22c`(#512, Git·원격 새 조회 없음). **297 version/history → frozen 치비3 → 296 → 디자인1 → 295 → 치비2 → 294 → THAW 이하 exact inverse. 비Git81파일868PASS/0FAIL/skip1·office46파일610PASS·297신규6/6·치비3 12PASS.** 운영·데이터511파일/기존fixture114/시험314단언/하위manifest 원문 보존, closure173→173→172→172→172→172→171→168→164/누락0·syntax15/PowerShell1/browser setup만 PASS. Git27목록·브라우저4·실제Edge/PNG10/Preview·Git커밋/push·배포/운영read-back은 서윤 인계. PNG·로그·snapshot·QA JSON은 tooling297-local 한 폴더(커밋 제외), 기존 비교PNG hash보존 이관. Notion 착수 insert_content 자동 승인 never 거절로 미반영·최종 갱신 대기는 인수인계 보존. [보고서](../../artifacts/chibi-pack-3/TOOLING-297.md) · [인수인계](handoffs/2026-11-14-tooling-297.md). 아래 타 담당·과거 기록 보존.
