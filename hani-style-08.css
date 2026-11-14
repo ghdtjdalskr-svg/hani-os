@@ -197,6 +197,10 @@
 #haniHelperBot{--helper-edge:90px;--helper-art-scale:1.653846154;--helper-safe-bottom:env(safe-area-inset-bottom,0px);position:fixed;z-index:86;width:var(--helper-edge);height:var(--helper-edge);font-family:inherit;color:#302a3d}
 #haniHelperBot[hidden],#haniHelperBot [hidden],.login-locked #haniHelperBot{display:none!important}
 #haniHelperBot button{font-family:inherit;cursor:pointer}
+/* Helper visibility preference: existing card/button styling, 44px touch targets. */
+#haniHelperBot .btn[data-helper-hide]{display:block;min-height:44px;min-width:44px;margin-top:12px;width:100%}
+#app #haniHelperSettings .btn[data-helper-visibility]{min-height:44px!important;min-width:64px!important;touch-action:manipulation}
+#haniHelperSettings [data-helper-visibility]:focus-visible{outline:3px solid var(--primary,#725295);outline-offset:3px}
 #haniHelperBot button:focus-visible{outline:3px solid #725295;outline-offset:3px}
 #haniHelperBot .hani-helper-face{position:relative;display:block;box-sizing:border-box;width:var(--helper-edge);height:var(--helper-edge);padding:0;border:2px solid #fff;border-radius:50%;background:radial-gradient(circle at 40% 25%,#fff9f2,#eee1f6);box-shadow:0 3px 14px #49365b30,0 0 0 1px #c9b6d8;touch-action:none;user-select:none;cursor:grab}
 #haniHelperBot .hani-helper-face:active{cursor:grabbing}

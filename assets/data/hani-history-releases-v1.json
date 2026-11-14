@@ -26,6 +26,18 @@
   ],
   "entries": [
     {
+      "id": "v2.9.298",
+      "date": "2026-11-14",
+      "status": "released",
+      "title": "도우미 끄기·켜기 스위치",
+      "category": "화면·디자인",
+      "credits": [],
+      "source": {
+        "commit": "",
+        "subject": "release: v2.9.298 도우미 끄기·켜기 스위치"
+      }
+    },
+    {
       "id": "v2.9.297",
       "date": "2026-11-14",
       "status": "released",
@@ -33,8 +45,8 @@
       "category": "화면·디자인",
       "credits": [],
       "source": {
-        "commit": "",
-        "subject": "release: v2.9.297 치비 3탄 생일·일기·시청"
+        "commit": "bc3b22c8fdaab3bd786980a5e0ca61e28ee3acde",
+        "subject": "release: v2.9.297 치비 3탄 생일·일기·시청 (#512)"
       }
     },
     {
