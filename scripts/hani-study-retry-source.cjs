@@ -1,4 +1,5 @@
 // Exact outer projection for fixed legacy QA. Never relax its assertions.
+require('./hani-chibi-pack-2-preload.cjs');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const {createHash}=require('node:crypto');

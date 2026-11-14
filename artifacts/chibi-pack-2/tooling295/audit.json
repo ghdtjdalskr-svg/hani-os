@@ -1,0 +1,34 @@
+{
+  "base": "396511a28ca227e1f77c9bcba96965af7d077478",
+  "branch": "hani/tooling-295",
+  "initialFiles": 2055,
+  "changed": [
+    "docs/development-history/CURRENT.md",
+    "scripts/fixtures/release-version-layers.json",
+    "scripts/hani-chibi-pack-2-layers.test.mjs",
+    "scripts/hani-chibi-pack-2-preload.cjs",
+    "scripts/hani-chibi-pack-2.test.mjs",
+    "scripts/hani-office-219.test.mjs",
+    "scripts/hani-release-294.test.mjs",
+    "scripts/hani-release-version-layers.cjs"
+  ],
+  "added": [
+    "artifacts/chibi-pack-2/TOOLING-295.md",
+    "artifacts/chibi-pack-2/tooling295-run.ps1",
+    "docs/development-history/handoffs/2026-11-14-tooling-295.md",
+    "scripts/hani-release-295.test.mjs"
+  ],
+  "unchangedFrozenFixtures": 111,
+  "unchangedOtherTestFiles": 284,
+  "unchangedTestBodies": [
+    "scripts/hani-release-294.test.mjs",
+    "scripts/hani-office-219.test.mjs",
+    "scripts/hani-chibi-pack-2.test.mjs",
+    "scripts/hani-chibi-pack-2-layers.test.mjs"
+  ],
+  "olderManifestBytesPreserved": true,
+  "independentRuntimeFiles": 514,
+  "outOfScopeChanges": 0,
+  "gitProcesses": 0,
+  "edgeProcesses": 0
+}

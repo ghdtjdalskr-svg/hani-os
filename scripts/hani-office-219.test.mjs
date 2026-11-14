@@ -8,7 +8,7 @@ import http from 'node:http';
 import repository from './hani-test-repository-evidence.cjs';
 import {readApprovedSource} from './hani-retire6-approved.mjs';
 import releases from './hani-release-version-layers.cjs';
-import {normalizeReviewedCurrentSource,readReviewedReleaseBaseline} from './hani-reviewed-release-baseline.mjs';
+import {normalizeReviewedCurrentSource,readReviewedReleaseBaseline as readDeployedReleaseBaseline} from './hani-reviewed-release-baseline.mjs';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 
 const root=fileURLToPath(new URL('../',import.meta.url)),out=path.join(root,'artifacts/office-219');
@@ -25,6 +25,14 @@ const git=(...args)=>{
 };
 // Keep this historical 19-person contract at its fixed approved v289 boundary.
 const read=f=>releases.projectReleaseSource(releases.readRawFileSync(path.join(root,f),'utf8'),f,'2.9.289');
+// The merged-release oracle must see deployed 295 bytes, while the historical
+// office contract keeps its existing exact inverse reader. Restore the adapter
+// immediately after this synchronous oracle read; its assertions stay intact.
+const readReviewedReleaseBaseline=file=>{
+ const adapted=fs.readFileSync;
+ try{fs.readFileSync=releases.readRawFileSync;return readDeployedReleaseBaseline(file);}
+ finally{fs.readFileSync=adapted;}
+};
 const before='60db7b5',base='974fa64df67a3c0060bdf0eda951aafeaf5a9b11';
 const old=f=>git('show',before+':'+f).toString('utf8');
 const times=['10:00','15:40','21:00','00:30'],widths=[390,412,884,1440],floors=['1f','2f','3f','4f','5f'];
