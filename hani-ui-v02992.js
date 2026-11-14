@@ -1633,6 +1633,29 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
   }
   let root, face, panel, dot, title, greetingLine, helpLine, newsLine, bank, loadNews, returnFocus, pending = false;
   const POSITION_KEY = 'hani_helper_pos_v1';
+  const HIDDEN_KEY = 'hani_helper_hidden_v1';
+  let helperHidden = false;
+  function readHidden() {
+    try { return localStorage.getItem(HIDDEN_KEY) === '1'; } catch (_) { return false; }
+  }
+  function renderVisibilitySetting() {
+    const host = document.getElementById('group-display')?.querySelector('.settings-group-body');
+    if (!host) return;
+    let card = document.getElementById('haniHelperSettings');
+    if (!card) {
+      card = document.createElement('div'); card.id = 'haniHelperSettings'; card.setAttribute('class', 'card full');
+      card.innerHTML = '<div class="sh"><h3 id="haniHelperVisibilityTitle">도우미 표시</h3><button class="btn" type="button" role="switch" aria-labelledby="haniHelperVisibilityTitle" aria-describedby="haniHelperVisibilityHelp" aria-checked="true" data-helper-visibility>켜짐</button></div><p class="sub" id="haniHelperVisibilityHelp">이 기기에서 도우미를 표시해요. 꺼 둔 상태는 다음에도 기억해요.</p>';
+      host.append(card);
+    }
+    const button = card.querySelector('[data-helper-visibility]');
+    button.setAttribute('aria-checked', String(!helperHidden));
+    button.textContent = helperHidden ? '꺼짐' : '켜짐';
+  }
+  function setHidden(hidden) {
+    helperHidden = hidden;
+    try { localStorage.setItem(HIDDEN_KEY, hidden ? '1' : '0'); } catch (_) {}
+    renderVisibilitySetting(); place();
+  }
   let position = null, drag = null, suppressClick = false;
   function readPosition() {
     try {
@@ -1691,6 +1714,7 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
   function people() { return window.HaniOrganizationRoster?.people || []; }
   function update() {
     if (!root) return;
+    renderVisibilitySetting();
     window.HaniFunPreview?.refresh();
     const person = duty(people());
     if (!person) { schedulePlace(); return; }
@@ -1732,7 +1756,7 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
     const login = document.body.dataset.view === 'login' || document.body.classList.contains('login-scroll-locked') ||
       document.body.classList.contains('login-locked') || app?.classList.contains('login-locked') || visible(document.getElementById('loginGate'));
     const modal = [...document.querySelectorAll('.modal.open,dialog[open],[role="dialog"],[aria-modal="true"]')].some(el => !root.contains(el) && visible(el));
-    root.dataset.helperReason = login ? 'login' : modal ? 'modal' : !duty(people()) ? 'no-duty' : 'shown';
+    root.dataset.helperReason = login ? 'login' : helperHidden ? 'user-hidden' : modal ? 'modal' : !duty(people()) ? 'no-duty' : 'shown';
     root.hidden = root.dataset.helperReason !== 'shown';
     if (root.hidden) { close(); return; }
     const viewport = viewportBox(), size = faceSize();
@@ -1792,11 +1816,23 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
       const button = document.createElement('button'); button.type = 'button'; button.dataset.helperGo = id; button.textContent = label; nav.append(button);
     }
     const reset = document.createElement('button'); reset.type = 'button'; reset.dataset.helperReset = ''; reset.textContent = '제자리로'; panel.append(reset);
+    helperHidden = readHidden();
     position = readPosition();
     window.HaniFunPreview?.mount(root, panel);
+    const hideButton = document.createElement('button'); hideButton.type = 'button'; hideButton.setAttribute('class', 'btn');
+    hideButton.dataset.helperHide = ''; hideButton.setAttribute('aria-label', '도우미 숨기기'); hideButton.textContent = '도우미 숨기기';
+    panel.querySelector('.hani-helper-home').append(hideButton);
     for (const type of ['pointerdown', 'pointermove', 'pointerup', 'pointercancel', 'lostpointercapture']) document.addEventListener(type, pointer);
     document.addEventListener('click', event => {
       if (suppressClick && event.detail !== 0 && face.contains(event.target)) { suppressClick = false; event.preventDefault(); return; }
+      if (event.target.closest('[data-helper-visibility]') && document.getElementById('haniHelperSettings')?.contains(event.target)) {
+        setHidden(!helperHidden); return;
+      }
+      if (event.target.closest('[data-helper-hide]') && root.contains(event.target)) {
+        setHidden(true);
+        if (typeof toast === 'function') toast('설정에서 다시 켤 수 있어요');
+        return;
+      }
       if (window.HaniFunPreview?.action(event.target)) { schedulePlace(); return; }
       if (face.contains(event.target)) { toggle(); return; }
       if (!root.contains(event.target)) { close(); schedulePlace(); return; }
