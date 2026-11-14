@@ -26,6 +26,18 @@
   ],
   "entries": [
     {
+      "id": "v2.9.297",
+      "date": "2026-11-14",
+      "status": "released",
+      "title": "치비 3탄 생일·일기·시청",
+      "category": "화면·디자인",
+      "credits": [],
+      "source": {
+        "commit": "",
+        "subject": "release: v2.9.297 치비 3탄 생일·일기·시청"
+      }
+    },
+    {
       "id": "v2.9.296",
       "date": "2026-11-14",
       "status": "released",
@@ -33,8 +45,8 @@
       "category": "화면·디자인",
       "credits": [],
       "source": {
-        "commit": "",
-        "subject": "release: v2.9.296 디자인 다듬기 1차"
+        "commit": "56c3105391cec207d9c55a4a3bbf76906749a0a4",
+        "subject": "release: v2.9.296 디자인 다듬기 1차 (#509)"
       }
     },
     {

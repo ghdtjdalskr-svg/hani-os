@@ -2,6 +2,38 @@
   "schema": 1,
   "layers": [
     {
+      "from": "2.9.296",
+      "to": "2.9.297",
+      "files": {
+        "index.html": {
+          "after": "a6889bdd5fb05ad75f7a794ecc372ff751869f0642aab1146cf64471082c656e",
+          "before": "b3260c334eb9e03d3f8bb9d1b096a92a64430ea8d2e41f772b7bdf1c125f0941",
+          "count": 60
+        },
+        "hani-main.js": {
+          "after": "b204d3e234c09b549c073e5aa2654a99acee79de7c7194c715562f15dfaeeb33",
+          "before": "c7665a1ae094587763ebe9a0d0f9e7a4d27db59184f4a38b5687190cf17e8bbf",
+          "count": 1
+        },
+        "assets/data/hani-history-releases-v1.json": {
+          "after": "be8e96a05c1e5d092f9a91cf1adbfacdee38d44b78d34528637e13dfdec4f88e",
+          "before": "fa91a3b4465859f9767b18ca431d8d64d556555323bd5fc9134a27e18a4234e1",
+          "count": 1,
+          "replacements": [
+            {
+              "before": "6\",\n      \"date\": \"2026-11-14\",\n      \"status\": \"released\",\n      \"title\": \"디자인 다듬기 1차\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.296 디자인 다듬기 1차",
+              "after": "7\",\n      \"date\": \"2026-11-14\",\n      \"status\": \"released\",\n      \"title\": \"치비 3탄 생일·일기·시청\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.297 치비 3탄 생일·일기·시청\"\n      }\n    },\n    {\n      \"id\": \"v2.9.296\",\n      \"date\": \"2026-11-14\",\n      \"status\": \"released\",\n      \"title\": \"디자인 다듬기 1차\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"56c3105391cec207d9c55a4a3bbf76906749a0a4\",\n        \"subject\": \"release: v2.9.296 디자인 다듬기 1차 (#509)"
+            }
+          ]
+        }
+      },
+      "feature": {
+        "module": "./hani-chibi-pack-3-source.cjs",
+        "fixture": "./fixtures/chibi-pack-3-delta.json",
+        "restore": "restore"
+      }
+    },
+    {
       "from": "2.9.295",
       "to": "2.9.296",
       "files": {

@@ -1,0 +1,82 @@
+{
+    "powershellErrors":  [
+
+                         ],
+    "javascript":  [
+                       {
+                           "output":  "",
+                           "file":  "scripts/hani-release-297.test.mjs",
+                           "exit":  0
+                       },
+                       {
+                           "output":  "",
+                           "file":  "scripts/hani-release-297-source.cjs",
+                           "exit":  0
+                       },
+                       {
+                           "output":  "",
+                           "file":  "scripts/hani-release-297-preload.cjs",
+                           "exit":  0
+                       },
+                       {
+                           "output":  "",
+                           "file":  "scripts/hani-release-296-input.cjs",
+                           "exit":  0
+                       },
+                       {
+                           "output":  "",
+                           "file":  "scripts/hani-release-296.test.mjs",
+                           "exit":  0
+                       },
+                       {
+                           "output":  "",
+                           "file":  "scripts/hani-release-version-layers.cjs",
+                           "exit":  0
+                       },
+                       {
+                           "output":  "",
+                           "file":  "scripts/hani-chibi-pack-3-source.cjs",
+                           "exit":  0
+                       },
+                       {
+                           "output":  "",
+                           "file":  "C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\tool297\\artifacts\\chibi-pack-3\\tooling297-audit.cjs",
+                           "exit":  0
+                       },
+                       {
+                           "output":  "",
+                           "file":  "C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\tool297\\artifacts\\chibi-pack-3\\tooling297-browser-setup.cjs",
+                           "exit":  0
+                       },
+                       {
+                           "output":  "",
+                           "file":  "C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\tool297\\artifacts\\chibi-pack-3\\tooling297-browser.cjs",
+                           "exit":  0
+                       },
+                       {
+                           "output":  "",
+                           "file":  "C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\tool297\\artifacts\\chibi-pack-3\\tooling297-init.cjs",
+                           "exit":  0
+                       },
+                       {
+                           "output":  "",
+                           "file":  "C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\tool297\\artifacts\\chibi-pack-3\\tooling297-output.cjs",
+                           "exit":  0
+                       },
+                       {
+                           "output":  "",
+                           "file":  "C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\tool297\\artifacts\\chibi-pack-3\\tooling297-plan.cjs",
+                           "exit":  0
+                       },
+                       {
+                           "output":  "",
+                           "file":  "C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\tool297\\artifacts\\chibi-pack-3\\tooling297-prepare.cjs",
+                           "exit":  0
+                       },
+                       {
+                           "output":  "",
+                           "file":  "C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\tool297\\artifacts\\chibi-pack-3\\tooling297-summarize.cjs",
+                           "exit":  0
+                       }
+                   ]
+}

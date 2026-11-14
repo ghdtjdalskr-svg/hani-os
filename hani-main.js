@@ -4613,7 +4613,7 @@ function renderMovies(){
   const sort=state.ui.movieSort||'recent',min=Math.max(0,Math.min(5,n(state.ui.movieMinRating))),search=state.ui.movieSearch||'',typeFilter=state.ui.movieTypeFilter||'all',matchesType=m=>typeFilter==='all'||movieContentType(m.contentType,'기타')===typeFilter,allWish=state.movies.filter(m=>m.status!=='watched'),allWatched=state.movies.filter(m=>m.status==='watched'),wishRecords=sortRatedItems(allWish.filter(matchesType),'recent','watchedDate'),watchedRecords=sortRatedItems(filterMinimumRating(filterText(allWatched.filter(matchesType),search,['title','director','actors','review','contentType']),min),sort,'watchedDate'),wish=movieWorkGroups(wishRecords),watched=movieWorkGroups(watchedRecords),completedWatched=allWatched.filter(m=>completedByToday(m.watchedDate)),ratings=completedWatched.map(m=>ratingValue(m.rating)).filter(v=>v!==null),avg=ratings.length?ratings.reduce((a,b)=>a+b,0)/ratings.length:0,five=ratings.filter(v=>v===5).length;
   const watchedUnits=movieViewingUnits(watchedRecords),allUnits=movieViewingUnits(state.movies),wishUnits=movieViewingUnits(allWish);$('movieCount').textContent=allUnits+'편';$('wishMovieCount').textContent=wishUnits+'편';$('watchedMovieCount').textContent=`${watched.length}작품 · ${watchedUnits}편`;$('movieStats').innerHTML=[['전체 기록',allUnits+'편'],['관람 예정',wishUnits+'편'],['관람 완료',movieViewingUnits(completedWatched)+'편'],['평균 평점',avg?`${avg.toFixed(1)}점 · 만점 ${five}편`:'-']].map(([l,v])=>`<div class="stat"><div class="label">${l}</div><div class="value">${v}</div></div>`).join('');
   if($('movieSeriesSection'))$('movieSeriesSection').hidden=true;const size=uiPageSize(12,3),wishPage=uiPageSlice('movieWish',wish,size),watchedPage=uiPageSlice('movieWatched',watched,size);$('wishMovies').innerHTML=wishPage.rows.map(movieWorkCard).join('')||'<div class="empty">조건에 맞는 관람 예정작이 없습니다.</div>';$('watchedMovies').innerHTML=watchedPage.rows.map(movieWorkCard).join('')||'<div class="empty">조건에 맞는 관람 작품이 없습니다.</div>';uiMountPagination($('wishMovies'),'movieWish',wishPage,renderMovies,'작품');uiMountPagination($('watchedMovies'),'movieWatched',watchedPage,renderMovies,'작품');
-  renderChibiNote("movieChibiNote",$("watchedMovies"),"minji-think","민지 · 회장님, 보고 싶은 작품부터 담아봐요.",state.movies.length===0);
+  renderChibiNote("movieChibiNote",$("watchedMovies"),"haru-popcorn","하루 · 첫 작품 기록을 기다리고 있어요!",state.movies.length===0);
   $('movieSort').value=sort;$('movieMinRating').value=min||'';$('movieSearch').value=search;$('movieTypeFilter').value=typeFilter;$('movieSort').onchange=()=>{state.ui.movieSort=$('movieSort').value;uiResetPage('movieWatched');save();renderMovies()};$('movieMinRating').oninput=()=>{state.ui.movieMinRating=Math.max(0,Math.min(5,n($('movieMinRating').value)));uiResetPage('movieWatched');save();renderMovies()};$('movieSearch').oninput=()=>{state.ui.movieSearch=$('movieSearch').value;uiResetPage('movieWatched');renderMovies()};$('movieTypeFilter').onchange=()=>{state.ui.movieTypeFilter=$('movieTypeFilter').value;uiResetPage('movieWish');uiResetPage('movieWatched');save();renderMovies()};updateMovieFormState();
   document.querySelectorAll('[data-movie-delete]').forEach(b=>b.onclick=async()=>{if(!await confirmRecordDelete(state.movies.find(x=>x.id===b.dataset.movieDelete),'시청 기록'))return;state.movies=state.movies.filter(x=>x.id!==b.dataset.movieDelete);commit('작품 기록을 삭제했습니다.')});document.querySelectorAll('[data-movie-toggle]').forEach(b=>b.onclick=()=>{const x=state.movies.find(v=>v.id===b.dataset.movieToggle);if(!x)return;x.status=x.status==='watched'?'wish':'watched';if(x.status==='watched'&&!x.watchedDate)x.watchedDate=today();x.updatedAt=new Date().toISOString();commit('작품 분류를 변경했습니다.')});document.querySelectorAll('[data-movie-edit]').forEach(b=>b.onclick=()=>{const x=state.movies.find(v=>v.id===b.dataset.movieEdit);if(!x)return;const meta=movieSeriesMeta(x);$('movieEditId').value=x.id;$('movieStatus').value=x.status||'wish';$('movieContentType').value=movieContentType(x.contentType,'기타');$('movieOrigin').value=x.origin||'국내';$('movieTitle').value=x.title||'';$('movieDirector').value=x.director||'';$('movieActors').value=x.actors||'';$('movieRating').value=x.rating??'';$('movieDate').value=x.watchedDate||'';$('movieSeason').value=meta?.season||'';$('movieEpisode').value=meta?.episode||'';$('movieReview').value=meta?movieReviewBody(x.review):x.review||'';$('saveMovie').textContent='수정 저장';updateMovieFormState();document.querySelector('#movie .phase1-collapsible-form')?.setAttribute('open','');$('movie').scrollIntoView({behavior:'smooth'})});
 }
@@ -4642,6 +4642,7 @@ function openDiaryDetail(id){const d=state.diaries.find(x=>x.id===id);if(!d)retu
 function editDiary(id){const d=state.diaries.find(x=>x.id===id);if(!d)return;$("diaryEditId").value=d.id;$("diaryDate").value=d.date||today();$("diaryMood").value=d.mood||"neutral";$("diaryTitle").value=d.title||"";$("diaryContent").value=d.content||"";$("saveDiary").textContent="수정 저장";closeModal("diaryModal");$("diary").scrollIntoView({behavior:"smooth"})}
 async function deleteDiary(id){if(!await confirmRecordDelete(state.diaries.find(x=>x.id===id),'일기'))return;state.diaries=state.diaries.filter(x=>x.id!==id);if(activeDiaryId===id)activeDiaryId=null;closeModal("diaryModal");commit("일기를 삭제했습니다.")}
 function renderDiary(){
+  renderChibiNote("diaryChibiNote",$("diaryList"),"yoonseul-notebook","윤슬 · 오늘 한 줄부터 남겨 볼까요?",!Array.isArray(state.diaries)||state.diaries.length===0);
   const search=state.ui.diarySearch||'',sort=state.ui.diarySort||'newest',all=Array.isArray(state.diaries)?state.diaries:[];let rows=filterText(all,search,['title','content','date']);rows.sort((a,b)=>sort==='oldest'?(a.date||'').localeCompare(b.date||'')||(a.createdAt||'').localeCompare(b.createdAt||''):sort==='updated'?(b.updatedAt||'').localeCompare(a.updatedAt||''):(b.date||'').localeCompare(a.date||'')||(b.createdAt||'').localeCompare(a.createdAt||''));
   $('diaryCount').textContent=all.length+'개';
   const pageData=uiPageSlice('diary',rows,uiPageSize(8,5));
@@ -5409,7 +5410,45 @@ function renderHaniCareHome(){
   slot.innerHTML=`<div class="sh"><div><h3>월말 정산 도우미</h3><p class="task-count-help">${esc(data.month)} · 18일 결산</p></div><b class="pill">${done}/3 완료</b></div><progress max="3" value="${done}" aria-label="월말 정산 진행">${done}/3</progress><ol class="hani-care-steps">${data.items.map((x,i)=>`<li><span class="hani-care-status" aria-label="${x.done?'완료':'미완료'}">${x.done?'✓':i+1}</span><div><b>${esc(x.label.replace(/^[①②③] /,''))}</b><p>${descriptions[i]}</p></div><button class="btn sm" type="button" data-hani-care-view="${x.view}">${x.done?'다시 보기':'확인하기'}</button></li>`).join('')}</ol>`;
   slot.querySelectorAll("[data-hani-care-view]").forEach(b=>b.onclick=()=>showView(b.dataset.haniCareView));
 }
+// Chibi pack 3: approved birthdays; identity/ranks follow the organization roster.
+const CHIBI_STAFF_BIRTHDAYS=Object.freeze([
+  ["seoyun","서윤","개발 리드",3,12],["dohyun","도연","개발 선임",6,18],
+  ["serin","세린","연구원",7,23],["yuri","유리","QA 책임",9,11],
+  ["arin","아린","UI/UX 선임",4,24],["gaeun","뮤즈 · 가은","회장 비서",9,25],
+  ["mir","MIR · 미르","AI 스페셜리스트",5,14],["taeo","채원","솔루션 매니저",2,6],
+  ["daon","다온","사원",11,21],["yoonseul","윤슬","사원",3,26],
+  ["hani","하니","전무",1,17],["yuna","유나","사원",2,20],
+  ["jieun","지은","부장",4,9],["haru","하루","대리",5,29],
+  ["naeun","나은","차장",7,8],["hina","히나","과장",8,21],
+  ["minji","민지","대리",10,8],["sooyeon","수연","주임",11,6],
+  ["sua","수아","과장",12,12],["ieum","이음","사원",6,3]
+].map(row=>Object.freeze(row)));
+function renderHomeBirthday(date=new Date(),birthdays=CHIBI_STAFF_BIRTHDAYS){
+  const day=new Date(date.getTime()+9*3600000),month=day.getUTCMonth()+1,dayOfMonth=day.getUTCDate();
+  const people=birthdays.filter(row=>row[3]===month&&row[4]===dayOfMonth);
+  const identity=row=>window.HaniOrganizationRoster?.people.find(person=>person.id===row[0])||{name:row[1],rank:row[2]};
+  renderChibiNote("homeBirthdayChibiNote",$("homeActions"),"birthday-cake","🎂 오늘은 "+people.map(row=>identity(row).name+" 님").join(", ")+" 생일이에요! · 하니 · 다 같이 축하해요.",people.length>0);
+  const slot=$("homeBirthdayChibiNote");if(!slot||!people.length)return;
+  let portraits=slot.querySelector(".hani-birthday-portraits");
+  if(!portraits){
+    portraits=document.createElement("span");portraits.className="hani-birthday-portraits";portraits.setAttribute("aria-hidden","true");
+    slot.insertBefore(portraits,slot.lastElementChild);
+    for(const row of CHIBI_STAFF_BIRTHDAYS){
+      const face=document.createElement("span"),person=identity(row);
+      face.className="hani-birthday-person";face.dataset.person=row[0];face.title=person.name+" · "+person.rank;
+      const image=sidebarAgentImages[row[0]]||({
+        gaeun:"./assets/profiles/thumb/hani-profile-gaeun-256.webp",
+        mir:"./assets/profiles/thumb/hani-profile-mir-256.webp",
+        taeo:"./assets/profiles/thumb/hani-profile-taeo-256.webp"
+      })[row[0]];
+      if(image)face.style.backgroundImage='url("'+image+'")';else face.textContent=person.name.slice(0,1);
+      portraits.append(face);
+    }
+  }
+  for(const face of portraits.children)face.hidden=!people.some(row=>row[0]===face.dataset.person);
+}
 function renderHome(){
+  renderHomeBirthday();
   syncThemeCollections();
   renderHomeDialogue();const official=officialBrokerSorted(),latest=official.at(-1)||null,latestCalc=latest?brokerCalc(latest):null;
   renderHaniCareHome();
@@ -7669,7 +7708,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.296";
+const HANI_DISPLAY_VERSION="2.9.297";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
@@ -8543,7 +8582,7 @@ function renderMonthlyReport(){
   const description=stored?`생성 시각 ${formatDateTime(stored.generatedAt)}. 원본 기록이 바뀌어도 이 보고서는 자동으로 바뀌지 않습니다.`:closed?(hasRecords?"해당 월의 기록을 확인한 뒤 보고서를 생성할 수 있습니다.":"이 달에는 보고서로 만들 완료 기록이 없습니다."):"해당 월이 끝난 뒤에만 보고서를 생성할 수 있습니다.";
   pending.hidden=false;
   const failure=monthlyReportGenerationFailure?.month===monthlyReportMonth?monthlyReportGenerationFailure.reason:"";
-  renderChibiNote("monthlyReportChibiNote",pending,"hani-point","하니 · 회장님, 보고할 달의 기록을 살펴봐요.",!failure&&!monthlyReportGeneration,true);
+  renderChibiNote("monthlyReportChibiNote",pending,"jieun-binder","지은 · 이번 달 보고가 생기면 여기 모아 둘게요.",!stored&&!failure&&!monthlyReportGeneration&&monthlyReportBoard==="monthly",true);
   pending.innerHTML=`${stored?`<h4>${esc(heading)}</h4>`:`<h4 class="monthly-report-empty-title"><span>${esc(monthlyReportMonth)}</span> <span>${esc(heading.slice(monthlyReportMonth.length+1))}</span></h4>`}<p>${esc(description)}</p><p role="status" data-monthly-generation-status>${esc(failure|| (monthlyReportGeneration?"원본 연결을 확인하고 보고서를 준비하고 있습니다. 잠시 기다려 주세요.":""))}</p><button type="button" id="monthlyReportGenerateBtn" ${hasRecords&&!monthlyReportGeneration?"":"disabled"}>${monthlyReportGeneration?"확인 중…":stored?"보고서 다시 생성":"보고서 생성"}</button>`;
   $("monthlyReportGenerateBtn").onclick=()=>monthlyReportGenerate(monthlyReportMonth);
 }

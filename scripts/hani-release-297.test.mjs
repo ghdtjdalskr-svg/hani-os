@@ -1,0 +1,109 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import release297 from './hani-release-297-source.cjs';
+import layers from './hani-release-version-layers.cjs';
+import chibi3 from './hani-chibi-pack-3-source.cjs';
+import release296 from './hani-release-296-source.cjs';
+import repository from './hani-test-repository-evidence.cjs';
+import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
+import fs from 'node:fs';
+import path from 'node:path';
+import vm from 'node:vm';
+import {fileURLToPath} from 'node:url';
+const {hash,readRawFileSync:read}=release297,root=new URL('../',import.meta.url);
+const raw=file=>read(new URL(file,root),'utf8'),release='bc3b22c8fdaab3bd786980a5e0ca61e28ee3acde';
+
+test('297 is outermost: exact version/history -> unchanged chibi3 -> independent main296 -> frozen296/design295',()=>{
+ const layer=layers.getLayer('2.9.297');assert.equal(layers.layers[0],layer);assert.deepEqual(layer,release297.layer);
+ assert.deepEqual(Object.keys(layer.files).sort(),['assets/data/hani-history-releases-v1.json','hani-main.js','index.html']);
+ assert.deepEqual(layer.feature,{module:'./hani-chibi-pack-3-source.cjs',fixture:'./fixtures/chibi-pack-3-delta.json',restore:'restore'});
+ for(const [file,row]of Object.entries(layer.files)){
+  const source=raw(file),before=release297.restore(source,file),main296=chibi3.project(before,file);
+  assert.equal(source,repository.read(release,file),'independent deployed297 bytes');
+  assert.equal(hash(source),row.after);assert.equal(hash(before),row.before);
+  assert.equal(layers.restoreVersionLayer(source,file,'2.9.297'),before);
+  assert.deepEqual(release297.restore(Buffer.from(source),file),Buffer.from(before));
+  assert.deepEqual(layers.restoreVersionLayer(Buffer.from(source),file,'2.9.297'),Buffer.from(before));
+  assert.equal(layers.projectPreRelease297Source(source,file),before);
+  assert.deepEqual(layers.projectPreRelease297Source(Buffer.from(source),file),Buffer.from(before));
+  assert.equal(layers.projectReleaseSource(source,file,'2.9.297'),source);
+  assert.equal(layers.projectFeatureSource(source,file,'2.9.297'),before);
+  assert.equal(layers.projectVersionSource(source,file,'2.9.296'),before,'version-only projection retains chibi3');
+  assert.equal(main296,repository.read(chibi3.delta.base,file));
+  assert.equal(layers.projectReleaseSource(source,file,'2.9.296'),main296);
+  assert.deepEqual(layers.projectReleaseSource(Buffer.from(source),file,'2.9.296'),Buffer.from(main296));
+  assert.equal(layers.projectPreRelease296Source(source,file),release296.restore(main296,file));
+  const forward=row.replacements?row.replacements.reduce((s,e)=>{assert.equal(s.split(e.before).length-1,1);return s.replace(e.before,()=>e.after)},before):before.replaceAll(layer.from,layer.to);
+  assert.equal(forward,source,'complete mixed EOL byte round-trip');assert.equal(raw(file),source);
+  if(file==='hani-main.js'){
+   assert.equal(hash(before),chibi3.delta.files[file].afterSha256);
+   assert.throws(()=>chibi3.restore(source,file),/exact chibi-pack-3 input/,'297 must precede feature inverse');
+   assert.throws(()=>release296.restore(before,file),/exact release-296 input/,'chibi3 must precede296');
+  }
+ }
+ for(const file of ['hani-street-journal.css','hani-design-system.css','hani-study-v02984.js']){
+  const source=raw(file);assert.equal(source,repository.read(release,file));
+  assert.equal(release297.project(source,file),source);assert.equal(layers.projectFeatureSource(source,file,'2.9.297'),source);
+  assert.equal(layers.projectReleaseSource(source,file,'2.9.296'),repository.read(chibi3.delta.base,file));
+ }
+});
+
+test('297 history removes only297 and restores complete296 source metadata',()=>{
+ const file='assets/data/hani-history-releases-v1.json',current=JSON.parse(raw(file)),before=JSON.parse(release297.restore(raw(file),file));
+ assert.equal(current.entries[0].id,'v2.9.297');assert.equal(current.entries[0].title,'치비 3탄 생일·일기·시청');
+ assert.deepEqual(current.entries[0].source,{commit:'',subject:'release: v2.9.297 치비 3탄 생일·일기·시청'});
+ assert.equal(current.entries[1].id,'v2.9.296');
+ assert.deepEqual(current.entries[1].source,{commit:'56c3105391cec207d9c55a4a3bbf76906749a0a4',subject:'release: v2.9.296 디자인 다듬기 1차 (#509)'});
+ assert.deepEqual(before.entries[0].source,{commit:'',subject:'release: v2.9.296 디자인 다듬기 1차'});
+ assert.deepEqual(current.entries.slice(2),before.entries.slice(1));assert.deepEqual({...current,entries:[]},{...before,entries:[]});
+ assert.equal(JSON.stringify(before),JSON.stringify(JSON.parse(repository.read(chibi3.delta.base,file))));
+});
+
+test('297 strict input pins reject byte/token/EOL drift, duplicates and double inverse',()=>{
+ for(const file of Object.keys(release297.layer.files)){
+  const source=raw(file),before=release297.restore(source,file);
+  for(const bad of [source+'\n',source.slice(1),source+source,before,source.replace(/\r?\n/,m=>m==='\n'?'\r\n':'\n'),source.replace('2.9.297','2.9.296')]){
+   assert.throws(()=>release297.restore(bad,file),/exact release-297 input/);
+   assert.throws(()=>layers.restoreVersionLayer(bad,file,'2.9.297'),/exact release-297 input/);
+   assert.equal(release297.project(bad,file),bad);assert.equal(layers.projectPreRelease297Source(bad,file),bad);
+   if(bad!==before)assert.equal(layers.projectReleaseSource(bad,file,'2.9.289'),bad);
+  }
+ }
+ assert.equal(release297.project('unknown bytes','not-an-owner'),'unknown bytes');
+ assert.throws(()=>release297.restore('unknown bytes','not-an-owner'),/known release297 owner/);
+});
+
+test('297 count, nonempty unique metadata and output pins reject malformed contracts',()=>{
+ for(const inverse of [{row:layers.getLayer('2.9.297').files,restore:(s,f)=>layers.restoreVersionLayer(s,f,'2.9.297')},{row:release297.layer.files,restore:release297.restore}]){
+  const file='index.html',row=inverse.row[file],count=row.count,before=row.before;
+  try{row.count++;assert.throws(()=>inverse.restore(raw(file),file),/complete version token count/);row.count=count;row.before='0'.repeat(64);assert.throws(()=>inverse.restore(raw(file),file),/exact release-296 output/);}
+  finally{row.count=count;row.before=before;}
+  const history='assets/data/hani-history-releases-v1.json',meta=inverse.row[history],edit=meta.replacements[0],after=edit.after,oldCount=meta.count;
+  try{meta.count++;assert.throws(()=>inverse.restore(raw(history),history),/complete release metadata edit count/);meta.count=oldCount;edit.after='not-present';assert.throws(()=>inverse.restore(raw(history),history),/unique complete release metadata/);edit.after='';assert.throws(()=>inverse.restore(raw(history),history),/nonempty exact metadata edit/);}
+  finally{edit.after=after;meta.count=oldCount;}
+ }
+});
+
+test('raw297 -> chibi3 -> main296 -> design295 -> main295 -> chibi2 -> main294 -> main293 -> frozen289 closure stays173/173/172/172/172/172/171/168/164',async()=>{
+ const projects=[b=>b,(b,f)=>release297.project(b,f),(b,f)=>layers.projectReleaseSource(b,f,'2.9.296'),(b,f)=>layers.projectFeatureSource(b,f,'2.9.296'),(b,f)=>layers.projectReleaseSource(b,f,'2.9.295'),(b,f)=>layers.projectFeatureSource(b,f,'2.9.295'),(b,f)=>layers.projectReleaseSource(b,f,'2.9.294'),(b,f)=>layers.projectReleaseSource(b,f,'2.9.293'),(b,f)=>layers.projectReleaseSource(b,f,'2.9.289')];
+ const counts=[];for(const project of projects){const closure=await resolveRuntimeClosure({exists:f=>fs.existsSync(new URL(f,root)),read:f=>project(read(new URL(f,root)),f)});counts.push(closure.files.length);assert.deepEqual(closure.missing,[]);}
+ assert.deepEqual(counts,[173,173,172,172,172,172,171,168,164]);
+ assert.equal(raw('hani-study-v02984.js').includes('2.9.297'),false);
+});
+
+test('297 isolated adapter preserves sync/callback/promise Buffer, string and error boundaries',async()=>{
+ const url=new URL('hani-main.js',root),source=read(url),expected=release297.project(source,'hani-main.js'),error=new Error('read failed');
+ const disk=(_f,encoding)=>encoding==='utf8'?source.toString('utf8'):source;
+ const fake={readFileSync:disk,readFile(f,...args){const done=args.pop();f==='error'?done(error):done(null,disk(f,args[0]))},promises:{readFile:async(...args)=>disk(...args)}};
+ let synced=false;
+ const sandbox={__dirname:fileURLToPath(new URL('.',import.meta.url)),URL,require:name=>name==='node:fs'?fake:name==='node:path'?path:name==='node:url'?{fileURLToPath}:name==='node:module'?{syncBuiltinESMExports(){synced=true}}:name==='./hani-release-297-source.cjs'?release297:assert.fail(name)};
+ vm.runInNewContext(read(new URL('./hani-release-297-preload.cjs',import.meta.url),'utf8'),sandbox);assert.ok(synced);
+ for(const file of [url,fileURLToPath(url)])for(const encoding of [undefined,'utf8']){
+  const want=encoding?expected.toString('utf8'):expected;
+  assert.deepEqual(fake.readFileSync(file,encoding),want);
+  assert.deepEqual(await new Promise((resolve,reject)=>fake.readFile(file,encoding,(e,b)=>e?reject(e):resolve(b))),want);
+  assert.deepEqual(await fake.promises.readFile(file,encoding),want);
+ }
+ await new Promise(resolve=>fake.readFile('error',(e,b)=>{assert.equal(e,error);assert.equal(b,undefined);resolve()}));
+ assert.deepEqual(read(url),source);
+});

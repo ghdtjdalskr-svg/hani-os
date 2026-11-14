@@ -1,3 +1,7 @@
+# 2026-11-14 · design2d · main297 재층 (도연 / Codex)
+
+`hani/design-polish-2` / 로컬 기준 `22fedb3`(main297+#513), 기존 `247ddec`. **source3곳 충돌 해결·디자인2→297→치비3→296→디자인1→295 이하, 기존 pin/단언 보존. 기존8/8·현재4/4·비Git91파일90성공(918PASS+script0/skip2), 기준 입력과 새 회귀0·기존 exam-popup 오류1 동일. tooling81파일868PASS·office46파일610PASS.** 운영/데이터509·fixture115·기존시험315 보존, syntax14/PS2/setup PASS. PNG/로그/snapshot3935파일 hash보존 local/imported 이관, local commit 제외. Git·Edge·원격조회·index처리·commit/push·배포는 서윤 인계. Notion 자동 승인 never 거절로 갱신 대기. [보고서](../../artifacts/design-polish-2/REPORT.md#design2d-main297-재층) · [인수인계](handoffs/2026-11-14-design-polish-2-main297.md). 아래 양쪽 기록 보존.
+
 # 2026-11-14 · design2c · 마지막 브라우저 실패 1건 수정 (도연 / Codex)
 
 전달 `hani/design-polish-2` / base `7a91982`(Git·원격 조회·Edge 없음). **AI 업무 SECTION의 fadeUp 280ms가 모션 감소 환경에서도 실행되는 원인: CSS 끝 2차 블록에 reduced-motion animation:none 1규칙, delta/source pin 정합. 신규8/8·syntax4/4·setup PASS·비Git85파일84성공/889 PASS+script5/skip2·office46파일610 PASS, design2b 대비 새 회귀0.** 기존 exam-popup fixture 시작 오류1 동일. 소스771 비교에서 CSS·delta·pin 외 변경0·기존fixture114/QA JSON172/측정기/원본 browser JSON 보존. 실제 마지막 1건 해소·새 CSSOM/PNG/픽셀 대비는 서윤 `browser-design2c` 재실행 대기. Git·버전·merge·배포 없음. Notion 착수 추가는 자동 승인 never 거절로 미반영/갱신 대기 보존. [보고서](../../artifacts/design-polish-2/REPORT.md#design2c) · [인수인계](handoffs/2026-11-14-design-polish-2-last-browser.md). 아래 기존 기록 보존.
@@ -9,6 +13,14 @@
 # 2026-11-14 · design2 · 디자인 다듬기 2차 (도연 / Codex)
 
 `hani/design-polish-2` / 기준 `7a91982`(Git 명령·원격 조회 없음). **CSS 끝 한 블록으로 표시 개선 6항목, 신규6/6·최초 비Git87파일84성공(887 PASS+script5/skip2), office46파일610 PASS.** 최종 CSS 관련19파일18성공(102 PASS+script4/skip1), browser 의존성 차단2·exam-popup fixture 오류1은 main296 재현. 기존fixture114·원본JSON172 보존, runtime71/closure172 중 CSS만 변경·누락0, syntax10/10·browser setup PASS. 실제 Edge/PNG·24조합 픽셀 대비·무겹침0·Git27·push/탑승·배포는 서윤 대기. 임의 helper 저장 위치/스크롤은 CSS token만으로 무겹침 보장 불가. 표시/cache296·runtime JS·저장/Cloud 불변, main merge·배포 없음. Notion 착수 생성/read-back 완료·최종 갱신 자동 승인 거절로 미반영. [보고서](../../artifacts/design-polish-2/REPORT.md) · [인수인계](handoffs/2026-11-14-design-polish-2.md). 아래 타 담당·과거 기록 보존.
+
+# 2026-11-14 · tooling-297 · 297 배포 후속 시험 층 (도연 / Codex)
+
+`hani/tooling-297` / 전달·고정 base `bc3b22c`(#512, Git·원격 새 조회 없음). **297 version/history → frozen 치비3 → 296 → 디자인1 → 295 → 치비2 → 294 → THAW 이하 exact inverse. 비Git81파일868PASS/0FAIL/skip1·office46파일610PASS·297신규6/6·치비3 12PASS.** 운영·데이터511파일/기존fixture114/시험314단언/하위manifest 원문 보존, closure173→173→172→172→172→172→171→168→164/누락0·syntax15/PowerShell1/browser setup만 PASS. Git27목록·브라우저4·실제Edge/PNG10/Preview·Git커밋/push·배포/운영read-back은 서윤 인계. PNG·로그·snapshot·QA JSON은 tooling297-local 한 폴더(커밋 제외), 기존 비교PNG hash보존 이관. Notion 착수 insert_content 자동 승인 never 거절로 미반영·최종 갱신 대기는 인수인계 보존. [보고서](../../artifacts/chibi-pack-3/TOOLING-297.md) · [인수인계](handoffs/2026-11-14-tooling-297.md). 아래 타 담당·과거 기록 보존.
+
+# 2026-11-14 · 치비 3탄 · 생일 카드와 빈 화면 (도연 / Codex · ch3)
+
+`hani/chibi-pack-3` / 전달·로컬 origin/main `7a91982`(2.9.296+#510, Git·원격 새 조회 없음). **홈생일20명·일기빈·시청하루·월간지은, 투명1024시트1장222.72KiB·기존 renderer/persistent slot. 비Git79파일860PASS/0FAIL/skip1·신규12PASS·사무실46파일610PASS.** 치비3→main296 exact inverse, 기존fixture114/시험312/단언·숫자·hash·디자인2 CSS·표시/cache296·저장/Cloud 경로 보존. closure173→172→172→172→172→171→168→164/누락0·JS syntax16·browser 합성setup PASS. Git27파일 목록만·실제Edge/PNG10/Preview·Git커밋/push·배포열차 인계는 서윤 대기. Notion 착수 insert_content는 자동 승인 never 거절로 미반영, 최종 갱신 대기 내용 인수인계에 보존. [보고서](../../artifacts/chibi-pack-3/REPORT.md) · [인수인계](handoffs/2026-11-14-chibi-pack-3.md). 아래 타 담당·과거 기록 보존.
 
 # 2026-11-14 · tooling-296 · 296 배포 후속 시험 층 (도연 / Codex)
 

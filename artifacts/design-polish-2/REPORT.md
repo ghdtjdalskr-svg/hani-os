@@ -80,7 +80,7 @@ Notion HANI-92 착수 기록 추가는 자동 승인 검토에서 `MCP tool call
 
 - **원인:** 실제 `#aiWork`는 `section.view`, `showView`가 `active`를 붙이며 `hani-style-01.css:27`의 `fadeUp .28s`(opacity 0→1·세로 이동)가 시작됩니다. 모션 감소 예외가 없고 시험은 `reducedMotion:'reduce'`에서 전환 100ms 후 측정하므로, 마지막 실패의 조상 `SECTION` 효과와 일치합니다. 스크린샷의 `animations:'disabled'`는 effects 검사 뒤에 적용돼 이 실패를 예방하지 못합니다. locator는 이미 첫 `.member-role` 한 개입니다. `textRects` 앞 4개는 BUTTON의 둥근 모서리 제외 영역이고, 나머지는 주변 이름·설명도 배경 픽셀에서 제외하려는 기존 수집 결과입니다. 다른 카드 전체를 측정 대상으로 고른 버그가 아닙니다.
 - **수정:** CSS 끝 2차 블록에 `@media(prefers-reduced-motion:reduce){#app #aiWork.view.active{animation:none}}` 한 규칙만 추가했습니다. 밝은/어두운 글자·면 쌍은 보존하고 delta/source pin을 새 CSS의 exact inverse로 갱신했습니다. 측정 대상·측정기·clip·4.5·기존 단언·runtime JS/DOM/이벤트는 그대로입니다.
-- **검증:** 신규 Node **8/8**, syntax **4/4**, `--setup-only` **PASS**(23화면·480대비 조합·브라우저 실행 없음). 비Git 회귀 **85파일 중 84성공·889 PASS + script5·skip2**, 사무실 **46파일·610 PASS**. 이전 design2b와 시험 목록·exit·pass·fail·skip 전부 동일하여 **새 회귀 0**입니다. 남은 1파일은 기존 `hani-exam-popup-214.test.mjs`의 `renderChibiNote is not defined` fixture 오류입니다. 소스 771개 비교에서 변경은 CSS·delta·source pin 3파일뿐이며, 독립 main296 exact inverse·기존 fixture114·측정기/단언·브라우저 원본 JSON·QA JSON172 보존을 확인했습니다. [최종 감사](design2c/preservation-audit.json)·[회귀 결과](design2c/test-results.json)·[로그](design2c/test-logs/)에 근거가 있습니다. 기존 design2b의 역할 대비 48개 중 47개는 최저 **9.468062622526778:1**, 나머지 한 개는 위 애니메이션 효과로 측정 중단입니다. 이를 새 결과의 PASS로 재사용하지 않습니다. 실제 새 CSSOM·PNG·24 Finish×계절 픽셀 대비·마지막 실패 해소는 **서윤 Edge 재실행 대기**입니다.
+- **검증:** 신규 Node **8/8**, syntax **4/4**, `--setup-only` **PASS**(23화면·480대비 조합·브라우저 실행 없음). 비Git 회귀 **85파일 중 84성공·889 PASS + script5·skip2**, 사무실 **46파일·610 PASS**. 이전 design2b와 시험 목록·exit·pass·fail·skip 전부 동일하여 **새 회귀 0**입니다. 남은 1파일은 기존 `hani-exam-popup-214.test.mjs`의 `renderChibiNote is not defined` fixture 오류입니다. 소스 771개 비교에서 변경은 CSS·delta·source pin 3파일뿐이며, 독립 main296 exact inverse·기존 fixture114·측정기/단언·브라우저 원본 JSON·QA JSON172 보존을 확인했습니다. [최종 감사](local/imported/design2c/preservation-audit.json)·[회귀 결과](local/imported/design2c/test-results.json)·[로그](local/imported/design2c/test-logs/)에 근거가 있습니다. 기존 design2b의 역할 대비 48개 중 47개는 최저 **9.468062622526778:1**, 나머지 한 개는 위 애니메이션 효과로 측정 중단입니다. 이를 새 결과의 PASS로 재사용하지 않습니다. 실제 새 CSSOM·PNG·24 Finish×계절 픽셀 대비·마지막 실패 해소는 **서윤 Edge 재실행 대기**입니다.
 - **경계:** Git·Edge·버전/cache 증가·저장/Cloud 변경·main 병합·배포 없음. 최초 FAIL194와 design2b FAIL1 JSON·PNG를 보존합니다. Notion 착수 추가는 자동 승인 검토에서 거절됐습니다(`approval policy is never`). 최종 갱신 대기는 [인수인계](../../docs/development-history/handoffs/2026-11-14-design-polish-2-last-browser.md)에 보존합니다.
 
 서윤 재실행 명령(출력 `browser-design2c`):
@@ -91,4 +91,24 @@ node scripts/hani-design-polish-2-regression.mjs --prepare-powershell
 & artifacts/design-polish-2/run-regression.ps1
 node scripts/hani-design-polish-2.browser.mjs --setup-only
 node scripts/hani-design-polish-2.browser.mjs '<playwright/index.mjs>' '<msedge.exe>' --output-dir=artifacts/design-polish-2/browser-design2c
+```
+
+## design2d (main297 재층)
+
+2026-11-14 KST · 도연 / Codex · `hani/design-polish-2` · 기준 `22fedb33cbd67923cc499ba99f55e8902a66ecb2`(main297 + #513), 기존 디자인2 `247ddec`. 원격 새 조회 없음.
+
+- **재층:** source 3곳의 충돌을 main의 치비3 preload + 바깥 디자인2로 해결했습니다. 297 raw reader도 디자인2 안쪽에 두고 자동 병합 dispatcher는 main297 + 기존 outer projection 한 줄임을 확인했습니다. 순서는 **디자인2 → 297 version/history → 치비3 → 296 → 디자인1 → 295 이하**입니다. CURRENT는 양쪽 기록을 보존해 충돌 표시만 제거했습니다. Git index 처리는 서윤 담당입니다.
+- **보존:** CSS·기존 디자인2 delta/source pin 무변경, 독립 main297 exact inverse. 기존 디자인2 시험은 input import 1줄만 바꾸고 새 exact tooling input으로 main296 고정 단언을 보존했습니다. 별도 현재 입력 시험 **4/4**, 기존 디자인2 **8/8**, main297 fixture **115개**·기존 시험 **315개** 원문 보존, 운영·데이터 **509개**는 CSS 역변환 후 main297 원문 일치. closure **173→173→172→172→172→172→171→168→164**, 누락0.
+- **검증:** 비Git 회귀 **91파일 중 90성공 / 918 PASS + script0 / skip2**. CSS만 exact inverse한 main297 기준 입력을 새 프로세스에서 함께 실행(89파일, 906 PASS + script0)해 공통 시험의 exit/pass/fail/skip을 비교했고 **새 회귀 0**입니다. 남은 실패는 양쪽 동일한 기존 `hani-exam-popup-214.test.mjs`의 `renderChibiNote is not defined`입니다. tooling-297 **81파일 868 PASS / 실패0**, 포함 office **46파일 610 PASS / 실패0**. JS syntax **14/14**·PowerShell **2/2**·browser setup **PASS**(23화면·480대비 조합·브라우저 실행0). [집계](local/design2d/test-summary.json)·[보존 감사](local/design2d/preservation-audit.json).
+- **증거/경계:** 기존 PNG·로그·snapshot **3,935파일**을 hash 그대로 `local/imported/`로 이관했고 새 출력도 `local/`에 제한했습니다(.gitignore 추가). 기존 design2c PASS/실패0 원본도 보존했으며 main297에서 실제 Edge·PNG는 서윤 재확인 대기입니다. Git·Edge·commit/push·버전/cache 증가·저장/Cloud 변경·merge·배포 없음. Notion 추가는 자동 승인 정책 `never`로 거절되어 [인수인계](../../docs/development-history/handoffs/2026-11-14-design-polish-2-main297.md)에 갱신 대기를 남겼습니다.
+
+서윤 실행 명령(먼저 충돌 해결 파일의 Git index 처리, `local/` 전체 commit 제외):
+
+```powershell
+node scripts/hani-design-polish-2.test.mjs
+node scripts/hani-design-polish-2-main297.test.mjs
+node scripts/hani-design-polish-2-regression.mjs --prepare-powershell
+& artifacts/design-polish-2/local/design2d/run-regression.ps1
+node scripts/hani-design-polish-2.browser.mjs --setup-only
+node scripts/hani-design-polish-2.browser.mjs '<playwright/index.mjs>' '<msedge.exe>' --output-dir=artifacts/design-polish-2/local/browser-design2d
 ```

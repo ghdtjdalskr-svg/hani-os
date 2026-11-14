@@ -1,5 +1,6 @@
 // Test-only outer design inverse on main295. The frozen 294 fixture stays intact.
-require('./hani-design-polish-2-preload.cjs'); // Exact outer input before this legacy reader is captured.
+require('./hani-design-polish-2-preload.cjs'); // Outermost exact design2 input.
+require('./hani-chibi-pack-3-preload.cjs');
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
 const bytes=readRawFileSync(path.join(__dirname,'fixtures/design-polish-1-main295-delta.json'));

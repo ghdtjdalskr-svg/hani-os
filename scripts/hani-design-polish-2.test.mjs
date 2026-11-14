@@ -3,7 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
-import inverse from './hani-design-polish-2-source.cjs';
+import inverse from './hani-design-polish-2-main297-input.cjs';
 import repository from './hani-test-repository-evidence.cjs';
 import {sampleBackgroundPixels} from './hani-design-polish-1-contrast.mjs';
 const {delta,hash,restore,project,readRawFileSync:read}=inverse,root=new URL('../',import.meta.url);
