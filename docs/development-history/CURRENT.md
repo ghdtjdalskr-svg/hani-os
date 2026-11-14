@@ -1,3 +1,11 @@
+# 2026-11-14 · tooling-297 · 297 배포 후속 시험 층 (도연 / Codex)
+
+`hani/tooling-297` / 전달·고정 base `bc3b22c`(#512, Git·원격 새 조회 없음). **297 version/history → frozen 치비3 → 296 → 디자인1 → 295 → 치비2 → 294 → THAW 이하 exact inverse. 비Git81파일868PASS/0FAIL/skip1·office46파일610PASS·297신규6/6·치비3 12PASS.** 운영·데이터511파일/기존fixture114/시험314단언/하위manifest 원문 보존, closure173→173→172→172→172→172→171→168→164/누락0·syntax15/PowerShell1/browser setup만 PASS. Git27목록·브라우저4·실제Edge/PNG10/Preview·Git커밋/push·배포/운영read-back은 서윤 인계. PNG·로그·snapshot·QA JSON은 tooling297-local 한 폴더(커밋 제외), 기존 비교PNG hash보존 이관. Notion 착수 insert_content 자동 승인 never 거절로 미반영·최종 갱신 대기는 인수인계 보존. [보고서](../../artifacts/chibi-pack-3/TOOLING-297.md) · [인수인계](handoffs/2026-11-14-tooling-297.md). 아래 타 담당·과거 기록 보존.
+
+# 2026-11-14 · 치비 3탄 · 생일 카드와 빈 화면 (도연 / Codex · ch3)
+
+`hani/chibi-pack-3` / 전달·로컬 origin/main `7a91982`(2.9.296+#510, Git·원격 새 조회 없음). **홈생일20명·일기빈·시청하루·월간지은, 투명1024시트1장222.72KiB·기존 renderer/persistent slot. 비Git79파일860PASS/0FAIL/skip1·신규12PASS·사무실46파일610PASS.** 치비3→main296 exact inverse, 기존fixture114/시험312/단언·숫자·hash·디자인2 CSS·표시/cache296·저장/Cloud 경로 보존. closure173→172→172→172→172→171→168→164/누락0·JS syntax16·browser 합성setup PASS. Git27파일 목록만·실제Edge/PNG10/Preview·Git커밋/push·배포열차 인계는 서윤 대기. Notion 착수 insert_content는 자동 승인 never 거절로 미반영, 최종 갱신 대기 내용 인수인계에 보존. [보고서](../../artifacts/chibi-pack-3/REPORT.md) · [인수인계](handoffs/2026-11-14-chibi-pack-3.md). 아래 타 담당·과거 기록 보존.
+
 # 2026-11-14 · tooling-296 · 296 배포 후속 시험 층 (도연 / Codex)
 
 `hani/tooling-296` / 전달·고정 base `56c3105`(#509, 원격 새 조회 없음·Git 금지). **296 version/history → frozen 디자인1 → 295 → 치비2 → 294 → THAW 이하 exact inverse. 비Git76파일 848PASS/0FAIL/skip1, office46파일 610PASS·Git27파일 목록만.** 신규296 5/5·raw closure172→172→172→172→171→168→164/누락0. 운영510파일 원문 일치·수정0, 기존fixture113/하위 manifest/시험 단언 보존·시험2개는 input import만. syntax11/11·helper9/9·PowerShell1/1·browser setup PASS, 실제 Edge·PNG·Git·commit/push·merge·배포·운영 read-back은 서윤 인계. 로컬 부산물은 tooling296-local에만 저장. Notion 착수 카드 생성/read-back 완료·최종 결과 갱신은 자동 승인 never 거절로 미반영(인수인계에 갱신 대기 보존). [짧은 보고서](../../artifacts/design-polish-1/TOOLING-296.md) · [인수인계](handoffs/2026-11-14-tooling-296.md). 아래 타 담당·과거 기록 보존.

@@ -1,4 +1,5 @@
 // Standalone test-only outer inverse. No fs adapter, runtime import or Git process.
+require('./hani-chibi-pack-3-preload.cjs');
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
 const layer=JSON.parse(readRawFileSync(path.join(__dirname,'fixtures/release-version-layers.json'),'utf8')).layers.find(r=>r.to==='2.9.296');

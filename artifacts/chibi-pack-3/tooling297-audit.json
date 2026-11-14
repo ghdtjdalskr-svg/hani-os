@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "base": "bc3b22c8fdaab3bd786980a5e0ca61e28ee3acde",
+  "changed": [
+    "scripts/fixtures/release-version-layers.json",
+    "scripts/hani-chibi-pack-3-source.cjs",
+    "scripts/hani-release-296.test.mjs",
+    "scripts/hani-release-version-layers.cjs"
+  ],
+  "newScripts": [
+    "scripts/hani-release-296-input.cjs",
+    "scripts/hani-release-297-preload.cjs",
+    "scripts/hani-release-297-source.cjs",
+    "scripts/hani-release-297.test.mjs"
+  ],
+  "productionUnchanged": 511,
+  "frozenFixturesUnchanged": 114,
+  "existingTestsAssertionsUnchanged": 314,
+  "existingTestsByteIdentical": 313,
+  "manifestLowerRowsByteIdentical": true,
+  "sourceOnlyOuterPreload": true,
+  "comparisonPng": {
+    "from": "artifacts/chibi-pack-3/compare.png",
+    "to": "artifacts/chibi-pack-3/tooling297-local/imported/compare.png",
+    "sha256": "2bd25960c4126d993b03a490a0f708c2d0b521c2bee9bd4cbbdf0641489d3291",
+    "preserved": true
+  },
+  "allTaskPngLogsInLocal": true,
+  "runtimeVersion": "2.9.297",
+  "git": "NOT_RUN",
+  "edge": "NOT_RUN"
+}
