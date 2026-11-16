@@ -396,7 +396,7 @@
         },
         {
           "id": "secretariat",
-          "label": "회장 비서실 · 가은/MUSE · 유나",
+          "label": "회장 비서실 · 가은/MUSE · 이음",
           "x": 300,
           "y": 50,
           "w": 240,
@@ -2871,15 +2871,15 @@
       "x": 480,
       "y": 175,
       "type": "desk",
-      "label": "유나 · 사원",
+      "label": "이음 · 사원",
       "capacity": 1,
-      "occupant": "yuna",
+      "occupant": "ieum",
       "rendererSeat": {
         "id": "desk_yuna",
         "zone": "desk",
         "x": 48,
         "y": 27.34375,
-        "owner": "yuna",
+        "owner": "ieum",
         "layer": 4,
         "box": [
           46.6,
@@ -2896,7 +2896,7 @@
       "x": 438,
       "y": 245,
       "type": "junction",
-      "label": "접근 · 유나 · 사원",
+      "label": "접근 · 이음 · 사원",
       "capacity": 1
     },
     {
@@ -2906,7 +2906,7 @@
       "x": 438,
       "y": 175,
       "type": "junction",
-      "label": "측면 접근 · 유나 · 사원",
+      "label": "측면 접근 · 이음 · 사원",
       "capacity": 1
     },
     {
@@ -3880,15 +3880,16 @@
       "x": 125,
       "y": 500,
       "type": "interaction",
-      "label": "안내 · 4F 유나에게 연결",
+      "label": "안내데스크 · 유나 사원",
       "capacity": 1,
+      "occupant": "yuna",
       "walkTarget": true,
       "rendererSeat": {
         "id": "reception",
         "zone": "reception",
         "x": 12.5,
         "y": 78.125,
-        "owner": null,
+        "owner": "yuna",
         "layer": 4,
         "box": [
           11.1,
@@ -3905,7 +3906,7 @@
       "x": 83,
       "y": 415,
       "type": "junction",
-      "label": "접근 · 안내 · 4F 유나에게 연결",
+      "label": "접근 · 안내데스크 · 유나 사원",
       "capacity": 1
     },
     {
@@ -8503,11 +8504,11 @@
       "name": "유나",
       "rank": "사원",
       "team": "strategy",
-      "homeAnchor": "desk_yuna",
+      "homeAnchor": "reception",
       "entity": "human_chibi",
       "registration": "registered",
       "provider": null,
-      "workAnchor": "desk_yuna",
+      "workAnchor": "reception",
       "meetingAnchor": "exec_meeting",
       "breakAnchor": "coffee_counter",
       "optionalEventAnchor": [],
@@ -8829,11 +8830,11 @@
       "name": "이음",
       "rank": "사원",
       "team": "strategy",
-      "homeAnchor": "desk_ieum",
+      "homeAnchor": "desk_yuna",
       "entity": "human_chibi",
       "registration": "registered",
       "provider": null,
-      "workAnchor": "desk_ieum",
+      "workAnchor": "desk_yuna",
       "meetingAnchor": "exec_meeting",
       "breakAnchor": "coffee_counter",
       "optionalEventAnchor": [
