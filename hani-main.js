@@ -2159,21 +2159,79 @@ const GROUP_COLLAPSE_KEY="hani_os_group_collapse_v1";
 const NAV_NEW_DATES=Object.freeze({investmentCommittee:"2026-10-11",board:"2026-10-11",organization:"2026-10-11",aura:"2026-10-11",aiBudget:"2026-10-11"});
 function navMenuIsNew(viewId,now=Date.now()){
   const date=NAV_NEW_DATES[viewId];if(!date)return false;
-  const day=Math.floor((now+9*3600000)/86400000),added=Math.floor(Date.parse(date+"T00:00:00Z")/86400000);
+  const ms=typeof now==="number"?now:Date.parse(now);if(!Number.isFinite(ms))return false;
+  const day=Math.floor((ms+9*3600000)/86400000),added=Math.floor(Date.parse(date+"T00:00:00Z")/86400000);
   return day>=added&&day<added+7;
 }
 let navNewBadgeTimer;
+function menuBadgeKstDay(now=Date.now()){
+  const ms=typeof now==="number"?now:Date.parse(now);
+  return Number.isFinite(ms)?new Date(ms+9*3600000).toISOString().slice(0,10):"";
+}
+function menuBadgeDateToKstDay(value){
+  const s=String(value||"").trim();
+  if(!s)return "";
+  if(/^\d{4}-\d{2}-\d{2}$/.test(s))return s;
+  if(/^\d{4}-\d{2}-\d{2}T/.test(s)&&!/(?:Z|[+-]\d{2}:?\d{2})$/.test(s))return s.slice(0,10);
+  const ms=Date.parse(s);
+  return Number.isFinite(ms)?new Date(ms+9*3600000).toISOString().slice(0,10):"";
+}
+function formatMenuBadgeCount(count){
+  const v=Number(count);
+  if(!Number.isFinite(v)||v<=0)return "";
+  const floored=Math.floor(v);
+  return floored>99?"99+":String(floored);
+}
+function computeMenuBadges(snapshot,runtime={},now=Date.now()){
+  const todayDay=menuBadgeKstDay(now),data=snapshot&&typeof snapshot==="object"?snapshot:{};
+  const rt=runtime&&typeof runtime==="object"?runtime:{};
+  const newEntry=active=>({kind:"new",active:!!active,count:active?1:0,text:active?"NEW":""});
+  const countEntry=nVal=>{
+    const count=Number.isFinite(Number(nVal))&&Number(nVal)>0?Math.floor(Number(nVal)):0;
+    return {kind:"count",active:count>0,count,text:formatMenuBadgeCount(count)};
+  };
+  const boardToday=(Array.isArray(data.boardPosts)?data.boardPosts:[]).some(p=>p&&!p.boardMeta&&!p.pending&&!p.draft&&!p.disposition&&menuBadgeDateToKstDay(p.publishedAt||p.createdAt)===todayDay);
+  const ilboDates=Array.isArray(rt.ilboDates)?rt.ilboDates:[];
+  const ilboToday=rt.ilboHasToday===true||ilboDates.some(d=>menuBadgeDateToKstDay(d)===todayDay);
+  const newsReadSet=rt.newsReadSet&&typeof rt.newsReadSet.has==="function"?rt.newsReadSet:null;
+  const newsToday=(Array.isArray(rt.newsPosts)?rt.newsPosts:[]).some(p=>p&&menuBadgeDateToKstDay(p.event_at||p.published_at||p.created_at)===todayDay&&(!newsReadSet||!p.post_id||!newsReadSet.has(p.post_id)));
+  const procNow=typeof now==="number"&&Number.isFinite(now)?new Date(now).toISOString():now;
+  const procRows=Array.isArray(rt.procrastinationItems)?rt.procrastinationItems:(typeof rt.projectProcrastination==="function"?rt.projectProcrastination(data,procNow):[]);
+  const procCount=(Array.isArray(procRows)?procRows:[]).filter(item=>item&&Number.isInteger(item.level)&&item.level>=1).length;
+  const tasksCount=(Array.isArray(data.tasks)?data.tasks:[]).filter(t=>t&&!t.done&&menuBadgeDateToKstDay(t.dueAt||t.due)===todayDay).length;
+  const studyCount=(Array.isArray(data.learningQuizzes)?data.learningQuizzes:[]).filter(q=>q&&q.status!=="completed"&&menuBadgeDateToKstDay(q.scheduledDate||q.date||q.createdAt)===todayDay).length;
+  const result={
+    board:newEntry(boardToday||navMenuIsNew("board",now)),
+    ilbo:newEntry(ilboToday||navMenuIsNew("ilbo",now)),
+    newsroom:newEntry(newsToday||navMenuIsNew("newsroom",now)),
+    procrastination:countEntry(procCount),
+    tasks:countEntry(tasksCount),
+    study:countEntry(studyCount)
+  };
+  for(const key of Object.keys(NAV_NEW_DATES)){
+    if(!Object.hasOwn(result,key))result[key]=newEntry(navMenuIsNew(key,now));
+  }
+  return result;
+}
+if(typeof window!=="undefined")window.HaniMenuBadges=Object.freeze({compute:computeMenuBadges,formatCount:formatMenuBadgeCount,kstDay:menuBadgeKstDay,dateToKstDay:menuBadgeDateToKstDay});
+window.addEventListener?.("hani-ilbo-ready",()=>renderNavNewBadges());
 function renderNavNewBadges(now=Date.now()){
+  let _snap={},_newsPosts=[],_newsReadSet=null;
+  try{_snap=state||{}}catch(_){}
+  try{_newsPosts=investmentNewsArchiveRuntime?.posts||[];_newsReadSet=investmentNewsArchiveRuntime?.readSet||null}catch(_){}
+  const _badges=computeMenuBadges(_snap,{ilboHasToday:window.HaniIlbo?.hasTodayIssue?.(now)===true,ilboDates:window.HaniIlbo?.issueDates?.()||[],newsPosts:_newsPosts,newsReadSet:_newsReadSet,projectProcrastination:window.HaniProcrastination?.project},now);
   window.HaniIlbo?.homeCard(now);window.HaniMilestones?.refresh();updateHomeNewsCount();
   window.HANI_CONTEXT_REMOTE_V1?.update();
   const badge=(label,active)=>{
     if(!label)return;
+    const cfg=active&&typeof active==="object"?active:{kind:"new",active:!!active,text:active?"NEW":"",count:active?1:0},on=!!(cfg.active&&cfg.text);
     let pill=label.nextElementSibling?.classList.contains("nav-new-pill")?label.nextElementSibling:null;
-    if(active&&!pill){pill=document.createElement("span");pill.className="nav-new-pill";pill.textContent="NEW";label.after(pill)}
+    if(on&&!pill){pill=document.createElement("span");pill.className="nav-new-pill";pill.hidden=true;label.after(pill)}
+    if(pill){if(on){pill.dataset.menuBadge=cfg.kind||"new";pill.textContent=cfg.text;pill.setAttribute("aria-label",cfg.kind==="count"?`${cfg.count}건 대기`:"새 항목")}else{pill.textContent="";pill.removeAttribute("aria-label")}}
     // Pill is a sibling so menuLabel's canonical text remains unchanged.
     if(pill)pill.hidden=!active;
   };
-  document.querySelectorAll("#sidebar .nav-btn[data-view]").forEach(button=>badge(button.querySelector(".txt"),navMenuIsNew(button.dataset.view,now)));
+  document.querySelectorAll("#sidebar .nav-btn[data-view]").forEach(button=>{const vid=button.dataset.view;if(vid==="study"&&button.querySelector("[data-study-pending]"))return;const label=button.querySelector(".txt"),e=Object.hasOwn(_badges,vid)?_badges[vid]:null;if(label&&e&&!label.nextElementSibling?.classList.contains("nav-new-pill")){const slot=document.createElement("span");slot.className="nav-new-pill";slot.hidden=true;slot.dataset.menuBadge=e.kind;label.after(slot)}badge(label,e&&e.active&&e.text?e:null)});
   document.querySelectorAll("#sidebar .group-head .nav-new-pill").forEach(pill=>pill.remove());
   clearTimeout(navNewBadgeTimer);
   navNewBadgeTimer=setTimeout(()=>renderNavNewBadges(),86400000-((Date.now()+9*3600000)%86400000)+30);
@@ -8588,7 +8646,7 @@ function renderMonthlyReport(){
 }
 
 
-function renderAll(){dataHubAuditSource();syncHaniDisplayVersion();normalizeHaniBrandLogos();refreshSelects();renderAccounts();renderInstruments();renderHoldings();renderTransactions();renderMonthlySnapshots();renderInvestmentQuickSuite();renderInvestmentHighlights();renderInvestmentAccountOverview();renderInvestmentNews();syncOverviewYearMirror();renderPortfolio();renderAssets();renderLedger();renderWishlist();renderBody();renderExercise();renderReading();renderMovies();renderDiary();renderCampus();renderTravel();renderCertificates();renderTasks();renderCalendar();renderTeam();renderNotes();renderHome();renderMonthlyReport();renderStoragePanel();window.HaniInvestmentCommittee?.render();/* PROCRASTINATION REFRESH */if(document.body.dataset.view==="procrastination")window.HaniProcrastination?.render(state)}
+function renderAll(){dataHubAuditSource();syncHaniDisplayVersion();normalizeHaniBrandLogos();refreshSelects();renderAccounts();renderInstruments();renderHoldings();renderTransactions();renderMonthlySnapshots();renderInvestmentQuickSuite();renderInvestmentHighlights();renderInvestmentAccountOverview();renderInvestmentNews();syncOverviewYearMirror();renderPortfolio();renderAssets();renderLedger();renderWishlist();renderBody();renderExercise();renderReading();renderMovies();renderDiary();renderCampus();renderTravel();renderCertificates();renderTasks();renderCalendar();renderTeam();renderNotes();renderHome();renderMonthlyReport();renderStoragePanel();window.HaniInvestmentCommittee?.render();/* PROCRASTINATION REFRESH */if(document.body.dataset.view==="procrastination")window.HaniProcrastination?.render(state);if(typeof renderNavNewBadges==="function")renderNavNewBadges()}
 function downloadJson(serialized,filename){const blob=new Blob([serialized],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function buildBackupPayload(value,exportedAt,mediaState=null){
   const payload={...value,meta:{...value.meta,lastBackupAt:exportedAt},version:VERSION,exportedAt,
