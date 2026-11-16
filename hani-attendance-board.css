@@ -1,0 +1,411 @@
+/* Scoped Home Attendance Stamp Board (#attendanceBoard). */
+#attendanceBoard {
+  --att-bg: linear-gradient(135deg, #fffdf9, #fff7eb);
+  --att-surface: #ffffff;
+  --att-surface-soft: #fffaf2;
+  --att-ink: #383028;
+  --att-muted: #7b6f62;
+  --att-line: #eadcc8;
+  --att-accent: #e07b42;
+  --att-accent-deep: #c9642d;
+  --att-gold: #d99b18;
+  --att-gold-bg: #fff5d9;
+  --att-rest-bg: #eef7ee;
+  --att-rest-line: #a7d4a9;
+  --att-rest-ink: #2b6b32;
+  --att-bubble: #ffffff;
+  --att-shadow: 0 8px 22px rgba(72, 52, 32, 0.06);
+
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin: 0 0 18px;
+  padding: 18px 20px;
+  border: 1px solid var(--att-line);
+  border-radius: 20px;
+  background: var(--att-bg);
+  color: var(--att-ink);
+  box-shadow: var(--att-shadow);
+  font-family: var(--ds-font, "SUIT Variable", "Pretendard Variable", Pretendard, -apple-system, sans-serif);
+  overflow-x: clip;
+}
+
+#attendanceBoard *,
+#attendanceBoard *::before,
+#attendanceBoard *::after {
+  box-sizing: border-box;
+}
+
+#attendanceBoard [hidden] {
+  display: none !important;
+}
+
+:root[data-theme="dark"] #attendanceBoard,
+[data-theme="dark"] #attendanceBoard,
+:root:is([data-finish="midnight-black"], [data-finish="titanium-graphite"]) #attendanceBoard {
+  --att-bg: linear-gradient(135deg, #211f2a, #28232d);
+  --att-surface: #1b1d27;
+  --att-surface-soft: #262938;
+  --att-ink: #f4f1eb;
+  --att-muted: #b6b1a9;
+  --att-line: #3e3a4b;
+  --att-accent: #f08d52;
+  --att-accent-deep: #d9763b;
+  --att-gold: #f0b93d;
+  --att-gold-bg: #3b301b;
+  --att-rest-bg: #1e3325;
+  --att-rest-line: #497e55;
+  --att-rest-ink: #9be0a5;
+  --att-bubble: #252836;
+  --att-shadow: 0 10px 26px rgba(0, 0, 0, 0.28);
+}
+
+#attendanceBoard.gold {
+  border: 2px solid var(--att-gold);
+  box-shadow: 0 8px 24px rgba(217, 155, 24, 0.22);
+}
+
+#attendanceBoard .att-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+#attendanceBoard .att-eyebrow {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--att-accent);
+}
+
+#attendanceBoard .att-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+#attendanceBoard .att-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+#attendanceBoard .att-badge.is-honor {
+  background: var(--att-gold-bg);
+  border: 1px solid var(--att-gold);
+  color: var(--att-ink);
+}
+
+#attendanceBoard .att-badge.is-pet {
+  background: var(--att-surface-soft);
+  border: 1px solid var(--att-line);
+  color: var(--att-muted);
+}
+
+#attendanceBoard .att-duty {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+  margin-bottom: 14px;
+}
+
+#attendanceBoard .face {
+  position: relative;
+  flex: 0 0 56px;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  border: 2px solid var(--att-line);
+  background: var(--att-surface-soft);
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+#attendanceBoard .face img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 20%;
+  display: block;
+}
+
+#attendanceBoard .face .att-pet-sprite {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background-repeat: no-repeat;
+  background-size: 500% auto;
+  background-position: 0% 100%;
+}
+
+#attendanceBoard .face .att-face-fallback {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--att-accent);
+}
+
+#attendanceBoard .face.hop {
+  animation: att-hop 0.9s ease 2;
+}
+
+#attendanceBoard .att-copy {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+#attendanceBoard .who {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  flex-wrap: wrap;
+  font-size: 14px;
+  font-weight: 800;
+  margin-bottom: 5px;
+}
+
+#attendanceBoard .who small {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--att-muted);
+}
+
+#attendanceBoard .bubble {
+  margin: 0;
+  padding: 10px 13px;
+  border-radius: 14px;
+  border: 1px solid var(--att-line);
+  background: var(--att-bubble);
+  font-size: 13.5px;
+  line-height: 1.5;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+#attendanceBoard .att-secret {
+  margin: 7px 0 0;
+  padding: 8px 11px;
+  border-radius: 11px;
+  border: 1px dashed var(--att-gold);
+  background: var(--att-gold-bg);
+  font-size: 12px;
+  line-height: 1.45;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+#attendanceBoard .att-week {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 8px;
+  min-width: 0;
+  margin: 12px 0;
+}
+
+#attendanceBoard .att-cell {
+  min-width: 0;
+  min-height: 62px;
+  padding: 6px 2px;
+  border-radius: 13px;
+  border: 1px solid var(--att-line);
+  background: var(--att-surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  text-align: center;
+}
+
+#attendanceBoard .att-cell .att-day {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--att-muted);
+}
+
+#attendanceBoard .att-cell .att-mark {
+  font-size: 18px;
+  line-height: 1.1;
+}
+
+#attendanceBoard .att-cell.is-today {
+  border: 2px dashed var(--att-accent);
+}
+
+#attendanceBoard .att-cell.stamped {
+  background: var(--att-gold-bg);
+  border-color: var(--att-gold);
+  border-style: solid;
+}
+
+#attendanceBoard .att-cell.is-today.stamped {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--att-accent) 28%, transparent);
+}
+
+#attendanceBoard .att-cell.rest {
+  background: var(--att-rest-bg);
+  border-color: var(--att-rest-line);
+  color: var(--att-rest-ink);
+}
+
+#attendanceBoard .att-cell.miss {
+  opacity: 0.48;
+}
+
+#attendanceBoard .att-cell.future .att-mark {
+  opacity: 0.42;
+}
+
+#attendanceBoard .att-cell.pop .att-mark {
+  animation: att-pop 0.36s cubic-bezier(0.22, 1.4, 0.36, 1) 1;
+}
+
+#attendanceBoard .att-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#attendanceBoard .att-streak {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--att-muted);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+#attendanceBoard .att-btn {
+  flex: 0 0 auto;
+  min-height: 40px;
+  padding: 9px 16px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--att-accent);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.12s ease, background 0.15s ease, opacity 0.15s ease;
+}
+
+#attendanceBoard .att-btn:hover:not(:disabled) {
+  background: var(--att-accent-deep);
+  transform: translateY(-1px);
+}
+
+#attendanceBoard .att-btn:focus-visible {
+  outline: 3px solid var(--att-accent);
+  outline-offset: 2px;
+}
+
+#attendanceBoard .att-btn:disabled {
+  background: var(--att-surface-soft);
+  border: 1px solid var(--att-line);
+  color: var(--att-muted);
+  cursor: default;
+  transform: none;
+}
+
+#attendanceBoard .att-notice {
+  margin: 10px 0 0;
+  padding: 8px 11px;
+  border-radius: 10px;
+  background: var(--att-surface-soft);
+  border: 1px solid var(--att-line);
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--att-ink);
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+#attendanceBoard .att-notice.is-warn {
+  border-color: #d9822b;
+}
+
+@keyframes att-hop {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-5px);
+  }
+  70% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes att-pop {
+  0% {
+    transform: scale(0.5);
+  }
+  70% {
+    transform: scale(1.22);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 640px) {
+  #attendanceBoard {
+    padding: 14px 13px;
+    border-radius: 17px;
+  }
+
+  #attendanceBoard .face {
+    flex-basis: 48px;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+  }
+
+  #attendanceBoard .att-week {
+    gap: 4px;
+  }
+
+  #attendanceBoard .att-cell {
+    min-height: 54px;
+    border-radius: 10px;
+    padding: 4px 1px;
+  }
+
+  #attendanceBoard .att-cell .att-mark {
+    font-size: 16px;
+  }
+
+  #attendanceBoard .att-foot {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #attendanceBoard .att-btn {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #attendanceBoard .face.hop,
+  #attendanceBoard .att-cell.pop .att-mark {
+    animation: none !important;
+  }
+
+  #attendanceBoard .att-btn {
+    transition: none !important;
+  }
+}

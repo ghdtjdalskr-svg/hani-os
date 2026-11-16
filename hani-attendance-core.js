@@ -1,12 +1,11 @@
 /* HANI OS · 출석 도장판 계산 엔진 (2안, 2026-11-17 서윤)
  * 화면 없음. 날짜 문자열 'YYYY-MM-DD'(회장님 기기 현지 날짜) 기준의 순수 계산만.
- * 저장은 회장님이 승인한 새 키 하나(hani_attendance_v1)만 쓰고, 다른 키는 읽지도 쓰지도 않는다.
- * hani_os_life_v23 은 이 파일에서 절대 다루지 않는다.
+ * 저장은 회장님이 승인한 새 키 하나(hani_attendance_v1)만 쓰고, 다른 키(핵심 생활 기록 포함)는 읽지도 쓰지도 않는다.
  */
 (function (root) {
   "use strict";
 
-  var KEY = "hani_attendance_v1";
+  const KEY = "hani_attendance_v1";
   var MILESTONES = [3, 7, 14, 30];
   var KEEP_DAYS = 400; // 저장 크기 상한(약 13개월)
   var DAY = 86400000;

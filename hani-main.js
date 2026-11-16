@@ -5449,6 +5449,7 @@ function renderHomeBirthday(date=new Date(),birthdays=CHIBI_STAFF_BIRTHDAYS){
 }
 function renderHome(){
   renderHomeBirthday();
+  window.HaniAttendanceBoard?.render();
   syncThemeCollections();
   renderHomeDialogue();const official=officialBrokerSorted(),latest=official.at(-1)||null,latestCalc=latest?brokerCalc(latest):null;
   renderHaniCareHome();
