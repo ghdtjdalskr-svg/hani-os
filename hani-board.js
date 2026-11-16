@@ -1433,9 +1433,9 @@
     const poll=posts().filter(published).find(p=>queenMonth(p)===month&&queenPollOpen(p,now));
     const season=value=>['winter','winter','spring','spring','spring','summer','summer','summer','autumn','autumn','autumn','winter'][Number(value.slice(5))-1];
     return [...(winner?[{kind:'queen-winner',kicker:'👑 '+Number(previous.slice(5))+'월의 퀸',title:winner.name+' · '+winner.rank,
-      copy:'왕관은 출근 완료! 오늘의 간식 회의도 기대할게요 ㅋㅋ',image:queenImages[previous]||bannerPortrait(winner.id),queenImage:queenImages[previous]?'solo':'portrait',queenSeason:season(previous),href:'#organization/people/'+winner.id}]:[]),
+      copy:'왕관은 출근 완료! 오늘의 간식 회의도 기대할게요 ㅋㅋ',image:queenImages[previous]||bannerPortrait(winner.id),queenImage:queenImages[previous]?'solo':'portrait',queenSeason:season(previous),tone:winner.id,href:'#organization/people/'+winner.id}]:[]),
       ...(poll?[{kind:'queen-vote',kicker:'HANI 사내 인기상',title:'👑 '+Number(month.slice(5))+'월의 퀸 투표 중',
-      copy:queenParticipation(poll,queenStandings(poll,now)),image:'./assets/team/hani-team-office.webp',queenSeason:season(month),href:'#board/post/'+encodeURIComponent(poll.id),postId:poll.id}]:[])];
+      copy:queenParticipation(poll,queenStandings(poll,now)),image:'./assets/team/hani-team-office-active-v2.jpg',queenSeason:season(month),tone:'queen-vote',href:'#board/post/'+encodeURIComponent(poll.id),postId:poll.id}]:[])];
   }
   // Read-only lounge promotion. Persistent nodes; a single visibility-owned timer.
   let bannerTimer=null,bannerIndex=0,bannerPaused=false;
@@ -1445,18 +1445,17 @@
     return window.HaniOrganizationHub?.portraitSource?.(id)||'./assets/team/hani-team-office.webp';
   }
   const loungeAds=Object.freeze([
-    {title:'☕ 하니 카페 멤버십',copy:'회장님 방문 시 아메리카노 사이즈업. 도장은 마음으로 찍어 드려요.',href:'#agentReview'},
-    {title:'🛗 5층 루프탑 오픈',copy:'오늘의 노을 맛집은 5층입니다. 예약은 없고 눈치만 있습니다.',href:'#agentReview'},
-    {title:'🚀 서윤의 배포 특가',copy:'오늘 배포하면 내일이 편해요. 환불은 롤백으로만 가능합니다.',href:'#dev'},
-    {title:'🍜 미르 야식 안내',copy:'3층 야근단 모집 중. 라면 물 조절은 관찰 데이터로 보장합니다.',href:'#agentReview'},
-    {title:'📈 하니 투자 리포트',copy:'감으로 사지 말고 리포트 보고 사세요 ㅋㅋ',href:'#investmentCommittee'},
-    {title:'🎭 주간 연속극',copy:'평일마다 새 이야기. 회장님 몰래 보는 건 금지입니다.',href:'#agentReview'}
+    {title:'☕ 하니 카페 멤버십',copy:'회장님 방문 시 아메리카노 사이즈업. 도장은 마음으로 찍어 드려요.',href:'#agentReview',image:'./assets/profiles/hani-profile-hani.webp',queenImage:'portrait',tone:'hani'},
+    {title:'🛗 5층 루프탑 오픈',copy:'오늘의 노을 맛집은 5층입니다. 예약은 없고 눈치만 있습니다.',href:'#agentReview',image:'./assets/building/floor-5f-217.webp',tone:'rooftop'},
+    {title:'🚀 서윤의 배포 특가',copy:'오늘 배포하면 내일이 편해요. 환불은 롤백으로만 가능합니다.',href:'#dev',image:'./assets/heroes/deployment-218.webp',tone:'seoyun'},
+    {title:'🍜 미르 야식 안내',copy:'3층 야근단 모집 중. 라면 물 조절은 관찰 데이터로 보장합니다.',href:'#agentReview',image:'./assets/profiles/hani-profile-mir.webp',queenImage:'portrait',tone:'mir'},
+    {title:'📈 하니 투자 리포트',copy:'감으로 사지 말고 리포트 보고 사세요 ㅋㅋ',href:'#investmentCommittee',image:'./assets/heroes/investment-226w.webp',tone:'jieun'},
+    {title:'🎭 주간 연속극',copy:'평일마다 새 이야기. 회장님 몰래 보는 건 금지입니다.',href:'#agentReview',image:'./assets/heroes/movie-218.webp',queenImage:'portrait',tone:'sooyeon'}
   ]);
   function dailyLoungeAds(now=Date.now()){
     const day=dayKey(now),first=Math.floor(Date.parse(day)/86400000)%loungeAds.length;
     const second=(first+1+hash(day)%5)%loungeAds.length;
-    return [first,second].map(i=>({...loungeAds[i],kind:'ad',kicker:'HANI 사내 소식',ad:true,
-      image:i===4?'./assets/heroes/investment-218.webp':'./assets/team/hani-team-office.webp'}));
+    return [first,second].map(i=>({...loungeAds[i],kind:'ad',kicker:'HANI 사내 소식',ad:true}));
   }
   function loungeBannerItems(now=Date.now()){
     const employee=window.HaniOrganizationHub?.overviewData?.(state,null,roster(),now)?.employee;
@@ -1464,10 +1463,10 @@
     const latest=rows=>(rows||[]).filter(r=>/^\d{4}-\d{2}-\d{2}$/.test(r.date)&&r.date<=dayKey(now)&&r.title&&!r.draft)
       .slice().sort((a,b)=>b.date.localeCompare(a.date)||b.number-a.number)[0];
     const ilbo=latest(bulletins.ilbo),market=latest(bulletins.market),best=weeklyBest(now)[0];
-    return [...queenSlides(now),...(employee?[{kind:'employee',kicker:'이달의 직원',title:employee.name,copy:'이번 달 게시글·공개 댓글 '+employee.count+'건 · 조직 소개에서 만나보세요.',image:bannerPortrait(employee.id),href:'#organization/people/'+employee.id}]:[]),
-      ...(ilbo?[{kind:'ilbo',kicker:'HANI 일보 · 제 '+ilbo.number+'호',title:'신문은 역시 HANI 일보!',copy:ilbo.title,image:'./assets/heroes/newsroom-218.webp',href:'#ilbo'}]:[]),
-      ...(best?[{kind:'best',kicker:'이번 주 라운지 베스트',title:displayText(best,best.title),copy:'이번 주 가장 많은 공감을 모은 이야기 · 라운지에서 이어 읽어요.',image:'./assets/team/hani-team-office.webp',href:'#board/post/'+encodeURIComponent(best.id),postId:best.id}]:[]),
-      ...(market?[{kind:'market',kicker:'이번 주 시장 4컷',title:market.title,copy:'제 '+market.number+'호 · '+market.date+' 발행 · 뉴스룸에서 함께 읽어요.',image:'./assets/heroes/newsroom-218.webp',href:'#newsroom'}]:[]),
+    return [...queenSlides(now),...(employee?[{kind:'employee',kicker:'이달의 직원',title:employee.name,copy:'이번 달 게시글·공개 댓글 '+employee.count+'건 · 조직 소개에서 만나보세요.',image:bannerPortrait(employee.id),queenImage:'portrait',tone:employee.id,href:'#organization/people/'+employee.id}]:[]),
+      ...(ilbo?[{kind:'ilbo',kicker:'HANI 일보 · 제 '+ilbo.number+'호',title:'신문은 역시 HANI 일보!',copy:ilbo.title,image:'./assets/heroes/ilbo-226w.webp',tone:'ilbo',href:'#ilbo'}]:[]),
+      ...(best?[{kind:'best',kicker:'이번 주 라운지 베스트',title:displayText(best,best.title),copy:'이번 주 가장 많은 공감을 모은 이야기 · 라운지에서 이어 읽어요.',image:'./assets/banner-preview-v1/company-board-community-v1.webp',tone:'best',href:'#board/post/'+encodeURIComponent(best.id),postId:best.id}]:[]),
+      ...(market?[{kind:'market',kicker:'이번 주 시장 4컷',title:market.title,copy:'제 '+market.number+'호 · '+market.date+' 발행 · 뉴스룸에서 함께 읽어요.',image:'./assets/heroes/newsroom-226w.webp',tone:'market',href:'#newsroom'}]:[]),
       ...dailyLoungeAds(now)];
   }
   function paintLoungeBanner(now=Date.now()){
@@ -1478,6 +1477,8 @@
     link.setAttribute('href',item.href);image.setAttribute('src',item.image);
     link.setAttribute('data-board-queen-season',item.queenSeason||'');
     link.setAttribute('data-board-queen-image',item.queenImage||'');
+    link.setAttribute('data-board-banner-tone',item.tone||'');
+    slot.setAttribute?.('data-board-banner-tone',item.tone||'');
     link.dataset.boardBannerPost=item.postId||'';
     for(const key of ['kicker','title','copy'])slot.querySelector('[data-board-banner-'+key+']').textContent=item[key];
     const chip=slot.querySelector('[data-board-banner-ad]');if(chip)chip.hidden=!item.ad;
