@@ -194,7 +194,7 @@
 #settlementQuickCheck .home-update-item>span{white-space:nowrap;font-size:12px;color:var(--text-primary)}
 
 /* Daily helper: existing launch ensemble faces; three staff use their office atlases. */
-#haniHelperBot{--helper-edge:58px;--helper-art-scale:1.038461538;--helper-safe-bottom:env(safe-area-inset-bottom,0px);position:fixed;z-index:86;width:var(--helper-edge);height:var(--helper-edge);font-family:inherit;color:#302a3d}
+#haniHelperBot{--helper-edge:90px;--helper-art-scale:1.653846154;--helper-safe-bottom:env(safe-area-inset-bottom,0px);position:fixed;z-index:86;width:var(--helper-edge);height:var(--helper-edge);font-family:inherit;color:#302a3d}
 #haniHelperBot[hidden],#haniHelperBot [hidden],.login-locked #haniHelperBot{display:none!important}
 #haniHelperBot button{font-family:inherit;cursor:pointer}
 /* Helper visibility preference: existing card/button styling, 44px touch targets. */
@@ -249,7 +249,7 @@
 #haniHelperBot nav button{min-height:36px;padding:7px 8px;border:1px solid #dfd2e6;border-radius:10px;background:#fff;color:#60466c;font-size:12px;font-weight:600}
 #haniHelperBot .hani-helper-news{font-size:11px;color:#735f7b;margin-top:12px;padding-top:10px;border-top:1px solid #eee5f0}
 #haniHelperBot [data-helper-reset]{display:block;margin:12px 0 0 auto;min-height:32px;padding:4px 10px;border:1px solid #dfd2e6;border-radius:8px;background:#fff;color:#60466c;font-size:12px}
-@media(max-width:850px){#haniHelperBot{--helper-edge:50px;--helper-art-scale:0.884615385}}
+@media(max-width:850px){#haniHelperBot{--helper-edge:78px;--helper-art-scale:1.423076923}}
 @keyframes hani-helper-tilt{0%,90%,100%{transform:rotate(0)}94%{transform:rotate(-6deg)}97%{transform:rotate(3deg)}}
 @keyframes hani-helper-bubble-in{from{opacity:0;transform:translateY(4px) scale(.96)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:no-preference){#haniHelperBot .hani-helper-art{animation:hani-helper-tilt 13s ease-in-out infinite}#haniHelperBot:focus-within .hani-helper-art,#haniHelperBot:hover .hani-helper-art{animation-play-state:paused}#haniHelperBot .hani-helper-bubble{animation:hani-helper-bubble-in 200ms ease-out}}

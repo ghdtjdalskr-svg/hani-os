@@ -295,9 +295,9 @@ function bubbleFixture({
   };
 }
 
-test('face size shrunk ~20% on PC & phone (>=44px touch target), dark & reduced-motion CSS present', () => {
-  assert.match(css, /#haniHelperBot\{[^}]*--helper-edge:58px;--helper-art-scale:1\.038461538;/);
-  assert.match(css, /@media\(max-width:850px\)\{#haniHelperBot\{--helper-edge:50px;--helper-art-scale:0\.884615385\}\}/);
+test('face size kept at original (PC 90px / phone 78px), dark & reduced-motion CSS present', () => {
+  assert.match(css, /#haniHelperBot\{[^}]*--helper-edge:90px;--helper-art-scale:1\.653846154;/);
+  assert.match(css, /@media\(max-width:850px\)\{#haniHelperBot\{--helper-edge:78px;--helper-art-scale:1\.423076923\}\}/);
   assert.match(css, /:root:is\(\[data-theme="dark"\],\[data-finish="midnight-black"\],\[data-finish="titanium-graphite"\]\) #haniHelperBot \.hani-helper-bubble/);
   assert.match(css, /@media\(prefers-reduced-motion:reduce\)\{#haniHelperBot \.hani-helper-art\{animation:none\}#haniHelperBot \.hani-helper-bubble\{animation:none;transition:none\}\}/);
   assert.match(css, /#haniHelperBot \.hani-helper-bubble\{[^}]*max-width:min\(248px,calc\(100vw - 24px\)\)/);
