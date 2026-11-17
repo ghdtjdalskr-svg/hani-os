@@ -1979,7 +1979,6 @@ const INVESTMENT_COMMITTEE_VIEW='investmentCommittee';
 function showView(id){
   if(id==="home"||id==="aura")syncThemeCollections();
   window.HANI_GOAL_PROGRESS?.syncGoalEditor?.(id);
-  if(typeof renderNavNewBadges==="function")renderNavNewBadges();
   const ORGANIZATION_VIEW_ID='organization',SETTINGS_VIEW_ID='settings';
   const committeeView=typeof INVESTMENT_COMMITTEE_VIEW==='string'?INVESTMENT_COMMITTEE_VIEW:'investmentCommittee';
   const committeeRoute=String(id||'').split('/');
@@ -1994,6 +1993,8 @@ function showView(id){
 const BOARD_VIEW_ID='board';
   if(boardHash)id=BOARD_VIEW_ID; // view id kept in a const so static DOM-id scans don't see a second id literal
   if(!$(id))id="home";
+  if(typeof markMenuSeen==="function")markMenuSeen(id);
+  if(typeof renderNavNewBadges==="function")renderNavNewBadges();
   clearTimeout(navigationTimer);navigationCurrent=NAVIGATION_VIEWS.has(id)?id:'';
   if(navigationBooted&&loginGateUnlocked)navigationPersist(navigationCurrent,0);
   document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));$(id).classList.add("active");
@@ -2154,6 +2155,53 @@ window.addEventListener("hashchange",()=>{const route=location.hash.slice(1);if(
 document.querySelectorAll("[data-view]").forEach(b=>b.addEventListener("click",()=>showView(b.dataset.view)));
 document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>showView(b.dataset.go)));
 if($("homeYunaQuick"))$("homeYunaQuick").onclick=()=>{showView("intake");setTimeout(()=>$("yunaInput")?.focus(),80)};
+const MENU_SEEN_KEY="hani_menu_seen_v1";
+const MENU_SEEN_VIEWS=new Set(["board","ilbo","newsroom"]);
+function menuSeenFormatKstIso(now=Date.now()){
+  const ms=now instanceof Date?now.getTime():typeof now==="number"?now:Date.parse(now);
+  if(!Number.isFinite(ms))return "";
+  return new Date(ms+9*3600000).toISOString().replace("Z","+09:00");
+}
+function menuSeenValidTimestamp(value){
+  if(typeof value!=="string")return "";
+  const s=value.trim();
+  if(!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(s))return "";
+  const day=s.slice(0,10),d=new Date(day+"T00:00:00Z");
+  if(!Number.isFinite(d.getTime())||d.toISOString().slice(0,10)!==day)return "";
+  const [hh,mm,ss]=s.slice(11,19).split(":").map(Number);
+  if(hh>23||mm>59||ss>59)return "";
+  return Number.isFinite(Date.parse(s))?s:"";
+}
+function readMenuSeen(){
+  try{
+    const raw=localStorage.getItem(MENU_SEEN_KEY);
+    if(!raw)return {};
+    const parsed=JSON.parse(raw);
+    if(!parsed||typeof parsed!=="object"||Array.isArray(parsed)||parsed.v!==1||!parsed.seen||typeof parsed.seen!=="object"||Array.isArray(parsed.seen))return {};
+    const out={};
+    for(const [k,v] of Object.entries(parsed.seen)){
+      if(!MENU_SEEN_VIEWS.has(k))continue;
+      const valid=menuSeenValidTimestamp(v);
+      if(valid)out[k]=valid;
+    }
+    return out;
+  }catch(_){
+    return {};
+  }
+}
+function markMenuSeen(viewId,now=Date.now()){
+  if(!MENU_SEEN_VIEWS.has(viewId))return false;
+  const stamp=menuSeenFormatKstIso(now);
+  if(!stamp)return false;
+  try{
+    const current=readMenuSeen();
+    const next={v:1,seen:{...current,[viewId]:stamp}};
+    localStorage.setItem(MENU_SEEN_KEY,JSON.stringify(next));
+    return true;
+  }catch(_){
+    return false;
+  }
+}
 const GROUP_COLLAPSE_KEY="hani_os_group_collapse_v1";
 // Menu freshness is a calendar-day window in KST; no read/unread persistence.
 const NAV_NEW_DATES=Object.freeze({investmentCommittee:"2026-10-11",board:"2026-10-11",organization:"2026-10-11",aura:"2026-10-11",aiBudget:"2026-10-11"});
@@ -2176,6 +2224,36 @@ function menuBadgeDateToKstDay(value){
   const ms=Date.parse(s);
   return Number.isFinite(ms)?new Date(ms+9*3600000).toISOString().slice(0,10):"";
 }
+function menuBadgeTimestampMs(value){
+  if(typeof value==="number")return Number.isFinite(value)?value:NaN;
+  const s=String(value||"").trim();
+  if(!s)return NaN;
+  if(/^\d{4}-\d{2}-\d{2}$/.test(s)){
+    const d=new Date(s+"T00:00:00Z");
+    if(!Number.isFinite(d.getTime())||d.toISOString().slice(0,10)!==s)return NaN;
+    return Date.parse(s+"T00:00:00+09:00");
+  }
+  const normalized=/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}/.test(s)?s.replace(" ","T"):s;
+  if(/^\d{4}-\d{2}-\d{2}T/.test(normalized)){
+    const day=normalized.slice(0,10),d=new Date(day+"T00:00:00Z");
+    if(!Number.isFinite(d.getTime())||d.toISOString().slice(0,10)!==day)return NaN;
+    const iso=/(?:Z|[+-]\d{2}:?\d{2})$/i.test(normalized)?normalized:normalized+"+09:00";
+    return Date.parse(iso);
+  }
+  return NaN;
+}
+function menuBadgeSeenMs(seenMap,viewId){
+  const raw=seenMap&&typeof seenMap==="object"?seenMap[viewId]:"";
+  if(typeof raw!=="string")return null;
+  const s=raw.trim();
+  if(!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(s))return null;
+  const day=s.slice(0,10),d=new Date(day+"T00:00:00Z");
+  if(!Number.isFinite(d.getTime())||d.toISOString().slice(0,10)!==day)return null;
+  const [hh,mm,ss]=s.slice(11,19).split(":").map(Number);
+  if(hh>23||mm>59||ss>59)return null;
+  const ms=Date.parse(s);
+  return Number.isFinite(ms)?ms:null;
+}
 function formatMenuBadgeCount(count){
   const v=Number(count);
   if(!Number.isFinite(v)||v<=0)return "";
@@ -2190,11 +2268,35 @@ function computeMenuBadges(snapshot,runtime={},now=Date.now()){
     const count=Number.isFinite(Number(nVal))&&Number(nVal)>0?Math.floor(Number(nVal)):0;
     return {kind:"count",active:count>0,count,text:formatMenuBadgeCount(count)};
   };
-  const boardToday=(Array.isArray(data.boardPosts)?data.boardPosts:[]).some(p=>p&&!p.boardMeta&&!p.pending&&!p.draft&&!p.disposition&&menuBadgeDateToKstDay(p.publishedAt||p.createdAt)===todayDay);
+  const seenMap=rt.menuSeen&&typeof rt.menuSeen==="object"&&!Array.isArray(rt.menuSeen)?rt.menuSeen:{};
+  const boardSeenMs=menuBadgeSeenMs(seenMap,"board");
+  const boardToday=(Array.isArray(data.boardPosts)?data.boardPosts:[]).some(p=>{
+    if(!p||p.boardMeta||p.pending||p.draft||p.disposition)return false;
+    const ts=p.publishedAt||p.createdAt;
+    if(boardSeenMs===null)return menuBadgeDateToKstDay(ts)===todayDay;
+    const ms=menuBadgeTimestampMs(ts);
+    return Number.isFinite(ms)&&ms>boardSeenMs;
+  });
   const ilboDates=Array.isArray(rt.ilboDates)?rt.ilboDates:[];
-  const ilboToday=rt.ilboHasToday===true||ilboDates.some(d=>menuBadgeDateToKstDay(d)===todayDay);
+  const ilboSeenMs=menuBadgeSeenMs(seenMap,"ilbo");
+  const ilboToday=ilboSeenMs===null
+    ?(rt.ilboHasToday===true||ilboDates.some(d=>menuBadgeDateToKstDay(d)===todayDay))
+    :(ilboDates.some(d=>{
+        const s=String(d||"").trim();
+        if(/^\d{4}-\d{2}-\d{2}$/.test(s)&&todayDay&&s>todayDay)return false;
+        const ms=menuBadgeTimestampMs(d);
+        return Number.isFinite(ms)&&ms>ilboSeenMs;
+      })||(rt.ilboHasToday===true&&!!todayDay&&menuBadgeTimestampMs(todayDay)>ilboSeenMs));
   const newsReadSet=rt.newsReadSet&&typeof rt.newsReadSet.has==="function"?rt.newsReadSet:null;
-  const newsToday=(Array.isArray(rt.newsPosts)?rt.newsPosts:[]).some(p=>p&&menuBadgeDateToKstDay(p.event_at||p.published_at||p.created_at)===todayDay&&(!newsReadSet||!p.post_id||!newsReadSet.has(p.post_id)));
+  const newsSeenMs=menuBadgeSeenMs(seenMap,"newsroom");
+  const newsToday=(Array.isArray(rt.newsPosts)?rt.newsPosts:[]).some(p=>{
+    const newsId=p?.post_id||p?.id;
+    if(!p||(newsReadSet&&newsId&&newsReadSet.has(newsId)))return false;
+    const ts=p.event_at||p.published_at||p.created_at;
+    if(newsSeenMs===null)return menuBadgeDateToKstDay(ts)===todayDay;
+    const ms=menuBadgeTimestampMs(ts);
+    return Number.isFinite(ms)&&ms>newsSeenMs;
+  });
   const procNow=typeof now==="number"&&Number.isFinite(now)?new Date(now).toISOString():now;
   const procRows=Array.isArray(rt.procrastinationItems)?rt.procrastinationItems:(typeof rt.projectProcrastination==="function"?rt.projectProcrastination(data,procNow):[]);
   const procCount=(Array.isArray(procRows)?procRows:[]).filter(item=>item&&Number.isInteger(item.level)&&item.level>=1).length;
@@ -2216,10 +2318,11 @@ function computeMenuBadges(snapshot,runtime={},now=Date.now()){
 if(typeof window!=="undefined")window.HaniMenuBadges=Object.freeze({compute:computeMenuBadges,formatCount:formatMenuBadgeCount,kstDay:menuBadgeKstDay,dateToKstDay:menuBadgeDateToKstDay});
 window.addEventListener?.("hani-ilbo-ready",()=>renderNavNewBadges());
 function renderNavNewBadges(now=Date.now()){
-  let _snap={},_newsPosts=[],_newsReadSet=null;
+  let _snap={},_newsPosts=[],_newsReadSet=null,_menuSeen={};
   try{_snap=state||{}}catch(_){}
   try{_newsPosts=investmentNewsArchiveRuntime?.posts||[];_newsReadSet=investmentNewsArchiveRuntime?.readSet||null}catch(_){}
-  const _badges=computeMenuBadges(_snap,{ilboHasToday:window.HaniIlbo?.hasTodayIssue?.(now)===true,ilboDates:window.HaniIlbo?.issueDates?.()||[],newsPosts:_newsPosts,newsReadSet:_newsReadSet,projectProcrastination:window.HaniProcrastination?.project},now);
+  try{_menuSeen=typeof readMenuSeen==="function"?readMenuSeen():{}}catch(_){}
+  const _badges=computeMenuBadges(_snap,{ilboHasToday:window.HaniIlbo?.hasTodayIssue?.(now)===true,ilboDates:window.HaniIlbo?.issueDates?.()||[],newsPosts:_newsPosts,newsReadSet:_newsReadSet,projectProcrastination:window.HaniProcrastination?.project,menuSeen:_menuSeen},now);
   window.HaniIlbo?.homeCard(now);window.HaniMilestones?.refresh();updateHomeNewsCount();
   window.HANI_CONTEXT_REMOTE_V1?.update();
   const badge=(label,active)=>{

@@ -116,3 +116,45 @@ node scripts/hani-release-package.mjs preflight --candidate HEAD
   - `hani-main.js:2158-2218`, `scripts/hani-menu-badges.test.mjs:145-166`, `hani-design-system.css:2268-2320` 재확인: 괄호/문법 오류 없음, `localStorage`/`sessionStorage`/`setInterval`/`MutationObserver` 미사용, `scripts/hani-menu-badges.test.mjs:217-218`의 1차 `#developmentTeamList` 정규식 2건 유지 확인, `HANI_DISPLAY_VERSION`/`?v=` 캐시 태그 미변경.
 - **미실행(환경 제약)**:
   - 현재 작업 환경에서 셸 명령 실행 도구가 비활성화되어 `node --test scripts/hani-menu-badges.test.mjs` 실제 실행 및 브라우저 실화면(390px/1440px) 확인은 수행하지 못함. 배포·QA 환경에서 테스트 및 화면 확인 필요.
+
+---
+
+## 3차 – 봤으면 꺼지기 (2026-11-17)
+
+### 1. 저장 형식 (`localStorage` 신규 키 1개)
+
+- **키 이름**: `hani_menu_seen_v1` (`MENU_SEEN_KEY`, 허용 대상 메뉴 `MENU_SEEN_VIEWS = Set(["board", "ilbo", "newsroom"])`)
+- **값 구조**:
+  ```json
+  {
+    "v": 1,
+    "seen": {
+      "board": "2026-11-18T09:30:00.000+09:00",
+      "ilbo": "2026-11-18T09:31:00.000+09:00",
+      "newsroom": "2026-11-18T09:32:00.000+09:00"
+    }
+  }
+  ```
+- 메뉴 ID → 마지막으로 `showView(id)`로 해당 화면을 연 시각(KST ISO, `+09:00`)만 저장하며, 글 내용·개수·개인 기록은 저장하지 않습니다.
+- `hani_os_life_v23`, Cloud, Supabase, `NAV_NEW_DATES` 고정 NEW, 숫자 배지(`procrastination`, `tasks`, `study`)는 변경하지 않았습니다.
+
+### 2. 바꾼 곳
+
+- **`hani-main.js:1995-1997` (`showView`)**:
+  - 라우트(`board/...` 포함) 및 fallback(`home`) 확정 직후 `markMenuSeen(id)`로 `board`/`ilbo`/`newsroom`의 열람 시각을 저장하고 즉시 `renderNavNewBadges()`를 호출해 기존 Persistent Slot(`<span class="nav-new-pill">`)을 갱신해 배지를 끕니다.
+- **`hani-main.js:2158-2204` (`hani_menu_seen_v1` 읽기·쓰기 헬퍼)**:
+  - `menuSeenFormatKstIso`, `menuSeenValidTimestamp`, `readMenuSeen`, `markMenuSeen` 추가.
+  - 읽기·쓰기는 모두 `try/catch`로 감싸 저장 실패 시 오류 없이 기존 화면 동작을 유지합니다.
+  - JSON 손상·버전 불일치·날짜/달력 형식 오류 시 해당 값을 무시하고 `removeItem`이나 덮어쓰기를 하지 않으며, 다음 정상 `showView` 저장 시 새 유효 값으로 대체됩니다.
+  - 쓰기는 `showView(id)`가 대상 메뉴를 열 때만 실행되며 `renderNavNewBadges`, `renderAll`, `setInterval`에서는 쓰지 않습니다.
+- **`hani-main.js:2227-2325` (`menuBadgeTimestampMs`, `menuBadgeSeenMs`, `computeMenuBadges`, `renderNavNewBadges`)**:
+  - `computeMenuBadges`는 순수 계산 함수로 유지하고 `runtime.menuSeen`을 전달받아 판단합니다(`localStorage` 미접근).
+  - `seen[id]`가 없으면 기존 "오늘(KST) 생긴 것" 기준을 유지하고, `seen[id]`가 있으면 "마지막으로 본 시각 이후 새로 생긴 것"이 있을 때만 `NEW`를 켭니다(단, `ilbo` 날짜 문자열 `YYYY-MM-DD`는 오늘 날짜 이하 발행분만 대상).
+  - `renderNavNewBadges()`가 `readMenuSeen()` 결과를 `runtime.menuSeen`으로 전달해 DOM을 갱신합니다.
+- **`scripts/hani-menu-seen.test.mjs` (신규 테스트)**:
+  - 키 이름 단일성(`hani_menu_seen_v1`), `hani_os_life_v23` 쓰기 0회, 보기 전 ON → `showView` 직후 OFF(Persistent Slot 재사용) → 새 항목 추가 후 재점등, 깨진 값 무시 및 `removeItem` 0회, 숫자 배지 및 `NAV_NEW_DATES` 불변 검증을 추가했습니다(기존 테스트·해시·픽스처 미수정).
+
+### 3. 검증 및 미확인 사항
+
+- **정적 확인**: `hani-main.js:1978-2006`, `2158-2350` 및 `scripts/hani-menu-seen.test.mjs` 코드 대조 완료. 기존 `scripts/hani-menu-badges.test.mjs`의 순수성 정규식 경계(`menuBadgeKstDay` ~ `savedCollapsedGroups` 내 `localStorage` 미포함) 유지 확인.
+- **미실행(환경 제약)**: 본 환경에서는 셸 명령 실행이 비활성화되어 있어 `node --test scripts/hani-menu-seen.test.mjs` 및 `node --test scripts/hani-menu-badges.test.mjs` 실제 실행은 수행하지 못했습니다. 통합 전 실행 확인이 필요합니다.
