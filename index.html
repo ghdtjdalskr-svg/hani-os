@@ -381,6 +381,10 @@
           <p class="home-monthly-check-copy">한 달에 한 번 입력하는 핵심 기록을 놓치지 않았는지 확인해요.</p>
           <div class="home-update-list" id="homeMonthlyUpdateList"></div>
         </div>
+        <button type="button" class="card home-ai-fuel-card" id="homeAiFuelCard" data-go="aiBudget" aria-label="AI 연료 · AI 주간 예산 화면으로 이동">
+          <div class="sh"><div><h3>AI 연료</h3><p class="sub" id="homeAiFuelStatus">브라우저 보관 요약 기준</p></div><span class="home-ai-fuel-more">자세히 ›</span></div>
+          <div class="home-ai-fuel-rows" id="homeAiFuelRows"></div>
+        </button>
         <div class="card home-team-panel home-team-panel-wide"><div class="home-team-head"><div><h3>내 라이프 파트너</h3><p>각 담당 영역으로 바로 이동해요.</p></div><button class="btn sm" data-go="aiTeam">전체보기 ›</button></div><div class="team ui26-team-strip" id="homeTeamList"></div></div>
       </div>
     </section>
@@ -1653,16 +1657,16 @@
       </div>
     </section>
     <section id="aiBudget" class="view">
-      <div class="card budget-connection-status"><span>최근 한도 확인</span><strong id="aiBudgetConnected">0 / 6</strong></div>
+      <div class="card budget-connection-status"><span>최근 한도 확인</span><strong id="aiBudgetConnected">0 / 5</strong></div>
       <div class="budget-toolbar"><button class="btn" id="aiBudgetRefresh" type="button">이 PC에서 사용량 가져오기</button><label class="btn" for="aiBudgetImport">요약 파일 가져오기</label><input id="aiBudgetImport" type="file" accept="application/json,.json" hidden><button class="btn" id="aiBudgetExport" type="button">요약 내보내기</button><button class="btn" type="button" data-go="aiTeam">AI 팀 보기</button></div>
       <p id="aiBudgetNotice" role="status" aria-live="polite"></p>
       <div class="budget-grid" id="aiBudgetCards"></div>
-      <div class="card budget-editor" id="aiBudgetEditor" hidden><h3>공식 화면에서 확인한 사용량 기록</h3><p class="sub">자동 조회값과 구분해 표시합니다. 회복 시각은 한국 시간으로 입력해 주세요.</p><form id="aiBudgetForm"><label for="aiBudgetAccount">계정</label><select id="aiBudgetAccount"><option value="codex-1">Codex 주력</option><option value="codex-2">Codex 보조</option><option value="claude-1">Claude</option><option value="gemini-1">Gemini</option></select>
+      <div class="card budget-editor" id="aiBudgetEditor" hidden><h3>공식 화면에서 확인한 사용량 기록</h3><p class="sub">자동 조회값과 구분해 표시합니다. 회복 시각은 한국 시간으로 입력해 주세요.</p><form id="aiBudgetForm"><label for="aiBudgetAccount">계정</label><select id="aiBudgetAccount"><option value="codex-1">GPT 주 계정</option><option value="codex-2">GPT 보조 계정</option><option value="claude-1">Claude</option><option value="gemini-pro">Gemini Pro (Google AI Pro)</option><option value="antigravity-cg">Antigravity · Claude/GPT</option></select>
       <div class="budget-input-row"><b>세션 한도</b><div class="budget-form-grid"><label>사용률 (%)<input id="budget-session-used" type="number" min="0" max="100" step="0.1" placeholder="확인한 값만 입력"></label><label>회복 예정 (한국 시간)<input id="budget-session-reset" type="datetime-local"></label></div></div>
       <div class="budget-input-row"><b>주간 한도</b><div class="budget-form-grid"><label>사용률 (%)<input id="budget-weekly-used" type="number" min="0" max="100" step="0.1" placeholder="확인한 값만 입력"></label><label>회복 예정 (한국 시간)<input id="budget-weekly-reset" type="datetime-local"></label></div></div>
       <div class="budget-input-row"><b>일간 한도</b><div class="budget-form-grid"><label>사용률 (%)<input id="budget-daily-used" type="number" min="0" max="100" step="0.1" placeholder="확인한 값만 입력"></label><label>회복 예정 (한국 시간)<input id="budget-daily-reset" type="datetime-local"></label></div></div>
       <div class="budget-actions"><button class="btn primary" type="submit">기록 저장</button><button class="btn" id="aiBudgetCancel" type="button">취소</button></div></form></div>
-      <div class="card budget-note"><p class="sub">구독 한도는 남은 토큰 수와 다릅니다. 회복 시각이 지나도 자동으로 100% 남음으로 바꾸지 않고 재확인을 기다립니다. Gemini CLI 세션 토큰은 Gemini 웹앱의 전체 사용량을 뜻하지 않습니다.</p><p class="sub" id="aiBudgetSaveState"></p><details class="activity-trend-info"><summary aria-label="aiBudget 연결 방법">ⓘ 연결 방법</summary><p class="sub">PC 연결은 로컬 사용량 도우미가 실행 중일 때 사용할 수 있어요. 휴대폰은 요약 파일 가져오기와 직접 기록을 지원하며, 기기 간 자동 공유는 아직 연결하지 않았습니다.</p></details></div>
+      <div class="card budget-note"><details class="activity-trend-info budget-info-details"><summary aria-label="aiBudget 표시 기준 및 연결 방법">ⓘ 표시 기준 · 연결 방법</summary><p class="sub">구독 한도는 남은 토큰 수와 다릅니다. 회복 시각이 지나도 자동으로 100% 남음으로 바꾸지 않고 재확인을 기다립니다. Gemini CLI 세션 토큰은 Gemini 웹앱의 전체 사용량을 뜻하지 않습니다.</p><p class="sub" id="aiBudgetSaveState"></p><p class="sub">PC 연결은 로컬 사용량 도우미가 실행 중일 때 사용할 수 있어요. 휴대폰은 요약 파일 가져오기와 직접 기록을 지원하며, 기기 간 자동 공유는 아직 연결하지 않았습니다.</p></details></div>
     </section>
     <section id="geminiReports" class="view">
   <p id="geminiReportStatus" role="status" aria-live="polite" hidden></p>
