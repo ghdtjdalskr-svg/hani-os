@@ -8,11 +8,11 @@
   const source={ 'codex-app-server':'Codex 공식 조회','codex-app':'Codex 앱 조회','claude-statusline':'Claude Code 제공','claude-plan-usage':'Claude 플랜 사용률 가져오기','claude-code-transcripts':'Claude Code 로컬 집계','official-screen':'공식 화면 확인','gemini-cli':'Gemini CLI 세션','gemini-cli-logs':'Gemini CLI 로컬 집계','antigravity':'Antigravity /usage 조회','manual':'직접 기록'};
   const states={unknown:'미확인',expired:'회복 시각 경과 · 재조회 필요',stale:'갱신 필요',limited:'한도 도달',low:'잔여 한도 적음',fresh:'최근 확인'};
   const STALE_OLD_MS=6*3600000;
-  // gemini-cli stays hidden; codex-2 is visible again as GPT 보조 계정 while preserving core slot schema.
-  const hiddenSlots=['gemini-cli'],visibleSlots=core.slots.filter(s=>!hiddenSlots.includes(s.id));
-  const slotLabels={'codex-1':'GPT 주 계정','codex-2':'GPT 보조 계정'};
+  // gemini-cli and codex-2 stay hidden (GPT 보조 계정 해지, 회장님 11/18); core slot schema unchanged.
+  const hiddenSlots=['gemini-cli','codex-2'],visibleSlots=core.slots.filter(s=>!hiddenSlots.includes(s.id));
+  const slotLabels={};
   const slotLabel=s=>slotLabels[s.id]||s.label;
-  const dashboardLabels={'codex-1':'GPT 주 계정','codex-2':'GPT 보조 계정','claude-1':'Claude','gemini-pro':'Gemini Pro','antigravity-cg':'Antigravity · C/G'};
+  const dashboardLabels={'codex-1':'GPT','claude-1':'Claude','gemini-pro':'Gemini Pro','antigravity-cg':'Antigravity · C/G'};
   const dashboardLabel=s=>dashboardLabels[s.id]||slotLabel(s);
   const kinds={session:'5시간 한도',weekly:'주간 한도',daily:'일간 한도',other:'기타 한도'};
   function relativeAge(v,now=Date.now()){

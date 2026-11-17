@@ -79,20 +79,20 @@ vm.runInContext(budgetJs, ui);
 const card = id => node('aiBudgetCards').innerHTML.match(new RegExp(`<article[^>]*data-budget-slot="${id}"[\\s\\S]*?</article>`))?.[0] || '';
 const fuelRow = id => node('homeAiFuelRows').innerHTML.match(new RegExp(`<div[^>]*data-fuel-slot="${id}"[\\s\\S]*?</div>`))?.[0] || '';
 
-// 1. Initial empty state: 0 writes, codex-2 visible, gemini-cli hidden, no progress bar drawn without values.
+// 1. Initial empty state: 0 writes, codex-2 (cancelled) and gemini-cli hidden, no progress bar drawn without values.
 assert.equal(writes.length, 0, 'initial render must not call setItem');
 assert.deepEqual(
   [...node('aiBudgetCards').innerHTML.matchAll(/data-budget-slot="([^"]+)"/g)].map(m => m[1]),
-  ['codex-1', 'codex-2', 'claude-1', 'gemini-pro', 'antigravity-cg']
+  ['codex-1', 'claude-1', 'gemini-pro', 'antigravity-cg']
 );
-assert.match(card('codex-1'), /GPT 주 계정/);
-assert.match(card('codex-2'), /GPT 보조 계정/);
-assert.match(card('codex-2'), /아직 수집 전/);
-assert.match(card('codex-2'), /미확인/);
-assert.equal(card('codex-2').includes('budget-meter'), false, 'empty codex-2 card must not draw a progress bar');
-assert.equal(card('codex-2').includes('role="meter"'), false);
+assert.match(card('codex-1'), /Codex 주력/);
+assert.match(card('codex-1'), /아직 수집 전/);
+assert.match(card('codex-1'), /미확인/);
+assert.equal(card('codex-1').includes('budget-meter'), false, 'empty card must not draw a progress bar');
+assert.equal(card('codex-1').includes('role="meter"'), false);
+assert.equal(card('codex-2'), '', 'cancelled GPT backup account stays hidden');
 assert.equal(node('aiBudgetCards').innerHTML.includes('data-budget-slot="gemini-cli"'), false, 'gemini-cli remains hidden');
-assert.match(node('aiBudgetAccount').innerHTML, /value="codex-2"[^>]*>GPT 보조 계정/);
+assert.equal(node('aiBudgetAccount').innerHTML.includes('codex-2'), false);
 assert.equal(node('aiBudgetAccount').innerHTML.includes('gemini-cli'), false);
 
 // 2. >6h stale chip & fresh relative age & reset countdown chip & missing-value no-bar rule.
@@ -181,19 +181,17 @@ fetchImpl = async () => ({ok: true, text: async () => JSON.stringify({schemaVers
 await node('aiBudgetRefresh').handlers.click();
 assert.equal(writes.length, 2);
 assert.match(card('codex-1'), /이번에는 못 가져왔어요 · 이전 값 표시 중/);
-assert.match(card('codex-2'), /이번에는 못 가져왔어요 · 이전 값 표시 중/);
 assert.equal(card('gemini-pro').includes('이번에는 못 가져왔어요'), false);
 
-// 5. Manual entry on codex-2 works and updates dashboard.
-node('aiBudgetAccount').value = 'codex-2';
+// 5. Manual entry on codex-1 works and updates dashboard.
+node('aiBudgetAccount').value = 'codex-1';
 node('budget-session-used').value = '25';
 node('budget-session-reset').value = '';
 node('aiBudgetForm').handlers.submit({preventDefault() {}});
 assert.equal(writes.length, 3);
-assert.match(card('codex-2'), /75%/);
-assert.match(card('codex-2'), /width:25%/);
-assert.match(card('codex-2'), /마지막 갱신 0분 전/);
-assert.equal(card('codex-2').includes('아직 수집 전'), false);
+assert.match(card('codex-1'), /75%/);
+assert.match(card('codex-1'), /width:25%/);
+assert.match(card('codex-1'), /마지막 갱신 0분 전/);
 
 // 6. Dashboard "AI 연료" card is strictly read-only and renders compact 1-line rows.
 const writesBeforeDash = writes.length;
@@ -203,14 +201,10 @@ assert.equal(writes.length, writesBeforeDash, 'dashboard render must be strictly
 assert.equal(removes.length, 0);
 assert.equal(clears, 0);
 
-assert.match(fuelRow('codex-1'), /GPT 주 계정/);
+assert.match(fuelRow('codex-1'), />GPT</);
 assert.match(fuelRow('codex-1'), /home-ai-fuel-bar/);
-assert.match(fuelRow('codex-1'), /width:42%/);
-assert.match(fuelRow('codex-1'), /42%/);
-
-assert.match(fuelRow('codex-2'), /GPT 보조 계정/);
-assert.match(fuelRow('codex-2'), /width:25%/);
-assert.match(fuelRow('codex-2'), /25%/);
+assert.match(fuelRow('codex-1'), /width:25%/);
+assert.equal(fuelRow('codex-2'), '');
 
 assert.match(fuelRow('claude-1'), /미확인/);
 assert.equal(fuelRow('claude-1').includes('home-ai-fuel-bar'), false, 'dashboard must not draw bar when value missing');
@@ -227,4 +221,4 @@ assert.match(budgetCss, /@media\(max-width:480px\)/);
 assert.match(budgetCss, /midnight-black/);
 assert.match(budgetCss, /titanium-graphite/);
 
-console.log('PASS: AI budget view — 0 extra writes, >6h stale chip, failure chip, codex-2 visible/gemini-cli hidden, no bar without value, read-only dashboard card.');
+console.log('PASS: AI budget view — 0 extra writes, >6h stale chip, failure chip, codex-2/gemini-cli hidden, no bar without value, read-only dashboard card.');
