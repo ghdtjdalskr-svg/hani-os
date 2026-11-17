@@ -1,0 +1,52 @@
+{
+ "base": "http://localhost:8748/",
+ "size": "1280x900",
+ "shots": [
+  {
+   "file": "porcelain-cream__investment.jpg",
+   "finish": "porcelain-cream",
+   "overflowX": false
+  },
+  {
+   "file": "porcelain-cream__organization.jpg",
+   "finish": "porcelain-cream",
+   "overflowX": false
+  },
+  {
+   "file": "porcelain-cream__home.jpg",
+   "finish": "porcelain-cream",
+   "overflowX": false
+  },
+  {
+   "file": "midnight-black__investment.jpg",
+   "finish": "midnight-black",
+   "overflowX": false
+  },
+  {
+   "file": "midnight-black__organization.jpg",
+   "finish": "midnight-black",
+   "overflowX": false
+  },
+  {
+   "file": "midnight-black__home.jpg",
+   "finish": "midnight-black",
+   "overflowX": false
+  },
+  {
+   "file": "sakura-pink__investment.jpg",
+   "finish": "sakura-pink",
+   "overflowX": false
+  },
+  {
+   "file": "sakura-pink__organization.jpg",
+   "finish": "sakura-pink",
+   "overflowX": false
+  },
+  {
+   "file": "sakura-pink__home.jpg",
+   "finish": "sakura-pink",
+   "overflowX": false
+  }
+ ],
+ "jsErrors": []
+}

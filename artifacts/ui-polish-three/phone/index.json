@@ -1,0 +1,17 @@
+{
+ "base": "http://localhost:8748/",
+ "size": "390x844",
+ "shots": [
+  {
+   "file": "porcelain-cream__investment.jpg",
+   "finish": "porcelain-cream",
+   "overflowX": false
+  },
+  {
+   "file": "porcelain-cream__organization.jpg",
+   "finish": "porcelain-cream",
+   "overflowX": false
+  }
+ ],
+ "jsErrors": []
+}

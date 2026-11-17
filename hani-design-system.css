@@ -2213,8 +2213,8 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 #app #board .board-tabs .board-tab[data-board-filter="LIFE"]{color:#28664c}
 #app #investment :is(.investment-tabs-main,.investment-live,.broker-stats){background:#fff!important;color:#28374c!important}
 #app #investment .investment-tabs-main .tab:not(.active){color:#4d4660!important;background:#fff!important}
-#app #investment :is(.investment-live small,.broker-stats .label){color:#4d4660!important;background:#fff!important}
-#app #investment .investment-live small{display:inline-block;padding:6px 8px!important;line-height:1.5!important}
+#app #investment :is(.investment-live small,.broker-stats .label){color:var(--text-secondary,#4d4660)!important;background:transparent!important}
+#app #investment .investment-live small{display:block;padding:0!important;line-height:1.35!important}
 #app #study .study-main-empty{background:#fff!important;color:#4d4660!important}
 #app #study .study-main-empty :is(b,p,span,.sub){color:#4d4660!important}
 #app #diary [data-diary-view]{background:#fff!important;color:#49385f!important}
