@@ -2267,3 +2267,106 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
   #app #ilbo :is(h1,h2,h3,.ilbo-headline){line-height:1.4}
 }
 #app #aiWork .ai-team-profile-role{color:#49385f!important;background:#f6f4fa!important;padding:6px 8px!important;line-height:1.5!important}
+
+/* ============================================================================
+ * hero banner dark preview (preview-only; midnight-black & titanium-graphite)
+ * Switch via <html data-banner-variant="a"> (default) or <html data-banner-variant="b">.
+ * Light finishes stay untouched. No JS/state/storage changes.
+ * ========================================================================== */
+
+/* Shared dark-finish base tokens, typography contrast, status pill, avatar & quote bubble */
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app :is(.ds-main-character-banner,#home>.ds-main-character-banner,#milestones>.ds-main-character-banner){
+  --text:var(--text-primary);
+  --ink:var(--text-primary);
+  --ui-ink:var(--text-primary);
+  --ui-sub:var(--text-secondary);
+  --ds-ink:var(--text-primary);
+  --ds-muted:var(--text-secondary);
+  --muted:var(--text-secondary);
+  --mcb-ink:var(--text-primary);
+  --mcb-muted:var(--text-secondary);
+  --mcb-tone:#9a72de;
+  --mcb-accent:#cbb8fa;
+  --mcb-agent-accent:var(--mcb-accent);
+  --mcb-up:#ff8a9b;
+  --mcb-down:#8ac2ff;
+  --mcb-status-bg:var(--surface-raised);
+  --mcb-status-line:var(--border-strong);
+  --mcb-quote-bg:var(--surface-raised);
+  --mcb-quote-border:var(--border-strong);
+  color-scheme:dark;
+  color:var(--text-primary);
+}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app .view>.ds-main-character-banner .sub{color:var(--mcb-muted)}
+
+/* Dark-finish luminous accents (>= 4.5:1) + muted ambient glow tone per category */
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app :is(.ds-main-character-banner,#home>.ds-main-character-banner).ds-tone-office{--mcb-tone:#9a72de;--mcb-accent:#cbb8fa}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app :is(.ds-main-character-banner,#home>.ds-main-character-banner).ds-tone-finance{--mcb-tone:#d49b35;--mcb-accent:#f2c97d}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app :is(.ds-main-character-banner,#home>.ds-main-character-banner).ds-tone-health{--mcb-tone:#2eb886;--mcb-accent:#7ae0b8}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app :is(.ds-main-character-banner,#home>.ds-main-character-banner).ds-tone-growth{--mcb-tone:#e07b42;--mcb-accent:#f6b287}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app :is(.ds-main-character-banner,#home>.ds-main-character-banner).ds-tone-life{--mcb-tone:#2ea7c7;--mcb-accent:#7fd4eb}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app :is(.ds-main-character-banner,#home>.ds-main-character-banner).ds-tone-work{--mcb-tone:#5a8de0;--mcb-accent:#9ec2fa}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app :is(.ds-main-character-banner,#home>.ds-main-character-banner).ds-tone-company{--mcb-tone:#b86fa3;--mcb-accent:#e5b2d6}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app :is(.ds-main-character-banner,#home>.ds-main-character-banner).ds-tone-system{--mcb-tone:#6488bd;--mcb-accent:#d2def2}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app :is(.ds-main-character-banner,#home>.ds-main-character-banner).ds-tone-sports{--mcb-tone:#5488d8;--mcb-accent:#9ec4ff}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app #milestones>.ds-main-character-banner.ds-tone-company{--mcb-tone:#c7a258;--mcb-accent:#e7ce93}
+
+/* Variant A (default, or data-banner-variant="a"): dark panel + 8~12% category glow, seamless fade to artwork */
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]):not([data-banner-variant="b"]) #app :is(.ds-main-character-banner,#home>.ds-main-character-banner,#milestones>.ds-main-character-banner){
+  --mcb-bg:radial-gradient(ellipse 60% 110% at 14% 12%,color-mix(in srgb,var(--mcb-tone) 11%,transparent),transparent 72%),linear-gradient(135deg,color-mix(in srgb,var(--mcb-tone) 9%,var(--surface-panel)) 0%,var(--surface-panel) 62%,var(--surface-canvas) 100%);
+  --mcb-border:color-mix(in srgb,var(--mcb-tone) 22%,var(--border-subtle));
+  --mcb-overlay:linear-gradient(90deg,color-mix(in srgb,var(--mcb-tone) 9%,var(--surface-panel)) 0%,color-mix(in srgb,var(--mcb-tone) 7%,var(--surface-panel)) 40%,color-mix(in srgb,var(--surface-panel) 84%,transparent) 56%,color-mix(in srgb,var(--surface-panel) 36%,transparent) 72%,transparent 88%);
+  --mcb-overlay-mobile:linear-gradient(90deg,color-mix(in srgb,var(--mcb-tone) 9%,var(--surface-panel)) 0%,color-mix(in srgb,var(--surface-panel) 90%,transparent) 62%,color-mix(in srgb,var(--surface-panel) 78%,transparent) 100%);
+  --mcb-quote-bg:color-mix(in srgb,var(--mcb-tone) 8%,var(--surface-raised));
+  --mcb-quote-border:color-mix(in srgb,var(--mcb-tone) 28%,var(--border-strong));
+  box-shadow:0 10px 28px color-mix(in srgb,var(--surface-canvas) 75%,#000);
+}
+
+/* Variant B (data-banner-variant="b"): illustration-first full-bleed artwork + left dark scrim + Finish tokens */
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"])[data-banner-variant="b"] #app :is(.ds-main-character-banner,#home>.ds-main-character-banner,#milestones>.ds-main-character-banner){
+  --mcb-bg:var(--surface-panel);
+  --mcb-border:var(--border-strong);
+  --mcb-muted:color-mix(in srgb,var(--text-primary) 86%,var(--text-secondary));
+  --mcb-scene-width:100%;
+  --mcb-scene-fit:cover;
+  --mcb-scene-mask:none;
+  --mcb-overlay:linear-gradient(90deg,color-mix(in srgb,var(--surface-canvas) 88%,transparent) 0%,color-mix(in srgb,var(--surface-canvas) 84%,transparent) 38%,color-mix(in srgb,var(--surface-canvas) 54%,transparent) 54%,color-mix(in srgb,var(--surface-canvas) 16%,transparent) 66%,transparent 76%);
+  --mcb-overlay-mobile:linear-gradient(180deg,color-mix(in srgb,var(--surface-canvas) 90%,transparent) 0%,color-mix(in srgb,var(--surface-canvas) 86%,transparent) 58%,color-mix(in srgb,var(--surface-canvas) 76%,transparent) 100%);
+  --mcb-quote-bg:color-mix(in srgb,var(--surface-raised) 88%,var(--surface-canvas));
+  --mcb-quote-border:var(--border-strong);
+  box-shadow:0 14px 34px color-mix(in srgb,var(--surface-canvas) 85%,#000),inset 0 1px 0 color-mix(in srgb,var(--structure-accent) 18%,transparent);
+}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"])[data-banner-variant="b"] #app .ds-main-character-banner :is(.ds-main-character-banner__title,.ds-main-character-banner__description){
+  text-shadow:0 1px 10px color-mix(in srgb,var(--surface-canvas) 90%,transparent);
+}
+@media(min-width:701px){
+  :root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"])[data-banner-variant="b"] #app :is(.ds-main-character-banner,#home>.ds-main-character-banner):after{background-size:100% 100%}
+}
+@media(max-width:700px){
+  :root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"])[data-banner-variant="b"] #app .view>:is(.ds-main-character-banner,#home>.ds-main-character-banner){
+    --mcb-scene-width:100%;
+    --mcb-scene-fit:cover;
+    --mcb-scene-fit-mobile:cover!important;
+    --mcb-scene-mask:none;
+  }
+}
+
+/* Shared dark-finish avatar frame & "○○ 한마디" speech bubble (>= 4.5:1 contrast) */
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app .ds-main-character-banner .ai-avatar{
+  background-color:var(--surface-raised)!important;
+  border-color:var(--mcb-quote-border)!important;
+  box-shadow:0 8px 20px rgba(0,0,0,.45)!important;
+}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app .ds-main-character-banner .ai-quote{
+  border-color:var(--mcb-quote-border)!important;
+  background:var(--mcb-quote-bg)!important;
+  box-shadow:0 8px 22px rgba(0,0,0,.4)!important;
+}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app .ds-main-character-banner .ai-quote:after{
+  border-left-color:var(--mcb-quote-border)!important;
+  border-bottom-color:var(--mcb-quote-border)!important;
+  background:var(--mcb-quote-bg)!important;
+}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app .ds-main-character-banner .ai-quote b{
+  color:var(--text-primary)!important;
+}
