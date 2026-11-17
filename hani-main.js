@@ -1699,7 +1699,7 @@ const canonicalProfileImages=Object.freeze({
 const agentImages=Object.freeze({...canonicalProfileImages,nauen:canonicalProfileImages.naeun,suyeon:canonicalProfileImages.sooyeon});
 // Small avatars (30-150px) use pre-resized 256px thumbnails; the 720px originals look jagged when the browser shrinks them 10-20x.
 const sidebarAgentImages=Object.freeze(Object.fromEntries(Object.entries(agentImages).map(([k,v])=>[k,v.replace("./assets/profiles/","./assets/profiles/thumb/").replace(/\.webp$/,"-256.webp")])));
-const pageAgentImage={home:"hani",investment:"hani",investmentCommittee:"hani",newsroom:"hani",asset:"jieun",ledger:"jieun",cards:"jieun",wishlist:"haru",diet:"nauen",exercise:"nauen",travel:"suyeon",university:"hina",study:"hina",certificate:"hina",reading:"haru",movie:"minji",diary:"minji",game:"suyeon",settings:"hani",work:"sua",tasks:"sua",calendar:"sua",drive:"sua",dev:"hani",deployment:"hani",intake:"yuna",agentReview:"hani",monthlyReport:"hani",policy:"hani",aiTeam:"hani"};
+const pageAgentImage={home:"hani",investment:"hani",investmentCommittee:"hani",newsroom:"hani",asset:"jieun",ledger:"jieun",cards:"jieun",wishlist:"haru",diet:"nauen",exercise:"nauen",travel:"suyeon",university:"hina",study:"hina",certificate:"hina",reading:"haru",movie:"minji",diary:"minji",game:"suyeon",settings:"hani",work:"sua",tasks:"sua",calendar:"sua",drive:"sua",dev:"hani",deployment:"hani",intake:"yuna",agentReview:"hani",monthlyReport:"hani",policy:"hani",aiTeam:"hani",aiWork:"dohyun",geminiReports:"serin",aiBudget:"seoyun"};
 const YUNA_AVATAR=canonicalProfileImages.yuna;
 const YUNA_PORTRAIT=canonicalProfileImages.yuna;
 
