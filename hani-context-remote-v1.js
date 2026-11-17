@@ -10,12 +10,12 @@
     geminiReports:{primary:"현재 화면 보기",agent:"SERIN",recent:"최근 항목",recentTarget:"#geminiReports",sections:[["현재 화면","#geminiReports"]]},
     aiWork:{primary:"현재 화면 보기",agent:"DOHYUN",recent:"최근 항목",recentTarget:"#aiWork",sections:[["현재 화면","#aiWork"]]},
     ilbo:{primary:"현재 화면 보기",agent:"MINJI",recent:"최근 항목",recentTarget:"#ilbo",sections:[["현재 화면","#ilbo"]]},
-    home:{primary:"오늘 할 일",action:{view:"tasks"},agent:"HANI",recent:"최근 활동",recentTarget:"#recentActivity",sections:[["시장","#lifeMarketGrid"],["자산",".home-dashboard-grid"],["AI TEAM","#homeDialogueText"]]},
-    intake:{primary:"새 기록 접수",focus:"#yunaInput,#intakeSourceText",agent:"YUNA",recent:"최근 접수",recentTarget:"#yunaConversation,#intakePreview",sections:[["빠른 접수","#yunaInput,#intakeSourceText"],["Preview","#yunaConversation,#intakePreview"]]},
+    home:{primary:"오늘 할 일",action:{view:"tasks"},agent:"HANI",recent:"최근 활동",recentTarget:"#recentActivity",sections:[["시장","#lifeMarketGrid"],["자산",".home-dashboard-grid"],["AI 팀","#homeDialogueText"]]},
+    intake:{primary:"새 기록 접수",focus:"#yunaInput,#intakeSourceText",agent:"YUNA",recent:"최근 접수",recentTarget:"#yunaConversation,#intakePreview",sections:[["빠른 접수","#yunaInput,#intakeSourceText"],["미리보기","#yunaConversation,#intakePreview"]]},
     agentReview:{primary:"새 안건 접수",focus:"#agentRequestInput",agent:"HANI",recent:"최근 결재안",recentTarget:"#agentCaseList",alert:"#agentCaseCount",alertLabel:"검토 안건",sections:[["안건","#agentCaseList"],["회의·검토","#agentCaseDetail"],["새 접수","#agentRequestInput"]]},
-    monthlyReport:{primary:"보고 월 선택",focus:"#monthlyReportMonth",agent:"HANI",recent:"월간 보고 목록",recentTarget:"#monthlyReportArchive",sections:[["핵심 요약","#monthlyReportKpis"],["HANI Insight","#monthlyReportInsight"],["영역별 보고","#monthlyReportDomains"]]},
-    policy:{primary:"규정 새로고침",click:"#agentRefreshPolicies",agent:"SUA",recent:"현재 규정",recentTarget:"#agentPolicyRegistry",sections:[["Registry","#agentPolicyRegistry"],["상태","#agentPolicyRegistryState"]]},
-    deployment:{primary:"배포 상태 확인",click:"#deployExecRefreshBtn",agent:"SEOYUN",recent:"Release Queue",recentTarget:"#deployExecutiveCard",sections:[["현황","#deployExecutiveCard"],["Inbox","#deployInboxRefreshBtn"],["HINA QA","#deployHinaQaBtn"]]},
+    monthlyReport:{primary:"보고 월 선택",focus:"#monthlyReportMonth",agent:"HANI",recent:"월간 보고 목록",recentTarget:"#monthlyReportArchive",sections:[["핵심 요약","#monthlyReportKpis"],["하니 인사이트","#monthlyReportInsight"],["영역별 보고","#monthlyReportDomains"]]},
+    policy:{primary:"규정 새로고침",click:"#agentRefreshPolicies",agent:"SUA",recent:"현재 규정",recentTarget:"#agentPolicyRegistry",sections:[["규정 목록","#agentPolicyRegistry"],["상태","#agentPolicyRegistryState"]]},
+    deployment:{primary:"배포 상태 확인",click:"#deployExecRefreshBtn",agent:"SEOYUN",recent:"배포 대기열",recentTarget:"#deployExecutiveCard",sections:[["현황","#deployExecutiveCard"],["수신함","#deployInboxRefreshBtn"],["히나 QA","#deployHinaQaBtn"]]},
     investment:{primary:"자산 업데이트",action:{view:"investmentIntake"},agent:"HANI",recent:"최근 월간 기록",recentTarget:"#investMonthly",sections:[["현황","#investOverview"],["월간 기록","#investMonthly"],["종목 관리","#investManage"]]},
     investmentCommittee:{primary:"포트폴리오 보기",action:{view:"investment"},agent:"HANI",recent:"월간 리포트",recentTarget:"#icMonthly",sections:[["종목 리포트","#icResearch"],["월간 리포트","#icMonthly"]]},
     investmentIntake:{primary:"업데이트 입력",focus:"#ledgerImportRaw",agent:"HANI",recent:"입력 안내",recentTarget:"#ledgerImportResult",sections:[["복붙 입력","#ledgerImportRaw"],["미리보기","#ledgerImportResult"]]},
@@ -28,25 +28,25 @@
     study:{primary:"학습 프로젝트 추가",click:"#studyProjectNew",agent:"HINA",recent:"최근 학습",recentTarget:"#studyHistoryPanel",sections:[["프로젝트","#studyProjectList"],["학습 기록","#studyHistoryPanel"]]},
     university:{primary:"과목 확인",target:"#campusCourseSections,#campusEmpty",recent:"학기·과목",recentTarget:"#campusCourseSections,#campusEmpty",agent:"HINA",sections:[["학기","#campusSemesterSelect"],["과목","#campusCourseSections,#campusEmpty"],["일정","#campusEventList"]]},
     certificate:{primary:"자격증 등록",focus:"#certificateName",agent:"HINA",recent:"최근 자격증",recentTarget:"#certificateList",sections:[["등록","#certificateName"],["목록","#certificateList"]]},
-    wishlist:{primary:"Wish 등록",click:"#wishlistAdd",agent:"HARU",recent:"최근 Wish",recentTarget:"#wishlistGrid",alert:"#wishlistCount",alertLabel:"Wish 항목",sections:[["현황","#wishlistGrid"],["검색","#wishlistSearch"]]},
+    wishlist:{primary:"위시 등록",click:"#wishlistAdd",agent:"HARU",recent:"최근 위시",recentTarget:"#wishlistGrid",alert:"#wishlistCount",alertLabel:"위시 항목",sections:[["현황","#wishlistGrid"],["검색","#wishlistSearch"]]},
     travel:{primary:"여행 만들기",click:"#travelAddTrip",agent:"SOOYEON",recent:"최근 여행",recentTarget:"#travelTripGrid",sections:[["완료 여행","#travelTripGrid"],["장소","#travelArchiveGrid"],["갈 여행","#travelWishGrid"]]},
     movie:{primary:"시청 기록 추가",focus:"#movieTitle",agent:"MINJI",recent:"최근 시청",recentTarget:"#watchedMovies",sections:[["등록","#movieTitle"],["아카이브","#watchedMovies"],["관람 예정","#wishMovies"]]},
     game:{primary:"최신 결과 보기",target:"#sportsPanel-home",recent:"최근 경기",recentTarget:"#sportsPanel-home",agent:"SOOYEON",sections:[["팀 현황","#sportsPanel-home"]]},
     diary:{primary:"새 일기",focus:"#diaryTitle",agent:"HARU",recent:"최근 일기",recentTarget:"#diaryList",sections:[["일기 작성","#diaryTitle"],["나의 일기장","#diaryList"]]},
-    tasks:{primary:"할 일 추가",focus:"#taskText",agent:"YUNA",recent:"최근 할 일",recentTarget:"#taskList",alert:"#taskCount",alertLabel:"할 일",sections:[["새 할 일","#taskText"],["목록","#taskList"],["Calendar","#taskCalendarHub"]]},
+    tasks:{primary:"할 일 추가",focus:"#taskText",agent:"YUNA",recent:"최근 할 일",recentTarget:"#taskList",alert:"#taskCount",alertLabel:"할 일",sections:[["새 할 일","#taskText"],["목록","#taskList"],["캘린더","#taskCalendarHub"]]},
     calendar:{primary:"오늘 일정",recent:"캘린더",recentTarget:"#calendar",agent:"YUNA",sections:[["캘린더","#calendar"]]},
-    drive:{primary:"Drive 열기",recent:"Drive",recentTarget:"#drive",agent:"SUA",sections:[["Drive","#drive"]]},
-    aura:{primary:"색상 고르기",click:'.aura-tabs [data-panel="auraFinishes"]',recent:"나의 색 · 우리들의 계절",recentTarget:"#auraCurrentCombination",agent:"HANI",sections:[["AURA 쇼룸","#aura"]]},
-    settings:{primary:"백업",click:"#quickBackup",recent:"저장·Cloud 상태",recentTarget:"#storageStats",agent:"YUNA",sections:[["저장","#storageStats"],["Cloud","#cloudBridgeCard"]]},
-    dev:{primary:"Release 확인",action:{view:"deployment"},recent:"개발센터",recentTarget:"#dev",agent:"SEOYUN",sections:[["Release","#dev"]]}
+    drive:{primary:"드라이브 열기",recent:"드라이브",recentTarget:"#drive",agent:"SUA",sections:[["드라이브","#drive"]]},
+    aura:{primary:"색상 고르기",click:'.aura-tabs [data-panel="auraFinishes"]',recent:"나의 색 · 우리들의 계절",recentTarget:"#auraCurrentCombination",agent:"HANI",sections:[["아우라 스튜디오","#aura"]]},
+    settings:{primary:"백업",click:"#quickBackup",recent:"저장·클라우드 상태",recentTarget:"#storageStats",agent:"YUNA",sections:[["저장","#storageStats"],["클라우드","#cloudBridgeCard"]]},
+    dev:{primary:"배포 확인",action:{view:"deployment"},recent:"개발센터",recentTarget:"#dev",agent:"SEOYUN",sections:[["배포","#dev"]]}
   };
 
   const rail=document.createElement("aside");
-  rail.id="haniContextRemote";rail.className="hani-context-remote";rail.setAttribute("aria-label","HANI Context Remote");
-  rail.innerHTML=`<div class="hani-remote-head"><span class="hani-remote-brand">HANI REMOTE</span><button type="button" class="hani-remote-collapse" aria-label="HANI Remote 접기">›</button><button type="button" class="hani-remote-close" aria-label="HANI Remote 닫기">×</button></div>
+  rail.id="haniContextRemote";rail.className="hani-context-remote";rail.setAttribute("aria-label","화면 리모컨");
+  rail.innerHTML=`<div class="hani-remote-head"><span class="hani-remote-brand">리모컨</span><button type="button" class="hani-remote-collapse" aria-label="리모컨 접기">›</button><button type="button" class="hani-remote-close" aria-label="리모컨 닫기">×</button></div>
     <section class="hani-remote-media" aria-label="지금 보는 화면">
       <img class="hani-remote-media-image" alt="" loading="lazy" decoding="async">
-      <span class="hani-remote-media-chip">지금 보는 화면</span>
+      <button type="button" class="hani-remote-media-chip" data-remote-action="current" aria-label="현재 화면 맨 위로" title="현재 화면 맨 위로">지금 보는 화면</button>
       <div class="hani-remote-media-content"><h2 data-remote-media-title></h2><p class="hani-remote-media-staff" data-remote-media-staff></p><p class="hani-remote-media-line" data-remote-media-line></p>
         <div class="hani-remote-media-actions">
           <div><button type="button" data-remote-action="primary" aria-label="주 작업"><span aria-hidden="true">＋</span></button><span>주 작업</span></div>
@@ -56,23 +56,15 @@
         </div>
       </div>
     </section>
-    <nav class="hani-remote-nav" aria-label="현재 화면 빠른 작업">
-      <p class="hani-remote-group-label">현재 화면 · 빠른 작업</p>
-      <button type="button" class="hani-remote-item is-current" data-remote-action="current"><span class="hani-remote-icon">⌖</span><span class="hani-remote-copy"><b>현재 섹션</b><small data-remote-current></small></span></button>
-      <button type="button" class="hani-remote-item is-primary" data-remote-action="primary"><span class="hani-remote-icon">＋</span><span class="hani-remote-copy"><b data-remote-primary></b></span></button>
-      <button type="button" class="hani-remote-item is-yuna" data-remote-action="yuna"><span class="hani-remote-icon">⚡</span><span class="hani-remote-copy"><b>유나에게 빠른 입력</b><small data-remote-yuna></small></span></button>
-      <button type="button" class="hani-remote-item" data-remote-action="agent"><span class="hani-remote-icon">♙</span><span class="hani-remote-copy"><b data-remote-agent></b></span></button>
-      <button type="button" class="hani-remote-item" data-remote-action="recent"><span class="hani-remote-icon">↶</span><span class="hani-remote-copy"><b data-remote-recent></b></span></button>
-      <button type="button" class="hani-remote-item is-alert" data-remote-action="alert" hidden><span class="hani-remote-icon">♢</span><span class="hani-remote-copy"><b data-remote-alert></b><small>확인이 필요합니다</small></span><span class="hani-remote-count" data-remote-count></span></button>
-    </nav>
+    <button type="button" class="hani-remote-item is-alert hani-remote-alert-banner" data-remote-action="alert" hidden><span class="hani-remote-icon">♢</span><span class="hani-remote-copy"><b data-remote-alert></b><small>확인이 필요합니다</small></span><span class="hani-remote-count" data-remote-count></span></button>
     <section class="hani-remote-today" aria-label="오늘 할 일">
       <button type="button" class="hani-remote-item" data-remote-action="tasks"><span class="hani-remote-icon">✓</span><span class="hani-remote-copy"><b>오늘 할 일</b><small data-remote-today-summary>할 일 확인</small></span><span class="hani-remote-count" data-remote-today-count hidden></span></button>
       <div class="hani-remote-quizzes" data-remote-quizzes hidden></div>
     </section>
-    <section class="hani-remote-section"><span class="hani-remote-section-label">SECTION SHORTCUTS</span><div class="hani-remote-links" data-remote-links><button type="button" class="hani-remote-link" hidden></button><button type="button" class="hani-remote-link" hidden></button><button type="button" class="hani-remote-link" hidden></button><button type="button" class="hani-remote-link" hidden></button></div></section>
-    <div class="hani-remote-utility"><p class="hani-remote-group-label">화면 설정 · 이동</p><button type="button" class="hani-remote-item" data-remote-action="theme"><span class="hani-remote-icon">✦</span><span class="hani-remote-copy"><b>테마 스튜디오</b></span></button><button type="button" class="hani-remote-item" data-remote-action="top"><span class="hani-remote-icon">↑</span><span class="hani-remote-copy"><b>맨 위로</b></span></button></div>`;
+    <section class="hani-remote-section"><span class="hani-remote-section-label">화면 바로가기</span><div class="hani-remote-links" data-remote-links><button type="button" class="hani-remote-link" hidden></button><button type="button" class="hani-remote-link" hidden></button><button type="button" class="hani-remote-link" hidden></button><button type="button" class="hani-remote-link" hidden></button></div></section>
+    <details class="hani-remote-utility"><summary class="hani-remote-utility-summary">화면 설정 · 이동</summary><div class="hani-remote-utility-body"><button type="button" class="hani-remote-item" data-remote-action="theme"><span class="hani-remote-icon">✦</span><span class="hani-remote-copy"><b>테마 스튜디오</b></span></button><button type="button" class="hani-remote-item" data-remote-action="top"><span class="hani-remote-icon">↑</span><span class="hani-remote-copy"><b>맨 위로</b></span></button></div></details>`;
   app.append(rail);
-  const mobileTrigger=document.createElement("button");mobileTrigger.type="button";mobileTrigger.className="hani-remote-mobile-trigger";mobileTrigger.innerHTML="<span>✦</span> HANI Remote";mobileTrigger.setAttribute("aria-controls",rail.id);mobileTrigger.setAttribute("aria-expanded","false");app.append(mobileTrigger);
+  const mobileTrigger=document.createElement("button");mobileTrigger.type="button";mobileTrigger.className="hani-remote-mobile-trigger";mobileTrigger.innerHTML="<span>✦</span> 리모컨";mobileTrigger.setAttribute("aria-controls",rail.id);mobileTrigger.setAttribute("aria-expanded","false");app.append(mobileTrigger);
 
   const viewId=()=>document.body.dataset.view||$(".view.active")?.id||"home";
   // On the market screen use its existing toolbar, not a floating chart overlay.
@@ -137,13 +129,14 @@
     const src=`./assets/context-remote/${file}`,img=$(".hani-remote-media-image",rail);
     if(img.getAttribute("src")!==src)img.src=src;
     img.style.objectPosition="50% 30%";
-    img.alt=`HANI OS 공식 프로필 ${s} 라이프 배너 · ${members}`;
+    img.alt=`하니 OS 라이프 배너 · ${members}`;
+    const staffName=hero?.speaker||window.HaniOrganizationRoster?.people?.find(p=>p.id===owner())?.name||c.agent||"하니";
     $("[data-remote-media-title]",rail).textContent=title;
-    $("[data-remote-media-staff]",rail).textContent=`담당 직원 · ${hero?.speaker||c.agent||"HANI"}`;
+    $("[data-remote-media-staff]",rail).textContent=`담당 직원 · ${staffName}`;
     $("[data-remote-media-line]",rail).textContent=hero?.quote||greetings[s][1];
-    for(const [action,label] of [["primary",c.primary],["recent",c.recent]]){
+    for(const [action,label] of [["current",`현재 섹션 · ${title}`],["primary",c.primary||"현재 화면 보기"],["yuna",`${title} 입력`],["agent",`담당 · ${staffName}`],["recent",c.recent||"최근 항목"]]){
       const button=$(`.hani-remote-media [data-remote-action="${action}"]`,rail);
-      button.setAttribute("aria-label",label||"현재 화면 보기");button.title=label||"현재 화면 보기";
+      if(button){button.setAttribute("aria-label",label);button.title=label;}
     }
   };
   const updateToday=()=>{
@@ -158,16 +151,24 @@
     box.hidden=!quizzes.length;
     if(box.dataset.signature===signature)return;
     box.dataset.signature=signature;box.replaceChildren();
-    for(const quiz of quizzes){
+    const makeQuizButton=quiz=>{
       const button=document.createElement('button');button.type='button';button.className='hani-remote-link';button.dataset.remoteQuiz=quiz.id;
-      button.textContent=(quiz.title||'미완료 퀴즈')+' · '+(study.quizDate(quiz)===day?'오늘':study.quizDate(quiz)||'날짜 미지정');box.append(button);
+      button.textContent=(quiz.title||'미완료 퀴즈')+' · '+(study.quizDate(quiz)===day?'오늘':study.quizDate(quiz)||'날짜 미지정');return button;
+    };
+    for(const quiz of quizzes.slice(0,3))box.append(makeQuizButton(quiz));
+    if(quizzes.length>3){
+      const more=document.createElement('details');more.className='hani-remote-today-more';
+      const summary=document.createElement('summary');summary.className='hani-remote-more-summary';summary.textContent=`나머지 ${quizzes.length-3}개 더 보기`;
+      const extra=document.createElement('div');extra.className='hani-remote-quizzes-extra';
+      for(const quiz of quizzes.slice(3))extra.append(makeQuizButton(quiz));
+      more.append(summary,extra);box.append(more);
     }
   };
   let lastView="";
-  const update=()=>{updateToday();const c=config(),title=$("#title")?.textContent?.trim()||viewId();$("[data-remote-current]",rail).textContent=title;$("[data-remote-primary]",rail).textContent=c.primary||"현재 화면 보기";$("[data-remote-yuna]",rail).textContent=`${title} 입력`;$("[data-remote-agent]",rail).textContent=`담당 · ${window.HANI_MAIN_CHARACTER_BANNER?.get(viewId())?.speaker||c.agent||"HANI"}`;$("[data-remote-recent]",rail).textContent=c.recent||"최근 항목";const sections=(c.sections||[]).filter(([,target])=>targetAvailable(target)).slice(0,4);$('[data-remote-links]',rail).querySelectorAll('button').forEach((b,i)=>{const section=sections[i];b.hidden=!section;if(section){b.textContent=section[0];b.dataset.target=section[1]}});const alert=$("[data-remote-action=alert]",rail),count=countFrom(c.alert);alert.hidden=!c.alert||count<1;if(!alert.hidden){$("[data-remote-alert]",rail).textContent=c.alertLabel||"확인 필요";$("[data-remote-count]",rail).textContent=String(count)}for(const action of ["primary","yuna","agent","recent"]){const available=actionAvailable(action,c);rail.querySelectorAll(`[data-remote-action="${action}"]`).forEach(b=>{b.hidden=!available;if(b.closest(".hani-remote-media"))b.parentElement.hidden=!available})}updateBanner(c,title);placeMobileTrigger();if(lastView!==viewId()){setMobile(false);lastView=viewId()}};
+  const update=()=>{updateToday();const c=config(),title=$("#title")?.textContent?.trim()||viewId();const sections=(c.sections||[]).filter(([,target])=>targetAvailable(target)).slice(0,4);$('[data-remote-links]',rail).querySelectorAll('button').forEach((b,i)=>{const section=sections[i];b.hidden=!section;if(section){b.textContent=section[0];b.dataset.target=section[1]}});const alert=$("[data-remote-action=alert]",rail),count=countFrom(c.alert);if(alert){alert.hidden=!c.alert||count<1;if(!alert.hidden){$("[data-remote-alert]",rail).textContent=c.alertLabel||"확인 필요";$("[data-remote-count]",rail).textContent=String(count)}}for(const action of ["primary","yuna","agent","recent"]){const available=actionAvailable(action,c);rail.querySelectorAll(`[data-remote-action="${action}"]`).forEach(b=>{b.hidden=!available;if(b.closest(".hani-remote-media"))b.parentElement.hidden=!available})}updateBanner(c,title);placeMobileTrigger();if(lastView!==viewId()){setMobile(false);lastView=viewId()}};
 
   rail.addEventListener("click",e=>{const quiz=e.target.closest('[data-remote-quiz]');if(quiz){window.HANI_STUDY_V02984_TEST?.openPendingQuiz(quiz.dataset.remoteQuiz);setMobile(false);return}const shortcut=e.target.closest(".hani-remote-link");if(shortcut){moveTo(shortcut.dataset.target);return}const action=e.target.closest("[data-remote-action]")?.dataset.remoteAction;if(!action)return;if(action==="tasks"){goView("tasks");setMobile(false);return}const c=config();if(action==="current")moveTo(`#${viewId()}`);if(action==="primary"){if(c.action?.view)goView(c.action.view);else if(c.click){const target=resolveTarget(c.click);if(target){target.focus();target.click()}}else if(c.focus)focusTarget(c.focus);else moveTo(c.target||`#${viewId()}`)}if(action==="yuna"){goView("intake");setTimeout(()=>focusTarget("#yunaInput,#intakeSourceText"),180)}if(action==="agent"){const route=profileRoute();if(route)goView(route);setMobile(false)}if(action==="theme"){goView("aura");setMobile(false)}if(action==="recent")moveTo(c.recentTarget||`#${viewId()}`);if(action==="alert")moveTo(c.recentTarget||c.alert);if(["primary","yuna","recent","current"].includes(action))setMobile(false);if(action==="top")window.scrollTo({top:0,behavior:"smooth"})});
-  $(".hani-remote-collapse",rail).addEventListener("click",()=>{const mini=app.classList.toggle("hani-remote-mini");$(".hani-remote-collapse",rail).textContent=mini?"‹":"›";$(".hani-remote-collapse",rail).setAttribute("aria-label",mini?"HANI Remote 펼치기":"HANI Remote 접기")});
+  $(".hani-remote-collapse",rail).addEventListener("click",()=>{const mini=app.classList.toggle("hani-remote-mini");$(".hani-remote-collapse",rail).textContent=mini?"‹":"›";$(".hani-remote-collapse",rail).setAttribute("aria-label",mini?"리모컨 펼치기":"리모컨 접기")});
   const setMobile=open=>{rail.dataset.open=open?"true":"false";mobileTrigger.setAttribute("aria-expanded",String(open))};
   mobileTrigger.addEventListener("click",()=>setMobile(rail.dataset.open!=="true"));
   $(".hani-remote-close",rail).addEventListener("click",()=>setMobile(false));
