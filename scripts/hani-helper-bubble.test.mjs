@@ -295,12 +295,14 @@ function bubbleFixture({
   };
 }
 
-test('face size kept at original (PC 90px / phone 78px), dark & reduced-motion CSS present', () => {
-  assert.match(css, /#haniHelperBot\{[^}]*--helper-edge:90px;--helper-art-scale:1\.653846154;/);
-  assert.match(css, /@media\(max-width:850px\)\{#haniHelperBot\{--helper-edge:78px;--helper-art-scale:1\.423076923\}\}/);
+test('face fills the circle (PC 90px / phone 78px), gentle sway, dark & reduced-motion CSS present', () => {
+  assert.match(css, /#haniHelperBot\{[^}]*--helper-edge:90px;--helper-art-scale:2\.6;/);
+  assert.match(css, /@media\(max-width:850px\)\{#haniHelperBot\{--helper-edge:78px;--helper-art-scale:2\.25\}\}/);
   assert.match(css, /:root:is\(\[data-theme="dark"\],\[data-finish="midnight-black"\],\[data-finish="titanium-graphite"\]\) #haniHelperBot \.hani-helper-bubble/);
-  assert.match(css, /@media\(prefers-reduced-motion:reduce\)\{#haniHelperBot \.hani-helper-art\{animation:none\}#haniHelperBot \.hani-helper-bubble\{animation:none;transition:none\}\}/);
+  assert.match(css, /@media\(prefers-reduced-motion:reduce\)\{#haniHelperBot \.hani-helper-art,#haniHelperBot \.hani-helper-face\{animation:none\}#haniHelperBot \.hani-helper-bubble\{animation:none;transition:none\}\}/);
   assert.match(css, /#haniHelperBot \.hani-helper-bubble\{[^}]*max-width:min\(248px,calc\(100vw - 24px\)\)/);
+  assert.match(css, /@keyframes hani-helper-sway\{0%,100%\{rotate:-4deg\}50%\{rotate:4deg\}\}/);
+  assert.match(css, /#haniHelperBot \.hani-helper-face\{[^}]*overflow:hidden/);
   assert.match(css, /#haniHelperBot \.hani-helper-bubble-close\{[^}]*width:28px;height:28px;/);
   assert.match(css, /#haniHelperBot \.hani-helper-bubble-close::after\{content:"";position:absolute;inset:-8px\}/);
 });
