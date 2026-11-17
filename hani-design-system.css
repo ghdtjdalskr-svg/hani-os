@@ -2697,8 +2697,7 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 :root[data-finish="titanium-graphite"] #app .date-mode-toggle button.active{background:var(--surface-panel)!important;color:var(--text-primary)!important}
 
 /* ============================================================================
- * hero banner dark preview (preview-only; midnight-black & titanium-graphite)
- * Switch via <html data-banner-variant="a"> (default) or <html data-banner-variant="b">.
+ * hero banner dark finish (midnight-black & titanium-graphite) — design A
  * Light finishes stay untouched. No JS/state/storage changes.
  * ========================================================================== */
 
@@ -2739,8 +2738,8 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 :root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app :is(.ds-main-character-banner,#home>.ds-main-character-banner).ds-tone-sports{--mcb-tone:#5488d8;--mcb-accent:#9ec4ff}
 :root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app #milestones>.ds-main-character-banner.ds-tone-company{--mcb-tone:#c7a258;--mcb-accent:#e7ce93}
 
-/* Variant A (default, or data-banner-variant="a"): dark panel + 8~12% category glow, seamless fade to artwork */
-:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]):not([data-banner-variant="b"]) #app :is(.ds-main-character-banner,#home>.ds-main-character-banner,#milestones>.ds-main-character-banner){
+/* Chosen design (회장님 11/17, 안 A): dark panel + 8~12% category glow, seamless fade to artwork */
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"])[data-finish] #app :is(.ds-main-character-banner,#home>.ds-main-character-banner,#milestones>.ds-main-character-banner){
   --mcb-bg:radial-gradient(ellipse 60% 110% at 14% 12%,color-mix(in srgb,var(--mcb-tone) 11%,transparent),transparent 72%),linear-gradient(135deg,color-mix(in srgb,var(--mcb-tone) 9%,var(--surface-panel)) 0%,var(--surface-panel) 62%,var(--surface-canvas) 100%);
   --mcb-border:color-mix(in srgb,var(--mcb-tone) 22%,var(--border-subtle));
   --mcb-overlay:linear-gradient(90deg,color-mix(in srgb,var(--mcb-tone) 9%,var(--surface-panel)) 0%,color-mix(in srgb,var(--mcb-tone) 7%,var(--surface-panel)) 40%,color-mix(in srgb,var(--surface-panel) 84%,transparent) 56%,color-mix(in srgb,var(--surface-panel) 36%,transparent) 72%,transparent 88%);
@@ -2748,35 +2747,6 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
   --mcb-quote-bg:color-mix(in srgb,var(--mcb-tone) 8%,var(--surface-raised));
   --mcb-quote-border:color-mix(in srgb,var(--mcb-tone) 28%,var(--border-strong));
   box-shadow:0 10px 28px color-mix(in srgb,var(--surface-canvas) 75%,#000);
-}
-
-/* Variant B (data-banner-variant="b"): illustration-first full-bleed artwork + left dark scrim + Finish tokens */
-:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"])[data-banner-variant="b"] #app :is(.ds-main-character-banner,#home>.ds-main-character-banner,#milestones>.ds-main-character-banner){
-  --mcb-bg:var(--surface-panel);
-  --mcb-border:var(--border-strong);
-  --mcb-muted:color-mix(in srgb,var(--text-primary) 86%,var(--text-secondary));
-  --mcb-scene-width:100%;
-  --mcb-scene-fit:cover;
-  --mcb-scene-mask:none;
-  --mcb-overlay:linear-gradient(90deg,color-mix(in srgb,var(--surface-canvas) 88%,transparent) 0%,color-mix(in srgb,var(--surface-canvas) 84%,transparent) 38%,color-mix(in srgb,var(--surface-canvas) 54%,transparent) 54%,color-mix(in srgb,var(--surface-canvas) 16%,transparent) 66%,transparent 76%);
-  --mcb-overlay-mobile:linear-gradient(180deg,color-mix(in srgb,var(--surface-canvas) 90%,transparent) 0%,color-mix(in srgb,var(--surface-canvas) 86%,transparent) 58%,color-mix(in srgb,var(--surface-canvas) 76%,transparent) 100%);
-  --mcb-quote-bg:color-mix(in srgb,var(--surface-raised) 88%,var(--surface-canvas));
-  --mcb-quote-border:var(--border-strong);
-  box-shadow:0 14px 34px color-mix(in srgb,var(--surface-canvas) 85%,#000),inset 0 1px 0 color-mix(in srgb,var(--structure-accent) 18%,transparent);
-}
-:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"])[data-banner-variant="b"] #app .ds-main-character-banner :is(.ds-main-character-banner__title,.ds-main-character-banner__description){
-  text-shadow:0 1px 10px color-mix(in srgb,var(--surface-canvas) 90%,transparent);
-}
-@media(min-width:701px){
-  :root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"])[data-banner-variant="b"] #app :is(.ds-main-character-banner,#home>.ds-main-character-banner):after{background-size:100% 100%}
-}
-@media(max-width:700px){
-  :root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"])[data-banner-variant="b"] #app .view>:is(.ds-main-character-banner,#home>.ds-main-character-banner){
-    --mcb-scene-width:100%;
-    --mcb-scene-fit:cover;
-    --mcb-scene-fit-mobile:cover!important;
-    --mcb-scene-mask:none;
-  }
 }
 
 /* Shared dark-finish avatar frame & "○○ 한마디" speech bubble (>= 4.5:1 contrast) */
