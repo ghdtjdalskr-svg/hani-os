@@ -2021,6 +2021,7 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
   if(['home','intake','tasks'].includes(id)&&typeof renderHaniCareHome==='function')renderHaniCareHome();
   if(id==="aiBudget")window.HaniAiBudget?.render();
   if(typeof window!=='undefined')window.HANI_CONTEXT_REMOTE_V1?.update();
+  if(typeof window!=='undefined')window.HaniHelperBot?.bubble?.(id);
   if(id==="exercise")drawExercise();if(id==="investment")setTimeout(drawPortfolio,30);if(id==="newsroom")setTimeout(()=>investmentNewsMaybeRefresh(),40);if(id==="diet")setTimeout(drawBody,30);if(id==="ledger")setTimeout(drawLedgerTrend,30);if(id==="calendar")renderCalendar();if(id==="tasks")setTimeout(()=>googleCalendarRefreshStatus({silent:true}),0);if(id==="intake")setTimeout(()=>intakeRenderPreview(),0);if(id==="agentReview")setTimeout(()=>agentReviewInit(),0);if(id==="monthlyReport")setTimeout(()=>renderMonthlyReport(),0);if(id==="policy")setTimeout(()=>agentPolicyInit(),0);if(id==="deployment")setTimeout(()=>deployCenterRender(),0);
   // v2.9.2: mobile browsers can throttle background polling. Re-check Cloud when opening data-heavy views.
   if(["home","investment","asset"].includes(id)&&cloudUser&&!cloudRecoveryMode){
