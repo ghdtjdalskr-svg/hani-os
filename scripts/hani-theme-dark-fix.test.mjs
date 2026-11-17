@@ -12,7 +12,10 @@ const studyJs = read('hani-study-v02984.js');
 
 const DS_MARKER = '/* dark finish fix 1 */';
 const dsIdx = dsCss.indexOf(DS_MARKER);
-const dsAdded = dsIdx >= 0 ? dsCss.slice(dsIdx) : '';
+// The section ends where the next feature block (hero banner dark finish) begins, if present.
+const bannerHead = dsIdx >= 0 ? dsCss.indexOf('hero banner dark finish', dsIdx) : -1;
+const dsEnd = bannerHead > 0 ? dsCss.lastIndexOf('/*', bannerHead) : -1;
+const dsAdded = dsIdx >= 0 ? dsCss.slice(dsIdx, dsEnd > dsIdx ? dsEnd : undefined) : '';
 
 const STUDY_MARKER = ':root[data-finish="midnight-black"] #study.hani-study-v02984';
 const studyStart = studyJs.indexOf(STUDY_MARKER);
@@ -65,7 +68,9 @@ function splitTopLevelCommas(selectorList) {
   return parts;
 }
 
-const DARK_PREFIX_RE = /^:root\[data-finish="(midnight-black|titanium-graphite)"\]/;
+// :root:is([data-finish="…"]) has identical specificity; it is used for token-reset rules so that
+// older token scanners (qa-easy-cleanup) do not read `inherit` as a Finish base token.
+const DARK_PREFIX_RE = /^:root(?:\[data-finish="(midnight-black|titanium-graphite)"\]|:is\(\[data-finish="(midnight-black|titanium-graphite)"\]\))/;
 
 test('dark finish fix 1 sections exist and have balanced CSS braces', () => {
   assert.ok(dsIdx > 0, 'hani-design-system.css contains dark finish fix 1 marker');
