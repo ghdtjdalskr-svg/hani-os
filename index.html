@@ -713,7 +713,7 @@
         <div class="card full asset-capture-v1" id="assetCaptureV1">
           <div class="sh"><div><h3>투자계좌 업데이트</h3></div><span class="pill finance">저장 전 확인</span></div>
           <div class="asset-capture-intro"><div class="asset-capture-character" aria-hidden="true">📸</div><p>업데이트할 기존 계좌를 먼저 선택한 뒤 스크린샷을 추가하세요. 선택한 계좌에만 원본 표시값을 반영하고, 저장 전 Preview에서 확인합니다.</p></div>
-          <label class="asset-capture-account-first"><span>1. 업데이트할 계좌</span><select id="assetCaptureAccount"><option value="">기존 계좌를 먼저 선택하세요</option></select><small>OCR 계좌명보다 이 선택이 우선하며, 선택한 accountId만 업데이트합니다.</small></label>
+          <label class="asset-capture-account-first"><span>1. 업데이트할 계좌</span><select id="assetCaptureAccount"><option value="">기존 계좌를 먼저 선택하세요</option></select><small>사진 속 계좌명보다 이 선택이 우선하며, 고른 계좌만 바뀝니다.</small></label>
           <div id="assetCaptureSwitchPrompt" class="asset-review-panel" role="group" aria-label="반영하지 않은 입력 확인" aria-live="polite" hidden></div>
           <div id="assetCapturePasteZone" class="asset-paste-zone" tabindex="0" role="group" aria-label="계좌 스크린샷 이미지 붙여넣기"><span aria-hidden="true">📋</span><div><b>계좌 화면 복사 후 여기를 클릭하고 Ctrl+V</b><small>붙여넣은 이미지는 분석 전까지 이 화면에만 임시 첨부됩니다. PNG·JPG·WEBP 지원.</small></div></div>
           <div class="asset-capture-actions"><label class="btn finance asset-file-label">2. 스크린샷 추가<input id="assetCaptureFiles" type="file" accept="image/png,image/jpeg,image/webp" multiple hidden disabled></label><button class="btn" id="assetCaptureAnalyze" type="button" disabled>3. 선택 계좌 분석</button><button class="btn" id="assetPositionsManual" type="button">종목·수량 직접 입력</button><button class="btn" id="assetAddAccount" type="button">+ 새 계좌 등록</button></div>
@@ -942,7 +942,7 @@
           </div>
           <div class="agent-guardrail" style="margin-top:10px">
             <span>🛡️</span>
-            <div><b>Preview before Commit.</b> Agent Workspace는 Life OS 원본과 분리되어 있습니다. 대표가 승인해도 결정 이력만 기록되며 <code>hani_os_life_v23</code>와 <code>hani_state</code>에는 자동 Commit하지 않습니다.</div>
+            <div><b>승인하기 전에는 기록이 바뀌지 않아요.</b> 이 공간에서는 안건과 결정 이력만 관리해요. 승인해도 생활 기록은 자동으로 바뀌지 않아요.</div>
           </div>
         </div>
 
@@ -953,7 +953,7 @@
           </div>
           <div class="card agent-detail-panel">
             <div id="agentCaseDetail" class="agent-detail-empty">
-              <div><div style="font-size:34px;margin-bottom:8px">📄</div><b>결재할 안건을 선택하세요.</b><div class="sub">첫 Pilot 안건도 기존 Agent DB에서 그대로 불러옵니다.</div></div>
+              <div><div style="font-size:34px;margin-bottom:8px">📄</div><b>결재할 안건을 선택하세요.</b><div class="sub">처음 검토할 안건도 기존 업무 기록에서 불러와요.</div></div>
             </div>
           </div>
         </div>
@@ -1488,47 +1488,47 @@
       <div class="sports-home-overview" data-sports-panel="home" aria-label="응원팀 현재 상태">
         <button type="button" class="sports-home-panel team-yankees" data-sports-open="yankees" data-sports-cadence="daily" aria-label="New York Yankees 팀 화면 열기">
           <span class="sports-home-team"><span class="sports-home-logo"><img src="./assets/sports/new-york-yankees.svg" alt="New York Yankees 로고"></span><span class="sports-home-identity"><small>MLB · AL EAST</small><strong>New York Yankees</strong></span><em class="win">WIN</em></span>
-          <span class="sports-home-recent"><small>최근 경기 · 2026.09.11</small><span class="sports-home-score"><span>NYM</span><b>4</b><i>:</i><b>6</b><span>NYY</span></span></span>
+          <span class="sports-home-recent"><small>시즌 종료 · 최근 경기 · 2026.09.11</small><span class="sports-home-score"><span>NYM</span><b>4</b><i>:</i><b>6</b><span>NYY</span></span></span>
           <span class="sports-home-foot"><span>New York Mets 상대</span><small>매일 업데이트</small></span>
         </button>
         <button type="button" class="sports-home-panel team-kia" data-sports-open="kia" data-sports-cadence="daily" aria-label="KIA Tigers 팀 화면 열기">
           <span class="sports-home-team"><span class="sports-home-logo"><img src="./assets/sports/kia-tigers-current.png" alt="KIA Tigers 로고"></span><span class="sports-home-identity"><small>KBO LEAGUE</small><strong>KIA Tigers</strong></span><em class="loss">LOSS</em></span>
-          <span class="sports-home-recent"><small>최근 경기 · 2026.09.12</small><span class="sports-home-score"><span>KT</span><b>6</b><i>:</i><b>2</b><span>KIA</span></span></span>
+          <span class="sports-home-recent"><small>시즌 종료 · 최근 경기 · 2026.09.12</small><span class="sports-home-score"><span>KT</span><b>6</b><i>:</i><b>2</b><span>KIA</span></span></span>
           <span class="sports-home-foot"><span>KT Wiz 상대 · 수원</span><small>매일 업데이트</small></span>
         </button>
         <button type="button" class="sports-home-panel team-madrid" data-sports-open="madrid" data-sports-cadence="weekly" aria-label="Real Madrid 팀 화면 열기">
           <span class="sports-home-team"><span class="sports-home-logo"><img src="./assets/sports/real-madrid.svg" alt="Real Madrid 로고"></span><span class="sports-home-identity"><small>LALIGA · UEFA</small><strong>Real Madrid</strong></span><em class="win">WIN</em></span>
-          <span class="sports-home-recent"><small>최근 경기 · 2026.09.08</small><span class="sports-home-score"><span>RMA</span><b>2</b><i>:</i><b>1</b><span>INT</span></span></span>
+          <span class="sports-home-recent"><small>시즌 종료 · 최근 경기 · 2026.09.08</small><span class="sports-home-score"><span>RMA</span><b>2</b><i>:</i><b>1</b><span>INT</span></span></span>
           <span class="sports-home-foot"><span>Inter 상대 · UEFA Champions League</span><small>주 1회 업데이트</small></span>
         </button>
         <button type="button" class="sports-home-panel team-dplus" data-sports-open="dplus" data-sports-cadence="weekly" aria-label="Dplus KIA 팀 화면 열기">
           <span class="sports-home-team"><span class="sports-home-logo"><img src="./assets/sports/dplus-kia.svg" alt="Dplus KIA 로고"></span><span class="sports-home-identity"><small>LCK · LEAGUE OF LEGENDS</small><strong>Dplus KIA</strong></span><em class="loss">LOSS</em></span>
-          <span class="sports-home-recent"><small>최근 경기 · 2026.09.06</small><span class="sports-home-score"><span>T1</span><b>3</b><i>:</i><b>1</b><span>DK</span></span></span>
+          <span class="sports-home-recent"><small>시즌 종료 · 최근 경기 · 2026.09.06</small><span class="sports-home-score"><span>T1</span><b>3</b><i>:</i><b>1</b><span>DK</span></span></span>
           <span class="sports-home-foot"><span>T1 상대 · LCK 플레이오프</span><small>주 1회 업데이트</small></span>
         </button>
       </div>
       <div class="sports-team-grid">
         <article class="sports-team-card team-yankees" data-sports-panel="yankees" hidden>
           <header class="sports-team-header"><span class="sports-team-logo"><img src="./assets/sports/new-york-yankees.svg" alt="New York Yankees 로고"></span><div><span class="sports-league">MLB · AL EAST</span><h3>New York Yankees</h3><p>Bronx, New York</p></div><span class="sports-team-code">NYY</span></header>
-          <div class="sports-result"><div><span>LAST GAME · 2026.09.11</span><strong class="win">WIN</strong></div><div class="sports-score"><span class="sports-match-logo sports-opponent-mark" aria-label="New York Mets">NYM</span><b>4</b><i>FINAL</i><b>6</b><span class="sports-match-logo"><img src="./assets/sports/new-york-yankees.svg" alt="New York Yankees 로고"></span></div><p>New York Mets vs New York Yankees · Yankee Stadium</p></div>
+          <div class="sports-result"><div><span>시즌 종료 · LAST GAME · 2026.09.11</span><strong class="win">WIN</strong></div><div class="sports-score"><span class="sports-match-logo sports-opponent-mark" aria-label="New York Mets">NYM</span><b>4</b><i>FINAL</i><b>6</b><span class="sports-match-logo"><img src="./assets/sports/new-york-yankees.svg" alt="New York Yankees 로고"></span></div><p>New York Mets vs New York Yankees · Yankee Stadium</p></div>
           <div class="sports-news"><span class="sports-section-label">DAILY UPDATE</span><a href="https://www.mlb.com/stories/game/823498/" target="_blank" rel="noopener"><b>메츠전 6–4 승리, 최근 경기 결과 반영</b><span>MLB.com · 09.11</span></a><a href="https://www.mlb.com/yankees/news" target="_blank" rel="noopener"><b>양키스 최신 팀 뉴스</b><span>Yankees News</span></a></div>
         </article>
 
         <article class="sports-team-card team-kia" data-sports-panel="kia" hidden>
           <header class="sports-team-header"><span class="sports-team-logo"><img src="./assets/sports/kia-tigers-current.png" alt="KIA 타이거즈 현재 로고"></span><div><span class="sports-league">KBO LEAGUE</span><h3>KIA Tigers</h3><p>광주-기아 챔피언스 필드</p></div><span class="sports-team-code">KIA</span></header>
-          <div class="sports-result"><div><span>LAST GAME · 2026.09.12</span><strong class="loss">LOSS</strong></div><div class="sports-score"><span class="sports-match-logo sports-opponent-mark" aria-label="KT Wiz">KT</span><b>6</b><i>FINAL</i><b>2</b><span class="sports-match-logo"><img src="./assets/sports/kia-tigers-current.png" alt="KIA Tigers 로고"></span></div><p>KT Wiz vs KIA Tigers · 수원 KT위즈파크</p></div>
+          <div class="sports-result"><div><span>시즌 종료 · LAST GAME · 2026.09.12</span><strong class="loss">LOSS</strong></div><div class="sports-score"><span class="sports-match-logo sports-opponent-mark" aria-label="KT Wiz">KT</span><b>6</b><i>FINAL</i><b>2</b><span class="sports-match-logo"><img src="./assets/sports/kia-tigers-current.png" alt="KIA Tigers 로고"></span></div><p>KT Wiz vs KIA Tigers · 수원 KT위즈파크</p></div>
           <div class="sports-news"><span class="sports-section-label">DAILY UPDATE</span><a href="https://www.koreabaseball.com/Schedule/Schedule.aspx" target="_blank" rel="noopener"><b>KT전 2–6, 최근 경기 결과 반영</b><span>KBO 일정·결과 · 09.12</span></a><a href="https://www.koreabaseball.com/TeamRank/TeamRank.aspx" target="_blank" rel="noopener"><b>KIA 최신 순위와 경기 흐름</b><span>KBO 팀 순위</span></a></div>
         </article>
 
         <article class="sports-team-card team-madrid" data-sports-panel="madrid" hidden>
           <header class="sports-team-header"><span class="sports-team-logo"><img src="./assets/sports/real-madrid.svg" alt="Real Madrid C.F. 로고"></span><div><span class="sports-league">LALIGA · UEFA</span><h3>Real Madrid C.F.</h3><p>Santiago Bernabéu</p></div><span class="sports-team-code">RMA</span></header>
-          <div class="sports-result"><div><span>LAST GAME · 2026.09.08</span><strong class="win">WIN</strong></div><div class="sports-score"><span class="sports-match-logo"><img src="./assets/sports/real-madrid.svg" alt="Real Madrid 로고"></span><b>2</b><i>FINAL</i><b>1</b><span class="sports-match-logo"><img class="sports-logo-crop" src="./assets/sports/inter-milan.webp" alt="Inter Milan 로고"></span></div><p>Real Madrid C.F. vs Inter · UEFA Champions League</p></div>
+          <div class="sports-result"><div><span>시즌 종료 · LAST GAME · 2026.09.08</span><strong class="win">WIN</strong></div><div class="sports-score"><span class="sports-match-logo"><img src="./assets/sports/real-madrid.svg" alt="Real Madrid 로고"></span><b>2</b><i>FINAL</i><b>1</b><span class="sports-match-logo"><img class="sports-logo-crop" src="./assets/sports/inter-milan.webp" alt="Inter Milan 로고"></span></div><p>Real Madrid C.F. vs Inter · UEFA Champions League</p></div>
           <div class="sports-news"><span class="sports-section-label">WEEKLY UPDATE</span><a href="https://www.realmadrid.com/en-US/news/football/first-team/reports/cronica-real-madrid-inter-j1-ucl-08-09-2026" target="_blank" rel="noopener"><b>음바페·발베르데 득점, UCL 첫 경기 승리</b><span>Real Madrid · 09.08</span></a></div>
         </article>
 
         <article class="sports-team-card team-dplus" data-sports-panel="dplus" hidden>
           <header class="sports-team-header"><span class="sports-team-logo"><img src="./assets/sports/dplus-kia.svg" alt="Dplus KIA 로고"></span><div><span class="sports-league">LCK · LEAGUE OF LEGENDS</span><h3>Dplus KIA</h3><p>Seoul, Korea</p></div><span class="sports-team-code">DK</span></header>
-          <div class="sports-result"><div><span>LAST GAME · 2026.09.06</span><strong class="loss">LOSS</strong></div><div class="sports-score"><span class="sports-match-logo"><img src="./assets/sports/t1-logo.png" alt="T1 로고"></span><b>3</b><i>BO5</i><b>1</b><span class="sports-match-logo"><img src="./assets/sports/dplus-kia.svg" alt="Dplus KIA 로고"></span></div><p>T1 vs Dplus KIA · LCK 플레이오프</p></div>
+          <div class="sports-result"><div><span>시즌 종료 · LAST GAME · 2026.09.06</span><strong class="loss">LOSS</strong></div><div class="sports-score"><span class="sports-match-logo"><img src="./assets/sports/t1-logo.png" alt="T1 로고"></span><b>3</b><i>BO5</i><b>1</b><span class="sports-match-logo"><img src="./assets/sports/dplus-kia.svg" alt="Dplus KIA 로고"></span></div><p>T1 vs Dplus KIA · LCK 플레이오프</p></div>
           <div class="sports-news"><span class="sports-section-label">WEEKLY UPDATE</span><a href="https://dotesports.com/league-of-legends/news/dplus-kia-qualify-worlds-2026" target="_blank" rel="noopener"><b>KT전 3–1 승리로 Worlds 2026 진출 확정</b><span>주요 소식 · 09.04</span></a></div>
         </article>
       </div>
@@ -1823,6 +1823,7 @@
 <script src="./js/hani-pdf-core.js?v=2.9.299"></script>
 <script src="./hani-media-core.js?v=2.9.299"></script>
 <script src="./hani-newsroom-4cut.js"></script>
+<script src="./hani-book-share-parse.js"></script>
 <script src="./hani-main.js?v=2.9.299"></script>
 <script src="./hani-drive-vault.js?v=2.9.299"></script>
 <script src="./hani-office-live.js?v=2.9.299" defer></script>

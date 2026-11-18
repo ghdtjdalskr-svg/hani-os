@@ -27,6 +27,7 @@ function routeIntent(text,hint="auto"){
 
 function inferKind(text,hint="auto"){
   if(hint!=="auto")return hint;
+  if(window.HaniBookShare?.parse(text))return "book";
   const s=clean(text);
   if(/읽었|읽는\s*중|책(?:을|\s)|다\s*읽었|완독(?:했|완료)?|이\s*책|책\s*(?:제목|표지)|제목(?:은|이)\s*.+(?:책|읽)|읽기\s*시작|읽고\s*있|도서|독서/.test(s))return "book";
   if(/시즌\s*\d+|\d+\s*화|봤어|봤다|시청|드라마|영화|애니|다큐|예능/.test(s))return "movie";
@@ -44,6 +45,12 @@ function parseMovie(text){
 }
 
 function parseBook(text){
+  const shared=window.HaniBookShare?.parse(text);
+  if(shared){
+    const natural=typeof intakeNaturalBook==="function"?intakeNaturalBook(text):null,completed=shared.userStatus?shared.userStatus==="read":natural?natural.status==="read":/완독|다\s*읽|읽었|봤어|봤다/.test(shared.userPhrases.join(" ")),date=explicitDate(shared.userPhrases.join(" "))||natural?.completedDate||natural?.readingDate||"";
+    const data={status:completed?"read":"wish",title:shared.title,author:shared.author,topic:"교양",rating:null,completedDate:completed?date:"",review:completed?"":"읽는 중"};
+    return {target:"book",data,entities:{readingDate:date},missing:[!data.title&&"title",!date&&(completed?"completedDate":"readingDate")].filter(Boolean)};
+  }
   const s=clean(text),natural=typeof intakeNaturalBook==="function"?intakeNaturalBook(text):null,completed=natural?natural.status==="read":/완독|다\s*읽|읽었|봤어|봤다/.test(s),date=explicitDate(s)||natural?.completedDate||natural?.readingDate||"";
   const named=firstMatch(s,/제목(?:은|이|을)?\s*[:：]?\s*(.+?)(?=\s*(?:이야|야|입니다|이에요|예요)?\s*(?:오늘|어제|완독|다\s*읽|읽기|$))/);
   let title=natural?.title||named||s.replace(/(?:오늘|어제)\s*/g,"").replace(/^(?:이\s*책|책)\s*/g,"").replace(/(?:이라는|라는)?\s*(?:책|도서)?\s*(?:을|를)?\s*(?:읽기\s*시작했어|읽기\s*시작했다|읽기\s*시작|읽고\s*있어|완독했어|완독했다|다\s*읽었어|다\s*읽었다).*$/g,"").replace(/[.!]+$/g,"").trim();
@@ -172,7 +179,7 @@ function parse(text,hint="auto"){
   if(scheduleIntent(text,hint))return parseSchedule(text);
   const kind=inferKind(text,hint),draft=kind==="movie"?parseMovie(text):kind==="book"?parseBook(text):kind==="travelWish"?parsePlace(text):kind==="diary"?parseDiary(text):parseTask(text);
   const rating=parseRatingInput(text,null);
-  if(['book','movie','travelWish'].includes(kind)&&rating.value!==null){
+  if(['book','movie','travelWish'].includes(kind)&&rating.value!==null&&!(kind==="book"&&window.HaniBookShare?.parse(text))){
     draft.data.rating=rating.valid?ratingForExistingScale(text,null):null;
     draft.entities={...draft.entities,ratingInput:rating};
     if(!rating.valid&&!draft.missing.includes('rating'))draft.missing.push('rating');

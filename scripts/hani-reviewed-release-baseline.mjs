@@ -1,3 +1,4 @@
+import './hani-audit-1-preload.cjs'; // Restore exact main299 before the historical oracle reads current owners.
 // Preservation oracle: fixed release225 through 233 proofs, then contiguous merged
 // release PRs from origin/main. Worktree/HEAD can never authorize source bytes.
 import assert from 'node:assert/strict';

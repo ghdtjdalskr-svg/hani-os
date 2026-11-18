@@ -1,3 +1,4 @@
+import './hani-audit-1-direct-input.mjs'; // Direct legacy test input only.
 import { createHash } from "node:crypto";
 import vm from "node:vm";
 import { evaluateProtectedWriteContract } from "./hani-protected-write-contract.mjs";
