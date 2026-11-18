@@ -4106,7 +4106,7 @@
     const award=activeFloor==='1f'&&map.dataset.art==='floor'?window.HaniBoard?.queenWinner?.(now):null;
     const image=award&&window.HaniBoard?.queenImages?.[award.month];
     const hidden=!image;if(queenFrame.hidden!==hidden)queenFrame.hidden=hidden;if(hidden)return;
-    const caption='👑 '+Number(award.month.slice(5))+'월의 퀸',title=caption+' · '+award.name;
+    const caption='👑 지난달('+Number(award.month.slice(5))+'월)의 퀸',title=caption+' · '+award.name;
     if(queenFrame.dataset.month!==award.month){queenFrame.dataset.month=award.month;queenImage.src=image;queenCaption.textContent=caption}
     if(queenFrame.title!==title){queenFrame.title=title;queenFrame.setAttribute('aria-label',title)}
   }
