@@ -1,0 +1,146 @@
+{
+  "node": "v24.20.0",
+  "base": "9f49286882e2efacd128e2920cc12f38d473a8e9",
+  "baselineSha": "2220b6129c63721906a3788ee9a7681f197c4523",
+  "baselineEvidence": "prior per-test logs; all source bytes and external image inputs reverified",
+  "regressionPolicy": "tooling300b: no previously passing main test may fail; keep named already-failing history-unify/lounge-billboard direct tests unchanged",
+  "baseline": {
+    "files": 274,
+    "success": 173,
+    "nonzero": 101,
+    "pass": 1549,
+    "fail": 59,
+    "skip": 10,
+    "positiveMarkers": 138
+  },
+  "current": {
+    "files": 276,
+    "success": 175,
+    "nonzero": 101,
+    "pass": 1574,
+    "fail": 58,
+    "skip": 10,
+    "positiveMarkers": 138
+  },
+  "missing": [],
+  "baselineMissing": [],
+  "duplicates": [],
+  "regressions": [],
+  "changed": [
+    {
+      "file": "hani-history-unify.test.mjs",
+      "before": [
+        1,
+        10,
+        4,
+        0
+      ],
+      "after": [
+        1,
+        13,
+        1,
+        0
+      ],
+      "newFailures": [
+        "shared loader shape failure keeps legacy data, shows a short notice, and caches the failed request"
+      ]
+    },
+    {
+      "file": "hani-lounge-billboard.test.mjs",
+      "before": [
+        1,
+        23,
+        4,
+        0
+      ],
+      "after": [
+        1,
+        21,
+        6,
+        0
+      ],
+      "newFailures": [
+        "slide order uses published module sources, actual employee and weeklyBest",
+        "winner appears only in following month, with vote second and employee third"
+      ]
+    }
+  ],
+  "allowedExistingFailureChanges": [
+    {
+      "file": "hani-history-unify.test.mjs",
+      "before": [
+        1,
+        10,
+        4,
+        0
+      ],
+      "after": [
+        1,
+        13,
+        1,
+        0
+      ],
+      "newFailures": [
+        "shared loader shape failure keeps legacy data, shows a short notice, and caches the failed request"
+      ]
+    },
+    {
+      "file": "hani-lounge-billboard.test.mjs",
+      "before": [
+        1,
+        23,
+        4,
+        0
+      ],
+      "after": [
+        1,
+        21,
+        6,
+        0
+      ],
+      "newFailures": [
+        "slide order uses published module sources, actual employee and weeklyBest",
+        "winner appears only in following month, with vote second and employee third"
+      ]
+    }
+  ],
+  "errorChanges": [
+    {
+      "file": "hani-history-unify.test.mjs",
+      "before": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "after": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /기존 기록/. Input:"
+    },
+    {
+      "file": "hani-lounge-billboard.test.mjs",
+      "before": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:",
+      "after": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:"
+    }
+  ],
+  "unexpectedErrorChanges": [],
+  "added": [
+    {
+      "file": "hani-audit-1.test.mjs",
+      "exit": 0,
+      "pass": 14,
+      "fail": 0,
+      "skip": 0,
+      "seconds": 0.8,
+      "framework": true,
+      "failures": [],
+      "positiveMarkers": [],
+      "error": ""
+    },
+    {
+      "file": "hani-release-300.test.mjs",
+      "exit": 0,
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "seconds": 2.84,
+      "framework": true,
+      "failures": [],
+      "positiveMarkers": [],
+      "error": ""
+    }
+  ]
+}

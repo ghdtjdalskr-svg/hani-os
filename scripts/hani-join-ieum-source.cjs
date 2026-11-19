@@ -1,3 +1,4 @@
+require('./hani-audit-1-preload.cjs'); // First raw owner read must already expose exact main299.
 // Explicit test-only inverse. Runtime and the old preservation oracles stay intact.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const hash=value=>crypto.createHash('sha256').update(value).digest('hex');
