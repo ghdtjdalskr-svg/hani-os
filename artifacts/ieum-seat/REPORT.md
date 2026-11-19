@@ -79,3 +79,30 @@
 
 - **테스트·구문 검사 미실행**: 셸 명령을 사용할 수 없는 조건으로 인해 `node --test scripts/hani-ieum-seat.test.mjs`, JSON 유효성 검사, `hani-office-live.js` 문법 검사 및 실제 브라우저 화면 확인을 실행하지 못함. 작업 완료 후 별도 `node --test scripts/hani-ieum-seat.test.mjs` 실행 확인 필요.
 - **범위 외 참고 항목**: `art-map-v1.json`의 `4f.deskProps` (`yuna-217.webp`가 `desk_yuna`에 계속 표시됨), `office-tap-lines-v1.json`(4줄 `ieum.morning`), `office-drama-v1.json`(10줄), `hani-main.js` / `hani-character-archive-data.js`의 `"하니 전무님 옆"` 소개 문구는 이번 작업 범위에 포함하지 않아 그대로 남아 있음.
+
+## 2차(시험 층)
+
+- 2026-11-19 · 도연 / Codex. `hani/ieum-seat-2`, HEAD `386a880`, 고정 main `ad95b84`. 재시작 전 완료 로그(main194/현재183개)는 동일 Node·원본 확인 후 이어서 사용. 위 5절의 시험·구문 미실행 상태를 아래 결과로 갱신한다.
+- 새 층: `scripts/hani-ieum-seat-source.cjs`, `hani-ieum-seat-preload.cjs`, `fixtures/ieum-seat-layer.json`, `hani-ieum-seat-layer.test.mjs`. 기존 `hani-release-300-source.cjs` 맨 앞에 연결 1줄만 추가. **자리 교체 → release-300 → audit-1 이하** 순서로 6개 owner의 정확한 main 바이트를 메모리에서 복원하며, 기존 본문·단언·hash·fixture는 보존했다.
+- 전체 `scripts/*.test.mjs`를 각 폴더 cwd에서 `node scripts/<파일>`로 개별 순차 실행했다(Node `v24.20.0`).
+
+| 기준 | 파일 수 | 종료 성공 / 실패 | Node PASS / FAIL / SKIP |
+|---|---:|---:|---:|
+| main `ad95b84` 독립 복사 | 276 | 169 / 107 | 1558 / 68 / 10 |
+| 현재 자리 교체 + 시험 층 | 278 | 171 / 107 | 1567 / 68 / 10 |
+
+- **신규 회귀0**, 기존276개 종료 코드·검사 수·결과 이름 변화0, 누락·중복0. 별도 script PASS 표식은 양쪽136개. 자리 교체 시험 **5/5**, 새 층 시험 **4/4**, syntax **11파일 PASS**.
+- 실제 교체 데이터를 역투영 없이 검사: 216·221 액션표/평일·주말 **384스냅샷 정착 좌표 겹침0**, 직원 홈 경로 **40/40** 연결. 자리 교체 자체의 추가 버그 수정0.
+- 지정 생성 JSON4개 원문 복원. 보호 경로31개·운영/데이터514개·기존 시험304개·fixture122개 바이트 보존. 저장·Cloud·schema 경로 변경0, 표시/cache `2.9.300` 유지(시험 도구 작업으로 버전 증가 N/A). 시험 부산물15개는 삭제 없이 로컬 증거 폴더로 옮겼다.
+- 남은 위험: 기존107개 실패는 유지되어 전체 PASS는 아니다(브라우저 인자/의존성, `spawnSync git EPERM`, 기존 `renderChibiNote`·기준선 단언 등). 실제 브라우저 화면·운영 read-back은 미검증이며, 위 범위 외 그림·소개 문구도 그대로다. 원격 최신 main 조회는 네트워크 차단으로 미확인. commit·push·merge·배포·Notion은 수행하지 않았다.
+- 근거: [전체 결과표](TEST-RESULTS.md), [대조 집계](test-summary.json), [원본 보존](preservation.json), [실제 자리 검사](runtime-check.json). 실행·집계·보존 도구는 이 폴더에, 원본 로그·독립 main·생성 부산물은 `.ai-budget-private/ieum-seat-2/`에 보존했다.
+
+## 3차
+
+- 2026-11-19~20 · 도연 / Codex, branch `hani/ieum-seat-2`, HEAD `386a880`, 고정 main `ad95b84`. Git 이력 선택기가 release commit `9f49286`만 인식하여 tooling merge `ad95b84`에서는 현재 299 투영 입력과 300 이력이 충돌했다.
+- 새 바깥 어댑터 `scripts/hani-ieum-seat-reviewed-input.cjs`와 새 시험 `hani-ieum-seat-history.test.mjs` 추가. 기존 `hani-release-300-reviewed-input.cjs`의 require 연결 1줄만 교체했다. 고정 base·교체 commit의 부모·자리/metadata 소유 파일 9개 exact hash가 모두 맞을 때만 기존 release300 선택기로 넘긴다. Git object 원문과 하위 단언·hash·fixture는 보존했다.
+- 최종 재검증: 기존 주요 6개 파일(brand-heroes/login/ocr/office-219/release-300/reviewed-release-baseline) 모두 PASS, 새 부정 시험 2/2 PASS. 전체 실행의 자리 시험 5/5·기존 층 4/4 PASS. JS 9파일·PowerShell 구문 PASS.
+- **전체 통과 조건은 미충족이다.** 지정 `seoyun-runall.cjs`는 이 환경의 `spawnSync(node)` EPERM을 모두 timeout으로 분류했다(현재279/main276). 별도 PowerShell 실행으로 각 새 Node·cwd·90초 제한을 유지해 279개 전부 실행: **175 PASS / 98 FAIL / 6 timeout**. 제공 main PASS209개 중171개 PASS,35개 FAIL(34개 명시적 EPERM·1개 자식 종료상태 null),3개 timeout. 누락0. [전체 대조](comparison-3.json), [실행기 제한](runner-3-diagnostic.json).
+- 성능: cafe 400ms 단언은 초기 두 번 PASS(전체 실행 최저 부재274/참석333ms), 후반 단독 재실행은 현재521ms·main557ms로 양쪽 FAIL. 시험의 legacy 입력6개가 main과 바이트까지 동일함을 확인했다. 실제 원본 교체 데이터/런타임 비교 중앙값은 부재 main591→교체531ms, 참석599→579ms로 자리 교체 특유의 저하는 관측하지 못했다. CPU·시스템 부하는 미계측이라 변동 원인은 단정하지 않는다. [측정](performance-3.json).
+- `pets-bubble`, `residents`, `staff-chat`의 90초 timeout은 고정 main 복사본에서도 모두 재현됐다. 현재 전체 실행의 다른 timeout3개(bori-stroll/kids-weekday/obr14)는 제공 main에서도 timeout이다. [main 대조](seoyun-baseline-timing-3-shell.json). 기준 복사본2335파일은 지정 생성 JSON4개 외 Git blob 일치.
+- 지정 생성 JSON4개 원본 복원, 기존 시험304·fixture122·보호 파일31·운영/데이터514개 바이트 보존. 저장·Cloud·schema·버전/cache 변경0. [보존 감사](preservation-3.json). commit·push·배포·Notion 미실행. 남은 행동은 자식 실행이 허용되는 환경에서 동일 지정 실행기로 최종 재검증하는 것이다. 원본 로그·생성 출력은 `.ai-budget-private/ieum-seat-3/`, 상세 [인수인계](../../docs/development-history/handoffs/2026-11-19-ieum-seat-3.md)에 보존했다.
