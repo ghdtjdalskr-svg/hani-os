@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "from": "2.9.299",
+  "to": "2.9.300",
+  "release": "9f49286882e2efacd128e2920cc12f38d473a8e9",
+  "base": "2220b6129c63721906a3788ee9a7681f197c4523",
+  "files": {
+    "index.html": {
+      "after": "5964536bc32271fafee18254b04742d434a4f33f583d147e580d5fd54ee1a99a",
+      "before": "7e066d9853a8a42364f6ded97d4e14ef0c4e35c7a9da32661b59d562c1b7ced8",
+      "count": 60
+    },
+    "hani-main.js": {
+      "after": "2500c4f07e58bef8ca54c6667193a6cdd6ab5181d32b30979c89fcb980144183",
+      "before": "6ec7c5c4e84124d32ec1c3b60fabc64f61a162a726409f00a24bea124cf056ae",
+      "count": 1
+    },
+    "assets/data/hani-history-releases-v1.json": {
+      "after": "e514578c1f7c5b8fb368c37e7639cbebb872c406d3b861e42e48a3c5b143b2c3",
+      "before": "0568615c2ffa40fbb5ab5c9b4de2e4dec69e7ffe060ec705ea2257ac4e1b855c",
+      "count": 1,
+      "replacements": [
+        {
+          "before": "299\",\n      \"date\": \"2026-11-14\",\n      \"status\": \"released\",\n      \"title\": \"디자인 다듬기 2차\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.299 디자인 다듬기 2차",
+          "after": "300\",\n      \"date\": \"2026-11-19\",\n      \"status\": \"released\",\n      \"title\": \"점검 반영 1차\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.300 점검 반영 1차\"\n      }\n    },\n    {\n      \"id\": \"v2.9.299\",\n      \"date\": \"2026-11-14\",\n      \"status\": \"released\",\n      \"title\": \"디자인 다듬기 2차\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"1881888a2ca970ab86adda9b193a90256027be1c\",\n        \"subject\": \"release: v2.9.299 디자인 다듬기 2차 (#515)"
+        }
+      ]
+    }
+  }
+}

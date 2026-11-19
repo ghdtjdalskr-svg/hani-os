@@ -1,0 +1,60 @@
+{
+  "node": "v24.20.0",
+  "base": "9f49286882e2efacd128e2920cc12f38d473a8e9",
+  "baselineSha": "2220b6129c63721906a3788ee9a7681f197c4523",
+  "baseline": {
+    "files": 274,
+    "success": 173,
+    "nonzero": 101,
+    "frameworkFiles": 155,
+    "pass": 1549,
+    "fail": 59,
+    "skip": 10,
+    "positiveMarkers": 138,
+    "blockedNonzero": 49
+  },
+  "current": {
+    "files": 276,
+    "success": 175,
+    "nonzero": 101,
+    "frameworkFiles": 157,
+    "pass": 1573,
+    "fail": 59,
+    "skip": 10,
+    "positiveMarkers": 138,
+    "blockedNonzero": 49
+  },
+  "missing": [],
+  "baselineMissing": [],
+  "duplicates": [],
+  "regressions": [],
+  "changed": [],
+  "added": [
+    {
+      "file": "hani-audit-1.test.mjs",
+      "exit": 0,
+      "pass": 14,
+      "fail": 0,
+      "skip": 0,
+      "seconds": 0.81,
+      "framework": true,
+      "failures": [],
+      "positiveMarkers": [],
+      "blocked": false,
+      "error": ""
+    },
+    {
+      "file": "hani-release-300.test.mjs",
+      "exit": 0,
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "seconds": 2.81,
+      "framework": true,
+      "failures": [],
+      "positiveMarkers": [],
+      "blocked": false,
+      "error": ""
+    }
+  ]
+}
