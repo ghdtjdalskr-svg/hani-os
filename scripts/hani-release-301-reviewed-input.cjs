@@ -1,5 +1,5 @@
 // Exact released301 history boundary. Git object reads stay independent and raw.
-const repository=require('./hani-test-repository-evidence.cjs');
+const repository=require('./hani-dark-bundle-reviewed-input.cjs');
 const release=require('./hani-release-301-source.cjs'),path=require('node:path'),assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'..');
 const seatBytes=release.readRawFileSync(path.join(__dirname,'fixtures/ieum-seat-layer.json'));
