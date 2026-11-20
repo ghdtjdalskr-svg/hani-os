@@ -1,3 +1,4 @@
+import './hani-lounge-queen-v3-preload.cjs'; // Exact queen inverse before legacy assertions.
 // node scripts/hani-newstaff-215.test.mjs [--unit] [playwright/index.mjs] [browser.exe]
 // Real app, disposable empty contexts; external traffic blocked, protected state never written.
 import assert from 'node:assert/strict';
