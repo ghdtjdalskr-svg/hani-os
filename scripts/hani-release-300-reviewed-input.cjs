@@ -1,6 +1,6 @@
 // The historical oracle sees projected299 current bytes. Select the same fixed
 // main299 history prefix only for the independently pinned deployed300 input.
-const repository=require('./hani-test-repository-evidence.cjs');
+const repository=require('./hani-ieum-seat-reviewed-input.cjs'); // Exact committed seat history before release300 selection.
 const release=require('./hani-release-300-source.cjs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
 function selectBase(base,read=release.readRawFileSync){

@@ -1,3 +1,4 @@
+require('./hani-ieum-seat-preload.cjs'); // Exact main300 input before release-300 capture.
 // Test-only exact deployed300 metadata -> frozen audit-1 candidate metadata.
 // Capture disk before every older fs adapter; no runtime file is ever written.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
