@@ -102,7 +102,7 @@ test('only exact302 metadata, all dark owners and seats may select the fixed dar
 });
 
 test('302 fixture identity is checked before any projection',()=>{
- assert.throws(()=>vm.runInNewContext(raw('scripts/hani-release-302-source.cjs').toString('utf8'),{__dirname:fileURLToPath(new URL('.',import.meta.url)),require:name=>name==='node:fs'?{readFileSync:()=>Buffer.concat([raw('scripts/fixtures/release-302-layer.json'),Buffer.from('\n')])}:name==='node:path'?path:name==='node:assert/strict'?assert:name==='node:crypto'?{createHash}:assert.fail(name)}),/frozen release302 fixture/);
+ assert.throws(()=>vm.runInNewContext(raw('scripts/hani-release-302-source.cjs').toString('utf8'),{__dirname:fileURLToPath(new URL('.',import.meta.url)),require:name=>name==='./hani-lounge-queen-v3-preload.cjs'?{}:name==='node:fs'?{readFileSync:()=>Buffer.concat([raw('scripts/fixtures/release-302-layer.json'),Buffer.from('\n')])}:name==='node:path'?path:name==='node:assert/strict'?assert:name==='node:crypto'?{createHash}:assert.fail(name)}),/frozen release302 fixture/);
 });
 
 test('302 preload preserves sync callback promise Buffer string URL fd errors and callback exceptions without writes',async()=>{

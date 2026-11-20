@@ -1,3 +1,4 @@
+require('./hani-lounge-queen-v3-preload.cjs'); // Exact candidate inverse before302 capture.
 // Test-only released302 metadata -> exact main301 metadata before dark-bundle.
 // Capture actual disk before dark-bundle, 301, seats and every older fs adapter.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
