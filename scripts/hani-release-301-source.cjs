@@ -1,3 +1,4 @@
+require('./hani-dark-bundle-preload.cjs'); // Restore exact main301 before its raw-reader capture.
 // Test-only exact deployed301 metadata -> main300 metadata with committed seats.
 // The raw reader captures disk before ieum-seat and all older fs adapters.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
