@@ -1,3 +1,4 @@
+require('./hani-audit-1-preload.cjs'); // audit-1 precedes release299 raw capture.
 require('./hani-release-299-preload.cjs'); // Exact deployed299 version/history precedes design2.
 // Input adapter only. Existing assertions see byte-exact main296, never loose normalization.
 const fs=require('node:fs'),path=require('node:path'),{fileURLToPath}=require('node:url');

@@ -1270,7 +1270,7 @@
     if(chibiNote){chibiNote.hidden=true;main.before(chibiNote);}
     const project = projectById(activeProjectId);
     if (!project) {
-      main.innerHTML = `<div class="study-card-v02984 study-main-empty"><div><b>학습 프로젝트를 선택해 주세요.</b><span>왼쪽에서 프로젝트를 만들면 Daily Quiz가 시작됩니다.</span></div></div>`;
+      main.innerHTML = `<div class="study-card-v02984 study-main-empty"><div><b>학습 프로젝트를 선택해 주세요.</b><span>프로젝트 설정에서 만들면 오늘의 퀴즈가 시작됩니다.</span></div></div>`;
       return;
     }
     const view = normalizeProject(project), date = generationDate(project), allQuizzes = projectQuizzes(project.id), todayQuiz = generationPeriodQuiz(project, date), pending = allQuizzes.filter(x => x.status !== 'completed'), completed = allQuizzes.filter(x => x.status === 'completed'), archiveMonths = [...new Set(allQuizzes.map(x => quizDate(x).slice(0,7)).filter(x => /^\d{4}-\d{2}$/.test(x)))].sort((a,b)=>b.localeCompare(a)), filteredQuizzes = quizArchiveMonth === 'all' ? allQuizzes : allQuizzes.filter(x => quizDate(x).startsWith(quizArchiveMonth)), archivePages = Math.max(1, Math.ceil(filteredQuizzes.length / QUIZ_ARCHIVE_PAGE_SIZE));

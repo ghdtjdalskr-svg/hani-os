@@ -1,3 +1,4 @@
+require('./hani-audit-1-preload.cjs'); // Restore exact main299 before capturing helper input.
 // Test-only outer exact inverse: main297 + helper toggle -> exact main297.
 // The two owner bytes equal pinned main296; keep its provenance and all pins.
 // No runtime imports, Git processes or lower-layer assertion changes.
