@@ -1,0 +1,28 @@
+{
+  "snapshot": 2347,
+  "changed": [
+    "scripts/hani-ieum-seat-history.test.mjs",
+    "scripts/hani-ieum-seat-reviewed-input.cjs",
+    "scripts/hani-ieum-seat-source.cjs"
+  ],
+  "unexpected": [],
+  "missing": [],
+  "restoredGenerated": [
+    "artifacts/office-behavior/obr16-layout-node.json",
+    "artifacts/office-behavior/obr17-layout-node.json",
+    "artifacts/office-behavior/obr19-layout-node.json",
+    "artifacts/office-drama/reachability.json"
+  ],
+  "generatedOriginals": [
+    "artifacts/office-behavior/obr16-layout-node.json",
+    "artifacts/office-behavior/obr17-layout-node.json",
+    "artifacts/office-behavior/obr19-layout-node.json",
+    "artifacts/office-drama/reachability.json"
+  ],
+  "existingTestsPreserved": 305,
+  "fixturesPreserved": 123,
+  "runtimeChanged": [],
+  "protectedChanged": [],
+  "baselineFiles": 2335,
+  "baselineUnexpectedDrift": []
+}
