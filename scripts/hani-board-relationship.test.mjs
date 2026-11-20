@@ -1,3 +1,4 @@
+import './hani-lounge-queen-v3-preload.cjs'; // Exact queen inverse before legacy assertions.
 // Exercise the real board with approved seed and synthetic records only.
 import assert from "node:assert/strict";
 import fs from "node:fs";
