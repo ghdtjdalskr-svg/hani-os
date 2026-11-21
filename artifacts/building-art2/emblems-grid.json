@@ -1,0 +1,261 @@
+{
+  "schema": 1,
+  "image": "assets/brand/hani-dept-emblems-v1.webp",
+  "width": 512,
+  "height": 256,
+  "columns": 4,
+  "rows": 2,
+  "cellWidth": 128,
+  "cellHeight": 128,
+  "order": "row-major",
+  "origin": "top-left",
+  "units": "pixels",
+  "transparentBackground": true,
+  "minimumTransparentGutter": 8,
+  "css": {
+    "backgroundSize": "400% 200%",
+    "note": "Set a square element; use each cell CSS position or extract its pixel rect."
+  },
+  "cells": [
+    {
+      "id": "business-solutions",
+      "name": "기업솔루션사업부",
+      "symbol": "악수",
+      "index": 0,
+      "column": 0,
+      "row": 0,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 128,
+        "height": 128
+      },
+      "contentRect": {
+        "x": 11,
+        "y": 8,
+        "width": 105,
+        "height": 112
+      },
+      "sourceCrop": {
+        "left": 51,
+        "top": 19,
+        "width": 388,
+        "height": 413
+      },
+      "cssBackgroundPositionPercent": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": "finance-assets",
+      "name": "재무자산관리실",
+      "symbol": "그래프·동전",
+      "index": 1,
+      "column": 1,
+      "row": 0,
+      "rect": {
+        "x": 128,
+        "y": 0,
+        "width": 128,
+        "height": 128
+      },
+      "contentRect": {
+        "x": 140,
+        "y": 8,
+        "width": 104,
+        "height": 112
+      },
+      "sourceCrop": {
+        "left": 480,
+        "top": 18,
+        "width": 383,
+        "height": 414
+      },
+      "cssBackgroundPositionPercent": {
+        "x": 33.333333333333336,
+        "y": 0
+      }
+    },
+    {
+      "id": "life-entertainment",
+      "name": "라이프&엔터",
+      "symbol": "음표·하트",
+      "index": 2,
+      "column": 2,
+      "row": 0,
+      "rect": {
+        "x": 256,
+        "y": 0,
+        "width": 128,
+        "height": 128
+      },
+      "contentRect": {
+        "x": 267,
+        "y": 8,
+        "width": 105,
+        "height": 112
+      },
+      "sourceCrop": {
+        "left": 904,
+        "top": 19,
+        "width": 387,
+        "height": 413
+      },
+      "cssBackgroundPositionPercent": {
+        "x": 66.66666666666667,
+        "y": 0
+      }
+    },
+    {
+      "id": "ai-platform",
+      "name": "AI플랫폼개발실",
+      "symbol": "칩",
+      "index": 3,
+      "column": 3,
+      "row": 0,
+      "rect": {
+        "x": 384,
+        "y": 0,
+        "width": 128,
+        "height": 128
+      },
+      "contentRect": {
+        "x": 395,
+        "y": 8,
+        "width": 105,
+        "height": 112
+      },
+      "sourceCrop": {
+        "left": 1334,
+        "top": 19,
+        "width": 389,
+        "height": 413
+      },
+      "cssBackgroundPositionPercent": {
+        "x": 100,
+        "y": 0
+      }
+    },
+    {
+      "id": "chairman-office",
+      "name": "회장실",
+      "symbol": "의자·별",
+      "index": 4,
+      "column": 0,
+      "row": 1,
+      "rect": {
+        "x": 0,
+        "y": 128,
+        "width": 128,
+        "height": 128
+      },
+      "contentRect": {
+        "x": 12,
+        "y": 136,
+        "width": 104,
+        "height": 112
+      },
+      "sourceCrop": {
+        "left": 51,
+        "top": 448,
+        "width": 389,
+        "height": 420
+      },
+      "cssBackgroundPositionPercent": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "secretariat",
+      "name": "비서실",
+      "symbol": "편지·시계",
+      "index": 5,
+      "column": 1,
+      "row": 1,
+      "rect": {
+        "x": 128,
+        "y": 128,
+        "width": 128,
+        "height": 128
+      },
+      "contentRect": {
+        "x": 139,
+        "y": 136,
+        "width": 105,
+        "height": 112
+      },
+      "sourceCrop": {
+        "left": 474,
+        "top": 448,
+        "width": 392,
+        "height": 420
+      },
+      "cssBackgroundPositionPercent": {
+        "x": 33.333333333333336,
+        "y": 100
+      }
+    },
+    {
+      "id": "strategy-planning",
+      "name": "전략기획실",
+      "symbol": "지도·나침반",
+      "index": 6,
+      "column": 2,
+      "row": 1,
+      "rect": {
+        "x": 256,
+        "y": 128,
+        "width": 128,
+        "height": 128
+      },
+      "contentRect": {
+        "x": 268,
+        "y": 136,
+        "width": 104,
+        "height": 112
+      },
+      "sourceCrop": {
+        "left": 901,
+        "top": 448,
+        "width": 392,
+        "height": 421
+      },
+      "cssBackgroundPositionPercent": {
+        "x": 66.66666666666667,
+        "y": 100
+      }
+    },
+    {
+      "id": "company-museum",
+      "name": "회사 박물관",
+      "symbol": "빈 액자·월계관",
+      "index": 7,
+      "column": 3,
+      "row": 1,
+      "rect": {
+        "x": 384,
+        "y": 128,
+        "width": 128,
+        "height": 128
+      },
+      "contentRect": {
+        "x": 396,
+        "y": 136,
+        "width": 104,
+        "height": 112
+      },
+      "sourceCrop": {
+        "left": 1334,
+        "top": 448,
+        "width": 389,
+        "height": 420
+      },
+      "cssBackgroundPositionPercent": {
+        "x": 100,
+        "y": 100
+      }
+    }
+  ]
+}
