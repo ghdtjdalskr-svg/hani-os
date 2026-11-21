@@ -1,3 +1,4 @@
+require('./hani-building-phase2-preload.cjs'); // Outermost Phase 2 inverse, before the Phase 1 capture.
 // Frozen test input only: Phase 1 -> office motion -> 306 -> existing 305 chain.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=b=>createHash('sha256').update(b).digest('hex');

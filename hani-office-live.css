@@ -347,3 +347,15 @@
 /* Motion polish 1 (11/21): the 100ms movement clock moves walkers in 10 steps per second; blend each step while walking only. */
 .hani-office-live:not([data-paused="true"]) .hani-office-actor[data-walking="true"]{transition:opacity .3s,left .1s linear,top .1s linear}
 @media(prefers-reduced-motion:reduce){.hani-office-live .hani-office-actor[data-walking="true"]{transition:none}}
+
+/* Phase 2: persistent room buttons, below actor hitboxes; native keyboard activation. */
+.hani-office-room-plate[data-room-view]{z-index:2;pointer-events:auto;cursor:pointer;min-height:44px;white-space:normal;text-align:center;padding:4px 6px;border-radius:8px;width:clamp(102px,22%,250px)!important;max-width:46%;display:block;visibility:visible}
+.hani-office-room-plate[data-room-view] b{font-size:clamp(7px,1cqw,11px)}
+.hani-office-room-plate[data-room-view] small{font-size:clamp(10px,1.15cqw,13px)}
+.hani-office-room-plate[data-room-view]:focus-visible,.hani-office-room-links button:focus-visible{outline:3px solid #8363b8;outline-offset:2px}
+.hani-office-room-plate[data-room-view][hidden]{display:none}
+.hani-office-room-links{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.hani-office-room-links button{min-height:44px;max-width:100%;padding:8px 10px;border:1px solid #c8bad8;border-radius:9px;background:var(--surface,#fff);color:var(--text,#453650);white-space:normal;overflow-wrap:anywhere;cursor:pointer}
+.hani-office-room-mobile-labels{display:none}
+.hani-office-room-mobile-labels button{min-width:0;min-height:44px;padding:8px;border:1px solid #c8bad8;border-radius:9px;background:#3f444a;color:#fff;white-space:normal;cursor:pointer}
+@media(max-width:700px){.hani-office-room-plate[data-room-view]{display:none}.hani-office-room-mobile-labels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:8px 0}}

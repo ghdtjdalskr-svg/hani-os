@@ -24,7 +24,9 @@
   "floors": [
     {
       "id": "5f",
-      "label": "5F 옥상 · 조용한 정원",
+      "label": "6F 옥상",
+      "order": 6,
+      "code": "6F",
       "quiet": true,
       "rooms": [
         {
@@ -2013,6 +2015,728 @@
           "w": 52,
           "h": 18,
           "kind": "sofa_or_table_surface"
+        }
+      ]
+    },
+    {
+      "id": "creative",
+      "order": 5,
+      "code": "5F",
+      "label": "5F 라이프·크리에이티브",
+      "category": "amenity",
+      "quiet": false,
+      "maxVisible": 4,
+      "anchorCount": 33,
+      "rooms": [
+        {
+          "id": "studio",
+          "floor": "creative",
+          "label": "방송 스튜디오",
+          "english": "HANI STUDIO",
+          "kind": "media",
+          "access": "staff",
+          "x": 40,
+          "y": 50,
+          "w": 390,
+          "h": 250,
+          "boundsSchematic": {
+            "x": 40,
+            "y": 50,
+            "w": 390,
+            "h": 250
+          },
+          "boundsArtPct": [
+            6.2799,
+            29.22423,
+            41.26794,
+            45.16472
+          ],
+          "door": "door_studio",
+          "junctionAnchor": "junction_studio",
+          "capacity": 4,
+          "slots": [
+            {
+              "anchorId": "studio_anchor_a",
+              "zone": "lounge",
+              "pose": "sitting",
+              "role": "visitor"
+            },
+            {
+              "anchorId": "studio_anchor_b",
+              "zone": "lounge",
+              "pose": "sitting",
+              "role": "visitor"
+            },
+            {
+              "anchorId": "studio_camera",
+              "zone": "lounge",
+              "pose": "standing",
+              "role": "visitor"
+            },
+            {
+              "anchorId": "studio_4cut",
+              "zone": "lounge",
+              "pose": "standing",
+              "role": "visitor"
+            }
+          ],
+          "propActions": [],
+          "menuLink": {
+            "primaryView": "newsroom",
+            "choices": [
+              {
+                "view": "ilbo",
+                "label": "HANI 일보"
+              },
+              {
+                "view": "newsroom",
+                "label": "뉴스룸"
+              },
+              {
+                "view": "investmentCommittee",
+                "label": "시황 4컷"
+              }
+            ]
+          },
+          "eventHooks": []
+        },
+        {
+          "id": "library_cinema",
+          "floor": "creative",
+          "label": "도서관·시네마",
+          "english": "LIBRARY & CINEMA",
+          "kind": "study",
+          "access": "staff",
+          "x": 450,
+          "y": 50,
+          "w": 400,
+          "h": 250,
+          "boundsSchematic": {
+            "x": 450,
+            "y": 50,
+            "w": 400,
+            "h": 250
+          },
+          "boundsArtPct": [
+            60.4067,
+            26.56748,
+            96.59091,
+            45.16472
+          ],
+          "door": "door_library_cinema",
+          "junctionAnchor": "junction_library_cinema",
+          "capacity": 4,
+          "slots": [
+            {
+              "anchorId": "lib_study_a",
+              "zone": "lounge",
+              "pose": "sitting",
+              "role": "visitor"
+            },
+            {
+              "anchorId": "lib_study_b",
+              "zone": "lounge",
+              "pose": "sitting",
+              "role": "visitor"
+            },
+            {
+              "anchorId": "cinema_sofa_a",
+              "zone": "lounge",
+              "pose": "sitting",
+              "role": "visitor"
+            },
+            {
+              "anchorId": "cinema_sofa_b",
+              "zone": "lounge",
+              "pose": "sitting",
+              "role": "visitor"
+            }
+          ],
+          "propActions": [],
+          "menuLink": {
+            "primaryView": "reading",
+            "choices": [
+              {
+                "view": "reading",
+                "label": "성민의 서재"
+              },
+              {
+                "view": "study",
+                "label": "공부"
+              },
+              {
+                "view": "movie",
+                "label": "시청 아카이브"
+              }
+            ]
+          },
+          "eventHooks": []
+        },
+        {
+          "id": "fitness",
+          "floor": "creative",
+          "label": "피트니스",
+          "english": "WELLNESS GYM",
+          "kind": "fitness",
+          "access": "staff",
+          "x": 40,
+          "y": 360,
+          "w": 390,
+          "h": 240,
+          "boundsSchematic": {
+            "x": 40,
+            "y": 360,
+            "w": 390,
+            "h": 240
+          },
+          "boundsArtPct": [
+            6.57895,
+            69.6068,
+            41.26794,
+            90.32944
+          ],
+          "door": "door_fitness",
+          "junctionAnchor": "junction_fitness",
+          "capacity": 4,
+          "slots": [
+            {
+              "anchorId": "fit_treadmill_a",
+              "zone": "lounge",
+              "pose": "standing",
+              "role": "visitor"
+            },
+            {
+              "anchorId": "fit_treadmill_b",
+              "zone": "lounge",
+              "pose": "standing",
+              "role": "visitor"
+            },
+            {
+              "anchorId": "fit_mat_a",
+              "zone": "lounge",
+              "pose": "standing",
+              "role": "visitor"
+            },
+            {
+              "anchorId": "fit_mat_b",
+              "zone": "lounge",
+              "pose": "standing",
+              "role": "visitor"
+            }
+          ],
+          "propActions": [],
+          "menuLink": {
+            "primaryView": "exercise",
+            "choices": [
+              {
+                "view": "exercise",
+                "label": "헬스클럽"
+              },
+              {
+                "view": "diet",
+                "label": "식단"
+              }
+            ]
+          },
+          "eventHooks": []
+        },
+        {
+          "id": "kids_pet_lounge",
+          "floor": "creative",
+          "label": "키즈·펫 라운지",
+          "english": "KIDS & PETS",
+          "kind": "kids_pet",
+          "access": "family_pet",
+          "x": 450,
+          "y": 360,
+          "w": 400,
+          "h": 240,
+          "boundsSchematic": {
+            "x": 450,
+            "y": 360,
+            "w": 400,
+            "h": 240
+          },
+          "boundsArtPct": [
+            59.50957,
+            71.7322,
+            96.59091,
+            90.32944
+          ],
+          "door": "door_kids_pet_lounge",
+          "junctionAnchor": "junction_kids_pet_lounge",
+          "capacity": 7,
+          "slots": [
+            {
+              "anchorId": "lounge_kids_play_a",
+              "zone": "lounge",
+              "pose": "standing",
+              "role": "visitor"
+            },
+            {
+              "anchorId": "lounge_kids_play_b",
+              "zone": "lounge",
+              "pose": "standing",
+              "role": "visitor"
+            },
+            {
+              "anchorId": "lounge_parent_chair",
+              "zone": "lounge",
+              "pose": "sitting",
+              "role": "visitor"
+            },
+            {
+              "anchorId": "pet_cushion_1",
+              "zone": "lounge",
+              "pose": "sitting",
+              "role": "pet"
+            },
+            {
+              "anchorId": "pet_cushion_2",
+              "zone": "lounge",
+              "pose": "sitting",
+              "role": "pet"
+            },
+            {
+              "anchorId": "pet_cushion_3",
+              "zone": "lounge",
+              "pose": "sitting",
+              "role": "pet"
+            },
+            {
+              "anchorId": "pet_cushion_4",
+              "zone": "lounge",
+              "pose": "sitting",
+              "role": "pet"
+            }
+          ],
+          "propActions": [],
+          "menuLink": {
+            "primaryView": "board",
+            "choices": [
+              {
+                "view": "board",
+                "label": "HANI 라운지"
+              }
+            ]
+          },
+          "eventHooks": []
+        }
+      ],
+      "walkable": [
+        {
+          "x": 30,
+          "y": 50,
+          "w": 940,
+          "h": 550
+        }
+      ],
+      "noWalk": [],
+      "zones": [],
+      "visitRules": [
+        {
+          "id": "creative-ilbo",
+          "floorId": "creative",
+          "roomId": "studio",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "minji",
+              "yuna",
+              "hani"
+            ],
+            "maxParticipants": 2
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "08:30",
+                "09:15"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "studio_camera",
+              "studio_anchor_a",
+              "studio_anchor_b"
+            ]
+          },
+          "durationSeconds": [
+            90,
+            180
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "하니 일보 오프닝 큐!",
+            "오늘 헤드라인 조명 체크 중"
+          ]
+        },
+        {
+          "id": "creative-4cut",
+          "floorId": "creative",
+          "roomId": "studio",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "minji",
+              "jieun",
+              "daon"
+            ],
+            "maxParticipants": 3
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "11:30",
+                "12:15"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "studio_camera",
+              "studio_anchor_a",
+              "studio_4cut"
+            ]
+          },
+          "durationSeconds": [
+            90,
+            180
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "이번 주 시황 4컷 앵글 잡는 중",
+            "하방 리스크 패널 확인 완료"
+          ]
+        },
+        {
+          "id": "creative-lunch-fit",
+          "floorId": "creative",
+          "roomId": "fitness",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "naeun",
+              "sooyeon"
+            ],
+            "maxParticipants": 2
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "12:15",
+                "13:00"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "fit_mat_a",
+              "fit_treadmill_a"
+            ]
+          },
+          "durationSeconds": [
+            90,
+            180
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "점심 가벼운 스트레칭 중"
+          ]
+        },
+        {
+          "id": "creative-lunch-cinema",
+          "floorId": "creative",
+          "roomId": "library_cinema",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "haru",
+              "minji"
+            ],
+            "maxParticipants": 2
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "12:15",
+                "13:00"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "cinema_sofa_a",
+              "cinema_sofa_b"
+            ]
+          },
+          "durationSeconds": [
+            90,
+            180
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "짧은 영화 한 편 보는 중"
+          ]
+        },
+        {
+          "id": "creative-newsroom",
+          "floorId": "creative",
+          "roomId": "studio",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "jieun",
+              "hani"
+            ],
+            "maxParticipants": 2
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "15:00",
+                "16:00"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "studio_anchor_a",
+              "studio_anchor_b"
+            ]
+          },
+          "durationSeconds": [
+            90,
+            180
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "뉴스룸 브리핑 테이크 1"
+          ]
+        },
+        {
+          "id": "creative-study",
+          "floorId": "creative",
+          "roomId": "library_cinema",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "hina",
+              "yoonseul"
+            ],
+            "maxParticipants": 2
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "15:00",
+                "16:00"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "lib_study_a",
+              "lib_study_b"
+            ]
+          },
+          "durationSeconds": [
+            90,
+            180
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "오늘의 퀴즈·단어 복습 중"
+          ]
+        },
+        {
+          "id": "creative-evening-fit",
+          "floorId": "creative",
+          "roomId": "fitness",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "naeun",
+              "arin",
+              "seoyun"
+            ],
+            "maxParticipants": 2
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "18:30",
+                "21:00"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "fit_mat_a",
+              "fit_mat_b",
+              "fit_treadmill_a"
+            ]
+          },
+          "durationSeconds": [
+            90,
+            180
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "퇴근 후 코어 스트레칭 중"
+          ]
+        },
+        {
+          "id": "creative-evening-read",
+          "floorId": "creative",
+          "roomId": "library_cinema",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "hina",
+              "haru",
+              "seongmin"
+            ],
+            "maxParticipants": 2
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "18:30",
+                "21:00"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "lib_study_a",
+              "cinema_sofa_a",
+              "cinema_sofa_b"
+            ]
+          },
+          "durationSeconds": [
+            90,
+            180
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "오늘의 한 편 상영 시작"
+          ]
+        },
+        {
+          "id": "creative-family",
+          "floorId": "creative",
+          "roomId": "kids_pet_lounge",
+          "category": "patrol",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "seongmin"
+            ],
+            "maxParticipants": 2
+          },
+          "when": {
+            "days": "weekend",
+            "timeWindows": [
+              [
+                "09:00",
+                "19:00"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "lounge_parent_chair"
+            ]
+          },
+          "durationSeconds": [
+            90,
+            180
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "주말 가족 라운지에서 쉬는 중"
+          ]
         }
       ]
     }
@@ -6476,6 +7200,450 @@
       "type": "junction",
       "label": "고정 보행 꺾임",
       "capacity": 1
+    },
+    {
+      "id": "elevator_creative",
+      "floor": "creative",
+      "room": null,
+      "x": 925,
+      "y": 240,
+      "type": "elevator",
+      "label": "elevator_creative",
+      "capacity": 4
+    },
+    {
+      "id": "hall_creative",
+      "floor": "creative",
+      "room": null,
+      "x": 925,
+      "y": 330,
+      "type": "junction",
+      "label": "hall_creative",
+      "capacity": 1
+    },
+    {
+      "id": "stairs_creative",
+      "floor": "creative",
+      "room": null,
+      "x": 925,
+      "y": 390,
+      "type": "stairs",
+      "label": "stairs_creative",
+      "capacity": 1
+    },
+    {
+      "id": "corridor_creative_top",
+      "floor": "creative",
+      "room": null,
+      "x": 500,
+      "y": 330,
+      "type": "junction",
+      "label": "corridor_creative_top",
+      "capacity": 1
+    },
+    {
+      "id": "corridor_creative_bottom",
+      "floor": "creative",
+      "room": null,
+      "x": 500,
+      "y": 345,
+      "type": "junction",
+      "label": "corridor_creative_bottom",
+      "capacity": 1
+    },
+    {
+      "id": "window_creative_1",
+      "floor": "creative",
+      "room": null,
+      "x": 500,
+      "y": 355,
+      "type": "junction",
+      "label": "window_creative_1",
+      "capacity": 1
+    },
+    {
+      "id": "door_studio",
+      "floor": "creative",
+      "room": "studio",
+      "x": 235,
+      "y": 300,
+      "type": "door",
+      "label": "door_studio",
+      "capacity": 1
+    },
+    {
+      "id": "junction_studio",
+      "floor": "creative",
+      "room": "studio",
+      "x": 235,
+      "y": 270,
+      "type": "junction",
+      "label": "junction_studio",
+      "capacity": 1
+    },
+    {
+      "id": "studio_anchor_a",
+      "floor": "creative",
+      "room": "studio",
+      "x": 120,
+      "y": 190,
+      "type": "seat",
+      "label": "studio_anchor_a",
+      "capacity": 1,
+      "posture": "sitting",
+      "rendererSeat": {
+        "id": "studio_anchor_a",
+        "zone": "lounge",
+        "layer": 4
+      }
+    },
+    {
+      "id": "studio_anchor_b",
+      "floor": "creative",
+      "room": "studio",
+      "x": 185,
+      "y": 190,
+      "type": "seat",
+      "label": "studio_anchor_b",
+      "capacity": 1,
+      "posture": "sitting",
+      "rendererSeat": {
+        "id": "studio_anchor_b",
+        "zone": "lounge",
+        "layer": 4
+      }
+    },
+    {
+      "id": "studio_camera",
+      "floor": "creative",
+      "room": "studio",
+      "x": 250,
+      "y": 190,
+      "type": "standing",
+      "label": "studio_camera",
+      "capacity": 1,
+      "posture": "standing",
+      "rendererSeat": {
+        "id": "studio_camera",
+        "zone": "lounge",
+        "layer": 4
+      }
+    },
+    {
+      "id": "studio_4cut",
+      "floor": "creative",
+      "room": "studio",
+      "x": 315,
+      "y": 190,
+      "type": "standing",
+      "label": "studio_4cut",
+      "capacity": 1,
+      "posture": "standing",
+      "rendererSeat": {
+        "id": "studio_4cut",
+        "zone": "lounge",
+        "layer": 4
+      }
+    },
+    {
+      "id": "door_library_cinema",
+      "floor": "creative",
+      "room": "library_cinema",
+      "x": 650,
+      "y": 300,
+      "type": "door",
+      "label": "door_library_cinema",
+      "capacity": 1
+    },
+    {
+      "id": "junction_library_cinema",
+      "floor": "creative",
+      "room": "library_cinema",
+      "x": 650,
+      "y": 270,
+      "type": "junction",
+      "label": "junction_library_cinema",
+      "capacity": 1
+    },
+    {
+      "id": "lib_study_a",
+      "floor": "creative",
+      "room": "library_cinema",
+      "x": 530,
+      "y": 190,
+      "type": "seat",
+      "label": "lib_study_a",
+      "capacity": 1,
+      "posture": "sitting",
+      "rendererSeat": {
+        "id": "lib_study_a",
+        "zone": "lounge",
+        "layer": 4
+      }
+    },
+    {
+      "id": "lib_study_b",
+      "floor": "creative",
+      "room": "library_cinema",
+      "x": 595,
+      "y": 190,
+      "type": "seat",
+      "label": "lib_study_b",
+      "capacity": 1,
+      "posture": "sitting",
+      "rendererSeat": {
+        "id": "lib_study_b",
+        "zone": "lounge",
+        "layer": 4
+      }
+    },
+    {
+      "id": "cinema_sofa_a",
+      "floor": "creative",
+      "room": "library_cinema",
+      "x": 660,
+      "y": 190,
+      "type": "seat",
+      "label": "cinema_sofa_a",
+      "capacity": 1,
+      "posture": "sitting",
+      "rendererSeat": {
+        "id": "cinema_sofa_a",
+        "zone": "lounge",
+        "layer": 4
+      }
+    },
+    {
+      "id": "cinema_sofa_b",
+      "floor": "creative",
+      "room": "library_cinema",
+      "x": 725,
+      "y": 190,
+      "type": "seat",
+      "label": "cinema_sofa_b",
+      "capacity": 1,
+      "posture": "sitting",
+      "rendererSeat": {
+        "id": "cinema_sofa_b",
+        "zone": "lounge",
+        "layer": 4
+      }
+    },
+    {
+      "id": "door_fitness",
+      "floor": "creative",
+      "room": "fitness",
+      "x": 235,
+      "y": 360,
+      "type": "door",
+      "label": "door_fitness",
+      "capacity": 1
+    },
+    {
+      "id": "junction_fitness",
+      "floor": "creative",
+      "room": "fitness",
+      "x": 235,
+      "y": 390,
+      "type": "junction",
+      "label": "junction_fitness",
+      "capacity": 1
+    },
+    {
+      "id": "fit_treadmill_a",
+      "floor": "creative",
+      "room": "fitness",
+      "x": 120,
+      "y": 500,
+      "type": "standing",
+      "label": "fit_treadmill_a",
+      "capacity": 1,
+      "posture": "standing",
+      "rendererSeat": {
+        "id": "fit_treadmill_a",
+        "zone": "lounge",
+        "layer": 4
+      }
+    },
+    {
+      "id": "fit_treadmill_b",
+      "floor": "creative",
+      "room": "fitness",
+      "x": 185,
+      "y": 500,
+      "type": "standing",
+      "label": "fit_treadmill_b",
+      "capacity": 1,
+      "posture": "standing",
+      "rendererSeat": {
+        "id": "fit_treadmill_b",
+        "zone": "lounge",
+        "layer": 4
+      }
+    },
+    {
+      "id": "fit_mat_a",
+      "floor": "creative",
+      "room": "fitness",
+      "x": 250,
+      "y": 500,
+      "type": "standing",
+      "label": "fit_mat_a",
+      "capacity": 1,
+      "posture": "standing",
+      "rendererSeat": {
+        "id": "fit_mat_a",
+        "zone": "lounge",
+        "layer": 4
+      }
+    },
+    {
+      "id": "fit_mat_b",
+      "floor": "creative",
+      "room": "fitness",
+      "x": 315,
+      "y": 500,
+      "type": "standing",
+      "label": "fit_mat_b",
+      "capacity": 1,
+      "posture": "standing",
+      "rendererSeat": {
+        "id": "fit_mat_b",
+        "zone": "lounge",
+        "layer": 4
+      }
+    },
+    {
+      "id": "door_kids_pet_lounge",
+      "floor": "creative",
+      "room": "kids_pet_lounge",
+      "x": 650,
+      "y": 360,
+      "type": "door",
+      "label": "door_kids_pet_lounge",
+      "capacity": 1
+    },
+    {
+      "id": "junction_kids_pet_lounge",
+      "floor": "creative",
+      "room": "kids_pet_lounge",
+      "x": 650,
+      "y": 390,
+      "type": "junction",
+      "label": "junction_kids_pet_lounge",
+      "capacity": 1
+    },
+    {
+      "id": "lounge_kids_play_a",
+      "floor": "creative",
+      "room": "kids_pet_lounge",
+      "x": 530,
+      "y": 500,
+      "type": "standing",
+      "label": "lounge_kids_play_a",
+      "capacity": 1,
+      "posture": "standing",
+      "rendererSeat": {
+        "id": "lounge_kids_play_a",
+        "zone": "lounge",
+        "layer": 4
+      }
+    },
+    {
+      "id": "lounge_kids_play_b",
+      "floor": "creative",
+      "room": "kids_pet_lounge",
+      "x": 595,
+      "y": 500,
+      "type": "standing",
+      "label": "lounge_kids_play_b",
+      "capacity": 1,
+      "posture": "standing",
+      "rendererSeat": {
+        "id": "lounge_kids_play_b",
+        "zone": "lounge",
+        "layer": 4
+      }
+    },
+    {
+      "id": "lounge_parent_chair",
+      "floor": "creative",
+      "room": "kids_pet_lounge",
+      "x": 660,
+      "y": 500,
+      "type": "seat",
+      "label": "lounge_parent_chair",
+      "capacity": 1,
+      "posture": "sitting",
+      "rendererSeat": {
+        "id": "lounge_parent_chair",
+        "zone": "lounge",
+        "layer": 4
+      }
+    },
+    {
+      "id": "pet_cushion_1",
+      "floor": "creative",
+      "room": "kids_pet_lounge",
+      "x": 725,
+      "y": 500,
+      "type": "seat",
+      "label": "pet_cushion_1",
+      "capacity": 1,
+      "posture": "sitting",
+      "rendererSeat": {
+        "id": "pet_cushion_1",
+        "zone": "lounge",
+        "layer": 4
+      }
+    },
+    {
+      "id": "pet_cushion_2",
+      "floor": "creative",
+      "room": "kids_pet_lounge",
+      "x": 790,
+      "y": 500,
+      "type": "seat",
+      "label": "pet_cushion_2",
+      "capacity": 1,
+      "posture": "sitting",
+      "rendererSeat": {
+        "id": "pet_cushion_2",
+        "zone": "lounge",
+        "layer": 4
+      }
+    },
+    {
+      "id": "pet_cushion_3",
+      "floor": "creative",
+      "room": "kids_pet_lounge",
+      "x": 855,
+      "y": 500,
+      "type": "seat",
+      "label": "pet_cushion_3",
+      "capacity": 1,
+      "posture": "sitting",
+      "rendererSeat": {
+        "id": "pet_cushion_3",
+        "zone": "lounge",
+        "layer": 4
+      }
+    },
+    {
+      "id": "pet_cushion_4",
+      "floor": "creative",
+      "room": "kids_pet_lounge",
+      "x": 920,
+      "y": 500,
+      "type": "seat",
+      "label": "pet_cushion_4",
+      "capacity": 1,
+      "posture": "sitting",
+      "rendererSeat": {
+        "id": "pet_cushion_4",
+        "zone": "lounge",
+        "layer": 4
+      }
     }
   ],
   "edges": [
@@ -6964,6 +8132,14 @@
     },
     {
       "from": "elevator_4f",
+      "to": "elevator_creative",
+      "kind": "elevator",
+      "bidirectional": true,
+      "durationMs": 700,
+      "capacity": 4
+    },
+    {
+      "from": "elevator_creative",
       "to": "elevator_5f",
       "kind": "elevator",
       "bidirectional": true,
@@ -6972,6 +8148,13 @@
     },
     {
       "from": "stairs_4f",
+      "to": "stairs_creative",
+      "kind": "stairs",
+      "bidirectional": true,
+      "durationMs": 1600
+    },
+    {
+      "from": "stairs_creative",
       "to": "stairs_5f",
       "kind": "stairs",
       "bidirectional": true,
@@ -8475,6 +9658,198 @@
     {
       "from": "junction_quiet_roof",
       "to": "rooftop_rest",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "elevator_creative",
+      "to": "hall_creative",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "stairs_creative",
+      "to": "hall_creative",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "hall_creative",
+      "to": "corridor_creative_top",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "corridor_creative_top",
+      "to": "corridor_creative_bottom",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "corridor_creative_bottom",
+      "to": "window_creative_1",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "corridor_creative_top",
+      "to": "door_studio",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "door_studio",
+      "to": "junction_studio",
+      "kind": "door",
+      "bidirectional": true
+    },
+    {
+      "from": "junction_studio",
+      "to": "studio_anchor_a",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "junction_studio",
+      "to": "studio_anchor_b",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "junction_studio",
+      "to": "studio_camera",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "junction_studio",
+      "to": "studio_4cut",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "corridor_creative_top",
+      "to": "door_library_cinema",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "door_library_cinema",
+      "to": "junction_library_cinema",
+      "kind": "door",
+      "bidirectional": true
+    },
+    {
+      "from": "junction_library_cinema",
+      "to": "lib_study_a",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "junction_library_cinema",
+      "to": "lib_study_b",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "junction_library_cinema",
+      "to": "cinema_sofa_a",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "junction_library_cinema",
+      "to": "cinema_sofa_b",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "corridor_creative_bottom",
+      "to": "door_fitness",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "door_fitness",
+      "to": "junction_fitness",
+      "kind": "door",
+      "bidirectional": true
+    },
+    {
+      "from": "junction_fitness",
+      "to": "fit_treadmill_a",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "junction_fitness",
+      "to": "fit_treadmill_b",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "junction_fitness",
+      "to": "fit_mat_a",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "junction_fitness",
+      "to": "fit_mat_b",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "corridor_creative_bottom",
+      "to": "door_kids_pet_lounge",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "door_kids_pet_lounge",
+      "to": "junction_kids_pet_lounge",
+      "kind": "door",
+      "bidirectional": true
+    },
+    {
+      "from": "junction_kids_pet_lounge",
+      "to": "lounge_kids_play_a",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "junction_kids_pet_lounge",
+      "to": "lounge_kids_play_b",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "junction_kids_pet_lounge",
+      "to": "lounge_parent_chair",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "junction_kids_pet_lounge",
+      "to": "pet_cushion_1",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "junction_kids_pet_lounge",
+      "to": "pet_cushion_2",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "junction_kids_pet_lounge",
+      "to": "pet_cushion_3",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "junction_kids_pet_lounge",
+      "to": "pet_cushion_4",
       "kind": "walk",
       "bidirectional": true
     }

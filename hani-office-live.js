@@ -3,7 +3,8 @@
   const Math=globalThis.Math,Map=globalThis.Map,Set=globalThis.Set,Infinity=globalThis.Infinity;
   // Phase 1: scene metadata only. Stable IDs and display order are independent.
   const floorDefaults=Object.freeze([
-    {id:'5f',legacyIds:['5f'],order:5,code:'5F',label:'5F 옥상 · 조용한 정원',category:'rooftop',quiet:true,tint:'#9cbd9a',residents:[],anchorCount:50,background:'./assets/building/floor-5f-217.webp'},
+    {id:'5f',legacyIds:['5f'],order:6,code:'6F',label:'6F 옥상',category:'rooftop',quiet:true,tint:'#9cbd9a',residents:[],anchorCount:50,background:'./assets/building/floor-5f-217.webp'},
+    {id:'creative',legacyIds:[],order:5,code:'5F',label:'5F 라이프·크리에이티브',category:'amenity',tint:'#a9c7b8',residents:[],background:'./assets/building/floor-5f-creative-v1.webp'},
     {id:'4f',legacyIds:[],order:4,code:'4F',label:'4F 대표실·라운지',category:'executive',tint:'#b692df',residents:['hani','gaeun','mir'],anchorCount:81,background:'./assets/building/floor-4f-217.webp'},
     {id:'3f',legacyIds:[],order:3,code:'3F',label:'3F AI플랫폼개발실',category:'office',tint:'#79aecf',residents:['seoyun','dohyun','serin','yuri','arin'],anchorCount:64,background:'./assets/building/floor-3f-215.webp',foregroundMasks:[{slot:0,source:'background'}]},
     {id:'2f',legacyIds:[],order:2,code:'2F',label:'2F 재무·라이프',category:'office',tint:'#94bd8e',residents:['jieun','haru','naeun','hina','minji','sooyeon'],anchorCount:74,background:'./assets/building/floor-2f-217.webp'},
@@ -12,27 +13,35 @@
   const floorDefaultIndex=new Map(floorDefaults.map(f=>[f.id,f]));
   let floorRegistry;
   function buildFloorRegistry(canon=null,art=null,eligible=null){
-    const anchorIndex=new Map((canon?.anchors||[]).map(a=>[a.id,a])),counts=new Map(),connectors=new Map();
-    for(const a of canon?.anchors||[]){counts.set(a.floor,(counts.get(a.floor)||0)+1);if(['elevator','stairs'].includes(a.type))connectors.set(a.floor+'|'+a.type,a.id)}
+    const anchorIndex=new Map((canon?.anchors||[]).map(a=>[a.id,a])),connectors=new Map();
+    for(const a of canon?.anchors||[]){if(['elevator','stairs'].includes(a.type))connectors.set(a.floor+'|'+a.type,a.id)}
     const people=eligible||(canon?.people||[]).filter(p=>p.status==='active'&&p.registration==='registered');
     const rows=Object.freeze((canon?.floors||floorDefaults).map(f=>{
       const base=floorDefaultIndex.get(f.id)||{},visual=art?.floors?.[f.id]||{},residents=canon?people.filter(p=>anchorIndex.get(p.homeAnchor)?.floor===f.id).map(p=>p.id):base.residents||[];
-      return Object.freeze({id:f.id,legacyIds:Object.freeze([...(f.legacyIds||base.legacyIds||[])]),order:f.order??base.order,code:f.code||base.code,label:f.label,category:f.category||base.category||'office',quiet:!!f.quiet,
-        tint:base.tint||'#9cbd9a',residents:Object.freeze(residents),maxVisible:f.maxVisible??Math.max(6,residents.length),anchorCount:f.anchorCount??base.anchorCount??counts.get(f.id)??0,
+      const order=f.order??base.order,category=f.category||base.category||'office',code=category==='rooftop'?order+'F':f.code||base.code;
+      return Object.freeze({id:f.id,legacyIds:Object.freeze([...(f.legacyIds||base.legacyIds||[])]),order,code,label:category==='rooftop'?code+' 옥상':f.label,category,quiet:!!f.quiet,
+        tint:base.tint||'#9cbd9a',residents:Object.freeze(residents),maxVisible:f.maxVisible??Math.max(6,residents.length),anchorCount:f.anchorCount??base.anchorCount,
         art:Object.freeze({background:visual.background||base.background,nightBackground:visual.nightBackground,production:base.residents?.length?base.background:undefined,
           foregroundMasks:Object.freeze((visual.foregroundMasks||base.foregroundMasks||[]).map(m=>Object.freeze({...m}))),plates:visual.plates||Object.freeze([])}),
-        connectors:Object.freeze({hallAnchor:f.connectors?.hallAnchor||'hall_'+f.id,elevatorAnchor:f.connectors?.elevatorAnchor||connectors.get(f.id+'|elevator')||'elevator_'+f.id,stairsAnchor:f.connectors?.stairsAnchor||connectors.get(f.id+'|stairs')||'stairs_'+f.id}),rooms:f.rooms||Object.freeze([]),walkable:f.walkable,noWalk:f.noWalk});
+        connectors:Object.freeze({hallAnchor:f.connectors?.hallAnchor||'hall_'+f.id,elevatorAnchor:f.connectors?.elevatorAnchor||connectors.get(f.id+'|elevator')||'elevator_'+f.id,stairsAnchor:f.connectors?.stairsAnchor||connectors.get(f.id+'|stairs')||'stairs_'+f.id}),visitRules:f.visitRules||Object.freeze([]),rooms:f.rooms||Object.freeze([]),walkable:f.walkable,noWalk:f.noWalk});
     }).sort((a,b)=>b.order-a.order));
     const index=new Map(rows.map(f=>[f.id,f]));for(const f of rows)for(const id of f.legacyIds)if(!index.has(id))index.set(id,f);
-    return Object.freeze({schemaVersion:'floor-registry-v1',defaultFloorId:'4f',floors:rows,get:id=>index.get(id),hasFloor:id=>index.has(id),order:id=>index.get(id)?.order,
+    const preferred=canon?.defaultFloorId||'4f',defaultFloorId=index.has(preferred)?index.get(preferred).id:(rows.find(f=>f.residents.length)||rows[0])?.id;
+    return Object.freeze({schemaVersion:'floor-registry-v1',defaultFloorId,floors:rows,get:id=>index.get(id),hasFloor:id=>index.has(id),order:id=>index.get(id)?.order,
       elevatorAnchor:id=>index.get(id)?.connectors.elevatorAnchor});
   }
+  let spatialWarning=false;
   function validateSpatial(canon,art){
+    const valid=checkSpatial(canon,art);
+    if(!valid&&!spatialWarning){spatialWarning=true;globalThis.console?.warn?.('HANI office spatial metadata invalid; using fallback.')}
+    return valid;
+  }
+  function checkSpatial(canon,art){
     try{
       if(canon?.contractVersion!=='spatial-216-v1'||art?.contractVersion!==canon.contractVersion||!Array.isArray(canon.floors)||!canon.floors.length||!Array.isArray(canon.anchors)||!Array.isArray(canon.edges)||!art.anchors)return false;
       const registry=buildFloorRegistry(canon,art),ids=new Map(),counts=new Map(),graph=new Map(),orders=new Set();
       if(new Set(registry.floors.map(f=>f.id)).size!==registry.floors.length)return false;
-      for(const f of registry.floors){if(!Number.isFinite(f.order)||orders.has(f.order)||!art.floors?.[f.id]?.background)return false;orders.add(f.order)}
+      for(const f of registry.floors){if(!Number.isFinite(f.order)||orders.has(f.order)||!Number.isInteger(f.anchorCount)||f.anchorCount<=0||!art.floors?.[f.id]?.background)return false;orders.add(f.order)}
       for(const a of canon.anchors){if(!a.id||ids.has(a.id)||!registry.hasFloor(a.floor)||!Number.isFinite(a.x)||!Number.isFinite(a.y)||!Number.isFinite(art.anchors[a.id]?.x)||!Number.isFinite(art.anchors[a.id]?.y))return false;ids.set(a.id,a);counts.set(a.floor,(counts.get(a.floor)||0)+1)}
       if(Object.keys(art.anchors).length!==ids.size||Object.keys(art.anchors).some(id=>!ids.has(id))||registry.floors.reduce((n,f)=>n+f.anchorCount,0)!==ids.size)return false;
       for(const f of registry.floors)if(counts.get(f.id)!==f.anchorCount)return false;
@@ -639,7 +648,7 @@
         else{const at=bucket.findIndex(e=>ledger.indexOf(e)>position);bucket.splice(at<0?bucket.length:at,0,event)}
       }
     }
-    function path(from,to){let targets=paths.get(from);if(!targets){targets=new Map();paths.set(from,targets)}if(!targets.has(to))targets.set(to,route(from,to));return targets.get(to)}
+    function path(from,to){let targets=paths.get(from);if(!targets){targets=new Map();paths.set(from,targets)}if(!targets.has(to)){const nodes=route(from,to);targets.set(to,anchors.get(from)?.floor!=='creative'&&anchors.get(to)?.floor!=='creative'?nodes.filter(a=>a.floor!=='creative'):nodes)}return targets.get(to)}
     function slot(id,pose='sit'){
       let poses=slotCache.get(id);if(poses?.has(pose))return poses.get(pose);
       const a=anchors.get(id),p=art?.anchors[id];if(!a||!p||a.runtimeAssignable===false||a.type==='core')return null;
@@ -1548,7 +1557,7 @@
       let capCache=new Map(),capLength=-1;
       function withinCap(e,includeVisitors=false){
         if(capLength!==result.length){capCache=new Map();capLength=result.length}
-        const mask=e.floors.reduce((m,f)=>m|(1<<(f.charCodeAt(0)-48)),0),key=e.start+'|'+e.end+'|'+e.people.length+'|'+mask+'|'+includeVisitors;
+        const floorKey=JSON.stringify([...new Set(e.floors)].sort()),key=e.start+'|'+e.end+'|'+e.people.length+'|'+floorKey+'|'+includeVisitors;
         if(!capCache.has(key))capCache.set(key,computeCap(e,includeVisitors));
         return capCache.get(key);
       }
@@ -2072,12 +2081,70 @@
       const next=[...new Set([...pool,...card.at])].filter(line=>line!==first);
       return next.length?next[seed(key+'|next')%next.length]:first;
     }
+    // Declarative programs fill safe gaps after the existing reservation ledger.
+    // One cached day per presence roster; no program work in the 100ms motion tick.
+    const creativePlans=new Map(),creativeOutings=new WeakMap();
+    function programOutings(outings,programs){
+      if(!programs.length)return outings;
+      let versions=creativeOutings.get(outings);if(!versions){versions=new WeakMap();creativeOutings.set(outings,versions)}
+      if(!versions.has(programs))versions.set(programs,[...outings.filter(e=>programCompatible(e,programs)),...programs]);
+      return versions.get(programs);
+    }
+    function programCompatible(event,programs){
+      if(event.creative||event.patrol||event.report||event.visitor||event.guestId)return true;
+      return !programs.some(p=>event.people.some(t=>p.people.some(q=>q.id===t.id))&&event.start<p.end+(event.card.kind==='errand'?0:5400)&&p.start<event.end+(event.card.kind==='errand'?0:5400));
+    }
+    function visitPlan(day,events,outings,options={}){
+      const rules=floorRegistry.get('creative')?.visitRules||[];
+      if(!rules.length||options.creativeVisits===false)return [];
+      const allowed=persons.filter(p=>(p.id!=='seongmin'||options.chairmanPresent)&&(!options.presentIds||options.presentIds.includes(p.id)));
+      const key=day+'|'+allowed.map(p=>p.id).join(',');if(creativePlans.has(key))return creativePlans.get(key);
+      const weekend=[0,6].includes(new Date(day+'T00:00:00Z').getUTCDay()),result=[];
+      // Formal group meetings/rest outrank programs; desk expressions yield.
+      const locked=events.filter(e=>{const a=actions.get(e.actionId);return a?.layer>=3||a?.personalNonWork}),ledger=[...locked,...outings.filter(e=>e.patrol||e.report||e.visitor||e.guestId)];
+      for(const rule of rules){
+        if((rule.when.days==='weekend')!==weekend)continue;
+        const [begin,end]=rule.when.timeWindows[0].map(t=>minute(t)*60),people=rule.who.optional.filter(id=>allowed.some(p=>p.id===id));
+        let booked=0;
+        for(const id of people){
+          if(booked>=rule.who.maxParticipants)break;
+          // Night workers keep their existing work; visitors never enter staff rooms.
+          if(begin>=18*3600&&lateWorkers.has(id))continue;
+          const p=personById.get(id),offset=seed(day+'|'+id+'|'+rule.id)%60;
+          // A lunch visit reuses that person's existing lunch, never a second rest.
+          const lunch=rule.id.startsWith('creative-lunch-')?locked.find(q=>q.actionId==='base-lunch'&&q.people.length===1&&q.people[0].id===id&&q.start>=begin&&q.end<end):null;
+          const reservations=lunch?ledger.filter(q=>q.id!==lunch.id):ledger;
+          for(let start=lunch?lunch.start:begin+offset;start+100<end;start+=lunch?86400:60){
+            const stay=Math.max(lunch?lunch.end-lunch.start:0,rule.durationSeconds[0]+seed(day+'|'+id+'|'+rule.id+'|stay')%(rule.durationSeconds[1]-rule.durationSeconds[0]+1));
+            const target=rule.where.anchors[rule.who.optional.indexOf(id)%rule.where.anchors.length],a=anchors.get(target);
+            const card={id:rule.id,kind:'program',floor:rule.floorId,room:rule.roomId,slots:rule.where.anchors,pose:a.posture==='sitting'?'sit':'stand',at:rule.lines};
+            const e=excursion(id,homeAt(p,start),card,target,start,stay,day,null,end);if(!e)continue;
+            const previous=result.filter(q=>q.people.some(t=>t.id===id));
+            if(previous.some(q=>e.start<q.end+rule.cooldowns.crossFloorSeconds&&q.start<e.end+rule.cooldowns.crossFloorSeconds))continue;
+            // Higher-priority reservations keep their original times and cooldowns.
+            if(reservations.some(q=>{const t=q.people.find(t=>t.id===id);if(!t)return false;
+              const away=anchors.get(t.seat.anchor)?.floor!==t.home.floor,rest=q.personalNonWork&&rule.roomId!=='studio';
+              const cooldown=away?rule.cooldowns.crossFloorSeconds:rest?rule.cooldowns.personNonWorkSeconds:0;
+              return e.start<q.end+cooldown&&q.start<e.end+cooldown;
+            }))continue;
+            if(result.some(q=>q.card.floor===e.card.floor&&q.start<e.end&&e.start<q.end)&&result.filter(q=>q.start<e.end&&e.start<q.end).length>=4)continue;
+            e.id=day+'|'+rule.id+'|'+id;e.creative=true;e.personalNonWork=rule.roomId!=='studio';
+            if(!reserve(e,reservations,allowed))continue;
+            if(lunch){e.replacesFormalId=lunch.id;ledger.push(e)}
+            result.push(e);booked++;break;
+          }
+        }
+      }
+      if(creativePlans.size>=4)creativePlans.delete(creativePlans.keys().next().value);creativePlans.set(key,result);return result;
+    }
+
     function snapshot(now,options={}){
       const kst=new Date(new Date(now).getTime()+32400000),day=kst.toISOString().slice(0,10),seconds=kst.getUTCHours()*3600+kst.getUTCMinutes()*60+kst.getUTCSeconds()+kst.getUTCMilliseconds()/1000;
       const events=plan(day,options),cancelled=options.cancelled||new Set(),blocked=new Set(options.summoned||[]);
       const late=isLate(seconds),evening=isEvening(seconds),presenceNote=late?'심야에도 함께해요 · 개발실과 라운지에 직원들이 남아 있어요':'';
       // Outings respect the complete frozen formal ledger, including suppressed events.
-      const outings=options.staffChat?[...blockPlan(day,Math.floor(seconds/BLOCK),events,options),options.staffChat]:blockPlan(day,Math.floor(seconds/BLOCK),events,options);
+      const baseOutings=blockPlan(day,Math.floor(seconds/BLOCK),events,options),programs=visitPlan(day,events,baseOutings,options);
+      const programmed=programOutings(baseOutings,programs),outings=options.staffChat&&programCompatible(options.staffChat,programs)?[...programmed,options.staffChat]:programmed;
       if(!idleLedgers.has(outings))idleLedgers.set(outings,[...events,...outings]);const idleLedger=idleLedgers.get(outings);
       const since=options.chairmanSince==null?-Infinity:(options.chairmanSince-Date.parse(day+'T00:00:00+09:00'))/1000;
       const visibleOutings=cancelled.size||blocked.size||since!==-Infinity?outings.filter(e=>!cancelled.has(e.id)&&!cancelled.has(e.guestId)&&!e.people.some(t=>blocked.has(t.id))&&!blocked.has(e.card?.targetPerson)&&(!e.report||e.start>=since)):outings;
@@ -2107,7 +2174,7 @@
             const room=floorRegistry.get(destination.floor)?.rooms.find(r=>r.id===destination.room);
             const name=place?.kind==='window'?place.name:(room?.label||destination.label||action.title).split(' · ')[0];
             const partners=event.group?.filter(id=>id!==p.id).map(id=>persons.find(p=>p.id===id).name).join('·');
-            line=p.visitor?event.visitor.go:(partners?partners+'와 ':'')+(card?.go||destination.floor.toUpperCase()+' '+name+' 가는 중');
+            line=p.visitor?event.visitor.go:(partners?partners+'와 ':'')+(card?.go||(floorRegistry.get(destination.floor)?.code||floorRegistry.get(destination.floor)?.label||'목적지')+' '+name+' 가는 중');
           }
           else if(state.state==='RETURNING'){
             const voice=placeTable?.behavior?.travelVoice[p.id];
@@ -2124,18 +2191,18 @@
         if(event?.patrol){
           if(state.state==='GOING')line='사무실 순찰 가는 중';
           else if(state.state==='RETURNING')line='순찰 마치고 자리로 돌아가는 중';
-          else if(state.state==='AT_PLACE')line=({'3f':'개발실 둘러보는 중','1f':'카페에서 커피 받는 중','5f':'옥상 정원 산책 중','2f':'라운지 둘러보는 중'})[state.floor];
+          else if(state.state==='AT_PLACE')line=({'3f':'개발실 둘러보는 중','1f':'카페에서 커피 받는 중','5f':'옥상 정원 산책 중','2f':'라운지 둘러보는 중'})[state.floor]||'새 구역 둘러보는 중';
         }
         // A brief stretch uses the existing pose slot at the same reserved
         // chair. Keep the long-rest words and reduced-motion seated pose intact.
         if(card?.id==='cafe-1f'&&performing&&!options.reducedMotion&&Math.floor(seconds+seed(p.id)%30)%30===0)state.seat=slot(t.seat.anchor,'stand');
         return {id:p.id,...state,visitor:!!p.visitor,...(p.visitor?event.visitor:{}),idle:!event||!!card,plain,stroll:!!card&&!p.visitor&&!options.reducedMotion,home:p.home?.floor||'1f',
-          pose:state.walking?(Math.floor((seconds+seed(day+'|walk|'+p.id)%10/10)*5)%2?'walk-a':'walk-b'):state.seat.posture,activity:p.visitor?'visit':event&&!card?(action.personalNonWork?'rest':action.layer===3?'meeting':'work'):lounge||card?.id==='cafe-1f'&&state.state==='AT_PLACE'?'rest':'work',
+          pose:state.walking?(Math.floor((seconds+seed(day+'|walk|'+p.id)%10/10)*5)%2?'walk-a':'walk-b'):state.seat.posture,activity:p.visitor?'visit':event?.creative?(event.personalNonWork?'rest':'work'):event&&!card?(action.personalNonWork?'rest':action.layer===3?'meeting':'work'):lounge||card?.id==='cafe-1f'&&state.state==='AT_PLACE'?'rest':'work',
           actionId:event&&!card&&(performing||state.state==='AT_PLACE')?action.id:'base-work',eventId:card?undefined:event?.id,outingId:card?event.id:undefined,groupIds:event?.group,placeId:card?.id,targetAnchor:t?.seat.anchor,line,...(event?.patrol?{patrol:event.patrol,patrolArrival:t.out.at(-1).end}:{}),
           emoji:performing&&!card?(action.actorOverrides?.[p.id]?.emoji||action.performance.emoji):'',personalNonWork:action?.personalNonWork};
       };
       const entries=persons.filter(p=>(p.id!=='seongmin'||options.chairmanPresent)&&(!options.presentIds||options.presentIds.includes(p.id))&&!blocked.has(p.id)&&presentAt(p.id,seconds)).map(p=>render(p,
-        active.find(e=>e.people.some(t=>t.id===p.id))||visibleOutings.find(e=>!e.visitor&&e.start<=seconds&&seconds<e.end&&e.people.some(t=>t.id===p.id)))).filter(Boolean);
+        visibleOutings.find(e=>e.creative&&e.start<=seconds&&seconds<e.end&&e.people.some(t=>t.id===p.id))||active.find(e=>e.people.some(t=>t.id===p.id))||visibleOutings.find(e=>!e.visitor&&e.start<=seconds&&seconds<e.end&&e.people.some(t=>t.id===p.id)))).filter(Boolean);
       for(const pair of placeTable?.behavior?.deskPairs||[]){
         const peers=pair.people.map(id=>entries.find(p=>p.id===id));
         if(peers.some(p=>!p||p.eventId||p.outingId||p.state!=='AT_HOME')||peers[0].floor!==peers[1].floor||gap(peers[0],peers[1])>350)continue;
@@ -2309,7 +2376,7 @@
       return {update,cancel,current:()=>active,timeMatches};
     }
 
-    return Object.freeze({createStaffChats,staffChatLines,plan,snapshot,seed,slot,actions,windows,presentAt,homeAt,blockPlan,stateAt,resourceIntervals,errandPlaces,reportPlaces,shortLine,identity:table.identity});
+    return Object.freeze({createStaffChats,staffChatLines,plan,snapshot,seed,slot,actions,windows,presentAt,homeAt,blockPlan,visitPlan,programCompatible,programOutings,stateAt,resourceIntervals,errandPlaces,reportPlaces,shortLine,identity:table.identity});
   }
   // Read-only label geometry, shared by the persistent renderer and Node tests.
   function statusLabelPriority(data){
@@ -3338,6 +3405,27 @@
   }
 
   const companionPrevFacing=new Map();
+  // Weekend outings share the existing lift-leg sampler. Kids/followers keep priority.
+  function creativePetState(person,now,reduced,occupied){
+    if(!scheduler||!floorRegistry.hasFloor('creative'))return null;
+    const date=koreaTime(now),weekday=date.getUTCDay(),seconds=date.getUTCHours()*3600+date.getUTCMinutes()*60+date.getUTCSeconds()+date.getUTCMilliseconds()/1000;
+    if(![0,6].includes(weekday)||seconds<32400||seconds>=68400)return null;
+    const ids=['pet-cat','pet-dog','pet-rabbit','pet-bori','companion-frog','companion-penguin','companion-otter','companion-chick','companion-fox'];
+    const day=date.toISOString().slice(0,10),block=Math.floor((seconds-32400)/7200),pick=residentSeed(day+'|creative-pets|'+block)%ids.length;
+    if(![ids[pick],ids[(pick+1)%ids.length]].includes(person.id))return null;
+    const clock=residentClock(now),homeFloor=person.companion?['4f','3f','1f','2f','2f'][person.atlasRow]:person.hours.find(([a,b])=>clock.seconds/3600>=a&&clock.seconds/3600<b)?.[2];
+    if(!homeFloor)return null;
+    const slotIndex=person.id===ids[pick]?0:1,target='pet_cushion_'+(slotIndex+1),home='elevator_'+homeFloor;
+    const seat=scheduler.slot(target,'sit');if(!seat)return null;
+    const start=32400+block*7200+slotIndex*4;let cursor=start;
+    const legs=nodes=>nodes.slice(1).map((b,i)=>{const a=nodes[i],pa=visualPoint(a),pb=visualPoint(b),duration=a.floor!==b.floor?1.6:Math.hypot((pa[0]-pb[0])*art.width/100,(pa[1]-pb[1])*art.height/100)/180;const leg={from:a.id,to:b.id,start:cursor,end:cursor+duration};cursor=leg.end;return leg});
+    const out=legs(route(home,target)),performStart=cursor;cursor+=1200;const performEnd=cursor,back=legs(route(target,home)),end=cursor;
+    if(seconds<start||seconds>=end)return null;
+    const event={start,end,performStart,performEnd},trip={id:person.id,home:{floor:homeFloor,anchorId:home},seat,out,back};
+    const state=scheduler.stateAt(event,trip,seconds,reduced),position=state.position||[state.seat.x,state.seat.y];
+    if(occupied.some(q=>{const at=q.position||[q.seat?.x,q.seat?.y];return q.floor===state.floor&&at.every(Number.isFinite)&&Math.hypot((at[0]-position[0])*art.width/100,(at[1]-position[1])*art.height/100)<96}))return null;
+    return {id:person.id,name:person.name,sprite:person.sprite||person.id,pet:true,companion:!!person.companion,kid:false,following:false,floor:state.floor,anchor:state.seat.anchor,position,point:[anchors.get(state.seat.anchor).x,anchors.get(state.seat.anchor).y],walking:state.walking,facing:'left',pose:state.walking?(Math.floor(seconds*4)%2?'walk-a':'walk-b'):state.seat.posture,creative:true};
+  }
   function companionSnapshot(now=new Date(),staff=null,enabled=true,reduced=false,neighbors=[]){
     if(!enabled||!canon||!art)return [];
     const date=koreaTime(now),weekday=date.getUTCDay(),weekend=weekday===0||weekday===6,day=date.toISOString().slice(0,10),seconds=date.getUTCHours()*3600+date.getUTCMinutes()*60+date.getUTCSeconds()+date.getUTCMilliseconds()/1000;
@@ -3370,6 +3458,7 @@
         walking=!reduced&&!!chair.walking;pose=walking?(Math.floor((seconds+walkJitter)*4)%2?'walk-a':'walk-b'):chair.pose==='sitting'||chair.seat?.posture==='sitting'?'sitting':'standing';
         if(walking)motion={bob:-Math.abs(Math.sin(walkWave))*(person.id==='kid-suyeon'?2.8:person.id==='kid-suhyeon'?1.8:person.id==='companion-frog'||person.id==='companion-chick'?2.4:1.6),lean:Math.sin(walkWave)*(person.id==='kid-suyeon'?1.6:person.id==='kid-suhyeon'?1.1:1.2),spin:0};
       }else{
+        const visit=creativePetState({...person,companion:true},now,reduced,people.concat(states));if(visit){states.push(visit);continue}
         // Off-duty companions stay in their department, on the existing pet rhythm.
         floor=['4f','3f','1f','2f','2f'][person.atlasRow];
         const available=[...residentStops.values()].filter(a=>a.floor===floor&&a.pet&&!usedStops.has(a.id)&&residentSpot(a.id)).flatMap(a=>[0,-12,12,24].map(dy=>({...a,visual:[a.visual[0],a.visual[1]+dy]}))).filter(a=>residentSafe(floor,[a.x,a.y],a.visual)&&free(floor,a.visual));
@@ -3765,6 +3854,7 @@
     const occupied=staff?.floors?.flatMap(f=>f.people||[])||[];
     if(residentTrioHold&&(residentTrioHold.key!==residentTrioKey(now)||Number(now)>=residentTrioHold.until))residentTrioHold=null;
     const states=[...residentPeople.filter(p=>p.id!=='pet-rabbit'),...residentPeople.filter(p=>p.id==='pet-rabbit')].flatMap(person=>{
+      const creativeVisit=person.pet&&creativePetState(person,now,reduced,occupied);if(creativeVisit){occupied.push(creativeVisit);return [creativeVisit]}
       const scheduleHour=person.pet?clock.seconds/3600:hour,window=person.hours.find(([start,end])=>scheduleHour>=start&&scheduleHour<end);if(!window)return [];
       const seconds=person.pet?clock.seconds:clock.seconds%86400,day=person.pet?clock.day:time.toISOString().slice(0,10),stroll=person.id==='pet-bori'&&!reduced?boriStroll(day,seconds):null,sleeping=person.pet&&(clock.sleeping||person.id==='pet-bori'&&!stroll&&(reduced||clock.hour<9||clock.hour>=21||(seconds+residentSeed('bori-nap|'+day)%300)%900<360));
       const chairman=interactions&&person.id==='pet-dog'&&!sleeping&&occupied.find(p=>p.id==='seongmin'&&p.seat&&(p.walking||p.pose==='sitting'||p.seat.posture==='sitting'));
@@ -4084,7 +4174,7 @@
   }
   // One scene host; actors remain mounted and only their floor/position changes.
   const building=HaniBuildingScene,tabs=root.querySelector(".hani-building-tabs"),floorLabel=document.createElement("span"),overflowChip=document.createElement("span"),floorButtons=new Map(),backgroundCache=new Map();
-  tabs.style.setProperty('--hani-floor-cols',String(building.floorRegistry.floors.length));
+  tabs.style.setProperty('--hani-floor-cols',String(building.floors.length));
   const roster=document.createElement("ul");roster.className="hani-building-roster";roster.setAttribute("aria-label","현재 층 직원과 활동");root.querySelector(".hani-office-scroll").after(roster);for(const actor of actors.values()){const row=document.createElement("li"),name=document.createElement("b"),text=document.createElement("span");name.textContent=actor.dataset.name;row.append(name,text);if(!actor.dataset.resident)roster.append(row);actor.officeRow=row;actor.officeRowName=name;actor.officeText=text}
   const actorBubble=document.createElement('div'),bubbleLine=document.createElement('p'),profileLink=document.createElement('a'),bubbleSprite=document.createElement('div'),bubbleClose=document.createElement('button');
   actorBubble.className='hani-office-character-bubble';actorBubble.hidden=true;actorBubble.setAttribute('aria-live','polite');actorBubble.setAttribute('aria-atomic','false');bubbleLine.setAttribute('aria-atomic','true');profileLink.setAttribute('aria-live','off');profileLink.textContent='프로필 ↗';profileLink.href='#organization/people';bubbleSprite.className='hani-office-bubble-sprite';bubbleSprite.hidden=true;bubbleSprite.setAttribute('aria-hidden','true');bubbleClose.type='button';bubbleClose.className='hani-office-bubble-close';bubbleClose.textContent='✕';bubbleClose.setAttribute('aria-label','말풍선 닫기');actorBubble.append(bubbleLine,profileLink,bubbleSprite,bubbleClose);actorBubble.onclick=event=>{if(!profileLink.contains(event.target))closeBubble(true,true)};map.append(actorBubble);
@@ -4230,12 +4320,14 @@
     if(eventPanel.contains(event.target)||eventButton.contains(event.target)){if(dismissOnly&&!actorBubble.hidden)closeBubble(true,true);return}
     const actor=event.target.closest?.('.hani-office-actor');
     if(actor&&actorLayer.contains(actor)){if(!dismissOnly)tapActor(actor,event);return}
+    const link=event.target.closest?.('[data-room-view]');
+    if(link&&root.contains(link)){if(!dismissOnly){const room=building.floorRegistry.get(activeFloor)?.rooms.find(r=>r.id===link.dataset.room);if(link.dataset.roomFloor===activeFloor&&room?.menuLink.choices.some(c=>c.view===link.dataset.roomView)&&typeof showView==='function'){event.preventDefault?.();closeBubble();showView(link.dataset.roomView)}}return}
     if(event.target.closest?.('.hani-office-barista')===baristaButton){if(!dismissOnly)openBaristaBubble(event);return}
     if(!dismissOnly||actorBubble.contains(event.target)||[...actors.values()].some(a=>a.officeRow.contains(event.target)))return;
     closeBubble(true,true);
   }
-  actorLayer.addEventListener('click',activateActor);
-  actorLayer.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();activateActor(event)}else if(event.key==='Escape')closeBubble(true,true)});
+  root.addEventListener('click',activateActor);
+  root.addEventListener('keydown',event=>{if(event.target.closest?.('[data-room-view]'))return;if(event.key==='Enter'||event.key===' '){event.preventDefault();activateActor(event)}else if(event.key==='Escape')closeBubble(true,true)});
   profileLink.addEventListener('click',event=>{if(typeof showView==='function'){event.preventDefault();showView('organization/people/'+bubblePerson)}});
   // The existing roster is also a touch-sized entry to the same bubble.
   for(const actor of actors.values()){actor.officeRow.setAttribute('role','button');actor.officeRow.tabIndex=0;actor.officeRow.addEventListener('click',event=>tapActor(actor,event));actor.officeRow.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();tapActor(actor,event)}})}
@@ -4248,7 +4340,8 @@
   });
   const plates=[];
   for(const floor of building.floors)for(const entry of building.floorRegistry.get(floor.id).art.plates){
-    const plate=document.createElement('span');plate.className='hani-office-room-plate';plate.dataset.room=entry.room;
+    const room=building.floorRegistry.get(floor.id).rooms.find(r=>r.id===entry.room),menu=room?.menuLink;
+    const plate=document.createElement(menu?'button':'span');if(menu){plate.type='button';plate.dataset.roomView=menu.primaryView;plate.dataset.roomFloor=floor.id}plate.className='hani-office-room-plate';plate.dataset.room=entry.room;
     plate.dataset.material=entry.material;plate.dataset.label=entry.label;plate.title=entry.fullLabel||entry.label;
     plate.dataset.mount=entry.mount||'wall';
     const english=document.createElement('b'),korean=document.createElement('small');
@@ -4562,7 +4655,12 @@
   }
   const rooms=document.createElement('div');rooms.className='hani-building-rooms';root.querySelector('.hani-office-scroll').after(rooms);
   const roomLabels=new Map();
-  for(const floor of building.floors){const list=document.createElement('p');list.textContent=[...(building.floorRegistry.get(floor.id).rooms).map(r=>r.label),...(building.floorRegistry.get(floor.id).art.plates).filter(p=>p.detail).map(p=>p.fullLabel)].join(' · ');rooms.append(list);roomLabels.set(floor.id,list)}
+  for(const floor of building.floors){const list=document.createElement('p');list.textContent=[...(building.floorRegistry.get(floor.id).rooms).map(r=>r.label),...(building.floorRegistry.get(floor.id).art.plates).filter(p=>p.detail).map(p=>p.fullLabel)].join(' · ');
+    const mobileLabels=document.createElement('span');mobileLabels.className='hani-office-room-mobile-labels';
+    for(const room of building.floorRegistry.get(floor.id).rooms)if(room.menuLink){const label=document.createElement('button');label.type='button';label.dataset.room=room.id;label.dataset.roomView=room.menuLink.primaryView;label.dataset.roomFloor=floor.id;label.textContent=room.label;mobileLabels.append(label)}
+    if(mobileLabels.children.length)list.append(mobileLabels);
+    for(const room of building.floorRegistry.get(floor.id).rooms)if(room.menuLink){const group=document.createElement('span');group.className='hani-office-room-links';for(const choice of room.menuLink.choices){const button=document.createElement('button');button.type='button';button.dataset.room=room.id;button.dataset.roomView=choice.view;button.dataset.roomFloor=floor.id;button.textContent=choice.label;group.append(button)}list.append(group)}
+    rooms.append(list);roomLabels.set(floor.id,list)}
   function legacySprite(actor){
     const sprite=actor.querySelector('.hani-office-sprite'),{group,row}=actor.officeLegacy;
     if(actor.dataset.resident||actor.dataset.person==='seongmin'||actor.dataset.person.startsWith('visitor')){sprite.className='hani-office-sprite';sprite.style.backgroundImage='';actor.dataset.avatar='pending';return}
@@ -4648,7 +4746,9 @@
     for(const entry of plannedRows)entry.row.hidden=entry.floor!==activeFloor;
     // Reuse the scheduler's exact formal/outing legs; never predict a route.
     const formal=building.scheduler&&!meeting?building.scheduler.plan(day,presence):[];
-    const scheduled=building.scheduler&&!meeting?[...formal,...building.scheduler.blockPlan(day,Math.floor(floorSnapshot.seconds/600),formal,presence),...(staffChat?[staffChat]:[])]:[];
+    const baseOutings=building.scheduler&&!meeting?building.scheduler.blockPlan(day,Math.floor(floorSnapshot.seconds/600),formal,presence):[];
+    const programs=building.scheduler&&!meeting?building.scheduler.visitPlan(day,formal,baseOutings,presence):[];
+    const scheduled=building.scheduler&&!meeting?[...formal,...baseOutings.filter(e=>building.scheduler.programCompatible(e,programs)),...programs,...(staffChat&&building.scheduler.programCompatible(staffChat,programs)?[staffChat]:[])]:[];
     const midnight=Date.parse(day+'T00:00:00+09:00');
     for(const actor of actors.values()){if(actor.dataset.resident)continue;actor.officeWasVisible=!actor.hidden;actor.hidden=true;actor.officeRow.hidden=true;actor.dataset.called="false"}
     for(const p of entries){const actor=actors.get(p.id);if(!actor||!p.seat)continue;actor.hidden=false;actor.officeRow.hidden=false;actor.dataset.activity=p.activity;actor.dataset.plain=String(Boolean(p.plain&&!selected&&!meeting));

@@ -1523,6 +1523,66 @@
           "planned": false
         }
       ]
+    },
+    "creative": {
+      "background": "./assets/building/floor-5f-creative-v1.webp",
+      "plates": [
+        {
+          "room": "studio",
+          "label": "방송 스튜디오",
+          "english": "HANI STUDIO",
+          "material": "charcoal",
+          "mount": "wall",
+          "x": 24,
+          "y": 9,
+          "width": 22,
+          "rotate": 0,
+          "skew": 0,
+          "ink": "#ffffff"
+        },
+        {
+          "room": "library_cinema",
+          "label": "도서관·시네마",
+          "english": "LIBRARY & CINEMA",
+          "material": "charcoal",
+          "mount": "wall",
+          "x": 78,
+          "y": 9,
+          "width": 22,
+          "rotate": 0,
+          "skew": 0,
+          "ink": "#ffffff"
+        },
+        {
+          "room": "fitness",
+          "label": "피트니스",
+          "english": "WELLNESS GYM",
+          "material": "charcoal",
+          "mount": "wall",
+          "x": 25,
+          "y": 62,
+          "width": 22,
+          "rotate": 0,
+          "skew": 0,
+          "ink": "#ffffff"
+        },
+        {
+          "room": "kids_pet_lounge",
+          "label": "키즈·펫 라운지",
+          "english": "KIDS & PETS",
+          "material": "charcoal",
+          "mount": "wall",
+          "x": 78,
+          "y": 62,
+          "width": 22,
+          "rotate": 0,
+          "skew": 0,
+          "ink": "#ffffff"
+        }
+      ],
+      "homeFurniture": {},
+      "deskProps": [],
+      "foregroundMasks": []
     }
   },
   "anchors": {
@@ -2940,6 +3000,138 @@
     "path_client_booth_slot_4_13": {
       "x": 11.075,
       "y": 72.28
+    },
+    "elevator_creative": {
+      "x": 50.05981,
+      "y": 18.91605
+    },
+    "hall_creative": {
+      "x": 51.01675,
+      "y": 23.91073
+    },
+    "stairs_creative": {
+      "x": 55.02392,
+      "y": 23.91073
+    },
+    "corridor_creative_top": {
+      "x": 51.01675,
+      "y": 43.03932
+    },
+    "corridor_creative_bottom": {
+      "x": 51.01675,
+      "y": 79.91498
+    },
+    "window_creative_1": {
+      "x": 51.01675,
+      "y": 93.30499
+    },
+    "door_studio": {
+      "x": 41.86603,
+      "y": 43.03932
+    },
+    "junction_studio": {
+      "x": 34.38995,
+      "y": 43.03932
+    },
+    "studio_anchor_a": {
+      "x": 22.42823,
+      "y": 29.75558
+    },
+    "studio_anchor_b": {
+      "x": 28.58852,
+      "y": 29.75558
+    },
+    "studio_camera": {
+      "x": 16.14833,
+      "y": 43.03932
+    },
+    "studio_4cut": {
+      "x": 34.38995,
+      "y": 43.03932
+    },
+    "door_library_cinema": {
+      "x": 59.21053,
+      "y": 41.44527
+    },
+    "junction_library_cinema": {
+      "x": 76.55502,
+      "y": 42.50797
+    },
+    "lib_study_a": {
+      "x": 84.80861,
+      "y": 43.03932
+    },
+    "lib_study_b": {
+      "x": 90.78947,
+      "y": 43.03932
+    },
+    "cinema_sofa_a": {
+      "x": 65.19139,
+      "y": 35.49416
+    },
+    "cinema_sofa_b": {
+      "x": 71.77033,
+      "y": 35.49416
+    },
+    "door_fitness": {
+      "x": 41.86603,
+      "y": 79.91498
+    },
+    "junction_fitness": {
+      "x": 38.8756,
+      "y": 86.60999
+    },
+    "fit_treadmill_a": {
+      "x": 14.35407,
+      "y": 78.1084
+    },
+    "fit_treadmill_b": {
+      "x": 14.35407,
+      "y": 87.56642
+    },
+    "fit_mat_a": {
+      "x": 31.99761,
+      "y": 79.91498
+    },
+    "fit_mat_b": {
+      "x": 31.99761,
+      "y": 86.29118
+    },
+    "door_kids_pet_lounge": {
+      "x": 59.21053,
+      "y": 77.57705
+    },
+    "junction_kids_pet_lounge": {
+      "x": 71.77033,
+      "y": 77.57705
+    },
+    "lounge_kids_play_a": {
+      "x": 71.77033,
+      "y": 74.38895
+    },
+    "lounge_kids_play_b": {
+      "x": 71.77033,
+      "y": 87.14134
+    },
+    "lounge_parent_chair": {
+      "x": 65.19139,
+      "y": 85.33475
+    },
+    "pet_cushion_1": {
+      "x": 78.34928,
+      "y": 80.34006
+    },
+    "pet_cushion_2": {
+      "x": 89.11483,
+      "y": 80.34006
+    },
+    "pet_cushion_3": {
+      "x": 78.94737,
+      "y": 88.41658
+    },
+    "pet_cushion_4": {
+      "x": 89.71292,
+      "y": 88.41658
     }
   }
 }
