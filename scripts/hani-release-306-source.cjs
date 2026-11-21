@@ -1,3 +1,4 @@
+require('./hani-menu-badges-preload.cjs'); // Menu badges precede every306 capture.
 // Test-only released306 version/history inverse before the helper and older captures.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
