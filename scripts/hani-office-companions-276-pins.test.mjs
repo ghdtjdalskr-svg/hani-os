@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import {createHash} from 'node:crypto';import {execFileSync} from 'node:child_process';
 import {companions276Delta as delta,restoreCompanions276Source as restore} from './hani-office-companions-276-source.mjs';
 import {restoreAffinity274Source} from './hani-office-affinity-274-source.mjs';

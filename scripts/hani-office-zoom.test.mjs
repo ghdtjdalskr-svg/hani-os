@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // 274: hash-verified exact inverse preserves the legacy no-storage assertion; raw runtime is tested by affinity safety QA.
 import {restoreAffinity274Source} from './hani-office-affinity-274-source.mjs';
 // node scripts/hani-office-zoom.test.mjs

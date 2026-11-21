@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 import {readTlayoutPlans} from './hani-office-tlayout-fixture.mjs';
 import {restoreResidentsSource} from './hani-office-residents-source.mjs';
 import test from 'node:test';

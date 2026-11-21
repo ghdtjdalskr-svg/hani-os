@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // Execute the actual scene owner with DOM doubles; this does not assert pixel layout.
 import assert from 'node:assert/strict';
 import test from 'node:test';

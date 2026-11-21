@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // The canonical dispatcher owns 293 version -> chibi -> 292/office ordering.
 // Keep its reader raw so this test exercises every outer release as well.
 import test from 'node:test';

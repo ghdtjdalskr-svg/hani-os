@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 import './hani-lounge-queen-v3-preload.cjs'; // Exact queen inverse before legacy assertions.
 // Raw runtime integration: no preservation projection or user data.
 // Preserve raw Ieum integration; remove only the unrelated exact chibi delta.

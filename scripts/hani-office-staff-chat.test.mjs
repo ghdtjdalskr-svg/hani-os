@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';
 import {readRawLifeFile} from './hani-life-bundle-source.mjs';
 import outer284 from './hani-save-guard-source.cjs';

@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // node --test scripts/hani-theme-thaw.test.mjs
 // Actual owners, injected clock, disposable DOM/storage only.
 import test from 'node:test';

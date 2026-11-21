@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 import './hani-lounge-queen-v3-preload.cjs'; // Exact queen inverse before legacy assertions.
 // Node-only execution of the real billboard, publication build and poll owners.
 import test from 'node:test';
