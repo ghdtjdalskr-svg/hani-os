@@ -1,3 +1,4 @@
+require('./hani-release-305-preload.cjs'); // Released305 precedes every304 capture.
 // Test-only released304 metadata -> exact pre304 metadata before UI Polish 1.
 // This reader retains the actual disk bytes outside every historical adapter.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
