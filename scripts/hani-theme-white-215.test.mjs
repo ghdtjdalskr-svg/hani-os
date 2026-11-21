@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 import {readBranchBaseline} from './hani-regression-baseline.mjs';
 // node scripts/hani-theme-white-215.test.mjs [<playwright index.mjs> <browser exe>]
 // Only disposable browser storage is used; external requests are blocked.

@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // Apply the exact 283/life inverses before historical office pins, including standalone runs.
 import './hani-life-bundle-preload.mjs';
 import test from 'node:test';

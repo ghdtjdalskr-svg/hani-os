@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 import {restoreTlayoutSource} from './hani-office-tlayout-fixture.mjs';
 // Node-only execution of the actual owners. These doubles do not prove pixels
 // or Android performance; the reviewer runs the real browser checks separately.

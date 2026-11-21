@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // Node: node scripts/hani-helper-bot.test.mjs
 import './hani-release-297-preload.cjs';
 // Real app/screenshots: append <playwright/index.mjs> <browser.exe>.

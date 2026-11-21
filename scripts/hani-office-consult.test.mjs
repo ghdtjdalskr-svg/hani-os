@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // Fixed pre-patrol behavior is independently pinned by the strict 278 inverse; current patrol is tested separately.
 import {projectPrePatrolSource} from './hani-office-chairman-patrol-278-source.mjs';
 // 274: hash-verified exact inverse preserves the legacy no-storage assertion; raw runtime is tested by affinity safety QA.

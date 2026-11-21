@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // Raw pre-task snapshots: node scripts/hani-building-206-safety.test.mjs <baseline dir>
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

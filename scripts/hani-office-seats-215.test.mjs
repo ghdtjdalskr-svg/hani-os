@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // node scripts/hani-office-seats-215.test.mjs [--browser <playwright index.mjs> <browser exe>]
 import assert from 'node:assert/strict';
 import test from 'node:test';

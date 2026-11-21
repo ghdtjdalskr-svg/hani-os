@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // node scripts/hani-fun-chat-fortune.test.mjs
 import './hani-release-297-preload.cjs';
 // Optional real app evidence: append <playwright/index.mjs> <browser.exe>.

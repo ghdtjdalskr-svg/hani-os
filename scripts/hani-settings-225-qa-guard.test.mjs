@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 import {readSettingsQaBaseline} from './hani-stale39-reviewed-source.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';

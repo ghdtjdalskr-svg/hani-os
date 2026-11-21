@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // Verify the actual combined 284 runtime independently of legacy projections.
 import test from 'node:test';
 import assert from 'node:assert/strict';

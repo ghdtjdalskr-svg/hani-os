@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // Actual production owner with DOM/Image doubles. No browser or saved data.
 import test from 'node:test';
 import assert from 'node:assert/strict';
