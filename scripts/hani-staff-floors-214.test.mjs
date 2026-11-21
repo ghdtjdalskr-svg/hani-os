@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 import './hani-lounge-queen-v3-preload.cjs'; // Exact queen inverse before legacy assertions.
 // node scripts/hani-staff-floors-214.test.mjs [playwright index.mjs] [browser exe]
 // Synthetic local preview only; external requests are blocked and no account is used.

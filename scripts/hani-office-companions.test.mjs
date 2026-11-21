@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 import {createRequire} from 'node:module';
 import os from 'node:os';
 import path from 'node:path';

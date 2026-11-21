@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // Keep default execution on the same exact outer chain as legacy regression.
 import './hani-chibi-pack-1-preload.cjs';
 import test from 'node:test';

@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // Main comparison: 583cc97960d0e41e975d633b27b1e60d322bcfc4, chairman present.
 import test from 'node:test';
 import assert from 'node:assert/strict';

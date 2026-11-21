@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // Lively idle layer: the shown floor changes every couple of seconds, day and evening, without shared spots.
 import assert from 'node:assert/strict';
 import test from 'node:test';

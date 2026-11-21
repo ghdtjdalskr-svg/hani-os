@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // Frozen design294 input; every original assertion and pin below is unchanged.
 import './hani-design-polish-1-frozen-preload.cjs';
 import test from 'node:test';

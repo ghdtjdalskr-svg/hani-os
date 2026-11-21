@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 import test from 'node:test';
 import {restoreBarista273Source} from './hani-office-barista-night-273-source.mjs';
 import {projectPreBoriStrollSource} from './hani-office-bori-stroll-source.mjs';

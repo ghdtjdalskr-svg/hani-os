@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 import './hani-pb-chibitoon-legacy-preload.mjs';
 import {readLegacyPbFile} from './hani-pb-chibitoon-legacy-preload.mjs';
 import test from 'node:test';
