@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "from": "2.9.300",
+  "to": "2.9.301",
+  "release": "0558dc341827e578f956e396fd952be80ead14a7",
+  "base": "ad95b84376edb9d132338a50a9b1423209b46c63",
+  "feature": "386a880f7bee1ab3f298425985f43d251c797b5e",
+  "files": {
+    "index.html": {
+      "after": "6ed409018a9478ffeea40911e57028f06a6424b1791565577f09d40dfb9cb08a",
+      "before": "5964536bc32271fafee18254b04742d434a4f33f583d147e580d5fd54ee1a99a",
+      "count": 60
+    },
+    "hani-main.js": {
+      "after": "99521bd84cf7fab5aa6b08ab4cc3a2b9dc5abde415de5187502ed51229984535",
+      "before": "2500c4f07e58bef8ca54c6667193a6cdd6ab5181d32b30979c89fcb980144183",
+      "count": 1
+    },
+    "assets/data/hani-history-releases-v1.json": {
+      "after": "934a11cbb2241f2520a07c03f4fd64f08e978a129ae1b9171170c159b3b485bf",
+      "before": "e514578c1f7c5b8fb368c37e7639cbebb872c406d3b861e42e48a3c5b143b2c3",
+      "count": 1,
+      "replacements": [
+        {
+          "before": "0\",\n      \"date\": \"2026-11-19\",\n      \"status\": \"released\",\n      \"title\": \"점검 반영 1차\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.300 점검 반영 1차",
+          "after": "1\",\n      \"date\": \"2026-11-20\",\n      \"status\": \"released\",\n      \"title\": \"이음·유나 자리 교체\",\n      \"category\": \"하니 그룹\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.301 이음·유나 자리 교체\"\n      }\n    },\n    {\n      \"id\": \"v2.9.300\",\n      \"date\": \"2026-11-19\",\n      \"status\": \"released\",\n      \"title\": \"점검 반영 1차\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"9f49286882e2efacd128e2920cc12f38d473a8e9\",\n        \"subject\": \"release: v2.9.300 점검 반영 1차 (#519)"
+        }
+      ]
+    }
+  }
+}

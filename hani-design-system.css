@@ -1401,7 +1401,7 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
   #app.app :is(button,a[href],summary,[role="button"],input,select,textarea):not(.hani-office-actor){min-height:40px!important}
   #app.app :is(button,a[href],[role="button"]):not(.hani-office-actor){min-width:40px!important}
   #app a[href]{display:inline-flex;align-items:center}
-  #app :is(input[type="checkbox"],input[type="radio"]){width:40px!important;height:40px!important;flex-shrink:0}
+  #app.app :is(input[type="checkbox"],input[type="radio"]):not(.hani-office-actor){width:22px!important;min-width:22px!important;height:22px!important;min-height:22px!important;flex-shrink:0;accent-color:var(--primary)}
   #app .date-flex-control{grid-template-columns:minmax(0,1fr) minmax(40px,max-content)}
   #app .task{grid-template-columns:40px minmax(0,1fr) auto}
   #app .task-derived .task{grid-template-columns:40px minmax(0,1fr)}
@@ -2213,8 +2213,8 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 #app #board .board-tabs .board-tab[data-board-filter="LIFE"]{color:#28664c}
 #app #investment :is(.investment-tabs-main,.investment-live,.broker-stats){background:#fff!important;color:#28374c!important}
 #app #investment .investment-tabs-main .tab:not(.active){color:#4d4660!important;background:#fff!important}
-#app #investment :is(.investment-live small,.broker-stats .label){color:#4d4660!important;background:#fff!important}
-#app #investment .investment-live small{display:inline-block;padding:6px 8px!important;line-height:1.5!important}
+#app #investment :is(.investment-live small,.broker-stats .label){color:var(--text-secondary,#4d4660)!important;background:transparent!important}
+#app #investment .investment-live small{display:block;padding:0!important;line-height:1.35!important}
 #app #study .study-main-empty{background:#fff!important;color:#4d4660!important}
 #app #study .study-main-empty :is(b,p,span,.sub){color:#4d4660!important}
 #app #diary [data-diary-view]{background:#fff!important;color:#49385f!important}
@@ -2268,6 +2268,728 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 }
 #app #aiWork .ai-team-profile-role{color:#49385f!important;background:#f6f4fa!important;padding:6px 8px!important;line-height:1.5!important}
 
+/* dark finish fix 1 */
+:root[data-finish="midnight-black"] #app .ai-team-profile-role,
+:root[data-finish="titanium-graphite"] #app .ai-team-profile-role{color:var(--text-primary)!important;background:var(--surface-raised)!important;border:1px solid var(--border-subtle)}
+
+/* Top 2: Forced light surfaces & dark ink reset under dark finishes */
+:root:is([data-finish="midnight-black"]) body[data-finish-active] :is(.asset-dashboard-card,.home-briefing-panel,.home-board-shell,.home-panel,.board-card,.board-panel,.ai-card,.ai-brief-card,.ai-log-card,.intake-card,.intake-panel,.ledger-card,.ledger-panel,.panel,.card,.module-shell,.section-card,.summary-card,.overview-card,.stat-card,.metric-card,.kpi-card,.detail-card,.history-card,.list-card,.table-card,.calendar-card,.journal-card,.diary-card,.memo-card,.note-card,.reading-card,.movie-card,.series-card,.travel-card,.exercise-card,.diet-card,.certificate-card,.study-card,.news-card,.newsroom-card,.wishlist-card,.investment-card,.investment-panel,.asset-card,.account-card,.holding-card,.broker-card,.agent-card,.review-card,.office-card,.dev-card,.deploy-card,.milestone-card,.ilbo-card,.tab-panel,.sub-panel,.drawer-card,.modal-card,.dialog-card,.sheet-card,.form-card,.filter-card,.chart-card,.timeline-card,.profile-card,.setting-card,.qa-card,.gate-card,.package-card),
+:root:is([data-finish="titanium-graphite"]) body[data-finish-active] :is(.asset-dashboard-card,.home-briefing-panel,.home-board-shell,.home-panel,.board-card,.board-panel,.ai-card,.ai-brief-card,.ai-log-card,.intake-card,.intake-panel,.ledger-card,.ledger-panel,.panel,.card,.module-shell,.section-card,.summary-card,.overview-card,.stat-card,.metric-card,.kpi-card,.detail-card,.history-card,.list-card,.table-card,.calendar-card,.journal-card,.diary-card,.memo-card,.note-card,.reading-card,.movie-card,.series-card,.travel-card,.exercise-card,.diet-card,.certificate-card,.study-card,.news-card,.newsroom-card,.wishlist-card,.investment-card,.investment-panel,.asset-card,.account-card,.holding-card,.broker-card,.agent-card,.review-card,.office-card,.dev-card,.deploy-card,.milestone-card,.ilbo-card,.tab-panel,.sub-panel,.drawer-card,.modal-card,.dialog-card,.sheet-card,.form-card,.filter-card,.chart-card,.timeline-card,.profile-card,.setting-card,.qa-card,.gate-card,.package-card){--surface-panel:inherit;--surface-raised:inherit;--border-subtle:inherit;--panel:inherit;--panel2:inherit;--line:inherit;--appearance-panel:inherit;--appearance-raised:inherit;--appearance-line:inherit;--text-primary:inherit;--text-secondary:inherit;--text-muted:inherit;--text:inherit;--muted:inherit;--appearance-ink:inherit;--appearance-muted:inherit;--ds-ink:inherit;--ds-muted:inherit;--ui-ink:inherit;--ui-sub:inherit;--ink:inherit;background:var(--surface-panel)!important;color:var(--text-primary)!important;border-color:var(--border-subtle)!important;color-scheme:dark}
+
+:root:is([data-finish="midnight-black"]) body[data-finish-active] :is(.stat,#assetComposition .item,.module-kpi),
+:root:is([data-finish="titanium-graphite"]) body[data-finish-active] :is(.stat,#assetComposition .item,.module-kpi){--surface-panel:inherit;--surface-raised:inherit;--border-subtle:inherit;--text-primary:inherit;--text-secondary:inherit;--text-muted:inherit;--ds-ink:inherit;--ds-muted:inherit;background:var(--surface-raised)!important;color:var(--text-primary)!important;border-color:var(--border-subtle)!important}
+
+:root[data-finish="midnight-black"] body[data-finish-active] :is(.home-briefing-panel,.home-board-shell,.board-card,.ai-card,.intake-card,.ledger-card,.study-card,.wishlist-card,.travel-card,.investment-card,.asset-card,.account-card,.holding-card,.broker-card,.agent-card,.review-card,.office-card,.dev-card,.deploy-card,.milestone-card) :is(h1,h2,h3,h4,h5,p,span,strong,b,label,dt,dd,td,th,li,a,button,input,select,textarea,summary,small,.sub,.muted,.kicker,.meta,.caption),
+:root[data-finish="titanium-graphite"] body[data-finish-active] :is(.home-briefing-panel,.home-board-shell,.board-card,.ai-card,.intake-card,.ledger-card,.study-card,.wishlist-card,.travel-card,.investment-card,.asset-card,.account-card,.holding-card,.broker-card,.agent-card,.review-card,.office-card,.dev-card,.deploy-card,.milestone-card) :is(h1,h2,h3,h4,h5,p,span,strong,b,label,dt,dd,td,th,li,a,button,input,select,textarea,summary,small,.sub,.muted,.kicker,.meta,.caption){color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app :is(#asset,#home) .account-card .account-value,
+:root[data-finish="titanium-graphite"] #app :is(#asset,#home) .account-card .account-value{color:color-mix(in srgb,var(--series-color,var(--structure-accent)) 68%,var(--text-primary))!important}
+
+:root[data-finish="midnight-black"] #app #yunaTargetHelp,
+:root[data-finish="titanium-graphite"] #app #yunaTargetHelp{background:var(--surface-raised);border-color:var(--border-subtle);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app #assetStats .stat:has(.asset-evaluation),
+:root[data-finish="titanium-graphite"] #app #assetStats .stat:has(.asset-evaluation){background:var(--surface-raised);border-color:var(--border-subtle);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app #travel .module-kpi,
+:root[data-finish="titanium-graphite"] #app #travel .module-kpi{background:var(--surface-raised)!important;border-color:var(--border-subtle)!important;color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app #travel :is(.travel-tabs,.travel-card,.travel-wish-copy,.travel-planning-note,.travel-place-row,.travel-source-note),
+:root[data-finish="titanium-graphite"] #app #travel :is(.travel-tabs,.travel-card,.travel-wish-copy,.travel-planning-note,.travel-place-row,.travel-source-note){background:var(--surface-panel);border-color:var(--border-subtle);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app #travel .travel-tabs button,
+:root[data-finish="titanium-graphite"] #app #travel .travel-tabs button{color:var(--text-secondary)}
+
+:root[data-finish="midnight-black"] #app #travel .travel-tabs button.active,
+:root[data-finish="titanium-graphite"] #app #travel .travel-tabs button.active{background:var(--surface-raised);border-color:var(--border-strong);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #travelTripDetailModal :is(.modal-card,.travel-detail-box,table,th,td,tr),
+:root[data-finish="titanium-graphite"] #travelTripDetailModal :is(.modal-card,.travel-detail-box,table,th,td,tr){background:var(--surface-panel);border-color:var(--border-subtle);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app #investment .invest-tabs,
+:root[data-finish="titanium-graphite"] #app #investment .invest-tabs{background:var(--surface-raised)!important;border-color:var(--border-subtle)!important}
+
+:root[data-finish="midnight-black"] #app #investment .invest-tab,
+:root[data-finish="titanium-graphite"] #app #investment .invest-tab{color:var(--text-secondary)!important}
+
+:root[data-finish="midnight-black"] #app #investment .invest-tab.active,
+:root[data-finish="titanium-graphite"] #app #investment .invest-tab.active{background:var(--surface-panel)!important;border-color:var(--border-strong)!important;color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app #investment :is(.invest-live,.invest-live-head,.broker-stats,.invest-broker-card,.invest-holding-row,.invest-order-row),
+:root[data-finish="titanium-graphite"] #app #investment :is(.invest-live,.invest-live-head,.broker-stats,.invest-broker-card,.invest-holding-row,.invest-order-row){background:var(--surface-raised)!important;border-color:var(--border-subtle)!important;color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app #investment :is(.stat,.broker-stat-card,.kpi-chip) :is(small,span,.stat-label,.label),
+:root[data-finish="titanium-graphite"] #app #investment :is(.stat,.broker-stat-card,.kpi-chip) :is(small,span,.stat-label,.label){color:var(--text-secondary)!important}
+
+:root[data-finish="midnight-black"] #app #investment :is(.stat,.broker-stat-card,.kpi-chip) :is(b,strong,.stat-value,.value),
+:root[data-finish="titanium-graphite"] #app #investment :is(.stat,.broker-stat-card,.kpi-chip) :is(b,strong,.stat-value,.value){color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app #investmentIntake :is(.asset-capture-account-first,.asset-paste-zone,.asset-capture-preview header,.asset-preview-actions,.asset-account-edit-row,.asset-holding-preview,.asset-position-row,.asset-position-confirm),
+:root[data-finish="titanium-graphite"] #app #investmentIntake :is(.asset-capture-account-first,.asset-paste-zone,.asset-capture-preview header,.asset-preview-actions,.asset-account-edit-row,.asset-holding-preview,.asset-position-row,.asset-position-confirm){background:var(--surface-raised);border-color:var(--border-subtle);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app #study .study-main-empty,
+:root[data-finish="titanium-graphite"] #app #study .study-main-empty{background:var(--surface-raised)!important;border-color:var(--border-subtle)!important;color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app #diary [data-diary-view],
+:root[data-finish="titanium-graphite"] #app #diary [data-diary-view]{background:var(--surface-panel)!important;border-color:var(--border-subtle)!important;color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app #diary [data-diary-view].active,
+:root[data-finish="titanium-graphite"] #app #diary [data-diary-view].active{background:var(--structure-accent)!important;border-color:var(--structure-accent)!important;color:var(--structure-on-accent)!important}
+
+:root[data-finish="midnight-black"] #app #home .home-cal-day,
+:root[data-finish="titanium-graphite"] #app #home .home-cal-day{background:var(--surface-raised);border-color:var(--border-subtle);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app #home .home-task-mini-item i,
+:root[data-finish="titanium-graphite"] #app #home .home-task-mini-item i{background:var(--surface-panel);border-color:var(--border-strong);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app #home .home-update-item.is-done,
+:root[data-finish="titanium-graphite"] #app #home .home-update-item.is-done{background:color-mix(in srgb,var(--surface-raised) 86%,var(--invest-up,var(--structure-accent)));border-color:var(--border-subtle);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app #home .home-update-item.is-wait,
+:root[data-finish="titanium-graphite"] #app #home .home-update-item.is-wait{background:var(--surface-panel);border-color:var(--border-subtle);color:var(--text-secondary)}
+
+:root[data-finish="midnight-black"] #app :is(#reading,#movie,#diary) .phase1-collapsible-form,
+:root[data-finish="titanium-graphite"] #app :is(#reading,#movie,#diary) .phase1-collapsible-form{background:var(--surface-panel);border-color:var(--border-subtle);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app :is(#reading,#movie) :is(.media-work-row,.media-work-placeholder,.media-episode-row,.series-archive-v2,.series-progress-card),
+:root[data-finish="titanium-graphite"] #app :is(#reading,#movie) :is(.media-work-row,.media-work-placeholder,.media-episode-row,.series-archive-v2,.series-progress-card){background:var(--surface-raised);border-color:var(--border-subtle);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app #movie :is(.series-progress-summary span,.series-episode-list>span),
+:root[data-finish="titanium-graphite"] #app #movie :is(.series-progress-summary span,.series-episode-list>span){background:var(--surface-panel);border-color:var(--border-subtle);color:var(--text-secondary)}
+
+:root[data-finish="midnight-black"] #app #wishlist :is(.wishlist-review-state,.wishlist-ai),
+:root[data-finish="titanium-graphite"] #app #wishlist :is(.wishlist-review-state,.wishlist-ai){background:var(--surface-raised);border-color:var(--border-subtle);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app #game :is(.sports-view-tabs,.sports-update-policy,.sports-legacy-note,.team-madrid),
+:root[data-finish="titanium-graphite"] #app #game :is(.sports-view-tabs,.sports-update-policy,.sports-legacy-note,.team-madrid){background:var(--surface-raised);border-color:var(--border-subtle);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app #game :is(.sports-home-logo,.sports-team-logo,.sports-match-logo),
+:root[data-finish="titanium-graphite"] #app #game :is(.sports-home-logo,.sports-team-logo,.sports-match-logo){background:color-mix(in srgb,var(--text-primary) 85%,var(--surface-panel));border-color:var(--border-subtle)}
+
+:root[data-finish="midnight-black"] #app #game :is(.sports-home-team em,.sports-result strong),
+:root[data-finish="titanium-graphite"] #app #game :is(.sports-home-team em,.sports-result strong){color:var(--text-secondary)}
+
+:root[data-finish="midnight-black"] #app #aura .tabs,
+:root[data-finish="titanium-graphite"] #app #aura .tabs{background:var(--surface-raised);border-color:var(--border-subtle)}
+
+:root[data-finish="midnight-black"] #app #aura .tab,
+:root[data-finish="titanium-graphite"] #app #aura .tab{color:var(--text-secondary)}
+
+:root[data-finish="midnight-black"] #app #aura .tab.active,
+:root[data-finish="titanium-graphite"] #app #aura .tab.active{background:var(--surface-panel);border-color:var(--border-strong);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app #aura :is(.aura-preview,.aura-poster-signature),
+:root[data-finish="titanium-graphite"] #app #aura :is(.aura-preview,.aura-poster-signature){background:var(--surface-panel);border-color:var(--border-subtle);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app :is(#diet,#certificate) .date-mode-toggle,
+:root[data-finish="titanium-graphite"] #app :is(#diet,#certificate) .date-mode-toggle{background:var(--surface-raised)!important;border-color:var(--border-subtle)!important;color:var(--text-primary)!important;color-scheme:dark}
+
+:root[data-finish="midnight-black"] #app :is(#diet,#certificate) .date-mode-toggle button.active,
+:root[data-finish="titanium-graphite"] #app :is(#diet,#certificate) .date-mode-toggle button.active{background:var(--surface-panel)!important;color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app :is(input[type="date"],input[type="time"],input[type="datetime-local"],select,textarea,input),
+:root[data-finish="titanium-graphite"] #app :is(input[type="date"],input[type="time"],input[type="datetime-local"],select,textarea,input){color-scheme:dark}
+
+/* Top 3: Sidebar lockup, white-icon-on-white-bg contrast, and dark season band */
+:root[data-finish="midnight-black"] #sidebar .sidebar-team-mini,
+:root[data-finish="titanium-graphite"] #sidebar .sidebar-team-mini,
+:root[data-finish="midnight-black"] #sidebar .sidebar-corporate-lockup,
+:root[data-finish="titanium-graphite"] #sidebar .sidebar-corporate-lockup{background:var(--surface-raised)!important;border-color:var(--border-subtle)!important;color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #sidebar .hani-brand-logo-frame,
+:root[data-finish="titanium-graphite"] #sidebar .hani-brand-logo-frame{background:color-mix(in srgb,var(--surface-raised) 88%,var(--collection-light,var(--structure-accent)))!important;border-color:var(--border-strong)!important}
+
+:root[data-finish="midnight-black"] #sidebar .sidebar-corporate-copy,
+:root[data-finish="titanium-graphite"] #sidebar .sidebar-corporate-copy{color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #sidebar .sidebar-corporate-copy small,
+:root[data-finish="titanium-graphite"] #sidebar .sidebar-corporate-copy small{color:var(--text-secondary)}
+
+:root[data-finish="midnight-black"] #sidebar .sidebar-team-face,
+:root[data-finish="titanium-graphite"] #sidebar .sidebar-team-face{background:var(--surface-panel);border-color:var(--border-subtle)}
+
+:root[data-finish="midnight-black"] #sidebar .nav-home .nav-btn,
+:root[data-finish="titanium-graphite"] #sidebar .nav-home .nav-btn{background:var(--surface-raised)!important;border-color:var(--border-subtle)!important;color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #sidebar .nav-home .nav-btn.active,
+:root[data-finish="titanium-graphite"] #sidebar .nav-home .nav-btn.active{background:color-mix(in srgb,var(--surface-raised) 76%,var(--structure-accent))!important;border-color:var(--border-strong)!important;color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #sidebar .dashboard-nav .ico,
+:root[data-finish="titanium-graphite"] #sidebar .dashboard-nav .ico,
+:root[data-finish="midnight-black"] #sidebar .nav-home .nav-btn .ico,
+:root[data-finish="titanium-graphite"] #sidebar .nav-home .nav-btn .ico,
+:root[data-finish="midnight-black"] #sidebar :is(.group-body,.side-bottom) .nav-btn .ico,
+:root[data-finish="titanium-graphite"] #sidebar :is(.group-body,.side-bottom) .nav-btn .ico{background:color-mix(in srgb,var(--surface-panel) 84%,var(--structure-accent))!important;border:1px solid var(--border-subtle);color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #sidebar .nav-btn.active .ico,
+:root[data-finish="titanium-graphite"] #sidebar .nav-btn.active .ico{background:var(--structure-accent)!important;border-color:var(--structure-accent);color:var(--structure-on-accent)!important}
+
+:root[data-finish="midnight-black"] #sidebar .nav-aura:before,
+:root[data-finish="titanium-graphite"] #sidebar .nav-aura:before{background:linear-gradient(120deg,transparent 0%,color-mix(in srgb,var(--structure-accent) 18%,transparent) 50%,transparent 100%);opacity:.45}
+
+:root[data-finish="midnight-black"] .season-frame-band,
+:root[data-finish="titanium-graphite"] .season-frame-band{background-image:linear-gradient(90deg,transparent 0%,color-mix(in srgb,var(--collection-light,var(--structure-accent)) 36%,transparent) 20%,color-mix(in srgb,var(--collection-light,var(--structure-accent)) 52%,transparent) 50%,color-mix(in srgb,var(--collection-light,var(--structure-accent)) 36%,transparent) 80%,transparent 100%);background-repeat:no-repeat;background-size:100% 2px;background-position:center;border-top-color:var(--border-subtle);border-bottom-color:var(--border-subtle);opacity:.85}
+
+/* Top 4: Missing titanium-graphite & data-theme="dark" selectors (milestones, agentReview, ilbo, procrastination) */
+:root[data-finish="titanium-graphite"] #app #milestones > .ds-main-character-banner{background:linear-gradient(135deg,var(--surface-panel),var(--surface-raised));border-color:var(--border-subtle);color:var(--text-primary)}
+
+:root[data-finish="titanium-graphite"] #app #milestones .ms-tier{background:var(--surface-raised);border-color:var(--border-subtle);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app #agentReview .hani-office-live,
+:root[data-finish="titanium-graphite"] #app #agentReview .hani-office-live{background:var(--surface-panel);border-color:var(--border-subtle);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app #agentReview .hani-office-live-head p,
+:root[data-finish="titanium-graphite"] #app #agentReview .hani-office-live-head p{color:var(--text-secondary)}
+
+:root[data-finish="midnight-black"] #app #agentReview :is(.hani-building-rooms,.hani-building-roster li,.hani-office-meeting),
+:root[data-finish="titanium-graphite"] #app #agentReview :is(.hani-building-rooms,.hani-building-roster li,.hani-office-meeting){background:var(--surface-raised);border-color:var(--border-subtle);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app #agentReview .hani-building-tabs button,
+:root[data-finish="titanium-graphite"] #app #agentReview .hani-building-tabs button{background:var(--surface-panel);border-color:var(--border-subtle);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app #agentReview .hani-building-tabs [aria-selected="true"],
+:root[data-finish="titanium-graphite"] #app #agentReview .hani-building-tabs [aria-selected="true"]{background:var(--structure-accent);border-color:var(--structure-accent);color:var(--structure-on-accent)}
+
+:root[data-finish="midnight-black"] #app #agentReview :is(.hani-building-tabs small,.hani-building-floor-label,.hani-building-overflow),
+:root[data-finish="titanium-graphite"] #app #agentReview :is(.hani-building-tabs small,.hani-building-floor-label,.hani-building-overflow){color:var(--text-secondary)}
+
+:root[data-finish="midnight-black"] #app #agentReview .hani-building-roster b,
+:root[data-finish="titanium-graphite"] #app #agentReview .hani-building-roster b{color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app #agentReview .hani-office-participants span,
+:root[data-finish="titanium-graphite"] #app #agentReview .hani-office-participants span{background:var(--surface-panel);border-color:var(--border-subtle);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app #ilbo :is(.ilbo-nameplate-illustrated,.ilbo-nameplate-copy,.ilbo-sheet,.ilbo-lead,.ilbo-brief,.ilbo-card,.ilbo-kpi,.ilbo-sidecard),
+:root[data-finish="titanium-graphite"] #app #ilbo :is(.ilbo-nameplate-illustrated,.ilbo-nameplate-copy,.ilbo-sheet,.ilbo-lead,.ilbo-brief,.ilbo-card,.ilbo-kpi,.ilbo-sidecard){background:var(--surface-panel);border-color:var(--border-subtle);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app #ilbo .ilbo-eyebrow,
+:root[data-finish="titanium-graphite"] #app #ilbo .ilbo-eyebrow{color:var(--text-secondary)}
+
+:root[data-finish="midnight-black"] #app #procrastination,
+:root[data-finish="titanium-graphite"] #app #procrastination{--pb-bg:var(--surface-panel);--pb-card:var(--surface-raised);--pb-soft:var(--surface-panel);--pb-line:var(--border-subtle);--pb-ink:var(--text-primary);--pb-muted:var(--text-secondary);--pb-tint:var(--surface-raised);background:var(--pb-bg);color:var(--pb-ink);border-color:var(--pb-line)}
+
+:root[data-finish="midnight-black"] #app #procrastination [data-pb-card],
+:root[data-finish="titanium-graphite"] #app #procrastination [data-pb-card]{--pb-tint:var(--surface-raised);background:var(--pb-card);border-color:var(--pb-line);color:var(--pb-ink)}
+
+/* Top 5: Later feature stylesheets (intake, dev, deployment, organization) */
+:root[data-finish="midnight-black"] #app #intake :is(.yuna-desk,.yuna-conversation,.yuna-preview,.yuna-route,.yuna-resume,.yuna-mobile-head,.yuna-composer,.yuna-composer textarea,.yuna-category-row select,.yuna-chips button),
+:root[data-finish="titanium-graphite"] #app #intake :is(.yuna-desk,.yuna-conversation,.yuna-preview,.yuna-route,.yuna-resume,.yuna-mobile-head,.yuna-composer,.yuna-composer textarea,.yuna-category-row select,.yuna-chips button){background:var(--surface-raised);border-color:var(--border-subtle);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app #intake .yuna-chips button.active,
+:root[data-finish="titanium-graphite"] #app #intake .yuna-chips button.active{background:var(--structure-accent);border-color:var(--structure-accent);color:var(--structure-on-accent)}
+
+:root[data-finish="midnight-black"] #app #dev :is(.hani-development-snapshot,.hani-dev-history-overview,.hani-history-kpis>div,.hani-history-toolbar,.hani-history-row,.hani-history-row code,.hani-history-status),
+:root[data-finish="titanium-graphite"] #app #dev :is(.hani-development-snapshot,.hani-dev-history-overview,.hani-history-kpis>div,.hani-history-toolbar,.hani-history-row,.hani-history-row code,.hani-history-status){background:var(--surface-raised);border-color:var(--border-subtle);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app #deployment :is(.deploy-exec-status,.deploy-exec-icon,.deploy-mode,.deploy-status,.deploy-progress span,.deploy-inbox-kpi,.deploy-inbox-summary,.deploy-queue-card,.deploy-result,.deploy-file-zone,.deploy-approval-strip,.deploy-advanced,.deploy-package-ingest,.hina-qa-card,.hina-qa-check,.hina-qa-badge),
+:root[data-finish="titanium-graphite"] #app #deployment :is(.deploy-exec-status,.deploy-exec-icon,.deploy-mode,.deploy-status,.deploy-progress span,.deploy-inbox-kpi,.deploy-inbox-summary,.deploy-queue-card,.deploy-result,.deploy-file-zone,.deploy-approval-strip,.deploy-advanced,.deploy-package-ingest,.hina-qa-card,.hina-qa-check,.hina-qa-badge){background:var(--surface-raised);border-color:var(--border-subtle);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app #deployment .deploy-progress span.active,
+:root[data-finish="titanium-graphite"] #app #deployment .deploy-progress span.active{background:var(--structure-accent);border-color:var(--structure-accent);color:var(--structure-on-accent)}
+
+:root[data-finish="midnight-black"] #app #haniOrganizationHub :is(.ogh-person-image,.ogh-placeholder,.ogh-detail-portrait,.ogh-detail-team-art,.ogh-stats>div,.ogh-employee),
+:root[data-finish="titanium-graphite"] #app #haniOrganizationHub :is(.ogh-person-image,.ogh-placeholder,.ogh-detail-portrait,.ogh-detail-team-art,.ogh-stats>div,.ogh-employee){background:color-mix(in srgb,var(--surface-raised) 84%,var(--team,var(--structure-accent)));border-color:var(--border-subtle);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app #haniOrganizationHub .ogh-detail-link,
+:root[data-finish="titanium-graphite"] #app #haniOrganizationHub .ogh-detail-link{background:var(--surface-panel);border-color:var(--border-strong);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app #haniOrganizationHub :is(.ogh-team-copy>small,.ogh-person-caption>small),
+:root[data-finish="titanium-graphite"] #app #haniOrganizationHub :is(.ogh-team-copy>small,.ogh-person-caption>small){color:var(--text-secondary)}
+
+/* Top 8: Home dialogue box, shared speech bubbles, and ledger Jieun comment */
+:root[data-finish="midnight-black"] #app .home-dialogue-shell,
+:root[data-finish="titanium-graphite"] #app .home-dialogue-shell{background:var(--surface-raised)!important;border-color:var(--border-subtle)!important;color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app .home-dialogue-avatar,
+:root[data-finish="titanium-graphite"] #app .home-dialogue-avatar{background:var(--surface-panel);border-color:var(--border-subtle)}
+
+:root[data-finish="midnight-black"] #app .home-dialogue-copy h3,
+:root[data-finish="titanium-graphite"] #app .home-dialogue-copy h3{color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app .home-dialogue-speaker,
+:root[data-finish="titanium-graphite"] #app .home-dialogue-speaker,
+:root[data-finish="midnight-black"] #app #homeDialogueText,
+:root[data-finish="titanium-graphite"] #app #homeDialogueText,
+:root[data-finish="midnight-black"] #app .home-dialogue-line,
+:root[data-finish="titanium-graphite"] #app .home-dialogue-line{background:var(--surface-panel)!important;border-color:var(--border-subtle)!important;color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app :is(.ds-agent-comment>div,.ds-jieun>div),
+:root[data-finish="titanium-graphite"] #app :is(.ds-agent-comment>div,.ds-jieun>div){background:var(--surface-raised);border-color:var(--border-subtle);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app :is(.ds-agent-comment>img,.ds-comment-portrait),
+:root[data-finish="titanium-graphite"] #app :is(.ds-agent-comment>img,.ds-comment-portrait){background:var(--surface-panel);border-color:var(--border-subtle)}
+
+:root[data-finish="midnight-black"] #app .ledger-jieun-comment,
+:root[data-finish="titanium-graphite"] #app .ledger-jieun-comment{background:var(--surface-raised)!important;border-color:var(--border-subtle)!important;color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app #ledgerJieunComment,
+:root[data-finish="titanium-graphite"] #app #ledgerJieunComment,
+:root[data-finish="midnight-black"] #app .ledger-comment-head :is(span,h4),
+:root[data-finish="titanium-graphite"] #app .ledger-comment-head :is(span,h4){color:var(--text-primary)}
+
+/* Top 10 (contrast only): Raise low-contrast summary/kicker/indicator text to >= 4.5:1 */
+:root[data-finish="midnight-black"] #app .phase1-collapsible-form>summary em,
+:root[data-finish="titanium-graphite"] #app .phase1-collapsible-form>summary em,
+:root[data-finish="midnight-black"] #app .wishlist-item-card details summary,
+:root[data-finish="titanium-graphite"] #app .wishlist-item-card details summary,
+:root[data-finish="midnight-black"] #app .media-work-identity span,
+:root[data-finish="titanium-graphite"] #app .media-work-identity span,
+:root[data-finish="midnight-black"] #app .media-work-row>details>summary,
+:root[data-finish="titanium-graphite"] #app .media-work-row>details>summary,
+:root[data-finish="midnight-black"] #app #newsroom .newsroom-4cut .newsroom-4cut-cuts b,
+:root[data-finish="titanium-graphite"] #app #newsroom .newsroom-4cut .newsroom-4cut-cuts b{color:var(--structure-accent)}
+
+:root[data-finish="midnight-black"] #app .phase1-collapsible-form>summary small,
+:root[data-finish="titanium-graphite"] #app .phase1-collapsible-form>summary small{color:var(--text-secondary)}
+
+:root[data-finish="midnight-black"] #app #newsroom .newsroom-4cut-context td.is-up,
+:root[data-finish="titanium-graphite"] #app #newsroom .newsroom-4cut-context td.is-up{background:transparent!important;color:color-mix(in srgb,var(--color-data-up) 45%,var(--text-primary))!important}
+
+:root[data-finish="midnight-black"] #app #newsroom .newsroom-4cut-context td.is-down,
+:root[data-finish="titanium-graphite"] #app #newsroom .newsroom-4cut-context td.is-down{background:transparent!important;color:color-mix(in srgb,var(--color-data-down) 42%,var(--text-primary))!important}
+
+/* dark finish fix 2 */
+:root:is([data-finish="midnight-black"]) body[data-finish-active] #app :is(.asset-dashboard-card,#assetComposition>.item,#asset .account-card,.home-account-grid .account-card,.home-calendar-mini,#home .home-update-item,.hani-development-snapshot,.hani-history-row,.wishlist-kpis>div,.wishlist-reason,.deploy-inbox-summary,.home-accounts-wrap,.home-task-summary,.home-task-mini-item,.agent-life-actions),
+:root:is([data-finish="titanium-graphite"]) body[data-finish-active] #app :is(.asset-dashboard-card,#assetComposition>.item,#asset .account-card,.home-account-grid .account-card,.home-calendar-mini,#home .home-update-item,.hani-development-snapshot,.hani-history-row,.wishlist-kpis>div,.wishlist-reason,.deploy-inbox-summary,.home-accounts-wrap,.home-task-summary,.home-task-mini-item,.agent-life-actions){--surface-panel:inherit;--surface-raised:inherit;--border-subtle:inherit;--text-primary:inherit;--text-secondary:inherit;--text-muted:inherit;background:var(--surface-panel)!important;border-color:var(--border-subtle)!important;color:var(--text-primary)!important}
+
+:root:is([data-finish="midnight-black"]) body[data-finish-active] #app :is(#asset,#investment) .stat,
+:root:is([data-finish="titanium-graphite"]) body[data-finish-active] #app :is(#asset,#investment) .stat{--surface-panel:inherit;--surface-raised:inherit;--border-subtle:inherit;--text-primary:inherit;--text-secondary:inherit;--text-muted:inherit;background:var(--surface-raised)!important;border-color:var(--border-subtle)!important;color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app .home-dialogue-line b,
+:root[data-finish="titanium-graphite"] #app .home-dialogue-line b{color:var(--structure-accent)!important}
+
+:root[data-finish="midnight-black"] #app .home-dialogue-line span,
+:root[data-finish="titanium-graphite"] #app .home-dialogue-line span{color:var(--text-secondary)!important}
+
+:root[data-finish="midnight-black"] #app #intake .yuna-desk #yunaTargetHelp,
+:root[data-finish="titanium-graphite"] #app #intake .yuna-desk #yunaTargetHelp{background:var(--surface-panel)!important;border-color:var(--border-subtle)!important;color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app #intake :is(.yuna-welcome>div:last-child,.yuna-bubble,.yuna-plus,.yuna-photo,.yuna-voice,.yuna-preview-top,.yuna-preview-actions,.yuna-preview-actions button:not(.is-primary),.yuna-file-pill),
+:root[data-finish="titanium-graphite"] #app #intake :is(.yuna-welcome>div:last-child,.yuna-bubble,.yuna-plus,.yuna-photo,.yuna-voice,.yuna-preview-top,.yuna-preview-actions,.yuna-preview-actions button:not(.is-primary),.yuna-file-pill){background:var(--surface-panel)!important;border-color:var(--border-subtle)!important;color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app #intake .yuna-status,
+:root[data-finish="titanium-graphite"] #app #intake .yuna-status{background:var(--surface-panel)!important;border:1px solid var(--border-subtle)!important;color:var(--structure-accent)!important}
+
+:root[data-finish="midnight-black"] #app #intake .yuna-welcome b,
+:root[data-finish="titanium-graphite"] #app #intake .yuna-welcome b{color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app #intake .yuna-welcome p,
+:root[data-finish="titanium-graphite"] #app #intake .yuna-welcome p{color:var(--text-secondary)!important}
+
+:root[data-finish="midnight-black"] #app #intake .yuna-chips button.is-active,
+:root[data-finish="titanium-graphite"] #app #intake .yuna-chips button.is-active{background:var(--structure-accent)!important;border-color:var(--structure-accent)!important;color:var(--structure-on-accent)!important}
+
+:root[data-finish="midnight-black"] #app #investment :is(.investment-live,.live-stat,.broker-stats,.broker-kpi,.page-nav-context-v02992,.investment-tabs-main,.investment-overview-tabs,.tabs),
+:root[data-finish="titanium-graphite"] #app #investment :is(.investment-live,.live-stat,.broker-stats,.broker-kpi,.page-nav-context-v02992,.investment-tabs-main,.investment-overview-tabs,.tabs){background:var(--surface-panel)!important;border-color:var(--border-subtle)!important;color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app #investment :is(.investment-tabs-main,.investment-overview-tabs,.tabs) .tab:not(.active),
+:root[data-finish="titanium-graphite"] #app #investment :is(.investment-tabs-main,.investment-overview-tabs,.tabs) .tab:not(.active){background:transparent!important;border-color:var(--border-subtle)!important;color:var(--text-secondary)!important}
+
+:root[data-finish="midnight-black"] #app #investment :is(.investment-tabs-main,.investment-overview-tabs,.tabs) .tab.active,
+:root[data-finish="titanium-graphite"] #app #investment :is(.investment-tabs-main,.investment-overview-tabs,.tabs) .tab.active{background:var(--surface-raised)!important;border:1px solid var(--border-strong)!important;color:var(--text-primary)!important;box-shadow:none!important}
+
+:root[data-finish="midnight-black"] #app #investment :is(.investment-live small,.live-stat small,.broker-stats .label,.broker-kpi .label),
+:root[data-finish="titanium-graphite"] #app #investment :is(.investment-live small,.live-stat small,.broker-stats .label,.broker-kpi .label){background:transparent!important;color:var(--text-secondary)!important}
+
+:root[data-finish="midnight-black"] #app #investment .pill,
+:root[data-finish="titanium-graphite"] #app #investment .pill{background:var(--surface-raised)!important;border:1px solid var(--border-subtle)!important;color:var(--structure-accent)!important}
+
+:root[data-finish="midnight-black"] #sidebar .hani-brand-logo-frame,
+:root[data-finish="titanium-graphite"] #sidebar .hani-brand-logo-frame{background:var(--surface-raised)!important;border-color:transparent!important}
+
+:root[data-finish="midnight-black"] #sidebar .hani-brand-logo-frame>img,
+:root[data-finish="titanium-graphite"] #sidebar .hani-brand-logo-frame>img{filter:invert(1) hue-rotate(180deg) saturate(1.1);mix-blend-mode:screen}
+
+:root[data-finish="midnight-black"] #app #asset #assetStats .stat:has(.asset-evaluation),
+:root[data-finish="titanium-graphite"] #app #asset #assetStats .stat:has(.asset-evaluation){background:var(--surface-raised)!important;border-color:var(--border-subtle)!important;color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app #asset #assetStats .stat:has(.asset-evaluation) .label,
+:root[data-finish="titanium-graphite"] #app #asset #assetStats .stat:has(.asset-evaluation) .label{color:var(--text-secondary)!important}
+
+:root[data-finish="midnight-black"] #app #asset #assetStats .value.asset-evaluation,
+:root[data-finish="titanium-graphite"] #app #asset #assetStats .value.asset-evaluation{color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app #procrastination,
+:root[data-finish="titanium-graphite"] #app #procrastination{--pb-bubble:var(--surface-panel);--pb-tint:var(--surface-panel)}
+
+:root[data-finish="midnight-black"] #app #procrastination .pb-speech,
+:root[data-finish="titanium-graphite"] #app #procrastination .pb-speech{background:var(--pb-bubble)!important;border-color:var(--pb-line)!important;color:var(--pb-ink)!important}
+
+:root[data-finish="midnight-black"] #app #procrastination .pb-footer .btn,
+:root[data-finish="titanium-graphite"] #app #procrastination .pb-footer .btn{background:var(--surface-panel);border-color:var(--border-strong);color:var(--text-primary)}
+
+:root[data-finish="midnight-black"] #app #aura .aura-preview :is(figcaption,h3),
+:root[data-finish="titanium-graphite"] #app #aura .aura-preview :is(figcaption,h3){color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app #aura .aura-preview :is(.aura-preview-kicker,.aura-campaign-description,.aura-campaign-cast,.aura-poster-signature,.aura-poster-signature>span),
+:root[data-finish="titanium-graphite"] #app #aura .aura-preview :is(.aura-preview-kicker,.aura-campaign-description,.aura-campaign-cast,.aura-poster-signature,.aura-poster-signature>span){color:var(--text-secondary)!important}
+
+:root[data-finish="midnight-black"] #app #aura .aura-tabs,
+:root[data-finish="titanium-graphite"] #app #aura .aura-tabs{background:var(--surface-raised)!important;border-color:var(--border-subtle)!important}
+
+:root[data-finish="midnight-black"] #app #aura .tab.active,
+:root[data-finish="titanium-graphite"] #app #aura .tab.active{background:var(--surface-panel)!important;border:1px solid var(--border-strong)!important;color:var(--text-primary)!important;box-shadow:none!important}
+
+:root[data-finish="midnight-black"] #app #deployment .deploy-exec-copy h3,
+:root[data-finish="titanium-graphite"] #app #deployment .deploy-exec-copy h3{color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app #deployment .deploy-exec-copy :is(p,.deploy-exec-note,.deploy-exec-kicker),
+:root[data-finish="titanium-graphite"] #app #deployment .deploy-exec-copy :is(p,.deploy-exec-note,.deploy-exec-kicker){color:var(--text-secondary)!important}
+
+:root[data-finish="midnight-black"] #app #deployment :is(.deploy-queue-card,.deploy-inbox-card,.deploy-step,.deploy-queue-head em,.deploy-queue-meta span,.deploy-mini,.deploy-result),
+:root[data-finish="titanium-graphite"] #app #deployment :is(.deploy-queue-card,.deploy-inbox-card,.deploy-step,.deploy-queue-head em,.deploy-queue-meta span,.deploy-mini,.deploy-result){background:var(--surface-raised)!important;border-color:var(--border-subtle)!important;color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app #deployment .deploy-queue-head b,
+:root[data-finish="titanium-graphite"] #app #deployment .deploy-queue-head b{color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app #deployment :is(.deploy-queue-head span,.deploy-queue-card p,.deploy-mini span,.deploy-card-head p),
+:root[data-finish="titanium-graphite"] #app #deployment :is(.deploy-queue-head span,.deploy-queue-card p,.deploy-mini span,.deploy-card-head p){color:var(--text-secondary)!important}
+
+:root[data-finish="midnight-black"] #app #dev .hani-history-kpis b,
+:root[data-finish="titanium-graphite"] #app #dev .hani-history-kpis b{color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app #dev .hani-history-kpis small,
+:root[data-finish="titanium-graphite"] #app #dev .hani-history-kpis small{color:var(--text-secondary)!important}
+
+:root:is([data-finish="midnight-black"]) #app #dev .hani-history-list .hani-history-row,
+:root:is([data-finish="titanium-graphite"]) #app #dev .hani-history-list .hani-history-row{--surface-raised:inherit;--text-primary:inherit;--text-secondary:inherit;background:var(--surface-raised)!important;border-color:var(--border-subtle)!important;color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app #dev .hani-history-row :is(h4,.hani-history-version),
+:root[data-finish="titanium-graphite"] #app #dev .hani-history-row :is(h4,.hani-history-version){color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app #dev .hani-history-row :is(p,.hani-history-meta,.hani-history-meta span,.hani-history-meta time),
+:root[data-finish="titanium-graphite"] #app #dev .hani-history-row :is(p,.hani-history-meta,.hani-history-meta span,.hani-history-meta time){color:var(--text-secondary)!important}
+
+:root[data-finish="midnight-black"] #app #travel .module-kpi :is(small,.sub),
+:root[data-finish="titanium-graphite"] #app #travel .module-kpi :is(small,.sub){color:var(--text-secondary)!important}
+
+:root[data-finish="midnight-black"] #app #game .sports-home-panel.team-madrid,
+:root[data-finish="titanium-graphite"] #app #game .sports-home-panel.team-madrid{--team-bg:var(--surface-raised);--team-fg:var(--text-primary);--team-muted:var(--text-secondary);--team-line:var(--border-subtle);--team-chip:var(--surface-panel)}
+
+:root[data-finish="midnight-black"] #app #game .sports-home-team em,
+:root[data-finish="titanium-graphite"] #app #game .sports-home-team em{background:var(--surface-panel)!important;border:1px solid var(--border-subtle)!important;color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app #game .sports-home-team em.win,
+:root[data-finish="titanium-graphite"] #app #game .sports-home-team em.win{color:var(--structure-accent)!important}
+
+:root[data-finish="midnight-black"] #app #game .sports-home-team em.loss,
+:root[data-finish="titanium-graphite"] #app #game .sports-home-team em.loss{color:var(--text-secondary)!important}
+
+:root[data-finish="midnight-black"] #app #game :is(.sports-home-foot>small,.sports-update-policy span),
+:root[data-finish="titanium-graphite"] #app #game :is(.sports-home-foot>small,.sports-update-policy span){background:var(--surface-raised)!important;border-color:var(--border-subtle)!important;color:var(--text-secondary)!important}
+
+:root[data-finish="midnight-black"] #app :is(#reading,#movie,#diary) .phase1-collapsible-form,
+:root[data-finish="titanium-graphite"] #app :is(#reading,#movie,#diary) .phase1-collapsible-form{background:var(--surface-panel)!important;border-color:var(--border-subtle)!important;color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app :is(#reading,#movie,#diary) .phase1-collapsible-form>summary,
+:root[data-finish="titanium-graphite"] #app :is(#reading,#movie,#diary) .phase1-collapsible-form>summary{background:transparent!important;color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app :is(#reading,#movie,#diary) .phase1-collapsible-form>summary em,
+:root[data-finish="titanium-graphite"] #app :is(#reading,#movie,#diary) .phase1-collapsible-form>summary em{background:var(--surface-raised)!important;border-color:var(--border-subtle)!important;color:var(--structure-accent)!important}
+
+:root:is([data-finish="midnight-black"]) #app #wishlist :is(.wishlist-kpis>div,#wishlistCount,.wishlist-guide-icon),
+:root:is([data-finish="titanium-graphite"]) #app #wishlist :is(.wishlist-kpis>div,#wishlistCount,.wishlist-guide-icon){--surface-raised:inherit;--text-primary:inherit;background:var(--surface-raised)!important;border-color:var(--border-subtle)!important;color:var(--text-primary)!important}
+
+:root[data-finish="midnight-black"] #app .date-mode-toggle,
+:root[data-finish="titanium-graphite"] #app .date-mode-toggle{background:var(--surface-raised)!important;border-color:var(--border-subtle)!important;color:var(--text-primary)!important;color-scheme:dark}
+
+:root[data-finish="midnight-black"] #app .date-mode-toggle button.active,
+:root[data-finish="titanium-graphite"] #app .date-mode-toggle button.active{background:var(--surface-panel)!important;color:var(--text-primary)!important}
+
+/* ============================================================================
+ * hero banner dark finish (midnight-black & titanium-graphite) — design A
+ * Light finishes stay untouched. No JS/state/storage changes.
+ * ========================================================================== */
+
+/* Shared dark-finish base tokens, typography contrast, status pill, avatar & quote bubble */
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app :is(.ds-main-character-banner,#home>.ds-main-character-banner,#milestones>.ds-main-character-banner){
+  --text:var(--text-primary);
+  --ink:var(--text-primary);
+  --ui-ink:var(--text-primary);
+  --ui-sub:var(--text-secondary);
+  --ds-ink:var(--text-primary);
+  --ds-muted:var(--text-secondary);
+  --muted:var(--text-secondary);
+  --mcb-ink:var(--text-primary);
+  --mcb-muted:var(--text-secondary);
+  --mcb-tone:#9a72de;
+  --mcb-accent:#cbb8fa;
+  --mcb-agent-accent:var(--mcb-accent);
+  --mcb-up:#ff8a9b;
+  --mcb-down:#8ac2ff;
+  --mcb-status-bg:var(--surface-raised);
+  --mcb-status-line:var(--border-strong);
+  --mcb-quote-bg:var(--surface-raised);
+  --mcb-quote-border:var(--border-strong);
+  color-scheme:dark;
+  color:var(--text-primary);
+}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app .view>.ds-main-character-banner .sub{color:var(--mcb-muted)}
+
+/* Dark-finish luminous accents (>= 4.5:1) + muted ambient glow tone per category */
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app :is(.ds-main-character-banner,#home>.ds-main-character-banner).ds-tone-office{--mcb-tone:#9a72de;--mcb-accent:#cbb8fa}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app :is(.ds-main-character-banner,#home>.ds-main-character-banner).ds-tone-finance{--mcb-tone:#d49b35;--mcb-accent:#f2c97d}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app :is(.ds-main-character-banner,#home>.ds-main-character-banner).ds-tone-health{--mcb-tone:#2eb886;--mcb-accent:#7ae0b8}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app :is(.ds-main-character-banner,#home>.ds-main-character-banner).ds-tone-growth{--mcb-tone:#e07b42;--mcb-accent:#f6b287}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app :is(.ds-main-character-banner,#home>.ds-main-character-banner).ds-tone-life{--mcb-tone:#2ea7c7;--mcb-accent:#7fd4eb}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app :is(.ds-main-character-banner,#home>.ds-main-character-banner).ds-tone-work{--mcb-tone:#5a8de0;--mcb-accent:#9ec2fa}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app :is(.ds-main-character-banner,#home>.ds-main-character-banner).ds-tone-company{--mcb-tone:#b86fa3;--mcb-accent:#e5b2d6}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app :is(.ds-main-character-banner,#home>.ds-main-character-banner).ds-tone-system{--mcb-tone:#6488bd;--mcb-accent:#d2def2}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app :is(.ds-main-character-banner,#home>.ds-main-character-banner).ds-tone-sports{--mcb-tone:#5488d8;--mcb-accent:#9ec4ff}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app #milestones>.ds-main-character-banner.ds-tone-company{--mcb-tone:#c7a258;--mcb-accent:#e7ce93}
+
+/* Chosen design (회장님 11/17, 안 A): dark panel + 8~12% category glow, seamless fade to artwork */
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"])[data-finish] #app :is(.ds-main-character-banner,#home>.ds-main-character-banner,#milestones>.ds-main-character-banner){
+  --mcb-bg:radial-gradient(ellipse 60% 110% at 14% 12%,color-mix(in srgb,var(--mcb-tone) 11%,transparent),transparent 72%),linear-gradient(135deg,color-mix(in srgb,var(--mcb-tone) 9%,var(--surface-panel)) 0%,var(--surface-panel) 62%,var(--surface-canvas) 100%);
+  --mcb-border:color-mix(in srgb,var(--mcb-tone) 22%,var(--border-subtle));
+  --mcb-overlay:linear-gradient(90deg,color-mix(in srgb,var(--mcb-tone) 9%,var(--surface-panel)) 0%,color-mix(in srgb,var(--mcb-tone) 7%,var(--surface-panel)) 40%,color-mix(in srgb,var(--surface-panel) 84%,transparent) 56%,color-mix(in srgb,var(--surface-panel) 36%,transparent) 72%,transparent 88%);
+  --mcb-overlay-mobile:linear-gradient(90deg,color-mix(in srgb,var(--mcb-tone) 9%,var(--surface-panel)) 0%,color-mix(in srgb,var(--surface-panel) 90%,transparent) 62%,color-mix(in srgb,var(--surface-panel) 78%,transparent) 100%);
+  --mcb-quote-bg:color-mix(in srgb,var(--mcb-tone) 8%,var(--surface-raised));
+  --mcb-quote-border:color-mix(in srgb,var(--mcb-tone) 28%,var(--border-strong));
+  box-shadow:0 10px 28px color-mix(in srgb,var(--surface-canvas) 75%,#000);
+}
+
+/* Shared dark-finish avatar frame & "○○ 한마디" speech bubble (>= 4.5:1 contrast) */
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app .ds-main-character-banner .ai-avatar{
+  background-color:var(--surface-raised)!important;
+  border-color:var(--mcb-quote-border)!important;
+  box-shadow:0 8px 20px rgba(0,0,0,.45)!important;
+}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app .ds-main-character-banner .ai-quote{
+  border-color:var(--mcb-quote-border)!important;
+  background:var(--mcb-quote-bg)!important;
+  box-shadow:0 8px 22px rgba(0,0,0,.4)!important;
+}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app .ds-main-character-banner .ai-quote:after{
+  border-left-color:var(--mcb-quote-border)!important;
+  border-bottom-color:var(--mcb-quote-border)!important;
+  background:var(--mcb-quote-bg)!important;
+}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app .ds-main-character-banner .ai-quote b{
+  color:var(--text-primary)!important;
+}
+
+/* audit-1: native mobile choices share one size across study, Drive and studio. */
+@media screen and (max-width:900px){
+  #app.app #study :is(input[type="checkbox"],input[type="radio"]),#app.app #drive :is(input[type="checkbox"],input[type="radio"]),#app.app #aura #launchGreetingEnabled{appearance:auto!important;box-sizing:border-box!important;flex:0 0 22px!important;width:22px!important;height:22px!important;min-width:22px!important;min-height:22px!important;max-width:22px!important;max-height:22px!important;margin:0!important;padding:0!important;transform:none!important;accent-color:var(--primary)}
+}
+
+/* =========================================================
+   UI Polish 1 (11/15, 11/17, 11/20) · Read-only CSS polish
+   - Preserves protected views (#investmentIntake, #deployment, #loginGate)
+   - Zero font-size declarations
+   ========================================================= */
+
+/* Req 1: Dashboard Pilot 2 ordering & role-tinted surfaces */
+#app #home.active{display:flex;flex-direction:column;gap:14px}
+#app #home>.ds-main-character-banner{order:-30;min-height:168px;height:168px;overflow:hidden}
+#app #home>.ds-main-character-banner .ds-main-character-banner__quote,
+#app #home>.ds-main-character-banner .ai-quote{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis}
+#app #home>.home-dialogue-shell{order:-27}
+#app #home>.home-lower-grid{order:-25}
+#app #home>.home-today-title{order:-24;margin-bottom:0}
+#app #home>.home-source-controls{order:-23}
+#app #home>#dataHubPeriodHelp,
+#app #home>#dataHubLatestRecord{order:-22}
+#app #home>.life-market-head{order:-20}
+#app #home>#lifeMarketBasis{order:-19}
+#app #home>#lifeMarketGrid{order:-18}
+#app #home>#lifeMarketBanner{order:-17}
+#app #home>#lifeMarketFeatured{order:-16}
+#app #home>.home-dashboard-grid{order:-10}
+#app #home>.life-ticker{order:-5}
+#app #home>[data-ilbo-home]{order:-4}
+#app #home>[data-hani-care-cards]{order:-3}
+#app #home>.hani-care-chip{order:-2;align-self:flex-start}
+#app #home>.hani-care-notice{order:-1}
+#app #home>.seasonal-life-banner{order:0}
+#app #home>.home-team-panel{order:1}
+
+#app #home .sh h3{display:inline-flex;align-items:center;gap:8px}
+#app #home .sh h3::before{content:"";display:inline-block;width:4px;height:1em;border-radius:999px;background:var(--structure-accent,var(--control-accent,#7562d9));flex:0 0 4px}
+#app #home :is(.home-planner-card,.home-monthly-check-card,.home-trend-card,.home-team-panel,.home-dialogue-shell,#lifeMarketGrid>[data-life-index]){
+  --hani-role-accent:var(--structure-accent,var(--control-accent,#7562d9));
+  background-color:color-mix(in srgb,var(--hani-role-accent) 7%,var(--surface-panel,#fff));
+  background-image:radial-gradient(circle at 100% 0%,color-mix(in srgb,var(--hani-role-accent) 14%,transparent) 0,color-mix(in srgb,var(--hani-role-accent) 14%,transparent) 42px,transparent 43px);
+  border-color:color-mix(in srgb,var(--hani-role-accent) 20%,var(--border-subtle,#e3e6f0))
+}
+#app #home #lifeMarketGrid>[data-life-index="investment"],
+#app #home #lifeMarketGrid>[data-life-index="ledger"]{--hani-role-accent:var(--finance,#245eb5)}
+#app #home #lifeMarketGrid>[data-life-index="weight"],
+#app #home #lifeMarketGrid>[data-life-index="steps"]{--hani-role-accent:var(--health,#197255)}
+#app #home #lifeMarketGrid>[data-life-index="books"],
+#app #home #lifeMarketGrid>[data-life-index="quiz"]{--hani-role-accent:var(--growth,#6f58d9)}
+#app #home .home-planner-card{--hani-role-accent:var(--growth,#6f58d9)}
+#app #home .home-monthly-check-card{--hani-role-accent:var(--finance,#245eb5)}
+#app #home .home-dialogue-shell{--hani-role-accent:var(--structure-accent,#7562d9)}
+#app #home :is(.home-planner-card,.home-monthly-check-card,.home-trend-card,.home-team-panel) .sh h3,
+#app #home #lifeMarketGrid>[data-life-index] .kpi-head span,
+#app #home .home-dialogue-shell .home-dialogue-speaker{
+  color:color-mix(in srgb,var(--hani-role-accent) 76%,var(--text-primary,#1f2433))
+}
+:root[data-finish="midnight-black"] #app #home :is(.home-planner-card,.home-monthly-check-card,.home-trend-card,.home-team-panel) .sh h3,
+:root[data-finish="titanium-graphite"] #app #home :is(.home-planner-card,.home-monthly-check-card,.home-trend-card,.home-team-panel) .sh h3,
+html[data-theme="dark"] #app #home :is(.home-planner-card,.home-monthly-check-card,.home-trend-card,.home-team-panel) .sh h3,
+:root[data-finish="midnight-black"] #app #home #lifeMarketGrid>[data-life-index] .kpi-head span,
+:root[data-finish="titanium-graphite"] #app #home #lifeMarketGrid>[data-life-index] .kpi-head span,
+html[data-theme="dark"] #app #home #lifeMarketGrid>[data-life-index] .kpi-head span,
+:root[data-finish="midnight-black"] #app #home .home-dialogue-shell .home-dialogue-speaker,
+:root[data-finish="titanium-graphite"] #app #home .home-dialogue-shell .home-dialogue-speaker,
+html[data-theme="dark"] #app #home .home-dialogue-shell .home-dialogue-speaker{
+  color:color-mix(in srgb,var(--hani-role-accent) 52%,var(--text-primary,#f4f2ee))
+}
+
+@media(max-width:700px){
+  #app #home>.ds-main-character-banner{order:-30;min-height:168px;height:auto}
+  #app #home>.home-lower-grid{display:contents!important}
+  #app #home .home-planner-card{order:-28}
+  #app #home>.home-dialogue-shell{order:-27}
+  #app #home .home-monthly-check-card{order:-26}
+  #app #home>.home-today-title{order:-24}
+  #app #home>.home-source-controls{order:-23}
+  #app #home>#dataHubPeriodHelp,
+  #app #home>#dataHubLatestRecord{order:-22}
+  #app #home>.life-market-head{order:-20}
+  #app #home>#lifeMarketBasis{order:-19}
+  #app #home>#lifeMarketGrid{order:-18}
+  #app #home>.home-dashboard-grid{order:-10}
+  #app #home>.life-ticker{order:-5}
+  #app #home>[data-ilbo-home]{order:-4}
+  #app #home>[data-hani-care-cards]{order:-3}
+  #app #home>.hani-care-chip{order:-2}
+  #app #home>.hani-care-notice{order:-1}
+  #app #home>.seasonal-life-banner{order:0}
+  #app #home>.home-team-panel{order:1}
+}
+
+/* Req 3: Compact ~120px banner for numeric/command views only (#home=168px; world/archive & #investmentIntake/#deployment untouched) */
+#app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner{
+  min-height:120px;
+  padding-top:14px;
+  padding-bottom:14px
+}
+#app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner .ds-main-character-banner__description{
+  display:none
+}
+#app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner .ds-main-character-banner__quote{
+  display:-webkit-box;
+  -webkit-line-clamp:1;
+  -webkit-box-orient:vertical;
+  overflow:hidden
+}
+@media(min-width:701px){
+  #app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner{
+    height:auto
+  }
+}
+@media(max-width:700px){
+  #app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner{
+    min-height:120px;
+    height:auto
+  }
+}
+
+/* Req 3b: compact banner = face + name + one-line quote (the copy box had min-height:234px) */
+#app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner .ds-main-character-banner__copy{min-height:0!important;padding-top:14px!important;padding-bottom:14px!important;justify-content:center}
+#app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner .ds-main-character-banner__eyebrow{display:none}
+#app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner .ds-main-character-banner__scene{position:absolute;inset:0;height:100%}
+#app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner .ds-main-character-banner__scene img{width:100%;height:100%;object-fit:cover}
+
+/* Req 4: Primary button unification to Finish accent tokens (size/padding/radius untouched; protected views excluded) */
+body[data-finish-active] #app .view:not(#investmentIntake):not(#deployment) :is(.btn.primary,.btn.finance,.btn.health),
+:root[data-finish] #app .view:not(#investmentIntake):not(#deployment) :is(.btn.primary,.btn.finance,.btn.health),
+body[data-finish-active] .modal:not(#deploymentQueueModal) :is(.btn.primary,.btn.finance,.btn.health),
+:root[data-finish] .modal:not(#deploymentQueueModal) :is(.btn.primary,.btn.finance,.btn.health){
+  background:var(--structure-accent)!important;
+  color:var(--structure-on-accent)!important;
+  border-color:var(--structure-accent)!important
+}
+body[data-finish-active] #app .view:not(#investmentIntake):not(#deployment) :is(.btn.primary,.btn.finance,.btn.health) svg,
+:root[data-finish] #app .view:not(#investmentIntake):not(#deployment) :is(.btn.primary,.btn.finance,.btn.health) svg,
+body[data-finish-active] .modal:not(#deploymentQueueModal) :is(.btn.primary,.btn.finance,.btn.health) svg,
+:root[data-finish] .modal:not(#deploymentQueueModal) :is(.btn.primary,.btn.finance,.btn.health) svg{
+  color:currentColor;
+  stroke:currentColor
+}
+body[data-finish-active] #app .view:not(#investmentIntake):not(#deployment) :is(.btn.primary,.btn.finance,.btn.health) :is(span,em,b),
+:root[data-finish] #app .view:not(#investmentIntake):not(#deployment) :is(.btn.primary,.btn.finance,.btn.health) :is(span,em,b),
+body[data-finish-active] .modal:not(#deploymentQueueModal) :is(.btn.primary,.btn.finance,.btn.health) :is(span,em,b),
+:root[data-finish] .modal:not(#deploymentQueueModal) :is(.btn.primary,.btn.finance,.btn.health) :is(span,em,b){
+  color:inherit
+}
+
+/* Req 5a: Investment view Finish unification & CSS-only duplicate KPI row hiding */
+#app #investment #brokerDashboardStats>.broker-kpi:is(:nth-child(1),:nth-child(3),:nth-child(4)){display:none!important}
+#app #investment :is(.investment-live,.live-stat,.broker-kpi,.broker-kpi.primary,.stat)::before,
+#app #investment :is(.investment-live,.live-stat,.broker-kpi,.broker-kpi.primary,.stat)::after{
+  content:none!important;
+  display:none!important
+}
+:root[data-finish="midnight-black"] #app #investment :is(.card,.investment-live,.live-stat,.broker-kpi,.stat,.stats>.stat,.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs),
+:root[data-finish="titanium-graphite"] #app #investment :is(.card,.investment-live,.live-stat,.broker-kpi,.stat,.stats>.stat,.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs),
+html[data-theme="dark"] #app #investment :is(.card,.investment-live,.live-stat,.broker-kpi,.stat,.stats>.stat,.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs){
+  background:var(--surface-panel)!important;
+  border-color:var(--border-subtle)!important;
+  color:var(--text-primary)!important;
+  box-shadow:none!important
+}
+:root[data-finish="midnight-black"] #app #investment :is(.live-stat,.broker-kpi,.broker-kpi.primary,.stat),
+:root[data-finish="titanium-graphite"] #app #investment :is(.live-stat,.broker-kpi,.broker-kpi.primary,.stat),
+html[data-theme="dark"] #app #investment :is(.live-stat,.broker-kpi,.broker-kpi.primary,.stat){
+  background:var(--surface-raised)!important;
+  border:1px solid var(--border-subtle)!important;
+  color:var(--text-primary)!important
+}
+:root[data-finish="midnight-black"] #app #investment :is(.live-stat,.broker-kpi,.stat) :is(label,span,.label,.eyebrow,.badge,.tag,small),
+:root[data-finish="titanium-graphite"] #app #investment :is(.live-stat,.broker-kpi,.stat) :is(label,span,.label,.eyebrow,.badge,.tag,small),
+html[data-theme="dark"] #app #investment :is(.live-stat,.broker-kpi,.stat) :is(label,span,.label,.eyebrow,.badge,.tag,small){
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding-inline:0!important;
+  color:var(--text-secondary)!important
+}
+:root[data-finish="midnight-black"] #app #investment :is(.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs) .tab,
+:root[data-finish="titanium-graphite"] #app #investment :is(.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs) .tab,
+html[data-theme="dark"] #app #investment :is(.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs) .tab{
+  background:var(--surface-raised)!important;
+  border-color:var(--border-subtle)!important;
+  color:var(--text-secondary)!important
+}
+:root[data-finish="midnight-black"] #app #investment :is(.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs) .tab.active,
+:root[data-finish="titanium-graphite"] #app #investment :is(.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs) .tab.active,
+html[data-theme="dark"] #app #investment :is(.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs) .tab.active{
+  background:var(--structure-accent)!important;
+  border-color:var(--structure-accent)!important;
+  color:var(--structure-on-accent)!important
+}
+
+/* Req 5c: Sidebar remote - preserve 4 round actions, collapse long lists, utility at bottom */
+#app #haniContextRemote .hani-remote-rail{display:flex;flex-direction:column}
+#app #haniContextRemote .hani-remote-utility{order:99;margin-top:auto}
+#app #haniContextRemote .hani-remote-today ul>li:nth-child(n+4){display:none}
+
+/* Req 6: Mobile dark-finish bottom list/index cards on #home */
+@media(max-width:700px){
+  :root[data-finish="midnight-black"] #app #home :is(.card,.home-kpi,[data-life-index],.home-index-card,.home-update-item,.home-task-mini-item,.home-team-panel,.ui26-member,[data-ilbo-home] .ilbo-home-card,.ms-home-card,.life-ticker,.home-news-card,.home-news-item,#dataHubStatus),
+  :root[data-finish="titanium-graphite"] #app #home :is(.card,.home-kpi,[data-life-index],.home-index-card,.home-update-item,.home-task-mini-item,.home-team-panel,.ui26-member,[data-ilbo-home] .ilbo-home-card,.ms-home-card,.life-ticker,.home-news-card,.home-news-item,#dataHubStatus),
+  html[data-theme="dark"] #app #home :is(.card,.home-kpi,[data-life-index],.home-index-card,.home-update-item,.home-task-mini-item,.home-team-panel,.ui26-member,[data-ilbo-home] .ilbo-home-card,.ms-home-card,.life-ticker,.home-news-card,.home-news-item,#dataHubStatus){
+    background:var(--surface-panel)!important;
+    border-color:var(--border-subtle)!important;
+    color:var(--text-primary)!important
+  }
+  :root[data-finish="midnight-black"] #app #home :is(.home-update-item,.home-task-mini-item,.ui26-member,.home-cal-day,.home-news-item,#settlementQuickCheck .home-update-item),
+  :root[data-finish="titanium-graphite"] #app #home :is(.home-update-item,.home-task-mini-item,.ui26-member,.home-cal-day,.home-news-item,#settlementQuickCheck .home-update-item),
+  html[data-theme="dark"] #app #home :is(.home-update-item,.home-task-mini-item,.ui26-member,.home-cal-day,.home-news-item,#settlementQuickCheck .home-update-item){
+    background:var(--surface-raised)!important;
+    border-color:var(--border-subtle)!important;
+    color:var(--text-primary)!important
+  }
+  :root[data-finish="midnight-black"] #app #home :is(.card,.home-kpi,[data-life-index],.home-update-item,.ui26-member,[data-ilbo-home] .ilbo-home-card,.ms-home-card) :is(small,p,.sub,.muted,.member-role),
+  :root[data-finish="titanium-graphite"] #app #home :is(.card,.home-kpi,[data-life-index],.home-update-item,.ui26-member,[data-ilbo-home] .ilbo-home-card,.ms-home-card) :is(small,p,.sub,.muted,.member-role),
+  html[data-theme="dark"] #app #home :is(.card,.home-kpi,[data-life-index],.home-update-item,.ui26-member,[data-ilbo-home] .ilbo-home-card,.ms-home-card) :is(small,p,.sub,.muted,.member-role){
+    color:var(--text-secondary)!important
+  }
 /* #aiWork portrait crop fix & 390px zero horizontal overflow (strictly scoped to #aiWork). */
 #app #aiWork,#app #aiWork .grid,#app #aiWork .card,#app #aiWork #developmentTeamList,#app #aiWork #developmentTeamList .ui26-member,#app #aiWork .member-copy{min-width:0;max-width:100%;box-sizing:border-box}
 #app #aiWork #developmentTeamList .ui26-member{display:flex;flex-direction:column;padding:0;overflow:hidden}

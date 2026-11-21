@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "from": "2.9.302",
+  "to": "2.9.303",
+  "release": "af76a87f9456a0b0b25676fda5178aec75f91afc",
+  "base": "507312505b5b8b3c3f203199ef8d77e9c0c7074b",
+  "files": {
+    "index.html": {
+      "after": "1e68daefffd1a6fc937c008460abf301c4f7f9c23fc988dc73d086b2db0c775f",
+      "before": "e58cc055cffa6042c813b4e774ba928c3649caafffd851a07031edcee0fb80c0",
+      "count": 60
+    },
+    "hani-main.js": {
+      "after": "081d0b10d1f80508e4db2d81f4d7b3cc5a60bab82c1eb194edcd6b2f44878082",
+      "before": "7a5953e215c0e4abbc4882b3b716aa0ec896a4dae21dc3f7e67d343e8428e4e7",
+      "count": 1
+    },
+    "assets/data/hani-history-releases-v1.json": {
+      "after": "e791c10fd9dc2b41c6b01686e5e20d51b93557f05e1d0fcf0567b6df70b767d8",
+      "before": "6129ab416c5e4959a54863ca0630e3bf9d4f5503ed3dd816167347ca25a0aaf5",
+      "count": 1,
+      "replacements": [
+        {
+          "before": "2\",\n      \"date\": \"2026-11-20\",\n      \"status\": \"released\",\n      \"title\": \"어두운 테마 다듬기\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.302 어두운 테마 다듬기",
+          "after": "3\",\n      \"date\": \"2026-11-20\",\n      \"status\": \"released\",\n      \"title\": \"이달의 퀸 레이스 중계\",\n      \"category\": \"하니 그룹\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.303 이달의 퀸 레이스 중계\"\n      }\n    },\n    {\n      \"id\": \"v2.9.302\",\n      \"date\": \"2026-11-20\",\n      \"status\": \"released\",\n      \"title\": \"어두운 테마 다듬기\",\n      \"category\": \"화면·디자인\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"d748920f90dd200dddec2befd262fee0959047a0\",\n        \"subject\": \"release: v2.9.302 어두운 테마 다듬기 (#524)"
+        }
+      ]
+    }
+  }
+}

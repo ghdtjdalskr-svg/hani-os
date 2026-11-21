@@ -1,3 +1,4 @@
+import './hani-lounge-queen-v3-preload.cjs'; // Exact queen inverse before legacy assertions.
 // Synthetic records only. Exercise existing generation, queue, save and renderer paths.
 import test from 'node:test';
 import assert from 'node:assert/strict';

@@ -1,0 +1,40 @@
+{
+  "tracked": 2307,
+  "changed": [
+    "scripts/hani-design-polish-2-preload.cjs",
+    "scripts/hani-helper-toggle-source.cjs",
+    "scripts/hani-join-ieum-source.cjs",
+    "scripts/hani-office-affinity-cap-source.cjs",
+    "scripts/hani-one-pass-rules.mjs",
+    "scripts/hani-regression-baseline.mjs",
+    "scripts/hani-release-299-source.cjs",
+    "scripts/hani-reviewed-release-baseline.mjs",
+    "scripts/hani-runtime-closure.mjs"
+  ],
+  "unexpected": [],
+  "missing": [],
+  "restored": [
+    {
+      "file": "artifacts/office-behavior/obr16-layout-node.json",
+      "sha256": "b93abb61e8c8fc727c86669c9c2d1658c7585439a2ed2a6c2d94b5091298709b",
+      "sameAsStart": true
+    },
+    {
+      "file": "artifacts/office-behavior/obr17-layout-node.json",
+      "sha256": "e285500dfd36c5df258a68dd403f96aefc6f8cfe57edcaf36c64c4eb1800e901",
+      "sameAsStart": true
+    },
+    {
+      "file": "artifacts/office-behavior/obr19-layout-node.json",
+      "sha256": "e38623b7b44eacd000361cfc7a5a7f53679cbd17882dbb18faca3ee54e85f8c8",
+      "sameAsStart": true
+    },
+    {
+      "file": "artifacts/office-drama/reachability.json",
+      "sha256": "6b00b9b08c6069cde4824553a5cb2aa72eeb667ec53b51782a10bd3fa29b1ef1",
+      "sameAsStart": true
+    }
+  ],
+  "existingTestsPreserved": 301,
+  "existingFixturesPreserved": 120
+}

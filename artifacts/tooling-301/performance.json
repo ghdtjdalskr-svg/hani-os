@@ -1,0 +1,196 @@
+{
+  "initial": {
+    "baseline": [
+      {
+        "file": "hani-office-cafe-rest.test.mjs",
+        "exit": 1,
+        "timeout": false,
+        "pass": 3,
+        "fail": 1,
+        "skip": 0,
+        "scriptPass": 0,
+        "eperm": true,
+        "seconds": 3.9
+      },
+      {
+        "file": "hani-office-companion-homes.test.mjs",
+        "exit": 1,
+        "timeout": false,
+        "pass": 15,
+        "fail": 1,
+        "skip": 0,
+        "scriptPass": 0,
+        "eperm": true,
+        "seconds": 75.72
+      },
+      {
+        "file": "hani-office-lively-v2.test.mjs",
+        "exit": 1,
+        "timeout": false,
+        "pass": 7,
+        "fail": 1,
+        "skip": 0,
+        "scriptPass": 0,
+        "eperm": true,
+        "seconds": 21.03
+      },
+      {
+        "file": "hani-office-residents.test.mjs",
+        "exit": 0,
+        "timeout": false,
+        "pass": 49,
+        "fail": 0,
+        "skip": 0,
+        "scriptPass": 0,
+        "eperm": false,
+        "seconds": 87.02
+      },
+      {
+        "file": "hani-office-staff-chat.test.mjs",
+        "exit": 0,
+        "timeout": false,
+        "pass": 17,
+        "fail": 0,
+        "skip": 0,
+        "scriptPass": 0,
+        "eperm": false,
+        "seconds": 79.76
+      }
+    ],
+    "current": [
+      {
+        "file": "hani-office-cafe-rest.test.mjs",
+        "exit": 1,
+        "timeout": false,
+        "pass": 3,
+        "fail": 1,
+        "skip": 0,
+        "scriptPass": 0,
+        "eperm": true,
+        "seconds": 3.94
+      },
+      {
+        "file": "hani-office-companion-homes.test.mjs",
+        "exit": 1,
+        "timeout": false,
+        "pass": 15,
+        "fail": 1,
+        "skip": 0,
+        "scriptPass": 0,
+        "eperm": true,
+        "seconds": 75.01
+      },
+      {
+        "file": "hani-office-lively-v2.test.mjs",
+        "exit": 1,
+        "timeout": false,
+        "pass": 7,
+        "fail": 1,
+        "skip": 0,
+        "scriptPass": 0,
+        "eperm": true,
+        "seconds": 20.59
+      },
+      {
+        "file": "hani-office-residents.test.mjs",
+        "exit": 0,
+        "timeout": false,
+        "pass": 49,
+        "fail": 0,
+        "skip": 0,
+        "scriptPass": 0,
+        "eperm": false,
+        "seconds": 86.83
+      },
+      {
+        "file": "hani-office-staff-chat.test.mjs",
+        "exit": 0,
+        "timeout": false,
+        "pass": 17,
+        "fail": 0,
+        "skip": 0,
+        "scriptPass": 0,
+        "eperm": false,
+        "seconds": 78.59
+      }
+    ]
+  },
+  "reruns": [
+    {
+      "run": "perf-current-1",
+      "results": [
+        {
+          "file": "hani-office-cafe-rest.test.mjs",
+          "exit": 1,
+          "timeout": false,
+          "pass": 3,
+          "fail": 1,
+          "skip": 0,
+          "scriptPass": 0,
+          "eperm": true,
+          "seconds": 4.07
+        },
+        {
+          "file": "hani-office-companion-homes.test.mjs",
+          "exit": 1,
+          "timeout": false,
+          "pass": 15,
+          "fail": 1,
+          "skip": 0,
+          "scriptPass": 0,
+          "eperm": true,
+          "seconds": 80.39
+        },
+        {
+          "file": "hani-office-lively-v2.test.mjs",
+          "exit": 1,
+          "timeout": false,
+          "pass": 7,
+          "fail": 1,
+          "skip": 0,
+          "scriptPass": 0,
+          "eperm": true,
+          "seconds": 20.66
+        }
+      ]
+    },
+    {
+      "run": "perf-current-2",
+      "results": [
+        {
+          "file": "hani-office-cafe-rest.test.mjs",
+          "exit": 1,
+          "timeout": false,
+          "pass": 3,
+          "fail": 1,
+          "skip": 0,
+          "scriptPass": 0,
+          "eperm": true,
+          "seconds": 3.98
+        },
+        {
+          "file": "hani-office-companion-homes.test.mjs",
+          "exit": 1,
+          "timeout": false,
+          "pass": 15,
+          "fail": 1,
+          "skip": 0,
+          "scriptPass": 0,
+          "eperm": true,
+          "seconds": 75.71
+        },
+        {
+          "file": "hani-office-lively-v2.test.mjs",
+          "exit": 1,
+          "timeout": false,
+          "pass": 7,
+          "fail": 1,
+          "skip": 0,
+          "scriptPass": 0,
+          "eperm": true,
+          "seconds": 19.97
+        }
+      ]
+    }
+  ]
+}

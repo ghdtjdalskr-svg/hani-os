@@ -26,6 +26,78 @@
   ],
   "entries": [
     {
+      "id": "v2.9.305",
+      "date": "2026-11-21",
+      "status": "released",
+      "title": "뉴스룸 시황 4컷 3호",
+      "category": "뉴스룸",
+      "credits": [],
+      "source": {
+        "commit": "",
+        "subject": "release: v2.9.305 뉴스룸 시황 4컷 3호"
+      }
+    },
+    {
+      "id": "v2.9.304",
+      "date": "2026-11-21",
+      "status": "released",
+      "title": "화면 다듬기 1차",
+      "category": "디자인 · 대시보드",
+      "credits": [],
+      "source": {
+        "commit": "cb1b9376aac575eb3f60a98f01afbe3855282798",
+        "subject": "release: v2.9.304 화면 다듬기 1차 (#530)"
+      }
+    },
+    {
+      "id": "v2.9.303",
+      "date": "2026-11-20",
+      "status": "released",
+      "title": "이달의 퀸 레이스 중계",
+      "category": "하니 그룹",
+      "credits": [],
+      "source": {
+        "commit": "af76a87f9456a0b0b25676fda5178aec75f91afc",
+        "subject": "release: v2.9.303 이달의 퀸 레이스 중계 (#526)"
+      }
+    },
+    {
+      "id": "v2.9.302",
+      "date": "2026-11-20",
+      "status": "released",
+      "title": "어두운 테마 다듬기",
+      "category": "화면·디자인",
+      "credits": [],
+      "source": {
+        "commit": "d748920f90dd200dddec2befd262fee0959047a0",
+        "subject": "release: v2.9.302 어두운 테마 다듬기 (#524)"
+      }
+    },
+    {
+      "id": "v2.9.301",
+      "date": "2026-11-20",
+      "status": "released",
+      "title": "이음·유나 자리 교체",
+      "category": "하니 그룹",
+      "credits": [],
+      "source": {
+        "commit": "0558dc341827e578f956e396fd952be80ead14a7",
+        "subject": "release: v2.9.301 이음·유나 자리 교체 (#522)"
+      }
+    },
+    {
+      "id": "v2.9.300",
+      "date": "2026-11-19",
+      "status": "released",
+      "title": "점검 반영 1차",
+      "category": "화면·디자인",
+      "credits": [],
+      "source": {
+        "commit": "9f49286882e2efacd128e2920cc12f38d473a8e9",
+        "subject": "release: v2.9.300 점검 반영 1차 (#519)"
+      }
+    },
+    {
       "id": "v2.9.299",
       "date": "2026-11-14",
       "status": "released",
@@ -33,8 +105,8 @@
       "category": "화면·디자인",
       "credits": [],
       "source": {
-        "commit": "",
-        "subject": "release: v2.9.299 디자인 다듬기 2차"
+        "commit": "1881888a2ca970ab86adda9b193a90256027be1c",
+        "subject": "release: v2.9.299 디자인 다듬기 2차 (#515)"
       }
     },
     {
@@ -113,7 +185,7 @@
       "id": "v2.9.292",
       "date": "2026-11-13",
       "status": "released",
-      "title": "사무실 직원을 눌러도 말풍선이 가끔 안 뜨던 문제 수정",
+      "title": "직원 말풍선 가끔 안 뜨던 문제 수정",
       "category": "화면·기능",
       "credits": [],
       "source": {

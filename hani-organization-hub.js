@@ -91,8 +91,9 @@
     if(historyReleasesRequested)return historyReleasesPromise;
     historyReleasesRequested=true;
     return historyReleasesPromise=fetch('./assets/data/hani-history-releases-v1.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('release catalog');return r.json()}).then(value=>{
-      if(value?.schema!==1||!Array.isArray(value.entries)||!value.entries.every(r=>/^v\d+\.\d+\.\d+$/.test(r?.id)&&typeof r.title==='string'&&/[가-힣]/.test(r.title)&&[...r.title].length<=24&&/^\d{4}-\d{2}-\d{2}$/.test(r.date)&&Number.isFinite(Date.parse(r.date+'T00:00:00Z'))&&new Date(r.date+'T00:00:00Z').toISOString().slice(0,10)===r.date&&['released','pages'].includes(r.status)&&Array.isArray(r.credits)))throw Error('release metadata');
-      historyReleases=value.entries;renderOverview();return historyReleases;
+      if(value?.schema!==1||!Array.isArray(value.entries))throw Error('release metadata');
+      const validEntries=value.entries.filter(r=>/^v\d+\.\d+\.\d+$/.test(r?.id)&&typeof r.title==='string'&&/[가-힣]/.test(r.title)&&[...r.title].length<=24&&/^\d{4}-\d{2}-\d{2}$/.test(r.date)&&Number.isFinite(Date.parse(r.date+'T00:00:00Z'))&&new Date(r.date+'T00:00:00Z').toISOString().slice(0,10)===r.date&&['released','pages'].includes(r.status)&&Array.isArray(r.credits));
+      historyReleases=validEntries;renderOverview();return historyReleases;
     }).catch(()=>{historyReleasesFailed=true;renderOverview();return null});
   }
   // The literal catalog fetch above is the only release loader (also traced by closure).
