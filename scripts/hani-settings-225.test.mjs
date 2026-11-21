@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 import {readSettingsQaBaseline} from './hani-stale39-reviewed-source.mjs';
 import {readReviewedReleaseBaseline as readBranchBaseline,readReviewedCurrentSource} from './hani-stale39-reviewed-source.mjs';
 // Real index + existing renderers/handlers, isolated synthetic origin. No account or external IO.

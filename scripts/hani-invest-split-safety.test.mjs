@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // Raw clean-worktree snapshots, supplied explicitly. No Git child process or user data.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // Synthetic geometry + actual owner execution. Real browser pixels are reviewed separately.
 import test from 'node:test';
 import assert from 'node:assert/strict';

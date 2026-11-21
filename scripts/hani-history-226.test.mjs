@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // node scripts/hani-history-226.test.mjs [--unit-only] [--before] [--cdp=http://127.0.0.1:9226]
 // Browser fixtures use the real history catalog, roster, newspaper module and manifest.
 // The additional third-month/approval cases below are explicitly synthetic boundary tests.

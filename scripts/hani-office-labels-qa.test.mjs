@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // Real label functions + persistent renderer with DOM doubles; pixel QA is separate.
 import test from 'node:test';
 import assert from 'node:assert/strict';

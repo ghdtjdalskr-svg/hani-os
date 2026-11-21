@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 import {assertOnboardedCanon} from './hani-office-onboarding-232-assertions.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';

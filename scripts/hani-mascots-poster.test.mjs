@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // Node-only real owner execution. No browser, Git, user data or network access.
 import test from 'node:test';
 import assert from 'node:assert/strict';

@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // Current raw main297 + design2 contract; frozen suites use explicit lower inputs.
 import test from 'node:test';
 import assert from 'node:assert/strict';

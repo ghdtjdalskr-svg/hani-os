@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // Isolated actual runtime/CSS; all external traffic blocked, synthetic in-memory state only.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

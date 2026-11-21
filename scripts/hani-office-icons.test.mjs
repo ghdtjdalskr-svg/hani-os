@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // Strip only the exact approved affinity storage owner; all other source keeps the original guards.
 import {stripApprovedAffinityStorage} from './hani-office-affinity-storage.mjs';
 import {createHash} from 'node:crypto';

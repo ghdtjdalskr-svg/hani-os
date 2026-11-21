@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // Node only. DOM doubles exercise the canonical event path; no browser is launched.
 import test from 'node:test';
 import assert from 'node:assert/strict';

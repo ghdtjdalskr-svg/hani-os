@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "from": "2.9.304",
+  "to": "2.9.305",
+  "release": "8a46ac79705ac515da41d0dccf9ef72283bfad50",
+  "base": "cb1b9376aac575eb3f60a98f01afbe3855282798",
+  "head": "1062879952a9ca4a3ecce08bc013c8bc7c76f4e2",
+  "release304Fixture": "f7ad2620b818a79d64e43f764aa24041b09cf512783f7b133341d33d727b4599",
+  "uiFixture": "c1d11356125a13cfc825e3d42a4b37d7a2537370d924c02a1074fab2ff463214",
+  "files": {
+    "index.html": {
+      "after": "ee9f4082520ec5b9fdb88e815edd10fbe188cc1cafa36cf7aaedb8e63f5940c5",
+      "before": "6ce7740604c3e21b8d92b393c4e04feed0e916866fa92e49f6808cf11dc0d853",
+      "count": 60
+    },
+    "hani-main.js": {
+      "after": "e3f2a4db4805c53e234f1af593d9518a74eeb56301270e194fe8d7768bea224f",
+      "before": "02035ac232da335aaef38cebedf6833a883c3d77f0105faded2b6ce48ca5dc38",
+      "count": 1
+    },
+    "assets/data/hani-history-releases-v1.json": {
+      "after": "32d620852b3962c72d06a24859914c67057120bc996eef44cd099977c90339f5",
+      "before": "dc3a4e251d26754870203b78e0606d5023c8671c955ee5c61b31bf782e9c2b40",
+      "count": 1,
+      "replacements": [
+        {
+          "before": "4\",\n      \"date\": \"2026-11-21\",\n      \"status\": \"released\",\n      \"title\": \"화면 다듬기 1차\",\n      \"category\": \"디자인 · 대시보드\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.304 화면 다듬기 1차",
+          "after": "5\",\n      \"date\": \"2026-11-21\",\n      \"status\": \"released\",\n      \"title\": \"뉴스룸 시황 4컷 3호\",\n      \"category\": \"뉴스룸\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.305 뉴스룸 시황 4컷 3호\"\n      }\n    },\n    {\n      \"id\": \"v2.9.304\",\n      \"date\": \"2026-11-21\",\n      \"status\": \"released\",\n      \"title\": \"화면 다듬기 1차\",\n      \"category\": \"디자인 · 대시보드\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"cb1b9376aac575eb3f60a98f01afbe3855282798\",\n        \"subject\": \"release: v2.9.304 화면 다듬기 1차 (#530)",
+          "start": 716
+        }
+      ]
+    },
+    "assets/data/newsroom-4cut/issues.json": {
+      "after": "b068ac7ae5d66244eb7951c00e8f7f2a0979b26bbe58b8f03c51ea4eb03adf7e",
+      "before": "fc00d303d972e575a16a602f91410ea88f236c296630767602c7808407378ece",
+      "count": 1,
+      "replacements": [
+        {
+          "before": "",
+          "after": ",\n    {\n      \"number\": 3,\n      \"publishDate\": \"2026-11-22\",\n      \"week\": \"2026-11-16~11-20\",\n      \"image\": \"003\",\n      \"title\": \"5,000선 무너진 한 주\",\n      \"alt\": \"11월 3주차(2026-11-16~11-20) 주간 시황 4컷. 앤스로픽 상장 흥행에도 AI 투자 수익성 우려로 AI·반도체주가 밀린 가운데 코스피는 한 주 7.95% 내린 4,869.96으로 5,000선을 내줬고, 코스닥은 7.72% 내린 645.68에 마감했다. S&P500은 8.6%, 나스닥 종합은 10.0% 내렸고 금요일 종가는 각각 6,910.39와 22,617.73이다. 주간 등락은 11/13 금요일 종가 대비 11/20 금요일 종가 기준이다. 원/달러 환율은 11/20 서울 15:30 주간거래 종가 1,336.2원으로 2호(1,356.6원)보다 내려왔다. 하니 앞 AI 상장 축하 풍선과 뒤편 AI 반도체 급락 전광판의 대비, 부러진 5,000선 난간 아래 4,869 표지로 미끄러지는 지은과 민지, 달러 주머니가 가벼워진 저울을 보며 안도하는 민지, 다음 주 AI 실적·금리 전망을 체크하는 세 기자 장면이다. 회장님은 등장하지 않는다. 정보 정리용이며 투자 권유가 아니다.\",\n      \"facts\": [\n        {\n          \"label\": \"원/달러\",\n          \"value\": \"1,336.2원\",\n          \"note\": \"11/20 서울 15:30 주간거래 종가\"\n        },\n        {\n          \"label\": \"원/달러 (2호 대비)\",\n          \"value\": \"1,356.6 → 1,336.2원\"\n        }\n      ],\n      \"cuts\": [\n        {\n          \"reporter\": \"하니\",\n          \"scene\": \"AI 상장 축하 풍선·폭죽 뒤로 AI 반도체 급락 화살표와 칩이 떨어지는 대비 장면\"\n        },\n        {\n          \"reporter\": \"지은 · 민지\",\n          \"scene\": \"부러진 5,000선 난간 아래 코스피·코스닥 미끄럼틀을 타고 4,869 표지의 쿠션으로 내려오는 전신 액션\"\n        },\n        {\n          \"reporter\": \"민지\",\n          \"scene\": \"달러 주머니가 살짝 높은 천칭과 2호 대비 1,356.6 → 1,336.2 표지를 보며 안도하는 소품 중심 장면\"\n        },\n        {\n          \"reporter\": \"하니 · 지은 · 민지\",\n          \"scene\": \"세 기자가 정면에서 다음 주 체크 보드의 AI 실적·금리 전망에 체크하는 마무리\"\n        }\n      ],\n      \"sources\": [\n        {\n          \"label\": \"아시아경제 · 국내 지수 11/20 종가\",\n          \"url\": \"https://view.asiae.co.kr/article/2026112015594961221\"\n        },\n        {\n          \"label\": \"컨슈머타임스 · 국내 지수 11/20 종가·투자심리 위축\",\n          \"url\": \"https://www.cstimes.com/news/articleView.html?idxno=728813\"\n        },\n        {\n          \"label\": \"esi · 11/13 대비 11/20 국내 지수 주간 등락 (미국 값은 전일 기준이므로 제외)\",\n          \"url\": \"https://esi-trade.vercel.app/reports/2026-W47\"\n        },\n        {\n          \"label\": \"Fundratings · 11/20 주간 동향·국내 지수 교차 확인\",\n          \"url\": \"https://www.fundratings.co.kr/financial/board/market_state\"\n        },\n        {\n          \"label\": \"오늘의 종목기록 · 11/13·11/20 종가·주간 등락 검산\",\n          \"url\": \"https://todaywhyup.blogspot.com/2026/11/2026-11-1620-795-772.html\"\n        },\n        {\n          \"label\": \"조선비즈 · 원/달러 1,336.2원 서울 15:30 마감 (11/20)\",\n          \"url\": \"https://biz.chosun.com/policy/policy_sub/2026/11/20/KPN2KONFS5F2LE323S7ENAX4IM/\"\n        },\n        {\n          \"label\": \"뉴스1 · 원/달러 서울 15:30 마감 교차 확인 (11/20)\",\n          \"url\": \"https://www.news1.kr/finance/market-exr/6361102\"\n        },\n        {\n          \"label\": \"뉴시스 · 원/달러 1,336.2원 마감 교차 확인 (11/20)\",\n          \"url\": \"https://nwww.newsis.com/view/NISX20261120_0003877064\"\n        },\n        {\n          \"label\": \"YTN · 앤스로픽 상장 흥행에도 남은 AI 투자 의구심 (11/20)\",\n          \"url\": \"https://www.ytn.co.kr/_ln/0102_202611201649308641\"\n        },\n        {\n          \"label\": \"AP · 미국 주요 지수 11/20 마감·주간 하락\",\n          \"url\": \"https://apnews.com/article/c10b797a17c2acf37924d834efebe135\"\n        },\n        {\n          \"label\": \"파이낸셜뉴스 · 뉴욕증시 11/20 마감 (11/21 06:30)\",\n          \"url\": \"https://www.fnnews.com/news/202611210627335528\"\n        },\n        {\n          \"label\": \"AP · 미국 주요 지수 11/13 마감 (주간 등락 검산 기준)\",\n          \"url\": \"https://apnews.com/article/12c1e8155fb85c3c7b09e058ed6d3c74\"\n        }\n      ]\n    }",
+          "start": 4429
+        }
+      ]
+    },
+    "scripts/hani-release-304-source.cjs": {
+      "after": "952e557ae2ca444c4bd9ce6e86a690f9d2bc50378a0b1735a324f3682e5dd6a8",
+      "before": "547d19be599977f02c37d341888f8aac7fd411dd05148966abd15c25aa4cda4c",
+      "count": 1,
+      "replacements": [
+        {
+          "before": "",
+          "after": "require('./hani-release-305-preload.cjs'); // Released305 precedes every304 capture.\n",
+          "start": 0
+        }
+      ]
+    }
+  }
+}
