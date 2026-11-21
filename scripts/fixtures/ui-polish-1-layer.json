@@ -1,0 +1,315 @@
+{
+  "schema": 1,
+  "layer": "ui-polish-1",
+  "base": "09ba997070b6262dd9194db4a4430d5a91225c7d",
+  "feature": "ed0881c31e948678c75541e15941274f41e4f3a6",
+  "projectedBase": "af76a87f9456a0b0b25676fda5178aec75f91afc",
+  "files": {
+    "hani-design-system.css": {
+      "beforeSha256": "0bf1f382891bb564cddb614a2b26dab58f53e33d69f74dcca36c767bf0880bc5",
+      "afterSha256": "02f6e7cd64fc8a7ceaf6b1171e9e89792a62ea006137e71c0e4079548668708b",
+      "beforeBytes": 340851,
+      "afterBytes": 356854,
+      "position": "append",
+      "added": "\n/* =========================================================\n   UI Polish 1 (11/15, 11/17, 11/20) · Read-only CSS polish\n   - Preserves protected views (#investmentIntake, #deployment, #loginGate)\n   - Zero font-size declarations\n   ========================================================= */\n\n/* Req 1: Dashboard Pilot 2 ordering & role-tinted surfaces */\n#app #home.active{display:flex;flex-direction:column;gap:14px}\n#app #home>.ds-main-character-banner{order:-30;min-height:168px;height:168px;overflow:hidden}\n#app #home>.ds-main-character-banner .ds-main-character-banner__quote,\n#app #home>.ds-main-character-banner .ai-quote{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis}\n#app #home>.home-dialogue-shell{order:-27}\n#app #home>.home-lower-grid{order:-25}\n#app #home>.home-today-title{order:-24;margin-bottom:0}\n#app #home>.home-source-controls{order:-23}\n#app #home>#dataHubPeriodHelp,\n#app #home>#dataHubLatestRecord{order:-22}\n#app #home>.life-market-head{order:-20}\n#app #home>#lifeMarketBasis{order:-19}\n#app #home>#lifeMarketGrid{order:-18}\n#app #home>#lifeMarketBanner{order:-17}\n#app #home>#lifeMarketFeatured{order:-16}\n#app #home>.home-dashboard-grid{order:-10}\n#app #home>.life-ticker{order:-5}\n#app #home>[data-ilbo-home]{order:-4}\n#app #home>[data-hani-care-cards]{order:-3}\n#app #home>.hani-care-chip{order:-2;align-self:flex-start}\n#app #home>.hani-care-notice{order:-1}\n#app #home>.seasonal-life-banner{order:0}\n#app #home>.home-team-panel{order:1}\n\n#app #home .sh h3{display:inline-flex;align-items:center;gap:8px}\n#app #home .sh h3::before{content:\"\";display:inline-block;width:4px;height:1em;border-radius:999px;background:var(--structure-accent,var(--control-accent,#7562d9));flex:0 0 4px}\n#app #home :is(.home-planner-card,.home-monthly-check-card,.home-trend-card,.home-team-panel,.home-dialogue-shell,#lifeMarketGrid>[data-life-index]){\n  --hani-role-accent:var(--structure-accent,var(--control-accent,#7562d9));\n  background-color:color-mix(in srgb,var(--hani-role-accent) 7%,var(--surface-panel,#fff));\n  background-image:radial-gradient(circle at 100% 0%,color-mix(in srgb,var(--hani-role-accent) 14%,transparent) 0,color-mix(in srgb,var(--hani-role-accent) 14%,transparent) 42px,transparent 43px);\n  border-color:color-mix(in srgb,var(--hani-role-accent) 20%,var(--border-subtle,#e3e6f0))\n}\n#app #home #lifeMarketGrid>[data-life-index=\"investment\"],\n#app #home #lifeMarketGrid>[data-life-index=\"ledger\"]{--hani-role-accent:var(--finance,#245eb5)}\n#app #home #lifeMarketGrid>[data-life-index=\"weight\"],\n#app #home #lifeMarketGrid>[data-life-index=\"steps\"]{--hani-role-accent:var(--health,#197255)}\n#app #home #lifeMarketGrid>[data-life-index=\"books\"],\n#app #home #lifeMarketGrid>[data-life-index=\"quiz\"]{--hani-role-accent:var(--growth,#6f58d9)}\n#app #home .home-planner-card{--hani-role-accent:var(--growth,#6f58d9)}\n#app #home .home-monthly-check-card{--hani-role-accent:var(--finance,#245eb5)}\n#app #home .home-dialogue-shell{--hani-role-accent:var(--structure-accent,#7562d9)}\n#app #home :is(.home-planner-card,.home-monthly-check-card,.home-trend-card,.home-team-panel) .sh h3,\n#app #home #lifeMarketGrid>[data-life-index] .kpi-head span,\n#app #home .home-dialogue-shell .home-dialogue-speaker{\n  color:color-mix(in srgb,var(--hani-role-accent) 76%,var(--text-primary,#1f2433))\n}\n:root[data-finish=\"midnight-black\"] #app #home :is(.home-planner-card,.home-monthly-check-card,.home-trend-card,.home-team-panel) .sh h3,\n:root[data-finish=\"titanium-graphite\"] #app #home :is(.home-planner-card,.home-monthly-check-card,.home-trend-card,.home-team-panel) .sh h3,\nhtml[data-theme=\"dark\"] #app #home :is(.home-planner-card,.home-monthly-check-card,.home-trend-card,.home-team-panel) .sh h3,\n:root[data-finish=\"midnight-black\"] #app #home #lifeMarketGrid>[data-life-index] .kpi-head span,\n:root[data-finish=\"titanium-graphite\"] #app #home #lifeMarketGrid>[data-life-index] .kpi-head span,\nhtml[data-theme=\"dark\"] #app #home #lifeMarketGrid>[data-life-index] .kpi-head span,\n:root[data-finish=\"midnight-black\"] #app #home .home-dialogue-shell .home-dialogue-speaker,\n:root[data-finish=\"titanium-graphite\"] #app #home .home-dialogue-shell .home-dialogue-speaker,\nhtml[data-theme=\"dark\"] #app #home .home-dialogue-shell .home-dialogue-speaker{\n  color:color-mix(in srgb,var(--hani-role-accent) 52%,var(--text-primary,#f4f2ee))\n}\n\n@media(max-width:700px){\n  #app #home>.ds-main-character-banner{order:-30;min-height:168px;height:auto}\n  #app #home>.home-lower-grid{display:contents!important}\n  #app #home .home-planner-card{order:-28}\n  #app #home>.home-dialogue-shell{order:-27}\n  #app #home .home-monthly-check-card{order:-26}\n  #app #home>.home-today-title{order:-24}\n  #app #home>.home-source-controls{order:-23}\n  #app #home>#dataHubPeriodHelp,\n  #app #home>#dataHubLatestRecord{order:-22}\n  #app #home>.life-market-head{order:-20}\n  #app #home>#lifeMarketBasis{order:-19}\n  #app #home>#lifeMarketGrid{order:-18}\n  #app #home>.home-dashboard-grid{order:-10}\n  #app #home>.life-ticker{order:-5}\n  #app #home>[data-ilbo-home]{order:-4}\n  #app #home>[data-hani-care-cards]{order:-3}\n  #app #home>.hani-care-chip{order:-2}\n  #app #home>.hani-care-notice{order:-1}\n  #app #home>.seasonal-life-banner{order:0}\n  #app #home>.home-team-panel{order:1}\n}\n\n/* Req 3: Compact ~120px banner for numeric/command views only (#home=168px; world/archive & #investmentIntake/#deployment untouched) */\n#app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner{\n  min-height:120px;\n  padding-top:14px;\n  padding-bottom:14px\n}\n#app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner .ds-main-character-banner__description{\n  display:none\n}\n#app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner .ds-main-character-banner__quote{\n  display:-webkit-box;\n  -webkit-line-clamp:1;\n  -webkit-box-orient:vertical;\n  overflow:hidden\n}\n@media(min-width:701px){\n  #app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner{\n    height:auto\n  }\n}\n@media(max-width:700px){\n  #app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner{\n    min-height:120px;\n    height:auto\n  }\n}\n\n/* Req 3b: compact banner = face + name + one-line quote (the copy box had min-height:234px) */\n#app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner .ds-main-character-banner__copy{min-height:0!important;padding-top:14px!important;padding-bottom:14px!important;justify-content:center}\n#app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner .ds-main-character-banner__eyebrow{display:none}\n#app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner .ds-main-character-banner__scene{position:absolute;inset:0;height:100%}\n#app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner .ds-main-character-banner__scene img{width:100%;height:100%;object-fit:cover}\n\n/* Req 4: Primary button unification to Finish accent tokens (size/padding/radius untouched; protected views excluded) */\nbody[data-finish-active] #app .view:not(#investmentIntake):not(#deployment) :is(.btn.primary,.btn.finance,.btn.health),\n:root[data-finish] #app .view:not(#investmentIntake):not(#deployment) :is(.btn.primary,.btn.finance,.btn.health),\nbody[data-finish-active] .modal:not(#deploymentQueueModal) :is(.btn.primary,.btn.finance,.btn.health),\n:root[data-finish] .modal:not(#deploymentQueueModal) :is(.btn.primary,.btn.finance,.btn.health){\n  background:var(--structure-accent)!important;\n  color:var(--structure-on-accent)!important;\n  border-color:var(--structure-accent)!important\n}\nbody[data-finish-active] #app .view:not(#investmentIntake):not(#deployment) :is(.btn.primary,.btn.finance,.btn.health) svg,\n:root[data-finish] #app .view:not(#investmentIntake):not(#deployment) :is(.btn.primary,.btn.finance,.btn.health) svg,\nbody[data-finish-active] .modal:not(#deploymentQueueModal) :is(.btn.primary,.btn.finance,.btn.health) svg,\n:root[data-finish] .modal:not(#deploymentQueueModal) :is(.btn.primary,.btn.finance,.btn.health) svg{\n  color:currentColor;\n  stroke:currentColor\n}\nbody[data-finish-active] #app .view:not(#investmentIntake):not(#deployment) :is(.btn.primary,.btn.finance,.btn.health) :is(span,em,b),\n:root[data-finish] #app .view:not(#investmentIntake):not(#deployment) :is(.btn.primary,.btn.finance,.btn.health) :is(span,em,b),\nbody[data-finish-active] .modal:not(#deploymentQueueModal) :is(.btn.primary,.btn.finance,.btn.health) :is(span,em,b),\n:root[data-finish] .modal:not(#deploymentQueueModal) :is(.btn.primary,.btn.finance,.btn.health) :is(span,em,b){\n  color:inherit\n}\n\n/* Req 5a: Investment view Finish unification & CSS-only duplicate KPI row hiding */\n#app #investment #brokerDashboardStats>.broker-kpi:is(:nth-child(1),:nth-child(3),:nth-child(4)){display:none!important}\n#app #investment :is(.investment-live,.live-stat,.broker-kpi,.broker-kpi.primary,.stat)::before,\n#app #investment :is(.investment-live,.live-stat,.broker-kpi,.broker-kpi.primary,.stat)::after{\n  content:none!important;\n  display:none!important\n}\n:root[data-finish=\"midnight-black\"] #app #investment :is(.card,.investment-live,.live-stat,.broker-kpi,.stat,.stats>.stat,.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs),\n:root[data-finish=\"titanium-graphite\"] #app #investment :is(.card,.investment-live,.live-stat,.broker-kpi,.stat,.stats>.stat,.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs),\nhtml[data-theme=\"dark\"] #app #investment :is(.card,.investment-live,.live-stat,.broker-kpi,.stat,.stats>.stat,.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs){\n  background:var(--surface-panel)!important;\n  border-color:var(--border-subtle)!important;\n  color:var(--text-primary)!important;\n  box-shadow:none!important\n}\n:root[data-finish=\"midnight-black\"] #app #investment :is(.live-stat,.broker-kpi,.broker-kpi.primary,.stat),\n:root[data-finish=\"titanium-graphite\"] #app #investment :is(.live-stat,.broker-kpi,.broker-kpi.primary,.stat),\nhtml[data-theme=\"dark\"] #app #investment :is(.live-stat,.broker-kpi,.broker-kpi.primary,.stat){\n  background:var(--surface-raised)!important;\n  border:1px solid var(--border-subtle)!important;\n  color:var(--text-primary)!important\n}\n:root[data-finish=\"midnight-black\"] #app #investment :is(.live-stat,.broker-kpi,.stat) :is(label,span,.label,.eyebrow,.badge,.tag,small),\n:root[data-finish=\"titanium-graphite\"] #app #investment :is(.live-stat,.broker-kpi,.stat) :is(label,span,.label,.eyebrow,.badge,.tag,small),\nhtml[data-theme=\"dark\"] #app #investment :is(.live-stat,.broker-kpi,.stat) :is(label,span,.label,.eyebrow,.badge,.tag,small){\n  background:transparent!important;\n  border:0!important;\n  box-shadow:none!important;\n  padding-inline:0!important;\n  color:var(--text-secondary)!important\n}\n:root[data-finish=\"midnight-black\"] #app #investment :is(.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs) .tab,\n:root[data-finish=\"titanium-graphite\"] #app #investment :is(.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs) .tab,\nhtml[data-theme=\"dark\"] #app #investment :is(.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs) .tab{\n  background:var(--surface-raised)!important;\n  border-color:var(--border-subtle)!important;\n  color:var(--text-secondary)!important\n}\n:root[data-finish=\"midnight-black\"] #app #investment :is(.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs) .tab.active,\n:root[data-finish=\"titanium-graphite\"] #app #investment :is(.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs) .tab.active,\nhtml[data-theme=\"dark\"] #app #investment :is(.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs) .tab.active{\n  background:var(--structure-accent)!important;\n  border-color:var(--structure-accent)!important;\n  color:var(--structure-on-accent)!important\n}\n\n/* Req 5c: Sidebar remote - preserve 4 round actions, collapse long lists, utility at bottom */\n#app #haniContextRemote .hani-remote-rail{display:flex;flex-direction:column}\n#app #haniContextRemote .hani-remote-utility{order:99;margin-top:auto}\n#app #haniContextRemote .hani-remote-today ul>li:nth-child(n+4){display:none}\n\n/* Req 6: Mobile dark-finish bottom list/index cards on #home */\n@media(max-width:700px){\n  :root[data-finish=\"midnight-black\"] #app #home :is(.card,.home-kpi,[data-life-index],.home-index-card,.home-update-item,.home-task-mini-item,.home-team-panel,.ui26-member,[data-ilbo-home] .ilbo-home-card,.ms-home-card,.life-ticker,.home-news-card,.home-news-item,#dataHubStatus),\n  :root[data-finish=\"titanium-graphite\"] #app #home :is(.card,.home-kpi,[data-life-index],.home-index-card,.home-update-item,.home-task-mini-item,.home-team-panel,.ui26-member,[data-ilbo-home] .ilbo-home-card,.ms-home-card,.life-ticker,.home-news-card,.home-news-item,#dataHubStatus),\n  html[data-theme=\"dark\"] #app #home :is(.card,.home-kpi,[data-life-index],.home-index-card,.home-update-item,.home-task-mini-item,.home-team-panel,.ui26-member,[data-ilbo-home] .ilbo-home-card,.ms-home-card,.life-ticker,.home-news-card,.home-news-item,#dataHubStatus){\n    background:var(--surface-panel)!important;\n    border-color:var(--border-subtle)!important;\n    color:var(--text-primary)!important\n  }\n  :root[data-finish=\"midnight-black\"] #app #home :is(.home-update-item,.home-task-mini-item,.ui26-member,.home-cal-day,.home-news-item,#settlementQuickCheck .home-update-item),\n  :root[data-finish=\"titanium-graphite\"] #app #home :is(.home-update-item,.home-task-mini-item,.ui26-member,.home-cal-day,.home-news-item,#settlementQuickCheck .home-update-item),\n  html[data-theme=\"dark\"] #app #home :is(.home-update-item,.home-task-mini-item,.ui26-member,.home-cal-day,.home-news-item,#settlementQuickCheck .home-update-item){\n    background:var(--surface-raised)!important;\n    border-color:var(--border-subtle)!important;\n    color:var(--text-primary)!important\n  }\n  :root[data-finish=\"midnight-black\"] #app #home :is(.card,.home-kpi,[data-life-index],.home-update-item,.ui26-member,[data-ilbo-home] .ilbo-home-card,.ms-home-card) :is(small,p,.sub,.muted,.member-role),\n  :root[data-finish=\"titanium-graphite\"] #app #home :is(.card,.home-kpi,[data-life-index],.home-update-item,.ui26-member,[data-ilbo-home] .ilbo-home-card,.ms-home-card) :is(small,p,.sub,.muted,.member-role),\n  html[data-theme=\"dark\"] #app #home :is(.card,.home-kpi,[data-life-index],.home-update-item,.ui26-member,[data-ilbo-home] .ilbo-home-card,.ms-home-card) :is(small,p,.sub,.muted,.member-role){\n    color:var(--text-secondary)!important\n  }\n}\n"
+    },
+    "scripts/hani-audit-1.test.mjs": {
+      "beforeSha256": "8d5ce5c37ba1c6c49233883e3805e8f0d0950a86c27a514ed9d1c0b906a8cab1",
+      "afterSha256": "a288758beba1c458048f6e3a753a5e7c69313bfded8ecc175fe08bb4583d4842",
+      "beforeBytes": 16334,
+      "afterBytes": 16431,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-chibi-pack-3.test.mjs": {
+      "beforeSha256": "4f567497771379955623402d215f8894698eadfa41f4978bc34cb17ad64b4a8f",
+      "afterSha256": "d6dd4af16ba3170588f3fdfea1c0c9f72df0219f0c28bd45efbf5a24d7d0e52d",
+      "beforeBytes": 15674,
+      "afterBytes": 15771,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-design-polish-1.test.mjs": {
+      "beforeSha256": "ecf062740052beae3a6d6133033b6cc95ebd7b95911604ec419e7e19b7efd051",
+      "afterSha256": "a0b8d94fbcf96cbb4615ab9bccec17c292c6db66de8b753e2660b49e7ab5d80f",
+      "beforeBytes": 7221,
+      "afterBytes": 7318,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-design-polish-1-main295.test.mjs": {
+      "beforeSha256": "d21e93424f14c2f58d230655f676f34ce4056f2fbfe9f006e14dfb6c0fdd9606",
+      "afterSha256": "fc508af17e906ecab9ad530af529aebb651b88298b6ed8ab8a2747be97b75c9b",
+      "beforeBytes": 4292,
+      "afterBytes": 4389,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-design-polish-2.test.mjs": {
+      "beforeSha256": "b3b25396699edea6824a7678c2da1f6db9641cb6fc8b4a77ea60c98e462473a4",
+      "afterSha256": "db2eb56d44249729482ea575b380c06fdc5c8c498985c213175f2689d713f7f1",
+      "beforeBytes": 10984,
+      "afterBytes": 11081,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-design-polish-2-main297.test.mjs": {
+      "beforeSha256": "2e897428228d3b823f4e26fb936f5657dc53e4689f11adb9fcf4c5c29d1a7c6e",
+      "afterSha256": "d84d1459b294685c1a25c9a8434a6c706661cb18be16970b6c706343be09b650",
+      "beforeBytes": 4725,
+      "afterBytes": 4822,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-hero-restore.test.mjs": {
+      "beforeSha256": "54757f207a2e8d39f9f38e041ee91c8384bddc3a5f88fb5ae57a8432028a98f2",
+      "afterSha256": "6ecdc9f86622b2e619b11544de06ee3c5c59c763e809b4204fc1742b4da228cd",
+      "beforeBytes": 8527,
+      "afterBytes": 8624,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-lounge-queen-v3.test.mjs": {
+      "beforeSha256": "016da8a9b34b1cd29bcb0fa529604f1001e5860e55d77edefd2ab33ce18728e0",
+      "afterSha256": "426aec77617729d9eca6c15d5cf31be2d584a1bda1675cd3f07c0fdc441d190b",
+      "beforeBytes": 33160,
+      "afterBytes": 33257,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-newsroom-285-source.test.mjs": {
+      "beforeSha256": "b772485edf6e85910e0c0cacf31d47fc068015f4d373b3dab3ff21fb8c179242",
+      "afterSha256": "f3309ae4fc655d430812a4f1a6eaba3094051b2d153e7f59fd91dcbbb4690122",
+      "beforeBytes": 2464,
+      "afterBytes": 2561,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-newsroom-4cut-288.test.mjs": {
+      "beforeSha256": "93f95b584d18604c4e0a7c9778a9fe769eb00051ff1537b02ba14a9578d33cbb",
+      "afterSha256": "80b2a6640bdb538e2a4050223ec72c6c5f8f22809582416ce7bd3989d3e6fcfb",
+      "beforeBytes": 7428,
+      "afterBytes": 7525,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-pb-chibitoon.test.mjs": {
+      "beforeSha256": "4f01ab136172384694f92c412bfe723872c3123b82c16664d9cda63b892e8e16",
+      "afterSha256": "d5a75c5c57167808b7f4dd1c22f467c5fb2fbff125a489a09883a34cc5901e2d",
+      "beforeBytes": 6238,
+      "afterBytes": 6335,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-stale39-source.test.mjs": {
+      "beforeSha256": "3b31b8b5b76699597ecca0f7526f1d2e62769943c4974e79aeed175de5c17b7e",
+      "afterSha256": "ea6efbfd555e8617b1b88f1daed33b2fb757875e727f85358bac99550e7558c9",
+      "beforeBytes": 4273,
+      "afterBytes": 4370,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-theme-thaw-source.test.mjs": {
+      "beforeSha256": "c6bd48a27eb58a424e9b536709a0a54cf2fef8ca7e02e592515d26c0e716a518",
+      "afterSha256": "f5cc562892da060266c6ab16c25dd63f13c88ecc7dec15911ecd7106dccc5fdf",
+      "beforeBytes": 5780,
+      "afterBytes": 5877,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-release-294.test.mjs": {
+      "beforeSha256": "90d9e3bc2998c685261014d91f3c5f4e50bac4e2b525b256e49fbe1b58bf3348",
+      "afterSha256": "11e5694bcbd0b231a3c9a74704336e0dc6a5eb503b869b7534e75e5766909700",
+      "beforeBytes": 4985,
+      "afterBytes": 5082,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-release-295.test.mjs": {
+      "beforeSha256": "7dfac070720db1cc848411896c81d24b396dc11bd898622b20ed33de95a5d55c",
+      "afterSha256": "9be39ef742b3477f8778883e20451ad424064ab6ff680fac059e7bea79f86a9a",
+      "beforeBytes": 6797,
+      "afterBytes": 6894,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-release-296.test.mjs": {
+      "beforeSha256": "c5f525ee548f11dacf6855baad64215307c403f42aa9c4a32d81ca4fb9ca3288",
+      "afterSha256": "be99a2bf63cbafd2327ae10c37171dc8268a5c0134298a0d46d1d30b29fddeeb",
+      "beforeBytes": 8151,
+      "afterBytes": 8248,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-release-297.test.mjs": {
+      "beforeSha256": "aba323ee253c58f3c26a7742acbb20ff4790664fc20cc010c16d642e205efb50",
+      "afterSha256": "2d7be7cca9ef08719b7d8bbb5e764773aa200d9f1744d464845582e4f309a720",
+      "beforeBytes": 9232,
+      "afterBytes": 9329,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-release-298.test.mjs": {
+      "beforeSha256": "9876973f5447957b6a5eaf702d733e88949ac1248509b0223963734bb9070ba6",
+      "afterSha256": "d9cca91331b6d076699768e4fb0db1d09ff1ad9081b14276b7689decdfd6a40a",
+      "beforeBytes": 11072,
+      "afterBytes": 11169,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-release-299.test.mjs": {
+      "beforeSha256": "3405018e9cbe34850b7f6920e6c787e5ac4b8442ce0ed999dd123f5d2bc09f99",
+      "afterSha256": "7a76c4667e0242c780ef43ccbe7070cc85c508dd763d9a83ddcde66f84561cf8",
+      "beforeBytes": 11011,
+      "afterBytes": 11108,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-release-300.test.mjs": {
+      "beforeSha256": "9cc01746c7fa6869c9110d484ff294cfbda3acf42d6151014449843e04a2881e",
+      "afterSha256": "998c606c33d9d344739561da9afc80118e01d292bf33800ba0686e00e9f79c6b",
+      "beforeBytes": 11128,
+      "afterBytes": 11225,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-release-301.test.mjs": {
+      "beforeSha256": "951c0a06e2176873dd300e0be405070c050ff16e7d0fa933a51f0f609c051e7e",
+      "afterSha256": "6a993fef244ea07e5bca3914cdc3c1d5e00717c3360a8355120d0205451acd13",
+      "beforeBytes": 9899,
+      "afterBytes": 9996,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-release-302.test.mjs": {
+      "beforeSha256": "f691fc3ffbfdb20a4f045fef374f69152c9d1aeb368d96220e14b88d2210a6f0",
+      "afterSha256": "f7386ddba335b5e247336606749dfce5c8210fb1ae2007b5e7644c16d0b27c32",
+      "beforeBytes": 13121,
+      "afterBytes": 13218,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-release-303.test.mjs": {
+      "beforeSha256": "0bc9a37e099d100343194648e96872eee9cd843463e8ca53c8b497b3eee46d0d",
+      "afterSha256": "cf8d27fe2706edfaca8a8aec1b1fe7f7c1a33f5af119914497c2babd90cbb1cf",
+      "beforeBytes": 14428,
+      "afterBytes": 14525,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-release-version-layers.test.mjs": {
+      "beforeSha256": "095c7e11bf22f12a4e183e6cdbdb29b8d3d04f5b0d54301b16730337b789c14d",
+      "afterSha256": "9851695799f04b509ad963e1edec4063224c57838198b759ef792626df9d140f",
+      "beforeBytes": 18046,
+      "afterBytes": 18143,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-dark-bundle-layer.test.mjs": {
+      "beforeSha256": "05d971921fa2489c048ea5c482f0f6ce38abcdea4938eee33136e3e88795d4a8",
+      "afterSha256": "54b108a20b4f6585f20403b7897d2fd3a5f462b5416f989cc0402d81b4763d01",
+      "beforeBytes": 11584,
+      "afterBytes": 11681,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-brand-heroes-218.test.mjs": {
+      "beforeSha256": "7c72e26e9faf6f12be97c8e245ebdcb95e5e829610a424f71ef75ac049bdb844",
+      "afterSha256": "e640540897637f6023d1e705baffb229446bcf4b2e0d084ab71f15d9e6725bbf",
+      "beforeBytes": 5922,
+      "afterBytes": 6019,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-ieum-seat-history.test.mjs": {
+      "beforeSha256": "f7663540fd2400a7d552cd5ee99888efa1ffcfe8773f4e5441b3c5354a641052",
+      "afterSha256": "359154268e3cc259b85b74c536f4a8f3537b16431582cf28214b92f11861626b",
+      "beforeBytes": 2290,
+      "afterBytes": 2387,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-login-a-204.test.mjs": {
+      "beforeSha256": "15411e8a01cf7dea90145db89a8c2bf7836dbce3435be2e1d0d065e251bb92b8",
+      "afterSha256": "efbebacf2bfbd91e5a016c18e758dde4abaad779a071f0c5ea874c5f7dd6d484",
+      "beforeBytes": 11321,
+      "afterBytes": 11418,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-ocr-accuracy-224.test.mjs": {
+      "beforeSha256": "4777dcada4b246e8dcea7b5df5570f818571e3f06c71a9ccc9cd1f0a4a3e1dbf",
+      "afterSha256": "b66529749c1a8bdbbe6fcf59bddd7322a948f0c5cd7628e82a5b57f9556b5307",
+      "beforeBytes": 19479,
+      "afterBytes": 19576,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-office-219.test.mjs": {
+      "beforeSha256": "6b251df6d592f0b0f1da5575da902ae86c89325012dc7d17090ab6e4046657c3",
+      "afterSha256": "52edd24ecf57bf7ddaac778c30476a53f353e0bcbbd0d840c8320f94f8c9a1b5",
+      "beforeBytes": 30597,
+      "afterBytes": 30694,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-proactive-204.test.mjs": {
+      "beforeSha256": "2a641d5fc0c0aac663e98907c5a3cb3f589b24392ddcfef79cb73857c39c025e",
+      "afterSha256": "fb5c540119fb3fa051a30cdcc853ace3c2603a01da797cfc4de5918dadae3989",
+      "beforeBytes": 23122,
+      "afterBytes": 23219,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    },
+    "scripts/hani-reviewed-release-baseline.test.mjs": {
+      "beforeSha256": "73b86d0ad03c765a2a66a517503a54f43a228bf09f60009926672606e45eebfd",
+      "afterSha256": "6fa26d5627b5b8f5831605ae1b2f91d1a607bf5b22b6e3824662bcbc0436bf92",
+      "beforeBytes": 26769,
+      "afterBytes": 26866,
+      "position": "prepend",
+      "added": "import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.\n"
+    }
+  },
+  "owners": {
+    "hani-board.js": "4ca7e2904a43008d4afbacf165696eec99df550fe79b52a8474b9f6dc8664ec6",
+    "hani-board.css": "381d3ecd554c6b4f69c7b435c4c3d920db755a599a0310592f1bc68abd370b1d",
+    "scripts/hani-release-302-source.cjs": "50977578b7ed14791045a1a69859394a66e4f1967c9f27e5248a0b7d0cb74501",
+    "scripts/hani-release-302.test.mjs": "f691fc3ffbfdb20a4f045fef374f69152c9d1aeb368d96220e14b88d2210a6f0",
+    "scripts/hani-audit-1.test.mjs": "8d5ce5c37ba1c6c49233883e3805e8f0d0950a86c27a514ed9d1c0b906a8cab1",
+    "scripts/hani-board-community.test.mjs": "670bf41cbe1dd00ae1fb8a64b4d1fdc6294402e0c82e2d1b87ca53a47c047a31",
+    "scripts/hani-board-guard.test.mjs": "072376d80c9f3f129cbf66ec4779c4e3d9af9ae77637af89394a18e968c76975",
+    "scripts/hani-board-living.test.mjs": "61b0a42ff9e93a2bab75dd6ee1501049a6ee018fd6b11385e3a857557c6c7ff9",
+    "scripts/hani-board-relationship.test.mjs": "0aba342d6ccb44e13d1aa1f7941e8068d1b5ec5034e8543db683291add837ba0",
+    "scripts/hani-board-views-211.test.mjs": "423ae758bf110faacc53221a89d77573b48af4dbedb2663410792942d517d3eb",
+    "scripts/hani-board.test.mjs": "ba697f79ddc915be35c6f0c0db3a2134e1dee588e226622c463d3d14324d72fd",
+    "scripts/hani-design-polish-2.test.mjs": "b3b25396699edea6824a7678c2da1f6db9641cb6fc8b4a77ea60c98e462473a4",
+    "scripts/hani-join-ieum.test.mjs": "43a75fc92fbcf8088fc78171477d312b7c16eeeb0cc8922795cf3afd5f272af2",
+    "scripts/hani-lounge-216.test.mjs": "7fcd4e7e07d0107d4166c1345cc98e0569ca8200028fa9d0c91fa8369e290e0e",
+    "scripts/hani-lounge-ai-213.test.mjs": "d60ef3e5462bce1e1c92d7decdeb0f26fb872d2bfe19486fd8508f8ffad88202",
+    "scripts/hani-lounge-billboard.test.mjs": "086813f3d1b6da171f2eb874ebb976845cbac764c8013bf0b5542ca61abfe1ee",
+    "scripts/hani-lounge-fun-211.test.mjs": "9ca8e8c11a33817eaa4d3bd93923922e6e91f7943eb3295f0cc657d952aac3dc",
+    "scripts/hani-lounge-natural-211.test.mjs": "cdade5900d3c029bd5e5e1c4b741d2ce81d6eaa14f0a160d0bf83e65d50e4620",
+    "scripts/hani-lounge-qa-212.test.mjs": "edf2ea1e44f56c27708308b1db5e7786c416d293aa0753a48c55b12eadab2915",
+    "scripts/hani-newface-217.test.mjs": "f450cc5abf265a989ea79e62748ef358a4da8fc03c8aeaaa07d472b4ba754462",
+    "scripts/hani-newstaff-215.test.mjs": "067754d60eeeccaafc3e234c2697435cdd0c36a7855f2d0f4c92981092b246d5",
+    "scripts/hani-qa-210-followup.test.mjs": "9b7462c9dd49b24d6f81997c0faff301943768bb01d033252bae554cca3a40ff",
+    "scripts/hani-qa-210.test.mjs": "b2ab39d47de87e9ab0515b0199b269ea4783a8b85a54c60989671a180e175b9a",
+    "scripts/hani-qa-easy-cleanup.test.mjs": "20f9c553d58d047f29ae099d786f8d5e48027afa92916bbdd7dc3ecf46cff721",
+    "scripts/hani-staff-floors-214.test.mjs": "0224f8d6fa8e41476056537ae5f571d08dc5c31d8ceea4683eadb1f4fcecf247",
+    "index.html": "1e68daefffd1a6fc937c008460abf301c4f7f9c23fc988dc73d086b2db0c775f",
+    "hani-main.js": "081d0b10d1f80508e4db2d81f4d7b3cc5a60bab82c1eb194edcd6b2f44878082",
+    "assets/data/hani-history-releases-v1.json": "e791c10fd9dc2b41c6b01686e5e20d51b93557f05e1d0fcf0567b6df70b767d8",
+    "hani-context-remote-v1.js": "93790e91766e2395c718bf25c82211e35c866205104cd98053d99b812caa5741",
+    "hani-context-remote.css": "da6354776e7bc950a5c2668c57da1e86bff3403a9b83952a704292bc8860ffc7",
+    "hani-design-system.css": "0bf1f382891bb564cddb614a2b26dab58f53e33d69f74dcca36c767bf0880bc5",
+    "hani-organization-hub.css": "2b9d009d19e7eed3c30455c9f06a21cc5eda65101d4d8b1a879a4818b1f121dd",
+    "hani-study-v02984.js": "cbfe7b55c781d659a4d71158f62f2fd80a5603113b2233a921dc1361bd729f41",
+    "hani-style-01.css": "6f1125ea5202fa908ba4f104e782352dfd76ba9cd5c8869e211e91ab141a568d",
+    "assets/data/office-actions-216.json": "25f10dbc381d13bf4923773c95a5c6dd7f71316fa5084911e466d372bc51c149",
+    "assets/data/office-actions-221.json": "b129a777bd5d47a586cc6fd3be85791305a4259218562e330dc8e29a47ad3b9c",
+    "data/hani-building/art-map-v1.json": "b1c99b6624b22e2ff55bcd72bbd374f21f361a07d921bf00272f10292eb94755",
+    "data/hani-building/office-places.json": "be6ffea80678a0fd3f01303faa634fd51404f0ee5b3d3c374c9669af28298e0f",
+    "data/hani-building/spatial-contract.json": "a1061f6becf9b8bcbcb8e100b4f1840bd2131ffad6714514dfcc0a5359a0556c",
+    "hani-office-live.js": "8b4f310112dde3fb1cfd2fbd4aff6c86fe7ef76abf440753beda49d2ea7fa9a0"
+  }
+}

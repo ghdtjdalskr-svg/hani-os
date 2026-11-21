@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // node scripts/hani-office-219.test.mjs [--browser [playwright/index.mjs] [browser.exe] [--labels-only]]
 // Real production index/assets for all revisions; fake KST clock, external traffic blocked.
 import assert from 'node:assert/strict';
