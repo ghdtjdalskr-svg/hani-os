@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 import './hani-chibi-pack-2-preload.cjs';
 import {installCloudTransport} from './hani-cloud-transport-fixture.cjs';
 import assert from 'node:assert/strict';

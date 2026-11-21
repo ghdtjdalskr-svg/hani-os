@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 /* Read-only safety comparison against raw pre-task files. */
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

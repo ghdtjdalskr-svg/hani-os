@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // Independent deployed-byte proof for the new outer layer, without Git processes.
 import test from 'node:test';
 import assert from 'node:assert/strict';

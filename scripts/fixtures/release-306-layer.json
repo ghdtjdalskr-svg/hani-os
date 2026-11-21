@@ -1,0 +1,426 @@
+{
+  "schema": 1,
+  "layer": "release-306",
+  "release": "077df04dea15d27d530ba957ad544381cf45ae60",
+  "base": "ca76e21ee71359e83e2c278f683d6b3066184a96",
+  "helperHead": "9ec0733b45958807523d905738bbe4f4da594c00",
+  "from": "2.9.305",
+  "to": "2.9.306",
+  "helperFixture": "ae1dd04ca9677d3a07377a3396827e59973bb0ee703da3e70ab775d29da7af01",
+  "files": {
+    "index.html": {
+      "beforeSha256": "ee9f4082520ec5b9fdb88e815edd10fbe188cc1cafa36cf7aaedb8e63f5940c5",
+      "afterSha256": "c6c3e739b7e7a871bd9bc0e7ece06d19215cd2d4faec85a9c32b187404ae9940",
+      "beforeBytes": 265029,
+      "afterBytes": 265029,
+      "count": 60,
+      "replacements": [
+        {
+          "start": 225686,
+          "beforeStart": 225686,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 225632,
+          "beforeStart": 225632,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 225443,
+          "beforeStart": 225443,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 225388,
+          "beforeStart": 225388,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 225339,
+          "beforeStart": 225339,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 225289,
+          "beforeStart": 225289,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 225231,
+          "beforeStart": 225231,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 225169,
+          "beforeStart": 225169,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 225108,
+          "beforeStart": 225108,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 225045,
+          "beforeStart": 225045,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 224978,
+          "beforeStart": 224978,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 224920,
+          "beforeStart": 224920,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 224853,
+          "beforeStart": 224853,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 224791,
+          "beforeStart": 224791,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 224726,
+          "beforeStart": 224726,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 224667,
+          "beforeStart": 224667,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 224392,
+          "beforeStart": 224392,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 224332,
+          "beforeStart": 224332,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 224274,
+          "beforeStart": 224274,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 224220,
+          "beforeStart": 224220,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 224163,
+          "beforeStart": 224163,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 223562,
+          "beforeStart": 223562,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 223345,
+          "beforeStart": 223345,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 223277,
+          "beforeStart": 223277,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 223215,
+          "beforeStart": 223215,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 223093,
+          "beforeStart": 223093,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 223037,
+          "beforeStart": 223037,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 222981,
+          "beforeStart": 222981,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 222833,
+          "beforeStart": 222833,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 222778,
+          "beforeStart": 222778,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 222722,
+          "beforeStart": 222722,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 195769,
+          "beforeStart": 195769,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 26530,
+          "beforeStart": 26530,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 15199,
+          "beforeStart": 15199,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 9180,
+          "beforeStart": 9180,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 8319,
+          "beforeStart": 8319,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 8262,
+          "beforeStart": 8262,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 8204,
+          "beforeStart": 8204,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 8134,
+          "beforeStart": 8134,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 8064,
+          "beforeStart": 8064,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 7992,
+          "beforeStart": 7992,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 7925,
+          "beforeStart": 7925,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 7858,
+          "beforeStart": 7858,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 7785,
+          "beforeStart": 7785,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 7715,
+          "beforeStart": 7715,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 7650,
+          "beforeStart": 7650,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 7584,
+          "beforeStart": 7584,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 4259,
+          "beforeStart": 4259,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 4110,
+          "beforeStart": 4110,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 3120,
+          "beforeStart": 3120,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 3022,
+          "beforeStart": 3022,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 2925,
+          "beforeStart": 2925,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 2813,
+          "beforeStart": 2813,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 2711,
+          "beforeStart": 2711,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 2617,
+          "beforeStart": 2617,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 2518,
+          "beforeStart": 2518,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 2418,
+          "beforeStart": 2418,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 2220,
+          "beforeStart": 2220,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 751,
+          "beforeStart": 751,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        },
+        {
+          "start": 422,
+          "beforeStart": 422,
+          "before": "2.9.305",
+          "after": "2.9.306"
+        }
+      ]
+    },
+    "hani-main.js": {
+      "beforeSha256": "d5e270781c4d1716b465bf89f076cedfc16a50a69e19bee561dd2c6775e4ad4c",
+      "afterSha256": "3945c19dd62e28debaab0a5ea32de7fc9f008a8698f862ab6b7359a6732af0b3",
+      "beforeBytes": 1419674,
+      "afterBytes": 1419674,
+      "count": 1,
+      "replacements": [
+        {
+          "start": 870043,
+          "beforeStart": 870043,
+          "before": "5",
+          "after": "6"
+        }
+      ]
+    },
+    "assets/data/hani-history-releases-v1.json": {
+      "beforeSha256": "32d620852b3962c72d06a24859914c67057120bc996eef44cd099977c90339f5",
+      "afterSha256": "7bcdbc8a609070443601846f0e2ff7a6b3b4bcd11061d266ab818836b607be4d",
+      "beforeBytes": 73263,
+      "afterBytes": 73633,
+      "count": 1,
+      "replacements": [
+        {
+          "start": 716,
+          "beforeStart": 716,
+          "before": "5\",\n      \"date\": \"2026-11-21\",\n      \"status\": \"released\",\n      \"title\": \"뉴스룸 시황 4컷 3호\",\n      \"category\": \"뉴스룸\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.305 뉴스룸 시황 4컷 3호",
+          "after": "6\",\n      \"date\": \"2026-11-21\",\n      \"status\": \"released\",\n      \"title\": \"도우미 한마디 말풍선\",\n      \"category\": \"도우미 · 사용성\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.306 도우미 한마디 말풍선\"\n      }\n    },\n    {\n      \"id\": \"v2.9.305\",\n      \"date\": \"2026-11-21\",\n      \"status\": \"released\",\n      \"title\": \"뉴스룸 시황 4컷 3호\",\n      \"category\": \"뉴스룸\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"8a46ac79705ac515da41d0dccf9ef72283bfad50\",\n        \"subject\": \"release: v2.9.305 뉴스룸 시황 4컷 3호 (#531)"
+        }
+      ]
+    },
+    "scripts/hani-helper-bubble-source.cjs": {
+      "beforeSha256": "60b6909202f437f71305a7c60b0ae74a1be0d038cc11b1adb4603e2927f28a67",
+      "afterSha256": "6aa415d755b1e105db957d76732cf3c6f7c8be10656a69feb08f75bfffd7f387",
+      "beforeBytes": 2017,
+      "afterBytes": 2113,
+      "count": 1,
+      "replacements": [
+        {
+          "start": 0,
+          "beforeStart": 0,
+          "before": "",
+          "after": "require('./hani-release-306-preload.cjs'); // Released306 metadata precedes the helper inverse.\n"
+        }
+      ]
+    }
+  }
+}
