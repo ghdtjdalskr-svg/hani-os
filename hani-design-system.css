@@ -2990,6 +2990,7 @@ html[data-theme="dark"] #app #investment :is(.tabs,.investment-tabs,.investment-
   html[data-theme="dark"] #app #home :is(.card,.home-kpi,[data-life-index],.home-update-item,.ui26-member,[data-ilbo-home] .ilbo-home-card,.ms-home-card) :is(small,p,.sub,.muted,.member-role){
     color:var(--text-secondary)!important
   }
+}
 /* #aiWork portrait crop fix & 390px zero horizontal overflow (strictly scoped to #aiWork). */
 #app #aiWork,#app #aiWork .grid,#app #aiWork .card,#app #aiWork #developmentTeamList,#app #aiWork #developmentTeamList .ui26-member,#app #aiWork .member-copy{min-width:0;max-width:100%;box-sizing:border-box}
 #app #aiWork #developmentTeamList .ui26-member{display:flex;flex-direction:column;padding:0;overflow:hidden}
