@@ -394,6 +394,49 @@
       }
     },
     {
+      "id": "convenience-1f",
+      "floor": "1f",
+      "room": "convenience",
+      "kind": "coffee",
+      "name": "HANI 24 편의점으로",
+      "slots": [
+        "convenience_browse"
+      ],
+      "go": "HANI 24 편의점으로 가는 중",
+      "at": [
+        "편의점에서 간식 고르는 중",
+        "편의점에서 음료 살펴보는 중"
+      ],
+      "pose": "stand",
+      "stay": [
+        30,
+        120
+      ],
+      "affinity": {
+        "seongmin": 2,
+        "hani": 1,
+        "yuna": 3,
+        "gaeun": 2,
+        "mir": 1,
+        "seoyun": 2,
+        "dohyun": 3,
+        "serin": 2,
+        "yuri": 2,
+        "arin": 2,
+        "jieun": 2,
+        "haru": 4,
+        "naeun": 2,
+        "hina": 3,
+        "minji": 4,
+        "sooyeon": 2,
+        "sua": 2,
+        "taeo": 2,
+        "daon": 2,
+        "yoonseul": 2,
+        "ieum": 2
+      }
+    },
+    {
       "id": "cafe-1f",
       "floor": "1f",
       "room": "cafe",
@@ -5054,7 +5097,7 @@
       "sua": [
         {
           "id": "signature-sua-0",
-          "place": "window-1f",
+          "place": "window-2f",
           "task": "B2B 업무 메모 펼쳐 보는 중",
           "evidence": {
             "voice": "업무에는 빈틈이 없고 고객과 문서를 정확히 다루지만 칭찬에는 의외로 약하다.",
@@ -5067,7 +5110,7 @@
         },
         {
           "id": "signature-sua-1",
-          "place": "coffee-1f",
+          "place": "pantry-2f",
           "task": "문서 정리 메모 펼쳐 보는 중",
           "evidence": {
             "voice": "업무에는 빈틈이 없고 고객과 문서를 정확히 다루지만 칭찬에는 의외로 약하다.",
@@ -5250,7 +5293,7 @@
       "taeo": [
         {
           "id": "signature-taeo-0",
-          "place": "window-1f",
+          "place": "window-2f",
           "task": "솔루션 기획 메모 펼쳐 보는 중",
           "evidence": {
             "voice": "고객 요구를 빠르게 정리하고 기술팀과 업무팀 사이의 언어를 맞추는 실무형 매니저.",
@@ -5263,7 +5306,7 @@
         },
         {
           "id": "signature-taeo-1",
-          "place": "coffee-1f",
+          "place": "pantry-2f",
           "task": "기업 업무 메모 펼쳐 보는 중",
           "evidence": {
             "voice": "고객 요구를 빠르게 정리하고 기술팀과 업무팀 사이의 언어를 맞추는 실무형 매니저.",
@@ -6015,6 +6058,26 @@
       "go": "방문객 안내하러 가는 중",
       "at": [
         "방문객 요청 확인 중"
+      ]
+    },
+    {
+      "id": "visitor-host-junction_consult",
+      "hostOnly": true,
+      "kind": "errand",
+      "errandKind": "task",
+      "floor": "1f",
+      "room": "consult",
+      "slots": [
+        "junction_consult"
+      ],
+      "pose": "stand",
+      "stay": [
+        8,
+        25
+      ],
+      "go": "상담실로 손님 맞이하러 가는 중",
+      "at": [
+        "상담실 앞에서 방문객 안내 중"
       ]
     }
   ]

@@ -1099,6 +1099,40 @@
             818
           ],
           "seatNote": "라이프 줄 다섯 번째 · 윤슬 책상"
+        },
+        "finance-row-spare": {
+          "type": "desk-chair",
+          "row": "finance",
+          "seatBounds": [
+            140,
+            498,
+            213,
+            605
+          ],
+          "deskBounds": [
+            95,
+            433,
+            263,
+            583
+          ],
+          "seatNote": "재무 줄 서쪽 · 수아(기업솔루션) 좌석"
+        },
+        "finance-row-spare-east": {
+          "type": "desk-chair",
+          "row": "finance",
+          "seatBounds": [
+            638,
+            498,
+            715,
+            605
+          ],
+          "deskBounds": [
+            598,
+            433,
+            752,
+            583
+          ],
+          "seatNote": "재무 줄 동쪽 · 채원(기업솔루션) 좌석"
         }
       },
       "backgroundSha256": "e829b0d2e7f72c47234d6b8ce9eb59e283d9f4ca20934aea4794157158faca65",
@@ -1128,40 +1162,7 @@
           448
         ]
       ],
-      "freeDesks": [
-        {
-          "id": "finance-row-spare",
-          "label": "여유석",
-          "seatBounds": [
-            140,
-            498,
-            213,
-            605
-          ],
-          "deskBounds": [
-            95,
-            433,
-            263,
-            583
-          ]
-        },
-        {
-          "id": "finance-row-spare-east",
-          "label": "여유석",
-          "seatBounds": [
-            638,
-            498,
-            715,
-            605
-          ],
-          "deskBounds": [
-            598,
-            433,
-            752,
-            583
-          ]
-        }
-      ],
+      "freeDesks": [],
       "directorOffice": {
         "bounds": [
           5,
@@ -1282,247 +1283,168 @@
           ],
           "width": 40,
           "planned": false
-        }
-      ]
-    },
-    "1f": {
-      "background": "./assets/building/floor-1f-217.webp",
-      "plates": [
-        {
-          "room": "business",
-          "label": "기업솔루션사업부",
-          "x": 24.1,
-          "y": 51,
-          "fullLabel": "기업솔루션사업부",
-          "material": "charcoal",
-          "secondary": false,
-          "ink": "#ffffff",
-          "rotate": 0,
-          "skew": -1,
-          "width": 13.157894736842104,
-          "mount": "wall",
-          "english": "Corporate Solutions",
-          "mountAnchor": {
-            "kind": "partition",
-            "x": 24.1,
-            "y": 51,
-            "clearOfWalkway": true
-          },
-          "surface": [
-            292.95,
-            451.91,
-            512.95,
-            507.91
-          ],
-          "nativeFont": 20
         },
-        {
-          "room": "consult",
-          "label": "고객 상담실",
-          "x": 12.70933014354067,
-          "y": 87.93836344314559,
-          "fullLabel": "고객 상담실",
-          "material": "charcoal",
-          "secondary": true,
-          "ink": "#ffffff",
-          "rotate": 0,
-          "skew": -1,
-          "width": 8.373205741626794,
-          "mount": "wall",
-          "english": "Consultation",
-          "mountAnchor": {
-            "kind": "partition",
-            "x": 12.70933014354067,
-            "y": 87.93836344314559,
-            "clearOfWalkway": true
-          },
-          "surface": [
-            142.5,
-            799.5,
-            282.5,
-            855.5
-          ],
-          "nativeFont": 20
-        },
-        {
-          "room": "lobby",
-          "label": "HANI 본사",
-          "x": 50,
-          "y": 13.6,
-          "fullLabel": "HANI GROUP · HANI 본사",
-          "surface": [
-            723.5,
-            99.98,
-            948.5,
-            155.98
-          ],
-          "material": "charcoal",
-          "secondary": false,
-          "ink": "#ffffff",
-          "rotate": 0,
-          "skew": -1,
-          "width": 13.456937799043061,
-          "logo": "./assets/brand/hani-group-ci-lobby-217.webp",
-          "english": "Lobby",
-          "mount": "wall",
-          "nativeFont": 20,
-          "mountAnchor": {
-            "kind": "partition",
-            "x": 50,
-            "y": 13.6,
-            "clearOfWalkway": true
-          }
-        },
-        {
-          "room": "cafe",
-          "label": "하니 카페",
-          "x": 95.3,
-          "y": 51.85972369819341,
-          "fullLabel": "HANI Coffee",
-          "material": "charcoal",
-          "secondary": true,
-          "ink": "#ffffff",
-          "rotate": 0,
-          "skew": -1,
-          "width": 8.373205741626794,
-          "mount": "wall",
-          "english": "HANI Coffee",
-          "mountAnchor": {
-            "kind": "partition",
-            "x": 95.3,
-            "y": 51.85972369819341,
-            "clearOfWalkway": true
-          },
-          "surface": [
-            1523.42,
-            460,
-            1663.42,
-            516
-          ],
-          "nativeFont": 20
-        },
-        {
-          "room": "lobby",
-          "label": "로비",
-          "english": "Lobby",
-          "detail": true,
-          "fullLabel": "로비",
-          "material": "charcoal",
-          "ink": "#ffffff",
-          "mount": "wall",
-          "mountAnchor": {
-            "kind": "wall",
-            "x": 62,
-            "y": 31,
-            "clearOfWalkway": true
-          },
-          "x": 62,
-          "y": 31,
-          "width": 6.578947368421052,
-          "rotate": 0,
-          "skew": -1,
-          "surface": [
-            981.64,
-            263.71,
-            1091.64,
-            319.71
-          ],
-          "nativeFont": 20
-        }
-      ],
-      "homeZones": {
-        "business": [
-          5,
-          49,
-          24,
-          70
-        ],
-        "consult": [
-          3,
-          68,
-          27,
-          82
-        ]
-      },
-      "homeFurniture": {
-        "business-west": {
-          "type": "desk-chair",
-          "row": "business",
-          "seatBounds": [
-            141,
-            545,
-            213,
-            646
-          ],
-          "deskBounds": [
-            121,
-            488,
-            240,
-            610
-          ]
-        },
-        "business-east": {
-          "type": "desk-chair",
-          "row": "business",
-          "seatBounds": [
-            258,
-            545,
-            329,
-            646
-          ],
-          "deskBounds": [
-            242,
-            488,
-            355,
-            610
-          ]
-        }
-      },
-      "backgroundSha256": "e70a5f528209876bf6285dad47612047dc4fdfc043df469adbb8216efd77c2a1",
-      "signPatchBoxes": [
-        [
-          6,
-          303,
-          212,
-          359
-        ],
-        [
-          126,
-          801,
-          299,
-          856
-        ],
-        [
-          1545,
-          462,
-          1672,
-          516
-        ]
-      ],
-      "deskProps": [
         {
           "id": "sua",
-          "anchor": "business-west",
+          "anchor": "finance-row-spare",
           "file": "./assets/building/props/sua-217.webp",
           "offset": [
-            29.768,
-            -144.057
+            38.5,
+            -155
           ],
           "width": 29,
           "planned": false
         },
         {
           "id": "taeo",
-          "anchor": "business-east",
+          "anchor": "finance-row-spare-east",
           "file": "./assets/building/props/taeo-217.webp",
           "offset": [
-            28.056,
-            -144.057
+            36,
+            -155
           ],
           "width": 26,
           "planned": false
         }
       ]
+    },
+    "1f": {
+      "background": "./assets/building/floor-1f-v2.webp",
+      "plates": [
+        {
+          "room": "convenience",
+          "label": "HANI 24 편의점",
+          "x": 14,
+          "y": 49.5,
+          "fullLabel": "HANI 24 편의점",
+          "material": "charcoal",
+          "secondary": false,
+          "ink": "#ffffff",
+          "rotate": 0,
+          "skew": -1,
+          "width": 11,
+          "mount": "wall",
+          "english": "HANI 24",
+          "mountAnchor": {
+            "kind": "partition",
+            "x": 14,
+            "y": 49.5,
+            "clearOfWalkway": true
+          },
+          "surface": [
+            147,
+            442,
+            321,
+            498
+          ],
+          "nativeFont": 20
+        },
+        {
+          "room": "lobby",
+          "label": "안내데스크",
+          "english": "INFO DESK",
+          "detail": true,
+          "fullLabel": "안내데스크 · 유나",
+          "material": "charcoal",
+          "secondary": true,
+          "ink": "#ffffff",
+          "mount": "wall",
+          "mountAnchor": {
+            "kind": "partition",
+            "x": 40.5,
+            "y": 24.5,
+            "clearOfWalkway": true
+          },
+          "x": 40.5,
+          "y": 24.5,
+          "width": 8.5,
+          "rotate": 0,
+          "skew": -1,
+          "surface": [
+            606,
+            202,
+            748,
+            258
+          ],
+          "nativeFont": 20
+        },
+        {
+          "room": "lobby",
+          "label": "로비",
+          "x": 50,
+          "y": 12.5,
+          "fullLabel": "로비",
+          "surface": [
+            765,
+            90,
+            907,
+            146
+          ],
+          "material": "charcoal",
+          "secondary": false,
+          "ink": "#ffffff",
+          "rotate": 0,
+          "skew": -1,
+          "width": 8.5,
+          "english": "LOBBY",
+          "mount": "wall",
+          "nativeFont": 20,
+          "mountAnchor": {
+            "kind": "wall",
+            "x": 50,
+            "y": 12.5,
+            "clearOfWalkway": true
+          }
+        },
+        {
+          "room": "cafe",
+          "label": "HANI Coffee",
+          "x": 94.5,
+          "y": 49.5,
+          "fullLabel": "HANI Coffee",
+          "material": "charcoal",
+          "secondary": true,
+          "ink": "#ffffff",
+          "rotate": 0,
+          "skew": -1,
+          "width": 8.5,
+          "mount": "wall",
+          "english": "CAFE",
+          "mountAnchor": {
+            "kind": "partition",
+            "x": 94.5,
+            "y": 49.5,
+            "clearOfWalkway": true
+          },
+          "surface": [
+            1509,
+            438,
+            1651,
+            494
+          ],
+          "nativeFont": 20
+        }
+      ],
+      "homeZones": {},
+      "homeFurniture": {},
+      "furnitureBounds": [
+        [0, 0, 445, 290],
+        [610, 235, 990, 410],
+        [1035, 245, 1245, 420],
+        [1140, 0, 1455, 270],
+        [1455, 0, 1672, 160],
+        [1235, 315, 1315, 385],
+        [1405, 315, 1485, 385],
+        [1235, 435, 1315, 505],
+        [1405, 435, 1485, 505],
+        [1315, 375, 1405, 445],
+        [0, 435, 455, 815],
+        [650, 485, 1000, 580],
+        [1440, 555, 1672, 815],
+        [0, 815, 615, 941],
+        [1050, 815, 1672, 941]
+      ],
+      "deskProps": []
     },
     "creative": {
       "background": "./assets/building/floor-5f-creative-v1.webp",
@@ -2448,7 +2370,7 @@
     },
     "door_finance": {
       "x": 46,
-      "y": 65
+      "y": 57
     },
     "junction_finance": {
       "x": 25,
@@ -2590,6 +2512,34 @@
     },
     "side_desk_daon": {
       "x": 31.738,
+      "y": 54.5
+    },
+    "finance-row-spare": {
+      "x": 10.6,
+      "y": 63.5,
+      "furniture": "finance row individual desk / front rolling chair",
+      "zone": "desk"
+    },
+    "approach_desk_sua": {
+      "x": 10.6,
+      "y": 60.38
+    },
+    "side_desk_sua": {
+      "x": 10.6,
+      "y": 54.5
+    },
+    "finance-row-spare-east": {
+      "x": 40.5,
+      "y": 63.5,
+      "furniture": "finance row individual desk / front rolling chair",
+      "zone": "desk"
+    },
+    "approach_desk_taeo": {
+      "x": 40.5,
+      "y": 60.38
+    },
+    "side_desk_taeo": {
+      "x": 40.5,
       "y": 54.5
     },
     "desk_yoonseul": {
@@ -2757,249 +2707,226 @@
       "y": 30
     },
     "hall_1f": {
-      "x": 35,
-      "y": 45
+      "x": 21.9,
+      "y": 40.4
     },
     "elevator_1f": {
-      "x": 35,
-      "y": 29
+      "x": 21.9,
+      "y": 27.8
     },
     "stairs_1f": {
-      "x": 32,
-      "y": 40
+      "x": 9.6,
+      "y": 34
     },
-    "door_business": {
-      "x": 25,
-      "y": 78
+    "door_convenience": {
+      "x": 25.5,
+      "y": 59.5
     },
-    "junction_business": {
-      "x": 23,
-      "y": 84
+    "junction_convenience": {
+      "x": 20.5,
+      "y": 72
     },
-    "hall_business": {
-      "x": 29,
-      "y": 78
+    "hall_convenience": {
+      "x": 30,
+      "y": 52
+    },
+    "convenience_browse": {
+      "x": 16.1,
+      "y": 79.2,
+      "furniture": "standing interaction"
     },
     "door_consult": {
-      "x": 25,
-      "y": 81
+      "x": 69.4,
+      "y": 50
     },
     "junction_consult": {
-      "x": 22,
-      "y": 80
+      "x": 74,
+      "y": 50.5
     },
     "hall_consult": {
-      "x": 29,
-      "y": 81
+      "x": 66,
+      "y": 52
     },
     "door_lobby": {
-      "x": 51,
-      "y": 45
+      "x": 49.8,
+      "y": 52
     },
     "junction_lobby": {
-      "x": 51,
-      "y": 33.5
+      "x": 52,
+      "y": 44.5
     },
     "hall_lobby": {
-      "x": 51,
-      "y": 46
+      "x": 46,
+      "y": 46.5
     },
     "door_cafe": {
-      "x": 66,
-      "y": 55
+      "x": 72,
+      "y": 56.5
     },
     "junction_cafe": {
-      "x": 79.5,
-      "y": 36.812
+      "x": 80.8,
+      "y": 44
     },
     "hall_cafe": {
-      "x": 66,
-      "y": 57
-    },
-    "business-west": {
-      "x": 10.6,
-      "y": 67.7,
-      "furniture": "business workstation / monitor and rolling chair",
-      "zone": "desk"
-    },
-    "approach_desk_sua": {
-      "x": 8.138,
-      "y": 72.28
-    },
-    "side_desk_sua": {
-      "x": 8.138,
-      "y": 65
-    },
-    "business-east": {
-      "x": 17.7,
-      "y": 67.7,
-      "furniture": "business workstation / monitor and rolling chair",
-      "zone": "desk"
-    },
-    "approach_desk_taeo": {
-      "x": 15.523,
-      "y": 72.28
-    },
-    "side_desk_taeo": {
-      "x": 15.523,
-      "y": 65
+      "x": 68,
+      "y": 56.5
     },
     "reception": {
-      "x": 50,
-      "y": 34,
+      "x": 49,
+      "y": 33.5,
       "furniture": "standing interaction"
     },
     "approach_reception": {
-      "x": 41.855,
-      "y": 33.5
+      "x": 50.8,
+      "y": 46.8
     },
     "ilbo_board": {
-      "x": 64,
-      "y": 50,
+      "x": 76.5,
+      "y": 27.5,
       "furniture": "standing interaction"
     },
     "approach_ilbo_board": {
-      "x": 47.463,
-      "y": 33.5
+      "x": 76.5,
+      "y": 31.5
     },
     "parcel_box": {
-      "x": 65,
-      "y": 55,
+      "x": 83.5,
+      "y": 27.5,
       "furniture": "standing interaction"
     },
     "approach_parcel_box": {
-      "x": 53.286,
-      "y": 33.5
+      "x": 83.5,
+      "y": 31.5
     },
     "arrival_gate": {
       "x": 50,
-      "y": 90,
+      "y": 86.6,
       "furniture": "standing interaction"
     },
     "approach_arrival_gate": {
-      "x": 50,
-      "y": 57
+      "x": 49.8,
+      "y": 62.5
     },
     "coffee_counter": {
       "x": 83,
-      "y": 60,
+      "y": 79.5,
       "furniture": "standing interaction"
     },
     "approach_coffee_counter": {
       "x": 77,
-      "y": 58
+      "y": 79.5
     },
     "client_booth": {
-      "x": 22,
-      "y": 80
+      "x": 69.4,
+      "y": 46
     },
     "lobby-nw": {
-      "x": 72,
-      "y": 37,
+      "x": 75,
+      "y": 38,
       "furniture": "chair / sofa at table"
     },
     "lobby-ne": {
-      "x": 86,
-      "y": 37,
+      "x": 86.5,
+      "y": 38,
       "furniture": "chair / sofa at table"
     },
     "lobby-sw": {
-      "x": 72,
-      "y": 50,
+      "x": 75,
+      "y": 50.5,
       "furniture": "chair / sofa at table"
     },
     "lobby-se": {
-      "x": 87,
-      "y": 50,
+      "x": 86.5,
+      "y": 50.5,
       "furniture": "chair / sofa at table"
     },
     "client_booth_slot_1": {
-      "x": 6.5,
-      "y": 76,
+      "x": 63.5,
+      "y": 38,
       "furniture": "chair / sofa at table"
     },
     "client_booth_slot_2": {
-      "x": 21,
-      "y": 76,
+      "x": 69.5,
+      "y": 38,
       "furniture": "chair / sofa at table"
     },
     "client_booth_slot_3": {
-      "x": 14,
-      "y": 61,
+      "x": 63.5,
+      "y": 43,
       "furniture": "chair / sofa at table"
     },
     "client_booth_slot_4": {
-      "x": 19,
-      "y": 61,
+      "x": 69.5,
+      "y": 43,
       "furniture": "chair / sofa at table"
     },
     "path_lobby-nw_14": {
-      "x": 74.25,
-      "y": 36.812
+      "x": 77.5,
+      "y": 42
     },
     "path_lobby-nw_18": {
-      "x": 74.25,
-      "y": 38.562
+      "x": 77.5,
+      "y": 40
     },
     "path_lobby-nw_24": {
-      "x": 72,
-      "y": 38.562
+      "x": 75,
+      "y": 40
     },
     "path_lobby-ne_12": {
       "x": 84,
-      "y": 36.812
+      "y": 42
     },
     "path_lobby-ne_16": {
       "x": 84,
-      "y": 38.562
+      "y": 40
     },
     "path_lobby-ne_22": {
-      "x": 86.25,
-      "y": 38.562
+      "x": 86.5,
+      "y": 40
     },
     "path_lobby-sw_14": {
-      "x": 74.25,
-      "y": 36.812
+      "x": 77.5,
+      "y": 46
     },
     "path_lobby-sw_40": {
-      "x": 74.25,
-      "y": 48.188
+      "x": 77.5,
+      "y": 48.5
     },
     "path_lobby-sw_46": {
-      "x": 72,
-      "y": 48.188
+      "x": 75,
+      "y": 48.5
     },
     "path_lobby-se_12": {
       "x": 84,
-      "y": 36.812
+      "y": 46
     },
     "path_lobby-se_38": {
       "x": 84,
-      "y": 48.188
+      "y": 48.5
     },
     "path_lobby-se_44": {
-      "x": 86.25,
-      "y": 48.188
+      "x": 86.5,
+      "y": 48.5
     },
     "path_client_booth_slot_1_7": {
-      "x": 23,
-      "y": 80
+      "x": 70,
+      "y": 48
     },
     "path_client_booth_slot_1_16": {
-      "x": 23,
-      "y": 79
+      "x": 66.5,
+      "y": 45
     },
     "path_client_booth_slot_1_22": {
-      "x": 6.5,
-      "y": 79
+      "x": 63.5,
+      "y": 42
     },
     "path_client_booth_slot_3_13": {
-      "x": 16.925,
-      "y": 72.28
+      "x": 66.5,
+      "y": 47
     },
     "path_client_booth_slot_4_13": {
-      "x": 11.075,
-      "y": 72.28
+      "x": 69.5,
+      "y": 47
     },
     "elevator_creative": {
       "x": 50.05981,
