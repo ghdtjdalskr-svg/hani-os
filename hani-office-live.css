@@ -344,3 +344,6 @@
 
 .hani-office-actor[data-person^="companion-"] .hani-office-sprite{background-image:url("./assets/office-companions/companions-v1.webp")}
 .hani-office-actor[data-resident="kid"] .hani-office-sprite{background-image:url("./assets/office-companions/kids-v2.webp")}
+/* Motion polish 1 (11/21): the 100ms movement clock moves walkers in 10 steps per second; blend each step while walking only. */
+.hani-office-live:not([data-paused="true"]) .hani-office-actor[data-walking="true"]{transition:opacity .3s,left .1s linear,top .1s linear}
+@media(prefers-reduced-motion:reduce){.hani-office-live .hani-office-actor[data-walking="true"]{transition:none}}
