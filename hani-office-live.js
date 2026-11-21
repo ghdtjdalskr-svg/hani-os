@@ -70,10 +70,12 @@
       // All office catalogs/art are seeded separately; use the existing metadata URL list.
       // The v3 sprites and the seeded place catalog are optional (index >= 3).
       const [canon,sprites,art,spritesV3,places]=await Promise.all([
-        './data/hani-building/spatial-contract.json','./assets/sprites-v2/manifest.json','./data/hani-building/art-map-v1.json','./assets/sprites-v3/manifest-v3.json','./data/hani-building/office-places.json'
+        ['./data/hani-building/spatial-contract-v2.json','./data/hani-building/spatial-contract.json'],'./assets/sprites-v2/manifest.json',['./data/hani-building/art-map-v2.json','./data/hani-building/art-map-v1.json'],'./assets/sprites-v3/manifest-v3.json','./data/hani-building/office-places.json'
       ].map(async (url,index)=>{
-        try{const response=await fetch(url);if(!response.ok)throw Error('office metadata');return await response.json()}
-        catch(error){if(index>=3)return null;throw error}
+        // Building v2 data first (7-floor registry); older deployments and fixtures only ship the v1 files.
+        for(const candidate of [].concat(url)){try{const response=await fetch(candidate);if(response.ok)return await response.json()}catch(_){}}
+        if(index>=3)return null;
+        throw Error('office metadata')
       }));
       seededPlaces=places;
       if(validateSpatial(canon,art))assets={canon,sprites,art,spritesV3:spritesV3?.scale===3&&Array.isArray(spritesV3.entries)?spritesV3:null};

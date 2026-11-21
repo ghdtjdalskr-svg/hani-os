@@ -1,3 +1,4 @@
+import {createRequire} from 'node:module';
 import inverse from './hani-building-phase2-source.cjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -5,7 +6,8 @@ import vm from 'node:vm';
 import {performance} from 'node:perf_hooks';
 
 const {readRawFileSync:raw,project,hash,layer}=inverse;
-const read=f=>raw(new URL('../'+f,import.meta.url),'utf8'),json=f=>JSON.parse(read(f)),plain=x=>JSON.parse(JSON.stringify(x));
+const v2data=createRequire(import.meta.url)('./hani-building-v2data-source.cjs');
+const read=f=>v2data.project(raw(new URL('../'+f,import.meta.url),'utf8'),f),json=f=>JSON.parse(read(f)),plain=x=>JSON.parse(JSON.stringify(x));
 const source=read('hani-office-live.js'),before=project(source,'hani-office-live.js');
 const files={canon:'data/hani-building/spatial-contract.json',art:'data/hani-building/art-map-v1.json',sprites:'assets/sprites-v2/manifest.json',spritesV3:'assets/sprites-v3/manifest-v3.json',places:'data/hani-building/office-places.json'};
 const assets=Object.fromEntries(Object.entries(files).map(([k,f])=>[k,json(f)])),oldAssets=Object.fromEntries(Object.entries(files).map(([k,f])=>[k,JSON.parse(project(read(f),f))]));
