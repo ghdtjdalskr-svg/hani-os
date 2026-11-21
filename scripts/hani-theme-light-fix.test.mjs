@@ -199,8 +199,6 @@ test('light finish fix 1 covers required L1-L4 selectors without touching storag
   }
 
   const requiredSelectors = [
-    '.btn.finance',
-    '.deploy-btn.primary',
     '#study.hani-study-v02984',
     '#agentReview',
     '#haniOrganizationHub',
@@ -216,9 +214,8 @@ test('light finish fix 1 covers required L1-L4 selectors without touching storag
     '.campus-semester-status',
     '#milestones>.ds-main-character-banner',
     '.ilbo-nameplate-illustrated',
-    '.deploy-exec-status',
     '.aura-preview',
-    '.home-dialogue-shell',
+    '#homeDialogueText',
     '.sidebar-corporate-lockup',
     '#ledgerJieunEdit',
     '#procrastination',
@@ -230,5 +227,77 @@ test('light finish fix 1 covers required L1-L4 selectors without touching storag
 
   for (const token of requiredSelectors) {
     assert.ok(lightSection.includes(token), `Missing expected L1-L4 selector token: ${token}`);
+  }
+});
+
+function stripNotPseudo(selectorText) {
+  let out = '';
+  let i = 0;
+  while (i < selectorText.length) {
+    if (selectorText.slice(i, i + 5) === ':not(') {
+      let depth = 1;
+      i += 5;
+      while (i < selectorText.length && depth > 0) {
+        if (selectorText[i] === '(') depth += 1;
+        else if (selectorText[i] === ')') depth -= 1;
+        i += 1;
+      }
+      continue;
+    }
+    out += selectorText[i];
+    i += 1;
+  }
+  return out;
+}
+
+test('light finish fix 1 removes Deployment Center, protected views, primary buttons, and #home Pilot 2 conflicts', () => {
+  const lightStart = css.indexOf(LIGHT_FIX_MARKER);
+  assert.ok(lightStart !== -1);
+  const lightSection = css.slice(lightStart);
+
+  for (const removed of [
+    '/* L1 - Deployment Center */',
+    '.btn.finance',
+    '.deploy-btn.primary',
+    '.deploy-exec-status',
+    '.deploy-inbox-summary',
+    '.home-dialogue-shell',
+  ]) {
+    assert.equal(lightSection.includes(removed), false, `Removed rule token must not remain in light finish fix 1: ${removed}`);
+  }
+
+  const stripped = stripCssComments(lightSection);
+  const rules = extractStyleRules(stripped);
+  const forbiddenOutsideNot = [
+    '#deployment',
+    '#deploymentQueueModal',
+    '.deploy-',
+    '#investmentIntake',
+    '#loginGate',
+    '#group-backup',
+    '#group-cloud',
+    '#cloudBridgeCard',
+    '#cloudChoice',
+    '#cloudAdvanced',
+    '#cloudEmergency',
+    '#loadRecovery',
+    '#safetyArchive',
+    '.btn.primary',
+    '.btn.finance',
+    '.btn.health',
+    '.home-dialogue-shell',
+  ];
+
+  for (const rule of rules) {
+    for (const sel of splitTopLevelCommas(rule.selector)) {
+      const targetPart = stripNotPseudo(sel);
+      for (const forbidden of forbiddenOutsideNot) {
+        assert.equal(
+          targetPart.includes(forbidden),
+          false,
+          `Selector must not target protected/overridden token (${forbidden}): ${sel}`
+        );
+      }
+    }
   }
 });

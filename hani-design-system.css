@@ -2989,27 +2989,23 @@ html[data-theme="dark"] #app #investment :is(.tabs,.investment-tabs,.investment-
   :root[data-finish="titanium-graphite"] #app #home :is(.card,.home-kpi,[data-life-index],.home-update-item,.ui26-member,[data-ilbo-home] .ilbo-home-card,.ms-home-card) :is(small,p,.sub,.muted,.member-role),
   html[data-theme="dark"] #app #home :is(.card,.home-kpi,[data-life-index],.home-update-item,.ui26-member,[data-ilbo-home] .ilbo-home-card,.ms-home-card) :is(small,p,.sub,.muted,.member-role){
     color:var(--text-secondary)!important
+  }
+}
 
 /* light finish fix 1 */
 /* L1: Unify fixed blue/purple/teal/orange controls, tabs and accents to active light-finish tokens. */
-:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app .view .btn.finance,
-:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] .modal .btn.finance{
-  background:var(--control-accent)!important;
-  border-color:var(--control-accent)!important;
-  color:var(--structure-on-accent)!important;
-}
-:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app .view .btn:focus-visible,
+:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app .view:not(#investmentIntake):not(#deployment) .btn:not(#group-backup .btn):not(#group-cloud .btn):not(#cloudBridgeCard .btn):not(#loadRecoveryPanel .btn):focus-visible,
 :root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app [data-life-index]:focus-visible{
   outline-color:var(--control-accent);
 }
-:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app .view .tabs{
+:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app .view:not(#investmentIntake):not(#deployment) .tabs{
   background:var(--surface-panel);
   border-color:var(--border-subtle);
 }
-:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app .view .tabs .tab:not(.active){
+:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app .view:not(#investmentIntake):not(#deployment) .tabs .tab:not(.active){
   color:var(--text-secondary);
 }
-:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app .view .tabs .tab.active{
+:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app .view:not(#investmentIntake):not(#deployment) .tabs .tab.active{
   background:var(--control-soft)!important;
   color:var(--control-accent)!important;
   box-shadow:none!important;
@@ -3020,31 +3016,6 @@ html[data-theme="dark"] #app #investment :is(.tabs,.investment-tabs,.investment-
 }
 :root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app :is(.quick-jump-item:hover,.quick-jump-item:focus){
   background:var(--control-soft);
-}
-
-/* L1 - Deployment Center */
-:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app #deployment :is(.deploy-btn.primary,.deploy-package-picker){
-  background:var(--control-accent);
-  border-color:var(--control-accent);
-  color:var(--structure-on-accent);
-}
-:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app #deployment :is(.deploy-kicker,.deploy-mode,.deploy-exec-kicker,.deploy-package-ingest>summary,.deploy-result a){
-  color:var(--control-accent);
-}
-:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app #deployment .deploy-mode{
-  background:var(--surface-raised);
-  border-color:var(--border-subtle);
-}
-:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app #deployment :is(.deploy-step,.deploy-progress span.active,.hina-qa-badge:not(.pass):not(.fail)){
-  background:var(--control-soft);
-  color:var(--control-accent);
-}
-:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app #deployment :is(.deploy-inbox-card,.deploy-approval-strip,.hina-qa-card,.deploy-final,.deploy-package-ingest,.deploy-package-drop,.deploy-file-zone){
-  border-color:var(--border-subtle)!important;
-}
-:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app #deployment .deploy-field :is(input,textarea):focus{
-  border-color:var(--control-accent);
-  box-shadow:0 0 0 3px var(--control-soft);
 }
 
 /* L1 - Study */
@@ -3387,7 +3358,7 @@ html[data-theme="dark"] #app #investment :is(.tabs,.investment-tabs,.investment-
 }
 
 /* L2: .pill & campus semester status badges follow active light finish (keep semantic danger/health/cloud states). */
-:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app .pill:not(.danger):not(.cloud-ok):not(.cloud-warn):not(.cloud-error):not(.health){
+:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app .view:not(#investmentIntake):not(#deployment) .pill:not(.danger):not(.cloud-ok):not(.cloud-warn):not(.cloud-error):not(.health):not(#group-backup .pill):not(#group-cloud .pill):not(#cloudBridgeCard .pill):not(#loadRecoveryPanel .pill):not(#cloudChoicePanel .pill){
   background:var(--control-soft);
   color:var(--control-accent);
 }
@@ -3402,7 +3373,7 @@ html[data-theme="dark"] #app #investment :is(.tabs,.investment-tabs,.investment-
 }
 
 /* L3: Release fixed cream/lavender and forced #fff!important surfaces onto finish surface tokens. */
-:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app :is(.asset-dashboard-card,#assetComposition>.item,#asset .account-card,.home-account-grid .account-card,.home-calendar-mini,#home .home-update-item,.hani-development-snapshot,.hani-history-row,.wishlist-kpis>div,.wishlist-reason,.deploy-inbox-summary,.home-accounts-wrap,.home-task-summary,.home-task-mini-item,.agent-life-actions),
+:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app :is(.asset-dashboard-card,#assetComposition>.item,#asset .account-card,.home-account-grid .account-card,.home-calendar-mini,#home .home-update-item,.hani-development-snapshot,.hani-history-row,.wishlist-kpis>div,.wishlist-reason,.home-accounts-wrap,.home-task-summary,.home-task-mini-item,.agent-life-actions),
 :root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app :is(#asset,#investment) .stat{
   --surface-panel:inherit;
   --surface-raised:inherit;
@@ -3428,7 +3399,7 @@ html[data-theme="dark"] #app #investment :is(.tabs,.investment-tabs,.investment-
   border-color:var(--border-subtle)!important;
   color:var(--text-primary);
 }
-:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app :is(.asset-dashboard-card,.home-accounts-wrap,.home-task-summary,.hani-development-snapshot,.deploy-inbox-summary){
+:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app :is(.asset-dashboard-card,.home-accounts-wrap,.home-task-summary,.hani-development-snapshot){
   background-color:var(--surface-panel)!important;
 }
 :root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app #milestones>.ds-main-character-banner{
@@ -3446,25 +3417,6 @@ html[data-theme="dark"] #app #investment :is(.tabs,.investment-tabs,.investment-
 }
 :root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app #ilbo .ilbo-nameplate-illustrated .ilbo-eyebrow{
   color:var(--text-secondary);
-}
-:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app #deployment .deploy-exec-status:not([data-state="done"]):not([data-state="failed"]){
-  background:var(--surface-panel);
-  border-color:var(--border-subtle);
-}
-:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app #deployment .deploy-exec-status:not([data-state="done"]):not([data-state="failed"]) .deploy-exec-icon{
-  background:var(--surface-raised);
-  border-color:var(--border-subtle);
-}
-:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app #deployment .deploy-exec-status:not([data-state="done"]):not([data-state="failed"]) .deploy-exec-copy h3{
-  color:var(--text-primary)!important;
-}
-:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app #deployment .deploy-exec-status:not([data-state="done"]):not([data-state="failed"]) .deploy-exec-copy :is(p,.deploy-exec-note){
-  color:var(--text-secondary)!important;
-}
-:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app #deployment :is(.deploy-inbox-kpi:not(.ok):not(.bad),.deploy-queue-card){
-  background:var(--surface-raised);
-  border-color:var(--border-subtle);
-  color:var(--text-primary);
 }
 :root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app #aura :is(.aura-preview,.aura-poster-signature){
   background:linear-gradient(145deg,var(--surface-panel),var(--control-soft));
@@ -3491,11 +3443,6 @@ html[data-theme="dark"] #app #investment :is(.tabs,.investment-tabs,.investment-
   --mcb-overlay:linear-gradient(90deg,var(--surface-panel) 0%,color-mix(in srgb,var(--surface-panel) 96%,transparent) 39%,color-mix(in srgb,var(--control-soft) 85%,transparent) 54%,color-mix(in srgb,var(--control-soft) 45%,transparent) 69%,transparent 88%);
   --mcb-overlay-mobile:linear-gradient(90deg,var(--surface-panel) 0%,color-mix(in srgb,var(--surface-panel) 93%,transparent) 52%,color-mix(in srgb,var(--control-soft) 65%,transparent) 100%);
 }
-:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app .home-dialogue-shell{
-  background:var(--surface-panel)!important;
-  border-color:var(--border-subtle)!important;
-  color:var(--text-primary)!important;
-}
 :root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app .home-dialogue-copy h3{
   color:var(--text-primary)!important;
 }
@@ -3507,12 +3454,12 @@ html[data-theme="dark"] #app #investment :is(.tabs,.investment-tabs,.investment-
 :root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app .home-dialogue-line b{
   color:var(--control-accent);
 }
-:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app :is(.ds-jieun>div,.ds-agent-comment>div){
+:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app .view:not(#investmentIntake):not(#deployment) :is(.ds-jieun>div,.ds-agent-comment>div){
   background:var(--surface-raised);
   border-color:var(--border-subtle);
   color:var(--text-primary);
 }
-:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app :is(.ds-jieun small,.ds-agent-comment small){
+:root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app .view:not(#investmentIntake):not(#deployment) :is(.ds-jieun small,.ds-agent-comment small){
   color:var(--control-accent);
 }
 :root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app #lifeMarketBanner .mood-copy{
