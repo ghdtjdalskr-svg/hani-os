@@ -1,3 +1,4 @@
+import './hani-lounge-queen-v3-preload.cjs'; // Exact queen inverse before legacy assertions.
 import test from 'node:test';
 import qaSupport from './qa-1st-test-support.cjs';
 import assert from 'node:assert/strict';

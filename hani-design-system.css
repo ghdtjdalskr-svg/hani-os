@@ -1401,7 +1401,7 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
   #app.app :is(button,a[href],summary,[role="button"],input,select,textarea):not(.hani-office-actor){min-height:40px!important}
   #app.app :is(button,a[href],[role="button"]):not(.hani-office-actor){min-width:40px!important}
   #app a[href]{display:inline-flex;align-items:center}
-  #app :is(input[type="checkbox"],input[type="radio"]){width:40px!important;height:40px!important;flex-shrink:0}
+  #app.app :is(input[type="checkbox"],input[type="radio"]):not(.hani-office-actor){width:22px!important;min-width:22px!important;height:22px!important;min-height:22px!important;flex-shrink:0;accent-color:var(--primary)}
   #app .date-flex-control{grid-template-columns:minmax(0,1fr) minmax(40px,max-content)}
   #app .task{grid-template-columns:40px minmax(0,1fr) auto}
   #app .task-derived .task{grid-template-columns:40px minmax(0,1fr)}
@@ -2768,6 +2768,227 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 :root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app .ds-main-character-banner .ai-quote b{
   color:var(--text-primary)!important;
 }
+
+/* audit-1: native mobile choices share one size across study, Drive and studio. */
+@media screen and (max-width:900px){
+  #app.app #study :is(input[type="checkbox"],input[type="radio"]),#app.app #drive :is(input[type="checkbox"],input[type="radio"]),#app.app #aura #launchGreetingEnabled{appearance:auto!important;box-sizing:border-box!important;flex:0 0 22px!important;width:22px!important;height:22px!important;min-width:22px!important;min-height:22px!important;max-width:22px!important;max-height:22px!important;margin:0!important;padding:0!important;transform:none!important;accent-color:var(--primary)}
+}
+
+/* =========================================================
+   UI Polish 1 (11/15, 11/17, 11/20) · Read-only CSS polish
+   - Preserves protected views (#investmentIntake, #deployment, #loginGate)
+   - Zero font-size declarations
+   ========================================================= */
+
+/* Req 1: Dashboard Pilot 2 ordering & role-tinted surfaces */
+#app #home.active{display:flex;flex-direction:column;gap:14px}
+#app #home>.ds-main-character-banner{order:-30;min-height:168px;height:168px;overflow:hidden}
+#app #home>.ds-main-character-banner .ds-main-character-banner__quote,
+#app #home>.ds-main-character-banner .ai-quote{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis}
+#app #home>.home-dialogue-shell{order:-27}
+#app #home>.home-lower-grid{order:-25}
+#app #home>.home-today-title{order:-24;margin-bottom:0}
+#app #home>.home-source-controls{order:-23}
+#app #home>#dataHubPeriodHelp,
+#app #home>#dataHubLatestRecord{order:-22}
+#app #home>.life-market-head{order:-20}
+#app #home>#lifeMarketBasis{order:-19}
+#app #home>#lifeMarketGrid{order:-18}
+#app #home>#lifeMarketBanner{order:-17}
+#app #home>#lifeMarketFeatured{order:-16}
+#app #home>.home-dashboard-grid{order:-10}
+#app #home>.life-ticker{order:-5}
+#app #home>[data-ilbo-home]{order:-4}
+#app #home>[data-hani-care-cards]{order:-3}
+#app #home>.hani-care-chip{order:-2;align-self:flex-start}
+#app #home>.hani-care-notice{order:-1}
+#app #home>.seasonal-life-banner{order:0}
+#app #home>.home-team-panel{order:1}
+
+#app #home .sh h3{display:inline-flex;align-items:center;gap:8px}
+#app #home .sh h3::before{content:"";display:inline-block;width:4px;height:1em;border-radius:999px;background:var(--structure-accent,var(--control-accent,#7562d9));flex:0 0 4px}
+#app #home :is(.home-planner-card,.home-monthly-check-card,.home-trend-card,.home-team-panel,.home-dialogue-shell,#lifeMarketGrid>[data-life-index]){
+  --hani-role-accent:var(--structure-accent,var(--control-accent,#7562d9));
+  background-color:color-mix(in srgb,var(--hani-role-accent) 7%,var(--surface-panel,#fff));
+  background-image:radial-gradient(circle at 100% 0%,color-mix(in srgb,var(--hani-role-accent) 14%,transparent) 0,color-mix(in srgb,var(--hani-role-accent) 14%,transparent) 42px,transparent 43px);
+  border-color:color-mix(in srgb,var(--hani-role-accent) 20%,var(--border-subtle,#e3e6f0))
+}
+#app #home #lifeMarketGrid>[data-life-index="investment"],
+#app #home #lifeMarketGrid>[data-life-index="ledger"]{--hani-role-accent:var(--finance,#245eb5)}
+#app #home #lifeMarketGrid>[data-life-index="weight"],
+#app #home #lifeMarketGrid>[data-life-index="steps"]{--hani-role-accent:var(--health,#197255)}
+#app #home #lifeMarketGrid>[data-life-index="books"],
+#app #home #lifeMarketGrid>[data-life-index="quiz"]{--hani-role-accent:var(--growth,#6f58d9)}
+#app #home .home-planner-card{--hani-role-accent:var(--growth,#6f58d9)}
+#app #home .home-monthly-check-card{--hani-role-accent:var(--finance,#245eb5)}
+#app #home .home-dialogue-shell{--hani-role-accent:var(--structure-accent,#7562d9)}
+#app #home :is(.home-planner-card,.home-monthly-check-card,.home-trend-card,.home-team-panel) .sh h3,
+#app #home #lifeMarketGrid>[data-life-index] .kpi-head span,
+#app #home .home-dialogue-shell .home-dialogue-speaker{
+  color:color-mix(in srgb,var(--hani-role-accent) 76%,var(--text-primary,#1f2433))
+}
+:root[data-finish="midnight-black"] #app #home :is(.home-planner-card,.home-monthly-check-card,.home-trend-card,.home-team-panel) .sh h3,
+:root[data-finish="titanium-graphite"] #app #home :is(.home-planner-card,.home-monthly-check-card,.home-trend-card,.home-team-panel) .sh h3,
+html[data-theme="dark"] #app #home :is(.home-planner-card,.home-monthly-check-card,.home-trend-card,.home-team-panel) .sh h3,
+:root[data-finish="midnight-black"] #app #home #lifeMarketGrid>[data-life-index] .kpi-head span,
+:root[data-finish="titanium-graphite"] #app #home #lifeMarketGrid>[data-life-index] .kpi-head span,
+html[data-theme="dark"] #app #home #lifeMarketGrid>[data-life-index] .kpi-head span,
+:root[data-finish="midnight-black"] #app #home .home-dialogue-shell .home-dialogue-speaker,
+:root[data-finish="titanium-graphite"] #app #home .home-dialogue-shell .home-dialogue-speaker,
+html[data-theme="dark"] #app #home .home-dialogue-shell .home-dialogue-speaker{
+  color:color-mix(in srgb,var(--hani-role-accent) 52%,var(--text-primary,#f4f2ee))
+}
+
+@media(max-width:700px){
+  #app #home>.ds-main-character-banner{order:-30;min-height:168px;height:auto}
+  #app #home>.home-lower-grid{display:contents!important}
+  #app #home .home-planner-card{order:-28}
+  #app #home>.home-dialogue-shell{order:-27}
+  #app #home .home-monthly-check-card{order:-26}
+  #app #home>.home-today-title{order:-24}
+  #app #home>.home-source-controls{order:-23}
+  #app #home>#dataHubPeriodHelp,
+  #app #home>#dataHubLatestRecord{order:-22}
+  #app #home>.life-market-head{order:-20}
+  #app #home>#lifeMarketBasis{order:-19}
+  #app #home>#lifeMarketGrid{order:-18}
+  #app #home>.home-dashboard-grid{order:-10}
+  #app #home>.life-ticker{order:-5}
+  #app #home>[data-ilbo-home]{order:-4}
+  #app #home>[data-hani-care-cards]{order:-3}
+  #app #home>.hani-care-chip{order:-2}
+  #app #home>.hani-care-notice{order:-1}
+  #app #home>.seasonal-life-banner{order:0}
+  #app #home>.home-team-panel{order:1}
+}
+
+/* Req 3: Compact ~120px banner for numeric/command views only (#home=168px; world/archive & #investmentIntake/#deployment untouched) */
+#app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner{
+  min-height:120px;
+  padding-top:14px;
+  padding-bottom:14px
+}
+#app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner .ds-main-character-banner__description{
+  display:none
+}
+#app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner .ds-main-character-banner__quote{
+  display:-webkit-box;
+  -webkit-line-clamp:1;
+  -webkit-box-orient:vertical;
+  overflow:hidden
+}
+@media(min-width:701px){
+  #app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner{
+    height:auto
+  }
+}
+@media(max-width:700px){
+  #app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner{
+    min-height:120px;
+    height:auto
+  }
+}
+
+/* Req 3b: compact banner = face + name + one-line quote (the copy box had min-height:234px) */
+#app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner .ds-main-character-banner__copy{min-height:0!important;padding-top:14px!important;padding-bottom:14px!important;justify-content:center}
+#app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner .ds-main-character-banner__eyebrow{display:none}
+#app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner .ds-main-character-banner__scene{position:absolute;inset:0;height:100%}
+#app :is(#investment,#investmentCommittee,#ledger,#newsroom,#monthlyReport,#diet,#exercise,#study,#university,#certificate,#tasks,#calendar,#drive,#work,#aiWork,#aiBudget,#geminiReports,#dev,#settings)>.ds-main-character-banner .ds-main-character-banner__scene img{width:100%;height:100%;object-fit:cover}
+
+/* Req 4: Primary button unification to Finish accent tokens (size/padding/radius untouched; protected views excluded) */
+body[data-finish-active] #app .view:not(#investmentIntake):not(#deployment) :is(.btn.primary,.btn.finance,.btn.health),
+:root[data-finish] #app .view:not(#investmentIntake):not(#deployment) :is(.btn.primary,.btn.finance,.btn.health),
+body[data-finish-active] .modal:not(#deploymentQueueModal) :is(.btn.primary,.btn.finance,.btn.health),
+:root[data-finish] .modal:not(#deploymentQueueModal) :is(.btn.primary,.btn.finance,.btn.health){
+  background:var(--structure-accent)!important;
+  color:var(--structure-on-accent)!important;
+  border-color:var(--structure-accent)!important
+}
+body[data-finish-active] #app .view:not(#investmentIntake):not(#deployment) :is(.btn.primary,.btn.finance,.btn.health) svg,
+:root[data-finish] #app .view:not(#investmentIntake):not(#deployment) :is(.btn.primary,.btn.finance,.btn.health) svg,
+body[data-finish-active] .modal:not(#deploymentQueueModal) :is(.btn.primary,.btn.finance,.btn.health) svg,
+:root[data-finish] .modal:not(#deploymentQueueModal) :is(.btn.primary,.btn.finance,.btn.health) svg{
+  color:currentColor;
+  stroke:currentColor
+}
+body[data-finish-active] #app .view:not(#investmentIntake):not(#deployment) :is(.btn.primary,.btn.finance,.btn.health) :is(span,em,b),
+:root[data-finish] #app .view:not(#investmentIntake):not(#deployment) :is(.btn.primary,.btn.finance,.btn.health) :is(span,em,b),
+body[data-finish-active] .modal:not(#deploymentQueueModal) :is(.btn.primary,.btn.finance,.btn.health) :is(span,em,b),
+:root[data-finish] .modal:not(#deploymentQueueModal) :is(.btn.primary,.btn.finance,.btn.health) :is(span,em,b){
+  color:inherit
+}
+
+/* Req 5a: Investment view Finish unification & CSS-only duplicate KPI row hiding */
+#app #investment #brokerDashboardStats>.broker-kpi:is(:nth-child(1),:nth-child(3),:nth-child(4)){display:none!important}
+#app #investment :is(.investment-live,.live-stat,.broker-kpi,.broker-kpi.primary,.stat)::before,
+#app #investment :is(.investment-live,.live-stat,.broker-kpi,.broker-kpi.primary,.stat)::after{
+  content:none!important;
+  display:none!important
+}
+:root[data-finish="midnight-black"] #app #investment :is(.card,.investment-live,.live-stat,.broker-kpi,.stat,.stats>.stat,.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs),
+:root[data-finish="titanium-graphite"] #app #investment :is(.card,.investment-live,.live-stat,.broker-kpi,.stat,.stats>.stat,.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs),
+html[data-theme="dark"] #app #investment :is(.card,.investment-live,.live-stat,.broker-kpi,.stat,.stats>.stat,.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs){
+  background:var(--surface-panel)!important;
+  border-color:var(--border-subtle)!important;
+  color:var(--text-primary)!important;
+  box-shadow:none!important
+}
+:root[data-finish="midnight-black"] #app #investment :is(.live-stat,.broker-kpi,.broker-kpi.primary,.stat),
+:root[data-finish="titanium-graphite"] #app #investment :is(.live-stat,.broker-kpi,.broker-kpi.primary,.stat),
+html[data-theme="dark"] #app #investment :is(.live-stat,.broker-kpi,.broker-kpi.primary,.stat){
+  background:var(--surface-raised)!important;
+  border:1px solid var(--border-subtle)!important;
+  color:var(--text-primary)!important
+}
+:root[data-finish="midnight-black"] #app #investment :is(.live-stat,.broker-kpi,.stat) :is(label,span,.label,.eyebrow,.badge,.tag,small),
+:root[data-finish="titanium-graphite"] #app #investment :is(.live-stat,.broker-kpi,.stat) :is(label,span,.label,.eyebrow,.badge,.tag,small),
+html[data-theme="dark"] #app #investment :is(.live-stat,.broker-kpi,.stat) :is(label,span,.label,.eyebrow,.badge,.tag,small){
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding-inline:0!important;
+  color:var(--text-secondary)!important
+}
+:root[data-finish="midnight-black"] #app #investment :is(.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs) .tab,
+:root[data-finish="titanium-graphite"] #app #investment :is(.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs) .tab,
+html[data-theme="dark"] #app #investment :is(.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs) .tab{
+  background:var(--surface-raised)!important;
+  border-color:var(--border-subtle)!important;
+  color:var(--text-secondary)!important
+}
+:root[data-finish="midnight-black"] #app #investment :is(.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs) .tab.active,
+:root[data-finish="titanium-graphite"] #app #investment :is(.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs) .tab.active,
+html[data-theme="dark"] #app #investment :is(.tabs,.investment-tabs,.investment-tabs-main,.investment-subtabs) .tab.active{
+  background:var(--structure-accent)!important;
+  border-color:var(--structure-accent)!important;
+  color:var(--structure-on-accent)!important
+}
+
+/* Req 5c: Sidebar remote - preserve 4 round actions, collapse long lists, utility at bottom */
+#app #haniContextRemote .hani-remote-rail{display:flex;flex-direction:column}
+#app #haniContextRemote .hani-remote-utility{order:99;margin-top:auto}
+#app #haniContextRemote .hani-remote-today ul>li:nth-child(n+4){display:none}
+
+/* Req 6: Mobile dark-finish bottom list/index cards on #home */
+@media(max-width:700px){
+  :root[data-finish="midnight-black"] #app #home :is(.card,.home-kpi,[data-life-index],.home-index-card,.home-update-item,.home-task-mini-item,.home-team-panel,.ui26-member,[data-ilbo-home] .ilbo-home-card,.ms-home-card,.life-ticker,.home-news-card,.home-news-item,#dataHubStatus),
+  :root[data-finish="titanium-graphite"] #app #home :is(.card,.home-kpi,[data-life-index],.home-index-card,.home-update-item,.home-task-mini-item,.home-team-panel,.ui26-member,[data-ilbo-home] .ilbo-home-card,.ms-home-card,.life-ticker,.home-news-card,.home-news-item,#dataHubStatus),
+  html[data-theme="dark"] #app #home :is(.card,.home-kpi,[data-life-index],.home-index-card,.home-update-item,.home-task-mini-item,.home-team-panel,.ui26-member,[data-ilbo-home] .ilbo-home-card,.ms-home-card,.life-ticker,.home-news-card,.home-news-item,#dataHubStatus){
+    background:var(--surface-panel)!important;
+    border-color:var(--border-subtle)!important;
+    color:var(--text-primary)!important
+  }
+  :root[data-finish="midnight-black"] #app #home :is(.home-update-item,.home-task-mini-item,.ui26-member,.home-cal-day,.home-news-item,#settlementQuickCheck .home-update-item),
+  :root[data-finish="titanium-graphite"] #app #home :is(.home-update-item,.home-task-mini-item,.ui26-member,.home-cal-day,.home-news-item,#settlementQuickCheck .home-update-item),
+  html[data-theme="dark"] #app #home :is(.home-update-item,.home-task-mini-item,.ui26-member,.home-cal-day,.home-news-item,#settlementQuickCheck .home-update-item){
+    background:var(--surface-raised)!important;
+    border-color:var(--border-subtle)!important;
+    color:var(--text-primary)!important
+  }
+  :root[data-finish="midnight-black"] #app #home :is(.card,.home-kpi,[data-life-index],.home-update-item,.ui26-member,[data-ilbo-home] .ilbo-home-card,.ms-home-card) :is(small,p,.sub,.muted,.member-role),
+  :root[data-finish="titanium-graphite"] #app #home :is(.card,.home-kpi,[data-life-index],.home-update-item,.ui26-member,[data-ilbo-home] .ilbo-home-card,.ms-home-card) :is(small,p,.sub,.muted,.member-role),
+  html[data-theme="dark"] #app #home :is(.card,.home-kpi,[data-life-index],.home-update-item,.ui26-member,[data-ilbo-home] .ilbo-home-card,.ms-home-card) :is(small,p,.sub,.muted,.member-role){
+    color:var(--text-secondary)!important
 
 /* light finish fix 1 */
 /* L1: Unify fixed blue/purple/teal/orange controls, tabs and accents to active light-finish tokens. */

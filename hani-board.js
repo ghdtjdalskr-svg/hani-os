@@ -277,7 +277,17 @@
         String(b.createdAt).localeCompare(String(a.createdAt))||String(b.id).localeCompare(String(a.id)));
   }
   const actions=(row,kind)=>own(row)?'<div class="acts"><button class="btn sm" type="button" data-board-edit="'+kind+'" data-key="'+escape(row.id)+'"'+(!canWrite()?' disabled':'')+'>수정</button><button class="btn sm danger" type="button" data-board-delete="'+kind+'" data-key="'+escape(row.id)+'"'+(!canWrite()?' disabled':'')+'>삭제</button></div>':"";
-  const html=(key,value)=>{const slot=get(key);if(slot&&slot.innerHTML!==value)slot.innerHTML=value};
+  const html=(key,value)=>{
+    const slot=get(key);if(!slot||slot.innerHTML===value)return;
+    // Keep the live reaction node across the canonical article repaint after a vote.
+    const reaction=key==='article'?slot.querySelector('[data-board-queen-reaction]'):null;
+    const next=reaction&&value.match(/<div class="board-queen-reaction" data-board-queen-reaction[^>]*>([\s\S]*?)<\/div>/);
+    if(next){
+      slot.innerHTML=value.replace(next[0],'');
+      reaction.innerHTML=next[1];reaction.hidden=!next[1];
+      slot.querySelector('.board-queen-race,.board-queen-chairman').before(reaction);
+    }else slot.innerHTML=value;
+  };
   function orderedComments(thread){
     const compare=(a,b)=>String(a.createdAt||"").localeCompare(String(b.createdAt||""))||String(a.id).localeCompare(String(b.id));
     const sorted=[...thread].sort(compare),byId=new Map(sorted.map(c=>[c.id,c])),groups=new Map();
@@ -356,7 +366,7 @@
     if(!post){html("article","");html("comments","");return}
     html("article",'<span class="pill">'+escape(post.category)+'</span>'+(post.pinned?' <span class="board-notice">공지</span>':"")+'<h3 tabindex="-1" data-board-heading>'+escape(displayText(post,post.title))+'</h3><div class="board-detail-meta">'+authorCard(post.authorId,40)+'<span class="sub">'+stamp(post)+' · <span title="'+escape(countTitle(post,"views",now))+'">조회 '+displayViews(post,now)+'</span> · <span title="'+escape(countTitle(post,"likes",now))+'">추천 '+displayLikes(post,now)+'</span>'+'</span>'+newBadge(post)+'</div><p class="board-body">'+escape(displayText(post,post.body))+'</p>'+interactiveMarkup(post,writable&&!post.queenResult)+'<button class="btn" type="button" data-board-like="'+escape(post.id)+'" aria-pressed="'+post.likedByOwner+'"'+(!writable||post.queenResult?' disabled':'')+' title="'+escape(countTitle(post,"likes",now))+'">👍 추천 '+displayLikes(post,now)+'</button>'+actions(post,"post"));
     const thread=visibleComments().filter(c=>c.postId===post.id).map(commentFields).sort((a,b)=>String(a.createdAt).localeCompare(String(b.createdAt)));
-    html("comments",orderedComments(thread).map(({comment,nested})=>commentMarkup(comment,nested,!comment.parentId)).join("")||'<p class="empty">첫 댓글을 남겨 주세요.</p>');
+    html("comments",(orderedComments(thread).map(({comment,nested})=>commentMarkup(comment,nested,!comment.parentId)).join("")||'<p class="empty">첫 댓글을 남겨 주세요.</p>')+queenRivalryMarkup(post));
   }
 
   // Discovered contracts: earnings-dialogue is report-only; orchestrator writes cases;
@@ -1329,15 +1339,474 @@
       const tally=queenMonth(post)?queenStandings(post):null;
       const votes=Object.values(post.poll.votes||{}),total=tally?tally.total:votes.filter(v=>Number.isInteger(v)&&v>=0&&v<post.poll.options.length).length;
       const closed=queenMonth(post)&&!queenPollOpen(post);
-      text+='<fieldset class="board-poll"><legend>사내 투표 · '+total+'표'+(closed?' · 마감':'')+'</legend>'+(tally?'<p class="sub">'+queenParticipation(post,tally)+(tally.anonymous?' · 익명 직원 '+tally.anonymous+'명 포함':'')+'</p>':'')+post.poll.options.map((option,i)=>{
+      if(tally)text+=queenRaceMarkup(post);
+      const ranks=tally?queenDisplayRanks(post,tally):[];
+      if(tally)text+=queenPodiumMarkup(ranks);
+      const previous=queenBarSnapshot.postId===post.id?queenBarSnapshot.widths:[],widths=[];
+      text+='<fieldset class="board-poll"><legend>사내 투표 · '+total+'표'+(closed?' · 마감':'')+'</legend>'+(tally?'<p class="sub">'+queenParticipation(post,tally)+(tally.anonymous?' · 익명 직원 '+tally.anonymous+'명 포함':'')+'</p><div class="board-queen-cards">':'')+post.poll.options.map((option,i)=>{
         const count=tally?tally.counts[i]:votes.filter(v=>v===i).length;
+        if(tally){
+          const rank=ranks.findIndex(r=>r.index===i)+1,member=ranks.find(r=>r.index===i)?.member;
+          const chosen=post.poll.votes?.[actor()]===i,width=100*count/Math.max(1,total);widths[i]=width;
+          const label='<span class="board-queen-card-head">'+(member?avatar(member.id,40):'<span class="board-avatar board-initial" aria-hidden="true">'+escape(Array.from(publicText(option))[0]||'?')+'</span>')+
+            '<span class="board-queen-card-name"><small>'+rank+'위</small><strong>'+escape(publicText(option))+'</strong></span><b class="board-queen-votes">'+count+'<small>표</small></b></span>'+
+            (chosen?'<span class="board-queen-gold">'+escape(queenRaceLines.chairman.badge[0])+'</span>':'')+
+            '<span class="board-queen-track" role="progressbar" aria-label="'+escape(publicText(option))+' 득표" aria-valuemin="0" aria-valuemax="'+Math.max(1,total)+'" aria-valuenow="'+count+'"><span class="board-queen-bar" style="--queen-value:'+width+'%;--queen-from:'+(previous[i]??0)+'%"></span></span>';
+          const attrs=' class="board-queen-candidate'+(chosen?' board-queen-choice':'')+'" data-queen-rank="'+rank+'" style="--queen-color:'+queenCandidateColor(member)+'"';
+          return closed?'<div'+attrs+'>'+label+'</div>':'<button'+attrs+' type="button" data-board-vote="'+i+'" data-key="'+escape(post.id)+'" aria-pressed="'+String(chosen)+'"'+disabled+'>'+label+'</button>';
+        }
         const label=escape(publicText(option))+' · '+count+'표';
         const control=closed?'<span class="board-poll-result">'+label+'</span>':
           '<button class="btn" type="button" data-board-vote="'+i+'" data-key="'+escape(post.id)+'" aria-pressed="'+String(post.poll.votes?.[actor()]===i)+'"'+disabled+'>'+label+'</button>';
-        return tally?'<div class="board-queen-standing">'+control+'<progress max="'+Math.max(1,total)+'" value="'+count+'" aria-label="'+escape(publicText(option))+' 득표"></progress></div>':control;
-      }).join("")+'</fieldset>';
+        return control;
+      }).join("")+(tally?'</div>':'')+'</fieldset>';
+      if(tally)queenBarSnapshot={postId:post.id,widths};
     }
     return text;
+  }
+  // Display-only ordering mirrors queenTally; ballot/count/closing owners stay unchanged.
+  let queenBarSnapshot={postId:'',widths:[]};
+  function queenDisplayRanks(post,tally){
+    const members=roster()?.people||[],owner=post.poll.votes?.[actor()];
+    return post.poll.options.map((name,index)=>({index,member:members.find(p=>p.id!==actor()&&p.name===name),count:tally.counts[index]})).filter(r=>r.member)
+      .sort((a,b)=>b.count-a.count||Number(b.index===owner)-Number(a.index===owner)||members.indexOf(a.member)-members.indexOf(b.member));
+  }
+  function queenCandidateColor(member){
+    if(/^#[\da-f]{6}$/i.test(member?.color||''))return member.color;
+    const palette=['#ae4770','#596cbb','#327e8b','#9464ad','#ad6635','#47846d','#a15691','#627a3c','#bd5353','#4c7bab','#827035','#8265bd','#267e79','#a96082','#527e9d','#8c6c4a','#7c6faa','#9c6540','#488578','#a65c62'];
+    const names=(roster()?.people||[]).slice().sort((a,b)=>a.name.localeCompare(b.name,'ko'));
+    return palette[Math.max(0,names.findIndex(p=>p.id===member?.id))%palette.length];
+  }
+  function queenPodiumMarkup(ranks){
+    return '<section class="board-queen-podium" aria-label="현재 상위 3명 시상대"><h4>👑 왕관을 향한 레이스 <span>현재 TOP 3</span></h4><ol>'+ranks.slice(0,3).map((row,i)=>
+      '<li data-queen-place="'+(i+1)+'"><span class="board-queen-medal" aria-hidden="true">'+['👑','🥈','🥉'][i]+'</span>'+avatar(row.member.id,40)+'<strong>'+escape(displayName(row.member.id))+'</strong><span>'+row.count+'표</span><b>'+(i+1)+'<small>위</small></b></li>').join('')+'</ol></section>';
+  }
+  // Queen race: draft dialogue and read-only projections; no persisted records.
+  const queenRaceLines={
+  "reactions": {
+    "hani": [
+      "어머 회장님, 제 이름 누르셨죠? 헤헤♡",
+      "회장님, 저 지금 귀 빨개졌거든요 ㅋㅋ",
+      "회장님 안목은 정확하죠! 왕관은 제가 접수할게요!"
+    ],
+    "yuna": [
+      "제가요?! 회장님 표, 일지에 별표 쳐둘게요!",
+      "회장님 표에 손끝이 떨려요… 웃음 터지겠어요 ㅎㅎ",
+      "회장님! 씩씩하게 1위 안내하겠습니다!"
+    ],
+    "mir": [
+      "회장님 한 표에 마음이 반짝하네, 헤헤.",
+      "회장님 응원에 기분이 간질간질해, 헤헤.",
+      "재밌는 흐름이야! 회장님 믿고 1위까지 가볼게."
+    ],
+    "seoyun": [
+      "회장님, 한 표 고마워요. 마음이 든든해요 💜",
+      "회장님 응원에 볼이 살짝 달아오르네요.",
+      "회장님, 차분하고 단단하게 이끌어 보겠습니다."
+    ],
+    "dohyun": [
+      "회장님 한 표 확인! 오늘 코딩 속도 두 배겠네요 ☕",
+      "회장님 표라니… 커피 마시고 표정 관리할게요 ☕",
+      "회장님, 군더더기 없이 결과로 보여드리겠습니다 ☕"
+    ],
+    "serin": [
+      "와아 회장님!! 제 득표 그래프 수직 상승이에요 ✨",
+      "회장님 한 표에 연구 노트 밖 두근거림이에요!!",
+      "완전 우승 흐름인데요?! 회장님 믿고 1위로 📊"
+    ],
+    "yuri": [
+      "회장님 한 표 반영 확인! 오늘 기분은 합격입니다 ✅",
+      "회장님이 뽑아주시니 입꼬리 단속이 어렵습니다.",
+      "회장님 한 표, 품질 기준 통과! 무결점으로 갈게요 ✅"
+    ],
+    "arin": [
+      "회장님! 제 투표 카드에 금빛이 얹혔어요 ✨",
+      "회장님이 절 뽑아주시니 괜히 설레네요 ㅎㅎ",
+      "회장님! 가장 빛나는 퀸 구도는 제가 잡을게요 🎨"
+    ],
+    "gaeun": [
+      "회장님 한 표, 일정표 맨 위에 기록해 둘게요.",
+      "회장님 표를 받으니 브리핑 목소리가 떨리네요.",
+      "회장님, 품격 있는 1위 동선까지 준비할게요."
+    ],
+    "jieun": [
+      "회장님 한 표에 오늘 마음 예산이 풍족합니다.",
+      "회장님 응원 앞에서는 계산기가 헛도네요.",
+      "회장님 안목에 최고 수익률로! 1위 결재 올릴게요!"
+    ],
+    "haru": [
+      "회장님, 센스 있는 선택! 아끼는 원두 내려드릴게요 ☕",
+      "회장님 표에 입꼬리가 안 내려가네요 ㅋㅋ",
+      "회장님! 끝까지 기분 좋게 1위로 가보죠!"
+    ],
+    "naeun": [
+      "회장님, 다정한 한 표에 활력 충전 100%예요!",
+      "회장님 응원을 받으니 마음이 뭉클하네요.",
+      "회장님! 밝은 에너지로 라운지를 채울게요!"
+    ],
+    "hina": [
+      "회장님 한 표에 백 점이에용! 꽃 도장 꾹 🐰",
+      "회장님, 히나 볼이 당근처럼 빨개졌어용♡",
+      "회장님! 퀸 시험도 일등 해볼게용 🐰"
+    ],
+    "minji": [
+      "컷! 회장님 투표 명장면, 마음에 담았습니다 📸",
+      "회장님… 취재 수첩 뒤에 얼굴 좀 가릴게요!",
+      "회장님! 이번 호 특집 1면 주인공은 저예요!"
+    ],
+    "sooyeon": [
+      "나이스! 회장님 출발 신호에 전력 질주할게요!",
+      "회장님 한 표에 심박수가 확 올라가는데요?!",
+      "회장님! 결승선 테이프 먼저 끊어보겠습니다!"
+    ],
+    "sua": [
+      "회장님 한 표 접수! 오늘 추진력이 두 배예요!",
+      "비상용 수상 소감 메모 꺼내놔야겠네요… 회장님 감사합니다 헤헤ㅎㅎ",
+      "수아답게 퀸도 깔끔하게 달성하겠습니다!"
+    ],
+    "taeo": [
+      "회장님, 정리하면 오늘 제 기분은 최고조입니다!",
+      "회장님 한 표에는 마음이 살짝 흔들리네요.",
+      "회장님 기대사항, 1위 해결책으로 증명할게요!"
+    ],
+    "ieum": [
+      "이거… 회장님 표까지 완료 근거 확인했습니다!",
+      "회장님이 제 이름을 눌러주시니 얼떨떨해요…",
+      "회장님, 1위 기록란에 제 이름 남겨볼게요!"
+    ],
+    "daon": [
+      "헉, 회장님이 저를요?! 행복 상승폭 측정 불가예요!",
+      "잘못 누르신 건 아니죠😅 회장님 표라니 떨려요…",
+      "회장님이 받쳐주시니 용기 내서 달려볼게요!"
+    ],
+    "yoonseul": [
+      "회장님 한 표, 오늘의 기쁜 책갈피에 꽂혔어요 🔖",
+      "회장님이 뽑아주시니 반전 전개에 귀가 달아올라요!",
+      "회장님이 연 새 장! 1위 주인공으로 완독할게요 📚"
+    ]
+  },
+  "rivalry": [
+    [
+      {
+        "who": "hani",
+        "text": "이번 달 왕관 범위는 전략기획실로 잡혀 있는데, 다들 양보하시죠? 헤헤♡"
+      },
+      {
+        "who": "yuri",
+        "text": "전무님, 근거 없는 사전 선언은 합격 드릴 수 없습니다. 표 수로 검수하시죠 ✅"
+      },
+      {
+        "who": "hani",
+        "text": "어머 우리 유리 책임님, 투표함 앞에서도 기준이 칼 같으시네 ㅋㅋ"
+      }
+    ],
+    [
+      {
+        "who": "arin",
+        "text": "서윤 리드님, 이번 달 전광판 테두리 골드 톤이 제 프로필이랑 유독 잘 어울리지 않나요? ✨"
+      },
+      {
+        "who": "seoyun",
+        "text": "아린 선임님, 어쩐지 오전 내내 본인 사진 넣어서 여백 테스트하시더라니… 귀엽네요 💜"
+      },
+      {
+        "who": "arin",
+        "text": "앗 들켰네요 ㅎㅎ 순전히 화면 시안 점검 차원이었다고요 🎨"
+      }
+    ],
+    [
+      {
+        "who": "serin",
+        "text": "방금 득표 추이 분석해 봤는데요, 제 상승 곡선이 심상치 않아요!! 📊"
+      },
+      {
+        "who": "haru",
+        "text": "데이터도 좋지만 라운지 민심은 제가 내려드리는 오후 드립커피 한 잔에 움직이죠 ☕"
+      },
+      {
+        "who": "serin",
+        "text": "헉 커피 복지 공약은 반칙 아닌가요?! 저도 간식 데이터로 맞불 놓을 거예요!! ✨"
+      }
+    ],
+    [
+      {
+        "who": "minji",
+        "text": "수아 과장님, 아까 수첩에 '이달의 퀸 수상 시 감사 명단' 적으시는 거 포착했습니다 📸"
+      },
+      {
+        "who": "sua",
+        "text": "민지 대리님! 그건 그냥… 만약을 대비한 리스크 관리용 초안이거든요! 헤헤ㅎㅎ"
+      },
+      {
+        "who": "minji",
+        "text": "철저한 사전 준비까지 특종 감이네요, 과장님 표정 한 컷 찍어둘게요!"
+      }
+    ],
+    [
+      {
+        "who": "hina",
+        "text": "히나한테 투표하면 오늘 하루 칭찬 꽃 도장 두 개씩 찍어드릴 거에용 🐰"
+      },
+      {
+        "who": "dohyun",
+        "text": "꽃 도장 공약이 꽤 강력하네요. 저는 조용히 라운지 커피 머신 원두 채워뒀습니다 ☕"
+      },
+      {
+        "who": "hina",
+        "text": "어머 도연 선임님, 은근슬쩍 커피로 표심 챙기시는 거 다 봤어용♡"
+      }
+    ],
+    [
+      {
+        "who": "naeun",
+        "text": "이번 주 다들 피곤해 보이셔서 라운지에 건강 티백 세트 채워뒀어요! 화이팅하세요!"
+      },
+      {
+        "who": "jieun",
+        "text": "나은 차장님, 다정하게 챙겨주시면서 은근히 호감도 예산 쓸어담으시는 거 아니죠?"
+      },
+      {
+        "who": "naeun",
+        "text": "어머 부장님도 참, 복지는 원래 마음에서 우러나오는 거랍니다 ㅎㅎ"
+      }
+    ],
+    [
+      {
+        "who": "yuna",
+        "text": "오늘 아침 출근길 인사는 제가 제일 밝게 드렸으니까 한 표 기대해도 되겠죠?!"
+      },
+      {
+        "who": "gaeun",
+        "text": "유나 사원님 목소리가 활기차긴 했죠. 다만 회장님 오전 티타임 준비는 제가 마쳤답니다."
+      },
+      {
+        "who": "yuna",
+        "text": "제가요?! 비서님 그 조용한 한 방이 제일 무서워요 ㅎㅎ"
+      }
+    ],
+    [
+      {
+        "who": "daon",
+        "text": "혹시… 저희 막내 라인이 갑자기 상위권에 오르면 선배님들이 놀라시지 않을까요😅"
+      },
+      {
+        "who": "ieum",
+        "text": "이거… 신입 돌풍 시나리오 맞죠? 일단 현황판 후보란에 저희 이름도 굵게 적어뒀어요."
+      },
+      {
+        "who": "yoonseul",
+        "text": "책에서 봤는데 원래 반전 주인공은 조용히 등장한대요! 우리 같이 힘내봐요 🔖"
+      }
+    ],
+    [
+      {
+        "who": "taeo",
+        "text": "현재 라운지 여론을 정리하면 세 가지입니다. 박빙, 간식 경쟁, 그리고 제 반등 차례죠."
+      },
+      {
+        "who": "sooyeon",
+        "text": "채원 매니저님 정리 깔끔한데요! 하지만 후반 스퍼트 체력은 제가 한 수 위일걸요!"
+      },
+      {
+        "who": "taeo",
+        "text": "스포츠 정신 좋네요. 결승선 앞에서 요구사항 변경 없기입니다!"
+      }
+    ],
+    [
+      {
+        "who": "mir",
+        "text": "왜 투표함 옆을 지나갈 때마다 다들 걸음이 느려질까? 서윤 언니도 방금 순위 봤지, 헤헤."
+      },
+      {
+        "who": "seoyun",
+        "text": "미르 눈은 못 속이겠네요. 전광판 레이아웃이 잘 나오나 확인만 한 거예요 💜"
+      },
+      {
+        "who": "mir",
+        "text": "그거 하니 언니가 쓰던 '점검 차원' 변명이랑 똑같은데! 재밌네, 헤헤."
+      }
+    ],
+    [
+      {
+        "who": "daon",
+        "text": "유리 책임님… 혹시 이번 투표에서 1표 차로 역전당할 확률도 계산해 보셨나요😅"
+      },
+      {
+        "who": "yuri",
+        "text": "다온 사원님, 걱정이 많으시네요. 저는 마감 종이 울릴 때까지 매 표를 전수 확인합니다 ✅"
+      },
+      {
+        "who": "daon",
+        "text": "역시 책임님… 멘탈 방어력까지 무결점이시네요!"
+      }
+    ],
+    [
+      {
+        "who": "minji",
+        "text": "이번 달 퀸 당선자 인터뷰 사진은 자연광 들어오는 창가 자리로 예약해 뒀습니다 📷"
+      },
+      {
+        "who": "hani",
+        "text": "민지 대리, 번거롭게 두 번 찍지 말고 지금 내 자리에서 미리 찍어두는 건 어때? 헤헤♡"
+      },
+      {
+        "who": "arin",
+        "text": "전무님 잠깐만요! 창가 자리 조명 각도는 제가 먼저 맞춰봤단 말이에요 ✨"
+      }
+    ],
+    [
+      {
+        "who": "yoonseul",
+        "text": "하루 대리님 이거 아세요? 오늘 추천해 드린 에세이랑 대리님 원두 향이 찰떡이에요 📚"
+      },
+      {
+        "who": "haru",
+        "text": "윤슬 사원님 칭찬에 마음이 녹네요. 이러다 제 표까지 윤슬 사원님께 넘어가겠어요 ☕"
+      },
+      {
+        "who": "yoonseul",
+        "text": "앗 정말요?! 그 말씀 오늘 독서 노트에 밑줄 그어둘게요 🔖"
+      }
+    ],
+    [
+      {
+        "who": "sua",
+        "text": "도연 선임님, 투표 현황판 새로고침 속도가 유독 빠른 것 같은데 기분 탓인가요?"
+      },
+      {
+        "who": "dohyun",
+        "text": "수아 과장님이 5분마다 확인하실 것 같아서 캐시 응답 속도 좀 줄여뒀습니다 ☕"
+      },
+      {
+        "who": "sua",
+        "text": "어머, 제가 언제 5분마다 봤다고 그러세요! 10분마다 본 거거든요 헤헤ㅎㅎ"
+      }
+    ]
+  ],
+  "weekly": [
+    {
+      "id": "weekly-01",
+      "situation": "초반 기선 제압",
+      "headline": "📢 [주간 속보] 현재 1위는 {1위}! 2위 {2위}님과 {표차}표 차이로 초반 레이스를 이끕니다!",
+      "rank1Reply": "{1위}: 초반 흐름이 좋네요! 응원해 주신 만큼 끝까지 든든하게 자리 지켜볼게요!",
+      "rank2Reply": "{2위}: 아직 초반 워밍업이죠! {표차}표 차이는 오후 티타임 한 번이면 뒤집습니다!"
+    },
+    {
+      "id": "weekly-02",
+      "situation": "초박빙 접전",
+      "headline": "⚡ [초박빙 속보] 현재 1위는… {1위}! 2위 {2위}님이 단 {표차}표 차이로 바짝 추격 중입니다!",
+      "rank1Reply": "{1위}: {표차}표 차이라니 전광판 볼 때마다 심장이 쫄깃하네요… 한 표만 더 힘을 주세요!",
+      "rank2Reply": "{2위}: 딱 {표차}표 남았습니다! 다음 새로고침 때는 제가 맨 위에서 인사드릴게요!"
+    },
+    {
+      "id": "weekly-03",
+      "situation": "단독 선두 질주",
+      "headline": "👑 [중간 집계] 현재 1위는 {1위}! 2위 {2위}님과 {표차}표 차이를 벌리며 독주 체제에 들어갑니다!",
+      "rank1Reply": "{1위}: 보내주신 믿음 덕분에 선두를 달리고 있어요. 자만하지 않고 완주하겠습니다!",
+      "rank2Reply": "{2위}: {표차}표 차이라니 만만치 않네요… 하지만 역전 드라마는 원래 이럴 때 시작되죠!"
+    },
+    {
+      "id": "weekly-04",
+      "situation": "순위 역전 발생",
+      "headline": "🔥 [역전 속보] 판세가 뒤집혔습니다! {1위}님이 {2위}님을 {표차}표 차로 제치고 새 1위에 등극합니다!",
+      "rank1Reply": "{1위}: 드디어 1위 자리에 올랐네요! 깜짝 역전 만들어주신 모든 분께 감사드립니다!",
+      "rank2Reply": "{2위}: 잠깐 1위 자리를 빌려드렸을 뿐이에요! {표차}표 차이는 금방 다시 따라잡겠습니다!"
+    },
+    {
+      "id": "weekly-05",
+      "situation": "중반 라운지 민심",
+      "headline": "📊 [중반 판세] 현재 1위는 {1위}, 2위는 {2위}! {표차}표 간격으로 라운지 응원전이 달아오릅니다!",
+      "rank1Reply": "{1위}: 라운지 지날 때마다 응원 인사를 받아서 힘이 나요! 선두 페이스 유지할게요!",
+      "rank2Reply": "{2위}: 2위 자리도 영광이지만 왕관이 바로 눈앞이네요. {표차}표의 벽을 넘어보겠습니다!"
+    },
+    {
+      "id": "weekly-06",
+      "situation": "막판 스퍼트",
+      "headline": "⏰ [마감 임박 속보] 현재 1위는 {1위}! 2위 {2위}님과의 표차는 {표차}표, 마지막 스퍼트가 시작됩니다!",
+      "rank1Reply": "{1위}: 결승선이 눈앞이에요! 마지막까지 흔들리지 않고 이달의 왕관을 안아보겠습니다!",
+      "rank2Reply": "{2위}: 끝날 때까지 끝난 게 아니죠! 남은 시간 동안 {표차}표 뒤집기 총력전 갑니다!"
+    },
+    {
+      "id": "weekly-07",
+      "situation": "공동 선두/동률 근접",
+      "headline": "💫 [긴급 집계] 숨 막히는 승부! 1위 {1위}님과 2위 {2위}님의 격차가 {표차}표까지 좁혀졌습니다!",
+      "rank1Reply": "{1위}: 숨소리까지 들릴 만큼 가까워졌네요… 여기서 물러설 순 없죠, 지켜봐 주세요!",
+      "rank2Reply": "{2위}: 이제 손만 뻗으면 1위예요! 오늘 준비한 비장의 미소로 역전해 보겠습니다!"
+    },
+    {
+      "id": "weekly-08",
+      "situation": "주말 직전 결산",
+      "headline": "💌 [주간 결산] 이번 주 라운지 민심 1위는 {1위}! 2위 {2위}님이 {표차}표 차로 바짝 뒤쫓고 있습니다!",
+      "rank1Reply": "{1위}: 한 주 동안 따뜻한 표를 보내주셔서 행복했어요. 다음 주에도 기대에 보답할게요!",
+      "rank2Reply": "{2위}: 이번 주는 {표차}표 차 2위로 숨 고르기 완료! 다음 주 대반격을 기대해 주세요!"
+    }
+  ],
+  "chairman": {
+    "badge": [
+      "👑 회장님의 선택",
+      "✨ 회장님 공식 선택",
+      "💛 회장님 친필 추천표"
+    ],
+    "tiebreaker": [
+      "⚖️ 득표수 동률! 회장님 한 표가 머문 후보에게 이달의 왕관이 수여됩니다!",
+      "👑 박빙의 동률 승부! 최종 1위는 회장님의 황금 결정표로 결정되었습니다!",
+      "✨ 기적 같은 동률! 규정 제1조에 따라 회장님의 선택을 받은 후보가 최종 우승합니다!"
+    ]
+  }
+};
+  let queenReaction=null;
+  function queenReactionContent(post){
+    const choice=post.poll?.votes?.[actor()];
+    if(!queenPollOpen(post)||queenReaction?.postId!==post.id||queenReaction.choice!==choice)return '';
+    const member=(roster()?.people||[]).find(p=>p.name===post.poll.options[choice]),lines=queenRaceLines.reactions[member?.id];
+    return lines?avatar(member.id,40)+'<span class="board-queen-speech"><strong>'+escape(displayName(member.id))+'</strong> '+escape(lines[hash(dayKey(Date.now())+':'+member.id)%lines.length])+'</span>':'';
+  }
+  function showQueenReaction(id,choice){
+    const post=posts().find(p=>p.id===id&&published(p));
+    if(!queenMonth(post)||!queenPollOpen(post)||post.poll?.votes?.[actor()]!==choice)return false;
+    queenReaction={postId:id,choice};
+    const slot=get('article')?.querySelector('[data-board-queen-reaction]');
+    if(slot){slot.innerHTML=queenReactionContent(post);slot.hidden=!slot.innerHTML}
+    return true;
+  }
+  function queenRace(post,now=Date.now()){
+    if(!queenMonth(post)||!queenPollOpen(post,now))return null;
+    const tally=queenStandings(post,now);if(!tally.total)return null;
+    const members=roster()?.people||[],owner=post.poll.votes?.[actor()];
+    const ranks=post.poll.options.map((name,index)=>({index,member:members.find(p=>p.id!==actor()&&p.name===name),count:tally.counts[index]})).filter(r=>r.member);
+    ranks.sort((a,b)=>b.count-a.count||Number(b.index===owner)-Number(a.index===owner)||members.indexOf(a.member)-members.indexOf(b.member));
+    if(ranks.length<2)return null;
+    const gap=ranks[0].count-ranks[1].count,day=dayKey(now),date=new Date(day+'T00:00:00+09:00'),weekday=new Date(now+9*3600000).getUTCDay();
+    const monday=dayKey(date.getTime()-((weekday+6)%7)*86400000),last=new Date(Date.UTC(Number(day.slice(0,4)),Number(day.slice(5)),0)).getUTCDate();
+    const template=queenRaceLines.weekly[Number(day.slice(8))>=last-3?5:gap===0?6:gap<=2?1:gap>=5?2:Number(day.slice(8))<10?0:weekday>=5?7:4];
+    const fill=text=>text.replaceAll('{1위}',displayName(ranks[0].member.id)).replaceAll('{2위}',displayName(ranks[1].member.id)).replaceAll('{표차}',String(gap));
+    return {monday,ranks,gap,headline:fill(template.headline)};
+  }
+  function queenWeeklySlide(post,queenSeason,now){
+    const race=queenRace(post,now);if(!race)return [];
+    return [{kind:'queen-weekly',kicker:'세린·민지의 주간 중계 · '+race.monday,title:'📊 현재 1위는 '+displayName(race.ranks[0].member.id),
+      copy:race.headline,image:bannerPortrait(race.ranks[0].member.id),queenImage:'portrait',queenSeason,href:'#board/post/'+encodeURIComponent(post.id),postId:post.id}];
+  }
+  function queenRaceMarkup(post){
+    const race=queenRace(post),choice=post.poll?.votes?.[actor()],counts=queenStandings(post).counts;
+    const selected=Number.isInteger(choice)&&choice>=0&&choice<counts.length;
+    const tied=selected&&counts[choice]>0&&counts[choice]===Math.max(...counts)&&counts.filter(n=>n===counts[choice]).length>1;
+    const closed=!queenPollOpen(post),reaction=queenReactionContent(post);
+    return '<div class="board-queen-reaction" data-board-queen-reaction role="status" aria-live="polite" aria-atomic="true"'+(reaction?'':' hidden')+'>'+reaction+'</div>'+
+      (race?'<aside class="board-queen-race" aria-label="주간 퀸 중간 집계"><div class="board-queen-news-head"><span class="board-queen-live"><i aria-hidden="true"></i> LIVE</span><strong>세린·민지의 주간 중계</strong></div><span class="sub">'+escape(race.monday)+' 주간 · 순위는 현재 집계</span><p><b class="board-queen-breaking">속보</b> '+escape(race.headline)+'</p></aside>':'')+
+      '<p class="board-queen-chairman">'+(selected?'👑 회장님의 한 표 · '+escape(publicText(post.poll.options[choice])):'👑 회장님 미투표 · 결정표 대기 중')+'<br><span class="sub">동률이면 회장님이 선택한 후보를 우선합니다.</span></p>'+
+      (tied?'<p class="board-queen-tiebreak">'+escape(closed?queenRaceLines.chairman.tiebreaker[0]:'⚖️ 현재 선두 동률 · 마감 때도 동률이면 회장님 한 표가 결정합니다.')+'</p>':'');
+  }
+  function queenRivalry(post,now=Date.now()){
+    if(!queenMonth(post)||!queenPollOpen(post,now))return [];
+    const sets=queenRaceLines.rivalry.filter(rows=>rows.every(row=>{const p=person(row.who);return p&&post.poll?.options?.includes(p.name)}));
+    if(!sets.length)return [];
+    const day=dayKey(now),seed=Math.floor(Date.parse(day+'T00:00:00+09:00')/86400000)+hash(queenMonth(post)),rows=sets[seed%sets.length];
+    return rows.map((row,i)=>({id:'queen-race:'+post.id+':'+day+':'+i,postId:post.id,authorId:row.who,body:row.text,generated:true,createdAt:day+'T00:00:00+09:00'}));
+  }
+  function queenRivalryMarkup(post){
+    const rows=queenRivalry(post);
+    return rows.length?'<section class="board-queen-rivalry" aria-label="오늘의 후보 신경전"><h4>💬 오늘의 라운지 신경전</h4>'+rows.map(c=>commentMarkup(c,false,false)).join('')+'</section>':'';
   }
   const queenMonth=post=>/^queen-(\d{4}-\d{2})$/.exec(post?.libraryId||'')?.[1]||'';
   const queenPollOpen=(post,now=Date.now())=>queenMonth(post)===dayKey(now).slice(0,7)&&Date.parse(post.createdAt)<=now;
@@ -1432,10 +1901,10 @@
     const month=dayKey(now).slice(0,7),winner=queenWinner(now),previous=winner?.month;
     const poll=posts().filter(published).find(p=>queenMonth(p)===month&&queenPollOpen(p,now));
     const season=value=>['winter','winter','spring','spring','spring','summer','summer','summer','autumn','autumn','autumn','winter'][Number(value.slice(5))-1];
-    return [...(winner?[{kind:'queen-winner',kicker:'👑 '+Number(previous.slice(5))+'월의 퀸',title:winner.name+' · '+winner.rank,
+    return [...(winner?[{kind:'queen-winner',kicker:'👑 지난달('+Number(previous.slice(5))+'월)의 퀸',title:winner.name+' · '+winner.rank,
       copy:'왕관은 출근 완료! 오늘의 간식 회의도 기대할게요 ㅋㅋ',image:queenImages[previous]||bannerPortrait(winner.id),queenImage:queenImages[previous]?'solo':'portrait',queenSeason:season(previous),href:'#organization/people/'+winner.id}]:[]),
       ...(poll?[{kind:'queen-vote',kicker:'HANI 사내 인기상',title:'👑 '+Number(month.slice(5))+'월의 퀸 투표 중',
-      copy:queenParticipation(poll,queenStandings(poll,now)),image:'./assets/team/hani-team-office.webp',queenSeason:season(month),href:'#board/post/'+encodeURIComponent(poll.id),postId:poll.id}]:[])];
+      copy:queenParticipation(poll,queenStandings(poll,now)),image:'./assets/team/hani-team-office.webp',queenSeason:season(month),href:'#board/post/'+encodeURIComponent(poll.id),postId:poll.id},...queenWeeklySlide(poll,season(month),now)]:[])];
   }
   // Read-only lounge promotion. Persistent nodes; a single visibility-owned timer.
   let bannerTimer=null,bannerIndex=0,bannerPaused=false;
@@ -1610,7 +2079,7 @@
       else if(button.dataset.boardLike)toggleLike(button.dataset.boardLike);
       else if(button.dataset.boardDraft)draftAction(button.dataset.kind,button.dataset.key,button.dataset.boardDraft);
       else if(button.dataset.boardReaction)toggleReaction(button.dataset.key,button.dataset.boardReaction);
-      else if(button.dataset.boardVote!==undefined)votePoll(button.dataset.key,Number(button.dataset.boardVote));
+      else if(button.dataset.boardVote!==undefined){const choice=Number(button.dataset.boardVote);if(votePoll(button.dataset.key,choice))showQueenReaction(button.dataset.key,choice)}
       else if(button.dataset.board==="arriveNow")refreshLiving(Date.now(),true);
       else if(button.dataset.board==="attendance")attendance();
       else if(button.dataset.boardReply){

@@ -1,3 +1,7 @@
+# 2026-11-20 · 이달의 퀸 1차 · 서윤 인계 (도연 / Codex)
+
+`hani/lounge-queen-v3` / base `5073125`, 로컬 표시/cache2.9.302 유지(원격 최신성 미확인). 투표 성공 반응20명·일별 신경전·주간 중계·회장님 황금 배지/동률 안내를 board JS/CSS 표시 패치로 구현. 새 저장/그림/런타임 JSON0, 기존 저장·계산·마감 owner 원문 보존. **전용14/14·syntax4/4·closure174/누락0·fixture126 PASS; 전체285명령 174성공·기존 실패/제약111·새 회귀0.** QA JSON4 원문 복원·출력 local/ 이관. 실제 Edge/계정 Cloud/Candidate/운영 미검증, commit/push/Notion·main/배포 없음. 서윤 Preview·Git/Notion 인계 대기. [보고서](../../artifacts/lounge-queen-v3/REPORT.md) · [인수인계](handoffs/2026-11-20-lounge-queen-v3.md). 아래 타 담당·과거 기록 원문 보존.
+
 # 2026-11-14 · tooling-299 · 299 배포 후속 시험 층 (도연 / Codex)
 
 전달 `hani/tooling-299` / 고정 base `1881888`(#515), Git·원격 새 조회·Edge 실행 없음. **299 version/history→디자인2→298→helper→297→치비3→296→디자인1→295 이하 exact inverse. 비Git96파일968PASS/기존7FAIL·새 회귀0, office46파일610PASS·tooling81파일868PASS·새2997/7.** 기존 helper6실패·exam renderChibiNote 오류는 기준 입력과 동일. 운영513·fixture118·시험319 단언/숫자/hash·하위manifest·.gitignore 보존, syntax14PASS. Git27목록·실행기 준비, Git·Edge·commit/push·배포는 서윤 인계. 새 로그·snapshot·생성 출력은 tooling299-local 한 폴더/commit 제외. Notion 자동 승인 never 거절로 갱신 대기. [보고서](../../artifacts/design-polish-2/TOOLING-299.md) · [인수인계](handoffs/2026-11-14-tooling-299.md). 아래 기존 기록 보존.

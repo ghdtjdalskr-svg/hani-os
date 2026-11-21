@@ -1,3 +1,4 @@
+import './hani-lounge-queen-v3-preload.cjs'; // Exact queen inverse before legacy assertions.
 // Synthetic VM fixtures; production save/storage/network are never used.
 import test from 'node:test';
 import assert from 'node:assert/strict';

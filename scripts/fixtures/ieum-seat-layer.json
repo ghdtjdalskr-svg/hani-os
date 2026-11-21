@@ -1,0 +1,589 @@
+{
+  "schema": 1,
+  "layer": "ieum-seat",
+  "base": "ad95b84376edb9d132338a50a9b1423209b46c63",
+  "feature": "386a880f7bee1ab3f298425985f43d251c797b5e",
+  "files": {
+    "assets/data/office-actions-216.json": {
+      "beforeSha256": "3f65ca48c051c3989f7c1369dd0fc5caefcf7a96c2d08c123a79261ad57cbecf",
+      "afterSha256": "25f10dbc381d13bf4923773c95a5c6dd7f71316fa5084911e466d372bc51c149",
+      "edits": [
+        {
+          "start": 1638,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 3883,
+          "before": "hani_office\",\"anchorId\":\"desk_ieum",
+          "after": "secretariat\",\"anchorId\":\"desk_yuna"
+        },
+        {
+          "start": 4342,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 5400,
+          "before": "hani_office\",\"anchorId\":\"desk_ieum",
+          "after": "secretariat\",\"anchorId\":\"desk_yuna"
+        },
+        {
+          "start": 6479,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 7537,
+          "before": "hani_office\",\"anchorId\":\"desk_ieum",
+          "after": "secretariat\",\"anchorId\":\"desk_yuna"
+        },
+        {
+          "start": 9616,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"side_desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"approach_reception"
+        },
+        {
+          "start": 11669,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 12727,
+          "before": "hani_office\",\"anchorId\":\"desk_ieum",
+          "after": "secretariat\",\"anchorId\":\"desk_yuna"
+        },
+        {
+          "start": 17026,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 18084,
+          "before": "hani_office\",\"anchorId\":\"desk_ieum",
+          "after": "secretariat\",\"anchorId\":\"desk_yuna"
+        },
+        {
+          "start": 19154,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 20212,
+          "before": "hani_office\",\"anchorId\":\"desk_ieum",
+          "after": "secretariat\",\"anchorId\":\"desk_yuna"
+        },
+        {
+          "start": 24328,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 41372,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 41918,
+          "before": "desk_yuna",
+          "after": "reception"
+        },
+        {
+          "start": 43934,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 51491,
+          "before": "",
+          "after": "approach_"
+        },
+        {
+          "start": 55860,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 56476,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 72406,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 80926,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 81984,
+          "before": "hani_office\",\"anchorId\":\"desk_ieum",
+          "after": "secretariat\",\"anchorId\":\"desk_yuna"
+        },
+        {
+          "start": 84495,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"side_desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"approach_reception"
+        },
+        {
+          "start": 86759,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 87817,
+          "before": "hani_office\",\"anchorId\":\"desk_ieum",
+          "after": "secretariat\",\"anchorId\":\"desk_yuna"
+        },
+        {
+          "start": 93259,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 94317,
+          "before": "hani_office\",\"anchorId\":\"desk_ieum",
+          "after": "secretariat\",\"anchorId\":\"desk_yuna"
+        },
+        {
+          "start": 95639,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 96697,
+          "before": "hani_office\",\"anchorId\":\"desk_ieum",
+          "after": "secretariat\",\"anchorId\":\"desk_yuna"
+        },
+        {
+          "start": 101921,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 128950,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 129496,
+          "before": "desk_yuna",
+          "after": "reception"
+        }
+      ]
+    },
+    "assets/data/office-actions-221.json": {
+      "beforeSha256": "45994d8923bc5ffa0062320498ed4ccaade508f363a4d7b73c5dec7af7fda0bf",
+      "afterSha256": "b129a777bd5d47a586cc6fd3be85791305a4259218562e330dc8e29a47ad3b9c",
+      "edits": [
+        {
+          "start": 1803,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 4048,
+          "before": "hani_office\",\"anchorId\":\"desk_ieum",
+          "after": "secretariat\",\"anchorId\":\"desk_yuna"
+        },
+        {
+          "start": 4507,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 5565,
+          "before": "hani_office\",\"anchorId\":\"desk_ieum",
+          "after": "secretariat\",\"anchorId\":\"desk_yuna"
+        },
+        {
+          "start": 6733,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 7791,
+          "before": "hani_office\",\"anchorId\":\"desk_ieum",
+          "after": "secretariat\",\"anchorId\":\"desk_yuna"
+        },
+        {
+          "start": 10048,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"side_desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"approach_reception"
+        },
+        {
+          "start": 12190,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 13248,
+          "before": "hani_office\",\"anchorId\":\"desk_ieum",
+          "after": "secretariat\",\"anchorId\":\"desk_yuna"
+        },
+        {
+          "start": 17903,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 18961,
+          "before": "hani_office\",\"anchorId\":\"desk_ieum",
+          "after": "secretariat\",\"anchorId\":\"desk_yuna"
+        },
+        {
+          "start": 20120,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 21178,
+          "before": "hani_office\",\"anchorId\":\"desk_ieum",
+          "after": "secretariat\",\"anchorId\":\"desk_yuna"
+        },
+        {
+          "start": 25561,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 44299,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 44845,
+          "before": "desk_yuna",
+          "after": "reception"
+        },
+        {
+          "start": 47092,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 55573,
+          "before": "",
+          "after": "approach_"
+        },
+        {
+          "start": 60481,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 61174,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 78721,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 87066,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 88124,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 89185,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 98163,
+          "before": "yuna",
+          "after": "ieum"
+        },
+        {
+          "start": 98387,
+          "before": "yuna",
+          "after": "ieum"
+        },
+        {
+          "start": 99352,
+          "before": "yuna",
+          "after": "ieum"
+        },
+        {
+          "start": 99576,
+          "before": "yuna",
+          "after": "ieum"
+        },
+        {
+          "start": 100543,
+          "before": "yuna",
+          "after": "ieum"
+        },
+        {
+          "start": 100767,
+          "before": "yuna",
+          "after": "ieum"
+        },
+        {
+          "start": 101979,
+          "before": "secretariat",
+          "after": "lobby"
+        },
+        {
+          "start": 102864,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 103990,
+          "before": "secretariat",
+          "after": "lobby"
+        },
+        {
+          "start": 106360,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 108659,
+          "before": "4f\",\"anchorId\":\"window_4",
+          "after": "1f\",\"anchorId\":\"window_1"
+        },
+        {
+          "start": 110450,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 115291,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 116349,
+          "before": "hani_office\",\"anchorId\":\"desk_ieum",
+          "after": "secretariat\",\"anchorId\":\"desk_yuna"
+        },
+        {
+          "start": 119014,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"side_desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"approach_reception"
+        },
+        {
+          "start": 121355,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 122413,
+          "before": "hani_office\",\"anchorId\":\"desk_ieum",
+          "after": "secretariat\",\"anchorId\":\"desk_yuna"
+        },
+        {
+          "start": 128163,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 129221,
+          "before": "hani_office\",\"anchorId\":\"desk_ieum",
+          "after": "secretariat\",\"anchorId\":\"desk_yuna"
+        },
+        {
+          "start": 130620,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 131678,
+          "before": "hani_office\",\"anchorId\":\"desk_ieum",
+          "after": "secretariat\",\"anchorId\":\"desk_yuna"
+        },
+        {
+          "start": 137133,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 166164,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 166710,
+          "before": "desk_yuna",
+          "after": "reception"
+        },
+        {
+          "start": 170131,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 174737,
+          "before": "yuna",
+          "after": "ieum"
+        },
+        {
+          "start": 174961,
+          "before": "yuna",
+          "after": "ieum"
+        },
+        {
+          "start": 176413,
+          "before": "secretariat",
+          "after": "lobby"
+        },
+        {
+          "start": 177549,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 178932,
+          "before": "secretariat",
+          "after": "lobby"
+        },
+        {
+          "start": 181562,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        },
+        {
+          "start": 184118,
+          "before": "4f\",\"anchorId\":\"window_4",
+          "after": "1f\",\"anchorId\":\"window_1"
+        },
+        {
+          "start": 186157,
+          "before": "4f\",\"room\":\"secretariat\",\"anchorId\":\"desk_yuna",
+          "after": "1f\",\"room\":\"lobby\",\"anchorId\":\"reception"
+        }
+      ]
+    },
+    "data/hani-building/art-map-v1.json": {
+      "beforeSha256": "3bf4b5d50fdf405c002bb380e3a91181cb27677ef511ef7bf2c275ee8eacd798",
+      "afterSha256": "b1c99b6624b22e2ff55bcd72bbd374f21f361a07d921bf00272f10292eb94755",
+      "edits": [
+        {
+          "start": 8616,
+          "before": "",
+          "after": ",\r\n          \"seatNote\": \"회장 비서실 · 동쪽 책상 · 이음 사원\""
+        },
+        {
+          "start": 9698,
+          "before": "오른쪽 기존 의자",
+          "after": "빈 자리 (여유석)"
+        }
+      ]
+    },
+    "data/hani-building/office-places.json": {
+      "beforeSha256": "b97e49e365b515ddc2a2b7d9fcbf120b6b3d5bff571c4c4f56fed3993da31512",
+      "afterSha256": "be6ffea80678a0fd3f01303faa634fd51404f0ee5b3d3c374c9669af28298e0f",
+      "edits": [
+        {
+          "start": 1717,
+          "before": "이음 · 전략기획실 사원 · 하니 전무님 옆\",\n      \"capacity\": 1,\n      \"occupant\": \"ieum\"",
+          "after": "빈 자리\",\n      \"capacity\": 1,\n      \"occupant\": null"
+        },
+        {
+          "start": 1897,
+          "before": "\"ieum\"",
+          "after": "null"
+        },
+        {
+          "start": 2196,
+          "before": "이음",
+          "after": "빈 자리"
+        },
+        {
+          "start": 2399,
+          "before": "이음",
+          "after": "빈 자리"
+        }
+      ]
+    },
+    "data/hani-building/spatial-contract.json": {
+      "beforeSha256": "c85e69d2754406f602d0741f8a1559ab17121d7a5a46f4a91ea5270f626f7634",
+      "afterSha256": "a1061f6becf9b8bcbcb8e100b4f1840bd2131ffad6714514dfcc0a5359a0556c",
+      "edits": [
+        {
+          "start": 8498,
+          "before": "유나",
+          "after": "이음"
+        },
+        {
+          "start": 58002,
+          "before": "유나 · 사원\",\n      \"capacity\": 1,\n      \"occupant\": \"yuna",
+          "after": "이음 · 사원\",\n      \"capacity\": 1,\n      \"occupant\": \"ieum"
+        },
+        {
+          "start": 58192,
+          "before": "yuna",
+          "after": "ieum"
+        },
+        {
+          "start": 58501,
+          "before": "유나",
+          "after": "이음"
+        },
+        {
+          "start": 58706,
+          "before": "유나",
+          "after": "이음"
+        },
+        {
+          "start": 78068,
+          "before": " · 4F 유나에게 연결\",\n      \"capacity\": 1",
+          "after": "데스크 · 유나 사원\",\n      \"capacity\": 1,\n      \"occupant\": \"yuna\""
+        },
+        {
+          "start": 78292,
+          "before": "null",
+          "after": "\"yuna\""
+        },
+        {
+          "start": 78593,
+          "before": " · 4F 유나에게 연결",
+          "after": "데스크 · 유나 사원"
+        },
+        {
+          "start": 173553,
+          "before": "desk_yuna",
+          "after": "reception"
+        },
+        {
+          "start": 173677,
+          "before": "desk_yuna",
+          "after": "reception"
+        },
+        {
+          "start": 181856,
+          "before": "ieum",
+          "after": "yuna"
+        },
+        {
+          "start": 181980,
+          "before": "ieum",
+          "after": "yuna"
+        }
+      ]
+    },
+    "hani-office-live.js": {
+      "beforeSha256": "b8c0facf63a9e26d04bfd2601c42fce24bfc3569a44684e7a4d163594a48474f",
+      "afterSha256": "8b4f310112dde3fb1cfd2fbd4aff6c86fe7ef76abf440753beda49d2ea7fa9a0",
+      "edits": [
+        {
+          "start": 351521,
+          "before": "하니 전무님 옆",
+          "after": "4층 비서실 자리"
+        }
+      ]
+    }
+  }
+}

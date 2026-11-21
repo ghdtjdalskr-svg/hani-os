@@ -1,0 +1,223 @@
+{
+  "baseline": {
+    "files": 276,
+    "exit0": 168,
+    "failed": 105,
+    "timeout": 3,
+    "pass": 1522,
+    "fail": 66,
+    "skip": 10,
+    "scriptPass": 147
+  },
+  "current": {
+    "files": 280,
+    "exit0": 178,
+    "failed": 99,
+    "timeout": 3,
+    "pass": 1556,
+    "fail": 56,
+    "skip": 10,
+    "scriptPass": 149
+  },
+  "missing": [],
+  "changed": [
+    {
+      "file": "hani-brand-heroes-218.test.mjs",
+      "baseline": {
+        "file": "hani-brand-heroes-218.test.mjs",
+        "exit": 1,
+        "timeout": false,
+        "pass": 1,
+        "fail": 2,
+        "skip": 0,
+        "scriptPass": 0,
+        "eperm": false,
+        "seconds": 1.08
+      },
+      "current": {
+        "file": "hani-brand-heroes-218.test.mjs",
+        "exit": 0,
+        "timeout": false,
+        "pass": 3,
+        "fail": 0,
+        "skip": 0,
+        "scriptPass": 0,
+        "eperm": false,
+        "seconds": 1.58
+      }
+    },
+    {
+      "file": "hani-login-a-204.test.mjs",
+      "baseline": {
+        "file": "hani-login-a-204.test.mjs",
+        "exit": 1,
+        "timeout": false,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0,
+        "scriptPass": 0,
+        "eperm": false,
+        "seconds": 0.4
+      },
+      "current": {
+        "file": "hani-login-a-204.test.mjs",
+        "exit": 0,
+        "timeout": false,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0,
+        "scriptPass": 1,
+        "eperm": false,
+        "seconds": 0.45
+      }
+    },
+    {
+      "file": "hani-ocr-accuracy-224.test.mjs",
+      "baseline": {
+        "file": "hani-ocr-accuracy-224.test.mjs",
+        "exit": 1,
+        "timeout": false,
+        "pass": 13,
+        "fail": 1,
+        "skip": 1,
+        "scriptPass": 0,
+        "eperm": false,
+        "seconds": 0.78
+      },
+      "current": {
+        "file": "hani-ocr-accuracy-224.test.mjs",
+        "exit": 0,
+        "timeout": false,
+        "pass": 14,
+        "fail": 0,
+        "skip": 1,
+        "scriptPass": 0,
+        "eperm": false,
+        "seconds": 1.17
+      }
+    },
+    {
+      "file": "hani-office-219.test.mjs",
+      "baseline": {
+        "file": "hani-office-219.test.mjs",
+        "exit": 1,
+        "timeout": false,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0,
+        "scriptPass": 0,
+        "eperm": false,
+        "seconds": 1.56
+      },
+      "current": {
+        "file": "hani-office-219.test.mjs",
+        "exit": 0,
+        "timeout": false,
+        "pass": 6,
+        "fail": 0,
+        "skip": 0,
+        "scriptPass": 1,
+        "eperm": false,
+        "seconds": 3.07
+      }
+    },
+    {
+      "file": "hani-release-300.test.mjs",
+      "baseline": {
+        "file": "hani-release-300.test.mjs",
+        "exit": 1,
+        "timeout": false,
+        "pass": 9,
+        "fail": 1,
+        "skip": 0,
+        "scriptPass": 0,
+        "eperm": false,
+        "seconds": 2.83
+      },
+      "current": {
+        "file": "hani-release-300.test.mjs",
+        "exit": 0,
+        "timeout": false,
+        "pass": 10,
+        "fail": 0,
+        "skip": 0,
+        "scriptPass": 0,
+        "eperm": false,
+        "seconds": 3.19
+      }
+    },
+    {
+      "file": "hani-reviewed-release-baseline.test.mjs",
+      "baseline": {
+        "file": "hani-reviewed-release-baseline.test.mjs",
+        "exit": 1,
+        "timeout": false,
+        "pass": 12,
+        "fail": 6,
+        "skip": 0,
+        "scriptPass": 0,
+        "eperm": false,
+        "seconds": 2.04
+      },
+      "current": {
+        "file": "hani-reviewed-release-baseline.test.mjs",
+        "exit": 0,
+        "timeout": false,
+        "pass": 18,
+        "fail": 0,
+        "skip": 0,
+        "scriptPass": 0,
+        "eperm": false,
+        "seconds": 12.46
+      }
+    }
+  ],
+  "regressions": [],
+  "newFailureTitles": [],
+  "newFiles": [
+    {
+      "file": "hani-ieum-seat.test.mjs",
+      "exit": 0,
+      "timeout": false,
+      "pass": 5,
+      "fail": 0,
+      "skip": 0,
+      "scriptPass": 0,
+      "eperm": false,
+      "seconds": 0.44
+    },
+    {
+      "file": "hani-ieum-seat-history.test.mjs",
+      "exit": 0,
+      "timeout": false,
+      "pass": 2,
+      "fail": 0,
+      "skip": 0,
+      "scriptPass": 0,
+      "eperm": false,
+      "seconds": 0.44
+    },
+    {
+      "file": "hani-ieum-seat-layer.test.mjs",
+      "exit": 0,
+      "timeout": false,
+      "pass": 4,
+      "fail": 0,
+      "skip": 0,
+      "scriptPass": 0,
+      "eperm": false,
+      "seconds": 0.46
+    },
+    {
+      "file": "hani-release-301.test.mjs",
+      "exit": 0,
+      "timeout": false,
+      "pass": 7,
+      "fail": 0,
+      "skip": 0,
+      "scriptPass": 0,
+      "eperm": false,
+      "seconds": 3
+    }
+  ]
+}

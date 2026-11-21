@@ -1,3 +1,4 @@
+require('./hani-audit-1-preload.cjs'); // Restore exact main299 before the office inverse chain.
 // Exact outer inverse for the approved daily-cap patch. Never strips arbitrary edits.
 const fs=require('node:fs'),assert=require('node:assert/strict'),{createHash}=require('node:crypto'),path=require('node:path');
 const {projectPreMascotLabelSource}=require('./hani-office-mascot-label-source.cjs');
