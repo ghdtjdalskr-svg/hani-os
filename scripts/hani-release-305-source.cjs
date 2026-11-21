@@ -1,3 +1,4 @@
+require('./hani-helper-bubble-preload.cjs'); // Helper bubble precedes every305 capture.
 // Test-only released305 metadata/catalog -> exact304 input before every older reader.
 // The single304 bootstrap require is also inverted for historical source tests.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
