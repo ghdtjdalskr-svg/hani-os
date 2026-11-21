@@ -1,3 +1,4 @@
+import './hani-lounge-queen-v3-preload.cjs'; // Exact queen inverse before legacy assertions.
 // node scripts/hani-board-community.test.mjs — synthetic records, no network/user data.
 import assert from "node:assert/strict";
 import fs from "node:fs";

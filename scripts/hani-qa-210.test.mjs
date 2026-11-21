@@ -1,3 +1,4 @@
+import './hani-lounge-queen-v3-preload.cjs'; // Exact queen inverse before legacy assertions.
 import {readReviewedReleaseBaseline as readBranchBaseline,readReviewedCurrentSource} from './hani-stale39-reviewed-source.mjs';
 import {withoutHeroRestore} from './hani-hero-restore-preservation.mjs';
 import test from 'node:test';

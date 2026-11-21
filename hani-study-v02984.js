@@ -802,6 +802,40 @@
 #study .study-quick-note{margin-top:16px}
 .home-task-mini-item.learning-derived{cursor:pointer;border-left:3px solid #8b78e8;padding-left:9px}.home-task-mini-item.learning-derived>i{background:#8b78e8!important}.home-task-mini-item.learning-derived b:before{content:"📚 ";}
 @media(max-width:800px){#study .study-engine-grid{grid-template-columns:1fr}#study .study-hero-v02984{align-items:flex-start;flex-direction:column}#study .study-project-form{grid-template-columns:1fr}#study .study-project-form .span2{grid-column:auto}#study .study-card-v02984{padding:13px}#study .study-submit-wrap{bottom:8px}#study .study-question{padding:12px}.study-hero-meta{width:100%}.study-chip{flex:1;text-align:center}#study .study-wrong-answer{grid-template-columns:1fr}#study .study-tab-toolbar select{width:100%;max-width:none}}
+:root[data-finish="midnight-black"] #study.hani-study-v02984,
+:root[data-finish="titanium-graphite"] #study.hani-study-v02984{--study:var(--structure-accent);--study-soft:var(--surface-raised);--study-line:var(--border-subtle);--panel:var(--surface-panel);--line:var(--border-subtle)}
+:root[data-finish="midnight-black"] #study.hani-study-v02984 :is(.study-chip,.study-subtabs,.study-card-v02984,.study-project-row,.study-project-form input,.study-project-form select,.study-focus-chip,.study-today-card,.study-board,.study-board th,.study-board td,.study-question,.study-choice,.study-explanation,.study-dispute textarea,.study-submit-wrap,.study-wrong-row,.study-wrong-meta span,.study-wrong-group,.study-wrong-answer div,.study-retry,.study-history-card,.study-status),
+:root[data-finish="titanium-graphite"] #study.hani-study-v02984 :is(.study-chip,.study-subtabs,.study-card-v02984,.study-project-row,.study-project-form input,.study-project-form select,.study-focus-chip,.study-today-card,.study-board,.study-board th,.study-board td,.study-question,.study-choice,.study-explanation,.study-dispute textarea,.study-submit-wrap,.study-wrong-row,.study-wrong-meta span,.study-wrong-group,.study-wrong-answer div,.study-retry,.study-history-card,.study-status){background:var(--surface-raised);border-color:var(--border-subtle);color:var(--text-primary)}
+:root[data-finish="midnight-black"] #study.hani-study-v02984 :is(.study-board-wrap,.study-project-tools,.study-dispute),
+:root[data-finish="titanium-graphite"] #study.hani-study-v02984 :is(.study-board-wrap,.study-project-tools,.study-dispute){border-color:var(--border-subtle)}
+:root[data-finish="midnight-black"] #study.hani-study-v02984 .study-progress-line i,
+:root[data-finish="titanium-graphite"] #study.hani-study-v02984 .study-progress-line i{background:var(--border-subtle)}
+:root[data-finish="midnight-black"] #study.hani-study-v02984 :is(.study-subtab.is-active,.study-project-row.is-active,.study-focus-chip:has(input:checked),.study-board-row:hover,.study-board-row.is-active),
+:root[data-finish="titanium-graphite"] #study.hani-study-v02984 :is(.study-subtab.is-active,.study-project-row.is-active,.study-focus-chip:has(input:checked),.study-board-row:hover,.study-board-row.is-active){background:color-mix(in srgb,var(--surface-raised) 82%,var(--structure-accent));border-color:var(--border-strong);color:var(--text-primary)}
+:root[data-finish="midnight-black"] #study.hani-study-v02984 :is(.study-subtab,.study-project-row span,.study-empty,.study-project-form label,.study-main-empty,.study-today-title span,.study-submit-wrap .sub,.study-wrong-row p,.study-wrong-group-title span),
+:root[data-finish="titanium-graphite"] #study.hani-study-v02984 :is(.study-subtab,.study-project-row span,.study-empty,.study-project-form label,.study-main-empty,.study-today-title span,.study-submit-wrap .sub,.study-wrong-row p,.study-wrong-group-title span){color:var(--text-secondary)}
+:root[data-finish="midnight-black"] #study.hani-study-v02984 :is(.study-main-empty b,.study-board-title,.study-explanation b,.study-score),
+:root[data-finish="titanium-graphite"] #study.hani-study-v02984 :is(.study-main-empty b,.study-board-title,.study-explanation b,.study-score){color:var(--text-primary)}
+:root[data-finish="midnight-black"] #study.hani-study-v02984 .study-board-no,
+:root[data-finish="titanium-graphite"] #study.hani-study-v02984 .study-board-no{color:var(--text-secondary)!important}
+:root[data-finish="midnight-black"] #study.hani-study-v02984 .study-board-score,
+:root[data-finish="titanium-graphite"] #study.hani-study-v02984 .study-board-score{color:var(--structure-accent)!important}
+:root[data-finish="midnight-black"] #study.hani-study-v02984 :is(.study-kicker,.study-wrong-group summary:after,.study-project-row .study-project-state,.study-question-head span),
+:root[data-finish="titanium-graphite"] #study.hani-study-v02984 :is(.study-kicker,.study-wrong-group summary:after,.study-project-row .study-project-state,.study-question-head span){background:var(--surface-panel);color:var(--structure-accent)}
+:root[data-finish="midnight-black"] #study.hani-study-v02984 .study-kicker,
+:root[data-finish="titanium-graphite"] #study.hani-study-v02984 .study-kicker{background:transparent;color:var(--structure-accent)}
+:root[data-finish="midnight-black"] #study.hani-study-v02984 :is(.study-project-row .study-project-state.paused,.study-status.pending,.study-status.in_progress),
+:root[data-finish="titanium-graphite"] #study.hani-study-v02984 :is(.study-project-row .study-project-state.paused,.study-status.pending,.study-status.in_progress){background:color-mix(in srgb,var(--surface-raised) 82%,var(--structure-accent));color:var(--text-primary)}
+:root[data-finish="midnight-black"] #study.hani-study-v02984 :is(.study-status.completed,.study-question.is-graded .study-choice.is-correct),
+:root[data-finish="titanium-graphite"] #study.hani-study-v02984 :is(.study-status.completed,.study-question.is-graded .study-choice.is-correct){background:color-mix(in srgb,var(--surface-raised) 82%,var(--invest-up,var(--structure-accent)));border-color:var(--border-strong);color:var(--text-primary)}
+:root[data-finish="midnight-black"] #study.hani-study-v02984 :is(.study-status.failed,.study-question.is-graded .study-choice.is-wrong),
+:root[data-finish="titanium-graphite"] #study.hani-study-v02984 :is(.study-status.failed,.study-question.is-graded .study-choice.is-wrong){background:color-mix(in srgb,var(--surface-raised) 82%,var(--invest-down,var(--structure-accent)));border-color:var(--border-strong);color:var(--text-primary)}
+:root[data-finish="midnight-black"] .study-popup-exam [data-exam-stamp] strong,
+:root[data-finish="titanium-graphite"] .study-popup-exam [data-exam-stamp] strong{background:var(--surface-raised);border-color:var(--invest-up,var(--structure-accent));color:var(--invest-up,var(--structure-accent))}
+:root[data-finish="midnight-black"] .home-task-mini-item.learning-derived,
+:root[data-finish="titanium-graphite"] .home-task-mini-item.learning-derived{border-left-color:var(--structure-accent);color:var(--text-primary)}
+:root[data-finish="midnight-black"] .home-task-mini-item.learning-derived>i,
+:root[data-finish="titanium-graphite"] .home-task-mini-item.learning-derived>i{background:var(--structure-accent)!important}
 `;
     document.head.appendChild(el);
   }
@@ -1236,7 +1270,7 @@
     if(chibiNote){chibiNote.hidden=true;main.before(chibiNote);}
     const project = projectById(activeProjectId);
     if (!project) {
-      main.innerHTML = `<div class="study-card-v02984 study-main-empty"><div><b>학습 프로젝트를 선택해 주세요.</b><span>왼쪽에서 프로젝트를 만들면 Daily Quiz가 시작됩니다.</span></div></div>`;
+      main.innerHTML = `<div class="study-card-v02984 study-main-empty"><div><b>학습 프로젝트를 선택해 주세요.</b><span>프로젝트 설정에서 만들면 오늘의 퀴즈가 시작됩니다.</span></div></div>`;
       return;
     }
     const view = normalizeProject(project), date = generationDate(project), allQuizzes = projectQuizzes(project.id), todayQuiz = generationPeriodQuiz(project, date), pending = allQuizzes.filter(x => x.status !== 'completed'), completed = allQuizzes.filter(x => x.status === 'completed'), archiveMonths = [...new Set(allQuizzes.map(x => quizDate(x).slice(0,7)).filter(x => /^\d{4}-\d{2}$/.test(x)))].sort((a,b)=>b.localeCompare(a)), filteredQuizzes = quizArchiveMonth === 'all' ? allQuizzes : allQuizzes.filter(x => quizDate(x).startsWith(quizArchiveMonth)), archivePages = Math.max(1, Math.ceil(filteredQuizzes.length / QUIZ_ARCHIVE_PAGE_SIZE));
