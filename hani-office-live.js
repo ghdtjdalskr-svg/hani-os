@@ -308,6 +308,79 @@
   }
   function monitorOpacity(now,reduced=false,visible=true){return (!visible||reduced) ? .42 : .42+.08*Math.sin(Number(now)*Math.PI/6000)}
   function visualPoint(anchor){const point=art?.anchors[anchor.id];return point?[point.x,point.y]:[anchor.x/10,anchor.y/6.4]}
+  function easeRun(u,durationSec){
+    u=Math.max(0,Math.min(1,u));
+    if(u<=0)return 0;if(u>=1)return 1;
+    const r=durationSec>0?Math.min(.5,.45/durationSec):.5;
+    if(u<r)return u*u/(2*r*(1-r));
+    if(u<=1-r)return (u-r/2)/(1-r);
+    const w=1-u;return 1-w*w/(2*r*(1-r));
+  }
+  function compileCurve(waypoints,w=art?.width||1672,h=art?.height||941){
+    const pts=[];
+    for(const p of waypoints){
+      const prev=pts.at(-1);
+      if(!prev||Math.hypot((p[0]-prev[0])*w/100,(p[1]-prev[1])*h/100)>=.01)pts.push(p);
+    }
+    if(pts.length<2)return {segs:[],totalLen:0,last:pts[0]||[0,0]};
+    const px=p=>[p[0]*w/100,p[1]*h/100],segs=[];
+    let cursor=pts[0],total=0;
+    const addLine=(a,b)=>{
+      const len=Math.hypot((b[0]-a[0])*w/100,(b[1]-a[1])*h/100);
+      if(len<.001)return;
+      segs.push({kind:'line',a,b,len,cumStart:total,cumEnd:total+len});total+=len;
+    };
+    const addQuad=(a,c,b)=>{
+      let len=0,prev=px(a);
+      for(let k=1;k<=4;k++){
+        const u=k/4,m=1-u,qx=m*m*a[0]+2*m*u*c[0]+u*u*b[0],qy=m*m*a[1]+2*m*u*c[1]+u*u*b[1],cur=[qx*w/100,qy*h/100];
+        len+=Math.hypot(cur[0]-prev[0],cur[1]-prev[1]);prev=cur;
+      }
+      if(len<.001)return;
+      segs.push({kind:'quad',a,c,b,len,cumStart:total,cumEnd:total+len});total+=len;
+    };
+    for(let i=1;i<pts.length-1;i++){
+      const p0=px(pts[i-1]),p1=px(pts[i]),p2=px(pts[i+1]);
+      const l1=Math.hypot(p1[0]-p0[0],p1[1]-p0[1]),l2=Math.hypot(p2[0]-p1[0],p2[1]-p1[1]);
+      const dot=l1>0&&l2>0?((p1[0]-p0[0])*(p2[0]-p1[0])+(p1[1]-p0[1])*(p2[1]-p1[1]))/(l1*l2):1;
+      const trim=dot<.985?Math.min(14,l1*.3,l2*.3):0;
+      if(trim>=1){
+        const a=[pts[i][0]-(p1[0]-p0[0])/l1*trim/w*100,pts[i][1]-(p1[1]-p0[1])/l1*trim/h*100];
+        const b=[pts[i][0]+(p2[0]-p1[0])/l2*trim/w*100,pts[i][1]+(p2[1]-p1[1])/l2*trim/h*100];
+        addLine(cursor,a);addQuad(a,pts[i],b);cursor=b;
+      }else{
+        addLine(cursor,pts[i]);cursor=pts[i];
+      }
+    }
+    addLine(cursor,pts.at(-1));
+    return {segs,totalLen:total,last:pts.at(-1)};
+  }
+  function sampleCurve(curve,dist){
+    if(!curve.segs.length)return {position:curve.last,dx:0};
+    const d=Math.max(0,Math.min(curve.totalLen,dist));
+    let seg=curve.segs.at(-1);
+    for(const s of curve.segs)if(d<=s.cumEnd){seg=s;break}
+    const u=seg.len>0?Math.max(0,Math.min(1,(d-seg.cumStart)/seg.len)):1;
+    if(seg.kind==='line')return {position:[seg.a[0]+(seg.b[0]-seg.a[0])*u,seg.a[1]+(seg.b[1]-seg.a[1])*u],dx:seg.b[0]-seg.a[0]};
+    const m=1-u;
+    return {
+      position:[m*m*seg.a[0]+2*m*u*seg.c[0]+u*u*seg.b[0],m*m*seg.a[1]+2*m*u*seg.c[1]+u*u*seg.b[1]],
+      dx:2*m*(seg.c[0]-seg.a[0])+2*u*(seg.b[0]-seg.c[0])
+    };
+  }
+  function buildWalkRuns(legs){
+    const runs=[],w=art?.width||1672,h=art?.height||941;let cur=null;
+    for(const leg of legs){
+      const a=anchors.get(leg.from),b=anchors.get(leg.to);
+      if(a.floor!==b.floor){cur=null;continue}
+      if(!cur||Math.abs(leg.start-cur.end)>1e-6||cur.floor!==a.floor){
+        cur={floor:a.floor,start:leg.start,end:leg.end,waypoints:[visualPoint(a),visualPoint(b)]};
+        runs.push(cur);
+      }else{cur.end=leg.end;cur.waypoints.push(visualPoint(b))}
+    }
+    for(const run of runs){run.duration=run.end-run.start;run.curve=compileCurve(run.waypoints,w,h)}
+    return runs;
+  }
   // Dijkstra over explicit canon edges. Intermediate chairs and stairs are forbidden.
   const routeTrees=new Map(),adjacent=new Map();
   for(const e of canon?.edges||[]){if(e.kind==='stairs')continue;
@@ -899,14 +972,20 @@
     }
     function travelSeconds(a,b){let targets=travelCache.get(a.id);if(!targets){targets=new Map();travelCache.set(a.id,targets)}if(targets.has(b.id))return targets.get(b.id);const p=pixels(visualPoint(a)),q=pixels(visualPoint(b)),value=a.floor!==b.floor?1.6:Math.hypot(p[0]-q[0],p[1]-q[1])/SCREEN_SPEED;targets.set(b.id,value);return value}
     function pathDuration(nodes){if(!pathDurations.has(nodes))pathDurations.set(nodes,nodes.slice(1).reduce((sum,to,i)=>sum+travelSeconds(nodes[i],to),0));return pathDurations.get(nodes)}
+    const walkRunCache=new WeakMap();
+    function phaseRuns(legs){let runs=walkRunCache.get(legs);if(!runs){runs=buildWalkRuns(legs);walkRunCache.set(legs,runs)}return runs}
     function stateAt(event,t,seconds,reduced=false){
       const outEnd=t.out.at(-1)?.end??event.start,backStart=t.back[0]?.start??event.end;
       const returned=t.back.length&&seconds>=t.back.at(-1).end;
       const state=returned?'AT_HOME':seconds<outEnd?'GOING':seconds>=backStart?'RETURNING':t.seat.anchor===t.home.anchorId?'AT_HOME':'AT_PLACE';
       const leg=(seconds<outEnd||seconds>=backStart)?(seconds<outEnd?t.out:t.back).find(l=>l.start<=seconds&&seconds<l.end):null;
       if(leg&&!reduced){
-        const a=anchors.get(leg.from),b=anchors.get(leg.to),pa=visualPoint(a),pb=visualPoint(b),ratio=(seconds-leg.start)/(leg.end-leg.start);
-        return {state,seat:slot(a.id,'stand'),floor:a.floor,walking:a.floor===b.floor,waiting:a.floor!==b.floor,position:a.floor===b.floor?[pa[0]+(pb[0]-pa[0])*ratio,pa[1]+(pb[1]-pa[1])*ratio]:pa};
+        const a=anchors.get(leg.from),b=anchors.get(leg.to),pa=visualPoint(a);
+        if(a.floor!==b.floor)return {state,seat:slot(a.id,'stand'),floor:a.floor,walking:false,waiting:true,position:pa};
+        const phase=seconds<outEnd?t.out:t.back,run=phaseRuns(phase).find(r=>r.start<=seconds&&seconds<r.end);
+        const u=run&&run.duration>0?(seconds-run.start)/run.duration:(seconds-leg.start)/(leg.end-leg.start);
+        const pos=run?sampleCurve(run.curve,easeRun(u,run.duration)*run.curve.totalLen).position:pa;
+        return {state,seat:slot(a.id,'stand'),floor:a.floor,walking:true,waiting:false,position:pos};
       }
       if(!reduced&&(state==='GOING'||state==='RETURNING')){
         const phase=state==='GOING'?t.out:t.back,previous=phase.filter(l=>l.end<=seconds).at(-1),next=phase.find(l=>l.start>seconds);
@@ -2001,7 +2080,7 @@
         // chair. Keep the long-rest words and reduced-motion seated pose intact.
         if(card?.id==='cafe-1f'&&performing&&!options.reducedMotion&&Math.floor(seconds+seed(p.id)%30)%30===0)state.seat=slot(t.seat.anchor,'stand');
         return {id:p.id,...state,visitor:!!p.visitor,...(p.visitor?event.visitor:{}),idle:!event||!!card,plain,stroll:!!card&&!p.visitor&&!options.reducedMotion,home:p.home?.floor||'1f',
-          pose:state.walking?(Math.floor(seconds*5)%2?'walk-a':'walk-b'):state.seat.posture,activity:p.visitor?'visit':event&&!card?(action.personalNonWork?'rest':action.layer===3?'meeting':'work'):lounge||card?.id==='cafe-1f'&&state.state==='AT_PLACE'?'rest':'work',
+          pose:state.walking?(Math.floor((seconds+seed(day+'|walk|'+p.id)%10/10)*5)%2?'walk-a':'walk-b'):state.seat.posture,activity:p.visitor?'visit':event&&!card?(action.personalNonWork?'rest':action.layer===3?'meeting':'work'):lounge||card?.id==='cafe-1f'&&state.state==='AT_PLACE'?'rest':'work',
           actionId:event&&!card&&(performing||state.state==='AT_PLACE')?action.id:'base-work',eventId:card?undefined:event?.id,outingId:card?event.id:undefined,groupIds:event?.group,placeId:card?.id,targetAnchor:t?.seat.anchor,line,...(event?.patrol?{patrol:event.patrol,patrolArrival:t.out.at(-1).end}:{}),
           emoji:performing&&!card?(action.actorOverrides?.[p.id]?.emoji||action.performance.emoji):'',personalNonWork:action?.personalNonWork};
       };
@@ -3113,10 +3192,10 @@
   // A visit is part of the existing companion rhythm. Only this in-memory
   // controller remembers daily turns; the resident tick owns movement/speech.
   function createKidsVisits(){
-    let day='',nextAt=0,active=null,counts=new Map(),patrolSeen=new Map();
+    let day='',nextAt=0,active=null,counts=new Map(),patrolSeen=new Map(),facings=new Map();
     const position=p=>p.position||(p.seat&&[p.seat.x,p.seat.y]);
     const distance=(a,b)=>Math.hypot((a[0]-b[0])*art.width/100,(a[1]-b[1])*art.height/100);
-    function reset(now){const today=koreaTime(now).toISOString().slice(0,10);if(today!==day){day=today;nextAt=now.getTime()+period()*1000;active=null;counts=new Map();patrolSeen=new Map()}}
+    function reset(now){const today=koreaTime(now).toISOString().slice(0,10);if(today!==day){day=today;nextAt=now.getTime()+period()*1000;active=null;counts=new Map();patrolSeen=new Map();facings=new Map()}}
     function period(){return 30+residentSeed(day+'|kids-visit|'+[...counts.values()].reduce((a,b)=>a+b,0))%31}
     function peers(now,staff,states){
       const sister=states.find(p=>p.id==='kid-suyeon'),chair=staff?.floors?.flatMap(f=>f.people||[]).find(p=>p.id==='seongmin');
@@ -3173,6 +3252,10 @@
       const lengths=path.slice(1).map((p,i)=>distance(p,path[i])),total=lengths.reduce((a,b)=>a+b,0);let remaining=Math.max(0,Math.min(1,progress))*total;
       for(let i=0;i<lengths.length;i++){if(remaining<=lengths[i]){const t=lengths[i]?remaining/lengths[i]:1,point=[path[i][0]+(path[i+1][0]-path[i][0])*t,path[i][1]+(path[i+1][1]-path[i][1])*t];return prefix?[...path.slice(0,i+1),point]:point}remaining-=lengths[i]}return prefix?path:path.at(-1);
     }
+    function segmentAt(path,progress){
+      const lengths=path.slice(1).map((p,i)=>distance(p,path[i])),total=lengths.reduce((a,b)=>a+b,0);let remaining=Math.max(0,Math.min(1,progress))*total;
+      for(let i=0;i<lengths.length;i++){if(remaining<=lengths[i]||i===lengths.length-1){const t=lengths[i]?Math.min(1,remaining/lengths[i]):1;return {point:[path[i][0]+(path[i+1][0]-path[i][0])*t,path[i][1]+(path[i+1][1]-path[i][1])*t],from:path[i],to:path[i+1]}}remaining-=lengths[i]}return {point:path.at(-1),from:path.at(-2)||path[0],to:path.at(-1)};
+    }
     function cancel(now){if(active&&!active.cancelled){const elapsed=(now.getTime()-active.started)/1000;active.cancelled=true;active.returnAt=now.getTime();active.returnPaths=active.paths.map((p,i)=>sample(p,(elapsed-i*.4)/active.travel,true).slice().reverse());active.line=null}}
     function update(now,staff,states,reduced=false){
       reset(now);const kids=states.filter(p=>p.kid),chair=staff?.floors?.flatMap(f=>f.people||[]).find(p=>p.id==='seongmin');
@@ -3188,9 +3271,12 @@
       active.positions=[];
       for(const [index,id]of ['kid-suyeon','kid-suhyeon'].entries()){
         const child=kids.find(p=>p.id===id),path=returning?(active.returnPaths?.[index]||active.paths[index].slice().reverse()):active.paths[index],progress=returning?(now.getTime()-returnAt)/1000/active.travel:(elapsed-index*.4)/active.travel;
-        child.position=sample(path,progress);active.positions.push(child.position);child.walking=!reduced&&progress>=0&&progress<1;child.pose=child.walking?Math.floor(elapsed*4)%2?'walk-a':'walk-b':'standing';child.facing=(path.at(-1)[0]-path[0][0])<0?'left':'right';delete child.artPose;delete child.scene;delete child.reaction;
+        const seg=segmentAt(path,progress),segDx=(seg.to[0]-seg.from[0])*art.width/100;
+        const jitter=(residentSeed('walk-phase|'+id)%100)/100,wave=(elapsed+jitter)*9;
+        if(Math.abs(segDx)>=6)facings.set(id,segDx<0?'left':'right');
+        child.position=seg.point;active.positions.push(child.position);child.walking=!reduced&&progress>=0&&progress<1;child.pose=child.walking?Math.floor((elapsed+jitter)*4)%2?'walk-a':'walk-b':'standing';child.facing=facings.get(id)||child.facing||'right';delete child.artPose;delete child.scene;delete child.reaction;
         child.activity={...child.activity,kind:'hidden-visit',partnerId:active.actorId};child.visit={key:active.key,actorId:active.actorId,phase:returning?'return':active.line?'talk':'approach'};
-        if(reduced)delete child.motion;else child.motion={bob:child.walking&&index===0?-Math.abs(Math.sin(elapsed*9))*3:0,lean:0,spin:0};
+        if(reduced)delete child.motion;else child.motion={bob:child.walking?-Math.abs(Math.sin(wave))*(index===0?2.8:1.8):0,lean:child.walking?Math.sin(wave)*(index===0?1.6:1.1):0,spin:0};
       }return active;
     }
     function request(now,staff,states,id,reduced=false){
@@ -3201,6 +3287,7 @@
     return {update,request,cancel,current:()=>active};
   }
 
+  const companionPrevFacing=new Map();
   function companionSnapshot(now=new Date(),staff=null,enabled=true,reduced=false,neighbors=[]){
     if(!enabled||!canon||!art)return [];
     const date=koreaTime(now),weekday=date.getUTCDay(),weekend=weekday===0||weekday===6,day=date.toISOString().slice(0,10),seconds=date.getUTCHours()*3600+date.getUTCMinutes()*60+date.getUTCSeconds()+date.getUTCMilliseconds()/1000;
@@ -3229,7 +3316,9 @@
         // Narrow desk sides may need the nearest validated floor stop.
         if(!position)position=[...residentStops.values()].filter(a=>a.floor===floor&&residentSpot(a.id)&&free(floor,a.visual)).sort((a,b)=>Math.hypot(a.visual[0]-center[0],a.visual[1]-center[1])-Math.hypot(b.visual[0]-center[0],b.visual[1]-center[1]))[0]?.visual;
         if(!position)continue;
-        walking=!reduced&&!!chair.walking;pose=walking?(Math.floor(seconds*4)%2?'walk-a':'walk-b'):chair.pose==='sitting'||chair.seat?.posture==='sitting'?'sitting':'standing';
+        const walkJitter=(residentSeed('walk-phase|'+person.id)%100)/100,walkWave=(seconds+walkJitter)*9;
+        walking=!reduced&&!!chair.walking;pose=walking?(Math.floor((seconds+walkJitter)*4)%2?'walk-a':'walk-b'):chair.pose==='sitting'||chair.seat?.posture==='sitting'?'sitting':'standing';
+        if(walking)motion={bob:-Math.abs(Math.sin(walkWave))*(person.id==='kid-suyeon'?2.8:person.id==='kid-suhyeon'?1.8:person.id==='companion-frog'||person.id==='companion-chick'?2.4:1.6),lean:Math.sin(walkWave)*(person.id==='kid-suyeon'?1.6:person.id==='kid-suhyeon'?1.1:1.2),spin:0};
       }else{
         // Off-duty companions stay in their department, on the existing pet rhythm.
         floor=['4f','3f','1f','2f','2f'][person.atlasRow];
@@ -3238,14 +3327,13 @@
         const preferred=available.filter(a=>person.id==='companion-chick'?a.id.startsWith('resident_bori_'):person.id==='companion-fox'?a.id.startsWith('resident_dog_'):true),stops=preferred.length?preferred:available;
         if(!stops.length)continue;
         const index=reduced?seed%stops.length:(rhythm.beat+seed)%stops.length,a=stops[(index+stops.length-1)%stops.length],b=stops[index];usedStops.add(a.id);usedStops.add(b.id);position=b.visual;point=[b.x,b.y];pose=rhythm.beat%3?'sitting':'standing';
-        if(!reduced&&a!==b){motion=petMotion(person.id,day,rhythm.beat,a,b,rhythm.elapsed,v=>free(floor,v));if(motion){({position,point,walking,facing,pose}=motion);if(person.id==='companion-chick'&&walking)motion={...motion,bob:-Math.abs(Math.sin(seconds*9))*2.5}}}
+        if(!reduced&&a!==b){motion=petMotion(person.id,day,rhythm.beat,a,b,rhythm.elapsed,v=>free(floor,v),1,companionPrevFacing.get(person.id)||null);if(motion){({position,point,walking,facing,pose}=motion);companionPrevFacing.set(person.id,facing);if(person.id==='companion-chick'&&walking)motion={...motion,bob:-Math.abs(Math.sin((seconds+(residentSeed('walk-phase|'+person.id)%100)/100)*9))*2.5}}}
       }
       const state={id:person.id,name:person.name,sprite:person.id,pet:!!person.pet,kid:!!person.kid,companion:true,following:follow,floor,anchor:follow?'companion-'+chair.id:person.id+'-'+floor,position,point,walking,facing,pose,...(motion?{motion}:{})};
       if(follow&&person.kid&&chair.patrol){
         const phase=chair.state==='RETURNING'?'return':chair.walking?'walk':floor;
         const line=person.id==='kid-suyeon'?(phase==='1f'?'아빠 나도 코코아!':phase==='5f'?'꽃이다!!':phase==='return'?'아빠 손 꼭 잡고 돌아가자!':'아빠 여기여기!'):(phase==='walk'?'…천천히 가.':'수연이 가방? 내가 들어 줄게.');
         state.scene={key:day+'|patrol|'+chair.patrol.window+'|'+person.id+'|'+phase,line,patrol:true,notBefore:chair.walking?0:now.getTime()+(chair.patrolArrival+(person.id==='kid-suyeon'?10:15)-seconds)*1000};
-        if(person.id==='kid-suyeon'&&walking)state.motion={bob:-Math.abs(Math.sin(seconds*9))*3,lean:Math.sin(seconds*9)*2,spin:0};
       }
       states.push(state);
     }
@@ -3317,14 +3405,17 @@
         if(approach.every((v,i)=>!i||clear(approach[i-1],v))){route=approach;cling=true;break}
       }
     }
-    const duration=reduced?rhythm.period:Math.min(rhythm.period*.8,sister?6:9),progress=Math.min(1,rhythm.elapsed/duration),lengths=route.slice(1).map((v,i)=>distance(route[i],v)),length=lengths.reduce((a,b)=>a+b,0);
-    let cursor=progress*length,position=home,from=home,to=home;
-    for(let i=0;i<lengths.length;i++){if(cursor<=lengths[i]){from=route[i];to=route[i+1];const t=lengths[i]?cursor/lengths[i]:1,e=petEase(t);position=[from[0]+(to[0]-from[0])*e,from[1]+(to[1]-from[1])*e];break}cursor-=lengths[i];}
+    const duration=reduced?rhythm.period:Math.min(rhythm.period*.8,sister?6:9),progress=Math.min(1,rhythm.elapsed/duration),easedProgress=reduced?progress:petEase(progress),lengths=route.slice(1).map((v,i)=>distance(route[i],v)),length=lengths.reduce((a,b)=>a+b,0);
+    let cursor=easedProgress*length,position=home,from=home,to=home;
+    for(let i=0;i<lengths.length;i++){if(cursor<=lengths[i]||i===lengths.length-1){from=route[i];to=route[i+1];const t=lengths[i]?Math.min(1,cursor/lengths[i]):1;position=[from[0]+(to[0]-from[0])*t,from[1]+(to[1]-from[1])*t];break}cursor-=lengths[i];}
     if(safe(position))child.position=position;
-    const moving=length>0&&progress<1&&!(chair.walking&&rhythm.elapsed>rhythm.period*.72);
-    if(moving){child.walking=!reduced;child.pose=reduced?'standing':Math.floor(seconds*4)%2?'walk-a':'walk-b';child.facing=to[0]<from[0]?'left':'right';}
+    const moving=length>0&&progress<1&&!(chair.walking&&rhythm.elapsed>rhythm.period*.72),walkJitter=(residentSeed('walk-phase|'+child.id)%100)/100,walkWave=(seconds+walkJitter)*9,segDx=(to[0]-from[0])*art.width/100;
+    if(moving){child.walking=!reduced;child.pose=reduced?'standing':Math.floor((seconds+walkJitter)*4)%2?'walk-a':'walk-b';if(Math.abs(segDx)>=6)child.facing=segDx<0?'left':'right';}
     if(!chair.walking&&!moving){child.walking=false;child.pose=sister&&action==='wave'?'sitting':sister||action==='beside'?'standing':'sitting';}
-    if(!reduced&&sister)child.motion={bob:action==='bounce'||moving?-Math.abs(Math.sin(seconds*9))*3:0,lean:action==='wave'?Math.sin(seconds*6)*3:0,spin:0};
+    if(!reduced){
+      if(sister)child.motion={bob:action==='bounce'||moving?-Math.abs(Math.sin(walkWave))*2.8:0,lean:moving?Math.sin(walkWave)*1.6:action==='wave'?Math.sin(walkWave*.7)*2.5:0,spin:0};
+      else child.motion={bob:moving?-Math.abs(Math.sin(walkWave))*1.8:0,lean:moving?Math.sin(walkWave)*1.1:0,spin:0};
+    }
     if(reduced)delete child.motion;
     child.activity={key:day+'|kids|'+child.id+'|'+rhythm.beat,kind:action,period:rhythm.period,elapsed:rhythm.elapsed,partnerId:partner?.id};
     // Preserve the logical walk/stop states; only the existing atlas selection
@@ -3421,8 +3512,8 @@
   function residentLife(now,states,reduced){
     const clock=residentClock(now);if(clock.sleeping||reduced)return states;
     for(const pet of states.filter(p=>p.pet&&!p.stroll&&!p.walking&&!p.motion?.active&&!p.affection&&(p.id!=='pet-bori'||p.pose!=='sleep'))){
-      // A shared six-second beat with two-second pet offsets prevents a chorus.
-      const seed=residentSeed('pet-life|'+clock.day+'|'+pet.id),slot=['pet-cat','pet-dog','pet-rabbit','pet-bori'].indexOf(pet.id),period=pet.id==='pet-bori'?12:6,time=clock.seconds+residentSeed('pet-life|'+clock.day)%period-slot*2,beat=Math.floor(time/period),elapsed=time%period;
+      // A shared six-second beat with two-second pet offsets and per-pet jitter prevents a chorus.
+      const seed=residentSeed('pet-life|'+clock.day+'|'+pet.id),slot=['pet-cat','pet-dog','pet-rabbit','pet-bori'].indexOf(pet.id),period=pet.id==='pet-bori'?12:6,time=clock.seconds+residentSeed('pet-life|'+clock.day)%period-slot*2+(seed%11)/10,beat=Math.floor(time/period),elapsed=time%period;
       pet.facing=(seed+beat)%2?'left':'right';
       if(elapsed>=1.2)continue;
       const kind=['hop','turn','sit-stand','wag'][(seed+beat)%4];
@@ -3453,8 +3544,8 @@
     }
     const route={nodes,length:nodes.at(-1)?.distance||0};if(petRoutes.size>=256)petRoutes.delete(petRoutes.keys().next().value);petRoutes.set(key,route);return route;
   }
-  function petMotion(id,day,beat,a,b,elapsed,free=()=>true,pace=1){
-    const seed=residentSeed('pet-leg|'+day+'|'+id+'|'+beat),rabbit=id==='pet-rabbit',dog=id==='pet-dog',base=id==='pet-bori'?18:rabbit?18:dog?48:40,speed=base*pace*(.9+seed%21/100),route=petRoute(a,b,seed),fallback=residentSeed('pet-facing|'+day+'|'+id)%2?'left':'right';
+  function petMotion(id,day,beat,a,b,elapsed,free=()=>true,pace=1,prevFacing=null){
+    const seed=residentSeed('pet-leg|'+day+'|'+id+'|'+beat),rabbit=id==='pet-rabbit',dog=id==='pet-dog',base=id==='pet-bori'?18:rabbit?18:dog?48:40,speed=base*pace*(.9+seed%21/100),route=petRoute(a,b,seed),fallback=prevFacing||(residentSeed('pet-facing|'+day+'|'+id)%2?'left':'right');
     if(!route.nodes.length||!route.nodes.every(n=>free(n.visual)))return null;
     const length=route.length,travel=length/speed,pause=length>=24&&seed%3===0?1+seed%201/100:0,split=.35+(seed%21)/100;
     // Mochi advances two 18px hops, then holds an ears-up rest before the next pair.
@@ -3478,7 +3569,7 @@
     // Keep the original collision/walkability guard at the actual interpolated point.
     if(!residentSafe(a.floor,point,position)||!free(position))return null;
     let facing=petFacing(a,b,fallback);if(paused&&kind==='look'&&length>=12&&progress>=.5)facing=facing==='left'?'right':'left';
-    const stride=rabbit?18:dog?24:30,phase=distance/stride,frame=Math.floor(phase)%2?'b':'a',bob=walking?-Math.sin(Math.PI*(phase%1))*(rabbit?2.2:dog?1.3:.35):0;
+    const stride=id==='pet-bori'?12:rabbit?18:dog?24:30,phase=distance/stride,frame=Math.floor(phase)%2?'b':'a',bob=walking?-Math.sin(Math.PI*(phase%1))*(rabbit?2.4:dog?1.8:id==='pet-bori'?1.5:id==='companion-frog'||id==='companion-chick'?2.4:1.2):0;
     const lean=paused?(kind==='sniff'?3*Math.sin(Math.PI*progress):id==='pet-cat'?2*Math.sin(progress*Math.PI*4):0):0,spin=paused&&kind==='spin'?360*petEase(progress):0;
     return {position,point,walking,facing,pose:walking?(rabbit?'hop-':'walk-')+frame:rabbit&&paused?'standing':'sitting',distance,duration,speed,pause,paused,kind,active,bob,lean,spin};
   }
@@ -3604,9 +3695,23 @@
     }
     return null;
   }
+  const petPrev=new Map();
+  function slewCompanion(floor,from,to,dt,kid=false){
+    const w=art?.width||1672,h=art?.height||941,dx=(to[0]-from[0])*w/100,dy=(to[1]-from[1])*h/100,dist=Math.hypot(dx,dy);
+    if(dist<=.5||dt<=0)return {position:to,moved:false,dx:0};
+    const step=Math.min(dist,240*dt);
+    if(step>=dist-.5)return {position:to,moved:false,dx};
+    const ratio=step/dist,cand=[from[0]+(to[0]-from[0])*ratio,from[1]+(to[1]-from[1])*ratio];
+    if(companionSafe(floor,cand,kid))return {position:cand,moved:true,dx:dx*ratio};
+    const altX=[cand[0],from[1]],altY=[from[0],cand[1]];
+    if(Math.abs(dx)>=Math.abs(dy)&&companionSafe(floor,altX,kid))return {position:altX,moved:true,dx:dx*ratio};
+    if(companionSafe(floor,altY,kid))return {position:altY,moved:true,dx:0};
+    if(companionSafe(floor,altX,kid))return {position:altX,moved:true,dx:dx*ratio};
+    return {position:to,moved:false,dx};
+  }
   function residentSnapshot(now=new Date(),staff=null,enabled=true,reduced=false,interactions=true){
     if(!enabled||!canon||!art)return [];
-    const time=koreaTime(now),clock=residentClock(now),hour=clock.hour;
+    const time=koreaTime(now),clock=residentClock(now),hour=clock.hour,nowMs=now.getTime();
     const occupied=staff?.floors?.flatMap(f=>f.people||[])||[];
     if(residentTrioHold&&(residentTrioHold.key!==residentTrioKey(now)||Number(now)>=residentTrioHold.until))residentTrioHold=null;
     const states=[...residentPeople.filter(p=>p.id!=='pet-rabbit'),...residentPeople.filter(p=>p.id==='pet-rabbit')].flatMap(person=>{
@@ -3616,9 +3721,13 @@
       const floor=chairman&&(!clock.night||chairman.floor==='1f')?chairman.floor:window[2],spots=(person.pet&&clock.night?residentNightSpots[person.id]:person.places[floor]||[...residentStops.values()].filter(a=>a.floor===floor&&(person.id==='pet-rabbit'||!a.id.startsWith('resident_rabbit_'))).map(a=>a.id)).filter(residentSpot);if(!spots.length)return [];
       const seed=residentSeed('office-residents|'+day+'|'+person.id),beat=Math.floor(seconds/900),rhythm=person.pet?residentRhythm(person.id,day,seconds):{beat,elapsed:seconds%900,rest:0},index=sleeping||reduced||stroll?0:(rhythm.beat+(person.pet?seed%spots.length:0))%spots.length;
       const free=p=>!occupied.some(q=>{const at=q.position||(q.seat&&[q.seat.x,q.seat.y]);return q.floor===floor&&at&&Math.hypot((p[0]-at[0])*art.width/100,(p[1]-at[1])*art.height/100)<(q.resident?96:100)});
+      const residentFree=p=>!occupied.some(q=>{const at=q.position||(q.seat&&[q.seat.x,q.seat.y]);return q.resident&&q.floor===floor&&at&&Math.hypot((p[0]-at[0])*art.width/100,(p[1]-at[1])*art.height/100)<96});
+      const prev=petPrev.get(person.id),validPrev=prev&&prev.day===day&&prev.floor===floor&&nowMs>prev.at&&nowMs-prev.at<=3000;
+      const holdStart=validPrev&&!reduced&&!sleeping&&residentSafe(floor,prev.point,prev.position,!!person.pet)&&residentFree(prev.position)?(prev.holdStart??nowMs):null;
+      const canHold=holdStart!==null&&nowMs-holdStart<=2500;
       const companions=interactions&&person.pet&&person.id!=='pet-bori'&&!sleeping&&!clock.night&&floor==='1f'&&residentPeople.some(q=>q.pet&&q.id!==person.id&&q.hours.some(([a,b,f])=>clock.seconds/3600>=a&&clock.seconds/3600<b&&f===floor));
       const group=companions&&residentSpot(residentNightSpots[person.id][0]);
-      if(group&&residentVisitPath(residentSpot(spots[0]),group,free).length)spots.splice(1,spots.length-1,group.id);
+      if(group&&residentVisitPath(residentSpot(spots[0]),group,canHold?residentFree:free).length)spots.splice(1,spots.length-1,group.id);
       const trio=interactions&&!reduced&&!sleeping&&residentTrioHold?.floor===floor?residentTrioHold.spots[person.id]:null;
       let anchor=trio||residentSpot(spots[index]),path=residentPath(spots[(index+spots.length-1)%spots.length],spots[index]),scene=null;
       // A social visit yields to the other pet's usual stops, including pets
@@ -3626,7 +3735,8 @@
       const visitFree=p=>free(p)&&!residentPeople.some(other=>other.pet&&other.id!==person.id&&other.id!=='pet-rabbit'&&(other.id!=='pet-bori'||other.hours.some(([a,b,f])=>clock.seconds/3600>=a&&clock.seconds/3600<b&&f===floor))&&(clock.night?residentNightSpots[other.id]:other.places[floor]||[]).some(id=>{const a=residentSpot(id);return a&&Math.hypot((p[0]-a.visual[0])*art.width/100,(p[1]-a.visual[1])*art.height/100)<96}));
       const visit=interactions&&!reduced&&person.pet&&person.id!=='pet-bori'&&!sleeping&&!trio?residentVisit(person,floor,occupied,seed,beat,visitFree,rhythm.beat):null;
       if(visit){const approach=residentVisitPath({...anchor,pet:true},visit.anchor,free);if(approach.length||!person.places[floor]||visit.scene.kind==='chairman'){anchor=visit.anchor;path=residentVisitPath(visit.previous,anchor,free);scene=visit.scene}}
-      let position=anchor.visual,point=[anchor.x,anchor.y],walking=false,facing=seed%2?'left':'right',pose=person.pet?(sleeping?'sleep':scene?'sitting':beat%3?'sitting':'standing'):'standing',distance=0,motion;
+      let position=anchor.visual,point=[anchor.x,anchor.y],walking=false,facing=validPrev?prev.facing:(seed%2?'left':'right'),pose=person.pet?(sleeping?'sleep':scene?'sitting':beat%3?'sitting':'standing'):'standing',distance=0,motion,heldSince=null;
+      const holdPrev=()=>{anchor=prev.anchor||anchor;position=prev.position;point=prev.point;walking=false;facing=prev.facing;pose=person.pet?'sitting':'standing';scene=null;motion=undefined;heldSince=holdStart};
       // Same validated routes: 15..30s cat/dog cycles, 25..45s rabbit cycles.
       // No lifts, shared reservations, layout reads or persistent state.
       let elapsed=rhythm.elapsed;
@@ -3637,16 +3747,23 @@
       if(person.pet&&!stroll&&!reduced&&path.length>1&&!sleeping){
         // A sleepy shuffle between nearby home stops stays visible for seconds;
         // scheduled outings use the same motion owner at its normal pace.
-        const a=path[0],b=path.at(-1),sample=petMotion(person.id,day,rhythm.beat,a,b,elapsed,free,person.id==='pet-bori'?.2:1);
-        if(sample){motion=sample;({position,point,walking,facing,pose}=sample);if(sample.active)anchor=a;else {position=b.visual;point=[b.x,b.y];pose=scene?'sitting':beat%3?'sitting':'standing'}}
+        const a=path[0],b=path.at(-1),sample=petMotion(person.id,day,rhythm.beat,a,b,elapsed,free,person.id==='pet-bori'?.55:1,validPrev?prev.facing:null);
+        if(sample){motion=sample;({position,point,walking,facing,pose}=sample);if(sample.active)anchor=a;else {position=b.visual;point=[b.x,b.y];pose=scene?'sitting':beat%3?'sitting':'standing'}}else if(canHold)holdPrev();
       }else if(!stroll&&!reduced&&path.length>1&&!sleeping)for(let i=1;i<path.length;i++){
         const a=path[i-1],b=path[i],va=a.visual,vb=b.visual,length=Math.hypot((vb[0]-va[0])*art.width/100,(vb[1]-va[1])*art.height/100),duration=length/(rabbit?18:person.id==='pet-dog'?48:40);
-        if(elapsed<duration){const t=duration?elapsed/duration:1;anchor=a;position=[va[0]+(vb[0]-va[0])*t,va[1]+(vb[1]-va[1])*t];point=[a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t];distance+=length*t;walking=true;facing=vb[0]<va[0]?'left':'right';pose=(rabbit?'hop-':'walk-')+(Math.floor(distance/(rabbit?18:30))%2?'b':'a');break}
+        if(elapsed<duration){const t=duration?elapsed/duration:1;anchor=a;position=[va[0]+(vb[0]-va[0])*t,va[1]+(vb[1]-va[1])*t];point=[a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t];distance+=length*t;walking=true;const fdx=(vb[0]-va[0])*art.width/100;if(Math.abs(fdx)>=12)facing=fdx<0?'left':'right';pose=(rabbit?'hop-':'walk-')+(Math.floor(distance/(rabbit?18:30))%2?'b':'a');break}
         elapsed-=duration;distance+=length;
       }
       const outing=stroll&&boriStrollSample(person,day,stroll,spots,free);
       if(stroll){if(outing)({position,point,walking,facing,pose,scene,motion}=outing);else {position=anchor.visual;point=[anchor.x,anchor.y];walking=false;pose='sleep';motion=undefined;scene=null}}
-      if(!free(position)){const alternatives=sleeping?[...spots.map(residentSpot),...[...residentStops.values()].filter(a=>a.floor===floor&&(person.id==='pet-rabbit'||!a.id.startsWith('resident_rabbit_'))&&residentSpot(a.id))]:spots.map(residentSpot),fallback=alternatives.find(a=>free(a.visual));if(!fallback)return [];anchor=fallback;position=anchor.visual;point=[anchor.x,anchor.y];walking=false;pose=person.pet?(sleeping?'sleep':'sitting'):'standing';scene=null;motion=undefined}
+      if(person.pet&&!stroll&&canHold&&!free(prev.position)||!free(position)){
+        if(canHold){
+          holdPrev();
+        }else{
+          const alternatives=sleeping?[...spots.map(residentSpot),...[...residentStops.values()].filter(a=>a.floor===floor&&(person.id==='pet-rabbit'||!a.id.startsWith('resident_rabbit_'))&&residentSpot(a.id))]:spots.map(residentSpot),fallback=alternatives.find(a=>free(a.visual));if(!fallback)return [];anchor=fallback;position=anchor.visual;point=[anchor.x,anchor.y];walking=false;pose=person.pet?(sleeping?'sleep':'sitting'):'standing';scene=null;motion=undefined;heldSince=null;
+        }
+      }
+      if(!prev||nowMs!==prev.at)petPrev.set(person.id,{at:nowMs,day,floor,anchor,position,point,facing,holdStart:heldSince});
       occupied.push({floor,resident:true,seat:{x:position[0],y:position[1]}});
       if(walking)scene=null;
       return [{id:person.id,name:person.name,sprite:person.sprite,pet:!!person.pet,floor,anchor:anchor.id,position,point,walking,facing,pose,scene,...(motion?{motion}:{}),...(outing?{stroll:outing.stroll,...(outing.life?{life:outing.life}:{})}:{})}];
@@ -3656,7 +3773,7 @@
   // Compact atlas fallback also works with a cached, pre-resident manifest.
   // The approved entries in manifest-v3.json remain the asset source of truth.
   function residentAtlas(person){const poses=person.pet?['sitting','standing',...(person.id==='pet-rabbit'?['hop-a','hop-b']:['walk-a','walk-b']),'sleep']:['standing','sitting','walk-a','walk-b'];return {id:person.id,file:person.sprite+'.webp',scale:3,cell:[96,144],atlas:person.pet?[480,288]:[768,768],frames:(person.pet?['left','right']:['']).flatMap((direction,row)=>poses.map((pose,col)=>({name:pose+(direction?'-'+direction:''),rect:[col*96,row*144,96,144],pivot:[48,135]})))}}
-  const residents=Object.freeze({names:residentNames,people:residentPeople,companions:companionPeople,kidsVisitLines,createKidsVisits,companionSnapshot,companionAtlas,companionReactions,companionSafe,seed:residentSeed,clock:residentClock,rhythm:residentRhythm,motion:petMotion,route:petRoute,ease:petEase,facing:petFacing,life:residentLife,affection:residentAffection,affectionVoice:residentAffectionVoice,voice:residentVoice,snapshot:residentSnapshot,safe:residentSafe,spot:residentSpot,path:residentPath,atlas:residentAtlas,bounds:residentBounds,trio:residentTrio,trioLines:residentTrioLines,trioChat:residentTrioChat,furniture:residentFurniture});
+  const residents=Object.freeze({names:residentNames,people:residentPeople,companions:companionPeople,kidsVisitLines,createKidsVisits,companionSnapshot,companionAtlas,companionReactions,companionSafe,slew:slewCompanion,seed:residentSeed,clock:residentClock,rhythm:residentRhythm,motion:petMotion,route:petRoute,ease:petEase,facing:petFacing,life:residentLife,affection:residentAffection,affectionVoice:residentAffectionVoice,voice:residentVoice,snapshot:residentSnapshot,safe:residentSafe,spot:residentSpot,path:residentPath,atlas:residentAtlas,bounds:residentBounds,trio:residentTrio,trioLines:residentTrioLines,trioChat:residentTrioChat,furniture:residentFurniture});
   // Read-only app signals; the caller installs one shared passive input callback
   // and reuses the office update/visibility cycle. No persistence or timer.
   function createPresence({now,locked,visible,override}){
@@ -3678,19 +3795,20 @@
   }
   // Visual projection only. The scheduler still owns every leg and deadline.
   function distanceGait(distance,dx,reduced=false){
-    const step=60,phase=Math.max(0,distance)/step;
-    return {pose:Math.floor(phase)%2?'walk-b':'walk-a',bounce:reduced?0:-Math.abs(Math.sin(phase*Math.PI))*.65,lean:reduced?0:Math.sign(dx)*.9};
+    const step=45,phase=Math.max(0,distance)/step;
+    return {pose:Math.floor(phase)%2?'walk-b':'walk-a',bounce:reduced?0:-Math.abs(Math.sin(phase*Math.PI))*2.4,lean:reduced?0:(dx<0?-1:1)*Math.sin(phase*Math.PI)*1.35};
   }
+  const motionRunCache=new WeakMap();
   function sampleMotion(event,person,seconds,reduced=false){
     const state=scheduler.stateAt(event,person,seconds,reduced),outEnd=person.out.at(-1)?.end??event.start;
-    const legs=seconds<outEnd?person.out:person.back;let distance=0,dx=0;
-    for(const leg of legs){
-      if(seconds<=leg.start)break;
-      const a=anchors.get(leg.from),b=anchors.get(leg.to),pa=visualPoint(a),pb=visualPoint(b);
-      if(a.floor!==b.floor)continue;
-      const ratio=Math.max(0,Math.min(1,(seconds-leg.start)/(leg.end-leg.start)));
-      distance+=Math.hypot((pb[0]-pa[0])*(art?.width||1672)/100,(pb[1]-pa[1])*(art?.height||941)/100)*ratio;
-      if(seconds<leg.end)dx=pb[0]-pa[0];
+    const legs=seconds<outEnd?person.out:person.back;let runs=motionRunCache.get(legs);
+    if(!runs){runs=buildWalkRuns(legs);motionRunCache.set(legs,runs)}
+    let distance=0,dx=0;
+    for(const run of runs){
+      if(seconds<=run.start)break;
+      if(seconds>=run.end){distance+=run.curve.totalLen;continue}
+      const u=run.duration>0?(seconds-run.start)/run.duration:1,dist=easeRun(u,run.duration)*run.curve.totalLen;
+      distance+=dist;dx=sampleCurve(run.curve,dist).dx;break;
     }
     return {...state,...distanceGait(distance,dx,reduced),distance};
   }
@@ -3736,7 +3854,7 @@
     const left=floor.left+(parent?.clientLeft||0)+node.offsetLeft-width/2,top=floor.top+(parent?.clientTop||0)+node.offsetTop-height;
     return {left,right:left+width,top,bottom:top+height,width,height};
   }
-  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,residents,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,motion:Object.freeze({gait:distanceGait,sample:sampleMotion,createReactions,stableActorBox,stableSpriteBox,stableMascotBox,effectDurations}),atmosphere:Object.freeze({light:officeLight,background:officeBackground,monitors:workingMonitors,opacity:monitorOpacity}),labels:Object.freeze({priority:statusLabelPriority,place:placeStatusLabels,short:phoneStatusLine}),places:Object.freeze([...places,...(scheduler?.errandPlaces||[]),...(scheduler?.reportPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines,dramaDate,validateDrama:validDramaBank})});
+  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,residents,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,motion:Object.freeze({gait:distanceGait,sample:sampleMotion,ease:easeRun,curve:compileCurve,sampleCurve,createReactions,stableActorBox,stableSpriteBox,stableMascotBox,effectDurations}),atmosphere:Object.freeze({light:officeLight,background:officeBackground,monitors:workingMonitors,opacity:monitorOpacity}),labels:Object.freeze({priority:statusLabelPriority,place:placeStatusLabels,short:phoneStatusLine}),places:Object.freeze([...places,...(scheduler?.errandPlaces||[]),...(scheduler?.reportPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines,dramaDate,validateDrama:validDramaBank})});
 })();
 /* Read-only Living Office. The Agent Case renderer remains the sole owner of requests, answers and decisions. */
 (() => {
@@ -3912,7 +4030,7 @@
     if(team){tag.style.setProperty('--office-team',team.color);tag.style.setProperty('--office-team-tint',team.tint)}
     const rank=document.createElement('span');rank.className='hani-office-rank';rank.textContent=key==='seongmin'?'':member?.rank?' '+member.rank:'';tagName.after(rank);
     const prop=document.createElement('span');prop.className='hani-office-prop';prop.setAttribute('aria-hidden','true');actor.append(sprite,tag,status,prop);actor.setAttribute('role','button');actor.tabIndex=0;actor.dataset.avatar='pending';actorLayer.append(actor);actors.set(key,actor);
-    const rhythm=resident?HaniBuildingScene.residents.seed('idle-motion|'+key):HaniBuildingScene.scheduler?.seed('idle-motion|'+key)||row;actor.style.setProperty('--idle-duration',(3.6+rhythm%29/10)+'s');actor.style.setProperty('--idle-delay',(-rhythm%67/10)+'s');
+    let idleHash=2166136261;for(const ch of 'idle-motion|'+key)idleHash=Math.imul(idleHash^ch.charCodeAt(0),16777619);const rhythm=idleHash>>>0;actor.style.setProperty('--idle-duration',(3.4+rhythm%29/10)+'s');actor.style.setProperty('--idle-delay',(-(1+rhythm%66)/10)+'s');
   }
   // One scene host; actors remain mounted and only their floor/position changes.
   const building=HaniBuildingScene,tabs=root.querySelector(".hani-building-tabs"),floorLabel=document.createElement("span"),overflowChip=document.createElement("span"),floorButtons=new Map(),backgroundCache=new Map();
@@ -4408,7 +4526,7 @@
     const path=animate&&!reduced&&building.canon?building.route(old&&building.anchors.get(old)?.floor===activeFloor?old:'elevator_'+activeFloor,target):[];
     if(animate&&!reduced&&building.canon&&!path.length){actor.dataset.route='blocked';label(actor,'이동 경로를 확인할 수 없어 출발 위치에서 대기 중');return}
     actor.dataset.route='ready';
-    if(path.length>1){actor.officeTravel={path,index:0,elapsed:0,startedAt:Date.now(),distance:0,seat};pose(actor,'walk-a');place(actor,building.visualPoint(path[0]))}
+    if(path.length>1){const waypoints=path.map(n=>building.visualPoint(n)),curve=building.motion.curve(waypoints),w=building.art?.width||1672,h=building.art?.height||941,rawLen=waypoints.slice(1).reduce((sum,p,i)=>sum+Math.hypot((p[0]-waypoints[i][0])*w/100,(p[1]-waypoints[i][1])*h/100),0),speed=building.canon?.movement?.speedPxPerSecond||180;actor.officeTravel={path,curve,duration:Math.max(1,rawLen/speed*1000),elapsed:0,startedAt:Date.now(),distance:0,seat};pose(actor,'walk-a');place(actor,waypoints[0])}
     else{actor.officeAnchor=target;place(actor,[seat.x,seat.y]);pose(actor,seat.posture||'sitting')}
   }
   for(const floor of building.floors){
@@ -4523,27 +4641,46 @@
   const weekdayGreetings=new Set();
   function updateResidents(now){
     if(!residentSlots.length)return;
-    const existing=building.residents.snapshot(now,floorSnapshot,true,reduced),states=[...existing,...building.residents.companionSnapshot(now,floorSnapshot,true,reduced,existing)];let changed=false;
+    const existing=building.residents.snapshot(now,floorSnapshot,true,reduced),states=[...existing,...building.residents.companionSnapshot(now,floorSnapshot,true,reduced,existing)],nowMs=now.getTime();let changed=false;
     const visit=kidsVisits.update(now,floorSnapshot,states,reduced);
     for(const person of residentSlots){
       const actor=actors.get(person.id),state=states.find(p=>p.id===person.id&&p.floor===activeFloor),wasVisible=!actor.hidden;
-      if(!state){delete actor.officePetFloor;delete actor.officeKidReaction;if(wasVisible){actor.hidden=true;clearMotion(actor);if(bubblePerson===person.id)closeBubble();changed=true}continue}
-      const prior=actor.officeResidentState,walking=String(state.walking),moved=!prior||prior.position[0]!==state.position[0]||prior.position[1]!==state.position[1],turned=!prior||prior.facing!==state.facing,posed=!prior||prior.pose!==state.pose||prior.artPose!==state.artPose;
-      if(person.pet&&state.pose==='sleep'&&(!wasVisible||prior?.pose!=='sleep'))clearMotion(actor);
+      if(!state){delete actor.officePetFloor;delete actor.officeKidReaction;delete actor.officeCompanionAt;if(wasVisible){actor.hidden=true;clearMotion(actor);if(bubblePerson===person.id)closeBubble();changed=true}continue}
+      const prior=actor.officeResidentState;
+      let targetPos=state.position,effectiveWalking=state.walking,effectiveFacing=state.facing,effectivePose=state.artPose||state.pose,effectiveMotion=state.motion;
+      if(person.companion&&wasVisible&&!reduced&&actor.officePosition&&actor.officeCompanionAt!=null&&!state.artPose){
+        const dt=(nowMs-actor.officeCompanionAt)/1000;
+        if(dt>0&&dt<=1){
+          const slewed=building.residents.slew(activeFloor,actor.officePosition,state.position,dt,!!person.kid);
+          targetPos=slewed.position;
+          if(slewed.moved){
+            if(!effectiveWalking){
+              effectiveWalking=true;
+              const jitter=(building.residents.seed('walk-phase|'+person.id)%100)/100,wave=(nowMs/1000+jitter)*9;
+              effectivePose=Math.floor((nowMs/1000+jitter)*4)%2?'walk-a':'walk-b';
+              effectiveMotion={bob:-Math.abs(Math.sin(wave))*(person.id==='kid-suyeon'?2.8:person.id==='kid-suhyeon'?1.8:2),lean:Math.sin(wave)*1.2,spin:0};
+            }
+            if(Math.abs(slewed.dx)>=4)effectiveFacing=slewed.dx<0?'left':'right';
+          }
+        }
+      }
+      if(person.companion)actor.officeCompanionAt=nowMs;
+      const walking=String(effectiveWalking),moved=!actor.officePosition||actor.officePosition[0]!==targetPos[0]||actor.officePosition[1]!==targetPos[1],turned=!prior||actor.dataset.facing!==effectiveFacing,posed=!prior||actor.dataset.pose!==effectivePose;
+      if(person.pet&&effectivePose==='sleep'&&(!wasVisible||prior?.pose!=='sleep'))clearMotion(actor);
       if(!wasVisible){actor.hidden=false;changed=true}
       if(!prior||prior.walking!==state.walking||prior.anchor!==state.anchor||prior.following!==state.following)changed=true;
       if(sceneVisible())loadSprite(actor,fitStatusLabels);
       if(!prior){actor.officeRow.hidden=true;actor.dataset.activity='resident';actor.dataset.status='resident';actor.dataset.line=person.lines[0];const status=actor.querySelector('.hani-office-status');status.dataset.full=actor.dataset.line;status.hidden=true;actor.setAttribute('aria-label',actor.dataset.name)}
-      if(turned)actor.dataset.facing=state.facing;
-      if(!prior||prior.walking!==state.walking)actor.dataset.walking=walking;
+      if(turned)actor.dataset.facing=effectiveFacing;
+      if(!prior||actor.dataset.walking!==walking)actor.dataset.walking=walking;
       if(!prior||prior.anchor!==state.anchor)actor.officeAnchor=state.anchor;
-      if(moved)place(actor,state.position);
-      if(posed||turned)applyPose(actor,state.artPose||state.pose);
+      if(moved)place(actor,targetPos);
+      if(posed||turned)applyPose(actor,effectivePose);
       if(person.pet||person.kid){
         // One entrance greeting uses the existing reaction queue and clock.
         // Walking defers it until arrival; hidden floors never consume it.
-        if(person.pet&&!person.companion&&actor.officePetFloor!==activeFloor){actor.officePetFloor=activeFloor;if(!reduced&&state.pose!=='sleep'&&sceneVisible())actor.officeReactions.request('hop',now.getTime()+1000*(1+['pet-cat','pet-dog','pet-rabbit','pet-bori'].indexOf(person.id)))}
-        const values=state.motion&&!reduced?[state.motion.bob.toFixed(3)+'px',state.motion.lean.toFixed(3)+'deg',state.motion.spin.toFixed(3)+'deg']:['0px','0deg','0deg'];
+        if(person.pet&&!person.companion&&actor.officePetFloor!==activeFloor){actor.officePetFloor=activeFloor;if(!reduced&&effectivePose!=='sleep'&&sceneVisible())actor.officeReactions.request('hop',now.getTime()+1000*(1+['pet-cat','pet-dog','pet-rabbit','pet-bori'].indexOf(person.id)))}
+        const values=effectiveMotion&&!reduced?[effectiveMotion.bob.toFixed(3)+'px',effectiveMotion.lean.toFixed(3)+'deg',effectiveMotion.spin.toFixed(3)+'deg']:['0px','0deg','0deg'];
         for(const [i,key]of ['--pet-bob','--pet-lean','--pet-spin'].entries())if((actor.style.getPropertyValue?.(key)??actor.style[key])!==values[i])actor.style.setProperty(key,values[i]);
         const gesture=state.motion?.paused?state.motion.kind:'';if((actor.dataset.petPause||'')!==gesture){if(gesture)actor.dataset.petPause=gesture;else delete actor.dataset.petPause}
       }
@@ -4692,13 +4829,12 @@
       }
       const travel=actor.officeTravel;
       if(travel&&!reduced){travel.elapsed=now-travel.startedAt;
-        while(travel.index<travel.path.length-1){
-          const a=travel.path[travel.index],b=travel.path[travel.index+1],duration=Math.max(1,Math.hypot(b.x-a.x,b.y-a.y)/building.canon.movement.speedPxPerSecond*1000),va=building.visualPoint(a),vb=building.visualPoint(b);
-          const length=Math.hypot((vb[0]-va[0])*(building.art?.width||1672)/100,(vb[1]-va[1])*(building.art?.height||941)/100);
-          if(travel.elapsed<duration){const t=travel.elapsed/duration;moveActor(actor,[va[0]+(vb[0]-va[0])*t,va[1]+(vb[1]-va[1])*t]);gait=building.motion.gait(travel.distance+length*t,vb[0]-va[0]);break}
-          travel.elapsed-=duration;travel.startedAt+=duration;travel.distance+=length;travel.index++;
+        if(travel.elapsed>=travel.duration){finishTravel(actor);actor.dataset.walking='false'}
+        else{
+          const durationSec=travel.duration/1000,u=Math.max(0,Math.min(1,travel.elapsed/travel.duration)),s=building.motion.ease(u,durationSec);
+          const dist=s*travel.curve.totalLen,sample=building.motion.sampleCurve(travel.curve,dist);
+          moveActor(actor,sample.position);gait=building.motion.gait(dist,sample.dx);
         }
-        if(travel.index===travel.path.length-1){finishTravel(actor);actor.dataset.walking='false'}
       }
       if(gait){if(actor.dataset.pose!==gait.pose)pose(actor,gait.pose);actor.style.setProperty('--step-bounce',gait.bounce+'px');actor.style.setProperty('--step-lean',gait.lean+'deg')}
       else{actor.style.setProperty('--step-bounce','0px');actor.style.setProperty('--step-lean','0deg')}
