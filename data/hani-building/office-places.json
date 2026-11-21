@@ -84,15 +84,15 @@
       "x": 755,
       "y": 205,
       "type": "desk",
-      "label": "이음 · 전략기획실 사원 · 하니 전무님 옆",
+      "label": "빈 자리",
       "capacity": 1,
-      "occupant": "ieum",
+      "occupant": null,
       "rendererSeat": {
         "id": "desk_ieum",
         "zone": "desk",
         "x": 77,
         "y": 34.1,
-        "owner": "ieum",
+        "owner": null,
         "layer": 4,
         "box": [
           75.6,
@@ -109,7 +109,7 @@
       "x": 795,
       "y": 205,
       "type": "junction",
-      "label": "측면 접근 · 이음",
+      "label": "측면 접근 · 빈 자리",
       "capacity": 1
     },
     {
@@ -119,7 +119,7 @@
       "x": 795,
       "y": 245,
       "type": "junction",
-      "label": "접근 · 이음",
+      "label": "접근 · 빈 자리",
       "capacity": 1
     }
   ],

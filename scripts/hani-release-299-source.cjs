@@ -1,3 +1,4 @@
+require('./hani-audit-1-preload.cjs'); // Establish the outer boundary before raw capture.
 // Outermost test-only inverse. Capture deployed299 bytes before any fs adapter.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');

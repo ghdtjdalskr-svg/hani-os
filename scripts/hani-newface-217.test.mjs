@@ -1,3 +1,4 @@
+import './hani-lounge-queen-v3-preload.cjs'; // Exact queen inverse before legacy assertions.
 // node scripts/hani-newface-217.test.mjs
 // Execute existing renderers with disposable VM inputs; decode final WebP pixels.
 import assert from 'node:assert/strict';

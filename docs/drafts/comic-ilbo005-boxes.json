@@ -1,0 +1,380 @@
+{
+  "image": "assets/comic-trial/hani-ilbo-005-v1.png",
+  "width": 1600,
+  "height": 2400,
+  "coordinateSystem": "[x1,y1,x2,y2], origin top-left, x2/y2 exclusive",
+  "measurement": {
+    "source": "final exported PNG at 1600x2400; connected white-component pixel measurement plus visual inspection",
+    "boxDefinition": "box = exact bounding box of the connected blank white interior including tail, excluding dark outline; not an estimated prompt position",
+    "whitePixelRule": "R,G,B >= 235 and max(R,G,B)-min(R,G,B) <= 20; 4-connected",
+    "textBoxDefinition": "conservative rectangular overlay area inside oval body, excludes tail; use this for dialogue wrapping",
+    "titleBoxDefinition": "purple title background pixels: B>R+12, B>G+15, R<145, G<130, y<135; antialias fringe excluded"
+  },
+  "titleBand": {
+    "box": [
+      18,
+      11,
+      1586,
+      124
+    ],
+    "textBox": [
+      65,
+      35,
+      1535,
+      102
+    ],
+    "text": "오늘의 성민 회장님 · 이음의 이사 날 — 4층 비서실 자리 찾기!"
+  },
+  "balloons": [
+    {
+      "order": 1,
+      "panel": 1,
+      "speaker": "이음",
+      "box": [
+        98,
+        162,
+        422,
+        385
+      ],
+      "textBox": [
+        140,
+        200,
+        380,
+        317
+      ]
+    },
+    {
+      "order": 2,
+      "panel": 1,
+      "speaker": "유나",
+      "box": [
+        450,
+        166,
+        759,
+        385
+      ],
+      "textBox": [
+        492,
+        207,
+        717,
+        323
+      ]
+    },
+    {
+      "order": 3,
+      "panel": 2,
+      "speaker": "보리",
+      "box": [
+        841,
+        176,
+        1162,
+        470
+      ],
+      "textBox": [
+        884,
+        217,
+        1119,
+        337
+      ]
+    },
+    {
+      "order": 4,
+      "panel": 2,
+      "speaker": "성민 회장",
+      "box": [
+        1262,
+        163,
+        1554,
+        387
+      ],
+      "textBox": [
+        1304,
+        205,
+        1512,
+        316
+      ]
+    },
+    {
+      "order": 5,
+      "panel": 3,
+      "speaker": "이음",
+      "box": [
+        310,
+        896,
+        665,
+        1128
+      ],
+      "textBox": [
+        358,
+        938,
+        617,
+        1059
+      ]
+    },
+    {
+      "order": 6,
+      "panel": 4,
+      "speaker": "유나",
+      "box": [
+        856,
+        899,
+        1186,
+        1121
+      ],
+      "textBox": [
+        903,
+        943,
+        1139,
+        1059
+      ]
+    },
+    {
+      "order": 7,
+      "panel": 4,
+      "speaker": "이음",
+      "box": [
+        1234,
+        896,
+        1541,
+        1121
+      ],
+      "textBox": [
+        1276,
+        937,
+        1499,
+        1057
+      ]
+    },
+    {
+      "order": 8,
+      "panel": 5,
+      "speaker": "성민 회장",
+      "box": [
+        77,
+        1646,
+        388,
+        1867
+      ],
+      "textBox": [
+        119,
+        1687,
+        346,
+        1805
+      ]
+    },
+    {
+      "order": 9,
+      "panel": 5,
+      "speaker": "가은",
+      "box": [
+        432,
+        1648,
+        752,
+        1856
+      ],
+      "textBox": [
+        478,
+        1692,
+        706,
+        1799
+      ]
+    },
+    {
+      "order": 10,
+      "panel": 6,
+      "speaker": "하니",
+      "box": [
+        868,
+        1645,
+        1177,
+        1851
+      ],
+      "textBox": [
+        910,
+        1686,
+        1135,
+        1798
+      ]
+    },
+    {
+      "order": 11,
+      "panel": 6,
+      "speaker": "이음",
+      "box": [
+        1232,
+        1641,
+        1543,
+        1853
+      ],
+      "textBox": [
+        1278,
+        1685,
+        1497,
+        1795
+      ]
+    }
+  ],
+  "captionBands": [
+    {
+      "row": 1,
+      "box": [
+        26,
+        815,
+        1576,
+        866
+      ],
+      "cells": [
+        {
+          "panel": 1,
+          "captionIndex": 0,
+          "box": [
+            26,
+            815,
+            788,
+            866
+          ],
+          "textBox": [
+            38,
+            822,
+            776,
+            859
+          ]
+        },
+        {
+          "panel": 2,
+          "captionIndex": 1,
+          "box": [
+            813,
+            815,
+            1576,
+            866
+          ],
+          "textBox": [
+            825,
+            822,
+            1564,
+            859
+          ]
+        }
+      ]
+    },
+    {
+      "row": 2,
+      "box": [
+        26,
+        1551,
+        1575,
+        1602
+      ],
+      "cells": [
+        {
+          "panel": 3,
+          "captionIndex": 2,
+          "box": [
+            26,
+            1551,
+            788,
+            1602
+          ],
+          "textBox": [
+            38,
+            1558,
+            776,
+            1595
+          ]
+        },
+        {
+          "panel": 4,
+          "captionIndex": 3,
+          "box": [
+            813,
+            1551,
+            1575,
+            1602
+          ],
+          "textBox": [
+            825,
+            1558,
+            1563,
+            1595
+          ]
+        }
+      ]
+    },
+    {
+      "row": 3,
+      "box": [
+        26,
+        2318,
+        1576,
+        2369
+      ],
+      "cells": [
+        {
+          "panel": 5,
+          "captionIndex": 4,
+          "box": [
+            26,
+            2318,
+            788,
+            2369
+          ],
+          "textBox": [
+            38,
+            2325,
+            776,
+            2362
+          ]
+        },
+        {
+          "panel": 6,
+          "captionIndex": 5,
+          "box": [
+            813,
+            2319,
+            1576,
+            2369
+          ],
+          "textBox": [
+            825,
+            2326,
+            1564,
+            2362
+          ]
+        }
+      ]
+    }
+  ],
+  "captionBandNote": "Each row has two separate white caption cells as in 003/004. Row box is their union envelope, including central gutter; use cell boxes for actual captions.",
+  "comparison": {
+    "image": "assets/comic-trial/hani-ilbo-005-compare.png",
+    "ieumDrawnCrop": [
+      60,
+      340,
+      375,
+      785
+    ],
+    "yunaDrawnCrop": [
+      390,
+      350,
+      720,
+      790
+    ]
+  },
+  "verification": {
+    "balloonCountsByPanel": [
+      2,
+      2,
+      1,
+      2,
+      2,
+      2
+    ],
+    "balloonTotal": 11,
+    "captionCells": 6,
+    "artText": "none; all title/caption/balloon regions blank; visual review",
+    "generation": "built-in image_gen, one generation plus one localized correction; 1024x1536 source exported to requested 1600x2400 using Lanczos3",
+    "runtimeChanges": false,
+    "commitPush": false
+  }
+}
