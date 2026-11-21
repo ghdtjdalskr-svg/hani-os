@@ -1,6 +1,60 @@
 /* V2 metadata is read-only; a failed metadata request keeps the production renderer. */
 (async () => {
   const Math=globalThis.Math,Map=globalThis.Map,Set=globalThis.Set,Infinity=globalThis.Infinity;
+  // Phase 1: scene metadata only. Stable IDs and display order are independent.
+  const floorDefaults=Object.freeze([
+    {id:'5f',legacyIds:['5f'],order:5,code:'5F',label:'5F 옥상 · 조용한 정원',category:'rooftop',quiet:true,tint:'#9cbd9a',residents:[],anchorCount:50,background:'./assets/building/floor-5f-217.webp'},
+    {id:'4f',legacyIds:[],order:4,code:'4F',label:'4F 대표실·라운지',category:'executive',tint:'#b692df',residents:['hani','gaeun','mir'],anchorCount:81,background:'./assets/building/floor-4f-217.webp'},
+    {id:'3f',legacyIds:[],order:3,code:'3F',label:'3F AI플랫폼개발실',category:'office',tint:'#79aecf',residents:['seoyun','dohyun','serin','yuri','arin'],anchorCount:64,background:'./assets/building/floor-3f-215.webp',foregroundMasks:[{slot:0,source:'background'}]},
+    {id:'2f',legacyIds:[],order:2,code:'2F',label:'2F 재무·라이프',category:'office',tint:'#94bd8e',residents:['jieun','haru','naeun','hina','minji','sooyeon'],anchorCount:74,background:'./assets/building/floor-2f-217.webp'},
+    {id:'1f',legacyIds:[],order:1,code:'1F',label:'1F 로비',category:'lobby',tint:'#e3b67d',residents:['yuna','sua','taeo'],anchorCount:57,background:'./assets/building/floor-1f-217.webp'}
+  ].map(f=>Object.freeze({...f,legacyIds:Object.freeze(f.legacyIds),residents:Object.freeze(f.residents),foregroundMasks:Object.freeze((f.foregroundMasks||[]).map(Object.freeze))})));
+  const floorDefaultIndex=new Map(floorDefaults.map(f=>[f.id,f]));
+  let floorRegistry;
+  function buildFloorRegistry(canon=null,art=null,eligible=null){
+    const anchorIndex=new Map((canon?.anchors||[]).map(a=>[a.id,a])),counts=new Map(),connectors=new Map();
+    for(const a of canon?.anchors||[]){counts.set(a.floor,(counts.get(a.floor)||0)+1);if(['elevator','stairs'].includes(a.type))connectors.set(a.floor+'|'+a.type,a.id)}
+    const people=eligible||(canon?.people||[]).filter(p=>p.status==='active'&&p.registration==='registered');
+    const rows=Object.freeze((canon?.floors||floorDefaults).map(f=>{
+      const base=floorDefaultIndex.get(f.id)||{},visual=art?.floors?.[f.id]||{},residents=canon?people.filter(p=>anchorIndex.get(p.homeAnchor)?.floor===f.id).map(p=>p.id):base.residents||[];
+      return Object.freeze({id:f.id,legacyIds:Object.freeze([...(f.legacyIds||base.legacyIds||[])]),order:f.order??base.order,code:f.code||base.code,label:f.label,category:f.category||base.category||'office',quiet:!!f.quiet,
+        tint:base.tint||'#9cbd9a',residents:Object.freeze(residents),maxVisible:f.maxVisible??Math.max(6,residents.length),anchorCount:f.anchorCount??base.anchorCount??counts.get(f.id)??0,
+        art:Object.freeze({background:visual.background||base.background,nightBackground:visual.nightBackground,production:base.residents?.length?base.background:undefined,
+          foregroundMasks:Object.freeze((visual.foregroundMasks||base.foregroundMasks||[]).map(m=>Object.freeze({...m}))),plates:visual.plates||Object.freeze([])}),
+        connectors:Object.freeze({hallAnchor:f.connectors?.hallAnchor||'hall_'+f.id,elevatorAnchor:f.connectors?.elevatorAnchor||connectors.get(f.id+'|elevator')||'elevator_'+f.id,stairsAnchor:f.connectors?.stairsAnchor||connectors.get(f.id+'|stairs')||'stairs_'+f.id}),rooms:f.rooms||Object.freeze([]),walkable:f.walkable,noWalk:f.noWalk});
+    }).sort((a,b)=>b.order-a.order));
+    const index=new Map(rows.map(f=>[f.id,f]));for(const f of rows)for(const id of f.legacyIds)if(!index.has(id))index.set(id,f);
+    return Object.freeze({schemaVersion:'floor-registry-v1',defaultFloorId:'4f',floors:rows,get:id=>index.get(id),hasFloor:id=>index.has(id),order:id=>index.get(id)?.order,
+      elevatorAnchor:id=>index.get(id)?.connectors.elevatorAnchor});
+  }
+  function validateSpatial(canon,art){
+    try{
+      if(canon?.contractVersion!=='spatial-216-v1'||art?.contractVersion!==canon.contractVersion||!Array.isArray(canon.floors)||!canon.floors.length||!Array.isArray(canon.anchors)||!Array.isArray(canon.edges)||!art.anchors)return false;
+      const registry=buildFloorRegistry(canon,art),ids=new Map(),counts=new Map(),graph=new Map(),orders=new Set();
+      if(new Set(registry.floors.map(f=>f.id)).size!==registry.floors.length)return false;
+      for(const f of registry.floors){if(!Number.isFinite(f.order)||orders.has(f.order)||!art.floors?.[f.id]?.background)return false;orders.add(f.order)}
+      for(const a of canon.anchors){if(!a.id||ids.has(a.id)||!registry.hasFloor(a.floor)||!Number.isFinite(a.x)||!Number.isFinite(a.y)||!Number.isFinite(art.anchors[a.id]?.x)||!Number.isFinite(art.anchors[a.id]?.y))return false;ids.set(a.id,a);counts.set(a.floor,(counts.get(a.floor)||0)+1)}
+      if(Object.keys(art.anchors).length!==ids.size||Object.keys(art.anchors).some(id=>!ids.has(id))||registry.floors.reduce((n,f)=>n+f.anchorCount,0)!==ids.size)return false;
+      for(const f of registry.floors)if(counts.get(f.id)!==f.anchorCount)return false;
+      for(const e of canon.edges){const a=ids.get(e.from),b=ids.get(e.to);if(!a||!b)return false;
+        if(a.floor!==b.floor&&(!['elevator','stairs'].includes(e.kind)||Math.abs(registry.order(a.floor)-registry.order(b.floor))!==1||a.type!==e.kind||b.type!==e.kind))return false;
+        if(e.kind==='stairs')continue;
+        if(!graph.has(e.from))graph.set(e.from,[]);graph.get(e.from).push(e.to);if(e.bidirectional){if(!graph.has(e.to))graph.set(e.to,[]);graph.get(e.to).push(e.from)}
+      }
+      // Both transport chains must retain a return path between adjacent floors.
+      for(let i=1;i<registry.floors.length;i++)for(const kind of ['elevator','stairs']){
+        const key=kind+'Anchor',a=registry.floors[i-1].connectors[key],b=registry.floors[i].connectors[key];
+        const connects=(from,to)=>canon.edges.some(e=>e.kind===kind&&(e.from===from&&e.to===to||e.bidirectional&&e.to===from&&e.from===to));
+        if(!connects(a,b)||!connects(b,a))return false;
+      }
+      const reached=new Set(),queue=[];
+      for(const f of registry.floors){for(const [key,type]of [['hallAnchor','junction'],['elevatorAnchor','elevator'],['stairsAnchor','stairs']]){const a=ids.get(f.connectors[key]);if(a?.floor!==f.id||a.type!==type)return false}}
+      queue.push(registry.floors[0].connectors.elevatorAnchor);reached.add(queue[0]);
+      for(let i=0;i<queue.length;i++){const id=queue[i];if(ids.get(id).rendererSeat)continue;for(const next of graph.get(id)||[])if(!reached.has(next)){reached.add(next);queue.push(next)}}
+      // Decorative, explicitly non-walkable objects (MIR core) need art, not routes.
+      return canon.anchors.every(a=>a.walkTarget===false||reached.has(a.id))&&(canon.people||[]).every(p=>ids.has(p.homeAnchor));
+    }catch(_){return false}
+  }
   let assets=globalThis.HaniOfficeV2Assets||null,seededPlaces=null;
   if(!assets&&typeof fetch==='function'){
     try{
@@ -13,7 +67,7 @@
         catch(error){if(index>=3)return null;throw error}
       }));
       seededPlaces=places;
-      if(canon.contractVersion==='spatial-216-v1'&&canon.anchors.length===326&&art.contractVersion===canon.contractVersion&&canon.anchors.every(a=>art.anchors[a.id]))assets={canon,sprites,art,spritesV3:spritesV3?.scale===3&&Array.isArray(spritesV3.entries)?spritesV3:null};
+      if(validateSpatial(canon,art))assets={canon,sprites,art,spritesV3:spritesV3?.scale===3&&Array.isArray(spritesV3.entries)?spritesV3:null};
     }catch(_){/* Production art and seats remain available without metadata. */}
   }
   function validActions(table,version){
@@ -58,7 +112,7 @@
     return {phase,tint,rooftopNight:phase==='night'};
   }
   function officeBackground(floor,now=new Date()){
-    return floor.id==='5f'&&floor.nightBackground&&officeLight(now).rooftopNight?floor.nightBackground:floor.background;
+    return floor.nightBackground&&officeLight(now).rooftopNight?floor.nightBackground:floor.background;
   }
   function validTapBank(bank,roster){
     if(bank?.schemaVersion!=='office-tap-lines-v1'||!bank.staff||bank.chairman?.id!=='seongmin')return false;
@@ -84,7 +138,7 @@
     return bank.weeks.every((week,i)=>week?.week===i+1&&text(week.title,100)&&Array.isArray(week.days)&&week.days.length===5&&
       week.days.every((day,j)=>day?.day===j+1&&text(day.summary,200)&&Array.isArray(day.lines)&&day.lines.length===5&&
         new Set(day.lines.map(row=>row?.staffId)).size===day.lines.length&&day.lines.every(row=>row&&ids.has(row.staffId)&&
-          typeof row.floor==='string'&&/^[1-5]f$/.test(row.floor)&&typeof row.hidden==='boolean'&&text(row.line,40))));
+          typeof row.floor==='string'&&floorRegistry.hasFloor(row.floor)&&typeof row.hidden==='boolean'&&text(row.line,40))));
   }
   // Approved local-only affinity: lifetime counts and KST daily allowance only.
   function createOfficeAffinity(){
@@ -223,14 +277,8 @@
   "use strict";
   const fallback="./assets/ai-approval-concepts/v3-office-background-empty-8-seats.webp";
   // Dynamic floor art is seeded on main separately from the runtime closure.
-  const FLOOR_ART=Object.freeze({"1f":"./assets/building/floor-1f-217.webp","2f":"./assets/building/floor-2f-217.webp","3f":"./assets/building/floor-3f-215.webp","4f":"./assets/building/floor-4f-217.webp","5f":"./assets/building/floor-5f-217.webp"});
   const DESK_PROP_ART=Object.freeze({"hani":"./assets/building/props/hani-217.webp","yuna":"./assets/building/props/yuna-217.webp","jieun":"./assets/building/props/jieun-217.webp","haru":"./assets/building/props/haru-217.webp","naeun":"./assets/building/props/naeun-217.webp","hina":"./assets/building/props/hina-217.webp","minji":"./assets/building/props/minji-217.webp","sooyeon":"./assets/building/props/sooyeon-217.webp","sua":"./assets/building/props/sua-217.webp","seoyun":"./assets/building/props/seoyun-217.webp","dohyun":"./assets/building/props/dohyun-217.webp","serin":"./assets/building/props/serin-217.webp","yuri":"./assets/building/props/yuri-217.webp","arin":"./assets/building/props/arin-217.webp","gaeun":"./assets/building/props/gaeun-217.webp","taeo":"./assets/building/props/taeo-217.webp","daon":"./assets/building/props/daon-217.webp","yoonseul":"./assets/building/props/yoonseul-217.webp","mir":"./assets/building/props/mir-217.webp"});
-  const legacyFloors=Object.freeze([
-    {id:"4f",label:"4F 대표실·라운지",tint:"#b692df",residents:["hani","gaeun","mir"]},
-    {id:"3f",label:"3F AI플랫폼개발실",tint:"#79aecf",residents:["seoyun","dohyun","serin","yuri","arin"]},
-    {id:"2f",label:"2F 재무·라이프",tint:"#94bd8e",residents:["jieun","haru","naeun","hina","minji","sooyeon"]},
-    {id:"1f",label:"1F 로비",tint:"#e3b67d",residents:["yuna","sua","taeo"]}
-  ].map(f=>Object.freeze({...f,residents:Object.freeze(f.residents),background:FLOOR_ART[f.id],fallback})));
+  const legacyFloors=Object.freeze(floorDefaults.filter(f=>f.residents.length).map(f=>Object.freeze({id:f.id,label:f.label,tint:f.tint,residents:f.residents,background:f.background,fallback})));
 
   // Coordinates are chair/feet anchors on the 1672 x 941 floor art, in percent.
   // box = floor footprint (x radius 1.4%, depth 1.4%); desk rects also drive occlusion.
@@ -280,7 +328,9 @@
   });
   const canon=assets?.canon, art=assets?.art, anchors=new Map((canon?.anchors||[]).map(a=>[a.id,a]));
   const eligible=(canon?.people||[]).filter(p=>p.status==='active'&&p.registration==='registered'&&(!window.HaniOrganizationRoster||window.HaniOrganizationRoster.people.some(r=>r.id===p.id)));
-  const floors=canon?Object.freeze(canon.floors.map(f=>Object.freeze({id:f.id,label:f.label,tint:legacyFloors.find(l=>l.id===f.id)?.tint||'#9cbd9a',residents:Object.freeze(eligible.filter(p=>anchors.get(p.homeAnchor)?.floor===f.id).map(p=>p.id)),background:art.floors[f.id].background,nightBackground:art.floors[f.id].nightBackground,production:legacyFloors.find(l=>l.id===f.id)?.background||fallback,fallback}))):legacyFloors;
+  floorRegistry=buildFloorRegistry(canon,art,eligible);
+  const floors=canon?Object.freeze(floorRegistry.floors.map(f=>Object.freeze({id:f.id,label:f.label,tint:f.tint,residents:f.residents,background:f.art.background,nightBackground:f.art.nightBackground,production:f.art.production||fallback,fallback}))):legacyFloors;
+  const floorIndex=new Map(floors.map(f=>[f.id,f]));
   const seatMaps=canon?Object.freeze(Object.fromEntries(floors.map(f=>[f.id,Object.freeze(canon.anchors.filter(a=>a.floor===f.id&&a.rendererSeat&&a.runtimeAssignable!==false).map(a=>Object.freeze({...a.rendererSeat,...art.anchors[a.id],anchor:a.id,posture:a.posture||(a.type==='seat'||a.type==='desk'?'sitting':'standing'),box:Object.freeze([art.anchors[a.id].x-1.4,art.anchors[a.id].y-1.4,art.anchors[a.id].x+1.4,art.anchors[a.id].y])})))]))):legacySeatMaps;
   const deskSurfaces=canon?Object.fromEntries(canon.floors.map(f=>[f.id,[]])):legacySurfaces;
   // Monitor centres are absent from the art map. Fractions within the EXISTING
@@ -526,7 +576,7 @@
     // Existing public noticeboard is drawn in 1F. No invented printers/cabinets.
     if(places.length&&anchors.has('ilbo_board'))errandPlaces.push({id:'errand-notice',kind:'errand',errandKind:'notice',floor:'1f',room:'lobby',slots:['ilbo_board'],pose:'stand',stay:[8,25],go:'게시판으로 가는 중',at:['게시판 공지 확인 중']});
     for(const a of anchors.values())if(places.length&&a.type==='door'&&['secretariat','hani_office','finance','life','platform','business'].includes(a.room)){
-      const room=canon.floors.find(f=>f.id===a.floor)?.rooms.find(r=>r.id===a.room),name=(room?.label||a.label).split(' · ')[0];
+      const room=floorRegistry.get(a.floor)?.rooms.find(r=>r.id===a.room),name=(room?.label||a.label).split(' · ')[0];
       errandPlaces.push({id:'errand-deliver-'+a.room,kind:'errand',errandKind:'delivery',floor:a.floor,room:a.room,slots:[a.id],pose:'stand',stay:[8,25],go:name+' 가는 중',at:['서류 전달 중']});
     }
     for(const card of placeTable?.errands||[])if(card.slots.every(id=>anchors.get(id)?.floor===card.floor&&anchors.get(id)?.room===card.room))errandPlaces.push(card.hostOnly?{...card,at:[...card.at,'상담 중','면접 진행 중']}:card);
@@ -1528,8 +1578,8 @@
           for(const e of active)if(e.performStart<=at&&at<e.performEnd){if(!byCard.has(e.card.id))byCard.set(e.card.id,[]);byCard.get(e.card.id).push(e)}
           gatheringWindow={at,length:result.length,active,byCard};
         }
-        if(at>=32400&&at<64800&&(card.id==='cafe-1f'||card.floor==='5f')){
-          const occupied=gatheringWindow.active.filter(e=>card.floor==='5f'?e.card.floor==='5f':e.card.id===card.id).reduce((n,e)=>n+e.people.length,0);
+        if(at>=32400&&at<64800&&(card.id==='cafe-1f'||floorRegistry.get(card.floor)?.category==='rooftop')){
+          const occupied=gatheringWindow.active.filter(e=>floorRegistry.get(card.floor)?.category==='rooftop'?floorRegistry.get(e.card.floor)?.category==='rooftop':e.card.id===card.id).reduce((n,e)=>n+e.people.length,0);
           w*=card.id==='cafe-1f'?(occupied<2?1000:.01):1;
         }
         let activeRhythms=rhythmsAt.get(at);if(!activeRhythms){activeRhythms=rhythms.filter(r=>at/3600>=r.hours[0]&&at/3600<r.hours[1]);rhythmsAt.set(at,activeRhythms)}
@@ -1644,7 +1694,7 @@
         const rankSeed=visitor?0:seed(rankBase),slotSeed=visitor?0:seed(day+'|slot|'+at);
         // Keep the lunch rest target with one fewer person when he is absent.
         const restPriority=lunch(at)?(options.chairmanPresent?16:10):null;
-        if(!visitor||cards.length>1)cards=cards.map(c=>({c,rank:visitor?seed(day+at+c.id):-Math.log(Math.max(.000001,seedTail(rankSeed,c.id)/4294967296))/(weight(c,people,at)*(displacedLounge&&(c.floor==='5f'||people.every(p=>homeAt(p,at).floor===c.floor))&&['coffee','sofa','garden','terrace','window'].includes(c.kind)?(restPriority??(c.floor==='5f'?4:17)):1))})).sort((a,b)=>a.rank-b.rank||a.c.id.localeCompare(b.c.id)).map(r=>r.c);
+        if(!visitor||cards.length>1)cards=cards.map(c=>({c,rank:visitor?seed(day+at+c.id):-Math.log(Math.max(.000001,seedTail(rankSeed,c.id)/4294967296))/(weight(c,people,at)*(displacedLounge&&(floorRegistry.get(c.floor)?.category==='rooftop'||people.every(p=>homeAt(p,at).floor===c.floor))&&['coffee','sofa','garden','terrace','window'].includes(c.kind)?(restPriority??(floorRegistry.get(c.floor)?.category==='rooftop'?4:17)):1))})).sort((a,b)=>a.rank-b.rank||a.c.id.localeCompare(b.c.id)).map(r=>r.c);
         if(!visitor&&!fill&&at-(lastFloor.get(homeAt(people[0],at).floor)??-Infinity)<BLOCK)cards=cards.slice(0,3);
         // During work hours allow three ranked cards, so a busy cafe does not
         // suppress an otherwise legal rest upstairs. Other hours retain one.
@@ -2054,7 +2104,7 @@
         if(event){
           if(state.state==='GOING'){
             const destination=anchors.get(t.seat.anchor),place=places.find(c=>c.slots.includes(t.seat.anchor));
-            const room=canon.floors.find(f=>f.id===destination.floor)?.rooms.find(r=>r.id===destination.room);
+            const room=floorRegistry.get(destination.floor)?.rooms.find(r=>r.id===destination.room);
             const name=place?.kind==='window'?place.name:(room?.label||destination.label||action.title).split(' · ')[0];
             const partners=event.group?.filter(id=>id!==p.id).map(id=>persons.find(p=>p.id===id).name).join('·');
             line=p.visitor?event.visitor.go:(partners?partners+'와 ':'')+(card?.go||destination.floor.toUpperCase()+' '+name+' 가는 중');
@@ -2455,7 +2505,7 @@
   function snapshot(now=new Date(),options={}){
     const scheduled=scheduler?.snapshot(now,options),date=new Date(new Date(now).getTime()+32400000),day=date.toISOString().slice(0,10),minutes=date.getUTCHours()*60+date.getUTCMinutes();
     const entries=scheduled?.entries||floors.flatMap(f=>f.residents.map(id=>({id,home:f.id,floor:f.id,activity:'work',seat:homeSeat(id),actionId:'base-work',line:'자료 확인 중'})));
-    return {day,minutes,...scheduled,onBreak:false,onMeeting:false,floors:floors.map(f=>{const people=entries.filter(p=>p.floor===f.id);return {...f,people,work:people.filter(p=>p.activity!=='rest').length,rest:people.filter(p=>p.activity==='rest').length,...projection(people,Math.max(6,f.residents.length))}})};
+    return {day,minutes,...scheduled,onBreak:false,onMeeting:false,floors:floors.map(f=>{const people=entries.filter(p=>p.floor===f.id);return {...f,people,work:people.filter(p=>p.activity!=='rest').length,rest:people.filter(p=>p.activity==='rest').length,...projection(people,floorRegistry.get(f.id).maxVisible)}})};
   }
 
   function profile(id){return ({daon:"./assets/profiles/thumb/hani-profile-daon-v2-256.webp",yoonseul:"./assets/profiles/thumb/hani-profile-yoonseul-v2-256.webp",sua:"./assets/profiles/thumb/hani-profile-sua-id-256.webp"})[id]||`./assets/profiles/thumb/hani-profile-${id}-256.webp`}
@@ -3610,7 +3660,7 @@
   function residentBounds(id,pose){if(id.startsWith('companion-'))return [12,60,84,135];if(id.startsWith('kid-'))return ['wave','seat-b','startled','cling'].includes(pose)?[12,31,84,135]:[18,35,78,135];const pet=id.startsWith('pet-');if(id==='pet-bori')return [2,({sitting:52,standing:53,'walk-a':63,'walk-b':65,sleep:89})[pose]??52,94,135];if(id==='pet-rabbit')return [11,({sitting:61,standing:63,'hop-a':74,'hop-b':70,sleep:100})[pose]??61,85,135];const top=pet?(pose==='sleep'?102:({sitting: id==='pet-cat'?81:76,standing:id==='pet-cat'?83:75,'walk-a':id==='pet-cat'?87:82,'walk-b':id==='pet-cat'?90:83})[pose]):({standing:15,sitting:30,'walk-a':24,'walk-b':24})[pose];return [pet?13:9,top??15,pet?82:87,135]}
   const residentPaths=new Map();
   function residentSafe(floorId,point,visual,pet=true){
-    const floor=canon?.floors.find(f=>f.id===floorId);if(!floor||!point||!visual)return false;
+    const floor=floorRegistry.get(floorId);if(!floor||!point||!visual)return false;
     const inside=(p,r)=>p[0]>=r.x&&p[0]<=r.x+r.w&&p[1]>=r.y&&p[1]<=r.y+r.h;
     if(!floor.walkable.some(r=>inside(point,r))||floor.noWalk.some(r=>inside(point,r)))return false;
     const px=[visual[0]*(art?.width||1672)/100,visual[1]*(art?.height||941)/100];
@@ -3854,7 +3904,7 @@
     const left=floor.left+(parent?.clientLeft||0)+node.offsetLeft-width/2,top=floor.top+(parent?.clientTop||0)+node.offsetTop-height;
     return {left,right:left+width,top,bottom:top+height,width,height};
   }
-  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,residents,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,motion:Object.freeze({gait:distanceGait,sample:sampleMotion,ease:easeRun,curve:compileCurve,sampleCurve,createReactions,stableActorBox,stableSpriteBox,stableMascotBox,effectDurations}),atmosphere:Object.freeze({light:officeLight,background:officeBackground,monitors:workingMonitors,opacity:monitorOpacity}),labels:Object.freeze({priority:statusLabelPriority,place:placeStatusLabels,short:phoneStatusLine}),places:Object.freeze([...places,...(scheduler?.errandPlaces||[]),...(scheduler?.reportPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines,dramaDate,validateDrama:validDramaBank})});
+  globalThis.HaniBuildingScene=Object.freeze({floorRegistry,getFloor:id=>floorIndex.get(id),buildFloorRegistry,validateSpatial,floors,snapshot,projection,profile,spriteSource,residents,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,motion:Object.freeze({gait:distanceGait,sample:sampleMotion,ease:easeRun,curve:compileCurve,sampleCurve,createReactions,stableActorBox,stableSpriteBox,stableMascotBox,effectDurations}),atmosphere:Object.freeze({light:officeLight,background:officeBackground,monitors:workingMonitors,opacity:monitorOpacity}),labels:Object.freeze({priority:statusLabelPriority,place:placeStatusLabels,short:phoneStatusLine}),places:Object.freeze([...places,...(scheduler?.errandPlaces||[]),...(scheduler?.reportPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines,dramaDate,validateDrama:validDramaBank})});
 })();
 /* Read-only Living Office. The Agent Case renderer remains the sole owner of requests, answers and decisions. */
 (() => {
@@ -4034,6 +4084,7 @@
   }
   // One scene host; actors remain mounted and only their floor/position changes.
   const building=HaniBuildingScene,tabs=root.querySelector(".hani-building-tabs"),floorLabel=document.createElement("span"),overflowChip=document.createElement("span"),floorButtons=new Map(),backgroundCache=new Map();
+  tabs.style.setProperty('--hani-floor-cols',String(building.floorRegistry.floors.length));
   const roster=document.createElement("ul");roster.className="hani-building-roster";roster.setAttribute("aria-label","현재 층 직원과 활동");root.querySelector(".hani-office-scroll").after(roster);for(const actor of actors.values()){const row=document.createElement("li"),name=document.createElement("b"),text=document.createElement("span");name.textContent=actor.dataset.name;row.append(name,text);if(!actor.dataset.resident)roster.append(row);actor.officeRow=row;actor.officeRowName=name;actor.officeText=text}
   const actorBubble=document.createElement('div'),bubbleLine=document.createElement('p'),profileLink=document.createElement('a'),bubbleSprite=document.createElement('div'),bubbleClose=document.createElement('button');
   actorBubble.className='hani-office-character-bubble';actorBubble.hidden=true;actorBubble.setAttribute('aria-live','polite');actorBubble.setAttribute('aria-atomic','false');bubbleLine.setAttribute('aria-atomic','true');profileLink.setAttribute('aria-live','off');profileLink.textContent='프로필 ↗';profileLink.href='#organization/people';bubbleSprite.className='hani-office-bubble-sprite';bubbleSprite.hidden=true;bubbleSprite.setAttribute('aria-hidden','true');bubbleClose.type='button';bubbleClose.className='hani-office-bubble-close';bubbleClose.textContent='✕';bubbleClose.setAttribute('aria-label','말풍선 닫기');actorBubble.append(bubbleLine,profileLink,bubbleSprite,bubbleClose);actorBubble.onclick=event=>{if(!profileLink.contains(event.target))closeBubble(true,true)};map.append(actorBubble);
@@ -4196,7 +4247,7 @@
     row.append(name,badge,info);roster.append(row);return {row,floor};
   });
   const plates=[];
-  for(const floor of building.floors)for(const entry of building.art?.floors[floor.id].plates||[]){
+  for(const floor of building.floors)for(const entry of building.floorRegistry.get(floor.id).art.plates){
     const plate=document.createElement('span');plate.className='hani-office-room-plate';plate.dataset.room=entry.room;
     plate.dataset.material=entry.material;plate.dataset.label=entry.label;plate.title=entry.fullLabel||entry.label;
     plate.dataset.mount=entry.mount||'wall';
@@ -4317,7 +4368,7 @@
     livePropLayer.hidden=!isFloor;
     for(const entry of liveProps)entry.prop.hidden=!isFloor||entry.floor!==floor.id||(entry.nightOnly&&background!==floor.nightBackground)||(!!entry.event&&!activeEvents.has(entry.event));
   }
-  let activeFloor="4f",floorSnapshot=null,layoutKey="",backgroundToken=0,returnFloor="4f",displayedFloor=null;
+  let activeFloor=building.floorRegistry.defaultFloorId,floorSnapshot=null,layoutKey="",backgroundToken=0,returnFloor=building.floorRegistry.defaultFloorId,displayedFloor=null;
   floorLabel.className="hani-building-floor-label";overflowChip.className="hani-building-overflow";const caption=document.createElement('div');caption.className='hani-building-floor-caption';const presenceNote=document.createElement('small');presenceNote.className='hani-building-presence-note';presenceNote.setAttribute('role','status');presenceNote.hidden=true;caption.append(floorLabel,overflowChip,presenceNote);root.querySelector('.hani-office-scroll').after(caption);
   const dramaCaption=document.createElement('small'),dramaTitle=document.createElement('b'),dramaSummary=document.createElement('span');dramaCaption.className='hani-building-drama-caption';dramaCaption.hidden=true;dramaCaption.append(dramaTitle,dramaSummary);caption.append(dramaCaption);let tapCatalogStarted=false;
   // View-only snack overlay. The table is the sole copy-edit point (up to 3 lines per staff id).
@@ -4497,7 +4548,7 @@
   function updateAtmosphere(now,visible=sceneActive){
     const light=building.atmosphere.light(now,reduced);atmosphere.dataset.phase=light.phase;
     for(const [phase,wash] of washes){const opacity=light.tint[phase].toFixed(5);if(wash.style.opacity!==opacity)wash.style.opacity=opacity}
-    const floor=building.floors.find(f=>f.id===activeFloor);
+    const floor=building.getFloor(activeFloor);
     updateLiveProps(floor,map.querySelector('.hani-office-background').getAttribute('src'),map.dataset.art==='floor'&&map.dataset.floor===activeFloor,now);
     if(visible&&backgroundRequest!==floor.id+'|'+building.atmosphere.background(floor,now))setBackground(floor);
     const monitors=map.dataset.art==='floor'?building.atmosphere.monitors(activeFloor,[...actors.values()].filter(a=>!a.hidden).map(a=>({
@@ -4511,7 +4562,7 @@
   }
   const rooms=document.createElement('div');rooms.className='hani-building-rooms';root.querySelector('.hani-office-scroll').after(rooms);
   const roomLabels=new Map();
-  for(const floor of building.floors){const list=document.createElement('p');list.textContent=[...(building.canon?.floors.find(f=>f.id===floor.id)?.rooms||[]).map(r=>r.label),...(building.art?.floors[floor.id].plates||[]).filter(p=>p.detail).map(p=>p.fullLabel)].join(' · ');rooms.append(list);roomLabels.set(floor.id,list)}
+  for(const floor of building.floors){const list=document.createElement('p');list.textContent=[...(building.floorRegistry.get(floor.id).rooms).map(r=>r.label),...(building.floorRegistry.get(floor.id).art.plates).filter(p=>p.detail).map(p=>p.fullLabel)].join(' · ');rooms.append(list);roomLabels.set(floor.id,list)}
   function legacySprite(actor){
     const sprite=actor.querySelector('.hani-office-sprite'),{group,row}=actor.officeLegacy;
     if(actor.dataset.resident||actor.dataset.person==='seongmin'||actor.dataset.person.startsWith('visitor')){sprite.className='hani-office-sprite';sprite.style.backgroundImage='';actor.dataset.avatar='pending';return}
@@ -4523,7 +4574,7 @@
     if(actor.officeTravel&&actor.officeTravel.seat.id===seat.id)return;
     actor.officeTravel=null;actor.dataset.seat=seat.id;actor.dataset.zone=seat.zone;actor.dataset.spot=seat.zone==='desk'?'seat':seat.zone;
     actor.dataset.home=[seat.x,seat.y].join(',');
-    const path=animate&&!reduced&&building.canon?building.route(old&&building.anchors.get(old)?.floor===activeFloor?old:'elevator_'+activeFloor,target):[];
+    const path=animate&&!reduced&&building.canon?building.route(old&&building.anchors.get(old)?.floor===activeFloor?old:building.floorRegistry.elevatorAnchor(activeFloor),target):[];
     if(animate&&!reduced&&building.canon&&!path.length){actor.dataset.route='blocked';label(actor,'이동 경로를 확인할 수 없어 출발 위치에서 대기 중');return}
     actor.dataset.route='ready';
     if(path.length>1){const waypoints=path.map(n=>building.visualPoint(n)),curve=building.motion.curve(waypoints),w=building.art?.width||1672,h=building.art?.height||941,rawLen=waypoints.slice(1).reduce((sum,p,i)=>sum+Math.hypot((p[0]-waypoints[i][0])*w/100,(p[1]-waypoints[i][1])*h/100),0),speed=building.canon?.movement?.speedPxPerSecond||180;actor.officeTravel={path,curve,duration:Math.max(1,rawLen/speed*1000),elapsed:0,startedAt:Date.now(),distance:0,seat};pose(actor,'walk-a');place(actor,waypoints[0])}
@@ -4557,7 +4608,7 @@
     })());
     variants.get(source).then(({background,isFloor})=>{
       if(token!==backgroundToken||floor.id!==activeFloor||source!==building.atmosphere.background(floor)||!viewVisible())return;
-      bg.src=background;if(floor.id==='3f')foregrounds[0].src=background;bg.hidden=false;bg.alt=floor.label+' · HANI GROUP';map.dataset.art=isFloor?'floor':'fallback';
+      bg.src=background;const masks=building.floorRegistry.get(floor.id).art.foregroundMasks;map.dataset.foreground=masks.length?'floor':'none';for(const mask of masks)if(foregrounds[mask.slot])foregrounds[mask.slot].src=mask.source==='background'?background:mask.src;bg.hidden=false;bg.alt=floor.label+' · HANI GROUP';map.dataset.art=isFloor?'floor':'fallback';
       foregrounds.forEach(img=>{img.hidden=true});
       map.dataset.mask='none';
       for(const entry of plates)entry.plate.hidden=entry.floor!==floor.id||!isFloor;
@@ -4763,7 +4814,7 @@
   async function walk(selected,returning=false){
     const token=++travelId;map.dataset.state=returning?"return":"summon";
     if(!returning)selected.forEach(key=>{const actor=actors.get(key);if(actor){actor.dataset.called="true";label(actor,"📣 회의 소집")}});
-    if(returning&&building.canon)for(const key of selected){const actor=actors.get(key),elevator=building.anchors.get('elevator_'+activeFloor);if(actor&&!actor.hidden&&elevator)seatActor(actor,{id:elevator.id,anchor:elevator.id,zone:'meeting',x:building.visualPoint(elevator)[0],y:building.visualPoint(elevator)[1],posture:'standing'},true)}
+    if(returning&&building.canon)for(const key of selected){const actor=actors.get(key),elevator=building.anchors.get(building.floorRegistry.elevatorAnchor(activeFloor));if(actor&&!actor.hidden&&elevator)seatActor(actor,{id:elevator.id,anchor:elevator.id,zone:'meeting',x:building.visualPoint(elevator)[0],y:building.visualPoint(elevator)[1],posture:'standing'},true)}
     // The same named meeting chairs own summon/return placement; no legacy waypoints.
     while(!sceneVisible()){await sleep(200);if(token!==travelId)return false}
     await sleep(reduced?25:100);if(token!==travelId)return false;

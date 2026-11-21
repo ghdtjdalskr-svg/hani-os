@@ -39,7 +39,7 @@
 @media(max-width:700px){.hani-office-live{padding:10px}.hani-office-live-head,.hani-office-meeting-title{align-items:stretch;flex-direction:column}.hani-office-live-actions{justify-content:flex-start}.hani-office-map{width:100%}}
 @media(max-width:700px){.hani-office-live:has(.hani-office-map[data-state="meeting"]) .hani-office-scroll{display:none}}
 @media(prefers-reduced-motion:reduce){.hani-office-actor{transition:none}}
-.hani-building-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:16px}
+.hani-building-tabs{display:grid;grid-template-columns:repeat(var(--hani-floor-cols,5),minmax(0,1fr));gap:8px;margin-top:16px}
 .hani-building-tabs button{min-width:0;min-height:58px;padding:10px 8px;border:1px solid #dcd5e8;border-radius:12px;background:#fff;color:#574666;text-align:left;cursor:pointer}
 .hani-building-tabs strong,.hani-building-tabs small{display:block;overflow-wrap:anywhere}.hani-building-tabs strong{font-size:12px}.hani-building-tabs small{margin-top:5px;font-size:11px;color:#71657e}
 .hani-building-tabs [aria-selected="true"]{border-color:#8363b8;background:#eee7f8;box-shadow:inset 0 -3px #8363b8}.hani-building-tabs button:focus-visible{outline:3px solid #8363b8;outline-offset:2px}
@@ -115,7 +115,7 @@
 :root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-building-tabs [aria-selected="true"]{background:#5b4175;border-color:#c7a8e8}
 :root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-building-roster li{background:#302839;color:#ddd1e7}
 :root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-building-roster b{color:#f4edf8}
-@media(max-width:700px){.hani-building-floor-label,.hani-building-overflow{top:auto;right:auto;bottom:auto;font-size:12px}.hani-building-tabs button:last-child{grid-column:1/-1}}
+@media(max-width:700px){.hani-building-floor-label,.hani-building-overflow{top:auto;right:auto;bottom:auto;font-size:12px}.hani-building-tabs button:nth-child(odd):last-child{grid-column:1/-1}}
 @media(max-width:1024px){.hani-office-live{padding-bottom:64px}}
 
 .hani-building-roster .hani-office-planned-badge{display:inline-block;font-size:11px;line-height:1.5;border:1px solid currentColor;border-radius:8px;padding:2px 6px;margin:0 5px 4px 0}
@@ -234,7 +234,7 @@
 
 /* Approved 3F G: reuse the existing foreground slot for the lead desk edge.
    Its own lower-body slice hides ankles; face/labels remain above the desk. */
-.hani-office-map[data-floor="3f"][data-art="floor"]:has(.hani-office-actor[data-seat="dev-lead"][data-pose="sitting"]:not([hidden]))>.hani-office-foreground:nth-of-type(2){display:block;clip-path:polygon(9.33% 67%,14.83% 67%,14.83% 85%,9.33% 85%)}
+.hani-office-map[data-foreground="floor"][data-art="floor"]:has(.hani-office-actor[data-seat="dev-lead"][data-pose="sitting"]:not([hidden]))>.hani-office-foreground:nth-of-type(2){display:block;clip-path:polygon(9.33% 67%,14.83% 67%,14.83% 85%,9.33% 85%)}
 
 /* One reusable heart per pet, driven by the resident clock without layout reads. */
 .hani-office-pet-heart{position:absolute;left:50%;bottom:calc(100% - var(--actor-height)*var(--resident-top,0) + 18px);z-index:8;font-size:13px;line-height:1;color:#e68b9b;pointer-events:none;opacity:0;transform:translateX(-50%)}
