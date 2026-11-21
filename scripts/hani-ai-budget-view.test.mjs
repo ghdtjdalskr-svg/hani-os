@@ -216,9 +216,36 @@ assert.equal(node('homeAiFuelRows').innerHTML.includes('gemini-cli'), false);
 assert.equal(storage.get('hani_os_life_v23'), 'LIFE_FIXTURE_UNCHANGED');
 assert.ok(writes.every(k => k === 'hani_ai_budget_summary_v1'));
 
-// Responsive & Dark finish CSS presence checks.
+// Responsive, #home placement & Dark finish CSS checks.
+const movedToHome = [];
+const fakeHome = {classList: {contains: () => true}, appendChild(el) { el.parentElement = this; movedToHome.push(el.id); }};
+const fakeLowerGrid = {className: 'home-lower-grid'};
+const fakeFuel = {id: 'homeAiFuelCard', parentElement: fakeLowerGrid};
+const promoNodes = new Map([['home', fakeHome], ['homeAiFuelCard', fakeFuel]]);
+const promoUi = vm.createContext({
+  window: {HaniAiBudgetCore: core},
+  document: {getElementById: id => promoNodes.get(id) ?? node('promo-' + id), addEventListener() {}},
+  localStorage: {getItem: () => null, setItem() { throw new Error('unexpected write'); }, removeItem() {}, clear() {}},
+  setInterval() {},
+  setTimeout,
+  clearTimeout,
+  AbortController,
+  Intl,
+  Date: MockDate,
+  console,
+  fetch: (...args) => fetchImpl(...args)
+});
+vm.runInContext(budgetJs, promoUi);
+assert.deepEqual(movedToHome, ['homeAiFuelCard'], 'AI 연료 card is promoted to direct child of #home');
+assert.equal(fakeFuel.parentElement, fakeHome);
+
 assert.match(budgetCss, /@media\(max-width:480px\)/);
 assert.match(budgetCss, /midnight-black/);
 assert.match(budgetCss, /titanium-graphite/);
+assert.match(budgetCss, /#app #home>\.home-ai-fuel-card\{[^}]*order:-15/);
+assert.match(budgetCss, /@media\(max-width:700px\)\{[^\n]*#app #home>\.home-ai-fuel-card\{order:-15\}/);
+assert.match(budgetCss, /:root:is\(\[data-finish="midnight-black"\],\[data-finish="titanium-graphite"\]\) #aiBudget \.budget-meter i\{background:var\(--structure-accent\)\}/);
+assert.match(budgetCss, /:root:is\(\[data-finish="midnight-black"\],\[data-finish="titanium-graphite"\]\) #app #home \.home-ai-fuel-bar i\{background:var\(--structure-accent\)\}/);
+assert.equal(/#aiBudget[^{]*\.btn[^}]*!important/.test(budgetCss), false, 'no hardcoded !important button color conflicts in #aiBudget CSS');
 
 console.log('PASS: AI budget view — 0 extra writes, >6h stale chip, failure chip, codex-2/gemini-cli hidden, no bar without value, read-only dashboard card.');

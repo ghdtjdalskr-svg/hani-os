@@ -172,5 +172,7 @@
   });
   setInterval(()=>{if(section.classList.contains('active')||$('home')?.classList.contains('active'))render();},60000);
   document.addEventListener('visibilitychange',()=>{if(!document.hidden&&(section.classList.contains('active')||$('home')?.classList.contains('active')))render();});
+  const homeNode=$('home'),fuelCard=$('homeAiFuelCard');
+  if(homeNode&&fuelCard&&typeof homeNode.appendChild==='function'&&fuelCard.parentElement&&fuelCard.parentElement!==homeNode)homeNode.appendChild(fuelCard);
   window.HaniAiBudget=Object.freeze({render});render();
 })();
