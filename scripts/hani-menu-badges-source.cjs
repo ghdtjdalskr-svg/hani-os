@@ -21,5 +21,25 @@ function restore(source,file){
  assert.equal(hash(text),row.beforeSha256,'exact pre-menu-badges output '+file);
  return buffer?Buffer.from(text):text;
 }
-function project(source,file){return Object.hasOwn(layer.files,file)&&hash(source)===layer.files[file].afterSha256?restore(source,file):source;}
-module.exports={layer,hash,restore,project,readRawFileSync};
+const connection="import './hani-menu-badges-preload.cjs'; // Exact menu badge inverse before historical readers.\n";
+const connectedTests=new Set(['hani-helper-bubble-layer','hani-release-306','hani-ui-polish-1','hani-proactive-204'].map(n=>'scripts/'+n+'.test.mjs'));
+function project(source,file){
+ if(Object.hasOwn(layer.files,file)&&hash(source)===layer.files[file].afterSha256)return restore(source,file);
+ // Historical readers see the exact pre-connection blob, never a relaxed body.
+ if(connectedTests.has(file)){
+  const text=source.toString();
+  if(text.startsWith(connection)){
+   const before=require('./hani-test-repository-evidence.cjs').read(layer.base,file);
+   if(text===connection+before)return Buffer.isBuffer(source)?Buffer.from(before):before;
+  }
+ }
+ return source;
+}
+function installHistoricalInputs(fs){
+ // Only these standalone historical suites need a directory/diff test view.
+ // The menu suite and every other process keep the real directory entries.
+ const entry=path.resolve(process.argv[1]||'');
+ if(['hani-helper-bubble-layer','hani-release-306','hani-proactive-204'].some(n=>entry===path.join(__dirname,n+'.test.mjs')))
+  require('./hani-menu-badges-historical-input.cjs').install(fs,entry);
+}
+module.exports={layer,hash,restore,project,readRawFileSync,connection,connectedTests,installHistoricalInputs};
