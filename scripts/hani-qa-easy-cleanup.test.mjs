@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 import './hani-lounge-queen-v3-preload.cjs'; // Exact queen inverse before legacy assertions.
 // Node-only: execute the existing presentation owners against synthetic, immutable data.
 // Ieum is an exact outer layer over this frozen 19-person presentation contract.

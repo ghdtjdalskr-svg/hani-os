@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import vm from 'node:vm';
 import capInverse from './hani-office-affinity-cap-source.cjs';
 import {fixture} from './hani-building-206-engine.test.mjs';

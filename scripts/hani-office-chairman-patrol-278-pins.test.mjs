@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import {createHash} from 'node:crypto';import {execFileSync} from 'node:child_process';
 import {patrol278Delta as fullDelta,projectPreCompanionHomesSource,restorePatrol278Source as restore,projectPreKidsSource,restoreKids278Source,projectPreVisitsSource,restoreVisits278Source,projectPreStaffChatSource,restoreStaffChats278Source,projectPreBubblePlaceSource,restoreBubblePlace278Source,projectPreFix278Source,restoreFix278Source} from './hani-office-chairman-patrol-278-source.mjs';
 const {companionHomesExtension,...delta}=fullDelta;

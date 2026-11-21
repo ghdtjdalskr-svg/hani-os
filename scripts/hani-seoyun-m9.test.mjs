@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // Connect the existing exact outer chain for default execution as well.
 import './hani-m9-polish-preload.cjs';
 import './hani-m9-link-preload.cjs';

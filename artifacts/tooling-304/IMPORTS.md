@@ -1,0 +1,183 @@
+# 기존 시험 import 목록
+
+시험 본문·단언·숫자·기존 fixture/hash는 변경하지 않았습니다. 각 파일 앞에 다음 한 줄만 있습니다.
+
+```js
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
+```
+
+304는 UI source의 `require` 한 줄로 먼저 설치되며, 303 이하 기존 파일은 수정하지 않았습니다.
+
+## 전달된 32개
+
+- `scripts/hani-audit-1.test.mjs`
+- `scripts/hani-brand-heroes-218.test.mjs`
+- `scripts/hani-chibi-pack-3.test.mjs`
+- `scripts/hani-dark-bundle-layer.test.mjs`
+- `scripts/hani-design-polish-1-main295.test.mjs`
+- `scripts/hani-design-polish-1.test.mjs`
+- `scripts/hani-design-polish-2-main297.test.mjs`
+- `scripts/hani-design-polish-2.test.mjs`
+- `scripts/hani-hero-restore.test.mjs`
+- `scripts/hani-ieum-seat-history.test.mjs`
+- `scripts/hani-login-a-204.test.mjs`
+- `scripts/hani-lounge-queen-v3.test.mjs`
+- `scripts/hani-newsroom-285-source.test.mjs`
+- `scripts/hani-newsroom-4cut-288.test.mjs`
+- `scripts/hani-ocr-accuracy-224.test.mjs`
+- `scripts/hani-office-219.test.mjs`
+- `scripts/hani-pb-chibitoon.test.mjs`
+- `scripts/hani-proactive-204.test.mjs`
+- `scripts/hani-release-294.test.mjs`
+- `scripts/hani-release-295.test.mjs`
+- `scripts/hani-release-296.test.mjs`
+- `scripts/hani-release-297.test.mjs`
+- `scripts/hani-release-298.test.mjs`
+- `scripts/hani-release-299.test.mjs`
+- `scripts/hani-release-300.test.mjs`
+- `scripts/hani-release-301.test.mjs`
+- `scripts/hani-release-302.test.mjs`
+- `scripts/hani-release-303.test.mjs`
+- `scripts/hani-release-version-layers.test.mjs`
+- `scripts/hani-reviewed-release-baseline.test.mjs`
+- `scripts/hani-stale39-source.test.mjs`
+- `scripts/hani-theme-thaw-source.test.mjs`
+
+## 이번에 연결한 134개
+
+- `scripts/hani-board-203a.test.mjs`
+- `scripts/hani-board-community.test.mjs`
+- `scripts/hani-board-guard.test.mjs`
+- `scripts/hani-board-living.test.mjs`
+- `scripts/hani-board-november.test.mjs`
+- `scripts/hani-board-relationship.test.mjs`
+- `scripts/hani-board-views-211.test.mjs`
+- `scripts/hani-board-vocative.test.mjs`
+- `scripts/hani-board.test.mjs`
+- `scripts/hani-building-206-engine.test.mjs`
+- `scripts/hani-building-206-safety.test.mjs`
+- `scripts/hani-building-206.test.mjs`
+- `scripts/hani-chibi-pack-1-layers.test.mjs`
+- `scripts/hani-chibi-pack-1-release293.test.mjs`
+- `scripts/hani-chibi-pack-1.test.mjs`
+- `scripts/hani-chibi-pack-2-layers.test.mjs`
+- `scripts/hani-chibi-pack-2.test.mjs`
+- `scripts/hani-chibi-pack-3-layers.test.mjs`
+- `scripts/hani-desk-mascots.test.mjs`
+- `scripts/hani-dev-report-generate.test.mjs`
+- `scripts/hani-duplicate-id-guard.test.mjs`
+- `scripts/hani-fun-chat-fortune.test.mjs`
+- `scripts/hani-fun-top3.test.mjs`
+- `scripts/hani-helper-275-pins.test.mjs`
+- `scripts/hani-helper-bot.test.mjs`
+- `scripts/hani-helper-toggle.test.mjs`
+- `scripts/hani-history-226.test.mjs`
+- `scripts/hani-ieum-seat-layer.test.mjs`
+- `scripts/hani-invest-split-safety.test.mjs`
+- `scripts/hani-join-ieum.test.mjs`
+- `scripts/hani-life-bundle-source.test.mjs`
+- `scripts/hani-lounge-216.test.mjs`
+- `scripts/hani-lounge-ai-213.test.mjs`
+- `scripts/hani-lounge-billboard.test.mjs`
+- `scripts/hani-lounge-fun-211.test.mjs`
+- `scripts/hani-lounge-natural-211.test.mjs`
+- `scripts/hani-lounge-qa-212.test.mjs`
+- `scripts/hani-m9-link.test.mjs`
+- `scripts/hani-mascots-poster.test.mjs`
+- `scripts/hani-nav-groups.test.mjs`
+- `scripts/hani-newface-217.test.mjs`
+- `scripts/hani-newsroom-4cut-230.test.mjs`
+- `scripts/hani-newstaff-215.test.mjs`
+- `scripts/hani-office-actions-216.test.mjs`
+- `scripts/hani-office-actions-221.test.mjs`
+- `scripts/hani-office-affinity-274-pins.test.mjs`
+- `scripts/hani-office-affinity-cap.test.mjs`
+- `scripts/hani-office-affinity-storage.test.mjs`
+- `scripts/hani-office-affinity.test.mjs`
+- `scripts/hani-office-barista-night-273-pins.test.mjs`
+- `scripts/hani-office-barista-night.test.mjs`
+- `scripts/hani-office-barista.test.mjs`
+- `scripts/hani-office-behavior.test.mjs`
+- `scripts/hani-office-bori-m9.test.mjs`
+- `scripts/hani-office-bori-stroll.test.mjs`
+- `scripts/hani-office-bubble-close.test.mjs`
+- `scripts/hani-office-cafe-rest.test.mjs`
+- `scripts/hani-office-chairman-234.test.mjs`
+- `scripts/hani-office-chairman-patrol-278-pins.test.mjs`
+- `scripts/hani-office-chairman-patrol.test.mjs`
+- `scripts/hani-office-companion-homes.test.mjs`
+- `scripts/hani-office-companions-276-pins.test.mjs`
+- `scripts/hani-office-companions.test.mjs`
+- `scripts/hani-office-consult.test.mjs`
+- `scripts/hani-office-crowded-labels.test.mjs`
+- `scripts/hani-office-drama.test.mjs`
+- `scripts/hani-office-fix-218.test.mjs`
+- `scripts/hani-office-floor-bubble.test.mjs`
+- `scripts/hani-office-hd-224.test.mjs`
+- `scripts/hani-office-icons.test.mjs`
+- `scripts/hani-office-kids-286-source.test.mjs`
+- `scripts/hani-office-kids-lively.test.mjs`
+- `scripts/hani-office-kids-merge.test.mjs`
+- `scripts/hani-office-kids-pose-b.test.mjs`
+- `scripts/hani-office-kids-visit.test.mjs`
+- `scripts/hani-office-kids-weekday.test.mjs`
+- `scripts/hani-office-labels-qa.test.mjs`
+- `scripts/hani-office-lively-v2.test.mjs`
+- `scripts/hani-office-lively.test.mjs`
+- `scripts/hani-office-mascot-label.test.mjs`
+- `scripts/hani-office-motion-1.test.mjs`
+- `scripts/hani-office-motion-2.test.mjs`
+- `scripts/hani-office-obr10.test.mjs`
+- `scripts/hani-office-obr12.test.mjs`
+- `scripts/hani-office-obr14.test.mjs`
+- `scripts/hani-office-obr15.test.mjs`
+- `scripts/hani-office-obr16.test.mjs`
+- `scripts/hani-office-obr17.test.mjs`
+- `scripts/hani-office-obr18.test.mjs`
+- `scripts/hani-office-obr19.test.mjs`
+- `scripts/hani-office-obr21.test.mjs`
+- `scripts/hani-office-obr3.test.mjs`
+- `scripts/hani-office-obr4.test.mjs`
+- `scripts/hani-office-obr6.test.mjs`
+- `scripts/hani-office-obr7.test.mjs`
+- `scripts/hani-office-obr8.test.mjs`
+- `scripts/hani-office-obr9.test.mjs`
+- `scripts/hani-office-pet-bori-272-pins.test.mjs`
+- `scripts/hani-office-pet-bori.test.mjs`
+- `scripts/hani-office-pets-268-pins.test.mjs`
+- `scripts/hani-office-pets-bubble.test.mjs`
+- `scripts/hani-office-props.test.mjs`
+- `scripts/hani-office-release-projection.test.mjs`
+- `scripts/hani-office-residents.test.mjs`
+- `scripts/hani-office-seats-215.test.mjs`
+- `scripts/hani-office-snack.test.mjs`
+- `scripts/hani-office-staff-chat.test.mjs`
+- `scripts/hani-office-tap-lines.test.mjs`
+- `scripts/hani-office-tlayout.test.mjs`
+- `scripts/hani-office-top-labels.test.mjs`
+- `scripts/hani-office-v2-215.test.mjs`
+- `scripts/hani-office-visitors-cafe.test.mjs`
+- `scripts/hani-office-xmas-269-pins.test.mjs`
+- `scripts/hani-office-xmas.test.mjs`
+- `scripts/hani-office-zoom.test.mjs`
+- `scripts/hani-polish-205-safety.test.mjs`
+- `scripts/hani-procrastination-board.test.mjs`
+- `scripts/hani-qa-210-followup.test.mjs`
+- `scripts/hani-qa-210.test.mjs`
+- `scripts/hani-qa-design-b4.test.mjs`
+- `scripts/hani-qa-easy-cleanup.test.mjs`
+- `scripts/hani-quiz-autogen-216.test.mjs`
+- `scripts/hani-save-guard.test.mjs`
+- `scripts/hani-seoyun-m9.test.mjs`
+- `scripts/hani-settings-225-qa-guard.test.mjs`
+- `scripts/hani-settings-225.test.mjs`
+- `scripts/hani-simplify-225.test.mjs`
+- `scripts/hani-staff-floors-214.test.mjs`
+- `scripts/hani-study-retry.test.mjs`
+- `scripts/hani-theme-thaw.test.mjs`
+- `scripts/hani-theme-white-215.test.mjs`
+- `scripts/hani-ui-203b-ui.test.mjs`
+- `scripts/hani-ui-203b.test.mjs`
+- `scripts/hani-wishlist-quick-add.test.mjs`
+
+각 파일을 cb1b937의 독립 Git 객체와 바이트 비교하여 import 한 줄 외 차이 0을 확인했습니다. 새 UI fixture의 기존 33행과 owners는 그대로 보존하고, 추가 134행만 등록했습니다.
