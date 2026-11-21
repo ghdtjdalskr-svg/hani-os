@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // Exercise the mounted office owner, existing actor/roster events and fake clock.
 import test from 'node:test';
 import assert from 'node:assert/strict';

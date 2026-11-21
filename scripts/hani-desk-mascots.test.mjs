@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // node scripts/hani-desk-mascots.test.mjs [--unit]
 // Browser default: real office + production index; local-only, synthetic clock/data.
 import assert from 'node:assert/strict';

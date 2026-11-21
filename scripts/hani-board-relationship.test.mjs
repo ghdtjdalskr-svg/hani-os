@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 import './hani-lounge-queen-v3-preload.cjs'; // Exact queen inverse before legacy assertions.
 // Exercise the real board with approved seed and synthetic records only.
 import assert from "node:assert/strict";

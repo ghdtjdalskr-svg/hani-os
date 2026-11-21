@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // node scripts/hani-fun-top3.test.mjs [--browser]
 // Real owner bodies in the existing exam DOM adapter; optional isolated Playwright layout QA.
 import assert from 'node:assert/strict';

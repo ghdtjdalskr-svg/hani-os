@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // Approved November content through the real builder/runtime; synthetic state only.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

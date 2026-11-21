@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "from": "2.9.303",
+  "to": "2.9.304",
+  "release": "cb1b9376aac575eb3f60a98f01afbe3855282798",
+  "base": "ff3ae45540e8a8b5b5ccea83e72ecd9a5fece529",
+  "projectedBase": "09ba997070b6262dd9194db4a4430d5a91225c7d",
+  "uiFixture": "c1d11356125a13cfc825e3d42a4b37d7a2537370d924c02a1074fab2ff463214",
+  "files": {
+    "index.html": {
+      "after": "6ce7740604c3e21b8d92b393c4e04feed0e916866fa92e49f6808cf11dc0d853",
+      "before": "1e68daefffd1a6fc937c008460abf301c4f7f9c23fc988dc73d086b2db0c775f",
+      "count": 60
+    },
+    "hani-main.js": {
+      "after": "02035ac232da335aaef38cebedf6833a883c3d77f0105faded2b6ce48ca5dc38",
+      "before": "081d0b10d1f80508e4db2d81f4d7b3cc5a60bab82c1eb194edcd6b2f44878082",
+      "count": 1
+    },
+    "assets/data/hani-history-releases-v1.json": {
+      "after": "dc3a4e251d26754870203b78e0606d5023c8671c955ee5c61b31bf782e9c2b40",
+      "before": "e791c10fd9dc2b41c6b01686e5e20d51b93557f05e1d0fcf0567b6df70b767d8",
+      "count": 1,
+      "replacements": [
+        {
+          "before": "3\",\n      \"date\": \"2026-11-20\",\n      \"status\": \"released\",\n      \"title\": \"이달의 퀸 레이스 중계\",\n      \"category\": \"하니 그룹\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.303 이달의 퀸 레이스 중계",
+          "after": "4\",\n      \"date\": \"2026-11-21\",\n      \"status\": \"released\",\n      \"title\": \"화면 다듬기 1차\",\n      \"category\": \"디자인 · 대시보드\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.304 화면 다듬기 1차\"\n      }\n    },\n    {\n      \"id\": \"v2.9.303\",\n      \"date\": \"2026-11-20\",\n      \"status\": \"released\",\n      \"title\": \"이달의 퀸 레이스 중계\",\n      \"category\": \"하니 그룹\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"af76a87f9456a0b0b25676fda5178aec75f91afc\",\n        \"subject\": \"release: v2.9.303 이달의 퀸 레이스 중계 (#526)"
+        }
+      ]
+    }
+  },
+  "passthrough": {
+    "artifacts/newsroom-4cut-003/REPORT-b.md": "21f5c3d97f730a70106a9ecdf57b444c596112051b06bd02820e76e019d9678a",
+    "artifacts/newsroom-4cut-003/REPORT.md": "345e340afc52ad5ac96b8a140418babd0fbc4b197ec49bd895bccec9e87a0bb8",
+    "artifacts/newsroom-4cut-003/compare-002-003.png": "fc4376448df13f8f80996efc7f7c90d38d7637aa9773ebd02ebf2c4180ac8f87",
+    "artifacts/newsroom-4cut-003/compare-002-003b.png": "59bd5fd04b4b0be03009d0c1f092d2d44017097d1c385b1cc02183f25d7de703",
+    "assets/newsroom-4cut/003.webp": "cf567ac58ebb1403ad3c8dcdef54bfda818f4b98489c2b0a4607da919de365f0",
+    "docs/drafts/newsroom-4cut-003-draft.json": "7f26b76d353eda830ff735751a57e00c13ecf3a56696c481e3e840541f73e540"
+  }
+}

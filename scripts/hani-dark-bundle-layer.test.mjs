@@ -1,3 +1,4 @@
+import './hani-ui-polish-1-preload.cjs'; // Exact UI Polish 1 inverse before historical readers.
 // Independent raw feature evidence, outside the legacy projection chain.
 import test from 'node:test';
 import assert from 'node:assert/strict';
