@@ -1,3 +1,4 @@
+import './hani-lounge-queen-v3-preload.cjs'; // Exact queen inverse before legacy assertions.
 // Synthetic Board v4 through the real board/save/backup functions; no user data/network.
 import assert from "node:assert/strict";
 import fs from "node:fs";

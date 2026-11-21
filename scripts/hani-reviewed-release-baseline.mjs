@@ -1,9 +1,10 @@
+import './hani-audit-1-preload.cjs'; // Restore exact main299 before the historical oracle reads current owners.
 // Preservation oracle: fixed release225 through 233 proofs, then contiguous merged
 // release PRs from origin/main. Worktree/HEAD can never authorize source bytes.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import repository from './hani-test-repository-evidence.cjs';
+import repository from './hani-release-300-reviewed-input.cjs';
 import {discoverMergedReleaseChain,advanceMergedReleaseFile} from './hani-merged-release-chain.mjs';
 const root=path.resolve(import.meta.dirname,'..');
 export const guardedRelease='776752c971f2ce48edf376a707eb345ae57da98c';

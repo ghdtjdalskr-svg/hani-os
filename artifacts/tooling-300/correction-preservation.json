@@ -1,0 +1,144 @@
+{
+  "base": "9f49286882e2efacd128e2920cc12f38d473a8e9",
+  "snapshotFiles": 2318,
+  "changed": [
+    "scripts/hani-release-300-preload.cjs",
+    "scripts/hani-release-300-source.cjs",
+    "scripts/hani-release-300.test.mjs"
+  ],
+  "removed": [
+    "scripts/hani-release-300-direct-input.mjs"
+  ],
+  "unexpectedChanges": [],
+  "unexpectedMissing": [],
+  "newForbiddenFiles": [],
+  "protectedChecks": [
+    {
+      "file": ".github/workflows/hani-dev-center-gate.yml",
+      "sha256": "03bc58c7527d3d1754925269543f55b64e95e168bb1071d7d1f0f9d380c469b6",
+      "exactReleaseBytes": true,
+      "sameAsStart": true
+    },
+    {
+      "file": ".github/workflows/hani-dev-center-self-protect.yml",
+      "sha256": "8119dc6255f9dee8a1768085c698614b608fccb5c48547918a80702a126e3c53",
+      "exactReleaseBytes": true,
+      "sameAsStart": true
+    },
+    {
+      "file": "AGENTS.md",
+      "sha256": "fee0b8fc0e6a9d2753fd5159de31d7402b273bfe6e42a56da8a9addaca13f45a",
+      "exactReleaseBytes": true,
+      "sameAsStart": true
+    },
+    {
+      "file": "dev-center/ai-weekly-budget.md",
+      "sha256": "c63797c9eb6fac37af9ba65e2e17c796290480260db3826acae9d3a43398b236",
+      "exactReleaseBytes": true,
+      "sameAsStart": true
+    },
+    {
+      "file": "dev-center/banner-art-direction-prompts.md",
+      "sha256": "eea0c93adaab1dd34f93b92dd913ff30322ebac4abe00c37beb187819b6a6eaa",
+      "exactReleaseBytes": true,
+      "sameAsStart": true
+    },
+    {
+      "file": "dev-center/codemap.json",
+      "sha256": "c58fb2921f1331e1fa2a089864e52267d6c87546fed0eeabf133b82376af16af",
+      "exactReleaseBytes": true,
+      "sameAsStart": true
+    },
+    {
+      "file": "dev-center/one-pass-gate-contract.json",
+      "sha256": "8cfe8785faa4d4682de210d439c7c933887306ce6e0a1a0cf6f4a196df49d6f6",
+      "exactReleaseBytes": true,
+      "sameAsStart": true
+    },
+    {
+      "file": "dev-center/one-pass-release.md",
+      "sha256": "8e3c38bf9dfbc3d92a65fc5170be6275993b1978a969c10046313a489577d44b",
+      "exactReleaseBytes": true,
+      "sameAsStart": true
+    },
+    {
+      "file": "dev-center/release-flow.schema.json",
+      "sha256": "8beb3ec323b9c00cb722098ce0cfd29c2e555284725282dcad19b1fe1052c92b",
+      "exactReleaseBytes": true,
+      "sameAsStart": true
+    },
+    {
+      "file": "dev-center/release-review.schema.json",
+      "sha256": "2e1334fb2d8501d7eae230ff97c8189acc43c17da4f3ee4eb0888ee6f7c17784",
+      "exactReleaseBytes": true,
+      "sameAsStart": true
+    },
+    {
+      "file": "scripts/hani-ci-scope.mjs",
+      "sha256": "9a94d709062015530425fa1b9dd100a1df5b5250c069a094e61dfa4b3d8bd45a",
+      "exactReleaseBytes": true,
+      "sameAsStart": true
+    },
+    {
+      "file": "scripts/hani-one-pass-release.mjs",
+      "sha256": "bc9df8e73d69f9b8374620e9a85069a059f8416ed971950ac92168b9bdfd30cd",
+      "exactReleaseBytes": true,
+      "sameAsStart": true
+    },
+    {
+      "file": "scripts/hani-one-pass-rules.mjs",
+      "sha256": "ef53558eab5ba0f64379ceb0fb2b001c25c08df26091bef09959db3cd06f6a47",
+      "exactReleaseBytes": true,
+      "sameAsStart": true
+    },
+    {
+      "file": "scripts/hani-release-package.mjs",
+      "sha256": "f2d58151a81c53f9565ee1bf6aea9e49a0a2f0b2413a5c8563ff964e6f237564",
+      "exactReleaseBytes": true,
+      "sameAsStart": true
+    },
+    {
+      "file": "scripts/hani-release-preqa.mjs",
+      "sha256": "a80a4a952fcc040b2b1b9e14215398e2509eb2535a29efcd44391fc871a46705",
+      "exactReleaseBytes": true,
+      "sameAsStart": true
+    },
+    {
+      "file": "scripts/hani-runtime-closure.mjs",
+      "sha256": "fd8fd4429ae59acced03f588e26f7da47fa1902193c87d48c46768a023de9aa8",
+      "exactReleaseBytes": true,
+      "sameAsStart": true
+    },
+    {
+      "file": "supabase/functions/hani-deploy-bridge/index.ts",
+      "sha256": "83daf58132b07dfc93a1481e440189373b0fd903bcada8e25d2c5e7028d989b9",
+      "exactReleaseBytes": true,
+      "sameAsStart": true
+    }
+  ],
+  "restored": [
+    {
+      "file": "artifacts/office-behavior/obr16-layout-node.json",
+      "sha256": "b93abb61e8c8fc727c86669c9c2d1658c7585439a2ed2a6c2d94b5091298709b",
+      "sameAsStart": true
+    },
+    {
+      "file": "artifacts/office-behavior/obr17-layout-node.json",
+      "sha256": "e285500dfd36c5df258a68dd403f96aefc6f8cfe57edcaf36c64c4eb1800e901",
+      "sameAsStart": true
+    },
+    {
+      "file": "artifacts/office-behavior/obr19-layout-node.json",
+      "sha256": "e38623b7b44eacd000361cfc7a5a7f53679cbd17882dbb18faca3ee54e85f8c8",
+      "sameAsStart": true
+    },
+    {
+      "file": "artifacts/office-drama/reachability.json",
+      "sha256": "6b00b9b08c6069cde4824553a5cb2aa72eeb667ec53b51782a10bd3fa29b1ef1",
+      "sameAsStart": true
+    }
+  ],
+  "existingTestsPreserved": 301,
+  "existingFixturesPreserved": 120,
+  "importedAuditAndNewFixturesPreserved": true
+}

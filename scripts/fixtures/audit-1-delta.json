@@ -1,0 +1,272 @@
+{
+  "schema": 1,
+  "layer": "audit-1",
+  "base": "2220b6129c63721906a3788ee9a7681f197c4523",
+  "target": "main299",
+  "files": {
+    "hani-board.js": {
+      "beforeSha256": "367029c6b6ddd186e2572423f93c9c2f782199d75b5cb41e0232260de74afb90",
+      "afterSha256": "43498efd6f1616045733d953ec00f89322866a75249d911b3aac351e91a96d51",
+      "edits": [
+        {
+          "start": 107024,
+          "before": "'+Number(previous.slice(5))+'월",
+          "after": "지난달('+Number(previous.slice(5))+'월)"
+        }
+      ]
+    },
+    "hani-office-live.js": {
+      "beforeSha256": "2e383857098ad7980ed86aae0a8cdf4aef9a556bb3bb24d26ad37bf05ba624df",
+      "afterSha256": "b8c0facf63a9e26d04bfd2601c42fce24bfc3569a44684e7a4d163594a48474f",
+      "edits": [
+        {
+          "start": 336133,
+          "before": "'+Number(award.month.slice(5))+'월",
+          "after": "지난달('+Number(award.month.slice(5))+'월)"
+        }
+      ]
+    },
+    "hani-design-system.css": {
+      "beforeSha256": "415cc5329e52304e17202ee8ec7f47c290e6972f29d40962a59d50f656452546",
+      "afterSha256": "91e9d5b65669573c9a9abbbcb7e6d8e5b2fd8bb8bf1e31a121542dff971c4144",
+      "edits": [
+        {
+          "start": 205981,
+          "before": " :is(input[type=\"checkbox\"],input[type=\"radio\"]){width:40px!important;height:40px!important;flex-shrink:0",
+          "after": ".app :is(input[type=\"checkbox\"],input[type=\"radio\"]):not(.hani-office-actor){width:22px!important;min-width:22px!important;height:22px!important;min-height:22px!important;flex-shrink:0;accent-color:var(--primary)"
+        },
+        {
+          "start": 289761,
+          "before": "",
+          "after": "\r\n/* audit-1: native mobile choices share one size across study, Drive and studio. */\r\n@media screen and (max-width:900px){\r\n  #app.app #study :is(input[type=\"checkbox\"],input[type=\"radio\"]),#app.app #drive :is(input[type=\"checkbox\"],input[type=\"radio\"]),#app.app #aura #launchGreetingEnabled{appearance:auto!important;box-sizing:border-box!important;flex:0 0 22px!important;width:22px!important;height:22px!important;min-width:22px!important;min-height:22px!important;max-width:22px!important;max-height:22px!important;margin:0!important;padding:0!important;transform:none!important;accent-color:var(--primary)}\r\n}\r\n"
+        }
+      ]
+    },
+    "hani-study-v02984.js": {
+      "beforeSha256": "648bd9b7ee443a492d05a25205006dc99bed73806e53309e361b9b9c93e2acff",
+      "afterSha256": "0c84e1289558b16f024cd555cf824dac196c4760075f25b50005df329734e712",
+      "edits": [
+        {
+          "start": 97389,
+          "before": "왼쪽에서 프로젝트를 만들면 Daily Quiz",
+          "after": "프로젝트 설정에서 만들면 오늘의 퀴즈"
+        }
+      ]
+    },
+    "index.html": {
+      "beforeSha256": "a664fcc8791efc1e6ab92522b658e6292907107e66c55067cba655bcf62c3dea",
+      "afterSha256": "7e066d9853a8a42364f6ded97d4e14ef0c4e35c7a9da32661b59d562c1b7ced8",
+      "edits": [
+        {
+          "start": 75058,
+          "before": "OCR 계좌명보다 이 선택이 우선하며, 선택한 accountId만 업데이트합",
+          "after": "사진 속 계좌명보다 이 선택이 우선하며, 고른 계좌만 바뀝"
+        },
+        {
+          "start": 97174,
+          "before": "Preview before Commit.</b> Agent Workspace는 Life OS 원본과 분리되어 있습니다. 대표가 승인해도 결정 이력만 기록되며 <code>hani_os_life_v23</code>와 <code>hani_state</code>에는 자동 Commit하지 않습니다",
+          "after": "승인하기 전에는 기록이 바뀌지 않아요.</b> 이 공간에서는 안건과 결정 이력만 관리해요. 승인해도 생활 기록은 자동으로 바뀌지 않아요"
+        },
+        {
+          "start": 97837,
+          "before": "첫 Pilot 안건도 기존 Agent DB에서 그대로 불러옵니다",
+          "after": "처음 검토할 안건도 기존 업무 기록에서 불러와요"
+        },
+        {
+          "start": 154576,
+          "before": "",
+          "after": "시즌 종료 · "
+        },
+        {
+          "start": 155312,
+          "before": "",
+          "after": "시즌 종료 · "
+        },
+        {
+          "start": 156049,
+          "before": "",
+          "after": "시즌 종료 · "
+        },
+        {
+          "start": 156809,
+          "before": "",
+          "after": "시즌 종료 · "
+        },
+        {
+          "start": 157575,
+          "before": "",
+          "after": "시즌 종료 · "
+        },
+        {
+          "start": 158794,
+          "before": "",
+          "after": "시즌 종료 · "
+        },
+        {
+          "start": 160034,
+          "before": "",
+          "after": "시즌 종료 · "
+        },
+        {
+          "start": 161238,
+          "before": "",
+          "after": "시즌 종료 · "
+        },
+        {
+          "start": 222900,
+          "before": "",
+          "after": "<script src=\"./hani-book-share-parse.js\"></script>\n"
+        }
+      ]
+    },
+    "hani-main.js": {
+      "beforeSha256": "22f7cbb6ec97c4a42d4b95f96b6951d84a0808519b65d315f30b0e3a4837e21b",
+      "afterSha256": "6ec7c5c4e84124d32ec1c3b60fabc64f61a162a726409f00a24bea124cf056ae",
+      "edits": [
+        {
+          "start": 375579,
+          "before": "ledgerJispiStatus(value,target)",
+          "after": "items.length?ledgerJispiStatus(value,target):\"기록 없음\";if(!items.length)return `<div class=\"ledger-jispi-card ${tone}\"><div class=\"ledger-jispi-head\"><span>${label}</span></div><div class=\"ledger-breaker-line\"><strong>기록 없음</strong></div><div class=\"ledger-jispi-meta\"><span>목표 ${esc(won(target))}</span><span>기록을 추가하면 비교할 수 있어요.</span></div></div>`"
+        },
+        {
+          "start": 500975,
+          "before": "Google OAuth 토큰은 브라우저가 아니라 Supabase 서버에만 보관합니다",
+          "after": "구글 연결 정보는 안전한 서버에만 보관해요"
+        },
+        {
+          "start": 642460,
+          "before": "",
+          "after": "  const seasonEnded=Date.now()-Date.parse(`${game.date}T12:00:00Z`)>=30*86400000&&!(Date.parse(next?.dateTime)>Date.now());\r\n"
+        },
+        {
+          "start": 642851,
+          "before": "",
+          "after": "${seasonEnded?\"시즌 종료 · \":\"\"}"
+        },
+        {
+          "start": 643627,
+          "before": "",
+          "after": "seasonEnded?\"시즌 종료\":"
+        },
+        {
+          "start": 643957,
+          "before": "",
+          "after": "${seasonEnded?\"시즌 종료 · \":\"\"}"
+        },
+        {
+          "start": 769579,
+          "before": "",
+          "after": "if(globalThis.HaniBookShare?.parse(text))return \"book\";"
+        },
+        {
+          "start": 773380,
+          "before": "",
+          "after": "  const shared=globalThis.HaniBookShare?.parse(text);\r\n  if(shared){\r\n    const completed=shared.userStatus===\"read\"||(shared.userStatus===null&&/완독|다\\s*읽|읽었|읽음/.test(shared.userPhrases.join(\" \"))),date=shared.userStatus?intakeReadingToday():\"\";\r\n    return {title:shared.title,author:shared.author,rating:null,review:completed?\"\":\"읽는 중\",completedDate:completed?date:\"\",readingDate:completed?\"\":date,status:completed?\"read\":\"wish\"};\r\n  }\r\n"
+        },
+        {
+          "start": 796361,
+          "before": "",
+          "after": "  const shared=globalThis.HaniBookShare?.parse(s);if(shared){const natural=intakeNaturalBook(s);return {...d,title:natural.title,author:natural.author,status:natural.status,rating:null,completedDate:natural.completedDate,review:natural.readingDate?[\"읽기 시작일: \"+natural.readingDate,natural.review].filter(Boolean).join(\"\\n\"):natural.review}}\r\n"
+        }
+      ]
+    },
+    "hani-ui-v02992.js": {
+      "beforeSha256": "bc88746447df91cb478fbf37a2952f21ae17eb224bba3da56b3472107ca6d140",
+      "afterSha256": "e278c95e8e1c4b2747d1254a32b3839fcca1066e28cc2bdc87b11c8ddbcddbf5",
+      "edits": [
+        {
+          "start": 63187,
+          "before": ",c=rec&&typeof ledgerCalc==='function'?ledgerCalc(rec):null;if(!rec||",
+          "after": ";if(!rec?.items?.length)return {text:'기록 없음',direction:'neutral'};const c=typeof ledgerCalc==='function'?ledgerCalc(rec):null;if("
+        }
+      ]
+    },
+    "hani-asset-update-v1.js": {
+      "beforeSha256": "3af574258171199890e2796fbc76331ad6b3fdc7ce8a8f2006dae829a06f25ab",
+      "afterSha256": "31315eb0d0098f9c08920eaca8e3b81da85c1b36c027bde05ae611d8de22ae36",
+      "edits": [
+        {
+          "start": 94588,
+          "before": "선택한 accountId만 삭제합니다",
+          "after": "고른 계좌만 삭제해요"
+        }
+      ]
+    },
+    "hani-yuna-helpdesk.js": {
+      "beforeSha256": "195c7711c825cb5276b7978bb88ee98d9b7bfa0714fbf69f41f86518942de229",
+      "afterSha256": "046e69878aabc6f8e02c714fb748622166a64674ed1755d73f84c65b0f74f715",
+      "edits": [
+        {
+          "start": 2759,
+          "before": "",
+          "after": "\n  if(window.HaniBookShare?.parse(text))return \"book\";"
+        },
+        {
+          "start": 4093,
+          "before": "",
+          "after": "  const shared=window.HaniBookShare?.parse(text);\n  if(shared){\n    const natural=typeof intakeNaturalBook===\"function\"?intakeNaturalBook(text):null,completed=shared.userStatus?shared.userStatus===\"read\":natural?natural.status===\"read\":/완독|다\\s*읽|읽었|봤어|봤다/.test(shared.userPhrases.join(\" \")),date=explicitDate(shared.userPhrases.join(\" \"))||natural?.completedDate||natural?.readingDate||\"\";\n    const data={status:completed?\"read\":\"wish\",title:shared.title,author:shared.author,topic:\"교양\",rating:null,completedDate:completed?date:\"\",review:completed?\"\":\"읽는 중\"};\n    return {target:\"book\",data,entities:{readingDate:date},missing:[!data.title&&\"title\",!date&&(completed?\"completedDate\":\"readingDate\")].filter(Boolean)};\n  }\n"
+        },
+        {
+          "start": 15943,
+          "before": "",
+          "after": "&&!(kind===\"book\"&&window.HaniBookShare?.parse(text))"
+        }
+      ]
+    },
+    "hani-organization-hub.js": {
+      "beforeSha256": "ff5b8201918ce95c44e97f794b1291d33a99610b513c1d2f60f163f43f1d210a",
+      "afterSha256": "56c240bc0a2fe2c250995ff5b24316e1602e9fff6f0739e7d678695c85c63500",
+      "edits": [
+        {
+          "start": 10470,
+          "before": "||!value.entries.every(r=>/^v\\d+\\.\\d+\\.\\d+$/.test(r?.id)&&typeof r.title==='string'&&/[가-힣]/.test(r.title)&&[...r.title].length<=24&&/^\\d{4}-\\d{2}-\\d{2}$/.test(r.date)&&Number.isFinite(Date.parse(r.date+'T00:00:00Z'))&&new Date(r.date+'T00:00:00Z').toISOString().slice(0,10)===r.date&&['released','pages'].includes(r.status)&&Array.isArray(r.credits)))throw Error('release metadata');\n      historyReleases=value.e",
+          "after": ")throw Error('release metadata');\n      const validEntries=value.entries.filter(r=>/^v\\d+\\.\\d+\\.\\d+$/.test(r?.id)&&typeof r.title==='string'&&/[가-힣]/.test(r.title)&&[...r.title].length<=24&&/^\\d{4}-\\d{2}-\\d{2}$/.test(r.date)&&Number.isFinite(Date.parse(r.date+'T00:00:00Z'))&&new Date(r.date+'T00:00:00Z').toISOString().slice(0,10)===r.date&&['released','pages'].includes(r.status)&&Array.isArray(r.credits));\n      historyReleases=validE"
+        }
+      ]
+    },
+    "hani-development-history-v1.js": {
+      "beforeSha256": "aee1f63008e3a0c48bcd273e1c047f13897ee904f70951285340a3fa02fff5b0",
+      "afterSha256": "6fd081a6e9b23778520da8c1107ce8c9e92ae93908fbc9a3bb01ebc0bbb63550",
+      "edits": [
+        {
+          "start": 7088,
+          "before": "",
+          "after": "?.slice(0,7)"
+        }
+      ]
+    },
+    "assets/data/hani-history-releases-v1.json": {
+      "beforeSha256": "026e3206c058e205c55d2d94afdbec2939163f5d5cf54c0b6287d0739f6c0bb2",
+      "afterSha256": "0568615c2ffa40fbb5ab5c9b4de2e4dec69e7ffe060ec705ea2257ac4e1b855c",
+      "edits": [
+        {
+          "start": 3005,
+          "before": "사무실 직원을 눌러도 말풍선이",
+          "after": "직원 말풍선"
+        }
+      ]
+    },
+    "scripts/hani-design-polish-2-preload.cjs": {
+      "beforeSha256": "26cf17b6cc1f368f99ea2b8b7296bfca20a2e47e24b7ed9a55f99cfe3b552954",
+      "afterSha256": "3ed85832a56a59bc05a909cca5547b4cb94f1bc927d30c8e1e1003c1619ec470",
+      "edits": [
+        {
+          "start": 0,
+          "before": "",
+          "after": "require('./hani-audit-1-preload.cjs'); // audit-1 precedes release299 raw capture.\n"
+        }
+      ]
+    },
+    "scripts/hani-release-299-source.cjs": {
+      "beforeSha256": "0bd31315283580553ce3b086bd2ccc2a4225b1eb16c6dee64435c6b2a5557e4f",
+      "afterSha256": "eb1043989284787be7b3265756cd29b43914d19cd1cbcb597b60af4b7a6db907",
+      "edits": [
+        {
+          "start": 0,
+          "before": "",
+          "after": "require('./hani-audit-1-preload.cjs'); // Establish the outer boundary before raw capture.\n"
+        }
+      ]
+    }
+  }
+}

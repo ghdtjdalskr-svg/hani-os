@@ -1,3 +1,4 @@
+import './hani-lounge-queen-v3-preload.cjs'; // Exact queen inverse before legacy assertions.
 // Node safety/inverse checks; real layout and pixels are a separate Edge handoff.
 import test from 'node:test';
 import assert from 'node:assert/strict';
