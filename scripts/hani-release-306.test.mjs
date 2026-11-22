@@ -1,3 +1,4 @@
+import './hani-menu-badges-preload.cjs'; // Exact menu badge inverse before historical readers.
 import release from './hani-release-306-source.cjs';
 import './hani-ui-polish-1-preload.cjs';
 import test from 'node:test';

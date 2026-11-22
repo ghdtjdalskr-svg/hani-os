@@ -1,3 +1,4 @@
+import './hani-menu-badges-preload.cjs'; // Exact menu badge inverse before historical readers.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

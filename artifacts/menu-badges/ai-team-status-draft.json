@@ -1,0 +1,55 @@
+{
+  "updatedAt": "2026-11-17",
+  "productionVersion": "2.9.299",
+  "members": [
+    {
+      "id": "seoyun",
+      "role": "Claude · 배포 팀장 · 설계/통합/시험",
+      "now": ["메뉴 NEW·카운트 배지 및 AI 업무현황 통합 후보 설계·시험 준비"],
+      "recent": ["운영 v2.9.299 배포 및 릴리스 열차 통합 관리"],
+      "next": ["메뉴 배지·AI 업무현황 targeted test 실행 및 열차 후보 통합", "대표님 Preview 확인 후 배포 절차 진행"]
+    },
+    {
+      "id": "dohyun",
+      "role": "Codex · 무거운 개발/그림 (11/19 복귀)",
+      "now": ["11/19 복귀 예정 · 무거운 기능 개발 및 아트워크 대기"],
+      "recent": ["코어 기능 구현·회귀 테스트 및 아트워크 작업"],
+      "next": ["11/19 복귀 후 무거운 개발·그림 태스크 인계 및 재개"]
+    },
+    {
+      "id": "serin",
+      "role": "Gemini (Hydrogen) · 중간 개발/기획/검수",
+      "now": ["출석 도장판·미룬 일 2차·이음 자리 및 메뉴 배지·AI 업무현황 초상화 크롭 수정"],
+      "recent": ["출석 도장판·미룬 일 2차·이음 자리 작업 진행"],
+      "next": ["메뉴 배지 단위 테스트 및 REPORT.md 정리 후 서윤에게 시험 인계"]
+    },
+    {
+      "id": "hani",
+      "role": "전무 · 기획",
+      "now": ["Life OS 전체 방향·메뉴 알림 기준·사내 기획 정리"],
+      "recent": ["HANI GROUP 기획 및 기능 우선순위 정돈"],
+      "next": ["대표님 Preview 확인을 위한 전체 기획 정합성 점검"]
+    },
+    {
+      "id": "yuri",
+      "role": "유리 · QA · 변경 범위/owner/이벤트 검토",
+      "now": ["메뉴 배지 읽기 전용 경계 및 #aiWork CSS 범위 검토 대기"],
+      "recent": ["2.9.299 변경 범위·DOM owner·event layering 검증"],
+      "next": ["Zero storage write 경계와 기존 테스트 영향 범위 확인"]
+    },
+    {
+      "id": "arin",
+      "role": "아린 · UI/UX · Preview 리뷰",
+      "now": ["사이드바 배지 시인성(다크 테마·접힘 모드) 및 #aiWork 인물 카드 Preview 검토 대기"],
+      "recent": ["390px 모바일 레이아웃 및 Finish 대비 UI/UX 리뷰"],
+      "next": ["데스크톱·접힌 사이드바·모바일 드로어 배지 및 인물 얼굴 크롭 가독성 검토"]
+    },
+    {
+      "id": "hina",
+      "role": "히나 · Final QA · Release Gate",
+      "now": ["후보 동결 및 targeted test·회귀 영향 확인 후 최종 Release Gate 대기"],
+      "recent": ["운영 v2.9.299 패키지 identity 및 사후 read-back 검증"],
+      "next": ["One-Pass preflight 및 대표님 승인 후 최종 배포 게이트 검증"]
+    }
+  ]
+}

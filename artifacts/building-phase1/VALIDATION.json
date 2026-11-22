@@ -1,0 +1,86 @@
+{
+  "base": "2db38f4834ba0f2b6c21c296b5c9a4e0732f2e0a",
+  "branch": "hani/building-5f",
+  "displayVersion": "2.9.306",
+  "runtimeSha256": {
+    "hani-office-live.js": "aeb2de37fcfe9dbefa5190b924ef37bb345eeea7caaf1b37046ef9d0e0ea3fab",
+    "hani-office-live.css": "8d4d0b4e83fcefbf4e473441a191b60e1cdef526f72406254b16d2abaf888d2d"
+  },
+  "fixtureSha256": "7c895e924197e39717b7c81d2a5bc1ce4ce88f893886a610ad78f1acf97e674d",
+  "runtimeClosure": {
+    "files": 174,
+    "missing": [],
+    "jsSha256": "aeb2de37fcfe9dbefa5190b924ef37bb345eeea7caaf1b37046ef9d0e0ea3fab"
+  },
+  "newTests": 10,
+  "identicalTemporalSnapshots": 351,
+  "identicalDomCases": 50,
+  "removedAnchorCasesRejected": 326,
+  "addedTimers": 0,
+  "addedEvents": 0,
+  "newStorageAccess": 0,
+  "standaloneFiles": 292,
+  "outcomes": {
+    "UNVERIFIED": 72,
+    "PASS": 191,
+    "FAIL": 29
+  },
+  "baselineFailureFiles": 29,
+  "baselineFailureCaseDifferences": 0,
+  "performance": {
+    "coldLimitMs": 400,
+    "warmLimitMs": 3,
+    "retries": [
+      {
+        "log": "perf-retry-1.log",
+        "firstMs": [
+          711.0285,
+          464.43280000000004,
+          540.8098999999997
+        ],
+        "bestMs": 464.43280000000004,
+        "warmMs": 1.2526544,
+        "coldPass": false,
+        "warmPass": true
+      },
+      {
+        "log": "perf-retry-2.log",
+        "firstMs": [
+          552.7933,
+          469.90430000000015,
+          562.3225000000002
+        ],
+        "bestMs": 469.90430000000015,
+        "warmMs": 1.2193712,
+        "coldPass": false,
+        "warmPass": true
+      }
+    ],
+    "control": {
+      "log": "perf-control.log",
+      "firstMs": [
+        642.7902999999999,
+        487.2828999999997,
+        496.13030000000026
+      ],
+      "bestMs": 487.2828999999997,
+      "warmMs": 1.2677303999999998,
+      "coldPass": false,
+      "warmPass": true
+    }
+  },
+  "qaRestoredSha256": {
+    "artifacts/office-behavior/obr16-layout-node.json": "b93abb61e8c8fc727c86669c9c2d1658c7585439a2ed2a6c2d94b5091298709b",
+    "artifacts/office-behavior/obr17-layout-node.json": "e285500dfd36c5df258a68dd403f96aefc6f8cfe57edcaf36c64c4eb1800e901",
+    "artifacts/office-behavior/obr19-layout-node.json": "e38623b7b44eacd000361cfc7a5a7f53679cbd17882dbb18faca3ee54e85f8c8",
+    "artifacts/office-drama/reachability.json": "6b00b9b08c6069cde4824553a5cb2aa72eeb667ec53b51782a10bd3fa29b1ef1",
+    "artifacts/m9-link/closure.json": "b9b10c433d480df9c14d2b75dd9c91dc0d0ebf2c3ccca90e43e58136446b0d47"
+  },
+  "generatedFilesMoved": 16,
+  "browser": {
+    "status": "UNVERIFIED",
+    "error": "EPERM",
+    "executable": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe"
+  },
+  "releaseActions": []
+}
