@@ -1,3 +1,4 @@
+require('./hani-release-309-preload.cjs'); // Released309 metadata precedes the budget view capture.
 // Test input only: exact AI budget view / 4-cut inverse before released308.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
