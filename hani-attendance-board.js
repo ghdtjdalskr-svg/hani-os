@@ -4,6 +4,13 @@
   function section_id() { return "attendanceBoard"; }
 
   const DAYS_KO = Object.freeze(["월", "화", "수", "목", "금", "토", "일"]);
+  const WD_KO = Object.freeze(["일", "월", "화", "수", "목", "금", "토"]);
+  const MILESTONE_TITLES = Object.freeze({
+    "3": "3일 연속! 🎉",
+    "7": "7일 개근! 🏅",
+    "14": "2주 개근! 🎊",
+    "30": "30일 개근! 👑"
+  });
 
   const CREW = Object.freeze([
     Object.freeze({ id: "hani", name: "하니", pet: false }),
@@ -415,11 +422,22 @@
     return memState;
   }
 
+  function formatDutyTag(dayKey, isPet) {
+    const role = isPet ? "오늘의 동물 당번" : "오늘의 출석 당번";
+    const parts = typeof dayKey === "string" ? dayKey.split("-") : [];
+    if (parts.length !== 3) return role;
+    const dt = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+    const wd = WD_KO[dt.getDay()];
+    if (!wd) return role;
+    return `${Number(parts[1])}월 ${Number(parts[2])}일(${wd}) · ${role}`;
+  }
+
   function buildSlot(homeActions) {
     const section = document.createElement("section");
     section.id = section_id();
     section.className = "att-board";
     section.setAttribute("aria-label", "오늘의 출석 도장판");
+    section.setAttribute("aria-live", "polite");
 
     const head = document.createElement("div");
     head.className = "att-head";
@@ -473,25 +491,19 @@
 
     face.append(faceImg, petSprite, faceFallback);
 
-    const copy = document.createElement("div");
-    copy.className = "att-copy";
-
     const who = document.createElement("div");
     who.className = "who";
-    const whoName = document.createElement("span");
-    const whoRole = document.createElement("small");
+    const whoRole = document.createElement("div");
+    whoRole.className = "att-role";
     whoRole.textContent = "오늘의 출석 당번";
-    who.append(whoName, whoRole);
+    const whoName = document.createElement("div");
+    whoName.className = "att-name";
+    who.append(whoRole, whoName);
+
+    dutyRow.append(face, who);
 
     const bubble = document.createElement("p");
     bubble.className = "bubble";
-
-    const secret = document.createElement("p");
-    secret.className = "att-secret";
-    secret.hidden = true;
-
-    copy.append(who, bubble, secret);
-    dutyRow.append(face, copy);
 
     const weekGrid = document.createElement("div");
     weekGrid.className = "att-week";
@@ -503,24 +515,76 @@
       cell.className = "att-cell";
       cell.setAttribute("role", "listitem");
 
-      const dayEl = document.createElement("span");
-      dayEl.className = "att-day";
-      dayEl.textContent = label;
-
       const markEl = document.createElement("span");
       markEl.className = "att-mark";
       markEl.setAttribute("aria-hidden", "true");
 
-      cell.append(dayEl, markEl);
+      const dayEl = document.createElement("span");
+      dayEl.className = "att-day";
+      dayEl.textContent = label;
+
+      cell.append(markEl, dayEl);
       weekGrid.append(cell);
       return { cell, dayEl, markEl };
     });
 
+    const rewardBox = document.createElement("div");
+    rewardBox.className = "att-reward";
+    rewardBox.hidden = true;
+
+    const rewardMedia = document.createElement("div");
+    rewardMedia.className = "att-reward-media";
+
+    const rewardImg = document.createElement("img");
+    rewardImg.alt = "";
+    rewardImg.width = 46;
+    rewardImg.height = 46;
+    rewardImg.decoding = "async";
+
+    const rewardPet = document.createElement("span");
+    rewardPet.className = "att-pet-sprite";
+    rewardPet.setAttribute("aria-hidden", "true");
+    rewardPet.hidden = true;
+
+    const rewardFallback = document.createElement("span");
+    rewardFallback.className = "att-reward-fallback";
+    rewardFallback.setAttribute("aria-hidden", "true");
+    rewardFallback.textContent = "🎁";
+    rewardFallback.hidden = true;
+
+    rewardImg.addEventListener("error", () => {
+      rewardImg.hidden = true;
+      if (rewardPet.hidden) rewardFallback.hidden = false;
+    });
+
+    rewardMedia.append(rewardImg, rewardPet, rewardFallback);
+
+    const rewardCopy = document.createElement("div");
+    rewardCopy.className = "att-reward-copy";
+
+    const rewardTitle = document.createElement("div");
+    rewardTitle.className = "att-reward-title";
+
+    const rewardText = document.createElement("p");
+    rewardText.className = "att-reward-text";
+
+    const rewardSecret = document.createElement("p");
+    rewardSecret.className = "att-reward-secret";
+    rewardSecret.hidden = true;
+
+    rewardCopy.append(rewardTitle, rewardText, rewardSecret);
+    rewardBox.append(rewardMedia, rewardCopy);
+
     const foot = document.createElement("div");
     foot.className = "att-foot";
 
-    const streakEl = document.createElement("span");
+    const streakEl = document.createElement("div");
     streakEl.className = "att-streak";
+    const streakNum = document.createElement("b");
+    streakNum.className = "att-streak-num";
+    const streakSub = document.createElement("small");
+    streakSub.className = "att-streak-sub";
+    streakEl.append(streakNum, streakSub);
 
     const btn = document.createElement("button");
     btn.type = "button";
@@ -533,7 +597,7 @@
     notice.className = "att-notice";
     notice.hidden = true;
 
-    section.append(head, dutyRow, weekGrid, foot, notice);
+    section.append(head, dutyRow, bubble, weekGrid, rewardBox, foot, notice);
     section._attRefs = {
       petBadge,
       honorBadge,
@@ -544,9 +608,16 @@
       whoName,
       whoRole,
       bubble,
-      secret,
       cells,
-      streakEl,
+      rewardBox,
+      rewardImg,
+      rewardPet,
+      rewardFallback,
+      rewardTitle,
+      rewardText,
+      rewardSecret,
+      streakNum,
+      streakSub,
       btn,
       notice
     };
@@ -617,19 +688,13 @@
     render();
   }
 
-  function buildNoticeText(today, clickInfo, duty) {
+  function buildNoticeText(today, clickInfo) {
     const parts = [];
     if (storageBlocked) {
       parts.push("⚠️ 브라우저 저장소를 쓸 수 없어 이 화면에서만 임시 기록돼요.");
     }
-    if (clickInfo && clickInfo.today === today) {
-      if (clickInfo.milestone) {
-        const mLine = pickLine(LINES.milestone[String(clickInfo.milestone)], `${today}:m:${clickInfo.milestone}`);
-        if (mLine) parts.push(mLine);
-        if (clickInfo.milestone === 7 && clickInfo.bonus) {
-          parts.push(`✨ ${duty.name} 호감도 +2 알림 (현재 호감도 시스템은 읽기 전용으로 안내만 표시돼요)`);
-        }
-      } else if (clickInfo.autoRest && clickInfo.autoRest.length) {
+    if (clickInfo && clickInfo.today === today && !clickInfo.milestone) {
+      if (clickInfo.autoRest && clickInfo.autoRest.length) {
         parts.push(pickLine(LINES.rest, `${today}:rest`));
       } else if (clickInfo.comeback) {
         parts.push(pickLine(LINES.comeback, `${today}:comeback`));
@@ -667,7 +732,12 @@
       refs.faceFallback.hidden = true;
       refs.petSprite.hidden = false;
       refs.petSprite.style.backgroundImage = `url("${PET_SPRITES[duty.id]}")`;
-      refs.whoRole.textContent = "오늘의 동물 당번";
+      refs.rewardImg.hidden = true;
+      refs.rewardImg.removeAttribute("src");
+      refs.rewardImg.alt = "";
+      refs.rewardFallback.hidden = true;
+      refs.rewardPet.hidden = false;
+      refs.rewardPet.style.backgroundImage = `url("${PET_SPRITES[duty.id]}")`;
     } else {
       refs.petSprite.hidden = true;
       refs.petSprite.style.backgroundImage = "";
@@ -679,23 +749,58 @@
       }
       refs.faceImg.alt = `${duty.name} 프로필`;
       refs.faceImg.hidden = false;
-      refs.whoRole.textContent = "오늘의 출석 당번";
+
+      refs.rewardPet.hidden = true;
+      refs.rewardPet.style.backgroundImage = "";
+      refs.rewardFallback.hidden = true;
+      if (refs.rewardImg.getAttribute("src") !== nextSrc) {
+        refs.rewardImg.src = nextSrc;
+      }
+      refs.rewardImg.alt = `${duty.name} 보상 아이콘`;
+      refs.rewardImg.hidden = false;
     }
 
+    refs.whoRole.textContent = formatDutyTag(today, duty.pet);
     refs.whoName.textContent = duty.name;
 
     const dutyLines = LINES.duty[duty.id] || LINES.duty.hani;
     const speechList = v.done ? dutyLines.after : dutyLines.before;
     refs.bubble.textContent = pickLine(speechList, `${today}:${duty.id}:${v.done ? "after" : "before"}`);
 
-    // 7-day milestone unlocks secret7 line for today's duty character.
+    // 7-day / milestone gold reward box
+    const clickInfo = (lastClick && lastClick.today === today) ? lastClick : null;
+    const activeMilestone = clickInfo && clickInfo.milestone ? clickInfo.milestone : null;
     const showSecret7 = v.unlocked.includes(7) || v.streak >= 7;
-    if (showSecret7 && LINES.secret7[duty.id]) {
-      refs.secret.textContent = `💌 7일 비밀 한마디: "${LINES.secret7[duty.id]}"`;
-      refs.secret.hidden = false;
+    const secretLine = showSecret7 && LINES.secret7[duty.id] ? LINES.secret7[duty.id] : "";
+
+    if (activeMilestone) {
+      const mKey = String(activeMilestone);
+      refs.rewardTitle.textContent = MILESTONE_TITLES[mKey] || `${activeMilestone}일 개근 보상! 🎁`;
+      let mText = pickLine(LINES.milestone[mKey], `${today}:m:${activeMilestone}`);
+      if (activeMilestone === 7 && clickInfo.bonus) {
+        mText = `${mText} · ✨ ${duty.name}의 마음이 한 뼘 더 가까워졌어요`;
+      }
+      refs.rewardText.textContent = mText;
+      if (secretLine) {
+        refs.rewardSecret.textContent = `💌 "${secretLine}"`;
+        refs.rewardSecret.hidden = false;
+      } else {
+        refs.rewardSecret.textContent = "";
+        refs.rewardSecret.hidden = true;
+      }
+      refs.rewardBox.hidden = false;
+    } else if (secretLine) {
+      refs.rewardTitle.textContent = `7일 개근 보상 · ${duty.name}의 비밀 한마디 💌`;
+      refs.rewardText.textContent = `"${secretLine}"`;
+      refs.rewardSecret.textContent = "";
+      refs.rewardSecret.hidden = true;
+      refs.rewardBox.hidden = false;
     } else {
-      refs.secret.textContent = "";
-      refs.secret.hidden = true;
+      refs.rewardTitle.textContent = "";
+      refs.rewardText.textContent = "";
+      refs.rewardSecret.textContent = "";
+      refs.rewardSecret.hidden = true;
+      refs.rewardBox.hidden = true;
     }
 
     // Mon-Sun 7 cells
@@ -716,6 +821,9 @@
       if (isMiss) slot.cell.classList.add("miss");
       if (isFuture) slot.cell.classList.add("future");
       if (isStamp && isToday && justStampedDay === today) slot.cell.classList.add("pop");
+
+      const dayNum = Number(cellData.day.slice(8, 10));
+      slot.dayEl.textContent = Number.isFinite(dayNum) ? `${DAYS_KO[i]} ${dayNum}` : DAYS_KO[i];
 
       let mark = "";
       let stateLabel = "예정";
@@ -745,10 +853,11 @@
     }
 
     // Streak & next milestone footer
+    refs.streakNum.textContent = `연속 ${v.streak}일째`;
     if (v.toNext > 0 && v.next) {
-      refs.streakEl.textContent = `연속 ${v.streak}일째 · 다음 보상(${v.next}일)까지 ${v.toNext}일`;
+      refs.streakSub.textContent = `다음 보상(${v.next}일)까지 ${v.toNext}일`;
     } else {
-      refs.streakEl.textContent = `연속 ${v.streak}일째 · 이달 출석 보상 모두 달성!`;
+      refs.streakSub.textContent = "이달 출석 보상 모두 달성! 👑";
     }
 
     if (v.done) {
@@ -759,7 +868,7 @@
       refs.btn.disabled = false;
     }
 
-    const noticeText = buildNoticeText(today, lastClick, duty);
+    const noticeText = buildNoticeText(today, clickInfo);
     if (noticeText) {
       refs.notice.textContent = noticeText;
       refs.notice.classList.toggle("is-warn", storageBlocked);
