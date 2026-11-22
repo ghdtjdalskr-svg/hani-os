@@ -44,6 +44,18 @@
 #procrastination [data-owner="yoonseul"] .pb-scene{background-image:linear-gradient(180deg,transparent 0 42px,rgba(116,80,48,.16) 42px 46px,transparent 46px 100%),repeating-linear-gradient(90deg,rgba(47,125,118,.08) 0 14px,rgba(140,104,68,.06) 14px 28px,transparent 28px 40px);background-size:100% 64px,100% 100%}
 #procrastination [data-owner="hani"] .pb-scene{background-image:repeating-linear-gradient(90deg,rgba(116,69,166,.08) 0 2px,transparent 2px 22px),radial-gradient(circle at 85% 15%,rgba(165,110,235,.16),transparent 52%)}
 
+/* Per-item scene distinction for shared-staff cards (Naeun, Jieun, Haru) */
+#procrastination [data-pb-card="steps"] .pb-scene{background-image:repeating-linear-gradient(90deg,rgba(46,139,87,.09) 0 2px,transparent 2px 34px),repeating-linear-gradient(180deg,rgba(46,139,87,.14) 0 8px,transparent 8px 20px),linear-gradient(180deg,rgba(255,255,255,.32),rgba(46,139,87,.09));background-size:100% 100%,2px 20px,100% 100%;background-position:0 0,center 0,0 0;background-repeat:repeat,repeat-y,no-repeat}
+#procrastination [data-pb-card="weight"]{--pb-scene-base:#eaf3f0}
+#procrastination [data-pb-card="weight"] .pb-scene{background-image:linear-gradient(rgba(46,139,87,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(46,139,87,.13) 1px,transparent 1px),linear-gradient(135deg,rgba(255,255,255,.45) 0 48%,transparent 52%);background-size:26px 26px,26px 26px,52px 52px}
+#procrastination [data-pb-card="assets"]{--pb-scene-base:#f5efe2}
+#procrastination [data-pb-card="assets"] .pb-scene{background-image:linear-gradient(rgba(166,109,38,.14) 1px,transparent 1px),linear-gradient(90deg,rgba(166,109,38,.14) 1px,transparent 1px),linear-gradient(rgba(166,109,38,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(166,109,38,.06) 1px,transparent 1px),linear-gradient(155deg,transparent 58%,rgba(166,109,38,.09) 100%);background-size:48px 48px,48px 48px,12px 12px,12px 12px,100% 100%}
+#procrastination [data-pb-card="ledger"]{--pb-scene-base:#f8f2e8}
+#procrastination [data-pb-card="ledger"] .pb-scene{background-image:linear-gradient(135deg,rgba(166,109,38,.16) 50%,transparent 50%),linear-gradient(225deg,rgba(166,109,38,.16) 50%,transparent 50%),linear-gradient(90deg,transparent calc(100% - 76px),rgba(166,109,38,.18) calc(100% - 76px) calc(100% - 75px),transparent calc(100% - 75px)),repeating-linear-gradient(180deg,transparent 0 18px,rgba(166,109,38,.13) 18px 19px);background-size:14px 8px,14px 8px,100% 100%,100% 100%;background-position:0 0,0 0,0 0,0 8px;background-repeat:repeat-x,repeat-x,no-repeat,repeat}
+#procrastination [data-pb-card="wishlist"] .pb-scene{background-image:repeating-linear-gradient(45deg,rgba(75,108,183,.08) 0 10px,transparent 10px 22px),repeating-linear-gradient(-45deg,rgba(75,108,183,.07) 0 10px,transparent 10px 22px),linear-gradient(90deg,transparent 18px,rgba(75,108,183,.11) 18px 22px,transparent 22px)}
+#procrastination [data-pb-card="spendReview"]{--pb-scene-base:#eef2fc}
+#procrastination [data-pb-card="spendReview"] .pb-scene{background-image:radial-gradient(circle at 12px 12px,rgba(75,108,183,.16) 2.5px,transparent 3px),radial-gradient(circle at 30px 30px,rgba(235,175,64,.24) 3px,transparent 3.5px),linear-gradient(180deg,rgba(255,255,255,.3),rgba(75,108,183,.06));background-size:36px 36px,36px 36px,100% 100%}
+
 /* Mood weather overlays on scene */
 #procrastination [data-level="0"]{--pb-weather:radial-gradient(circle at 88% 12%,rgba(255,232,148,.48),rgba(255,246,196,.18) 38%,transparent 65%)}
 #procrastination [data-level="1"]{--pb-weather:linear-gradient(180deg,rgba(255,255,255,.16),transparent 55%)}
@@ -87,6 +99,9 @@
 /* Portraits: 5-row chibi sheet + 4 profile thumbnails */
 #procrastination .pb-portrait{display:block;flex:none;width:192px;max-width:100%;aspect-ratio:1;background-image:url("./assets/procrastination/pb-chibi-sheet-v1.webp");background-repeat:no-repeat;background-size:600% 500%;background-position:var(--pb-x,100%) var(--pb-y,0%)}
 #procrastination [data-owner="naeun"]{--pb-y:0%}
+#procrastination :is([data-pb-card="steps"],[data-pb-card="weight"]) .pb-portrait{background-image:url("./assets/procrastination/pb-naeun-items-v1.webp");background-size:600% 200%}
+#procrastination [data-pb-card="steps"]{--pb-y:0%}
+#procrastination [data-pb-card="weight"]{--pb-y:100%}
 #procrastination [data-owner="hina"]{--pb-y:25%}
 #procrastination [data-owner="jieun"]{--pb-y:50%}
 #procrastination [data-owner="haru"]{--pb-y:75%}
@@ -145,6 +160,31 @@
 :root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #procrastination [data-owner="sooyeon"]{--pb-staff-color:#f28872;--pb-staff-soft:#46241f;--pb-staff-ink:#2a110d;--pb-scene-base:#3b2421}
 [data-theme="dark"] #procrastination [data-owner="yoonseul"],
 :root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #procrastination [data-owner="yoonseul"]{--pb-staff-color:#68cac1;--pb-staff-soft:#1e3a38;--pb-staff-ink:#0c2220;--pb-scene-base:#1f3533}
+
+[data-theme="dark"] #procrastination [data-pb-card="steps"],
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #procrastination [data-pb-card="steps"]{--pb-scene-base:#1d3126}
+[data-theme="dark"] #procrastination [data-pb-card="steps"] .pb-scene,
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #procrastination [data-pb-card="steps"] .pb-scene{background-image:repeating-linear-gradient(90deg,rgba(87,194,136,.12) 0 2px,transparent 2px 34px),repeating-linear-gradient(180deg,rgba(87,194,136,.18) 0 8px,transparent 8px 20px),linear-gradient(180deg,rgba(255,255,255,.04),rgba(87,194,136,.08))}
+[data-theme="dark"] #procrastination [data-pb-card="weight"],
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #procrastination [data-pb-card="weight"]{--pb-scene-base:#1b2f2d}
+[data-theme="dark"] #procrastination [data-pb-card="weight"] .pb-scene,
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #procrastination [data-pb-card="weight"] .pb-scene{background-image:linear-gradient(rgba(87,194,136,.15) 1px,transparent 1px),linear-gradient(90deg,rgba(87,194,136,.15) 1px,transparent 1px),linear-gradient(135deg,rgba(255,255,255,.04) 0 48%,transparent 52%)}
+[data-theme="dark"] #procrastination [data-pb-card="assets"],
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #procrastination [data-pb-card="assets"]{--pb-scene-base:#31291d}
+[data-theme="dark"] #procrastination [data-pb-card="assets"] .pb-scene,
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #procrastination [data-pb-card="assets"] .pb-scene{background-image:linear-gradient(rgba(229,173,93,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(229,173,93,.16) 1px,transparent 1px),linear-gradient(rgba(229,173,93,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(229,173,93,.07) 1px,transparent 1px),linear-gradient(155deg,transparent 58%,rgba(229,173,93,.08) 100%)}
+[data-theme="dark"] #procrastination [data-pb-card="ledger"],
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #procrastination [data-pb-card="ledger"]{--pb-scene-base:#342c21}
+[data-theme="dark"] #procrastination [data-pb-card="ledger"] .pb-scene,
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #procrastination [data-pb-card="ledger"] .pb-scene{background-image:linear-gradient(135deg,rgba(229,173,93,.22) 50%,transparent 50%),linear-gradient(225deg,rgba(229,173,93,.22) 50%,transparent 50%),linear-gradient(90deg,transparent calc(100% - 76px),rgba(229,173,93,.22) calc(100% - 76px) calc(100% - 75px),transparent calc(100% - 75px)),repeating-linear-gradient(180deg,transparent 0 18px,rgba(229,173,93,.15) 18px 19px)}
+[data-theme="dark"] #procrastination [data-pb-card="wishlist"],
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #procrastination [data-pb-card="wishlist"]{--pb-scene-base:#212a40}
+[data-theme="dark"] #procrastination [data-pb-card="wishlist"] .pb-scene,
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #procrastination [data-pb-card="wishlist"] .pb-scene{background-image:repeating-linear-gradient(45deg,rgba(132,165,236,.10) 0 10px,transparent 10px 22px),repeating-linear-gradient(-45deg,rgba(132,165,236,.09) 0 10px,transparent 10px 22px),linear-gradient(90deg,transparent 18px,rgba(132,165,236,.15) 18px 22px,transparent 22px)}
+[data-theme="dark"] #procrastination [data-pb-card="spendReview"],
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #procrastination [data-pb-card="spendReview"]{--pb-scene-base:#242d44}
+[data-theme="dark"] #procrastination [data-pb-card="spendReview"] .pb-scene,
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #procrastination [data-pb-card="spendReview"] .pb-scene{background-image:radial-gradient(circle at 12px 12px,rgba(132,165,236,.18) 2.5px,transparent 3px),radial-gradient(circle at 30px 30px,rgba(246,196,88,.24) 3px,transparent 3.5px),linear-gradient(180deg,rgba(255,255,255,.03),rgba(132,165,236,.07))}
 
 [data-theme="dark"] #procrastination [data-level="0"],
 :root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #procrastination [data-level="0"]{--pb-weather:radial-gradient(circle at 88% 12%,rgba(255,220,128,.22),rgba(255,220,128,.07) 42%,transparent 65%)}

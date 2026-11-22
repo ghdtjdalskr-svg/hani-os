@@ -124,18 +124,161 @@
     }
   };
   const SPECS = [
-    {id:'steps', title:'걸음 수 입력', owner:'naeun', route:'exercise', cadence:'매일', bounds:[1,7,14,30]},
-    {id:'weight', title:'체중 입력', owner:'naeun', route:'diet', cadence:'매일', bounds:[1,7,14,30]},
-    {id:'workout', title:'운동 세션 기록', owner:'sooyeon', route:'exercise', cadence:'3일마다', bounds:[3,7,14,30]},
-    {id:'quiz', title:'미완료 퀴즈 풀기', owner:'hina', route:'study', cadence:'문제 예정일 기준', bounds:[1,7,14,30]},
-    {id:'wrongReview', title:'오답노트 복습', owner:'yoonseul', route:'study', cadence:'주 1회', bounds:[7,14,30,60]},
-    {id:'assets', title:'자산 업데이트', owner:'jieun', route:'investmentIntake', cadence:'월 1회', bounds:[31,45,60,90]},
-    {id:'ledger', title:'가계부 입력', owner:'jieun', route:'ledger', cadence:'월 1회', bounds:[31,45,60,90]},
-    {id:'wishlist', title:'위시리스트 정리', owner:'haru', route:'wishlist', cadence:'주 1회', bounds:[7,14,30,60]},
-    {id:'spendReview', title:'소비 후속 리뷰', owner:'haru', route:'ledger', cadence:'구매 2주 후', bounds:[14,30,45,60]},
-    {id:'culture', title:'책·영화 기록', owner:'minji', route:'movie', cadence:'주 1회', bounds:[7,14,30,60]},
-    {id:'tasks', title:'밀린 할 일', owner:'gaeun', route:'tasks', cadence:'마감일 기준', bounds:[1,7,14,30]},
-    {id:'diary', title:'하루 한 줄 기록', owner:'hani', route:'diary', cadence:'매일', bounds:[1,7,14,30]}
+    {
+      id:'steps', title:'걸음 수 입력', owner:'naeun', route:'exercise', cadence:'매일', bounds:[1,7,14,30],
+      lines:[
+        '회장님, 오늘 산책길 가뿐했죠!',
+        '만보기 숫자가 오늘 비어 있어요.',
+        '저 삐졌어요. 잠깐 산책 어때요?',
+        '흥, 운동화 끈만 만지고 있을게요!',
+        '구석에서 만보기 흔들며 기다려요…'
+      ],
+      thanks:'드디어! 고마워요♡ 발걸음 가뿐해요!',
+      reply:'헤헤, 같이 가볍게 걸어 봐요!',
+      mediation:'회장님, 나은이가 만보기만 보고 있어요…'
+    },
+    {
+      id:'weight', title:'체중 입력', owner:'naeun', route:'diet', cadence:'매일', bounds:[1,7,14,30],
+      lines:[
+        '회장님, 오늘도 물 챙겨 드셨죠?',
+        '체중계가 회장님 발길을 기다려요.',
+        '살짝 삐졌어요. 물 한 잔 마실까요?',
+        '흥, 체중계 옆에서 토라져 있을게요!',
+        '구석에서 물컵 안고 기다릴래요…'
+      ],
+      thanks:'드디어! 고마워요♡ 컨디션 최고예요!',
+      reply:'좋아요, 물 한 모금부터 챙겨요!',
+      mediation:'회장님, 나은이가 물컵 들고 시무룩해요…'
+    },
+    {
+      id:'workout', title:'운동 세션 기록', owner:'sooyeon', route:'exercise', cadence:'3일마다', bounds:[3,7,14,30],
+      lines:[
+        '회장님, 오늘 흘린 땀 멋졌어요!',
+        '오늘 운동 세트 기록이 비었어요!',
+        '승부욕 발동! 가볍게 한 세트 어때요?',
+        '저 삐져서 스트레칭만 하고 있을래요!',
+        '땀 닦고 트랙 구석에서 기다려요…'
+      ],
+      thanks:'드디어! 고마워요♡ 오늘 땀 최고!',
+      reply:'좋았어요! 한 세트 바로 가시죠!',
+      mediation:'회장님, 수연이가 덤벨 옆에서 시무룩해요…'
+    },
+    {
+      id:'quiz', title:'미완료 퀴즈 풀기', owner:'hina', route:'study', cadence:'문제 예정일 기준', bounds:[1,7,14,30],
+      lines:[
+        '회장님♡ 오늘 문제지 술술 풀리네용!',
+        '문제지가 책상에서 기다리고 있어용!',
+        '흥! 히나 삐졌어용. 한 문제만용?',
+        '문제지 덮고 살짝 돌아앉을래용!',
+        '구석에서 문제지 꼭 안고 있을래용…'
+      ],
+      thanks:'드디어! 고마워요♡ 백점 예감이에용!',
+      reply:'히히, 새 문제지 바로 펼쳐 둘게용!',
+      mediation:'회장님, 히나가 문제지 안고 삐졌어요…'
+    },
+    {
+      id:'wrongReview', title:'오답노트 복습', owner:'yoonseul', route:'study', cadence:'주 1회', bounds:[7,14,30,60],
+      lines:[
+        '회장님, 오답 정리 흐름이 좋아요!',
+        '빨간펜 든 오답노트가 기다려요.',
+        '조금 서운해요. 한 줄만 다시 봐요!',
+        '책갈피만 만지작거리고 있을게요…',
+        '구석에서 빨간펜 꼭 쥐고 있어요…'
+      ],
+      thanks:'드디어! 고마워요♡ 깔끔히 복습됐어요!',
+      reply:'와, 빨간펜이랑 노트 펴 둘게요!',
+      mediation:'회장님, 윤슬이가 빨간펜 쥐고 기다려요…'
+    },
+    {
+      id:'assets', title:'자산 업데이트', owner:'jieun', route:'investmentIntake', cadence:'월 1회', bounds:[31,45,60,90],
+      lines:[
+        '회장님, 포트폴리오가 참 단정하네요.',
+        '이번 달 잔고 확인이 기다리고 있어요.',
+        '살짝 서운해요. 포트폴리오 봐둘까요?',
+        '차트 접고 잠깐 돌아앉아 있을게요.',
+        '구석에서 잔고표 안고 기다릴게요…'
+      ],
+      thanks:'드디어! 고마워요♡ 잔고가 든든해요.',
+      reply:'좋아요, 포트폴리오 바로 열어 둘게요.',
+      mediation:'회장님, 지은이가 잔고표 안고 돌아앉았어요…'
+    },
+    {
+      id:'ledger', title:'가계부 입력', owner:'jieun', route:'ledger', cadence:'월 1회', bounds:[31,45,60,90],
+      lines:[
+        '회장님, 영수증 정리가 깔끔하네요.',
+        '서랍 속 영수증들이 기다리고 있어요.',
+        '조금 서운해요. 영수증 같이 볼까요?',
+        '영수증 묶음만 만지작거릴게요…',
+        '구석에서 영수증 철 안고 기다려요…'
+      ],
+      thanks:'드디어! 고마워요♡ 숫자가 딱 맞네요.',
+      reply:'네, 영수증 정리 칸 바로 켜 둘게요.',
+      mediation:'회장님, 지은이가 영수증 철 안고 있어요…'
+    },
+    {
+      id:'wishlist', title:'위시리스트 정리', owner:'haru', route:'wishlist', cadence:'주 1회', bounds:[7,14,30,60],
+      lines:[
+        '회장님, 장바구니 취향이 멋져요!',
+        '장바구니 목록이 손길을 기다려요.',
+        '음, 살짝 삐졌어요. 하나만 비울까요?',
+        '장바구니 덮고 잠깐 토라져 있을게요.',
+        '구석에서 장바구니 접고 있을래요…'
+      ],
+      thanks:'드디어! 고마워요♡ 목록이 깔끔해요.',
+      reply:'와, 장바구니부터 같이 펼쳐 봐요!',
+      mediation:'회장님, 하루가 장바구니만 보고 있어요…'
+    },
+    {
+      id:'spendReview', title:'소비 후속 리뷰', owner:'haru', route:'ledger', cadence:'구매 2주 후', bounds:[14,30,45,60],
+      lines:[
+        '회장님, 산 물건 잘 쓰시니 뿌듯해요.',
+        '지난번 산 물건 후기가 궁금해요.',
+        '조금 서운해요. 별점 하나만 남길까요?',
+        '후기 카드만 만지작거리고 있을게요.',
+        '구석에서 후기 메모지 접고 있어요…'
+      ],
+      thanks:'드디어! 고마워요♡ 후기가 알차네요.',
+      reply:'좋아요, 후기 칸 바로 열어 둘게요!',
+      mediation:'회장님, 하루가 후기 메모지 만지작거려요…'
+    },
+    {
+      id:'culture', title:'책·영화 기록', owner:'minji', route:'movie', cadence:'주 1회', bounds:[7,14,30,60],
+      lines:[
+        '회장님, 오늘 본 감상 멋졌어요!',
+        '엔딩 크레딧 후 감상이 궁금해요!',
+        '컷! 책이랑 영화 감상 기다려요.',
+        '카메라 덮고 삐질래요. 한 줄 감상!',
+        '구석에서 팝콘 식히며 기다려요…'
+      ],
+      thanks:'드디어! 고마워요♡ 멋진 감상이에요!',
+      reply:'진짜죠?! 감상 노트 펼쳐 둘게요!',
+      mediation:'회장님, 민지가 감상 노트 덮고 삐졌어요…'
+    },
+    {
+      id:'tasks', title:'밀린 할 일', owner:'gaeun', route:'tasks', cadence:'마감일 기준', bounds:[1,7,14,30],
+      lines:[
+        '회장님, 오늘 마감이 매끄럽네요.',
+        '지난 마감 할 일이 하나 남았어요.',
+        '조금 아쉽네요. 마감 같이 볼까요?',
+        '일정표 덮고 잠깐 서운해할게요…',
+        '구석에서 마감 수첩 안고 기다려요…'
+      ],
+      thanks:'드디어! 고마워요♡ 마감이 깔끔해요.',
+      reply:'네, 회장님! 바로 준비해 둘게요.',
+      mediation:'회장님, 가은이가 마감 수첩 안고 있어요…'
+    },
+    {
+      id:'diary', title:'하루 한 줄 기록', owner:'hani', route:'diary', cadence:'매일', bounds:[1,7,14,30],
+      lines:[
+        '회장님, 오늘 한 줄도 든든하네요♡',
+        '오늘의 한 줄 이야기가 궁금해요.',
+        '조금 서운하네, 한 줄만 남겨줘요.',
+        '나도 잠깐 삐진 척할래요. 진짜로!',
+        '구석에서 한 줄 노트 안고 기다려요…'
+      ],
+      thanks:'드디어! 고마워요♡ 한 줄이 참 좋아요.',
+      reply:'알겠어요, 차 한 잔 내어 올게요♡'
+    }
   ];
   const object = x => x !== null && typeof x === 'object' && !Array.isArray(x);
   const rows = x => Array.isArray(x) ? x.filter(object) : [];
@@ -237,10 +380,14 @@
       const days = clear ? 0 : rawDays;
       const pending = Object.prototype.hasOwnProperty.call(pendingCounts, spec.id) ? pendingCounts[spec.id] : null;
       const celebrated = Object.prototype.hasOwnProperty.call(thanksToday, spec.id) ? thanksToday[spec.id] : rawDays === 0;
-      const speech = celebrated ? staff.thanks : level === null ? UNKNOWN_SPEECH : staff.lines[level];
-      const mediation = Number.isInteger(level) && level >= 3 && spec.owner !== 'hani' ? staff.mediation : null;
+      const lines = Array.isArray(spec.lines) ? spec.lines : staff.lines;
+      const thanks = spec.thanks || staff.thanks;
+      const reply = spec.reply || staff.reply;
+      const speech = celebrated ? thanks : level === null ? UNKNOWN_SPEECH : (lines[level] ?? staff.lines[level]);
+      const mediationText = spec.mediation || staff.mediation;
+      const mediation = Number.isInteger(level) && level >= 3 && spec.owner !== 'hani' ? mediationText : null;
       return {
-        ...spec, staff,
+        ...spec, staff, reply,
         date: date ? new Date(dayNumber(date) * DAY).toISOString().slice(0,10) : null,
         days, level, pending, speech, mediation
       };
@@ -280,7 +427,7 @@
       card.querySelector('[data-pb-reply]').onclick = () => {
         if (card.dataset.replied === 'true') return;
         card.dataset.replied = 'true';
-        speechEl.textContent = item.staff.reply;
+        speechEl.textContent = item.reply || item.staff.reply;
         setTimeout(() => {
           delete card.dataset.replied;
           showView(item.route);
