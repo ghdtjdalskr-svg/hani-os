@@ -1,3 +1,4 @@
+require('./hani-release-310-preload.cjs'); // Released310 metadata precedes the attendance capture.
 // Test input only: attendance wiring -> released309 -> budget view ->308 -> older.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
