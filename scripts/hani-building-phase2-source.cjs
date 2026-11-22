@@ -1,3 +1,4 @@
+require('./hani-building-v2data-preload.cjs'); // Capture Phase2 only after the v2-data inverse.
 // Frozen test input only: building-phase2 -> building-phase1 -> office-motion -> 306.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=b=>createHash('sha256').update(b).digest('hex');

@@ -3,7 +3,7 @@ require('./hani-building-phase2-preload.cjs'); // Outermost Phase 2 inverse, bef
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=b=>createHash('sha256').update(b).digest('hex');
 const bytes=readRawFileSync(path.join(__dirname,'fixtures/building-phase1-layer.json'));
-assert.equal(hash(bytes),'7c895e924197e39717b7c81d2a5bc1ce4ce88f893886a610ad78f1acf97e674d','frozen building Phase 1 inverse');
+assert.equal(hash(bytes),'599f7dae9005f4054736108e98abf4a97cf5450ff1a96eabd597b63c8780f3b0','frozen building Phase 1 inverse');
 const layer=JSON.parse(bytes);assert.equal(layer.schema,1);assert.equal(layer.layer,'building-phase1');
 assert.deepEqual(layer.stages.map(s=>s.name),['building-phase1','office-motion','306']);
 function restoreStage(source,file,name){
@@ -18,5 +18,7 @@ function restoreStage(source,file,name){
  assert.equal(Buffer.byteLength(text),row.beforeBytes);assert.equal(hash(text),row.beforeSha256,'exact '+name+' output '+file);
  return buffer?Buffer.from(text):text;
 }
-function project(source,file){for(const stage of layer.stages){const row=Object.hasOwn(stage.files,file)?stage.files[file]:null;if(row&&hash(source)===row.afterSha256)source=restoreStage(source,file,stage.name)}return source}
+// The frozen306 ledger remains testable, but its runtime inverse now belongs
+// after307 and menu-badges. Do not consume306 before those captures.
+function project(source,file){for(const stage of layer.stages.filter(s=>s.name!=='306')){const row=Object.hasOwn(stage.files,file)?stage.files[file]:null;if(row&&hash(source)===row.afterSha256)source=restoreStage(source,file,stage.name)}return source}
 module.exports={layer,hash,restoreStage,project,readRawFileSync};

@@ -1,5 +1,7 @@
 import inverse from './hani-building-phase1-source.cjs';
 import repository from './hani-test-repository-evidence.cjs';
+import release306 from './hani-release-306-source.cjs';
+import release307 from './hani-release-307-source.cjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
@@ -128,9 +130,11 @@ test('mobile five-tab geometry is unchanged and six tabs occupy three paired row
 
 test('exact inverse has ordered frozen boundaries and rejects altered, duplicate and partial inputs',()=>{
  for(const stage of layer.stages)for(const [file,row]of Object.entries(stage.files)){
-  let source=read(file);for(const upper of layer.stages){if(upper.name===stage.name)break;if(upper.files[file]&&hash(source)===upper.files[file].afterSha256)source=restoreStage(source,file,upper.name)}
+  //306 is below307/menu in the current chain; use that canonical capture for
+  // the retained306 ledger, while Phase1/motion still use the Phase1 capture.
+  let source=stage.name==='306'?release306.readRawFileSync(new URL('../'+file,import.meta.url),'utf8'):read(file);for(const upper of layer.stages){if(upper.name===stage.name)break;if(upper.files[file]&&hash(source)===upper.files[file].afterSha256)source=restoreStage(source,file,upper.name)}
   assert.equal(hash(source),row.afterSha256);const restored=restoreStage(source,file,stage.name);assert.equal(hash(restored),row.beforeSha256);assert.equal(Buffer.byteLength(restored),row.beforeBytes);
-  const ref=stage.name==='building-phase1'?layer.base:stage.name==='office-motion'?layer.release306:layer.pre306;
+  const ref=file==='scripts/hani-release-305-source.cjs'?release307.layer.release:stage.name==='building-phase1'?layer.base:stage.name==='office-motion'?layer.release306:layer.pre306;
   assert.equal(restored,repository.read(ref,file),'independent Git object boundary '+stage.name+' '+file);
   for(const bad of [source+'\n',source.slice(1),source+source,restored])assert.throws(()=>restoreStage(bad,file,stage.name));
   const edit=row.replacements[0],partial=source.slice(0,edit.afterStart)+edit.before+source.slice(edit.afterStart+edit.after.length);assert.throws(()=>restoreStage(partial,file,stage.name));
