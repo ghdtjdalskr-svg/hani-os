@@ -25,7 +25,7 @@
     Object.freeze({ id: "sooyeon", name: "수연", pet: false }),
     Object.freeze({ id: "yoonseul", name: "윤슬", pet: false }),
     Object.freeze({ id: "sua", name: "수아", pet: false }),
-    Object.freeze({ id: "taeo", name: "태오", pet: false }),
+    Object.freeze({ id: "taeo", name: "채원", pet: false }),
     Object.freeze({ id: "pet-cat", name: "치즈", pet: true }),
     Object.freeze({ id: "pet-dog", name: "크림", pet: true }),
     Object.freeze({ id: "pet-bori", name: "보리", pet: true }),
