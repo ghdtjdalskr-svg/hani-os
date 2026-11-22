@@ -139,12 +139,12 @@ test('syntax and static read-only / timer safety', () => {
   assert.equal(timeoutMatches.length, 1, 'Expected exactly one setTimeout inside reply click handler');
 });
 
-test('board exposes 14 cards with updated owners and speech constraints', () => {
+test('board exposes 15 cards with updated owners and speech constraints', () => {
   const { api } = loadBoard();
   const now = '2026-11-17T12:00:00+09:00';
   const empty = api.project({}, now);
 
-  assert.equal(empty.length, 14);
+  assert.equal(empty.length, 15);
   const byId = Object.fromEntries(empty.map(item => [item.id, item]));
   assert.equal(byId.diary.owner, 'hani');
   assert.equal(byId.culture.owner, 'minji');
@@ -276,13 +276,13 @@ test('render uses persistent card slots, toggles mediation, and handles reply bu
   };
 
   api.render(state);
-  assert.equal(dom.board.children.length, 14);
+  assert.equal(dom.board.children.length, 15);
   const firstCards = dom.board.children.slice();
 
   // Re-render preserves persistent card nodes
   const kstToday = new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10);
   api.render({ ...state, diaries: [{ date: kstToday, content: '오늘 일기' }] });
-  assert.equal(dom.board.children.length, 14);
+  assert.equal(dom.board.children.length, 15);
   firstCards.forEach((card, i) => assert.equal(dom.board.children[i], card));
 
   const tasksCard = dom.board.querySelector('[data-pb-card="tasks"]');
