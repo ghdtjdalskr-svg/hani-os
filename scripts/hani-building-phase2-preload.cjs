@@ -1,4 +1,5 @@
 // Install the outer exact inverse before the Phase 1 reader captures fs.
+require('./hani-building-v2data-preload.cjs');
 const fs=require('node:fs'),path=require('node:path'),{fileURLToPath}=require('node:url');
 const {project}=require('./hani-building-phase2-source.cjs'),root=path.resolve(__dirname,'..');
 const sync=fs.readFileSync,callback=fs.readFile,promise=fs.promises.readFile;
