@@ -1699,7 +1699,7 @@ const canonicalProfileImages=Object.freeze({
 const agentImages=Object.freeze({...canonicalProfileImages,nauen:canonicalProfileImages.naeun,suyeon:canonicalProfileImages.sooyeon});
 // Small avatars (30-150px) use pre-resized 256px thumbnails; the 720px originals look jagged when the browser shrinks them 10-20x.
 const sidebarAgentImages=Object.freeze(Object.fromEntries(Object.entries(agentImages).map(([k,v])=>[k,v.replace("./assets/profiles/","./assets/profiles/thumb/").replace(/\.webp$/,"-256.webp")])));
-const pageAgentImage={home:"hani",investment:"hani",investmentCommittee:"hani",newsroom:"hani",asset:"jieun",ledger:"jieun",cards:"jieun",wishlist:"haru",diet:"nauen",exercise:"nauen",travel:"suyeon",university:"hina",study:"hina",certificate:"hina",reading:"haru",movie:"minji",diary:"minji",game:"suyeon",settings:"hani",work:"sua",tasks:"sua",calendar:"sua",drive:"sua",dev:"hani",deployment:"hani",intake:"yuna",agentReview:"hani",monthlyReport:"hani",policy:"hani",aiTeam:"hani"};
+const pageAgentImage={home:"hani",investment:"hani",investmentCommittee:"hani",newsroom:"hani",asset:"jieun",ledger:"jieun",cards:"jieun",wishlist:"haru",diet:"nauen",exercise:"nauen",travel:"suyeon",university:"hina",study:"hina",certificate:"hina",reading:"haru",movie:"minji",diary:"minji",game:"suyeon",settings:"hani",work:"sua",tasks:"sua",calendar:"sua",drive:"sua",dev:"hani",deployment:"hani",intake:"yuna",agentReview:"hani",monthlyReport:"hani",policy:"hani",aiTeam:"hani",aiWork:"dohyun",geminiReports:"serin",aiBudget:"seoyun"};
 const YUNA_AVATAR=canonicalProfileImages.yuna;
 const YUNA_PORTRAIT=canonicalProfileImages.yuna;
 
@@ -2020,7 +2020,7 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
   if(id==="geminiReports")window.HaniGeminiReports?.render();
   if(id==="drive"&&typeof googleDriveEnter==="function")googleDriveEnter();
   if(['home','intake','tasks'].includes(id)&&typeof renderHaniCareHome==='function')renderHaniCareHome();
-  if(id==="aiBudget")window.HaniAiBudget?.render();
+  if(id==="aiBudget"||id==="home")window.HaniAiBudget?.render();
   if(typeof window!=='undefined')window.HANI_CONTEXT_REMOTE_V1?.update();
   if(typeof window!=='undefined')window.HaniHelperBot?.bubble?.(id);
   if(id==="exercise")drawExercise();if(id==="investment")setTimeout(drawPortfolio,30);if(id==="newsroom")setTimeout(()=>investmentNewsMaybeRefresh(),40);if(id==="diet")setTimeout(drawBody,30);if(id==="ledger")setTimeout(drawLedgerTrend,30);if(id==="calendar")renderCalendar();if(id==="tasks")setTimeout(()=>googleCalendarRefreshStatus({silent:true}),0);if(id==="intake")setTimeout(()=>intakeRenderPreview(),0);if(id==="agentReview")setTimeout(()=>agentReviewInit(),0);if(id==="monthlyReport")setTimeout(()=>renderMonthlyReport(),0);if(id==="policy")setTimeout(()=>agentPolicyInit(),0);if(id==="deployment")setTimeout(()=>deployCenterRender(),0);
@@ -5659,7 +5659,7 @@ function renderHome(){
   if($("homeExerciseLabel"))$("homeExerciseLabel").textContent=`${year}년 운동`;
   // Dashboard metric is rendered by dataHubRenderDashboard.
   // Dashboard metric is rendered by dataHubRenderDashboard.
-  renderHomeMiniCharts();renderLifeMarket()}
+  renderHomeMiniCharts();renderLifeMarket();window.HaniAiBudget?.render()}
 
 let activeLifeIndex="hasdaq";
 const LIFE_MARKET_BRIEFS={
@@ -7877,7 +7877,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.308";
+const HANI_DISPLAY_VERSION="2.9.309";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
