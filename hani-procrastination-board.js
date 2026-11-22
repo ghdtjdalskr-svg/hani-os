@@ -20,7 +20,7 @@
     diary:'회장님 첫 한 줄, 제일 먼저 읽고 싶어요♡',
     goals:'첫 목표를 세우면 제가 같이 지켜볼게요♡',
     backup:'첫 백업 한 번이면 기록이 든든해져요!',
-    release:'배포센터를 한 번 열어 주시면 확인할게용!'
+    release:'배포 기록 확인하는 중이에용!'
   });
   const STAFF = {
     naeun: {
@@ -336,15 +336,15 @@
       mediation:'회장님, 이음이가 기록 상자 안고 걱정해요…'
     },
     {
-      id:'release', title:'배포 승인 대기', owner:'hina', route:'deployment', cadence:'올라오면 바로', bounds:[0,3,7,14],
+      id:'release', title:'새 배포 소식', owner:'hina', route:'deployment', cadence:'주 1회', bounds:[7,14,21,30],
       lines:[
-        '회장님♡ 승인할 배포 없어용, 깔끔!',
-        '새 배포가 도장 기다리고 있어용!',
-        '흥! 검증 다 끝났는데 기다리는 중이에용.',
-        '배포 상자 앞에서 발 동동 구르는 중이에용!',
-        '구석에서 배포 상자 꼭 안고 있을래용…'
+        '회장님♡ 최근 배포로 앱이 싱싱해용!',
+        '새 배포 소식 기다리고 있어용!',
+        '흥! 배포 소식이 뜸해서 심심해용.',
+        '배포 상자에 먼지 쌓이는 중이에용!',
+        '구석에서 배포 일정표 안고 있을래용…'
       ],
-      thanks:'드디어! 고마워요♡ 배포 출발이에용!',
+      thanks:'드디어! 고마워요♡ 새 버전 나왔어용!',
       reply:'히히, 배포센터 바로 열어 둘게용!',
       mediation:'회장님, 히나가 배포 상자 안고 기다려요…'
     }
@@ -377,12 +377,11 @@
     return values.filter(value => elapsed(value, now) !== null).sort((a,b) => dayNumber(a) - dayNumber(b))[0] || null;
   }
   function updated(row) { return row.updatedAt || row.importedAt || row.createdAt; }
-  function project(input, now = new Date().toISOString(), deploy = null) {
+  function project(input, now = new Date().toISOString(), release = null) {
     const state = object(input) ? input : {};
-    // 배포 승인 대기: read-only view of the 배포센터 result already in memory (no fetch here).
-    // Unchecked this session → unknown; checked with nothing approvable → clear.
-    const releaseChecked = object(deploy) && object(deploy.pending) && !deploy.pending.error;
-    const releaseWaiting = releaseChecked && object(deploy.pending.pending) && deploy.pending.pending.ready_for_approval === true ? deploy.pending.pending : null;
+    // 새 배포 소식: days since the newest released entry of the shared release catalog
+    // (loaded once by the organization hub; this board never fetches). Unloaded → unknown.
+    const releaseDate = object(release) && typeof release.date === 'string' ? release.date : null;
     const projects = rows(state.learningProjects).filter(p => typeof p.id === 'string' && p.id.trim());
     const activeProjectIds = new Set(projects.filter(p => !['paused','archived'].includes(p.status)).map(p => p.id));
     const quizzes = rows(state.learningQuizzes);
@@ -428,10 +427,9 @@
       diary: latest(rows(state.diaries).filter(r => typeof r.content === 'string' && r.content.trim()).map(r => r.date), now),
       goals: latest((Array.isArray(state.goalRegistry) ? rows(state.goalRegistry) : rows(object(state.goalRegistry) ? (state.goalRegistry.goals || state.goalRegistry.items) : [])).map(updated), now),
       backup: latest([object(state.meta) ? state.meta.lastBackupAt : null], now),
-      release: releaseWaiting ? latest([releaseWaiting.created_at], now) : null
+      release: latest([releaseDate], now)
     };
     const clears = {
-      release: releaseChecked && !releaseWaiting,
       quiz: !pendingQuizzes.length && !!completedQuiz,
       wrongReview: !pendingWrongs.length && wrongs.some(w => reviewedStates.has(w.reviewStatus)),
       spendReview: !pendingSpends.length && spends.some(r => rows(r.reviews).length > 0),
@@ -441,8 +439,7 @@
       quiz: elapsed(completedQuiz, now) === 0,
       wrongReview: elapsed(reviewedWrong, now) === 0,
       spendReview: elapsed(reviewedSpend, now) === 0,
-      tasks: false,
-      release: false
+      tasks: false
     };
     const pendingCounts = {
       quiz: pendingQuizzes.length,
@@ -478,6 +475,7 @@
     if (item.id === 'tasks' && item.pending) return ` · 마감 지난 일 ${item.pending}개`;
     return '';
   }
+  let releaseInfo = null, releaseAsked = false, lastState = null;
   function render(state) {
     const root = document.getElementById('procrastinationBoard');
     if (!root) return;
@@ -486,8 +484,19 @@
       const staff = STAFF[spec.owner];
       return `<article class="pb-card" data-pb-card="${spec.id}"><div class="pb-copy"><p class="pb-owner">${staff.name} <span>${staff.role}</span></p><h3>${spec.title}</h3></div><div class="pb-scene"><div class="pb-bubble-wrap"><span class="pb-nametag">${staff.name}</span><p class="pb-speech"></p></div><span class="pb-portrait" role="img" aria-label="${staff.name}"></span><div class="pb-mediation" hidden><span class="pb-mediation-tag">하니 전무</span><p class="pb-mediation-text"></p></div></div><div class="pb-footer"><p class="pb-level"></p><p class="pb-age"></p><p class="pb-basis"></p><div class="pb-actions"><button type="button" class="btn pb-reply-btn" data-pb-reply="${spec.id}">미안해, 지금 할게! 🐸</button><button type="button" class="btn" data-pb-go="${spec.route}">${spec.id === 'quiz' ? '문제 풀러 가기' : '기록하러 가기'} <span aria-hidden="true">↗</span></button></div></div></article>`;
     }).join('');
-    // hani-main's top-level `deployRuntime` (classic-script global); absent → card stays unknown.
-    const model = project(state, undefined, typeof deployRuntime !== 'undefined' ? deployRuntime : null);
+    lastState = state;
+    // Ask the shared catalog once; when it answers, re-run this same render (persistent cards only update).
+    const catalog = window.HaniReleaseCatalog;
+    if (!releaseAsked && catalog && typeof catalog.load === 'function') {
+      releaseAsked = true;
+      Promise.resolve().then(() => catalog.load()).then(value => {
+        const entries = value && Array.isArray(value.entries) ? value.entries : [];
+        const top = entries.find(entry => entry && entry.status === 'released' && typeof entry.date === 'string');
+        releaseInfo = top ? {date: top.date} : null;
+        render(lastState);
+      }).catch(() => {});
+    }
+    const model = project(state, undefined, releaseInfo);
     for (const item of model) {
       const card = root.querySelector(`[data-pb-card="${item.id}"]`);
       card.dataset.level = item.level === null ? 'unknown' : String(item.level);
