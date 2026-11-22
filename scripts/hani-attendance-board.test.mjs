@@ -1,3 +1,4 @@
+import './hani-light-311-preload.cjs'; // Exact light-311 inverse before the authored attendance UI assertions.
 // node --test scripts/hani-attendance-board.test.mjs
 import test from "node:test";
 import assert from "node:assert/strict";
