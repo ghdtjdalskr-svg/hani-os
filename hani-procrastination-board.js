@@ -17,7 +17,9 @@
     spendReview:'산 물건 첫 후기, 제가 제일 궁금해요!',
     culture:'첫 감상 한 줄이면 레디, 액션이에요!',
     tasks:'첫 할 일만 적어 주시면 제가 챙길게요.',
-    diary:'회장님 첫 한 줄, 제일 먼저 읽고 싶어요♡'
+    diary:'회장님 첫 한 줄, 제일 먼저 읽고 싶어요♡',
+    goals:'첫 목표를 세우면 제가 같이 지켜볼게요♡',
+    backup:'첫 백업 한 번이면 기록이 든든해져요!'
   });
   const STAFF = {
     naeun: {
@@ -136,6 +138,19 @@
       thanks:'드디어! 고마워요♡ 딱 정리됐어요!',
       reply:'와! 오답노트 바로 펼쳐 놓을게요!',
       mediation:'회장님, 윤슬이가 책갈피 꽂아두고 기다려요…'
+    },
+    ieum: {
+      name:'이음', role:'기록 · 지식 관리',
+      lines:[
+        '회장님 기록, 오늘도 안전해요.',
+        '백업 한 번 해 두면 마음 편해요.',
+        '조금 불안해요… 백업 한 번만요!',
+        '기록 보관함 앞에서 서성이고 있어요.',
+        '구석에서 외장 상자 꼭 안고 있어요…'
+      ],
+      thanks:'드디어! 고마워요♡ 기록이 든든해요.',
+      reply:'네, 백업 버튼 바로 찾아 둘게요!',
+      mediation:'회장님, 이음이가 기록 상자 안고 걱정해요…'
     }
   };
   const SPECS = [
@@ -293,6 +308,31 @@
       ],
       thanks:'드디어! 고마워요♡ 한 줄이 참 좋아요.',
       reply:'알겠어요, 차 한 잔 내어 올게요♡'
+    },
+    {
+      id:'goals', title:'목표 점검', owner:'hani', route:'settings', cadence:'월 1회', bounds:[31,45,60,90],
+      lines:[
+        '회장님, 목표 지도가 선명하네요♡',
+        '이번 달 목표, 한 번 같이 볼까요?',
+        '목표판에 먼지가 살짝 앉았어요.',
+        '나 목표판 앞에서 팔짱 꼈어요. 흥!',
+        '구석에서 목표 지도 펼쳐 놓고 있어요…'
+      ],
+      thanks:'드디어! 고마워요♡ 방향이 딱 잡혔어요.',
+      reply:'좋아요, 목표판 바로 펼쳐 둘게요♡'
+    },
+    {
+      id:'backup', title:'데이터 백업', owner:'ieum', route:'settings', cadence:'주 1회', bounds:[7,14,30,60],
+      lines:[
+        '회장님 기록, 오늘도 안전해요.',
+        '백업 한 번 해 두면 마음 편해요.',
+        '조금 불안해요… 백업 한 번만요!',
+        '기록 보관함 앞에서 서성이고 있어요.',
+        '구석에서 외장 상자 꼭 안고 있어요…'
+      ],
+      thanks:'드디어! 고마워요♡ 기록이 든든해요.',
+      reply:'네, 백업 버튼 바로 찾아 둘게요!',
+      mediation:'회장님, 이음이가 기록 상자 안고 걱정해요…'
     }
   ];
   const object = x => x !== null && typeof x === 'object' && !Array.isArray(x);
@@ -367,7 +407,9 @@
       spendReview: elapsed(reviewedSpend, now) === 0 ? reviewedSpend : oldestSpend || reviewedSpend,
       culture: latest([...bookDates, ...movieDates], now),
       tasks: oldestTask,
-      diary: latest(rows(state.diaries).filter(r => typeof r.content === 'string' && r.content.trim()).map(r => r.date), now)
+      diary: latest(rows(state.diaries).filter(r => typeof r.content === 'string' && r.content.trim()).map(r => r.date), now),
+      goals: latest((Array.isArray(state.goalRegistry) ? rows(state.goalRegistry) : rows(object(state.goalRegistry) ? (state.goalRegistry.goals || state.goalRegistry.items) : [])).map(updated), now),
+      backup: latest([object(state.meta) ? state.meta.lastBackupAt : null], now)
     };
     const clears = {
       quiz: !pendingQuizzes.length && !!completedQuiz,

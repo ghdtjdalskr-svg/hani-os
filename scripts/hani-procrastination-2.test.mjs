@@ -139,12 +139,12 @@ test('syntax and static read-only / timer safety', () => {
   assert.equal(timeoutMatches.length, 1, 'Expected exactly one setTimeout inside reply click handler');
 });
 
-test('board exposes 12 cards with updated owners and speech constraints', () => {
+test('board exposes 14 cards with updated owners and speech constraints', () => {
   const { api } = loadBoard();
   const now = '2026-11-17T12:00:00+09:00';
   const empty = api.project({}, now);
 
-  assert.equal(empty.length, 12);
+  assert.equal(empty.length, 14);
   const byId = Object.fromEntries(empty.map(item => [item.id, item]));
   assert.equal(byId.diary.owner, 'hani');
   assert.equal(byId.culture.owner, 'minji');
@@ -276,13 +276,13 @@ test('render uses persistent card slots, toggles mediation, and handles reply bu
   };
 
   api.render(state);
-  assert.equal(dom.board.children.length, 12);
+  assert.equal(dom.board.children.length, 14);
   const firstCards = dom.board.children.slice();
 
   // Re-render preserves persistent card nodes
   const kstToday = new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10);
   api.render({ ...state, diaries: [{ date: kstToday, content: '오늘 일기' }] });
-  assert.equal(dom.board.children.length, 12);
+  assert.equal(dom.board.children.length, 14);
   firstCards.forEach((card, i) => assert.equal(dom.board.children[i], card));
 
   const tasksCard = dom.board.querySelector('[data-pb-card="tasks"]');
@@ -311,7 +311,9 @@ test('render uses persistent card slots, toggles mediation, and handles reply bu
 test('CSS references valid assets and supports themes, 9 staff, 5 moods, mobile, and reduced motion', () => {
   const urls = [...cssSource.matchAll(/url\((["']?)([^"')]+)\1\)/g)].map(m => m[2]);
   // Round 3 adds the Naeun per-item pose sheet and the scene background sheet.
-  assert.equal(urls.length, 7);
+  // Round 3b adds the 이음 profile for the backup card.
+  assert.equal(urls.length, 8);
+  assert.ok(urls.includes('./assets/profiles/thumb/hani-profile-ieum-256.webp'));
   assert.ok(urls.includes('./assets/procrastination/pb-naeun-items-v1.webp'));
   assert.ok(urls.includes('./assets/procrastination/pb-scene-bg-v1.webp'));
   for (const rel of urls) {

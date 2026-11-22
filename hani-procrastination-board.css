@@ -235,3 +235,13 @@
 #procrastination .pb-card .pb-scene::before{background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,0) 45%),var(--pb-weather)}
 [data-theme="dark"] #procrastination .pb-card .pb-scene::before,
 :root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #procrastination .pb-card .pb-scene::before{background:linear-gradient(rgba(16,14,22,.42),rgba(16,14,22,.42)),var(--pb-weather)}
+/* Round 3b: 목표 점검(하니) · 데이터 백업(이음) cards. Backgrounds reuse the office-window and library cells until dedicated art lands. */
+#procrastination [data-owner="ieum"]{--pb-staff-color:#5b6fb5;--pb-staff-soft:#e8ecfa;--pb-staff-ink:#ffffff;--pb-scene-base:#eceffa}
+#procrastination [data-owner="ieum"] .pb-portrait{width:148px;margin:10px 0 6px;border-radius:50%;border:3px solid var(--pb-staff-color);background-image:url("./assets/profiles/thumb/hani-profile-ieum-256.webp");background-size:cover;background-position:center 18%;box-shadow:0 6px 16px rgba(45,35,60,.14)}
+#procrastination [data-level="3"][data-owner="ieum"] .pb-portrait{border-color:#c94a5a}
+#procrastination [data-level="4"][data-owner="ieum"] .pb-portrait{border-color:#727a8c;filter:saturate(.76) brightness(.95)}
+[data-theme="dark"] #procrastination [data-owner="ieum"],
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #procrastination [data-owner="ieum"]{--pb-staff-color:#93a6ec;--pb-staff-soft:#252c46;--pb-staff-ink:#10162c;--pb-scene-base:#232a40}
+@media(max-width:600px){#procrastination [data-owner="ieum"] .pb-portrait{width:136px}}
+#procrastination [data-pb-card="goals"]{--pb-bg-x:33.3333%;--pb-bg-y:50%}
+#procrastination [data-pb-card="backup"]{--pb-bg-x:0%;--pb-bg-y:50%}
