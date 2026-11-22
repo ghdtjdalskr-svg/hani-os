@@ -1,0 +1,426 @@
+{
+  "schema": 1,
+  "layer": "release-307",
+  "release": "4c3761da46ff1d1618555cc39fc0ddfe458b675a",
+  "base": "cd916e28466a17dfe5723fbce41ab3d0930522ec",
+  "menuHead": "6cda54ea3875677ea932c5ce47326757abd2daf3",
+  "from": "2.9.306",
+  "to": "2.9.307",
+  "menuFixture": "f099196509836d63e70509eb3125865387e4f2e4f2b81fc40136601c7a98660f",
+  "files": {
+    "index.html": {
+      "beforeSha256": "c6c3e739b7e7a871bd9bc0e7ece06d19215cd2d4faec85a9c32b187404ae9940",
+      "afterSha256": "826f32c758b5c8d21d9dc4a96e7909f170c20d03b39c0418437ebc9a02f52f82",
+      "beforeBytes": 265029,
+      "afterBytes": 265029,
+      "count": 60,
+      "replacements": [
+        {
+          "start": 225686,
+          "beforeStart": 225686,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 225632,
+          "beforeStart": 225632,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 225443,
+          "beforeStart": 225443,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 225388,
+          "beforeStart": 225388,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 225339,
+          "beforeStart": 225339,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 225289,
+          "beforeStart": 225289,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 225231,
+          "beforeStart": 225231,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 225169,
+          "beforeStart": 225169,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 225108,
+          "beforeStart": 225108,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 225045,
+          "beforeStart": 225045,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 224978,
+          "beforeStart": 224978,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 224920,
+          "beforeStart": 224920,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 224853,
+          "beforeStart": 224853,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 224791,
+          "beforeStart": 224791,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 224726,
+          "beforeStart": 224726,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 224667,
+          "beforeStart": 224667,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 224392,
+          "beforeStart": 224392,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 224332,
+          "beforeStart": 224332,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 224274,
+          "beforeStart": 224274,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 224220,
+          "beforeStart": 224220,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 224163,
+          "beforeStart": 224163,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 223562,
+          "beforeStart": 223562,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 223345,
+          "beforeStart": 223345,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 223277,
+          "beforeStart": 223277,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 223215,
+          "beforeStart": 223215,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 223093,
+          "beforeStart": 223093,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 223037,
+          "beforeStart": 223037,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 222981,
+          "beforeStart": 222981,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 222833,
+          "beforeStart": 222833,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 222778,
+          "beforeStart": 222778,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 222722,
+          "beforeStart": 222722,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 195769,
+          "beforeStart": 195769,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 26530,
+          "beforeStart": 26530,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 15199,
+          "beforeStart": 15199,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 9180,
+          "beforeStart": 9180,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 8319,
+          "beforeStart": 8319,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 8262,
+          "beforeStart": 8262,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 8204,
+          "beforeStart": 8204,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 8134,
+          "beforeStart": 8134,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 8064,
+          "beforeStart": 8064,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 7992,
+          "beforeStart": 7992,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 7925,
+          "beforeStart": 7925,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 7858,
+          "beforeStart": 7858,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 7785,
+          "beforeStart": 7785,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 7715,
+          "beforeStart": 7715,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 7650,
+          "beforeStart": 7650,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 7584,
+          "beforeStart": 7584,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 4259,
+          "beforeStart": 4259,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 4110,
+          "beforeStart": 4110,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 3120,
+          "beforeStart": 3120,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 3022,
+          "beforeStart": 3022,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 2925,
+          "beforeStart": 2925,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 2813,
+          "beforeStart": 2813,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 2711,
+          "beforeStart": 2711,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 2617,
+          "beforeStart": 2617,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 2518,
+          "beforeStart": 2518,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 2418,
+          "beforeStart": 2418,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 2220,
+          "beforeStart": 2220,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 751,
+          "beforeStart": 751,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        },
+        {
+          "start": 422,
+          "beforeStart": 422,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        }
+      ]
+    },
+    "hani-main.js": {
+      "beforeSha256": "e1545a2ea9ed9abbdebd843afb05e34a585914e74822274198c9d61637e6d75b",
+      "afterSha256": "5ebfe25e783895c4968387da49f39f3b593662db0cf53e6c63b6a0c7b259f6c5",
+      "beforeBytes": 1428597,
+      "afterBytes": 1428597,
+      "count": 1,
+      "replacements": [
+        {
+          "start": 878885,
+          "beforeStart": 878885,
+          "before": "2.9.306",
+          "after": "2.9.307"
+        }
+      ]
+    },
+    "assets/data/hani-history-releases-v1.json": {
+      "beforeSha256": "7bcdbc8a609070443601846f0e2ff7a6b3b4bcd11061d266ab818836b607be4d",
+      "afterSha256": "5ddc9535bd361910e9df511ccad7bfed48c5f63cdc418b3a96b44506fbc94f29",
+      "beforeBytes": 73633,
+      "afterBytes": 74022,
+      "count": 1,
+      "replacements": [
+        {
+          "start": 716,
+          "beforeStart": 716,
+          "before": "6\",\n      \"date\": \"2026-11-21\",\n      \"status\": \"released\",\n      \"title\": \"도우미 한마디 말풍선\",\n      \"category\": \"도우미 · 사용성\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.306 도우미 한마디 말풍선",
+          "after": "7\",\n      \"date\": \"2026-11-21\",\n      \"status\": \"released\",\n      \"title\": \"메뉴 NEW 배지 · 봤으면 꺼지기\",\n      \"category\": \"메뉴 · 사용성\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.307 메뉴 NEW 배지 · 봤으면 꺼지기\"\n      }\n    },\n    {\n      \"id\": \"v2.9.306\",\n      \"date\": \"2026-11-21\",\n      \"status\": \"released\",\n      \"title\": \"도우미 한마디 말풍선\",\n      \"category\": \"도우미 · 사용성\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"077df04dea15d27d530ba957ad544381cf45ae60\",\n        \"subject\": \"release: v2.9.306 도우미 한마디 말풍선 (#533)"
+        }
+      ]
+    },
+    "scripts/hani-menu-badges-source.cjs": {
+      "beforeSha256": "d6f1a62e9753c652625d24a94030fe33bd62de57c9d48dc8c8614f2c653509b4",
+      "afterSha256": "6fd607cb2b77e793962957a26e3d3a6f513271f2d21f71a8567b3b3ca64070ae",
+      "beforeBytes": 3118,
+      "afterBytes": 3212,
+      "count": 1,
+      "replacements": [
+        {
+          "start": 0,
+          "beforeStart": 0,
+          "before": "",
+          "after": "require('./hani-release-307-preload.cjs'); // Released307 metadata precedes the menu inverse.\n"
+        }
+      ]
+    }
+  }
+}
