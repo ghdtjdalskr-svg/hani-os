@@ -1,0 +1,1837 @@
+{
+  "schemaVersion": "building-story-pack-v1",
+  "status": "draft",
+  "phase": "Phase 4",
+  "meta": {
+    "description": "HANI 그룹 본사 Phase 4 '살아 있는 회사' 대사·장면 데이터 초안 (무저장 · 0-AI 토큰 · KST 결정적)",
+    "chairman": {
+      "id": "seongmin",
+      "title": "회장님",
+      "mascotForm": "공식 개구리 캐릭터",
+      "companionPlaceholder": "chairmanDog"
+    },
+    "buildingChanges": {
+      "convenienceStoreName": "HANI 24",
+      "convenienceFloor": "1F",
+      "businessDeptMovedTo": "2F",
+      "businessMembers": ["sua", "taeo"],
+      "departmentAnimalsRule": "평소 소속 부서 상주, 점심·주말·사내 이벤트 때 가끔 외출(희귀 장면)"
+    },
+    "constraints": {
+      "maxLineLength": 30,
+      "noStorage": true,
+      "noAiCalls": true,
+      "noKidsInCompetitionOrVote": true,
+      "noRomanceOrAppearance": true
+    }
+  },
+  "microArcs": [
+    {
+      "id": "arc-hani-1",
+      "staffId": "hani",
+      "staffName": "하니",
+      "title": "아침 아이디어 세 줄 정리",
+      "timeSlot": "morning",
+      "steps": [
+        { "step": 1, "floor": "4F", "zone": "4F 전무실", "action": "standing", "line": "새 아이디어는 세 줄로 줄여봐요♡" },
+        { "step": 2, "floor": "1F", "zone": "1F 카페", "action": "walk", "line": "따뜻한 커피 한 잔 챙길까요?" },
+        { "step": 3, "floor": "4F", "zone": "4F 임원회의실", "action": "sitting", "line": "오늘 방향, 딱 잡혔어요! 헤헤♡" }
+      ]
+    },
+    {
+      "id": "arc-hani-2",
+      "staffId": "hani",
+      "staffName": "하니",
+      "title": "전 층 안건 순회",
+      "timeSlot": "afternoon",
+      "steps": [
+        { "step": 1, "floor": "3F", "zone": "3F 개발실", "action": "approach", "line": "이번 기능, 범위 안에 맞죠?♡" },
+        { "step": 2, "floor": "2F", "zone": "2F 업무실", "action": "approach", "line": "수아 과장님 자리 참 좋네요♡" },
+        { "step": 3, "floor": "5F", "zone": "5F 스튜디오", "action": "standing", "line": "이번 주 소식도 기대돼요!" }
+      ]
+    },
+    {
+      "id": "arc-gaeun-1",
+      "staffId": "gaeun",
+      "staffName": "가은",
+      "title": "빈틈없는 아침 일정 준비",
+      "timeSlot": "morning",
+      "steps": [
+        { "step": 1, "floor": "4F", "zone": "4F 비서실", "action": "sitting", "line": "오늘 회의실 의자부터 맞췄어요." },
+        { "step": 2, "floor": "1F", "zone": "1F 안내데스크", "action": "walk", "line": "유나님, 오늘 방문 일정 확인요." },
+        { "step": 3, "floor": "4F", "zone": "4F 비서실", "action": "sitting", "line": "이동 여유 10분도 챙겼습니다." }
+      ]
+    },
+    {
+      "id": "arc-gaeun-2",
+      "staffId": "gaeun",
+      "staffName": "가은",
+      "title": "오후 티타임 사수",
+      "timeSlot": "evening",
+      "steps": [
+        { "step": 1, "floor": "4F", "zone": "4F 전무실", "action": "approach", "line": "회의 사이 차 한 잔 시간입니다." },
+        { "step": 2, "floor": "6F", "zone": "6F 옥상", "action": "standing", "line": "잠깐 바람 쐬고 내려가시죠." }
+      ]
+    },
+    {
+      "id": "arc-ieum-1",
+      "staffId": "ieum",
+      "staffName": "이음",
+      "title": "완료 근거 찾아 잇기",
+      "timeSlot": "morning",
+      "steps": [
+        { "step": 1, "floor": "4F", "zone": "4F 전무실", "action": "sitting", "line": "이거… 끝난 거 맞죠?" },
+        { "step": 2, "floor": "3F", "zone": "3F 개발실", "action": "approach", "line": "서윤 선배, 맥락 여쭤봐도 돼요?" },
+        { "step": 3, "floor": "4F", "zone": "4F 전무실", "action": "sitting", "line": "확인됐으니 완료로 닫을게요." }
+      ]
+    },
+    {
+      "id": "arc-ieum-2",
+      "staffId": "ieum",
+      "staffName": "이음",
+      "title": "도서관 색인 정리",
+      "timeSlot": "afternoon",
+      "steps": [
+        { "step": 1, "floor": "5F", "zone": "5F 도서관", "action": "walk", "line": "지난 기록도 순서대로 꽂아둘게요." },
+        { "step": 2, "floor": "5F", "zone": "5F 도서관", "action": "sitting", "line": "열린 메모는 내일 이어볼게요." }
+      ]
+    },
+    {
+      "id": "arc-mir-1",
+      "staffId": "mir",
+      "staffName": "미르",
+      "title": "편의점 컵라면 관찰",
+      "timeSlot": "night",
+      "steps": [
+        { "step": 1, "floor": "4F", "zone": "4F 미르존", "action": "standing", "line": "다들 1층으로 내려가네. 왜?" },
+        { "step": 2, "floor": "1F", "zone": "1F HANI 24", "action": "standing", "line": "뜨거운 물 붓고 삼 분 기다리네." },
+        { "step": 3, "floor": "1F", "zone": "1F HANI 24", "action": "standing", "line": "밤과 컵라면, 이건 연결되네. 헤헤." }
+      ]
+    },
+    {
+      "id": "arc-mir-2",
+      "staffId": "mir",
+      "staffName": "미르",
+      "title": "옥상 바람과 생각 연결",
+      "timeSlot": "afternoon",
+      "steps": [
+        { "step": 1, "floor": "6F", "zone": "6F 옥상", "action": "walk", "line": "구름이 빨리 가네. 조금 더 볼게." },
+        { "step": 2, "floor": "4F", "zone": "4F 미르존", "action": "standing", "line": "아까 질문이랑 이어지네. 헤헤." }
+      ]
+    },
+    {
+      "id": "arc-yuna-1",
+      "staffId": "yuna",
+      "staffName": "유나",
+      "title": "아침 택배·메모 분류",
+      "timeSlot": "morning",
+      "steps": [
+        { "step": 1, "floor": "1F", "zone": "1F 안내데스크", "action": "standing", "line": "제가요?! 우편물부터 나눌게요!" },
+        { "step": 2, "floor": "2F", "zone": "2F 업무실", "action": "walk", "line": "수아 과장님, 소포 가져왔어요!" },
+        { "step": 3, "floor": "1F", "zone": "1F 안내데스크", "action": "sitting", "line": "색깔 태그 붙이기 완료했어요!" }
+      ]
+    },
+    {
+      "id": "arc-yuna-2",
+      "staffId": "yuna",
+      "staffName": "유나",
+      "title": "HANI 24 저녁 간식 심부름",
+      "timeSlot": "evening",
+      "steps": [
+        { "step": 1, "floor": "1F", "zone": "1F HANI 24", "action": "walk", "line": "오늘은 어떤 1+1 간식이 떴지?" },
+        { "step": 2, "floor": "1F", "zone": "1F 로비", "action": "standing", "line": "야간 메모 정리하고 퇴근할게요!" }
+      ]
+    },
+    {
+      "id": "arc-seoyun-1",
+      "staffId": "seoyun",
+      "staffName": "서윤",
+      "title": "설계 범위 나누기",
+      "timeSlot": "morning",
+      "steps": [
+        { "step": 1, "floor": "3F", "zone": "3F 개발실", "action": "sitting", "line": "먼저 변경 범위부터 볼게요 💜" },
+        { "step": 2, "floor": "3F", "zone": "3F 스탠드업", "action": "standing", "line": "정리하면 두 가지예요. 같이 봐요." },
+        { "step": 3, "floor": "3F", "zone": "3F 개발실", "action": "sitting", "line": "기존 경로는 그대로 보존할게요." }
+      ]
+    },
+    {
+      "id": "arc-seoyun-2",
+      "staffId": "seoyun",
+      "staffName": "서윤",
+      "title": "퇴근 후 피트니스 스트레칭",
+      "timeSlot": "evening",
+      "steps": [
+        { "step": 1, "floor": "5F", "zone": "5F 피트니스", "action": "walk", "line": "어깨 굳기 전에 잠깐 풀어야죠." },
+        { "step": 2, "floor": "1F", "zone": "1F 카페", "action": "sitting", "line": "은하님, 따뜻한 디카페인 부탁해요 💜" }
+      ]
+    },
+    {
+      "id": "arc-dohyun-1",
+      "staffId": "dohyun",
+      "staffName": "도연",
+      "title": "로컬 재현과 커피 리필",
+      "timeSlot": "morning",
+      "steps": [
+        { "step": 1, "floor": "3F", "zone": "3F 개발실", "action": "sitting", "line": "재현했어요. 원인 두 줄이네요 ☕" },
+        { "step": 2, "floor": "1F", "zone": "1F 카페", "action": "walk", "line": "아메리카노 한 잔만 들고 갈게요." },
+        { "step": 3, "floor": "3F", "zone": "3F 개발실", "action": "sitting", "line": "타겟 테스트 통과요 ☕" }
+      ]
+    },
+    {
+      "id": "arc-dohyun-2",
+      "staffId": "dohyun",
+      "staffName": "도연",
+      "title": "심야 컵라면 3분 대기",
+      "timeSlot": "night",
+      "steps": [
+        { "step": 1, "floor": "3F", "zone": "3F 서버실", "action": "standing", "line": "로그 확인 끝. 배고프네요." },
+        { "step": 2, "floor": "1F", "zone": "1F HANI 24", "action": "sitting", "line": "물 붓고 3분 테스트 대기 중 ☕" }
+      ]
+    },
+    {
+      "id": "arc-serin-1",
+      "staffId": "serin",
+      "staffName": "세린",
+      "title": "반복 패턴 발견 출동",
+      "timeSlot": "morning",
+      "steps": [
+        { "step": 1, "floor": "3F", "zone": "3F 개발실", "action": "sitting", "line": "어?! 반복 패턴 보여요!! 📊" },
+        { "step": 2, "floor": "3F", "zone": "3F 스탠드업", "action": "standing", "line": "이거 자동화 각인데요?! ✨" },
+        { "step": 3, "floor": "3F", "zone": "3F 개발실", "action": "sitting", "line": "비교 표부터 근거로 붙일게요!" }
+      ]
+    },
+    {
+      "id": "arc-serin-2",
+      "staffId": "serin",
+      "staffName": "세린",
+      "title": "도서관 데이터 자료 탐색",
+      "timeSlot": "afternoon",
+      "steps": [
+        { "step": 1, "floor": "5F", "zone": "5F 도서관", "action": "walk", "line": "오! 좋은 참고서 찾았어요!! ✨" },
+        { "step": 2, "floor": "1F", "zone": "1F HANI 24", "action": "standing", "line": "당 충전하고 실험 이어갈래요! 📊" }
+      ]
+    },
+    {
+      "id": "arc-yuri-1",
+      "staffId": "yuri",
+      "staffName": "유리",
+      "title": "깐깐한 사전 검증 순찰",
+      "timeSlot": "morning",
+      "steps": [
+        { "step": 1, "floor": "3F", "zone": "3F 개발실", "action": "sitting", "line": "미검증은 PASS 아닙니다." },
+        { "step": 2, "floor": "3F", "zone": "3F 릴리스룸", "action": "standing", "line": "모바일 폭 예외 하나 더 볼게요." },
+        { "step": 3, "floor": "3F", "zone": "3F 개발실", "action": "sitting", "line": "기대값 일치 확인. 깔끔합니다 ✅" }
+      ]
+    },
+    {
+      "id": "arc-yuri-2",
+      "staffId": "yuri",
+      "staffName": "유리",
+      "title": "옥상 산책 후 체크리스트",
+      "timeSlot": "afternoon",
+      "steps": [
+        { "step": 1, "floor": "6F", "zone": "6F 옥상", "action": "walk", "line": "옥상 안전 난간 상태 양호합니다." },
+        { "step": 2, "floor": "3F", "zone": "3F 개발실", "action": "sitting", "line": "오후 검수 목록 다시 엽니다 ✅" }
+      ]
+    },
+    {
+      "id": "arc-arin-1",
+      "staffId": "arin",
+      "staffName": "아린",
+      "title": "말풍선 여백 스케치",
+      "timeSlot": "morning",
+      "steps": [
+        { "step": 1, "floor": "3F", "zone": "3F 개발실", "action": "sitting", "line": "여기 여백을 숨 쉬게 해봐요 ✨" },
+        { "step": 2, "floor": "1F", "zone": "1F 카페", "action": "sitting", "line": "햇살 색감이 너무 예쁜데요? 🎨" },
+        { "step": 3, "floor": "3F", "zone": "3F 개발실", "action": "sitting", "line": "작은 화면 대비도 맞춰볼게요!" }
+      ]
+    },
+    {
+      "id": "arc-arin-2",
+      "staffId": "arin",
+      "staffName": "아린",
+      "title": "시네마 색감 영감 찾기",
+      "timeSlot": "evening",
+      "steps": [
+        { "step": 1, "floor": "5F", "zone": "5F 시네마", "action": "sitting", "line": "이 장면 톤, 참고해보는 건 어때요?" },
+        { "step": 2, "floor": "6F", "zone": "6F 옥상", "action": "standing", "line": "노을빛 색 조합 메모해둘래요 🎨" }
+      ]
+    },
+    {
+      "id": "arc-jieun-1",
+      "staffId": "jieun",
+      "staffName": "지은",
+      "title": "아침 장부와 커피 결재",
+      "timeSlot": "morning",
+      "steps": [
+        { "step": 1, "floor": "2F", "zone": "2F 업무실", "action": "sitting", "line": "이번 달 고정지출부터 볼게요." },
+        { "step": 2, "floor": "1F", "zone": "1F 카페", "action": "walk", "line": "모닝커피 한 잔은 필수 비용이죠." },
+        { "step": 3, "floor": "2F", "zone": "2F 업무실", "action": "sitting", "line": "오차 없이 딱 맞네요. 든든해요." }
+      ]
+    },
+    {
+      "id": "arc-jieun-2",
+      "staffId": "jieun",
+      "staffName": "지은",
+      "title": "스튜디오 시황 브리핑",
+      "timeSlot": "afternoon",
+      "steps": [
+        { "step": 1, "floor": "5F", "zone": "5F 스튜디오", "action": "sitting", "line": "숫자 근거 확인하고 녹화 가죠." },
+        { "step": 2, "floor": "2F", "zone": "2F 팬트리", "action": "standing", "line": "수아 과장님, 차 한 잔 하실래요?" }
+      ]
+    },
+    {
+      "id": "arc-haru-1",
+      "staffId": "haru",
+      "staffName": "하루",
+      "title": "HANI 24 가성비 비교",
+      "timeSlot": "lunch",
+      "steps": [
+        { "step": 1, "floor": "2F", "zone": "2F 업무실", "action": "sitting", "line": "비품 두 개 가격표 비교해 봤어요." },
+        { "step": 2, "floor": "1F", "zone": "1F HANI 24", "action": "standing", "line": "1+1 제품, 용량 대비 아주 좋네요." },
+        { "step": 3, "floor": "2F", "zone": "2F 업무실", "action": "sitting", "line": "오래 쓸 걸로 딱 하나만 골랐어요." }
+      ]
+    },
+    {
+      "id": "arc-haru-2",
+      "staffId": "haru",
+      "staffName": "하루",
+      "title": "도서관 위시리스트 점검",
+      "timeSlot": "evening",
+      "steps": [
+        { "step": 1, "floor": "5F", "zone": "5F 도서관", "action": "sitting", "line": "사기 전에 도서관 책부터 볼래요." },
+        { "step": 2, "floor": "5F", "zone": "5F 시네마", "action": "sitting", "line": "퇴근 전 짧은 단편 하나 딱이네요." }
+      ]
+    },
+    {
+      "id": "arc-daon-1",
+      "staffId": "daon",
+      "staffName": "다온",
+      "title": "혹시 모를 예비분 챙기기",
+      "timeSlot": "morning",
+      "steps": [
+        { "step": 1, "floor": "2F", "zone": "2F 업무실", "action": "sitting", "line": "혹시… 최악의 경우엔요 😅" },
+        { "step": 2, "floor": "2F", "zone": "2F 팬트리", "action": "standing", "line": "초콜릿 다 떨어질까 봐 한 통 더요…" },
+        { "step": 3, "floor": "2F", "zone": "2F 업무실", "action": "sitting", "line": "반대 근거까지 적으니 안심이에요." }
+      ]
+    },
+    {
+      "id": "arc-daon-2",
+      "staffId": "daon",
+      "staffName": "다온",
+      "title": "스튜디오 4컷 패널 점검",
+      "timeSlot": "afternoon",
+      "steps": [
+        { "step": 1, "floor": "5F", "zone": "5F 스튜디오", "action": "standing", "line": "하방 리스크 메모… 빠진 데 없죠?" },
+        { "step": 2, "floor": "6F", "zone": "6F 옥상", "action": "walk", "line": "바람 쐬니 걱정이 줄어드네요 😅" }
+      ]
+    },
+    {
+      "id": "arc-naeun-1",
+      "staffId": "naeun",
+      "staffName": "나은",
+      "title": "점심 러닝과 수분 체크",
+      "timeSlot": "lunch",
+      "steps": [
+        { "step": 1, "floor": "2F", "zone": "2F 업무실", "action": "standing", "line": "다들 어깨 펴고 기지개 켜요~" },
+        { "step": 2, "floor": "5F", "zone": "5F 피트니스", "action": "walk", "line": "가볍게 20분 뛰고 회복해야지!" },
+        { "step": 3, "floor": "1F", "zone": "1F HANI 24", "action": "standing", "line": "생수랑 구운 계란 챙기기 완료!" }
+      ]
+    },
+    {
+      "id": "arc-naeun-2",
+      "staffId": "naeun",
+      "staffName": "나은",
+      "title": "저녁 팀원 밥 챙기기",
+      "timeSlot": "evening",
+      "steps": [
+        { "step": 1, "floor": "2F", "zone": "2F 협업실", "action": "approach", "line": "수아야, 밥부터 먹고 제안서 봐!" },
+        { "step": 2, "floor": "2F", "zone": "2F 팬트리", "action": "sitting", "line": "따뜻한 허브차 한 잔씩 마셔요~" }
+      ]
+    },
+    {
+      "id": "arc-hina-1",
+      "staffId": "hina",
+      "staffName": "히나",
+      "title": "도서관 단어 퀴즈 검수",
+      "timeSlot": "morning",
+      "steps": [
+        { "step": 1, "floor": "2F", "zone": "2F 업무실", "action": "sitting", "line": "만년 과장 히나, 예문 확인해용! 🐰" },
+        { "step": 2, "floor": "5F", "zone": "5F 도서관", "action": "sitting", "line": "칠판 예문 오타 없나 볼게용♡" },
+        { "step": 3, "floor": "5F", "zone": "5F 도서관", "action": "standing", "line": "최종 검수 완벽해용! 별 다섯 개!" }
+      ]
+    },
+    {
+      "id": "arc-hina-2",
+      "staffId": "hina",
+      "staffName": "히나",
+      "title": "모찌랑 쉬는 시간",
+      "timeSlot": "afternoon",
+      "steps": [
+        { "step": 1, "floor": "5F", "zone": "5F 키즈펫", "action": "sitting", "line": "모찌야, 잠깐 조용히 쉬자용♡" },
+        { "step": 2, "floor": "1F", "zone": "1F 카페", "action": "walk", "line": "달콤한 라떼 마시고 힘낼게용!" }
+      ]
+    },
+    {
+      "id": "arc-minji-1",
+      "staffId": "minji",
+      "staffName": "민지",
+      "title": "일보 썸네일 현장 촬영",
+      "timeSlot": "afternoon",
+      "steps": [
+        { "step": 1, "floor": "5F", "zone": "5F 스튜디오", "action": "standing", "line": "조명 체크 끝! 오늘 컷 가보자!" },
+        { "step": 2, "floor": "1F", "zone": "1F HANI 24", "action": "approach", "line": "유나님 잠깐! 브이 해봐요 📸" },
+        { "step": 3, "floor": "2F", "zone": "2F 업무실", "action": "sitting", "line": "방금 컷, 일보 썸네일 감이다!" }
+      ]
+    },
+    {
+      "id": "arc-minji-2",
+      "staffId": "minji",
+      "staffName": "민지",
+      "title": "심야 편의점 브이로그",
+      "timeSlot": "night",
+      "steps": [
+        { "step": 1, "floor": "1F", "zone": "1F HANI 24", "action": "sitting", "line": "야간 컵라면 컷, 감성 완벽해 📸" },
+        { "step": 2, "floor": "5F", "zone": "5F 시네마", "action": "sitting", "line": "마지막 장면 편집만 남았어요!" }
+      ]
+    },
+    {
+      "id": "arc-sooyeon-1",
+      "staffId": "sooyeon",
+      "staffName": "수연",
+      "title": "점심 러닝 & 루트 탐색",
+      "timeSlot": "lunch",
+      "steps": [
+        { "step": 1, "floor": "5F", "zone": "5F 피트니스", "action": "walk", "line": "오늘 페이스 최고! 낭만상 가능!" },
+        { "step": 2, "floor": "6F", "zone": "6F 옥상", "action": "standing", "line": "바람 방향 보니 주말 산책 각이야!" },
+        { "step": 3, "floor": "2F", "zone": "2F 업무실", "action": "sitting", "line": "돌아와서 여행 루트 별표 중!" }
+      ]
+    },
+    {
+      "id": "arc-sooyeon-2",
+      "staffId": "sooyeon",
+      "staffName": "수연",
+      "title": "1F 편의점 이온음료 충전",
+      "timeSlot": "afternoon",
+      "steps": [
+        { "step": 1, "floor": "1F", "zone": "1F HANI 24", "action": "standing", "line": "시원한 이온음료 하나 챙겨갈래!" },
+        { "step": 2, "floor": "2F", "zone": "2F 협업실", "action": "sitting", "line": "저녁 경기 일정표 공유 완료!" }
+      ]
+    },
+    {
+      "id": "arc-yoonseul-1",
+      "staffId": "yoonseul",
+      "staffName": "윤슬",
+      "title": "도서관 참고서 연결하기",
+      "timeSlot": "morning",
+      "steps": [
+        { "step": 1, "floor": "2F", "zone": "2F 업무실", "action": "sitting", "line": "이거 아세요? 어제 메모랑 닮았어요!" },
+        { "step": 2, "floor": "5F", "zone": "5F 도서관", "action": "walk", "line": "출처 책 여기서 이어지네요! 📚" },
+        { "step": 3, "floor": "2F", "zone": "2F 업무실", "action": "sitting", "line": "요약 카드에 책갈피 꽂았어요 🔖" }
+      ]
+    },
+    {
+      "id": "arc-yoonseul-2",
+      "staffId": "yoonseul",
+      "staffName": "윤슬",
+      "title": "저녁 에세이 한 권",
+      "timeSlot": "evening",
+      "steps": [
+        { "step": 1, "floor": "1F", "zone": "1F 카페", "action": "sitting", "line": "따뜻한 차랑 에세이 딱이에요 📚" },
+        { "step": 2, "floor": "5F", "zone": "5F 도서관", "action": "standing", "line": "읽은 책 제자리에 반납 완료! 🔖" }
+      ]
+    },
+    {
+      "id": "arc-sua-1",
+      "staffId": "sua",
+      "staffName": "수아",
+      "title": "2F 출근 후 1F 상담 미팅",
+      "timeSlot": "morning",
+      "steps": [
+        { "step": 1, "floor": "2F", "zone": "2F 기업솔루션", "action": "sitting", "line": "2층 자리도 쾌적하네요! 헤헤ㅎㅎ" },
+        { "step": 2, "floor": "1F", "zone": "1F 안내데스크", "action": "walk", "line": "고객사 미팅, 기한 내 끝낼게요!" },
+        { "step": 3, "floor": "1F", "zone": "1F 카페", "action": "sitting", "line": "증빙 정리까지 완벽해요ㅎㅎ" }
+      ]
+    },
+    {
+      "id": "arc-sua-2",
+      "staffId": "sua",
+      "staffName": "수아",
+      "title": "2F 이웃 부서와 인사",
+      "timeSlot": "afternoon",
+      "steps": [
+        { "step": 1, "floor": "2F", "zone": "2F 협업실", "action": "approach", "line": "지은 부장님, 2층 이웃 됐어요ㅎㅎ" },
+        { "step": 2, "floor": "1F", "zone": "1F HANI 24", "action": "standing", "line": "간식 챙겨서 후속 메일 보낼게요!" }
+      ]
+    },
+    {
+      "id": "arc-taeo-1",
+      "staffId": "taeo",
+      "staffName": "채원",
+      "title": "고객 요청 세 가지 번역",
+      "timeSlot": "morning",
+      "steps": [
+        { "step": 1, "floor": "2F", "zone": "2F 기업솔루션", "action": "sitting", "line": "요청 정리하면 세 가지입니다." },
+        { "step": 2, "floor": "3F", "zone": "3F 개발실", "action": "approach", "line": "예외 조건까지 표로 묶었습니다." },
+        { "step": 3, "floor": "2F", "zone": "2F 기업솔루션", "action": "sitting", "line": "개발 티켓 등록 완료했습니다." }
+      ]
+    },
+    {
+      "id": "arc-taeo-2",
+      "staffId": "taeo",
+      "staffName": "채원",
+      "title": "1F 상담부스 후속 정리",
+      "timeSlot": "afternoon",
+      "steps": [
+        { "step": 1, "floor": "1F", "zone": "1F 안내데스크", "action": "standing", "line": "구두 약속은 빼고 증빙만 적죠." },
+        { "step": 2, "floor": "2F", "zone": "2F 협업실", "action": "sitting", "line": "비교 제안서 정돈 끝났습니다." }
+      ]
+    }
+  ],
+  "buddyOutings": [
+    {
+      "id": "buddy-01",
+      "aId": "serin",
+      "aName": "세린",
+      "bId": "arin",
+      "bName": "아린",
+      "floor": "1F",
+      "zone": "1F 카페",
+      "timeSlot": "afternoon",
+      "turns": [
+        { "speaker": "serin", "text": "아린님!! 버튼 클릭 수 줄었어요!! 📊" },
+        { "speaker": "arin", "text": "여백 숨 쉬게 바꾼 덕분인가요? ✨" },
+        { "speaker": "serin", "text": "이 조합, 효과 측정 각인데요?!" },
+        { "speaker": "arin", "text": "좋아요! 색감도 살짝 더 다듬어요 🎨" }
+      ]
+    },
+    {
+      "id": "buddy-02",
+      "aId": "haru",
+      "aName": "하루",
+      "bId": "jieun",
+      "bName": "지은",
+      "floor": "1F",
+      "zone": "1F HANI 24",
+      "timeSlot": "lunch",
+      "turns": [
+        { "speaker": "haru", "text": "부장님, 이 1+1 견과류 가성비 좋아요." },
+        { "speaker": "jieun", "text": "개당 단가가 얼마인가요, 하루 대리?" },
+        { "speaker": "haru", "text": "온라인 최저가보다 백 원 더 싸요." },
+        { "speaker": "jieun", "text": "합격이네요. 2층 간식으로 결제하죠." }
+      ]
+    },
+    {
+      "id": "buddy-03",
+      "aId": "hina",
+      "aName": "히나",
+      "bId": "yoonseul",
+      "bName": "윤슬",
+      "floor": "5F",
+      "zone": "5F 도서관",
+      "timeSlot": "afternoon",
+      "turns": [
+        { "speaker": "yoonseul", "text": "과장님, 아세요? 어원이 이어져요! 📚" },
+        { "speaker": "hina", "text": "오오! 윤슬이 자료 정리 최고예용♡" },
+        { "speaker": "yoonseul", "text": "핵심만 뽑아 퀴즈 칸에 꽂았어요 🔖" },
+        { "speaker": "hina", "text": "좋아용! 채점은 히나가 딱 볼게용🐰" }
+      ]
+    },
+    {
+      "id": "buddy-04",
+      "aId": "minji",
+      "aName": "민지",
+      "bId": "sooyeon",
+      "bName": "수연",
+      "floor": "6F",
+      "zone": "6F 옥상",
+      "timeSlot": "lunch",
+      "turns": [
+        { "speaker": "sooyeon", "text": "민지야! 오늘 옥상 구름 그림 같다!" },
+        { "speaker": "minji", "text": "기다려, 지금 역광 각도 잡았어 📸" },
+        { "speaker": "sooyeon", "text": "우리 점심 산책 낭만상 백 점이야!" },
+        { "speaker": "minji", "text": "컷! 오늘 B컷까지 다 건졌네~" }
+      ]
+    },
+    {
+      "id": "buddy-05",
+      "aId": "yuna",
+      "aName": "유나",
+      "bId": "gaeun",
+      "bName": "가은",
+      "floor": "1F",
+      "zone": "1F 안내데스크",
+      "timeSlot": "morning",
+      "turns": [
+        { "speaker": "yuna", "text": "가은님! 제가요?! 택배가 세 개나 왔어요!" },
+        { "speaker": "gaeun", "text": "놀라지 말아요. 비품 건은 제가 확인해요." },
+        { "speaker": "yuna", "text": "휴, 다행이에요! 2층 것도 따로 뒀어요!" },
+        { "speaker": "gaeun", "text": "고마워요, 유나님 분류가 깔끔하네요." }
+      ]
+    },
+    {
+      "id": "buddy-06",
+      "aId": "seoyun",
+      "aName": "서윤",
+      "bId": "dohyun",
+      "bName": "도연",
+      "floor": "1F",
+      "zone": "1F HANI 24",
+      "timeSlot": "night",
+      "turns": [
+        { "speaker": "seoyun", "text": "도연 선임님, 야식은 김치컵이죠 💜" },
+        { "speaker": "dohyun", "text": "물 온도 98도 확인. 타이머 3분요 ☕" },
+        { "speaker": "seoyun", "text": "익을 동안 내일 배포 순서만 볼게요." },
+        { "speaker": "dohyun", "text": "면 안 불게 두 줄로 끝내요." }
+      ]
+    },
+    {
+      "id": "buddy-07",
+      "aId": "dohyun",
+      "aName": "도연",
+      "bId": "yuri",
+      "bName": "유리",
+      "floor": "1F",
+      "zone": "1F 카페",
+      "timeSlot": "afternoon",
+      "turns": [
+        { "speaker": "dohyun", "text": "유리 책임님, 엣지 케이스 다 고쳤어요 ☕" },
+        { "speaker": "yuri", "text": "오프라인 전환 때도 확인하셨나요?" },
+        { "speaker": "dohyun", "text": "방금 비행기 모드까지 재현 통과요." },
+        { "speaker": "yuri", "text": "근거 확인. 그럼 PASS 드립니다 ✅" }
+      ]
+    },
+    {
+      "id": "buddy-08",
+      "aId": "serin",
+      "aName": "세린",
+      "bId": "seoyun",
+      "bName": "서윤",
+      "floor": "5F",
+      "zone": "5F 도서관",
+      "timeSlot": "afternoon",
+      "turns": [
+        { "speaker": "serin", "text": "리드님!! 대사 100줄 다 자동 생성해요?!" },
+        { "speaker": "seoyun", "text": "잠깐요, 먼저 품질 범위부터 볼게요 💜" },
+        { "speaker": "serin", "text": "아! 캐릭터 말투 검증 규칙부터 넣을게요!" },
+        { "speaker": "seoyun", "text": "좋아요, 정리하면 두 단계로 가봐요." }
+      ]
+    },
+    {
+      "id": "buddy-09",
+      "aId": "arin",
+      "aName": "아린",
+      "bId": "yuri",
+      "bName": "유리",
+      "floor": "5F",
+      "zone": "5F 시네마",
+      "timeSlot": "evening",
+      "turns": [
+        { "speaker": "arin", "text": "유리님, 이 영화 자막 여백 예쁘죠? 🎨" },
+        { "speaker": "yuri", "text": "가독성 좋네요. 두 줄 넘침도 없습니다." },
+        { "speaker": "arin", "text": "우리 도감 카드도 이 비율 어때요? ✨" },
+        { "speaker": "yuri", "text": "390px 폭에서도 안 깨지면 찬성입니다 ✅" }
+      ]
+    },
+    {
+      "id": "buddy-10",
+      "aId": "sua",
+      "aName": "수아",
+      "bId": "taeo",
+      "bName": "채원",
+      "floor": "1F",
+      "zone": "1F HANI 24",
+      "timeSlot": "afternoon",
+      "turns": [
+        { "speaker": "sua", "text": "채원 매니저님, 2층 이사 기념 간식요ㅎㅎ" },
+        { "speaker": "taeo", "text": "감사합니다. 1층 편의점이 가깝군요." },
+        { "speaker": "sua", "text": "맞아요! 동선도 기한 내 딱 맞아요~" },
+        { "speaker": "taeo", "text": "정리하면 엘베 두 번에 1+1입니다." }
+      ]
+    },
+    {
+      "id": "buddy-11",
+      "aId": "daon",
+      "aName": "다온",
+      "bId": "haru",
+      "bName": "하루",
+      "floor": "1F",
+      "zone": "1F HANI 24",
+      "timeSlot": "afternoon",
+      "turns": [
+        { "speaker": "daon", "text": "혹시… 이 도시락 매운 경우엔요 😅" },
+        { "speaker": "haru", "text": "그럼 옆에 있는 부드러운 계란밥 골라요." },
+        { "speaker": "daon", "text": "안 매운 대비책이 있네요… 다행이에요." },
+        { "speaker": "haru", "text": "성분표까지 봤으니 실패 없을 거예요." }
+      ]
+    },
+    {
+      "id": "buddy-12",
+      "aId": "naeun",
+      "aName": "나은",
+      "bId": "hina",
+      "bName": "히나",
+      "floor": "5F",
+      "zone": "5F 피트니스",
+      "timeSlot": "evening",
+      "turns": [
+        { "speaker": "naeun", "text": "히나야, 오늘은 문제 말고 매트 펴자!" },
+        { "speaker": "hina", "text": "언니이~ 스트레칭도 퀴즈로 내주세용♡" },
+        { "speaker": "naeun", "text": "자, 목 돌리기 1번 문제! 천천히~" },
+        { "speaker": "hina", "text": "헤헤♡ 몸이 가벼워진 것 같아용🐰" }
+      ]
+    },
+    {
+      "id": "buddy-13",
+      "aId": "hani",
+      "aName": "하니",
+      "bId": "mir",
+      "bName": "미르",
+      "floor": "6F",
+      "zone": "6F 옥상",
+      "timeSlot": "afternoon",
+      "turns": [
+        { "speaker": "mir", "text": "하니, 왜 다들 5층에 모이는 걸 좋아해?" },
+        { "speaker": "hani", "text": "일만 하지 말고 숨 돌릴 곳이 필요하거든♡" },
+        { "speaker": "mir", "text": "휴식이랑 다음 아이디어, 연결되네." },
+        { "speaker": "hani", "text": "맞아! 미르도 같이 바람 쐬자, 헤헤♡" }
+      ]
+    },
+    {
+      "id": "buddy-14",
+      "aId": "ieum",
+      "aName": "이음",
+      "bId": "seoyun",
+      "bName": "서윤",
+      "floor": "2F",
+      "zone": "2F 협업실",
+      "timeSlot": "afternoon",
+      "turns": [
+        { "speaker": "ieum", "text": "서윤 선배, 2층 변경 기록도 이을까요?" },
+        { "speaker": "seoyun", "text": "네, 수아·채원 자리 이동 근거부터 적어요." },
+        { "speaker": "ieum", "text": "알겠어요. 확인된 날짜까지 적을게요!" },
+        { "speaker": "seoyun", "text": "차분해서 든든하네요, 이음님 💜" }
+      ]
+    },
+    {
+      "id": "buddy-15",
+      "aId": "naeun",
+      "aName": "나은",
+      "bId": "sua",
+      "bName": "수아",
+      "floor": "2F",
+      "zone": "2F 팬트리",
+      "timeSlot": "lunch",
+      "turns": [
+        { "speaker": "naeun", "text": "수아야, 2층 오니까 챙겨주기 더 좋다!" },
+        { "speaker": "sua", "text": "어머, 나은 언니! 헤헤ㅎㅎ 반가워요!" },
+        { "speaker": "naeun", "text": "제안서 전에 따뜻한 주먹밥부터 먹자." },
+        { "speaker": "sua", "text": "네! 배 채우고 기한 내 끝낼게요!" }
+      ]
+    }
+  ],
+  "npcs": [
+    {
+      "id": "npc-conv-day",
+      "name": "편의점 점원 (주간)",
+      "role": "HANI 24 주간 점원",
+      "floor": "1F",
+      "zone": "1F HANI 24",
+      "hours": "07:00~19:00",
+      "personality": "활기차고 살가우며 1+1 신상품 소식을 누구보다 빨리 전해주는 1층 분위기 메이커",
+      "monologues": [
+        "어서 오세요, HANI 24입니다! 😊",
+        "따끈한 삼각김밥 방금 들어왔어요!",
+        "이번 주 1+1 매대 꽉 채웠습니다~",
+        "점심 도시락, 오늘 구성 알차요!",
+        "진열대 줄 맞추니 기분 좋네요 ✨",
+        "영수증 필요하시면 바로 드려요~"
+      ],
+      "chemistries": [
+        {
+          "staffId": "haru",
+          "staffName": "하루",
+          "turns": [
+            { "speaker": "npc-conv-day", "text": "하루 대리님, 오늘 1+1 신상 왔어요!" },
+            { "speaker": "haru", "text": "오, 중량 대비 가격이 딱 좋네요." }
+          ]
+        },
+        {
+          "staffId": "naeun",
+          "staffName": "나은",
+          "turns": [
+            { "speaker": "naeun", "text": "점원님, 저당 두유 새로 들어왔나요?" },
+            { "speaker": "npc-conv-day", "text": "네! 냉장고 맨 앞줄에 챙겨뒀어요~" }
+          ]
+        },
+        {
+          "staffId": "yuna",
+          "staffName": "유나",
+          "turns": [
+            { "speaker": "yuna", "text": "점원님! 로비 물품 영수증 여기 있어요!" },
+            { "speaker": "npc-conv-day", "text": "유나님, 오늘도 정리 깔끔하시네요!" }
+          ]
+        },
+        {
+          "staffId": "sua",
+          "staffName": "수아",
+          "turns": [
+            { "speaker": "sua", "text": "미팅 전에 목 캔디 하나 주세요ㅎㅎ" },
+            { "speaker": "npc-conv-day", "text": "네 과장님! 꿀맛으로 골라뒀어요~" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "npc-conv-night",
+      "name": "편의점 점원 (야간)",
+      "role": "HANI 24 야간 점원",
+      "floor": "1F",
+      "zone": "1F HANI 24",
+      "hours": "19:00~07:00",
+      "personality": "차분하고 배려심이 깊으며 야근자들의 컵라면 물 온도와 휴식을 묵묵히 챙기는 야간 수호자",
+      "monologues": [
+        "야근엔 따뜻한 컵라면이죠 🍜",
+        "온수기 물 펄펄 잘 끓고 있어요.",
+        "새벽 물류 정리 딱 끝났습니다.",
+        "조용한 밤에도 불은 환히 켜둬요.",
+        "따뜻한 보리차 한 병 드셔보세요.",
+        "오늘 하루도 정말 고생 많으셨어요."
+      ],
+      "chemistries": [
+        {
+          "staffId": "dohyun",
+          "staffName": "도연",
+          "turns": [
+            { "speaker": "npc-conv-night", "text": "도연 선임님, 물 잘 끓여뒀어요." },
+            { "speaker": "dohyun", "text": "감사해요. 딱 삼 분만 쓰고 갈게요 ☕" }
+          ]
+        },
+        {
+          "staffId": "seoyun",
+          "staffName": "서윤",
+          "turns": [
+            { "speaker": "seoyun", "text": "점원님, 밤에 간식 뭐가 제일 잘 나가요?" },
+            { "speaker": "npc-conv-night", "text": "리드님 드시는 김치사발면이 일등이죠." }
+          ]
+        },
+        {
+          "staffId": "mir",
+          "staffName": "미르",
+          "turns": [
+            { "speaker": "mir", "text": "밤에는 왜 바코드를 조용히 찍어?" },
+            { "speaker": "npc-conv-night", "text": "다들 쉬는 시간엔 소리도 줄이거든요." }
+          ]
+        },
+        {
+          "staffId": "minji",
+          "staffName": "민지",
+          "turns": [
+            { "speaker": "minji", "text": "점원님, 새벽 편의점 조명 예술이에요!" },
+            { "speaker": "npc-conv-night", "text": "하하, 따뜻한 거 하나 들고 찍으세요." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "npc-security",
+      "name": "로비 보안·안내원",
+      "role": "1F 로비 보안·안내",
+      "floor": "1F",
+      "zone": "1F 로비·게이트",
+      "hours": "08:00~22:00",
+      "personality": "든든하고 예의 바르며 출입문과 택배·건물 안전을 빈틈없이 살피는 1층 지킴이",
+      "monologues": [
+        "오늘도 좋은 하루 되십시오!",
+        "1층 로비 순찰 이상 없습니다.",
+        "택배함 문, 모두 단단히 닫혔군요.",
+        "바닥 미끄럼 없이 깔끔합니다.",
+        "비 오는 날엔 우산 꽂이부터 보죠.",
+        "퇴근길 발걸음 조심히 가십시오."
+      ],
+      "chemistries": [
+        {
+          "staffId": "ieum",
+          "staffName": "이음",
+          "turns": [
+            { "speaker": "ieum", "text": "보안님, 오늘 방문 기록 확인됐죠?" },
+            { "speaker": "npc-security", "text": "네, 시간 순서대로 빈칸 없이 맞습니다." }
+          ]
+        },
+        {
+          "staffId": "taeo",
+          "staffName": "채원",
+          "turns": [
+            { "speaker": "taeo", "text": "고객사 두 분, 1층 상담실로 안내 부탁요." },
+            { "speaker": "npc-security", "text": "알겠습니다. 도착 즉시 호출하겠습니다." }
+          ]
+        },
+        {
+          "staffId": "yuri",
+          "staffName": "유리",
+          "turns": [
+            { "speaker": "yuri", "text": "비상구 앞 동선 막힘 없습니까?" },
+            { "speaker": "npc-security", "text": "매일 아침 확인합니다. 100% 비어 있습니다." }
+          ]
+        },
+        {
+          "staffId": "gaeun",
+          "staffName": "가은",
+          "turns": [
+            { "speaker": "gaeun", "text": "오늘 임원 방문 차량 예정되어 있어요." },
+            { "speaker": "npc-security", "text": "네 비서님, 게이트 앞 바로 비워두겠습니다." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "npc-studio-crew",
+      "name": "스튜디오 스태프",
+      "role": "5F 스튜디오 제작 보조",
+      "floor": "5F",
+      "zone": "5F 스튜디오",
+      "hours": "08:30~17:30",
+      "personality": "카메라·조명·음향을 척척 맞추며 생방송 같은 현장감을 불어넣는 열정파 스태프",
+      "monologues": [
+        "조명 체크 완료, 큐 대기 중입니다!",
+        "마이크 감도 딱 깔끔하게 잡혔네요.",
+        "오늘 4컷 백드롭 각도가 완벽해요.",
+        "배터리 두 개 미리 완충해 뒀어요.",
+        "5층 ON-AIR 전등 확인했습니다!",
+        "카메라 렌즈 먼지 하나 없네요 ✨"
+      ],
+      "chemistries": [
+        {
+          "staffId": "minji",
+          "staffName": "민지",
+          "turns": [
+            { "speaker": "npc-studio-crew", "text": "민지 대리님, 키라이트 올렸습니다!" },
+            { "speaker": "minji", "text": "좋아요! 3, 2, 1 바로 레디 액션! 📸" }
+          ]
+        },
+        {
+          "staffId": "jieun",
+          "staffName": "지은",
+          "turns": [
+            { "speaker": "jieun", "text": "시황 도표 글자 선명하게 보이나요?" },
+            { "speaker": "npc-studio-crew", "text": "네 부장님, 숫자 전부 또렷합니다!" }
+          ]
+        },
+        {
+          "staffId": "daon",
+          "staffName": "다온",
+          "turns": [
+            { "speaker": "daon", "text": "혹시… 마이크가 꺼질 경우엔요 😅" },
+            { "speaker": "npc-studio-crew", "text": "예비 핀 마이크 바로 옆에 뒀으니 안심요!" }
+          ]
+        },
+        {
+          "staffId": "hani",
+          "staffName": "하니",
+          "turns": [
+            { "speaker": "hani", "text": "스태프님, 오늘 일보 오프닝 가볼까요♡" },
+            { "speaker": "npc-studio-crew", "text": "네 전무님! 큐 사인 바로 드릴게요!" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "npc-trainer",
+      "name": "웰니스 트레이너",
+      "role": "5F 피트니스 코치",
+      "floor": "5F",
+      "zone": "5F 피트니스",
+      "hours": "12:00~13:30, 18:00~20:30",
+      "personality": "무리 없는 자세 교정과 밝은 파이팅으로 직원들의 거북목과 컨디션을 지켜주는 코치",
+      "monologues": [
+        "어깨 쭉 펴고 숨 크게 내쉬세요!",
+        "러닝머신 안전 클립부터 확인!",
+        "오늘 거북목 탈출 스트레칭 갑니다!",
+        "물 한 모금 마시고 한 세트 더~",
+        "요가 매트 소독 깔끔히 마쳤어요.",
+        "꾸준한 10분이 한 시간보다 낫죠!"
+      ],
+      "chemistries": [
+        {
+          "staffId": "naeun",
+          "staffName": "나은",
+          "turns": [
+            { "speaker": "npc-trainer", "text": "나은 차장님, 오늘 코어 폼 좋아요!" },
+            { "speaker": "naeun", "text": "고마워요! 무리 안 하고 리듬 탈게요~" }
+          ]
+        },
+        {
+          "staffId": "sooyeon",
+          "staffName": "수연",
+          "turns": [
+            { "speaker": "sooyeon", "text": "코치님! 오늘 인터벌 페이스 올릴래요!" },
+            { "speaker": "npc-trainer", "text": "좋습니다! 쿨다운 오 분은 필수예요!" }
+          ]
+        },
+        {
+          "staffId": "serin",
+          "staffName": "세린",
+          "turns": [
+            { "speaker": "serin", "text": "심박수 그래프 패턴 신기해요!! 📊" },
+            { "speaker": "npc-trainer", "text": "연구원님, 숫자 말고 호흡도 느끼세요!" }
+          ]
+        },
+        {
+          "staffId": "seoyun",
+          "staffName": "서윤",
+          "turns": [
+            { "speaker": "seoyun", "text": "목 뒤가 뻐근한데 동작 추천 있나요?" },
+            { "speaker": "npc-trainer", "text": "턱 살짝 당기고 15초만 늘려보시죠!" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "npc-librarian",
+      "name": "도서관·시네마 사서",
+      "role": "5F 도서관·시네마 사서",
+      "floor": "5F",
+      "zone": "5F 도서관·시네마",
+      "hours": "10:00~19:00",
+      "personality": "조곤조곤 책과 영화를 추천하며 조용한 휴식과 배움의 온도를 지켜주는 큐레이터",
+      "monologues": [
+        "오늘의 추천작 보드에 적었어요 📚",
+        "서가 정리하니 종이 향이 좋네요.",
+        "시네마 상영 전 조명 살짝 낮출게요.",
+        "책갈피 남는 거 창구에 두었어요.",
+        "조용한 5층 서재에 잘 오셨어요.",
+        "그림책 코너도 주말 준비 완료요."
+      ],
+      "chemistries": [
+        {
+          "staffId": "yoonseul",
+          "staffName": "윤슬",
+          "turns": [
+            { "speaker": "yoonseul", "text": "사서님! 새 인문 서적 들어왔나요? 📚" },
+            { "speaker": "npc-librarian", "text": "네, 둘째 칸 맨 왼쪽에 꽂아뒀어요 🔖" }
+          ]
+        },
+        {
+          "staffId": "hina",
+          "staffName": "히나",
+          "turns": [
+            { "speaker": "hina", "text": "사서님, 일본어 원서 코너 어디예용?" },
+            { "speaker": "npc-librarian", "text": "창가 서가 아래 칸에 모아뒀습니다." }
+          ]
+        },
+        {
+          "staffId": "arin",
+          "staffName": "아린",
+          "turns": [
+            { "speaker": "arin", "text": "도감 책자 여백 배치가 너무 예쁜데요? 🎨" },
+            { "speaker": "npc-librarian", "text": "눈이 편안한 판형으로 골라두었지요." }
+          ]
+        },
+        {
+          "staffId": "haru",
+          "staffName": "하루",
+          "turns": [
+            { "speaker": "haru", "text": "혹시 가볍게 읽을 경제 에세이 있나요?" },
+            { "speaker": "npc-librarian", "text": "오늘의 추천 칸 첫 번째 책이 딱이에요." }
+          ]
+        }
+      ]
+    }
+  ],
+  "eventReactions": {
+    "deployDay": [
+      { "speakerId": "seoyun", "speakerName": "서윤", "floor": "3F", "text": "이번 배포, 영향 범위 깔끔했어요 💜" },
+      { "speakerId": "dohyun", "speakerName": "도연", "floor": "3F", "text": "운영 반영 확인. 테스트 통과요 ☕" },
+      { "speakerId": "yuri", "speakerName": "유리", "floor": "3F", "text": "배포 후 리드백까지 PASS입니다 ✅" },
+      { "speakerId": "serin", "speakerName": "세린", "floor": "3F", "text": "릴리스 속도 그래프 완벽해요!! 📊" },
+      { "speakerId": "arin", "speakerName": "아린", "floor": "3F", "text": "새 화면 숨 쉬는 느낌 너무 좋아요 ✨" },
+      { "speakerId": "hani", "speakerName": "하니", "floor": "4F", "text": "다들 고생했어요! 오늘 배포 최고♡" },
+      { "speakerId": "ieum", "speakerName": "이음", "floor": "4F", "text": "연혁 기록이랑 현황판도 이었어요!" },
+      { "speakerId": "yuna", "speakerName": "유나", "floor": "1F", "text": "새 기능 안내 메모도 붙였어요!" }
+    ],
+    "ilboDay": [
+      { "speakerId": "minji", "speakerName": "민지", "floor": "5F", "text": "이번 호 하니 일보, 컷 잘 나왔죠? 📸" },
+      { "speakerId": "hani", "speakerName": "하니", "floor": "4F", "text": "우리 주간 기록 모이니 뿌듯하네요♡" },
+      { "speakerId": "yuna", "speakerName": "유나", "floor": "1F", "text": "1층 게시판에 새 일보 걸었어요!" },
+      { "speakerId": "yoonseul", "speakerName": "윤슬", "floor": "2F", "text": "지난주 독서 기록이 일보에 실렸어요📚" },
+      { "speakerId": "naeun", "speakerName": "나은", "floor": "2F", "text": "회장님 걸음 수 그래프 멋지네요~" },
+      { "speakerId": "serin", "speakerName": "세린", "floor": "3F", "text": "주간 요약 데이터 패턴 또 보여요!! ✨" },
+      { "speakerId": "sua", "speakerName": "수아", "floor": "2F", "text": "이번 주 일보도 빈틈없이 알차요ㅎㅎ" },
+      { "speakerId": "mir", "speakerName": "미르", "floor": "4F", "text": "일주일 조각들이 신문으로 이어지네." }
+    ],
+    "friday4Cut": [
+      { "speakerId": "minji", "speakerName": "민지", "floor": "5F", "text": "금요일 시황 4컷, 오늘 공개예요! 📸" },
+      { "speakerId": "jieun", "speakerName": "지은", "floor": "2F", "text": "이번 주 시장 요약, 한눈에 보이네요." },
+      { "speakerId": "daon", "speakerName": "다온", "floor": "2F", "text": "혹시… 3컷째 리스크 대사 보셨나요😅" },
+      { "speakerId": "haru", "speakerName": "하루", "floor": "2F", "text": "4컷 보면서 주말 소비 계획 세워요." },
+      { "speakerId": "taeo", "speakerName": "채원", "floor": "2F", "text": "어려운 지표를 네 컷으로 번역했군요." },
+      { "speakerId": "hina", "speakerName": "히나", "floor": "5F", "text": "만화로 보니 이해가 쏙쏙 돼용! 🐰" },
+      { "speakerId": "sooyeon", "speakerName": "수연", "floor": "2F", "text": "금요일 4컷 보면 주말 출발 신호죠!" },
+      { "speakerId": "gaeun", "speakerName": "가은", "floor": "4F", "text": "주간 뉴스룸 링크도 브리핑에 넣었죠." }
+    ],
+    "queenSeason": [
+      { "speakerId": "minji", "speakerName": "민지", "floor": "1F", "text": "이달의 퀸 시즌! 로비 액자 반짝여요!" },
+      { "speakerId": "serin", "speakerName": "세린", "floor": "3F", "text": "주간 판세 중계, 흥미진진한데요?! 📊" },
+      { "speakerId": "hani", "speakerName": "하니", "floor": "4F", "text": "이번 달 퀸, 회장님 표가 핵심이죠♡" },
+      { "speakerId": "hina", "speakerName": "히나", "floor": "2F", "text": "만년 과장도 은근히 두근거려용! 🐰" },
+      { "speakerId": "yuri", "speakerName": "유리", "floor": "3F", "text": "투표 집계 로직 무결성 이상 무 ✅" },
+      { "speakerId": "sua", "speakerName": "수아", "floor": "2F", "text": "어머, 응원해 주시면 더 힘나죠ㅎㅎ" },
+      { "speakerId": "naeun", "speakerName": "나은", "floor": "2F", "text": "경쟁보다 다 같이 즐기는 축제가 좋아요~" },
+      { "speakerId": "yuna", "speakerName": "유나", "floor": "1F", "text": "제가요?! 1층 로비 열기가 뜨거워요!" }
+    ],
+    "birthday": [
+      { "speakerId": "hani", "speakerName": "하니", "floor": "4F", "text": "오늘 생일 주인공, 축하 듬뿍 받아요♡" },
+      { "speakerId": "naeun", "speakerName": "나은", "floor": "2F", "text": "생일에는 맛있는 거 꼭 챙겨 먹어요!" },
+      { "speakerId": "minji", "speakerName": "민지", "floor": "5F", "text": "생일 기념 컷, 제가 예쁘게 남길게요 📸" },
+      { "speakerId": "hina", "speakerName": "히나", "floor": "2F", "text": "생일 축하 노래 백 점으로 불러줄게용♡" },
+      { "speakerId": "jieun", "speakerName": "지은", "floor": "2F", "text": "생일자 커피 한 잔은 회사 예산으로!" },
+      { "speakerId": "arin", "speakerName": "아린", "floor": "3F", "text": "생일 카드 색감도 반짝이게 골랐어요 ✨" },
+      { "speakerId": "gaeun", "speakerName": "가은", "floor": "4F", "text": "축하 인사 시간, 일정에 빼두었어요." },
+      { "speakerId": "mir", "speakerName": "미르", "floor": "4F", "text": "생일이란 날엔 다들 표정이 따뜻하네." }
+    ],
+    "seasonDecXmas": [
+      { "speakerId": "arin", "speakerName": "아린", "floor": "1F", "text": "1층 트리 전구, 너무 예쁜데요? ✨" },
+      { "speakerId": "yuna", "speakerName": "유나", "floor": "1F", "text": "트리 아래 선물 상자 제가 정리했어요!" },
+      { "speakerId": "hina", "speakerName": "히나", "floor": "2F", "text": "눈 내리는 창문 보니 설레용♡ 🎄" },
+      { "speakerId": "seoyun", "speakerName": "서윤", "floor": "6F", "text": "옥상 전구 켜지니까 연말 같네요 💜" },
+      { "speakerId": "haru", "speakerName": "하루", "floor": "1F", "text": "1층 HANI 24 호빵이 딱 겨울 맛이에요." },
+      { "speakerId": "daon", "speakerName": "다온", "floor": "2F", "text": "올해도 큰 사고 없이 연말이네요 😅" },
+      { "speakerId": "sooyeon", "speakerName": "수연", "floor": "6F", "text": "겨울 옥상 공기도 상쾌해서 좋아요!" },
+      { "speakerId": "hani", "speakerName": "하니", "floor": "4F", "text": "회장님, 핫초코 한 잔 돌릴까요?♡" }
+    ],
+    "seasonJanThawTeaser": [
+      { "speakerId": "seoyun", "speakerName": "서윤", "floor": "3F", "text": "1월 8일, THAW 티저가 열렸어요 💜" },
+      { "speakerId": "arin", "speakerName": "아린", "floor": "1F", "text": "서리 블루 색감, 겨울 끝의 봄 같아요 ✨" },
+      { "speakerId": "yoonseul", "speakerName": "윤슬", "floor": "5F", "text": "해빙의 정원 이야기, 책과 이어져요📚" },
+      { "speakerId": "mir", "speakerName": "미르", "floor": "4F", "text": "얼음 아래 봄이 미리 연결되네. 헤헤." },
+      { "speakerId": "minji", "speakerName": "민지", "floor": "5F", "text": "THAW 티저 포스터 감성 미쳤다 📸" },
+      { "speakerId": "jieun", "speakerName": "지은", "floor": "2F", "text": "새해 첫 프로젝트, 일정이 알차네요." },
+      { "speakerId": "taeo", "speakerName": "채원", "floor": "2F", "text": "2월 8일 정식 오픈까지 한 달 남았군요." },
+      { "speakerId": "hani", "speakerName": "하니", "floor": "4F", "text": "회장님, 봄을 조금 먼저 열어볼까요♡" }
+    ],
+    "seasonFebThaw": [
+      { "speakerId": "arin", "speakerName": "아린", "floor": "5F", "text": "THAW 정식 출시! 꽃눈이 피었어요 ✨" },
+      { "speakerId": "hani", "speakerName": "하니", "floor": "4F", "text": "해빙의 정원 오픈! 다들 멋져요♡" },
+      { "speakerId": "seoyun", "speakerName": "서윤", "floor": "3F", "text": "전 층 시즌 무드, 깔끔히 적용됐어요💜" },
+      { "speakerId": "dohyun", "speakerName": "도연", "floor": "3F", "text": "THAW 테마 전환, 프레임 통과요 ☕" },
+      { "speakerId": "yuri", "speakerName": "유리", "floor": "3F", "text": "시즌 배너와 접근성 검수 PASS ✅" },
+      { "speakerId": "sooyeon", "speakerName": "수연", "floor": "6F", "text": "이제 곧 바깥 산책하기 딱 좋겠어요!" },
+      { "speakerId": "yoonseul", "speakerName": "윤슬", "floor": "5F", "text": "봄맞이 독서 릴레이 시작해봐요! 📚" },
+      { "speakerId": "sua", "speakerName": "수아", "floor": "2F", "text": "새봄 기분으로 2월도 빈틈없이ㅎㅎ" }
+    ]
+  },
+  "rareScenes": [
+    {
+      "id": "rare-01",
+      "title": "펭귄의 점심 HANI 24 나들이",
+      "category": "department_animal_outing",
+      "condition": { "days": "weekday", "time": "12:00~13:30", "floor": "1F", "actors": ["companion-penguin", "haru", "npc-conv-day"] },
+      "probability": 0.04,
+      "cooldownDays": 5,
+      "lines": [
+        { "speakerId": "companion-penguin", "speakerName": "꼬마 펭귄", "text": "3층 개발실 대표로 점심 순찰 왔어요!" },
+        { "speakerId": "npc-conv-day", "speakerName": "편의점 점원 (주간)", "text": "어머, 펭귄 손님! 시원한 얼음컵 드릴까요?" },
+        { "speakerId": "haru", "speakerName": "하루", "text": "펭귄은 1+1 생선과자 코너부터 보네요." }
+      ]
+    },
+    {
+      "id": "rare-02",
+      "title": "2층 이사 수달의 1층 카페 마실",
+      "category": "department_animal_outing",
+      "condition": { "days": "weekday", "time": "12:15~13:15", "floor": "1F", "actors": ["companion-otter", "sua", "taeo"] },
+      "probability": 0.04,
+      "cooldownDays": 5,
+      "lines": [
+        { "speakerId": "companion-otter", "speakerName": "아기 수달", "text": "2층에서 1층 카페로 마실 나왔어요!" },
+        { "speakerId": "sua", "speakerName": "수아", "text": "우리 수달이, 옛날 1층이 그리웠나 봐ㅎㅎ" },
+        { "speakerId": "taeo", "speakerName": "채원", "text": "점심시간 외출은 허용된 일정입니다." }
+      ]
+    },
+    {
+      "id": "rare-03",
+      "title": "병아리의 주말 5층 키즈펫 소풍",
+      "category": "department_animal_outing",
+      "condition": { "days": "weekend", "time": "10:00~17:00", "floor": "5F", "actors": ["companion-chick", "hina", "pet-rabbit"] },
+      "probability": 0.05,
+      "cooldownDays": 6,
+      "lines": [
+        { "speakerId": "companion-chick", "speakerName": "병아리", "text": "주말이라 5층 놀이 매트 구경 왔삐약!" },
+        { "speakerId": "pet-rabbit", "speakerName": "모찌", "text": "(긴 귀를 쫑긋이며 옆 쿠션을 내어준다)" },
+        { "speakerId": "hina", "speakerName": "히나", "text": "동글동글 모찌랑 병아리 최고예용♡" }
+      ]
+    },
+    {
+      "id": "rare-04",
+      "title": "아기 여우의 옥상 햇살 산책",
+      "category": "department_animal_outing",
+      "condition": { "days": "weekend", "time": "13:00~16:30", "floor": "6F", "actors": ["companion-fox", "jieun", "daon"] },
+      "probability": 0.04,
+      "cooldownDays": 6,
+      "lines": [
+        { "speakerId": "companion-fox", "speakerName": "아기 여우", "text": "2층 재무실 잠시 비우고 옥상 왔어요!" },
+        { "speakerId": "jieun", "speakerName": "지은", "text": "여우도 주말엔 햇볕 쬐고 쉬어야죠." },
+        { "speakerId": "daon", "speakerName": "다온", "text": "꼬리가 바람에 날리니 참 평화롭네요…" }
+      ]
+    },
+    {
+      "id": "rare-05",
+      "title": "사내 이벤트 날 부서 동물 대집합",
+      "category": "department_animal_outing",
+      "condition": { "days": "event_or_birthday", "time": "14:00~18:00", "floor": "1F", "actors": ["companion-penguin", "companion-otter", "companion-chick", "companion-fox"] },
+      "probability": 0.03,
+      "cooldownDays": 7,
+      "lines": [
+        { "speakerId": "companion-penguin", "speakerName": "꼬마 펭귄", "text": "행사 날이라 부서 동물들 다 모였어요!" },
+        { "speakerId": "companion-otter", "speakerName": "아기 수달", "text": "2층 대표로 조개 박수 쳐줄게요!" },
+        { "speakerId": "companion-chick", "speakerName": "병아리", "text": "삐약삐약! 다 함께 1층 로비 축제다!" },
+        { "speakerId": "companion-fox", "speakerName": "아기 여우", "text": "가끔 이렇게 다 같이 모이니 좋네요!" }
+      ]
+    },
+    {
+      "id": "rare-06",
+      "title": "회장님과 강아지의 아침 출근 순찰",
+      "category": "chairman_dog",
+      "condition": { "days": "daily", "time": "08:30~10:30", "floor": "1F", "actors": ["seongmin", "chairmanDog", "npc-security"] },
+      "probability": 0.05,
+      "cooldownDays": 3,
+      "lines": [
+        { "speakerId": "chairmanDog", "speakerName": "회장님 강아지", "text": "멍! 회장님 발걸음 맞춰 로비 순찰 중!" },
+        { "speakerId": "npc-security", "speakerName": "로비 보안·안내원", "text": "회장님과 꼬마 경호원님, 좋은 아침입니다!" },
+        { "speakerId": "yuna", "speakerName": "유나", "text": "회장님 발걸음에 맞춰 걷는 거 대단해요!" }
+      ]
+    },
+    {
+      "id": "rare-07",
+      "title": "6층 옥상 회장님과 강아지의 낮잠 바람",
+      "category": "chairman_dog",
+      "condition": { "days": "daily", "time": "13:00~16:00", "floor": "6F", "actors": ["seongmin", "chairmanDog", "npc-gardener"] },
+      "probability": 0.04,
+      "cooldownDays": 5,
+      "lines": [
+        { "speakerId": "chairmanDog", "speakerName": "회장님 강아지", "text": "(회장님 개구리 발치에 배 깔고 눕는다)" },
+        { "speakerId": "npc-gardener", "speakerName": "옥상 정원사", "text": "허브 바람이 좋아서 둘 다 나른하시군요." },
+        { "speakerId": "pet-cat", "speakerName": "치즈", "text": "햇볕 명당 절반은 양보해 줄게, 야옹." }
+      ]
+    },
+    {
+      "id": "rare-08",
+      "title": "5층 라운지 남매와 회장님 강아지",
+      "category": "chairman_dog",
+      "condition": { "days": "weekend", "time": "10:00~18:00", "floor": "5F", "actors": ["chairmanDog", "kid-suhyeon", "kid-suyeon", "seongmin"] },
+      "probability": 0.05,
+      "cooldownDays": 4,
+      "lines": [
+        { "speakerId": "kid-suyeon", "speakerName": "수연", "text": "와아! 아빠 강아지! 나랑 공놀이 하자!" },
+        { "speakerId": "chairmanDog", "speakerName": "회장님 강아지", "text": "왕왕! (수연이 앞에서 꼬리를 빙글 돌린다)" },
+        { "speakerId": "kid-suhyeon", "speakerName": "수현", "text": "…너무 세게 당기지 마. 머리 쓰다듬어 봐." }
+      ]
+    },
+    {
+      "id": "rare-09",
+      "title": "심야 HANI 24 컵라면 회동",
+      "category": "staff_rare",
+      "condition": { "days": "weekday", "time": "22:00~01:30", "floor": "1F", "actors": ["seoyun", "dohyun", "npc-conv-night"] },
+      "probability": 0.04,
+      "cooldownDays": 5,
+      "lines": [
+        { "speakerId": "seoyun", "speakerName": "서윤", "text": "야근엔 김치사발면이 설계의 정석이에요 💜" },
+        { "speakerId": "dohyun", "speakerName": "도연", "text": "국물 온도 체크 완료. 딱 좋습니다 ☕" },
+        { "speakerId": "npc-conv-night", "speakerName": "편의점 점원 (야간)", "text": "단무지 서비스로 하나씩 더 챙겨드렸어요." }
+      ]
+    },
+    {
+      "id": "rare-10",
+      "title": "5층 스튜디오 치즈 돌발 NG 컷",
+      "category": "staff_rare",
+      "condition": { "days": "weekday", "time": "14:00~17:00", "floor": "5F", "actors": ["minji", "pet-cat", "npc-studio-crew"] },
+      "probability": 0.03,
+      "cooldownDays": 6,
+      "lines": [
+        { "speakerId": "minji", "speakerName": "민지", "text": "자, 뉴스룸 오프닝 갑니다! 큐~!" },
+        { "speakerId": "pet-cat", "speakerName": "치즈", "text": "(카메라 정중앙에 식빵을 구우며 앉는다)" },
+        { "speakerId": "npc-studio-crew", "speakerName": "스튜디오 스태프", "text": "앗 NG! 치즈 님, 초점 다 가져가셨어요!" }
+      ]
+    },
+    {
+      "id": "rare-11",
+      "title": "주말 4층 전무실 남매 작전 회의",
+      "category": "staff_rare",
+      "condition": { "days": "weekend", "time": "11:00~17:00", "floor": "4F", "actors": ["kid-suhyeon", "kid-suyeon", "hani"] },
+      "probability": 0.04,
+      "cooldownDays": 6,
+      "lines": [
+        { "speakerId": "kid-suyeon", "speakerName": "수연", "text": "하니 이모! 오늘 아빠 놀아주기 작전 회의!" },
+        { "speakerId": "hani", "speakerName": "하니", "text": "좋아, 꼬마 본부장님! 안건 1호는 간식이야♡" },
+        { "speakerId": "kid-suhyeon", "speakerName": "수현", "text": "…아빠 쉬는 시간도 일정에 넣어주세요." }
+      ]
+    },
+    {
+      "id": "rare-12",
+      "title": "6층 밤 옥상 별보기와 미르의 질문",
+      "category": "staff_rare",
+      "condition": { "days": "daily", "time": "20:00~23:30", "floor": "6F", "actors": ["mir", "sooyeon", "seongmin"] },
+      "probability": 0.03,
+      "cooldownDays": 7,
+      "lines": [
+        { "speakerId": "sooyeon", "speakerName": "수연", "text": "와, 오늘 옥상에서 별이 선명하게 보여!" },
+        { "speakerId": "mir", "speakerName": "미르", "text": "회장님, 왜 별을 보면 마음이 조용해져?" },
+        { "speakerId": "sooyeon", "speakerName": "수연", "text": "내일 또 힘내라고 반짝이는 거 아닐까!" }
+      ]
+    },
+    {
+      "id": "rare-13",
+      "title": "5층 피트니스 점심 거북목 챌린지",
+      "category": "staff_rare",
+      "condition": { "days": "weekday", "time": "12:15~13:15", "floor": "5F", "actors": ["naeun", "yuna", "npc-trainer"] },
+      "probability": 0.04,
+      "cooldownDays": 5,
+      "lines": [
+        { "speakerId": "npc-trainer", "speakerName": "웰니스 트레이너", "text": "자, 어깨 귀에서 멀어지게 내립니다!" },
+        { "speakerId": "yuna", "speakerName": "유나", "text": "제가요?! 제 어깨가 원래 이리 굳었나요?!" },
+        { "speakerId": "naeun", "speakerName": "나은", "text": "막내 잘한다~ 매일 오 분씩만 풀자!" }
+      ]
+    },
+    {
+      "id": "rare-14",
+      "title": "HANI 24 1+1 가성비 끝장 토론",
+      "category": "staff_rare",
+      "condition": { "days": "weekday", "time": "15:00~17:00", "floor": "1F", "actors": ["haru", "daon", "npc-conv-day"] },
+      "probability": 0.04,
+      "cooldownDays": 5,
+      "lines": [
+        { "speakerId": "haru", "speakerName": "하루", "text": "둘 다 먹으면 이득, 남기면 손해예요." },
+        { "speakerId": "daon", "speakerName": "다온", "text": "혹시… 유통기한 넘길 최악의 경우엔요😅" },
+        { "speakerId": "npc-conv-day", "speakerName": "편의점 점원 (주간)", "text": "유통기한 넉넉한 젤리로 고르시면 딱이죠!" }
+      ]
+    },
+    {
+      "id": "rare-15",
+      "title": "2층 기업솔루션 이사 기념 떡 타임",
+      "category": "staff_rare",
+      "condition": { "days": "weekday", "time": "10:30~15:30", "floor": "2F", "actors": ["sua", "taeo", "jieun", "naeun"] },
+      "probability": 0.03,
+      "cooldownDays": 7,
+      "lines": [
+        { "speakerId": "sua", "speakerName": "수아", "text": "2층 식구분들, 이사 기념 시루떡 드세요ㅎㅎ" },
+        { "speakerId": "taeo", "speakerName": "채원", "text": "정리하면 1인 1팩, 호박떡 선택 가능합니다." },
+        { "speakerId": "jieun", "speakerName": "지은", "text": "덕분에 2층 분위기가 더 든든해졌네요." }
+      ]
+    },
+    {
+      "id": "rare-16",
+      "title": "5층 도서관 퀴즈 출제 합동 검수",
+      "category": "staff_rare",
+      "condition": { "days": "weekday", "time": "14:30~16:30", "floor": "5F", "actors": ["hina", "yoonseul", "yuri"] },
+      "probability": 0.04,
+      "cooldownDays": 5,
+      "lines": [
+        { "speakerId": "yoonseul", "speakerName": "윤슬", "text": "출처 다섯 권에서 예문 추려왔어요! 📚" },
+        { "speakerId": "hina", "speakerName": "히나", "text": "오답 보기도 헷갈리게 잘 만들었어용♡" },
+        { "speakerId": "yuri", "speakerName": "유리", "text": "정답 번호 중복 없음. 검수 PASS입니다 ✅" }
+      ]
+    },
+    {
+      "id": "rare-17",
+      "title": "1층 로비 사내 4펫 정모 식빵 타임",
+      "category": "staff_rare",
+      "condition": { "days": "daily", "time": "16:30~19:00", "floor": "1F", "actors": ["pet-cat", "pet-dog", "pet-rabbit", "pet-bori"] },
+      "probability": 0.03,
+      "cooldownDays": 6,
+      "lines": [
+        { "speakerId": "pet-cat", "speakerName": "치즈", "text": "오늘은 1층 햇빛 아래 나란히 눕자옹." },
+        { "speakerId": "pet-dog", "speakerName": "크림", "text": "좋아요! 다 모이니 산책 기분이에요!" },
+        { "speakerId": "pet-rabbit", "speakerName": "모찌", "text": "보리 옆자리 따뜻해서 좋아요…" },
+        { "speakerId": "pet-bori", "speakerName": "보리", "text": "다 같이 쉬니까 로비가 포근해요, 멍." }
+      ]
+    },
+    {
+      "id": "rare-18",
+      "title": "3층 서버실 새벽 자동화 대성공",
+      "category": "staff_rare",
+      "condition": { "days": "weekday", "time": "21:00~00:30", "floor": "3F", "actors": ["serin", "dohyun", "seoyun"] },
+      "probability": 0.03,
+      "cooldownDays": 7,
+      "lines": [
+        { "speakerId": "serin", "speakerName": "세린", "text": "우와!! 처리 시간 절반으로 줄었어요!! 📊" },
+        { "speakerId": "dohyun", "speakerName": "도연", "text": "전체 400ms 이내 유지. 통과요 ☕" },
+        { "speakerId": "seoyun", "speakerName": "서윤", "text": "이제 정리하고 1층 라면 먹으러 가요 💜" }
+      ]
+    },
+    {
+      "id": "rare-19",
+      "title": "5층 시네마 퇴근 후 무비 나이트",
+      "category": "staff_rare",
+      "condition": { "days": "weekday", "time": "18:30~21:00", "floor": "5F", "actors": ["minji", "arin", "npc-librarian"] },
+      "probability": 0.04,
+      "cooldownDays": 5,
+      "lines": [
+        { "speakerId": "npc-librarian", "speakerName": "도서관·시네마 사서", "text": "오늘의 단편 상영, 지금 시작합니다." },
+        { "speakerId": "minji", "speakerName": "민지", "text": "오프닝 구도부터 명장면 예약이네요 📸" },
+        { "speakerId": "arin", "speakerName": "아린", "text": "스크린 색감이 따뜻해서 너무 예쁜데요? 🎨" }
+      ]
+    },
+    {
+      "id": "rare-20",
+      "title": "새벽 카페와 편의점의 따뜻한 인사",
+      "category": "staff_rare",
+      "condition": { "days": "daily", "time": "05:30~07:00", "floor": "1F", "actors": ["eunha", "npc-conv-night", "mir"] },
+      "probability": 0.03,
+      "cooldownDays": 7,
+      "lines": [
+        { "speakerId": "eunha", "speakerName": "은하", "text": "점원님, 오늘 밤도 수고 많으셨어요." },
+        { "speakerId": "npc-conv-night", "speakerName": "편의점 점원 (야간)", "text": "은하님도요! 곧 주간 팀 교대 시간이에요." },
+        { "speakerId": "mir", "speakerName": "미르", "text": "밤이랑 아침이 여기서 이어지네. 헤헤." }
+      ]
+    }
+  ],
+  "storefront": {
+    "weeks": [
+      {
+        "week": 1,
+        "month": "12월",
+        "periodLabel": "12월 1주차 · 첫눈 맞이",
+        "hani24OnePlusOne": {
+          "item": "단팥 찐 호빵",
+          "emoji": "🥟",
+          "priceNote": "1+1 겨울 첫 특가",
+          "clerkLine": "따끈한 호빵 두 개로 손 녹이세요!",
+          "staffReview": { "staffId": "haru", "staffName": "하루", "line": "하나 먹고 하나 나누면 딱 알맞아요." }
+        },
+        "cafeNewMenu": {
+          "item": "스노우 핫초코",
+          "emoji": "🍫",
+          "temp": "HOT",
+          "barista": "이슬",
+          "baristaLine": "부드러운 마시멜로 살짝 띄웠어요.",
+          "staffReview": { "staffId": "hina", "staffName": "히나", "line": "달콤해서 단어 암기 백 점이에용♡" }
+        }
+      },
+      {
+        "week": 2,
+        "month": "12월",
+        "periodLabel": "12월 2주차 · 겨울 간식 주간",
+        "hani24OnePlusOne": {
+          "item": "꼬치 어묵 컵",
+          "emoji": "🍢",
+          "priceNote": "1+1 국물 보온 컵",
+          "clerkLine": "따뜻한 국물로 추위 녹여가세요!",
+          "staffReview": { "staffId": "seoyun", "staffName": "서윤", "line": "저녁 작업 전에 몸 녹이기 좋네요 💜" }
+        },
+        "cafeNewMenu": {
+          "item": "시나몬 애플티",
+          "emoji": "🍎",
+          "temp": "HOT",
+          "barista": "은하",
+          "baristaLine": "사과 향과 시나몬이 포근하게 어울려요.",
+          "staffReview": { "staffId": "arin", "staffName": "아린", "line": "잔 색감이 노을처럼 너무 예쁜데요? ✨" }
+        }
+      },
+      {
+        "week": 3,
+        "month": "12월",
+        "periodLabel": "12월 3주차 · 크리스마스 이브 주간",
+        "hani24OnePlusOne": {
+          "item": "미니 슈톨렌 쿠키",
+          "emoji": "🎄",
+          "priceNote": "1+1 홀리데이 패키지",
+          "clerkLine": "크리스마스 나눔용으로 딱 좋습니다!",
+          "staffReview": { "staffId": "yuna", "staffName": "유나", "line": "하나씩 책상에 나눠드리기 좋아요!" }
+        },
+        "cafeNewMenu": {
+          "item": "토피넛 크림 라떼",
+          "emoji": "☕",
+          "temp": "HOT",
+          "barista": "이슬",
+          "baristaLine": "고소한 견과류 거품을 올렸습니다.",
+          "staffReview": { "staffId": "hani", "staffName": "하니", "line": "연말 분위기 물씬 나네요! 헤헤♡" }
+        }
+      },
+      {
+        "week": 4,
+        "month": "12월",
+        "periodLabel": "12월 4주차 · 연말 결산 주간",
+        "hani24OnePlusOne": {
+          "item": "꿀 유자차 스틱",
+          "emoji": "🍋",
+          "priceNote": "1+1 목 관리 시즌팩",
+          "clerkLine": "올해도 수고한 목, 유자차로 챙기세요!",
+          "staffReview": { "staffId": "sua", "staffName": "수아", "line": "미팅 많은 날 필수템이에요ㅎㅎ" }
+        },
+        "cafeNewMenu": {
+          "item": "바닐라 빈 카푸치노",
+          "emoji": "🥛",
+          "temp": "HOT",
+          "barista": "은하",
+          "baristaLine": "한 해 마무리에 달콤한 거품을 얹었죠.",
+          "staffReview": { "staffId": "jieun", "staffName": "지은", "line": "결산 끝내고 마시니 더 꿀맛이네요." }
+        }
+      },
+      {
+        "week": 5,
+        "month": "1월",
+        "periodLabel": "1월 1주차 · 새해 첫 출근",
+        "hani24OnePlusOne": {
+          "item": "사골 떡국 컵밥",
+          "emoji": "🍲",
+          "priceNote": "1+1 새해 든든 특가",
+          "clerkLine": "새해 첫 주, 뜨끈한 떡국 드세요!",
+          "staffReview": { "staffId": "dohyun", "staffName": "도연", "line": "조리 2분, 한 끼로 깔끔히 통과요 ☕" }
+        },
+        "cafeNewMenu": {
+          "item": "흑임자 크림 라떼",
+          "emoji": "🖤",
+          "temp": "HOT",
+          "barista": "이슬",
+          "baristaLine": "고소한 흑임자 크림을 듬뿍 올렸어요.",
+          "staffReview": { "staffId": "naeun", "staffName": "나은", "line": "고소해서 아침 대용으로도 든든해~" }
+        }
+      },
+      {
+        "week": 6,
+        "month": "1월",
+        "periodLabel": "1월 2주차 · THAW 티저 시작",
+        "hani24OnePlusOne": {
+          "item": "군고구마 말랭이",
+          "emoji": "🍠",
+          "priceNote": "1+1 쫀득 간식팩",
+          "clerkLine": "달콤 쫀득한 고구마, 손이 계속 가요!",
+          "staffReview": { "staffId": "daon", "staffName": "다온", "line": "살 안 찌고 배부른 좋은 선택이네요…" }
+        },
+        "cafeNewMenu": {
+          "item": "프로스트 민트 티",
+          "emoji": "❄️",
+          "temp": "HOT/ICE",
+          "barista": "이슬",
+          "baristaLine": "THAW 티저 기념 맑은 민트빛 티예요.",
+          "staffReview": { "staffId": "arin", "staffName": "아린", "line": "파란 찻빛이 해빙의 정원 같아요 ✨" }
+        }
+      },
+      {
+        "week": 7,
+        "month": "1월",
+        "periodLabel": "1월 3주차 · 한겨울 활력 주간",
+        "hani24OnePlusOne": {
+          "item": "따뜻한 검은콩 두유",
+          "emoji": "🥛",
+          "priceNote": "1+1 보온팩",
+          "clerkLine": "단백질 채우기 좋은 따뜻한 두유예요!",
+          "staffReview": { "staffId": "yoonseul", "staffName": "윤슬", "line": "책 읽을 때 옆에 두기 딱 좋아요 🔖" }
+        },
+        "cafeNewMenu": {
+          "item": "제주 한라봉 에이드",
+          "emoji": "🍊",
+          "temp": "ICE",
+          "barista": "은하",
+          "baristaLine": "상큼한 과육으로 기분 전환 어때요?",
+          "staffReview": { "staffId": "sooyeon", "staffName": "수연", "line": "운동 끝나고 마시니 낭만상 최고!" }
+        }
+      },
+      {
+        "week": 8,
+        "month": "1월",
+        "periodLabel": "1월 4주차 · 입춘 준비 주간",
+        "hani24OnePlusOne": {
+          "item": "계란 치즈 샌드위치",
+          "emoji": "🥪",
+          "priceNote": "1+1 아침 콤보",
+          "clerkLine": "부드러운 에그 샐러드 꽉 채웠어요!",
+          "staffReview": { "staffId": "taeo", "staffName": "채원", "line": "간단하고 든든한 아침 한 끼입니다." }
+        },
+        "cafeNewMenu": {
+          "item": "세이지 카모마일 티",
+          "emoji": "🌿",
+          "temp": "HOT",
+          "barista": "이슬",
+          "baristaLine": "마음이 차분해지는 허브 블렌드예요.",
+          "staffReview": { "staffId": "ieum", "staffName": "이음", "line": "향이 은은해서 정리가 잘 돼요." }
+        }
+      },
+      {
+        "week": 9,
+        "month": "2월",
+        "periodLabel": "2월 1주차 · THAW 출시 직전",
+        "hani24OnePlusOne": {
+          "item": "생딸기 찹쌀 모찌",
+          "emoji": "🍓",
+          "priceNote": "1+1 초봄 첫 입",
+          "clerkLine": "달콤한 딸기 모찌, 오늘 막 나왔어요!",
+          "staffReview": { "staffId": "minji", "staffName": "민지", "line": "단면 색감부터 사진 각이에요 📸" }
+        },
+        "cafeNewMenu": {
+          "item": "펄 베리 밀크티",
+          "emoji": "🫐",
+          "temp": "ICE/HOT",
+          "barista": "이슬",
+          "baristaLine": "THAW 팔레트 닮은 부드러운 밀크티예요.",
+          "staffReview": { "staffId": "serin", "staffName": "세린", "line": "당도 비율이 완벽한 황금 패턴!! ✨" }
+        }
+      },
+      {
+        "week": 10,
+        "month": "2월",
+        "periodLabel": "2월 2주차 · THAW 정식 출시",
+        "hani24OnePlusOne": {
+          "item": "바질 토마토 샐러드랩",
+          "emoji": "🥗",
+          "priceNote": "1+1 해빙 그린팩",
+          "clerkLine": "싱그러운 봄빛 바질 랩 출시됐어요!",
+          "staffReview": { "staffId": "naeun", "staffName": "나은", "line": "채소 듬뿍이라 점심 루틴으로 딱이야~" }
+        },
+        "cafeNewMenu": {
+          "item": "해빙의 정원 블라썸 라떼",
+          "emoji": "🌸",
+          "temp": "HOT/ICE",
+          "barista": "이슬",
+          "baristaLine": "THAW 출시 기념 꽃향기 라떼입니다!",
+          "staffReview": { "staffId": "seoyun", "staffName": "서윤", "line": "출시 기념으로 다 같이 한 잔해요 💜" }
+        }
+      },
+      {
+        "week": 11,
+        "month": "2월",
+        "periodLabel": "2월 3주차 · 봄맞이 주간",
+        "hani24OnePlusOne": {
+          "item": "유채꿀 레몬 워터",
+          "emoji": "🍯",
+          "priceNote": "1+1 산뜻 보충",
+          "clerkLine": "가볍게 비타민 채우기 딱 좋아요!",
+          "staffReview": { "staffId": "yuri", "staffName": "유리", "line": "당분 과하지 않아 깔끔합니다 ✅" }
+        },
+        "cafeNewMenu": {
+          "item": "말차 화이트 모카",
+          "emoji": "🍵",
+          "temp": "ICE/HOT",
+          "barista": "은하",
+          "baristaLine": "연한 새싹빛 말차 거품을 올렸어요.",
+          "staffReview": { "staffId": "gaeun", "staffName": "가은", "line": "오후 티타임에 딱 어울리는 맛이네요." }
+        }
+      },
+      {
+        "week": 12,
+        "month": "2월",
+        "periodLabel": "2월 4주차 · 새 학기·봄 준비",
+        "hani24OnePlusOne": {
+          "item": "크림치즈 소금빵",
+          "emoji": "🥐",
+          "priceNote": "1+1 베이커리 픽",
+          "clerkLine": "겉바속촉 소금빵 방금 구웠어요!",
+          "staffReview": { "staffId": "haru", "staffName": "하루", "line": "이 가격에 두 개면 무조건 추천이죠." }
+        },
+        "cafeNewMenu": {
+          "item": "청포도 스파클링 티",
+          "emoji": "🍇",
+          "temp": "ICE",
+          "barista": "이슬",
+          "baristaLine": "상쾌한 탄산으로 기운 돋워보세요!",
+          "staffReview": { "staffId": "sooyeon", "staffName": "수연", "line": "곧 봄 야외 활동 시작 신호 같아요!" }
+        }
+      }
+    ]
+  },
+  "weeklyMissions": [
+    {
+      "week": 1,
+      "month": "12월",
+      "theme": "겨울 첫걸음 주간",
+      "mission": {
+        "title": "이번 주 걸음 수 3일 기록하기",
+        "category": "걸음",
+        "targetSummary": "이번 주 중 아무 3일만 걸음 기록 남기기",
+        "easyCutline": "주 3일 (60% 달성 시 완료)"
+      },
+      "weekendEvent": {
+        "title": "1F HANI 24 호빵 파티",
+        "floor": "1F",
+        "zone": "1F HANI 24",
+        "celebrationLine": "호빵 나눠 먹으며 다 같이 웃어요! 🥟"
+      }
+    },
+    {
+      "week": 2,
+      "month": "12월",
+      "theme": "따뜻한 책장 주간",
+      "mission": {
+        "title": "독서 또는 시청 기록 1건 남기기",
+        "category": "독서·시청",
+        "targetSummary": "읽은 책이나 본 영화 1건만 가볍게 기록",
+        "easyCutline": "주 1건"
+      },
+      "weekendEvent": {
+        "title": "5F 시네마 주말 무료 상영회",
+        "floor": "5F",
+        "zone": "5F 시네마",
+        "celebrationLine": "주말 시네마 불 켜졌어요! 편히 봐요 🎬"
+      }
+    },
+    {
+      "week": 3,
+      "month": "12월",
+      "theme": "연말 알뜰 결산 주간",
+      "mission": {
+        "title": "가계부 지출 기록 3일 남기기",
+        "category": "가계부",
+        "targetSummary": "소비 내역 3일 이상 적기 (금액 무관)",
+        "easyCutline": "주 3일"
+      },
+      "weekendEvent": {
+        "title": "1F 카페 연말 티타임",
+        "floor": "1F",
+        "zone": "1F 카페",
+        "celebrationLine": "지은 부장님이 커피 한 턱 쏜대요! ☕"
+      }
+    },
+    {
+      "week": 4,
+      "month": "12월",
+      "theme": "한 해 고마움 일기 주간",
+      "mission": {
+        "title": "한 줄 일기 2일 작성하기",
+        "category": "일기",
+        "targetSummary": "올해 고마웠던 일 짧게 2일 기록",
+        "easyCutline": "주 2일"
+      },
+      "weekendEvent": {
+        "title": "6F 옥상 연말 전구 점등회",
+        "floor": "6F",
+        "zone": "6F 옥상",
+        "celebrationLine": "옥상 전구 반짝! 한 해 수고했어요 ✨"
+      }
+    },
+    {
+      "week": 5,
+      "month": "1월",
+      "theme": "새해 첫 루틴 주간",
+      "mission": {
+        "title": "걸음·운동 중 2일 기록하기",
+        "category": "운동·걸음",
+        "targetSummary": "걷기든 스트레칭이든 편한 날 2일 기록",
+        "easyCutline": "주 2일"
+      },
+      "weekendEvent": {
+        "title": "1F HANI 24 새해 떡국 데이",
+        "floor": "1F",
+        "zone": "1F HANI 24",
+        "celebrationLine": "새해 첫 주 달성! 다 같이 떡국 한 컵 🍲"
+      }
+    },
+    {
+      "week": 6,
+      "month": "1월",
+      "theme": "THAW 티저 독서 주간",
+      "mission": {
+        "title": "독서 기록 또는 퀴즈 1회 풀기",
+        "category": "독서·퀴즈",
+        "targetSummary": "독서 메모 1건 또는 학습 퀴즈 1세트 완료",
+        "easyCutline": "주 1회"
+      },
+      "weekendEvent": {
+        "title": "5F 도서관 겨울 북토크",
+        "floor": "5F",
+        "zone": "5F 도서관",
+        "celebrationLine": "윤슬 사원이 추천 책갈피를 나눠줘요 🔖"
+      }
+    },
+    {
+      "week": 7,
+      "month": "1월",
+      "theme": "겨울 체력 지키기 주간",
+      "mission": {
+        "title": "체중 또는 근력/유산소 2일 기록",
+        "category": "건강",
+        "targetSummary": "몸 상태 살피는 기록 2일만 남기기",
+        "easyCutline": "주 2일"
+      },
+      "weekendEvent": {
+        "title": "5F 피트니스 주말 스트레칭",
+        "floor": "5F",
+        "zone": "5F 피트니스",
+        "celebrationLine": "나은 차장님과 개운하게 몸 풀어요 💪"
+      }
+    },
+    {
+      "week": 8,
+      "month": "1월",
+      "theme": "겨울 소비 점검 주간",
+      "mission": {
+        "title": "가계부 또는 할 일 완료 3건",
+        "category": "가계부·할일",
+        "targetSummary": "가계부 적기나 작은 할 일 끝내기 총 3건",
+        "easyCutline": "주 3건"
+      },
+      "weekendEvent": {
+        "title": "2F 팬트리 다과 모임",
+        "floor": "2F",
+        "zone": "2F 팬트리",
+        "celebrationLine": "다 같이 차 마시며 주말 여유 즐겨요 🍵"
+      }
+    },
+    {
+      "week": 9,
+      "month": "2월",
+      "theme": "봄맞이 마음 정리 주간",
+      "mission": {
+        "title": "일기 2일 + 걸음 2일 기록하기",
+        "category": "일기·걸음",
+        "targetSummary": "둘 중 3회만 채워도 넉넉히 달성!",
+        "easyCutline": "합계 3회"
+      },
+      "weekendEvent": {
+        "title": "5F 스튜디오 포토타임",
+        "floor": "5F",
+        "zone": "5F 스튜디오",
+        "celebrationLine": "민지 대리가 기념 단체 컷 찍어줘요 📸"
+      }
+    },
+    {
+      "week": 10,
+      "month": "2월",
+      "theme": "THAW 해빙의 정원 주간",
+      "mission": {
+        "title": "생활 기록 아무거나 4일 남기기",
+        "category": "자유 기록",
+        "targetSummary": "운동·독서·일기·가계부 중 편한 기록 4일",
+        "easyCutline": "주 4일"
+      },
+      "weekendEvent": {
+        "title": "6F 옥상 해빙 가든 파티",
+        "floor": "6F",
+        "zone": "6F 옥상",
+        "celebrationLine": "THAW 꽃눈 아래 다 같이 축하 파티! 🌸"
+      }
+    },
+    {
+      "week": 11,
+      "month": "2월",
+      "theme": "새싹 배움 릴레이 주간",
+      "mission": {
+        "title": "학습 퀴즈 2세트 또는 독서 2일",
+        "category": "공부·독서",
+        "targetSummary": "가볍게 문제 풀기나 책 읽기 2일",
+        "easyCutline": "주 2일"
+      },
+      "weekendEvent": {
+        "title": "5F 키즈펫 라운지 간식 타임",
+        "floor": "5F",
+        "zone": "5F 키즈펫",
+        "celebrationLine": "4펫도 신나서 꼬리 흔들며 축하해요 🐾"
+      }
+    },
+    {
+      "week": 12,
+      "month": "2월",
+      "theme": "봄 출발 준비 주간",
+      "mission": {
+        "title": "걸음 수 3일 + 한 줄 일기 1일",
+        "category": "걸음·일기",
+        "targetSummary": "3일 이상만 기록하면 기분 좋게 완료",
+        "easyCutline": "주 3회"
+      },
+      "weekendEvent": {
+        "title": "1F 로비 봄맞이 환호 타임",
+        "floor": "1F",
+        "zone": "1F 로비",
+        "celebrationLine": "겨울 갓생 완주! 3월도 힘차게 가요 🎉"
+      }
+    }
+  ]
+}

@@ -1,0 +1,794 @@
+{
+  "schema": 1,
+  "layer": "building-phase1",
+  "base": "2db38f4834ba0f2b6c21c296b5c9a4e0732f2e0a",
+  "release306": "077df04dea15d27d530ba957ad544381cf45ae60",
+  "pre306": "ca76e21",
+  "stages": [
+    {
+      "name": "building-phase1",
+      "files": {
+        "hani-office-live.js": {
+          "beforeSha256": "8ff690a0bf507db3f2b85dae10c00a84227eb994f34883b0e113a28c55fb04d4",
+          "afterSha256": "aeb2de37fcfe9dbefa5190b924ef37bb345eeea7caaf1b37046ef9d0e0ea3fab",
+          "beforeBytes": 453427,
+          "afterBytes": 459945,
+          "replacements": [
+            {
+              "beforeStart": 201,
+              "afterStart": 201,
+              "before": "",
+              "after": "  // Phase 1: scene metadata only. Stable IDs and display order are independent.\n  const floorDefaults=Object.freeze([\n    {id:'5f',legacyIds:['5f'],order:5,code:'5F',label:'5F 옥상 · 조용한 정원',category:'rooftop',quiet:true,tint:'#9cbd9a',residents:[],anchorCount:50,background:'./assets/building/floor-5f-217.webp'},\n    {id:'4f',legacyIds:[],order:4,code:'4F',label:'4F 대표실·라운지',category:'executive',tint:'#b692df',residents:['hani','gaeun','mir'],anchorCount:81,background:'./assets/building/floor-4f-217.webp'},\n    {id:'3f',legacyIds:[],order:3,code:'3F',label:'3F AI플랫폼개발실',category:'office',tint:'#79aecf',residents:['seoyun','dohyun','serin','yuri','arin'],anchorCount:64,background:'./assets/building/floor-3f-215.webp',foregroundMasks:[{slot:0,source:'background'}]},\n    {id:'2f',legacyIds:[],order:2,code:'2F',label:'2F 재무·라이프',category:'office',tint:'#94bd8e',residents:['jieun','haru','naeun','hina','minji','sooyeon'],anchorCount:74,background:'./assets/building/floor-2f-217.webp'},\n    {id:'1f',legacyIds:[],order:1,code:'1F',label:'1F 로비',category:'lobby',tint:'#e3b67d',residents:['yuna','sua','taeo'],anchorCount:57,background:'./assets/building/floor-1f-217.webp'}\n  ].map(f=>Object.freeze({...f,legacyIds:Object.freeze(f.legacyIds),residents:Object.freeze(f.residents),foregroundMasks:Object.freeze((f.foregroundMasks||[]).map(Object.freeze))})));\n  const floorDefaultIndex=new Map(floorDefaults.map(f=>[f.id,f]));\n  let floorRegistry;\n  function buildFloorRegistry(canon=null,art=null,eligible=null){\n    const anchorIndex=new Map((canon?.anchors||[]).map(a=>[a.id,a])),counts=new Map(),connectors=new Map();\n    for(const a of canon?.anchors||[]){counts.set(a.floor,(counts.get(a.floor)||0)+1);if(['elevator','stairs'].includes(a.type))connectors.set(a.floor+'|'+a.type,a.id)}\n    const people=eligible||(canon?.people||[]).filter(p=>p.status==='active'&&p.registration==='registered');\n    const rows=Object.freeze((canon?.floors||floorDefaults).map(f=>{\n      const base=floorDefaultIndex.get(f.id)||{},visual=art?.floors?.[f.id]||{},residents=canon?people.filter(p=>anchorIndex.get(p.homeAnchor)?.floor===f.id).map(p=>p.id):base.residents||[];\n      return Object.freeze({id:f.id,legacyIds:Object.freeze([...(f.legacyIds||base.legacyIds||[])]),order:f.order??base.order,code:f.code||base.code,label:f.label,category:f.category||base.category||'office',quiet:!!f.quiet,\n        tint:base.tint||'#9cbd9a',residents:Object.freeze(residents),maxVisible:f.maxVisible??Math.max(6,residents.length),anchorCount:f.anchorCount??base.anchorCount??counts.get(f.id)??0,\n        art:Object.freeze({background:visual.background||base.background,nightBackground:visual.nightBackground,production:base.residents?.length?base.background:undefined,\n          foregroundMasks:Object.freeze((visual.foregroundMasks||base.foregroundMasks||[]).map(m=>Object.freeze({...m}))),plates:visual.plates||Object.freeze([])}),\n        connectors:Object.freeze({hallAnchor:f.connectors?.hallAnchor||'hall_'+f.id,elevatorAnchor:f.connectors?.elevatorAnchor||connectors.get(f.id+'|elevator')||'elevator_'+f.id,stairsAnchor:f.connectors?.stairsAnchor||connectors.get(f.id+'|stairs')||'stairs_'+f.id}),rooms:f.rooms||Object.freeze([]),walkable:f.walkable,noWalk:f.noWalk});\n    }).sort((a,b)=>b.order-a.order));\n    const index=new Map(rows.map(f=>[f.id,f]));for(const f of rows)for(const id of f.legacyIds)if(!index.has(id))index.set(id,f);\n    return Object.freeze({schemaVersion:'floor-registry-v1',defaultFloorId:'4f',floors:rows,get:id=>index.get(id),hasFloor:id=>index.has(id),order:id=>index.get(id)?.order,\n      elevatorAnchor:id=>index.get(id)?.connectors.elevatorAnchor});\n  }\n  function validateSpatial(canon,art){\n    try{\n      if(canon?.contractVersion!=='spatial-216-v1'||art?.contractVersion!==canon.contractVersion||!Array.isArray(canon.floors)||!canon.floors.length||!Array.isArray(canon.anchors)||!Array.isArray(canon.edges)||!art.anchors)return false;\n      const registry=buildFloorRegistry(canon,art),ids=new Map(),counts=new Map(),graph=new Map(),orders=new Set();\n      if(new Set(registry.floors.map(f=>f.id)).size!==registry.floors.length)return false;\n      for(const f of registry.floors){if(!Number.isFinite(f.order)||orders.has(f.order)||!art.floors?.[f.id]?.background)return false;orders.add(f.order)}\n      for(const a of canon.anchors){if(!a.id||ids.has(a.id)||!registry.hasFloor(a.floor)||!Number.isFinite(a.x)||!Number.isFinite(a.y)||!Number.isFinite(art.anchors[a.id]?.x)||!Number.isFinite(art.anchors[a.id]?.y))return false;ids.set(a.id,a);counts.set(a.floor,(counts.get(a.floor)||0)+1)}\n      if(Object.keys(art.anchors).length!==ids.size||Object.keys(art.anchors).some(id=>!ids.has(id))||registry.floors.reduce((n,f)=>n+f.anchorCount,0)!==ids.size)return false;\n      for(const f of registry.floors)if(counts.get(f.id)!==f.anchorCount)return false;\n      for(const e of canon.edges){const a=ids.get(e.from),b=ids.get(e.to);if(!a||!b)return false;\n        if(a.floor!==b.floor&&(!['elevator','stairs'].includes(e.kind)||Math.abs(registry.order(a.floor)-registry.order(b.floor))!==1||a.type!==e.kind||b.type!==e.kind))return false;\n        if(e.kind==='stairs')continue;\n        if(!graph.has(e.from))graph.set(e.from,[]);graph.get(e.from).push(e.to);if(e.bidirectional){if(!graph.has(e.to))graph.set(e.to,[]);graph.get(e.to).push(e.from)}\n      }\n      // Both transport chains must retain a return path between adjacent floors.\n      for(let i=1;i<registry.floors.length;i++)for(const kind of ['elevator','stairs']){\n        const key=kind+'Anchor',a=registry.floors[i-1].connectors[key],b=registry.floors[i].connectors[key];\n        const connects=(from,to)=>canon.edges.some(e=>e.kind===kind&&(e.from===from&&e.to===to||e.bidirectional&&e.to===from&&e.from===to));\n        if(!connects(a,b)||!connects(b,a))return false;\n      }\n      const reached=new Set(),queue=[];\n      for(const f of registry.floors){for(const [key,type]of [['hallAnchor','junction'],['elevatorAnchor','elevator'],['stairsAnchor','stairs']]){const a=ids.get(f.connectors[key]);if(a?.floor!==f.id||a.type!==type)return false}}\n      queue.push(registry.floors[0].connectors.elevatorAnchor);reached.add(queue[0]);\n      for(let i=0;i<queue.length;i++){const id=queue[i];if(ids.get(id).rendererSeat)continue;for(const next of graph.get(id)||[])if(!reached.has(next)){reached.add(next);queue.push(next)}}\n      // Decorative, explicitly non-walkable objects (MIR core) need art, not routes.\n      return canon.anchors.every(a=>a.walkTarget===false||reached.has(a.id))&&(canon.people||[]).every(p=>ids.has(p.homeAnchor));\n    }catch(_){return false}\n  }\n"
+            },
+            {
+              "beforeStart": 1020,
+              "afterStart": 7672,
+              "before": "      if(canon.contractVersion==='spatial-216-v1'&&canon.anchors.length===326&&art.contractVersion===canon.contractVersion&&canon.anchors.every(a=>art.anchors[a.id]))assets={canon,sprites,art,spritesV3:spritesV3?.scale===3&&Array.isArray(spritesV3.entries)?spritesV3:null};\n",
+              "after": "      if(validateSpatial(canon,art))assets={canon,sprites,art,spritesV3:spritesV3?.scale===3&&Array.isArray(spritesV3.entries)?spritesV3:null};\n"
+            },
+            {
+              "beforeStart": 5301,
+              "afterStart": 11823,
+              "before": "    return floor.id==='5f'&&floor.nightBackground&&officeLight(now).rooftopNight?floor.nightBackground:floor.background;\n",
+              "after": "    return floor.nightBackground&&officeLight(now).rooftopNight?floor.nightBackground:floor.background;\n"
+            },
+            {
+              "beforeStart": 7417,
+              "afterStart": 13922,
+              "before": "          typeof row.floor==='string'&&/^[1-5]f$/.test(row.floor)&&typeof row.hidden==='boolean'&&text(row.line,40))));\n",
+              "after": "          typeof row.floor==='string'&&floorRegistry.hasFloor(row.floor)&&typeof row.hidden==='boolean'&&text(row.line,40))));\n"
+            },
+            {
+              "beforeStart": 18679,
+              "afterStart": 25191,
+              "before": "  const FLOOR_ART=Object.freeze({\"1f\":\"./assets/building/floor-1f-217.webp\",\"2f\":\"./assets/building/floor-2f-217.webp\",\"3f\":\"./assets/building/floor-3f-215.webp\",\"4f\":\"./assets/building/floor-4f-217.webp\",\"5f\":\"./assets/building/floor-5f-217.webp\"});\n",
+              "after": ""
+            },
+            {
+              "beforeStart": 19891,
+              "afterStart": 26152,
+              "before": "  const legacyFloors=Object.freeze([\n    {id:\"4f\",label:\"4F 대표실·라운지\",tint:\"#b692df\",residents:[\"hani\",\"gaeun\",\"mir\"]},\n    {id:\"3f\",label:\"3F AI플랫폼개발실\",tint:\"#79aecf\",residents:[\"seoyun\",\"dohyun\",\"serin\",\"yuri\",\"arin\"]},\n    {id:\"2f\",label:\"2F 재무·라이프\",tint:\"#94bd8e\",residents:[\"jieun\",\"haru\",\"naeun\",\"hina\",\"minji\",\"sooyeon\"]},\n    {id:\"1f\",label:\"1F 로비\",tint:\"#e3b67d\",residents:[\"yuna\",\"sua\",\"taeo\"]}\n  ].map(f=>Object.freeze({...f,residents:Object.freeze(f.residents),background:FLOOR_ART[f.id],fallback})));\n",
+              "after": "  const legacyFloors=Object.freeze(floorDefaults.filter(f=>f.residents.length).map(f=>Object.freeze({id:f.id,label:f.label,tint:f.tint,residents:f.residents,background:f.background,fallback})));\n"
+            },
+            {
+              "beforeStart": 23615,
+              "afterStart": 29558,
+              "before": "  const floors=canon?Object.freeze(canon.floors.map(f=>Object.freeze({id:f.id,label:f.label,tint:legacyFloors.find(l=>l.id===f.id)?.tint||'#9cbd9a',residents:Object.freeze(eligible.filter(p=>anchors.get(p.homeAnchor)?.floor===f.id).map(p=>p.id)),background:art.floors[f.id].background,nightBackground:art.floors[f.id].nightBackground,production:legacyFloors.find(l=>l.id===f.id)?.background||fallback,fallback}))):legacyFloors;\n",
+              "after": "  floorRegistry=buildFloorRegistry(canon,art,eligible);\n  const floors=canon?Object.freeze(floorRegistry.floors.map(f=>Object.freeze({id:f.id,label:f.label,tint:f.tint,residents:f.residents,background:f.art.background,nightBackground:f.art.nightBackground,production:f.art.production||fallback,fallback}))):legacyFloors;\n  const floorIndex=new Map(floors.map(f=>[f.id,f]));\n"
+            },
+            {
+              "beforeStart": 49769,
+              "afterStart": 55658,
+              "before": "      const room=canon.floors.find(f=>f.id===a.floor)?.rooms.find(r=>r.id===a.room),name=(room?.label||a.label).split(' · ')[0];\n",
+              "after": "      const room=floorRegistry.get(a.floor)?.rooms.find(r=>r.id===a.room),name=(room?.label||a.label).split(' · ')[0];\n"
+            },
+            {
+              "beforeStart": 129669,
+              "afterStart": 135548,
+              "before": "        if(at>=32400&&at<64800&&(card.id==='cafe-1f'||card.floor==='5f')){\n          const occupied=gatheringWindow.active.filter(e=>card.floor==='5f'?e.card.floor==='5f':e.card.id===card.id).reduce((n,e)=>n+e.people.length,0);\n",
+              "after": "        if(at>=32400&&at<64800&&(card.id==='cafe-1f'||floorRegistry.get(card.floor)?.category==='rooftop')){\n          const occupied=gatheringWindow.active.filter(e=>floorRegistry.get(card.floor)?.category==='rooftop'?floorRegistry.get(e.card.floor)?.category==='rooftop':e.card.id===card.id).reduce((n,e)=>n+e.people.length,0);\n"
+            },
+            {
+              "beforeStart": 139290,
+              "afterStart": 145271,
+              "before": "        if(!visitor||cards.length>1)cards=cards.map(c=>({c,rank:visitor?seed(day+at+c.id):-Math.log(Math.max(.000001,seedTail(rankSeed,c.id)/4294967296))/(weight(c,people,at)*(displacedLounge&&(c.floor==='5f'||people.every(p=>homeAt(p,at).floor===c.floor))&&['coffee','sofa','garden','terrace','window'].includes(c.kind)?(restPriority??(c.floor==='5f'?4:17)):1))})).sort((a,b)=>a.rank-b.rank||a.c.id.localeCompare(b.c.id)).map(r=>r.c);\n",
+              "after": "        if(!visitor||cards.length>1)cards=cards.map(c=>({c,rank:visitor?seed(day+at+c.id):-Math.log(Math.max(.000001,seedTail(rankSeed,c.id)/4294967296))/(weight(c,people,at)*(displacedLounge&&(floorRegistry.get(c.floor)?.category==='rooftop'||people.every(p=>homeAt(p,at).floor===c.floor))&&['coffee','sofa','garden','terrace','window'].includes(c.kind)?(restPriority??(floorRegistry.get(c.floor)?.category==='rooftop'?4:17)):1))})).sort((a,b)=>a.rank-b.rank||a.c.id.localeCompare(b.c.id)).map(r=>r.c);\n"
+            },
+            {
+              "beforeStart": 174644,
+              "afterStart": 180693,
+              "before": "            const room=canon.floors.find(f=>f.id===destination.floor)?.rooms.find(r=>r.id===destination.room);\n",
+              "after": "            const room=floorRegistry.get(destination.floor)?.rooms.find(r=>r.id===destination.room);\n"
+            },
+            {
+              "beforeStart": 211907,
+              "afterStart": 217946,
+              "before": "    return {day,minutes,...scheduled,onBreak:false,onMeeting:false,floors:floors.map(f=>{const people=entries.filter(p=>p.floor===f.id);return {...f,people,work:people.filter(p=>p.activity!=='rest').length,rest:people.filter(p=>p.activity==='rest').length,...projection(people,Math.max(6,f.residents.length))}})};\n",
+              "after": "    return {day,minutes,...scheduled,onBreak:false,onMeeting:false,floors:floors.map(f=>{const people=entries.filter(p=>p.floor===f.id);return {...f,people,work:people.filter(p=>p.activity!=='rest').length,rest:people.filter(p=>p.activity==='rest').length,...projection(people,floorRegistry.get(f.id).maxVisible)}})};\n"
+            },
+            {
+              "beforeStart": 279183,
+              "afterStart": 285226,
+              "before": "    const floor=canon?.floors.find(f=>f.id===floorId);if(!floor||!point||!visual)return false;\n",
+              "after": "    const floor=floorRegistry.get(floorId);if(!floor||!point||!visual)return false;\n"
+            },
+            {
+              "beforeStart": 303340,
+              "afterStart": 309372,
+              "before": "  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,residents,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,motion:Object.freeze({gait:distanceGait,sample:sampleMotion,ease:easeRun,curve:compileCurve,sampleCurve,createReactions,stableActorBox,stableSpriteBox,stableMascotBox,effectDurations}),atmosphere:Object.freeze({light:officeLight,background:officeBackground,monitors:workingMonitors,opacity:monitorOpacity}),labels:Object.freeze({priority:statusLabelPriority,place:placeStatusLabels,short:phoneStatusLine}),places:Object.freeze([...places,...(scheduler?.errandPlaces||[]),...(scheduler?.reportPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines,dramaDate,validateDrama:validDramaBank})});\n",
+              "after": "  globalThis.HaniBuildingScene=Object.freeze({floorRegistry,getFloor:id=>floorIndex.get(id),buildFloorRegistry,validateSpatial,floors,snapshot,projection,profile,spriteSource,residents,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,motion:Object.freeze({gait:distanceGait,sample:sampleMotion,ease:easeRun,curve:compileCurve,sampleCurve,createReactions,stableActorBox,stableSpriteBox,stableMascotBox,effectDurations}),atmosphere:Object.freeze({light:officeLight,background:officeBackground,monitors:workingMonitors,opacity:monitorOpacity}),labels:Object.freeze({priority:statusLabelPriority,place:placeStatusLabels,short:phoneStatusLine}),places:Object.freeze([...places,...(scheduler?.errandPlaces||[]),...(scheduler?.reportPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines,dramaDate,validateDrama:validDramaBank})});\n"
+            },
+            {
+              "beforeStart": 324382,
+              "afterStart": 330495,
+              "before": "",
+              "after": "  tabs.style.setProperty('--hani-floor-cols',String(building.floorRegistry.floors.length));\n"
+            },
+            {
+              "beforeStart": 341612,
+              "afterStart": 347817,
+              "before": "  for(const floor of building.floors)for(const entry of building.art?.floors[floor.id].plates||[]){\n",
+              "after": "  for(const floor of building.floors)for(const entry of building.floorRegistry.get(floor.id).art.plates){\n"
+            },
+            {
+              "beforeStart": 352823,
+              "afterStart": 359034,
+              "before": "  let activeFloor=\"4f\",floorSnapshot=null,layoutKey=\"\",backgroundToken=0,returnFloor=\"4f\",displayedFloor=null;\n",
+              "after": "  let activeFloor=building.floorRegistry.defaultFloorId,floorSnapshot=null,layoutKey=\"\",backgroundToken=0,returnFloor=building.floorRegistry.defaultFloorId,displayedFloor=null;\n"
+            },
+            {
+              "beforeStart": 369639,
+              "afterStart": 375916,
+              "before": "    const floor=building.floors.find(f=>f.id===activeFloor);\n",
+              "after": "    const floor=building.getFloor(activeFloor);\n"
+            },
+            {
+              "beforeStart": 371145,
+              "afterStart": 377409,
+              "before": "  for(const floor of building.floors){const list=document.createElement('p');list.textContent=[...(building.canon?.floors.find(f=>f.id===floor.id)?.rooms||[]).map(r=>r.label),...(building.art?.floors[floor.id].plates||[]).filter(p=>p.detail).map(p=>p.fullLabel)].join(' · ');rooms.append(list);roomLabels.set(floor.id,list)}\n",
+              "after": "  for(const floor of building.floors){const list=document.createElement('p');list.textContent=[...(building.floorRegistry.get(floor.id).rooms).map(r=>r.label),...(building.floorRegistry.get(floor.id).art.plates).filter(p=>p.detail).map(p=>p.fullLabel)].join(' · ');rooms.append(list);roomLabels.set(floor.id,list)}\n"
+            },
+            {
+              "beforeStart": 372685,
+              "afterStart": 378939,
+              "before": "    const path=animate&&!reduced&&building.canon?building.route(old&&building.anchors.get(old)?.floor===activeFloor?old:'elevator_'+activeFloor,target):[];\n",
+              "after": "    const path=animate&&!reduced&&building.canon?building.route(old&&building.anchors.get(old)?.floor===activeFloor?old:building.floorRegistry.elevatorAnchor(activeFloor),target):[];\n"
+            },
+            {
+              "beforeStart": 376082,
+              "afterStart": 382363,
+              "before": "      bg.src=background;if(floor.id==='3f')foregrounds[0].src=background;bg.hidden=false;bg.alt=floor.label+' · HANI GROUP';map.dataset.art=isFloor?'floor':'fallback';\n",
+              "after": "      bg.src=background;const masks=building.floorRegistry.get(floor.id).art.foregroundMasks;map.dataset.foreground=masks.length?'floor':'none';for(const mask of masks)if(foregrounds[mask.slot])foregrounds[mask.slot].src=mask.source==='background'?background:mask.src;bg.hidden=false;bg.alt=floor.label+' · HANI GROUP';map.dataset.art=isFloor?'floor':'fallback';\n"
+            },
+            {
+              "beforeStart": 398540,
+              "afterStart": 405016,
+              "before": "    if(returning&&building.canon)for(const key of selected){const actor=actors.get(key),elevator=building.anchors.get('elevator_'+activeFloor);if(actor&&!actor.hidden&&elevator)seatActor(actor,{id:elevator.id,anchor:elevator.id,zone:'meeting',x:building.visualPoint(elevator)[0],y:building.visualPoint(elevator)[1],posture:'standing'},true)}\n",
+              "after": "    if(returning&&building.canon)for(const key of selected){const actor=actors.get(key),elevator=building.anchors.get(building.floorRegistry.elevatorAnchor(activeFloor));if(actor&&!actor.hidden&&elevator)seatActor(actor,{id:elevator.id,anchor:elevator.id,zone:'meeting',x:building.visualPoint(elevator)[0],y:building.visualPoint(elevator)[1],posture:'standing'},true)}\n"
+            }
+          ]
+        },
+        "hani-office-live.css": {
+          "beforeSha256": "6281f9104eede3455b278342606793287fb8fdf52f7e31361db30e7a79ef0810",
+          "afterSha256": "8d4d0b4e83fcefbf4e473441a191b60e1cdef526f72406254b16d2abaf888d2d",
+          "beforeBytes": 39920,
+          "afterBytes": 39966,
+          "replacements": [
+            {
+              "beforeStart": 6369,
+              "afterStart": 6369,
+              "before": ".hani-building-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:16px}\n",
+              "after": ".hani-building-tabs{display:grid;grid-template-columns:repeat(var(--hani-floor-cols,5),minmax(0,1fr));gap:8px;margin-top:16px}\n"
+            },
+            {
+              "beforeStart": 13782,
+              "afterStart": 13805,
+              "before": "@media(max-width:700px){.hani-building-floor-label,.hani-building-overflow{top:auto;right:auto;bottom:auto;font-size:12px}.hani-building-tabs button:last-child{grid-column:1/-1}}\n",
+              "after": "@media(max-width:700px){.hani-building-floor-label,.hani-building-overflow{top:auto;right:auto;bottom:auto;font-size:12px}.hani-building-tabs button:nth-child(odd):last-child{grid-column:1/-1}}\n"
+            },
+            {
+              "beforeStart": 27399,
+              "afterStart": 27437,
+              "before": ".hani-office-map[data-floor=\"3f\"][data-art=\"floor\"]:has(.hani-office-actor[data-seat=\"dev-lead\"][data-pose=\"sitting\"]:not([hidden]))>.hani-office-foreground:nth-of-type(2){display:block;clip-path:polygon(9.33% 67%,14.83% 67%,14.83% 85%,9.33% 85%)}\n",
+              "after": ".hani-office-map[data-foreground=\"floor\"][data-art=\"floor\"]:has(.hani-office-actor[data-seat=\"dev-lead\"][data-pose=\"sitting\"]:not([hidden]))>.hani-office-foreground:nth-of-type(2){display:block;clip-path:polygon(9.33% 67%,14.83% 67%,14.83% 85%,9.33% 85%)}\n"
+            }
+          ]
+        },
+        "scripts/hani-release-305-source.cjs": {
+          "beforeSha256": "37196b1ab6dbf0567e129777018b9dc483648eec12cca9d24e0bd531b58752f2",
+          "afterSha256": "493075143b4b482d02c8f64eebd10adcf6cc21d40e8e7fca900fc2537c0b37ba",
+          "beforeBytes": 2040,
+          "afterBytes": 2147,
+          "replacements": [
+            {
+              "beforeStart": 0,
+              "afterStart": 0,
+              "before": "",
+              "after": "require('./hani-building-phase1-preload.cjs'); // Phase 1 / motion / 306 precede every historical capture.\n"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "office-motion",
+      "files": {
+        "hani-office-live.js": {
+          "beforeSha256": "8b4f310112dde3fb1cfd2fbd4aff6c86fe7ef76abf440753beda49d2ea7fa9a0",
+          "afterSha256": "8ff690a0bf507db3f2b85dae10c00a84227eb994f34883b0e113a28c55fb04d4",
+          "beforeBytes": 444263,
+          "afterBytes": 453427,
+          "replacements": [
+            {
+              "beforeStart": 26598,
+              "afterStart": 26598,
+              "before": "",
+              "after": "  function easeRun(u,durationSec){\n    u=Math.max(0,Math.min(1,u));\n    if(u<=0)return 0;if(u>=1)return 1;\n    const r=durationSec>0?Math.min(.5,.45/durationSec):.5;\n    if(u<r)return u*u/(2*r*(1-r));\n    if(u<=1-r)return (u-r/2)/(1-r);\n    const w=1-u;return 1-w*w/(2*r*(1-r));\n  }\n  function compileCurve(waypoints,w=art?.width||1672,h=art?.height||941){\n    const pts=[];\n    for(const p of waypoints){\n      const prev=pts.at(-1);\n      if(!prev||Math.hypot((p[0]-prev[0])*w/100,(p[1]-prev[1])*h/100)>=.01)pts.push(p);\n    }\n    if(pts.length<2)return {segs:[],totalLen:0,last:pts[0]||[0,0]};\n    const px=p=>[p[0]*w/100,p[1]*h/100],segs=[];\n    let cursor=pts[0],total=0;\n    const addLine=(a,b)=>{\n      const len=Math.hypot((b[0]-a[0])*w/100,(b[1]-a[1])*h/100);\n      if(len<.001)return;\n      segs.push({kind:'line',a,b,len,cumStart:total,cumEnd:total+len});total+=len;\n    };\n    const addQuad=(a,c,b)=>{\n      let len=0,prev=px(a);\n      for(let k=1;k<=4;k++){\n        const u=k/4,m=1-u,qx=m*m*a[0]+2*m*u*c[0]+u*u*b[0],qy=m*m*a[1]+2*m*u*c[1]+u*u*b[1],cur=[qx*w/100,qy*h/100];\n        len+=Math.hypot(cur[0]-prev[0],cur[1]-prev[1]);prev=cur;\n      }\n      if(len<.001)return;\n      segs.push({kind:'quad',a,c,b,len,cumStart:total,cumEnd:total+len});total+=len;\n    };\n    for(let i=1;i<pts.length-1;i++){\n      const p0=px(pts[i-1]),p1=px(pts[i]),p2=px(pts[i+1]);\n      const l1=Math.hypot(p1[0]-p0[0],p1[1]-p0[1]),l2=Math.hypot(p2[0]-p1[0],p2[1]-p1[1]);\n      const dot=l1>0&&l2>0?((p1[0]-p0[0])*(p2[0]-p1[0])+(p1[1]-p0[1])*(p2[1]-p1[1]))/(l1*l2):1;\n      const trim=dot<.985?Math.min(14,l1*.3,l2*.3):0;\n      if(trim>=1){\n        const a=[pts[i][0]-(p1[0]-p0[0])/l1*trim/w*100,pts[i][1]-(p1[1]-p0[1])/l1*trim/h*100];\n        const b=[pts[i][0]+(p2[0]-p1[0])/l2*trim/w*100,pts[i][1]+(p2[1]-p1[1])/l2*trim/h*100];\n        addLine(cursor,a);addQuad(a,pts[i],b);cursor=b;\n      }else{\n        addLine(cursor,pts[i]);cursor=pts[i];\n      }\n    }\n    addLine(cursor,pts.at(-1));\n    return {segs,totalLen:total,last:pts.at(-1)};\n  }\n  function sampleCurve(curve,dist){\n    if(!curve.segs.length)return {position:curve.last,dx:0};\n    const d=Math.max(0,Math.min(curve.totalLen,dist));\n    let seg=curve.segs.at(-1);\n    for(const s of curve.segs)if(d<=s.cumEnd){seg=s;break}\n    const u=seg.len>0?Math.max(0,Math.min(1,(d-seg.cumStart)/seg.len)):1;\n    if(seg.kind==='line')return {position:[seg.a[0]+(seg.b[0]-seg.a[0])*u,seg.a[1]+(seg.b[1]-seg.a[1])*u],dx:seg.b[0]-seg.a[0]};\n    const m=1-u;\n    return {\n      position:[m*m*seg.a[0]+2*m*u*seg.c[0]+u*u*seg.b[0],m*m*seg.a[1]+2*m*u*seg.c[1]+u*u*seg.b[1]],\n      dx:2*m*(seg.c[0]-seg.a[0])+2*u*(seg.b[0]-seg.c[0])\n    };\n  }\n  function buildWalkRuns(legs){\n    const runs=[],w=art?.width||1672,h=art?.height||941;let cur=null;\n    for(const leg of legs){\n      const a=anchors.get(leg.from),b=anchors.get(leg.to);\n      if(a.floor!==b.floor){cur=null;continue}\n      if(!cur||Math.abs(leg.start-cur.end)>1e-6||cur.floor!==a.floor){\n        cur={floor:a.floor,start:leg.start,end:leg.end,waypoints:[visualPoint(a),visualPoint(b)]};\n        runs.push(cur);\n      }else{cur.end=leg.end;cur.waypoints.push(visualPoint(b))}\n    }\n    for(const run of runs){run.duration=run.end-run.start;run.curve=compileCurve(run.waypoints,w,h)}\n    return runs;\n  }\n"
+            },
+            {
+              "beforeStart": 85527,
+              "afterStart": 88830,
+              "before": "",
+              "after": "    const walkRunCache=new WeakMap();\n    function phaseRuns(legs){let runs=walkRunCache.get(legs);if(!runs){runs=buildWalkRuns(legs);walkRunCache.set(legs,runs)}return runs}\n"
+            },
+            {
+              "beforeStart": 86033,
+              "afterStart": 89511,
+              "before": "        const a=anchors.get(leg.from),b=anchors.get(leg.to),pa=visualPoint(a),pb=visualPoint(b),ratio=(seconds-leg.start)/(leg.end-leg.start);\n        return {state,seat:slot(a.id,'stand'),floor:a.floor,walking:a.floor===b.floor,waiting:a.floor!==b.floor,position:a.floor===b.floor?[pa[0]+(pb[0]-pa[0])*ratio,pa[1]+(pb[1]-pa[1])*ratio]:pa};\n",
+              "after": "        const a=anchors.get(leg.from),b=anchors.get(leg.to),pa=visualPoint(a);\n        if(a.floor!==b.floor)return {state,seat:slot(a.id,'stand'),floor:a.floor,walking:false,waiting:true,position:pa};\n        const phase=seconds<outEnd?t.out:t.back,run=phaseRuns(phase).find(r=>r.start<=seconds&&seconds<r.end);\n        const u=run&&run.duration>0?(seconds-run.start)/run.duration:(seconds-leg.start)/(leg.end-leg.start);\n        const pos=run?sampleCurve(run.curve,easeRun(u,run.duration)*run.curve.totalLen).position:pa;\n        return {state,seat:slot(a.id,'stand'),floor:a.floor,walking:true,waiting:false,position:pos};\n"
+            },
+            {
+              "beforeStart": 173141,
+              "afterStart": 176903,
+              "before": "          pose:state.walking?(Math.floor(seconds*5)%2?'walk-a':'walk-b'):state.seat.posture,activity:p.visitor?'visit':event&&!card?(action.personalNonWork?'rest':action.layer===3?'meeting':'work'):lounge||card?.id==='cafe-1f'&&state.state==='AT_PLACE'?'rest':'work',\n",
+              "after": "          pose:state.walking?(Math.floor((seconds+seed(day+'|walk|'+p.id)%10/10)*5)%2?'walk-a':'walk-b'):state.seat.posture,activity:p.visitor?'visit':event&&!card?(action.personalNonWork?'rest':action.layer===3?'meeting':'work'):lounge||card?.id==='cafe-1f'&&state.state==='AT_PLACE'?'rest':'work',\n"
+            },
+            {
+              "beforeStart": 231132,
+              "afterStart": 234926,
+              "before": "    let day='',nextAt=0,active=null,counts=new Map(),patrolSeen=new Map();\n",
+              "after": "    let day='',nextAt=0,active=null,counts=new Map(),patrolSeen=new Map(),facings=new Map();\n"
+            },
+            {
+              "beforeStart": 231364,
+              "afterStart": 235176,
+              "before": "    function reset(now){const today=koreaTime(now).toISOString().slice(0,10);if(today!==day){day=today;nextAt=now.getTime()+period()*1000;active=null;counts=new Map();patrolSeen=new Map()}}\n",
+              "after": "    function reset(now){const today=koreaTime(now).toISOString().slice(0,10);if(today!==day){day=today;nextAt=now.getTime()+period()*1000;active=null;counts=new Map();patrolSeen=new Map();facings=new Map()}}\n"
+            },
+            {
+              "beforeStart": 237340,
+              "afterStart": 241170,
+              "before": "",
+              "after": "    function segmentAt(path,progress){\n      const lengths=path.slice(1).map((p,i)=>distance(p,path[i])),total=lengths.reduce((a,b)=>a+b,0);let remaining=Math.max(0,Math.min(1,progress))*total;\n      for(let i=0;i<lengths.length;i++){if(remaining<=lengths[i]||i===lengths.length-1){const t=lengths[i]?Math.min(1,remaining/lengths[i]):1;return {point:[path[i][0]+(path[i+1][0]-path[i][0])*t,path[i][1]+(path[i+1][1]-path[i][1])*t],from:path[i],to:path[i+1]}}remaining-=lengths[i]}return {point:path.at(-1),from:path.at(-2)||path[0],to:path.at(-1)};\n    }\n"
+            },
+            {
+              "beforeStart": 239033,
+              "afterStart": 243417,
+              "before": "        child.position=sample(path,progress);active.positions.push(child.position);child.walking=!reduced&&progress>=0&&progress<1;child.pose=child.walking?Math.floor(elapsed*4)%2?'walk-a':'walk-b':'standing';child.facing=(path.at(-1)[0]-path[0][0])<0?'left':'right';delete child.artPose;delete child.scene;delete child.reaction;\n",
+              "after": "        const seg=segmentAt(path,progress),segDx=(seg.to[0]-seg.from[0])*art.width/100;\n        const jitter=(residentSeed('walk-phase|'+id)%100)/100,wave=(elapsed+jitter)*9;\n        if(Math.abs(segDx)>=6)facings.set(id,segDx<0?'left':'right');\n        child.position=seg.point;active.positions.push(child.position);child.walking=!reduced&&progress>=0&&progress<1;child.pose=child.walking?Math.floor((elapsed+jitter)*4)%2?'walk-a':'walk-b':'standing';child.facing=facings.get(id)||child.facing||'right';delete child.artPose;delete child.scene;delete child.reaction;\n"
+            },
+            {
+              "beforeStart": 239559,
+              "afterStart": 244179,
+              "before": "        if(reduced)delete child.motion;else child.motion={bob:child.walking&&index===0?-Math.abs(Math.sin(elapsed*9))*3:0,lean:0,spin:0};\n",
+              "after": "        if(reduced)delete child.motion;else child.motion={bob:child.walking?-Math.abs(Math.sin(wave))*(index===0?2.8:1.8):0,lean:child.walking?Math.sin(wave)*(index===0?1.6:1.1):0,spin:0};\n"
+            },
+            {
+              "beforeStart": 240214,
+              "afterStart": 244885,
+              "before": "",
+              "after": "  const companionPrevFacing=new Map();\n"
+            },
+            {
+              "beforeStart": 243787,
+              "afterStart": 248497,
+              "before": "        walking=!reduced&&!!chair.walking;pose=walking?(Math.floor(seconds*4)%2?'walk-a':'walk-b'):chair.pose==='sitting'||chair.seat?.posture==='sitting'?'sitting':'standing';\n",
+              "after": "        const walkJitter=(residentSeed('walk-phase|'+person.id)%100)/100,walkWave=(seconds+walkJitter)*9;\n        walking=!reduced&&!!chair.walking;pose=walking?(Math.floor((seconds+walkJitter)*4)%2?'walk-a':'walk-b'):chair.pose==='sitting'||chair.seat?.posture==='sitting'?'sitting':'standing';\n        if(walking)motion={bob:-Math.abs(Math.sin(walkWave))*(person.id==='kid-suyeon'?2.8:person.id==='kid-suhyeon'?1.8:person.id==='companion-frog'||person.id==='companion-chick'?2.4:1.6),lean:Math.sin(walkWave)*(person.id==='kid-suyeon'?1.6:person.id==='kid-suhyeon'?1.1:1.2),spin:0};\n"
+            },
+            {
+              "beforeStart": 244987,
+              "afterStart": 250104,
+              "before": "        if(!reduced&&a!==b){motion=petMotion(person.id,day,rhythm.beat,a,b,rhythm.elapsed,v=>free(floor,v));if(motion){({position,point,walking,facing,pose}=motion);if(person.id==='companion-chick'&&walking)motion={...motion,bob:-Math.abs(Math.sin(seconds*9))*2.5}}}\n",
+              "after": "        if(!reduced&&a!==b){motion=petMotion(person.id,day,rhythm.beat,a,b,rhythm.elapsed,v=>free(floor,v),1,companionPrevFacing.get(person.id)||null);if(motion){({position,point,walking,facing,pose}=motion);companionPrevFacing.set(person.id,facing);if(person.id==='companion-chick'&&walking)motion={...motion,bob:-Math.abs(Math.sin((seconds+(residentSeed('walk-phase|'+person.id)%100)/100)*9))*2.5}}}\n"
+            },
+            {
+              "beforeStart": 246042,
+              "afterStart": 251294,
+              "before": "        if(person.id==='kid-suyeon'&&walking)state.motion={bob:-Math.abs(Math.sin(seconds*9))*3,lean:Math.sin(seconds*9)*2,spin:0};\n",
+              "after": ""
+            },
+            {
+              "beforeStart": 252480,
+              "afterStart": 257600,
+              "before": "    const duration=reduced?rhythm.period:Math.min(rhythm.period*.8,sister?6:9),progress=Math.min(1,rhythm.elapsed/duration),lengths=route.slice(1).map((v,i)=>distance(route[i],v)),length=lengths.reduce((a,b)=>a+b,0);\n    let cursor=progress*length,position=home,from=home,to=home;\n    for(let i=0;i<lengths.length;i++){if(cursor<=lengths[i]){from=route[i];to=route[i+1];const t=lengths[i]?cursor/lengths[i]:1,e=petEase(t);position=[from[0]+(to[0]-from[0])*e,from[1]+(to[1]-from[1])*e];break}cursor-=lengths[i];}\n",
+              "after": "    const duration=reduced?rhythm.period:Math.min(rhythm.period*.8,sister?6:9),progress=Math.min(1,rhythm.elapsed/duration),easedProgress=reduced?progress:petEase(progress),lengths=route.slice(1).map((v,i)=>distance(route[i],v)),length=lengths.reduce((a,b)=>a+b,0);\n    let cursor=easedProgress*length,position=home,from=home,to=home;\n    for(let i=0;i<lengths.length;i++){if(cursor<=lengths[i]||i===lengths.length-1){from=route[i];to=route[i+1];const t=lengths[i]?Math.min(1,cursor/lengths[i]):1;position=[from[0]+(to[0]-from[0])*t,from[1]+(to[1]-from[1])*t];break}cursor-=lengths[i];}\n"
+            },
+            {
+              "beforeStart": 253039,
+              "afterStart": 258234,
+              "before": "    const moving=length>0&&progress<1&&!(chair.walking&&rhythm.elapsed>rhythm.period*.72);\n    if(moving){child.walking=!reduced;child.pose=reduced?'standing':Math.floor(seconds*4)%2?'walk-a':'walk-b';child.facing=to[0]<from[0]?'left':'right';}\n",
+              "after": "    const moving=length>0&&progress<1&&!(chair.walking&&rhythm.elapsed>rhythm.period*.72),walkJitter=(residentSeed('walk-phase|'+child.id)%100)/100,walkWave=(seconds+walkJitter)*9,segDx=(to[0]-from[0])*art.width/100;\n    if(moving){child.walking=!reduced;child.pose=reduced?'standing':Math.floor((seconds+walkJitter)*4)%2?'walk-a':'walk-b';if(Math.abs(segDx)>=6)child.facing=segDx<0?'left':'right';}\n"
+            },
+            {
+              "beforeStart": 253430,
+              "afterStart": 258780,
+              "before": "    if(!reduced&&sister)child.motion={bob:action==='bounce'||moving?-Math.abs(Math.sin(seconds*9))*3:0,lean:action==='wave'?Math.sin(seconds*6)*3:0,spin:0};\n",
+              "after": "    if(!reduced){\n      if(sister)child.motion={bob:action==='bounce'||moving?-Math.abs(Math.sin(walkWave))*2.8:0,lean:moving?Math.sin(walkWave)*1.6:action==='wave'?Math.sin(walkWave*.7)*2.5:0,spin:0};\n      else child.motion={bob:moving?-Math.abs(Math.sin(walkWave))*1.8:0,lean:moving?Math.sin(walkWave)*1.1:0,spin:0};\n    }\n"
+            },
+            {
+              "beforeStart": 264267,
+              "afterStart": 269786,
+              "before": "      // A shared six-second beat with two-second pet offsets prevents a chorus.\n      const seed=residentSeed('pet-life|'+clock.day+'|'+pet.id),slot=['pet-cat','pet-dog','pet-rabbit','pet-bori'].indexOf(pet.id),period=pet.id==='pet-bori'?12:6,time=clock.seconds+residentSeed('pet-life|'+clock.day)%period-slot*2,beat=Math.floor(time/period),elapsed=time%period;\r\n",
+              "after": "      // A shared six-second beat with two-second pet offsets and per-pet jitter prevents a chorus.\n      const seed=residentSeed('pet-life|'+clock.day+'|'+pet.id),slot=['pet-cat','pet-dog','pet-rabbit','pet-bori'].indexOf(pet.id),period=pet.id==='pet-bori'?12:6,time=clock.seconds+residentSeed('pet-life|'+clock.day)%period-slot*2+(seed%11)/10,beat=Math.floor(time/period),elapsed=time%period;\r\n"
+            },
+            {
+              "beforeStart": 266731,
+              "afterStart": 272282,
+              "before": "  function petMotion(id,day,beat,a,b,elapsed,free=()=>true,pace=1){\n    const seed=residentSeed('pet-leg|'+day+'|'+id+'|'+beat),rabbit=id==='pet-rabbit',dog=id==='pet-dog',base=id==='pet-bori'?18:rabbit?18:dog?48:40,speed=base*pace*(.9+seed%21/100),route=petRoute(a,b,seed),fallback=residentSeed('pet-facing|'+day+'|'+id)%2?'left':'right';\n",
+              "after": "  function petMotion(id,day,beat,a,b,elapsed,free=()=>true,pace=1,prevFacing=null){\n    const seed=residentSeed('pet-leg|'+day+'|'+id+'|'+beat),rabbit=id==='pet-rabbit',dog=id==='pet-dog',base=id==='pet-bori'?18:rabbit?18:dog?48:40,speed=base*pace*(.9+seed%21/100),route=petRoute(a,b,seed),fallback=prevFacing||(residentSeed('pet-facing|'+day+'|'+id)%2?'left':'right');\n"
+            },
+            {
+              "beforeStart": 269096,
+              "afterStart": 274677,
+              "before": "    const stride=rabbit?18:dog?24:30,phase=distance/stride,frame=Math.floor(phase)%2?'b':'a',bob=walking?-Math.sin(Math.PI*(phase%1))*(rabbit?2.2:dog?1.3:.35):0;\r\n",
+              "after": "    const stride=id==='pet-bori'?12:rabbit?18:dog?24:30,phase=distance/stride,frame=Math.floor(phase)%2?'b':'a',bob=walking?-Math.sin(Math.PI*(phase%1))*(rabbit?2.4:dog?1.8:id==='pet-bori'?1.5:id==='companion-frog'||id==='companion-chick'?2.4:1.2):0;\r\n"
+            },
+            {
+              "beforeStart": 281727,
+              "afterStart": 287397,
+              "before": "",
+              "after": "  const petPrev=new Map();\n  function slewCompanion(floor,from,to,dt,kid=false){\n    const w=art?.width||1672,h=art?.height||941,dx=(to[0]-from[0])*w/100,dy=(to[1]-from[1])*h/100,dist=Math.hypot(dx,dy);\n    if(dist<=.5||dt<=0)return {position:to,moved:false,dx:0};\n    const step=Math.min(dist,240*dt);\n    if(step>=dist-.5)return {position:to,moved:false,dx};\n    const ratio=step/dist,cand=[from[0]+(to[0]-from[0])*ratio,from[1]+(to[1]-from[1])*ratio];\n    if(companionSafe(floor,cand,kid))return {position:cand,moved:true,dx:dx*ratio};\n    const altX=[cand[0],from[1]],altY=[from[0],cand[1]];\n    if(Math.abs(dx)>=Math.abs(dy)&&companionSafe(floor,altX,kid))return {position:altX,moved:true,dx:dx*ratio};\n    if(companionSafe(floor,altY,kid))return {position:altY,moved:true,dx:0};\n    if(companionSafe(floor,altX,kid))return {position:altX,moved:true,dx:dx*ratio};\n    return {position:to,moved:false,dx};\n  }\n"
+            },
+            {
+              "beforeStart": 281869,
+              "afterStart": 288453,
+              "before": "    const time=koreaTime(now),clock=residentClock(now),hour=clock.hour;\n",
+              "after": "    const time=koreaTime(now),clock=residentClock(now),hour=clock.hour,nowMs=now.getTime();\n"
+            },
+            {
+              "beforeStart": 283812,
+              "afterStart": 290416,
+              "before": "",
+              "after": "      const residentFree=p=>!occupied.some(q=>{const at=q.position||(q.seat&&[q.seat.x,q.seat.y]);return q.resident&&q.floor===floor&&at&&Math.hypot((p[0]-at[0])*art.width/100,(p[1]-at[1])*art.height/100)<96});\n      const prev=petPrev.get(person.id),validPrev=prev&&prev.day===day&&prev.floor===floor&&nowMs>prev.at&&nowMs-prev.at<=3000;\n      const holdStart=validPrev&&!reduced&&!sleeping&&residentSafe(floor,prev.point,prev.position,!!person.pet)&&residentFree(prev.position)?(prev.holdStart??nowMs):null;\n      const canHold=holdStart!==null&&nowMs-holdStart<=2500;\n"
+            },
+            {
+              "beforeStart": 284132,
+              "afterStart": 291307,
+              "before": "      if(group&&residentVisitPath(residentSpot(spots[0]),group,free).length)spots.splice(1,spots.length-1,group.id);\n",
+              "after": "      if(group&&residentVisitPath(residentSpot(spots[0]),group,canHold?residentFree:free).length)spots.splice(1,spots.length-1,group.id);\n"
+            },
+            {
+              "beforeStart": 285518,
+              "afterStart": 292714,
+              "before": "      let position=anchor.visual,point=[anchor.x,anchor.y],walking=false,facing=seed%2?'left':'right',pose=person.pet?(sleeping?'sleep':scene?'sitting':beat%3?'sitting':'standing'):'standing',distance=0,motion;\n",
+              "after": "      let position=anchor.visual,point=[anchor.x,anchor.y],walking=false,facing=validPrev?prev.facing:(seed%2?'left':'right'),pose=person.pet?(sleeping?'sleep':scene?'sitting':beat%3?'sitting':'standing'):'standing',distance=0,motion,heldSince=null;\n      const holdPrev=()=>{anchor=prev.anchor||anchor;position=prev.position;point=prev.point;walking=false;facing=prev.facing;pose=person.pet?'sitting':'standing';scene=null;motion=undefined;heldSince=holdStart};\n"
+            },
+            {
+              "beforeStart": 286392,
+              "afterStart": 293840,
+              "before": "        const a=path[0],b=path.at(-1),sample=petMotion(person.id,day,rhythm.beat,a,b,elapsed,free,person.id==='pet-bori'?.2:1);\n        if(sample){motion=sample;({position,point,walking,facing,pose}=sample);if(sample.active)anchor=a;else {position=b.visual;point=[b.x,b.y];pose=scene?'sitting':beat%3?'sitting':'standing'}}\r\n",
+              "after": "        const a=path[0],b=path.at(-1),sample=petMotion(person.id,day,rhythm.beat,a,b,elapsed,free,person.id==='pet-bori'?.55:1,validPrev?prev.facing:null);\n        if(sample){motion=sample;({position,point,walking,facing,pose}=sample);if(sample.active)anchor=a;else {position=b.visual;point=[b.x,b.y];pose=scene?'sitting':beat%3?'sitting':'standing'}}else if(canHold)holdPrev();\r\n"
+            },
+            {
+              "beforeStart": 287003,
+              "afterStart": 294506,
+              "before": "        if(elapsed<duration){const t=duration?elapsed/duration:1;anchor=a;position=[va[0]+(vb[0]-va[0])*t,va[1]+(vb[1]-va[1])*t];point=[a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t];distance+=length*t;walking=true;facing=vb[0]<va[0]?'left':'right';pose=(rabbit?'hop-':'walk-')+(Math.floor(distance/(rabbit?18:30))%2?'b':'a');break}\r\n",
+              "after": "        if(elapsed<duration){const t=duration?elapsed/duration:1;anchor=a;position=[va[0]+(vb[0]-va[0])*t,va[1]+(vb[1]-va[1])*t];point=[a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t];distance+=length*t;walking=true;const fdx=(vb[0]-va[0])*art.width/100;if(Math.abs(fdx)>=12)facing=fdx<0?'left':'right';pose=(rabbit?'hop-':'walk-')+(Math.floor(distance/(rabbit?18:30))%2?'b':'a');break}\r\n"
+            },
+            {
+              "beforeStart": 287650,
+              "afterStart": 295206,
+              "before": "      if(!free(position)){const alternatives=sleeping?[...spots.map(residentSpot),...[...residentStops.values()].filter(a=>a.floor===floor&&(person.id==='pet-rabbit'||!a.id.startsWith('resident_rabbit_'))&&residentSpot(a.id))]:spots.map(residentSpot),fallback=alternatives.find(a=>free(a.visual));if(!fallback)return [];anchor=fallback;position=anchor.visual;point=[anchor.x,anchor.y];walking=false;pose=person.pet?(sleeping?'sleep':'sitting'):'standing';scene=null;motion=undefined}\n",
+              "after": "      if(person.pet&&!stroll&&canHold&&!free(prev.position)||!free(position)){\n        if(canHold){\n          holdPrev();\n        }else{\n          const alternatives=sleeping?[...spots.map(residentSpot),...[...residentStops.values()].filter(a=>a.floor===floor&&(person.id==='pet-rabbit'||!a.id.startsWith('resident_rabbit_'))&&residentSpot(a.id))]:spots.map(residentSpot),fallback=alternatives.find(a=>free(a.visual));if(!fallback)return [];anchor=fallback;position=anchor.visual;point=[anchor.x,anchor.y];walking=false;pose=person.pet?(sleeping?'sleep':'sitting'):'standing';scene=null;motion=undefined;heldSince=null;\n        }\n      }\n      if(!prev||nowMs!==prev.at)petPrev.set(person.id,{at:nowMs,day,floor,anchor,position,point,facing,holdStart:heldSince});\n"
+            },
+            {
+              "beforeStart": 289242,
+              "afterStart": 297078,
+              "before": "  const residents=Object.freeze({names:residentNames,people:residentPeople,companions:companionPeople,kidsVisitLines,createKidsVisits,companionSnapshot,companionAtlas,companionReactions,companionSafe,seed:residentSeed,clock:residentClock,rhythm:residentRhythm,motion:petMotion,route:petRoute,ease:petEase,facing:petFacing,life:residentLife,affection:residentAffection,affectionVoice:residentAffectionVoice,voice:residentVoice,snapshot:residentSnapshot,safe:residentSafe,spot:residentSpot,path:residentPath,atlas:residentAtlas,bounds:residentBounds,trio:residentTrio,trioLines:residentTrioLines,trioChat:residentTrioChat,furniture:residentFurniture});\n",
+              "after": "  const residents=Object.freeze({names:residentNames,people:residentPeople,companions:companionPeople,kidsVisitLines,createKidsVisits,companionSnapshot,companionAtlas,companionReactions,companionSafe,slew:slewCompanion,seed:residentSeed,clock:residentClock,rhythm:residentRhythm,motion:petMotion,route:petRoute,ease:petEase,facing:petFacing,life:residentLife,affection:residentAffection,affectionVoice:residentAffectionVoice,voice:residentVoice,snapshot:residentSnapshot,safe:residentSafe,spot:residentSpot,path:residentPath,atlas:residentAtlas,bounds:residentBounds,trio:residentTrio,trioLines:residentTrioLines,trioChat:residentTrioChat,furniture:residentFurniture});\n"
+            },
+            {
+              "beforeStart": 291388,
+              "afterStart": 299243,
+              "before": "    const step=60,phase=Math.max(0,distance)/step;\n    return {pose:Math.floor(phase)%2?'walk-b':'walk-a',bounce:reduced?0:-Math.abs(Math.sin(phase*Math.PI))*.65,lean:reduced?0:Math.sign(dx)*.9};\n",
+              "after": "    const step=45,phase=Math.max(0,distance)/step;\n    return {pose:Math.floor(phase)%2?'walk-b':'walk-a',bounce:reduced?0:-Math.abs(Math.sin(phase*Math.PI))*2.4,lean:reduced?0:(dx<0?-1:1)*Math.sin(phase*Math.PI)*1.35};\n"
+            },
+            {
+              "beforeStart": 291588,
+              "afterStart": 299467,
+              "before": "",
+              "after": "  const motionRunCache=new WeakMap();\n"
+            },
+            {
+              "beforeStart": 291757,
+              "afterStart": 299674,
+              "before": "    const legs=seconds<outEnd?person.out:person.back;let distance=0,dx=0;\n    for(const leg of legs){\n      if(seconds<=leg.start)break;\n      const a=anchors.get(leg.from),b=anchors.get(leg.to),pa=visualPoint(a),pb=visualPoint(b);\n      if(a.floor!==b.floor)continue;\n      const ratio=Math.max(0,Math.min(1,(seconds-leg.start)/(leg.end-leg.start)));\n      distance+=Math.hypot((pb[0]-pa[0])*(art?.width||1672)/100,(pb[1]-pa[1])*(art?.height||941)/100)*ratio;\n      if(seconds<leg.end)dx=pb[0]-pa[0];\n",
+              "after": "    const legs=seconds<outEnd?person.out:person.back;let runs=motionRunCache.get(legs);\n    if(!runs){runs=buildWalkRuns(legs);motionRunCache.set(legs,runs)}\n    let distance=0,dx=0;\n    for(const run of runs){\n      if(seconds<=run.start)break;\n      if(seconds>=run.end){distance+=run.curve.totalLen;continue}\n      const u=run.duration>0?(seconds-run.start)/run.duration:1,dist=easeRun(u,run.duration)*run.curve.totalLen;\n      distance+=dist;dx=sampleCurve(run.curve,dist).dx;break;\n"
+            },
+            {
+              "beforeStart": 295438,
+              "afterStart": 303340,
+              "before": "  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,residents,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,motion:Object.freeze({gait:distanceGait,sample:sampleMotion,createReactions,stableActorBox,stableSpriteBox,stableMascotBox,effectDurations}),atmosphere:Object.freeze({light:officeLight,background:officeBackground,monitors:workingMonitors,opacity:monitorOpacity}),labels:Object.freeze({priority:statusLabelPriority,place:placeStatusLabels,short:phoneStatusLine}),places:Object.freeze([...places,...(scheduler?.errandPlaces||[]),...(scheduler?.reportPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines,dramaDate,validateDrama:validDramaBank})});\n",
+              "after": "  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,residents,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,motion:Object.freeze({gait:distanceGait,sample:sampleMotion,ease:easeRun,curve:compileCurve,sampleCurve,createReactions,stableActorBox,stableSpriteBox,stableMascotBox,effectDurations}),atmosphere:Object.freeze({light:officeLight,background:officeBackground,monitors:workingMonitors,opacity:monitorOpacity}),labels:Object.freeze({priority:statusLabelPriority,place:placeStatusLabels,short:phoneStatusLine}),places:Object.freeze([...places,...(scheduler?.errandPlaces||[]),...(scheduler?.reportPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines,dramaDate,validateDrama:validDramaBank})});\n"
+            },
+            {
+              "beforeStart": 315857,
+              "afterStart": 323803,
+              "before": "    const rhythm=resident?HaniBuildingScene.residents.seed('idle-motion|'+key):HaniBuildingScene.scheduler?.seed('idle-motion|'+key)||row;actor.style.setProperty('--idle-duration',(3.6+rhythm%29/10)+'s');actor.style.setProperty('--idle-delay',(-rhythm%67/10)+'s');\n",
+              "after": "    let idleHash=2166136261;for(const ch of 'idle-motion|'+key)idleHash=Math.imul(idleHash^ch.charCodeAt(0),16777619);const rhythm=idleHash>>>0;actor.style.setProperty('--idle-duration',(3.4+rhythm%29/10)+'s');actor.style.setProperty('--idle-delay',(-(1+rhythm%66)/10)+'s');\n"
+            },
+            {
+              "beforeStart": 365056,
+              "afterStart": 373012,
+              "before": "    if(path.length>1){actor.officeTravel={path,index:0,elapsed:0,startedAt:Date.now(),distance:0,seat};pose(actor,'walk-a');place(actor,building.visualPoint(path[0]))}\n",
+              "after": "    if(path.length>1){const waypoints=path.map(n=>building.visualPoint(n)),curve=building.motion.curve(waypoints),w=building.art?.width||1672,h=building.art?.height||941,rawLen=waypoints.slice(1).reduce((sum,p,i)=>sum+Math.hypot((p[0]-waypoints[i][0])*w/100,(p[1]-waypoints[i][1])*h/100),0),speed=building.canon?.movement?.speedPxPerSecond||180;actor.officeTravel={path,curve,duration:Math.max(1,rawLen/speed*1000),elapsed:0,startedAt:Date.now(),distance:0,seat};pose(actor,'walk-a');place(actor,waypoints[0])}\n"
+            },
+            {
+              "beforeStart": 376859,
+              "afterStart": 385158,
+              "before": "    const existing=building.residents.snapshot(now,floorSnapshot,true,reduced),states=[...existing,...building.residents.companionSnapshot(now,floorSnapshot,true,reduced,existing)];let changed=false;\n",
+              "after": "    const existing=building.residents.snapshot(now,floorSnapshot,true,reduced),states=[...existing,...building.residents.companionSnapshot(now,floorSnapshot,true,reduced,existing)],nowMs=now.getTime();let changed=false;\n"
+            },
+            {
+              "beforeStart": 377296,
+              "afterStart": 385615,
+              "before": "      if(!state){delete actor.officePetFloor;delete actor.officeKidReaction;if(wasVisible){actor.hidden=true;clearMotion(actor);if(bubblePerson===person.id)closeBubble();changed=true}continue}\n      const prior=actor.officeResidentState,walking=String(state.walking),moved=!prior||prior.position[0]!==state.position[0]||prior.position[1]!==state.position[1],turned=!prior||prior.facing!==state.facing,posed=!prior||prior.pose!==state.pose||prior.artPose!==state.artPose;\n      if(person.pet&&state.pose==='sleep'&&(!wasVisible||prior?.pose!=='sleep'))clearMotion(actor);\n",
+              "after": "      if(!state){delete actor.officePetFloor;delete actor.officeKidReaction;delete actor.officeCompanionAt;if(wasVisible){actor.hidden=true;clearMotion(actor);if(bubblePerson===person.id)closeBubble();changed=true}continue}\n      const prior=actor.officeResidentState;\n      let targetPos=state.position,effectiveWalking=state.walking,effectiveFacing=state.facing,effectivePose=state.artPose||state.pose,effectiveMotion=state.motion;\n      if(person.companion&&wasVisible&&!reduced&&actor.officePosition&&actor.officeCompanionAt!=null&&!state.artPose){\n        const dt=(nowMs-actor.officeCompanionAt)/1000;\n        if(dt>0&&dt<=1){\n          const slewed=building.residents.slew(activeFloor,actor.officePosition,state.position,dt,!!person.kid);\n          targetPos=slewed.position;\n          if(slewed.moved){\n            if(!effectiveWalking){\n              effectiveWalking=true;\n              const jitter=(building.residents.seed('walk-phase|'+person.id)%100)/100,wave=(nowMs/1000+jitter)*9;\n              effectivePose=Math.floor((nowMs/1000+jitter)*4)%2?'walk-a':'walk-b';\n              effectiveMotion={bob:-Math.abs(Math.sin(wave))*(person.id==='kid-suyeon'?2.8:person.id==='kid-suhyeon'?1.8:2),lean:Math.sin(wave)*1.2,spin:0};\n            }\n            if(Math.abs(slewed.dx)>=4)effectiveFacing=slewed.dx<0?'left':'right';\n          }\n        }\n      }\n      if(person.companion)actor.officeCompanionAt=nowMs;\n      const walking=String(effectiveWalking),moved=!actor.officePosition||actor.officePosition[0]!==targetPos[0]||actor.officePosition[1]!==targetPos[1],turned=!prior||actor.dataset.facing!==effectiveFacing,posed=!prior||actor.dataset.pose!==effectivePose;\n      if(person.pet&&effectivePose==='sleep'&&(!wasVisible||prior?.pose!=='sleep'))clearMotion(actor);\n"
+            },
+            {
+              "beforeStart": 378419,
+              "afterStart": 387947,
+              "before": "      if(turned)actor.dataset.facing=state.facing;\n      if(!prior||prior.walking!==state.walking)actor.dataset.walking=walking;\n",
+              "after": "      if(turned)actor.dataset.facing=effectiveFacing;\n      if(!prior||actor.dataset.walking!==walking)actor.dataset.walking=walking;\n"
+            },
+            {
+              "beforeStart": 378626,
+              "afterStart": 388159,
+              "before": "      if(moved)place(actor,state.position);\n      if(posed||turned)applyPose(actor,state.artPose||state.pose);\n",
+              "after": "      if(moved)place(actor,targetPos);\n      if(posed||turned)applyPose(actor,effectivePose);\n"
+            },
+            {
+              "beforeStart": 378924,
+              "afterStart": 388440,
+              "before": "        if(person.pet&&!person.companion&&actor.officePetFloor!==activeFloor){actor.officePetFloor=activeFloor;if(!reduced&&state.pose!=='sleep'&&sceneVisible())actor.officeReactions.request('hop',now.getTime()+1000*(1+['pet-cat','pet-dog','pet-rabbit','pet-bori'].indexOf(person.id)))}\n        const values=state.motion&&!reduced?[state.motion.bob.toFixed(3)+'px',state.motion.lean.toFixed(3)+'deg',state.motion.spin.toFixed(3)+'deg']:['0px','0deg','0deg'];\n",
+              "after": "        if(person.pet&&!person.companion&&actor.officePetFloor!==activeFloor){actor.officePetFloor=activeFloor;if(!reduced&&effectivePose!=='sleep'&&sceneVisible())actor.officeReactions.request('hop',now.getTime()+1000*(1+['pet-cat','pet-dog','pet-rabbit','pet-bori'].indexOf(person.id)))}\n        const values=effectiveMotion&&!reduced?[effectiveMotion.bob.toFixed(3)+'px',effectiveMotion.lean.toFixed(3)+'deg',effectiveMotion.spin.toFixed(3)+'deg']:['0px','0deg','0deg'];\n"
+            },
+            {
+              "beforeStart": 399986,
+              "afterStart": 409517,
+              "before": "        while(travel.index<travel.path.length-1){\n          const a=travel.path[travel.index],b=travel.path[travel.index+1],duration=Math.max(1,Math.hypot(b.x-a.x,b.y-a.y)/building.canon.movement.speedPxPerSecond*1000),va=building.visualPoint(a),vb=building.visualPoint(b);\n          const length=Math.hypot((vb[0]-va[0])*(building.art?.width||1672)/100,(vb[1]-va[1])*(building.art?.height||941)/100);\n          if(travel.elapsed<duration){const t=travel.elapsed/duration;moveActor(actor,[va[0]+(vb[0]-va[0])*t,va[1]+(vb[1]-va[1])*t]);gait=building.motion.gait(travel.distance+length*t,vb[0]-va[0]);break}\n          travel.elapsed-=duration;travel.startedAt+=duration;travel.distance+=length;travel.index++;\n",
+              "after": "        if(travel.elapsed>=travel.duration){finishTravel(actor);actor.dataset.walking='false'}\n        else{\n          const durationSec=travel.duration/1000,u=Math.max(0,Math.min(1,travel.elapsed/travel.duration)),s=building.motion.ease(u,durationSec);\n          const dist=s*travel.curve.totalLen,sample=building.motion.sampleCurve(travel.curve,dist);\n          moveActor(actor,sample.position);gait=building.motion.gait(dist,sample.dx);\n"
+            },
+            {
+              "beforeStart": 400704,
+              "afterStart": 409967,
+              "before": "        if(travel.index===travel.path.length-1){finishTravel(actor);actor.dataset.walking='false'}\n",
+              "after": ""
+            }
+          ]
+        },
+        "hani-office-live.css": {
+          "beforeSha256": "a7aaa77fa50268e4e01a698f1c6b932a214e709bdac732028d308353a068406e",
+          "afterSha256": "6281f9104eede3455b278342606793287fb8fdf52f7e31361db30e7a79ef0810",
+          "beforeBytes": 39455,
+          "afterBytes": 39920,
+          "replacements": [
+            {
+              "beforeStart": 21312,
+              "afterStart": 21312,
+              "before": "@keyframes hani-office-breathe{0%,100%{transform:scaleY(1) rotate(0deg)}45%{transform:scaleY(1.012) rotate(.35deg)}70%{transform:scaleY(1.004) rotate(-.2deg)}}\n@keyframes hani-office-sway{0%,100%{transform:rotate(0deg) scaleY(1)}35%{transform:rotate(.65deg) scaleY(1.006)}75%{transform:rotate(-.45deg) scaleY(1.01)}}\n",
+              "after": "@keyframes hani-office-breathe{0%,100%{transform:scaleY(1) rotate(0deg)}45%{transform:scaleY(1.026) rotate(1.1deg)}70%{transform:scaleY(1.008) rotate(-.7deg)}}\n@keyframes hani-office-sway{0%,100%{transform:rotate(0deg) scaleY(1)}35%{transform:rotate(1.3deg) scaleY(1.022)}75%{transform:rotate(-1.1deg) scaleY(1.026)}}\n"
+            },
+            {
+              "beforeStart": 26565,
+              "afterStart": 26566,
+              "before": ".hani-office-actor[data-person=\"kid-suyeon\"][data-walking=\"true\"]:not([data-motion]) .hani-office-sprite{transform:translateY(var(--pet-bob,0px)) rotate(var(--pet-lean,0deg))}\n",
+              "after": ".hani-office-actor[data-resident=\"kid\"][data-walking=\"true\"]:not([data-motion]) .hani-office-sprite{transform:translateY(var(--pet-bob,0px)) rotate(var(--pet-lean,0deg))}\n"
+            },
+            {
+              "beforeStart": 29664,
+              "afterStart": 29660,
+              "before": "@keyframes hani-pet-idle{0%,100%{transform:scale(1)}40%{transform:scale(.98,.97)}72%{transform:scale(.99,.985)}}\n",
+              "after": "@keyframes hani-pet-idle{0%,100%{transform:scale(1) rotate(0deg)}40%{transform:scale(.982,.97) rotate(.8deg)}72%{transform:scale(1.01,1.024) rotate(-.6deg)}}\n"
+            },
+            {
+              "beforeStart": 30447,
+              "afterStart": 30488,
+              "before": ".hani-office-actor[data-resident=\"pet\"][data-pose=\"sleep\"]:not([data-motion]) .hani-office-sprite{animation:hani-pet-sleep 4s ease-in-out infinite}\r\n",
+              "after": ".hani-office-actor[data-resident=\"pet\"][data-pose=\"sleep\"]:not([data-motion]) .hani-office-sprite{animation:hani-pet-sleep var(--idle-duration,4s) var(--idle-delay,0s) ease-in-out infinite}\r\n"
+            },
+            {
+              "beforeStart": 31571,
+              "afterStart": 31654,
+              "before": "@keyframes hani-pet-sleep{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.012)}}\r\n",
+              "after": "@keyframes hani-pet-sleep{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.03)}}\r\n"
+            },
+            {
+              "beforeStart": 39455,
+              "afterStart": 39537,
+              "before": "",
+              "after": "/* Motion polish 1 (11/21): the 100ms movement clock moves walkers in 10 steps per second; blend each step while walking only. */\n.hani-office-live:not([data-paused=\"true\"]) .hani-office-actor[data-walking=\"true\"]{transition:opacity .3s,left .1s linear,top .1s linear}\n@media(prefers-reduced-motion:reduce){.hani-office-live .hani-office-actor[data-walking=\"true\"]{transition:none}}\n"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "306",
+      "files": {
+        "index.html": {
+          "beforeSha256": "ee9f4082520ec5b9fdb88e815edd10fbe188cc1cafa36cf7aaedb8e63f5940c5",
+          "afterSha256": "c6c3e739b7e7a871bd9bc0e7ece06d19215cd2d4faec85a9c32b187404ae9940",
+          "beforeBytes": 265029,
+          "afterBytes": 265029,
+          "replacements": [
+            {
+              "beforeStart": 370,
+              "afterStart": 370,
+              "before": "<link rel=\"stylesheet\" href=\"./hani-ai-budget.css?v=2.9.305\">\n",
+              "after": "<link rel=\"stylesheet\" href=\"./hani-ai-budget.css?v=2.9.306\">\n"
+            },
+            {
+              "beforeStart": 710,
+              "afterStart": 710,
+              "before": "<title>갓생살기 프로젝트 · HANI OS Life Edition v2.9.305</title>\n",
+              "after": "<title>갓생살기 프로젝트 · HANI OS Life Edition v2.9.306</title>\n"
+            },
+            {
+              "beforeStart": 2169,
+              "afterStart": 2169,
+              "before": "<link rel=\"stylesheet\" href=\"./hani-style-01.css?v=2.9.305\">\r\n",
+              "after": "<link rel=\"stylesheet\" href=\"./hani-style-01.css?v=2.9.306\">\r\n"
+            },
+            {
+              "beforeStart": 2367,
+              "afterStart": 2367,
+              "before": "<link rel=\"stylesheet\" href=\"./hani-style-08.css?v=2.9.305\" id=\"hani-page-skeleton-v02992-style\">\r\n\n<link rel=\"stylesheet\" href=\"./hani-style-02.css?v=2.9.305\" id=\"v2926-sidebar-team-visual-fix\">\r\n\n\n<link rel=\"stylesheet\" href=\"./hani-style-03.css?v=2.9.305\" id=\"v2927-dashboard-team-fix\">\r\n\n\n<link rel=\"stylesheet\" href=\"./hani-style-04.css?v=2.9.305\" id=\"v2933-agent-executive-visibility\">\r\n\n\n<link rel=\"stylesheet\" href=\"./hani-style-05.css?v=2.9.305\" id=\"v2934-executive-hierarchy-agent-visibility\">\r\n\n\n<link rel=\"stylesheet\" href=\"./hani-style-06.css?v=2.9.305\" id=\"agent-color-backgrounds-v2936\">\r\n<link rel=\"stylesheet\" href=\"./hani-style-07.css?v=2.9.305\" id=\"hani-deployment-center-style\">\n<link rel=\"stylesheet\" href=\"./hani-office-live.css?v=2.9.305\">\n",
+              "after": "<link rel=\"stylesheet\" href=\"./hani-style-08.css?v=2.9.306\" id=\"hani-page-skeleton-v02992-style\">\r\n\n<link rel=\"stylesheet\" href=\"./hani-style-02.css?v=2.9.306\" id=\"v2926-sidebar-team-visual-fix\">\r\n\n\n<link rel=\"stylesheet\" href=\"./hani-style-03.css?v=2.9.306\" id=\"v2927-dashboard-team-fix\">\r\n\n\n<link rel=\"stylesheet\" href=\"./hani-style-04.css?v=2.9.306\" id=\"v2933-agent-executive-visibility\">\r\n\n\n<link rel=\"stylesheet\" href=\"./hani-style-05.css?v=2.9.306\" id=\"v2934-executive-hierarchy-agent-visibility\">\r\n\n\n<link rel=\"stylesheet\" href=\"./hani-style-06.css?v=2.9.306\" id=\"agent-color-backgrounds-v2936\">\r\n<link rel=\"stylesheet\" href=\"./hani-style-07.css?v=2.9.306\" id=\"hani-deployment-center-style\">\n<link rel=\"stylesheet\" href=\"./hani-office-live.css?v=2.9.306\">\n"
+            },
+            {
+              "beforeStart": 3999,
+              "afterStart": 3999,
+              "before": "<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/variable/woff2/SUIT-Variable.css?v=2.9.305\">\r\n<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css?v=2.9.305\">\r\n",
+              "after": "<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/variable/woff2/SUIT-Variable.css?v=2.9.306\">\r\n<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css?v=2.9.306\">\r\n"
+            },
+            {
+              "beforeStart": 7528,
+              "afterStart": 7528,
+              "before": "<link rel=\"stylesheet\" href=\"./hani-yuna-helpdesk.css?v=2.9.305\">\n<link rel=\"stylesheet\" href=\"./hani-design-system.css?v=2.9.305\">\n<link rel=\"stylesheet\" href=\"./hani-asset-market.css?v=2.9.305\">\n<link rel=\"stylesheet\" href=\"./hani-portfolio-preview.css?v=2.9.305\">\n<link rel=\"stylesheet\" href=\"./hani-investment-committee.css?v=2.9.305\">\n<link rel=\"stylesheet\" href=\"./hani-street-journal.css?v=2.9.305\">\n<link rel=\"stylesheet\" href=\"./hani-context-remote.css?v=2.9.305\">\n<link rel=\"stylesheet\" href=\"./hani-development-history.css?v=2.9.305\">\n<link rel=\"stylesheet\" href=\"./hani-character-archive.css?v=2.9.305\">\r\n<link rel=\"stylesheet\" href=\"./hani-organization-hub.css?v=2.9.305\">\n<link rel=\"stylesheet\" href=\"./hani-board.css?v=2.9.305\">\n<link rel=\"stylesheet\" href=\"./hani-ilbo.css?v=2.9.305\">\n",
+              "after": "<link rel=\"stylesheet\" href=\"./hani-yuna-helpdesk.css?v=2.9.306\">\n<link rel=\"stylesheet\" href=\"./hani-design-system.css?v=2.9.306\">\n<link rel=\"stylesheet\" href=\"./hani-asset-market.css?v=2.9.306\">\n<link rel=\"stylesheet\" href=\"./hani-portfolio-preview.css?v=2.9.306\">\n<link rel=\"stylesheet\" href=\"./hani-investment-committee.css?v=2.9.306\">\n<link rel=\"stylesheet\" href=\"./hani-street-journal.css?v=2.9.306\">\n<link rel=\"stylesheet\" href=\"./hani-context-remote.css?v=2.9.306\">\n<link rel=\"stylesheet\" href=\"./hani-development-history.css?v=2.9.306\">\n<link rel=\"stylesheet\" href=\"./hani-character-archive.css?v=2.9.306\">\r\n<link rel=\"stylesheet\" href=\"./hani-organization-hub.css?v=2.9.306\">\n<link rel=\"stylesheet\" href=\"./hani-board.css?v=2.9.306\">\n<link rel=\"stylesheet\" href=\"./hani-ilbo.css?v=2.9.306\">\n"
+            },
+            {
+              "beforeStart": 9145,
+              "afterStart": 9145,
+              "before": "        <p>HANI OS · Life Edition v2.9.305</p>\n",
+              "after": "        <p>HANI OS · Life Edition v2.9.306</p>\n"
+            },
+            {
+              "beforeStart": 15158,
+              "afterStart": 15158,
+              "before": "          <small>HANI OS · Life Edition v2.9.305</small>\n",
+              "after": "          <small>HANI OS · Life Edition v2.9.306</small>\n"
+            },
+            {
+              "beforeStart": 26497,
+              "afterStart": 26497,
+              "before": "    <div class=\"foot\">HANI OS · v2.9.305<br>AI Review v0.5 · Investment News v0.3 · Executive Deploy UX</div>\n",
+              "after": "    <div class=\"foot\">HANI OS · v2.9.306<br>AI Review v0.5 · Investment News v0.3 · Executive Deploy UX</div>\n"
+            },
+            {
+              "beforeStart": 195711,
+              "afterStart": 195711,
+              "before": "    <div class=\"footer\">갓생살기 프로젝트 · HANI OS Life Edition v2.9.305 · AI Review v0.5 · Investment News v0.3 · Executive Deploy UX · AI TEAM Work Overlay</div>\n",
+              "after": "    <div class=\"footer\">갓생살기 프로젝트 · HANI OS Life Edition v2.9.306 · AI Review v0.5 · Investment News v0.3 · Executive Deploy UX · AI TEAM Work Overlay</div>\n"
+            },
+            {
+              "beforeStart": 222648,
+              "afterStart": 222648,
+              "before": "<script src=\"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2?v=2.9.305\"></script>\n<script src=\"./js/hani-pdf-core.js?v=2.9.305\"></script>\n<script src=\"./hani-media-core.js?v=2.9.305\"></script>\n",
+              "after": "<script src=\"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2?v=2.9.306\"></script>\n<script src=\"./js/hani-pdf-core.js?v=2.9.306\"></script>\n<script src=\"./hani-media-core.js?v=2.9.306\"></script>\n"
+            },
+            {
+              "beforeStart": 222951,
+              "afterStart": 222951,
+              "before": "<script src=\"./hani-main.js?v=2.9.305\"></script>\n<script src=\"./hani-drive-vault.js?v=2.9.305\"></script>\n<script src=\"./hani-office-live.js?v=2.9.305\" defer></script>\n",
+              "after": "<script src=\"./hani-main.js?v=2.9.306\"></script>\n<script src=\"./hani-drive-vault.js?v=2.9.306\"></script>\n<script src=\"./hani-office-live.js?v=2.9.306\" defer></script>\n"
+            },
+            {
+              "beforeStart": 223171,
+              "afterStart": 223171,
+              "before": "<script src=\"./hani-newsroom-ux-v02970.js?v=2.9.305\"></script>\n<script src=\"./hani-ui-cleanup-v02971.js?v=2.9.305\"></script>\n<script src=\"./hani-stability-polish-v02972.js?v=2.9.305\"></script>\r\n",
+              "after": "<script src=\"./hani-newsroom-ux-v02970.js?v=2.9.306\"></script>\n<script src=\"./hani-ui-cleanup-v02971.js?v=2.9.306\"></script>\n<script src=\"./hani-stability-polish-v02972.js?v=2.9.306\"></script>\r\n"
+            },
+            {
+              "beforeStart": 223527,
+              "afterStart": 223527,
+              "before": "<script src=\"./hani-ui-v02976.js?v=2.9.305\"></script>\n",
+              "after": "<script src=\"./hani-ui-v02976.js?v=2.9.306\"></script>\n"
+            },
+            {
+              "beforeStart": 224113,
+              "afterStart": 224113,
+              "before": "<script src=\"./hani-company-followup-preview.js?v=2.9.305\"></script>\n<script src=\"./hani-study-v02984.js?v=2.9.305\"></script>\n<script src=\"./hani-ui-v02992.js?v=2.9.305\"></script>\n<script src=\"./hani-yuna-helpdesk.js?v=2.9.305\"></script>\n<script src=\"./hani-asset-update-v1.js?v=2.9.305\"></script>\n",
+              "after": "<script src=\"./hani-company-followup-preview.js?v=2.9.306\"></script>\n<script src=\"./hani-study-v02984.js?v=2.9.306\"></script>\n<script src=\"./hani-ui-v02992.js?v=2.9.306\"></script>\n<script src=\"./hani-yuna-helpdesk.js?v=2.9.306\"></script>\n<script src=\"./hani-asset-update-v1.js?v=2.9.306\"></script>\n"
+            },
+            {
+              "beforeStart": 224624,
+              "afterStart": 224624,
+              "before": "<script src=\"./hani-asset-market-view.js?v=2.9.305\"></script>\n<script src=\"./hani-street-journal.js?v=2.9.305\"></script>\n<script src=\"./hani-investment-committee.js?v=2.9.305\"></script>\n<script src=\"./hani-context-remote-v1.js?v=2.9.305\"></script>\n<script src=\"./hani-development-history-v1.js?v=2.9.305\"></script>\n<script src=\"./hani-goal-progress.js?v=2.9.305\"></script>\n<script src=\"./hani-character-archive-data.js?v=2.9.305\"></script>\r\n<script src=\"./hani-character-archive.js?v=2.9.305\"></script>\n<script src=\"./hani-organization-hub.js?v=2.9.305\"></script>\n<script src=\"./hani-relationship-seed.js?v=2.9.305\"></script>\n<script src=\"./hani-board-library.js?v=2.9.305\"></script>\n<script src=\"./hani-board.js?v=2.9.305\"></script>\n<script src=\"./hani-ilbo.js?v=2.9.305\"></script>\n<script src=\"./hani-milestones.js?v=2.9.305\"></script>\n",
+              "after": "<script src=\"./hani-asset-market-view.js?v=2.9.306\"></script>\n<script src=\"./hani-street-journal.js?v=2.9.306\"></script>\n<script src=\"./hani-investment-committee.js?v=2.9.306\"></script>\n<script src=\"./hani-context-remote-v1.js?v=2.9.306\"></script>\n<script src=\"./hani-development-history-v1.js?v=2.9.306\"></script>\n<script src=\"./hani-goal-progress.js?v=2.9.306\"></script>\n<script src=\"./hani-character-archive-data.js?v=2.9.306\"></script>\r\n<script src=\"./hani-character-archive.js?v=2.9.306\"></script>\n<script src=\"./hani-organization-hub.js?v=2.9.306\"></script>\n<script src=\"./hani-relationship-seed.js?v=2.9.306\"></script>\n<script src=\"./hani-board-library.js?v=2.9.306\"></script>\n<script src=\"./hani-board.js?v=2.9.306\"></script>\n<script src=\"./hani-ilbo.js?v=2.9.306\"></script>\n<script src=\"./hani-milestones.js?v=2.9.306\"></script>\n"
+            },
+            {
+              "beforeStart": 225592,
+              "afterStart": 225592,
+              "before": "<script src=\"./hani-ai-budget-core.js?v=2.9.305\"></script>\n<script src=\"./hani-ai-budget.js?v=2.9.305\"></script>\n",
+              "after": "<script src=\"./hani-ai-budget-core.js?v=2.9.306\"></script>\n<script src=\"./hani-ai-budget.js?v=2.9.306\"></script>\n"
+            }
+          ]
+        },
+        "hani-main.js": {
+          "beforeSha256": "e3f2a4db4805c53e234f1af593d9518a74eeb56301270e194fe8d7768bea224f",
+          "afterSha256": "3945c19dd62e28debaab0a5ea32de7fc9f008a8698f862ab6b7359a6732af0b3",
+          "beforeBytes": 1419606,
+          "afterBytes": 1419674,
+          "replacements": [
+            {
+              "beforeStart": 152602,
+              "afterStart": 152602,
+              "before": "  if(typeof window!=='undefined')window.HANI_CONTEXT_REMOTE_V1?.update();\r\n",
+              "after": "  if(typeof window!=='undefined')window.HANI_CONTEXT_REMOTE_V1?.update();\n  if(typeof window!=='undefined')window.HaniHelperBot?.bubble?.(id);\n"
+            },
+            {
+              "beforeStart": 869941,
+              "afterStart": 870009,
+              "before": "const HANI_DISPLAY_VERSION=\"2.9.305\";\n",
+              "after": "const HANI_DISPLAY_VERSION=\"2.9.306\";\n"
+            }
+          ]
+        },
+        "hani-style-08.css": {
+          "beforeSha256": "f3d12144f169e4b76da3c44f325b254867aa456136d32ff676e670236de7038d",
+          "afterSha256": "1df449075be961eb8612eaadf5a08c4d4daad42eeff45d4cf6a533a52025dc6f",
+          "beforeBytes": 50309,
+          "afterBytes": 53316,
+          "replacements": [
+            {
+              "beforeStart": 38975,
+              "afterStart": 38975,
+              "before": "#haniHelperBot{--helper-edge:90px;--helper-art-scale:1.653846154;--helper-safe-bottom:env(safe-area-inset-bottom,0px);position:fixed;z-index:86;width:var(--helper-edge);height:var(--helper-edge);font-family:inherit;color:#302a3d}\n",
+              "after": "#haniHelperBot{--helper-edge:90px;--helper-art-scale:2.6;--helper-safe-bottom:env(safe-area-inset-bottom,0px);position:fixed;z-index:86;width:var(--helper-edge);height:var(--helper-edge);font-family:inherit;color:#302a3d}\n"
+            },
+            {
+              "beforeStart": 39898,
+              "afterStart": 39890,
+              "before": "#haniHelperBot .hani-helper-face{position:relative;display:block;box-sizing:border-box;width:var(--helper-edge);height:var(--helper-edge);padding:0;border:2px solid #fff;border-radius:50%;background:radial-gradient(circle at 40% 25%,#fff9f2,#eee1f6);box-shadow:0 3px 14px #49365b30,0 0 0 1px #c9b6d8;touch-action:none;user-select:none;cursor:grab}\n",
+              "after": "#haniHelperBot .hani-helper-face{position:relative;display:block;box-sizing:border-box;width:var(--helper-edge);height:var(--helper-edge);padding:0;border:2px solid #fff;border-radius:50%;background:radial-gradient(circle at 40% 25%,#fff9f2,#eee1f6);box-shadow:0 3px 14px #49365b30,0 0 0 1px #c9b6d8;touch-action:none;user-select:none;cursor:grab;overflow:hidden;transform-origin:50% 100%}\n"
+            },
+            {
+              "beforeStart": 40303,
+              "afterStart": 40337,
+              "before": "#haniHelperBot .hani-helper-art{position:absolute;left:50%;top:50%;margin:-26px;display:block;width:52px;height:52px;scale:var(--helper-art-scale);border-radius:50%;background-image:var(--helper-image,none);background-size:var(--helper-size,272px 170px);background-position:var(--helper-x,0px) var(--helper-y,0px);background-repeat:no-repeat;clip-path:var(--helper-shape,inset(var(--helper-trim,0px)));mask-image:var(--helper-mask,none);transform-origin:50% 80%}\n",
+              "after": "#haniHelperBot .hani-helper-art{position:absolute;left:50%;top:50%;margin:-26px;display:block;width:52px;height:52px;scale:var(--helper-art-scale);border-radius:50%;background-image:var(--helper-image,none);background-size:var(--helper-size,272px 170px);background-position:var(--helper-x,0px) var(--helper-y,0px);background-repeat:no-repeat;clip-path:var(--helper-shape,inset(var(--helper-trim,0px)));mask-image:var(--helper-mask,none);transform-origin:50% 42%}\n"
+            },
+            {
+              "beforeStart": 46546,
+              "afterStart": 46580,
+              "before": "@media(max-width:850px){#haniHelperBot{--helper-edge:78px;--helper-art-scale:1.423076923}}\n",
+              "after": "@media(max-width:850px){#haniHelperBot{--helper-edge:78px;--helper-art-scale:2.25}}\n"
+            },
+            {
+              "beforeStart": 46754,
+              "afterStart": 46781,
+              "before": "@media(prefers-reduced-motion:no-preference){#haniHelperBot .hani-helper-art{animation:hani-helper-tilt 13s ease-in-out infinite}#haniHelperBot:focus-within .hani-helper-art,#haniHelperBot:hover .hani-helper-art{animation-play-state:paused}}\n@media(prefers-reduced-motion:reduce){#haniHelperBot .hani-helper-art{animation:none}}\n",
+              "after": "@keyframes hani-helper-bubble-in{from{opacity:0;transform:translateY(4px) scale(.96)}to{opacity:1;transform:none}}\n@keyframes hani-helper-sway{0%,100%{rotate:-4deg}50%{rotate:4deg}}@media(prefers-reduced-motion:no-preference){#haniHelperBot .hani-helper-face{animation:hani-helper-sway 3.6s ease-in-out infinite}#haniHelperBot:focus-within .hani-helper-face,#haniHelperBot:hover .hani-helper-face,#haniHelperBot .hani-helper-face:active{animation-play-state:paused}#haniHelperBot .hani-helper-bubble{animation:hani-helper-bubble-in 200ms ease-out}}\n@media(prefers-reduced-motion:reduce){#haniHelperBot .hani-helper-art,#haniHelperBot .hani-helper-face{animation:none}#haniHelperBot .hani-helper-bubble{animation:none;transition:none}}\n#haniHelperBot .hani-helper-bubble{--bubble-bg:#fffdfb;--bubble-ink:#282235;--bubble-border:#cbbad8;--bubble-close-bg:#efe7f5;--bubble-close-ink:#4a3559;position:fixed;box-sizing:border-box;display:flex;align-items:center;gap:6px;max-width:min(248px,calc(100vw - 24px));padding:7px 8px 7px 12px;border:1px solid var(--bubble-border);border-radius:16px;background:var(--bubble-bg);color:var(--bubble-ink);box-shadow:0 6px 20px rgba(48,33,64,.16);z-index:1}\n:root:is([data-theme=\"dark\"],[data-finish=\"midnight-black\"],[data-finish=\"titanium-graphite\"]) #haniHelperBot .hani-helper-bubble{--bubble-bg:#1e222d;--bubble-ink:#f4f1fa;--bubble-border:#616b82;--bubble-close-bg:#2f3646;--bubble-close-ink:#f4f1fa;box-shadow:0 8px 24px rgba(0,0,0,.48)}\n:root:is([data-theme=\"dark\"],[data-finish=\"midnight-black\"],[data-finish=\"titanium-graphite\"]) #haniHelperBot .hani-helper-bubble button:focus-visible{outline-color:#d5c4f8}\n#haniHelperBot .hani-helper-bubble::before{content:\"\";position:absolute;width:10px;height:10px;background:var(--bubble-bg);border-style:solid;border-color:var(--bubble-border);border-width:0;transform:rotate(45deg);pointer-events:none}\n#haniHelperBot .hani-helper-bubble[data-side=\"left\"]::before{right:-6px;top:50%;margin-top:-5px;border-top-width:1px;border-right-width:1px}\n#haniHelperBot .hani-helper-bubble[data-side=\"right\"]::before{left:-6px;top:50%;margin-top:-5px;border-bottom-width:1px;border-left-width:1px}\n#haniHelperBot .hani-helper-bubble[data-side=\"top\"]::before{bottom:-6px;right:22px;border-right-width:1px;border-bottom-width:1px}\n#haniHelperBot .hani-helper-bubble[data-side=\"bottom\"]::before{top:-6px;right:22px;border-top-width:1px;border-left-width:1px}\n#haniHelperBot .hani-helper-bubble:is([data-side=\"top\"],[data-side=\"bottom\"])[data-align=\"start\"]::before{right:auto;left:18px}\n#haniHelperBot .hani-helper-bubble-body{appearance:none;border:0;background:transparent;color:inherit;padding:2px 0;margin:0;text-align:left;font-size:12.5px;font-weight:650;line-height:1.45;word-break:keep-all;overflow-wrap:anywhere;min-width:0;flex:1}\n#haniHelperBot .hani-helper-bubble-close{appearance:none;position:relative;flex:none;display:grid;place-items:center;width:28px;height:28px;min-width:28px;min-height:28px;padding:0;margin:0;border:0;border-radius:50%;background:var(--bubble-close-bg);color:var(--bubble-close-ink);font-size:16px;font-weight:700;line-height:1}\n#haniHelperBot .hani-helper-bubble-close::after{content:\"\";position:absolute;inset:-8px}\n@media(min-width:851px){#haniHelperBot .hani-helper-bubble-body{font-size:13px}}\n"
+            }
+          ]
+        },
+        "hani-ui-v02992.js": {
+          "beforeSha256": "e278c95e8e1c4b2747d1254a32b3839fcca1066e28cc2bdc87b11c8ddbcddbf5",
+          "afterSha256": "b174a8945aff88de50b9a3ac68fa9bbd63315a17cf4b92dac39a4281950f8fca",
+          "beforeBytes": 141401,
+          "afterBytes": 152422,
+          "replacements": [
+            {
+              "beforeStart": 90145,
+              "afterStart": 90145,
+              "before": "",
+              "after": "  const BUBBLE_MS = 6000;\n  const BUBBLE_LINES = Object.freeze({\n    home: Object.freeze(['오늘 도장 찍으셨어요?', '회장님, 오늘 한 칸 채워볼까요?', '오늘의 흐름을 한눈에 볼 수 있어요.']),\n    milestones: Object.freeze(['소중한 변화가 여기 모여 있어요.', '빛나는 순간을 하나씩 꺼내봐요.']),\n    intake: Object.freeze(['떠오른 생각, 유나에게 맡겨봐요!', '짧은 메모도 깔끔하게 정리돼요.']),\n    agentReview: Object.freeze(['사무실 식구들이 인사 기다려요!', '층마다 누가 있는지 둘러볼까요?']),\n    monthlyReport: Object.freeze(['컨퍼런스 룸 브리핑 시간이에요.', '이번 기간 흐름을 함께 짚어봐요.']),\n    organization: Object.freeze(['우리 팀 식구들을 소개해 드릴게요.', '각 팀이 맡은 역할을 둘러보세요.']),\n    ilbo: Object.freeze(['이번 주 HANI 일보가 왔어요!', '따끈한 사내 소식을 읽어볼까요?']),\n    board: Object.freeze(['라운지에 새 이야기가 올라왔어요.', '가볍게 한 줄 남겨봐도 좋아요.']),\n    investment: Object.freeze(['포트폴리오 흐름을 차분히 봐요.', '기준 날짜부터 먼저 확인해 봐요.']),\n    investmentCommittee: Object.freeze(['종목별 투자 근거를 살펴볼까요?', '리포트와 월간 자료가 모여 있어요.']),\n    investmentIntake: Object.freeze(['최신 자산 숫자를 맞춰볼까요?', '반영 전 미리보기 꼭 확인해요.']),\n    asset: Object.freeze(['전체 자산 구성을 한눈에 봐요.', '계좌별 흐름을 차분히 살펴보세요.']),\n    ledger: Object.freeze(['이번 달 지출 한 줄 정리해 볼까요?', '계획한 소비인지 함께 확인해요.']),\n    newsroom: Object.freeze(['오늘 주요 소식만 쏙 모아왔어요.', '관심 종목 뉴스 흐름을 살펴봐요.']),\n    diet: Object.freeze(['하루 숫자보다 흐름이 중요해요!', '오늘도 무리하지 말고 기록해요.']),\n    exercise: Object.freeze(['오늘 페이스도 아주 좋아요!', '꾸준한 한 걸음이 모여 큰 힘 돼요.']),\n    reading: Object.freeze(['마음에 남은 문장 하나 적어볼까요?', '다음에 읽을 책도 골라보세요.']),\n    study: Object.freeze(['오늘 퀴즈 한 문제 풀어볼까요?', '틀린 문제도 좋은 힌트가 돼요.']),\n    university: Object.freeze(['이번 주 강의와 마감 챙겨볼까요?', '주차별 계획을 차근차근 확인해요.']),\n    certificate: Object.freeze(['시험 일정까지 차분히 준비해요.', '오늘 공부 분량부터 체크해 봐요.']),\n    wishlist: Object.freeze(['눈여겨본 아이템, 여기 모아둬요.', '링크만 붙여넣어도 금방 정리돼요.']),\n    travel: Object.freeze(['다음 여행 동선을 그려볼까요?', '다녀온 좋은 장소도 남겨보세요.']),\n    movie: Object.freeze(['재밌게 본 작품 한 줄 남겨봐요.', '보고 싶은 목록도 슬쩍 꺼내봐요.']),\n    game: Object.freeze(['오늘 응원할 팀 경기 확인해 봐요!', '승패보다 시즌 흐름을 함께 봐요.']),\n    diary: Object.freeze(['오늘 기억할 한 줄 남겨볼까요?', '회장님의 하루를 조용히 적어봐요.']),\n    tasks: Object.freeze(['오늘 할 일부터 하나씩 지워봐요!', '지금 바로 할 한 가지를 골라봐요.']),\n    procrastination: Object.freeze(['삐진 직원이 있어요…', '미뤄둔 일, 지금 한 번 볼까요?']),\n    calendar: Object.freeze(['오늘 일정이 겹치지 않게 봐요.', '쉬는 시간도 일정에 넣어두세요.']),\n    work: Object.freeze(['중요한 업무 순서부터 잡아봐요.', '남은 후속 조치도 놓치지 마세요.']),\n    drive: Object.freeze(['필요한 파일을 빠르게 찾아볼까요?', '연결된 폴더 상태를 확인해 봐요.']),\n    aiWork: Object.freeze(['AI 팀원들이 한 일을 확인해 봐요.', '담당자별 작업 결과를 모아뒀어요.']),\n    dev: Object.freeze(['개발 진행 상황을 한눈에 봐요.', '바뀐 부분과 기록을 살펴보세요.']),\n    geminiReports: Object.freeze(['차분히 정리된 보고서를 읽어봐요.', '새로운 분석 노트가 준비됐어요.']),\n    deployment: Object.freeze(['배포 후보와 검사 상태를 확인해요.', '안전하게 검증된 것만 올려요.']),\n    aiBudget: Object.freeze(['이번 주 남은 한도를 살펴볼까요?', '여유 있게 작업 일정을 맞춰봐요.']),\n    aura: Object.freeze(['오늘 기분에 맞는 색을 골라봐요!', '계절 테마로 분위기를 바꿔보세요.']),\n    settings: Object.freeze(['백업과 연결 상태를 점검해 봐요.', '도우미 표시도 여기서 바꿀 수 있어요.']),\n    policy: Object.freeze(['사내 규칙과 기준을 확인해 봐요.', '정해진 원칙을 한눈에 볼 수 있어요.']),\n    aiTeam: Object.freeze(['함께 일하는 팀원들을 불러볼까요?', '담당자별 역할을 살펴볼 수 있어요.']),\n    characterArchive: Object.freeze(['동료들의 이야기를 펼쳐볼까요?', '한 명씩 프로필을 구경해 보세요.'])\n  });\n  const BUBBLE_FALLBACK = Object.freeze(['회장님, 무엇이든 편하게 눌러보세요.', '오늘도 천천히 한 걸음씩 가요!', '궁금한 화면이면 저를 눌러주세요.']);\n  const bubbleCursor = new Map();\n  function bubbleText(view) {\n    const key = String(view || '').split('/')[0] || 'home';\n    const lines = Object.hasOwn(BUBBLE_LINES, key) ? BUBBLE_LINES[key] : BUBBLE_FALLBACK;\n    const index = bubbleCursor.get(key) || 0;\n    bubbleCursor.set(key, (index + 1) % lines.length);\n    return lines[index];\n  }\n"
+            },
+            {
+              "beforeStart": 97039,
+              "afterStart": 100553,
+              "before": "  let root, face, panel, dot, title, greetingLine, helpLine, newsLine, bank, loadNews, returnFocus, pending = false;\n",
+              "after": "  let root, face, panel, dot, title, greetingLine, helpLine, newsLine, bubbleEl, bubbleBody, bank, loadNews, returnFocus, pending = false, bubbleTimer = 0, bubbleBooted = false, bubbleDismissed = false, lastBubbleView = '';\n"
+            },
+            {
+              "beforeStart": 99509,
+              "afterStart": 103130,
+              "before": "  function faceSize() { return face.getBoundingClientRect().width || (window.innerWidth > 850 ? 90 : 78); }\n",
+              "after": "  function faceSize() { return face.getBoundingClientRect().width || (window.innerWidth > 850 ? 58 : 50); }\n"
+            },
+            {
+              "beforeStart": 102732,
+              "afterStart": 106353,
+              "before": "",
+              "after": "  function clearBubbleTimer() {\n    if (bubbleTimer && typeof clearTimeout === 'function') clearTimeout(bubbleTimer);\n    bubbleTimer = 0;\n  }\n  function hideBubble(dismiss = false) {\n    if (dismiss) bubbleDismissed = true;\n    clearBubbleTimer();\n    if (bubbleEl) bubbleEl.hidden = true;\n  }\n  function startBubble(view) {\n    if (!bubbleEl || !bubbleBody || helperHidden || bubbleDismissed || !panel?.hidden) return;\n    bubbleBody.textContent = bubbleText(view);\n    bubbleEl.hidden = false;\n    clearBubbleTimer();\n    if (typeof setTimeout === 'function') bubbleTimer = setTimeout(() => hideBubble(), BUBBLE_MS);\n  }\n  function placeBubble(box, viewport, bounds, obstacles) {\n    if (!bubbleEl || bubbleEl.hidden) return;\n    const margin = 12, gap = 10;\n    const areaLeft = Math.max(viewport.left, bounds.left) + margin;\n    const areaRight = Math.min(viewport.left + viewport.width, bounds.left + bounds.width) - margin;\n    const areaTop = viewport.top + margin;\n    const areaBottom = viewport.top + viewport.height - margin;\n    const maxWidth = Math.max(120, Math.min(248, areaRight - areaLeft));\n    bubbleEl.style.maxWidth = maxWidth + 'px';\n    const rect = bubbleEl.getBoundingClientRect();\n    const w = Math.min(maxWidth, rect.width || Math.min(maxWidth, 200));\n    const h = rect.height || 44;\n    const onRight = (box.left + box.right) / 2 >= bounds.left + bounds.width / 2;\n    const sides = onRight ? ['left', 'right', 'top', 'bottom'] : ['right', 'left', 'top', 'bottom'];\n    const clampX = x => Math.max(areaLeft, Math.min(x, Math.max(areaLeft, areaRight - w)));\n    const clampY = y => Math.max(areaTop, Math.min(y, Math.max(areaTop, areaBottom - h)));\n    const hits = (c, o) => c.left < o.right + 4 && c.right + 4 > o.left && c.top < o.bottom + 4 && c.bottom + 4 > o.top;\n    const fits = (side, x, y) => side === 'left' ? x >= areaLeft && x + w <= box.left - gap + 1 :\n      side === 'right' ? x >= box.right + gap - 1 && x + w <= areaRight :\n        side === 'top' ? y >= areaTop && y + h <= box.top - gap + 1 :\n          y >= box.bottom + gap - 1 && y + h <= areaBottom;\n    const coords = side => {\n      const x = side === 'left' ? box.left - w - gap : side === 'right' ? box.right + gap : clampX(onRight ? box.right - w : box.left);\n      const y = side === 'top' ? box.top - h - gap : side === 'bottom' ? box.bottom + gap : clampY((box.top + box.bottom - h) / 2);\n      return {side, x, y, box: {left: x, top: y, right: x + w, bottom: y + h}};\n    };\n    const candidates = sides.map(coords);\n    const chosen = candidates.find(c => fits(c.side, c.x, c.y) && c.x >= areaLeft && c.x + w <= areaRight &&\n      c.y >= areaTop && c.y + h <= areaBottom && !obstacles.some(o => hits(c.box, o))) ||\n      candidates.find(c => fits(c.side, c.x, c.y) && !hits(c.box, box)) ||\n      {side: candidates[0].side, x: clampX(candidates[0].x), y: clampY(candidates[0].y)};\n    bubbleEl.dataset.side = chosen.side;\n    if (chosen.side === 'top' || chosen.side === 'bottom') bubbleEl.dataset.align = onRight ? 'end' : 'start';\n    else delete bubbleEl.dataset.align;\n    bubbleEl.style.left = Math.round(clampX(chosen.x)) + 'px';\n    bubbleEl.style.top = Math.round(clampY(chosen.y)) + 'px';\n  }\n"
+            },
+            {
+              "beforeStart": 103028,
+              "afterStart": 109864,
+              "before": "",
+              "after": "    hideBubble();\n"
+            },
+            {
+              "beforeStart": 103301,
+              "afterStart": 110155,
+              "before": "",
+              "after": "  function onViewChange(view) {\n    if (!root) return;\n    const next = String(view || document.body.dataset.view || 'home').split('/')[0] || 'home';\n    if (next === 'login') { hideBubble(); return; }\n    const changed = !bubbleBooted || next !== lastBubbleView;\n    place();\n    if (root.hidden || helperHidden || bubbleDismissed || !panel.hidden) { hideBubble(); return; }\n    if (changed && lastBubbleView !== next) {\n      bubbleBooted = true; lastBubbleView = next;\n      startBubble(next);\n      place();\n    }\n  }\n"
+            },
+            {
+              "beforeStart": 104337,
+              "afterStart": 111713,
+              "before": "    if (root.hidden) { close(); return; }\n",
+              "after": "    if (root.hidden) { close(); hideBubble(); return; }\n"
+            },
+            {
+              "beforeStart": 105091,
+              "afterStart": 112481,
+              "before": "    const controls = position ? [] : [...document.querySelectorAll('*')].filter(el => floating(el) && !(desktop && el === rail));\n",
+              "after": "    const controls = [...document.querySelectorAll('*')].filter(el => floating(el) && !(desktop && el === rail));\n"
+            },
+            {
+              "beforeStart": 105405,
+              "afterStart": 112779,
+              "before": "    if (!position && rail && floating(rail)) controls.push(...rail.querySelectorAll('button,a[href],input,textarea,select,[role=\"button\"]'));\n    if (!position && document.activeElement?.matches('input:not([type=\"hidden\"]),textarea,select,[contenteditable=\"true\"]')) controls.push(document.activeElement);\n    const obstacles = controls\n",
+              "after": "    if (rail && floating(rail)) controls.push(...rail.querySelectorAll('button,a[href],input,textarea,select,[role=\"button\"]'));\n    if (document.activeElement?.matches('input:not([type=\"hidden\"]),textarea,select,[contenteditable=\"true\"]')) controls.push(document.activeElement);\n    const bubbleObstacles = controls\n"
+            },
+            {
+              "beforeStart": 106031,
+              "afterStart": 113385,
+              "before": "",
+              "after": "    const obstacles = position ? [] : bubbleObstacles;\n"
+            },
+            {
+              "beforeStart": 107608,
+              "afterStart": 115017,
+              "before": "",
+              "after": "    const activeView = String(document.body.dataset.view || 'home').split('/')[0] || 'home';\n    if ((!bubbleBooted || activeView !== lastBubbleView) && activeView !== 'login') {\n      bubbleBooted = true; lastBubbleView = activeView;\n      if (!bubbleDismissed && panel.hidden) startBubble(activeView);\n    }\n    if (!panel.hidden) hideBubble();\n    else placeBubble(box, viewport, bounds, bubbleObstacles);\n"
+            },
+            {
+              "beforeStart": 107927,
+              "afterStart": 115745,
+              "before": "    root.innerHTML = '<button class=\"hani-helper-face\" type=\"button\" aria-expanded=\"false\" aria-controls=\"haniHelperSpeech\"><span class=\"hani-helper-art\" aria-hidden=\"true\"></span><i class=\"hani-helper-dot\" aria-hidden=\"true\" hidden></i></button><section id=\"haniHelperSpeech\" class=\"hani-helper-speech\" role=\"dialog\" aria-modal=\"false\" aria-labelledby=\"haniHelperTitle\" hidden><header><div><small>오늘의 당번</small><h2 id=\"haniHelperTitle\"></h2></div><button type=\"button\" data-helper-close aria-label=\"도우미 닫기\">×</button></header><div class=\"hani-helper-home\"><p class=\"hani-helper-greeting\"></p><p class=\"hani-helper-affinity\"></p><h3>이 화면 도움말</h3><p class=\"hani-helper-help\"></p><nav aria-label=\"도우미 바로가기\"></nav><p class=\"hani-helper-news\" aria-live=\"polite\"></p></div></section>';\n",
+              "after": "    root.innerHTML = '<button class=\"hani-helper-face\" type=\"button\" aria-expanded=\"false\" aria-controls=\"haniHelperSpeech\"><span class=\"hani-helper-art\" aria-hidden=\"true\"></span><i class=\"hani-helper-dot\" aria-hidden=\"true\" hidden></i></button><div id=\"haniHelperBubble\" class=\"hani-helper-bubble\" role=\"status\" aria-live=\"polite\" hidden><button class=\"hani-helper-bubble-body\" type=\"button\" data-helper-bubble-open></button><button class=\"hani-helper-bubble-close\" type=\"button\" data-helper-bubble-close aria-label=\"말풍선 닫기\">×</button></div><section id=\"haniHelperSpeech\" class=\"hani-helper-speech\" role=\"dialog\" aria-modal=\"false\" aria-labelledby=\"haniHelperTitle\" hidden><header><div><small>오늘의 당번</small><h2 id=\"haniHelperTitle\"></h2></div><button type=\"button\" data-helper-close aria-label=\"도우미 닫기\">×</button></header><div class=\"hani-helper-home\"><p class=\"hani-helper-greeting\"></p><p class=\"hani-helper-affinity\"></p><h3>이 화면 도움말</h3><p class=\"hani-helper-help\"></p><nav aria-label=\"도우미 바로가기\"></nav><p class=\"hani-helper-news\" aria-live=\"polite\"></p></div></section>';\n"
+            },
+            {
+              "beforeStart": 108889,
+              "afterStart": 117004,
+              "before": "",
+              "after": "    bubbleEl = root.querySelector('.hani-helper-bubble'); bubbleBody = root.querySelector('.hani-helper-bubble-body');\n"
+            },
+            {
+              "beforeStart": 110778,
+              "afterStart": 119012,
+              "before": "",
+              "after": "      if (event.target.closest('[data-helper-bubble-close]') && root.contains(event.target)) {\n        const refocus = bubbleEl?.contains(document.activeElement);\n        hideBubble(true);\n        if (refocus) face.focus({preventScroll: true});\n        return;\n      }\n      if (event.target.closest('[data-helper-bubble-open]') && root.contains(event.target)) { open(); return; }\n"
+            },
+            {
+              "beforeStart": 111300,
+              "afterStart": 119915,
+              "before": "    document.addEventListener('keydown', event => { if (event.key === 'Escape' && !panel.hidden) { event.preventDefault(); close(true); } });\n",
+              "after": "    document.addEventListener('keydown', event => {\n      if (event.key !== 'Escape') return;\n      if (!panel.hidden) { event.preventDefault(); close(true); }\n      else if (bubbleEl && !bubbleEl.hidden && bubbleEl.contains(document.activeElement)) { event.preventDefault(); hideBubble(true); face.focus({preventScroll: true}); }\n    });\n"
+            },
+            {
+              "beforeStart": 113110,
+              "afterStart": 121922,
+              "before": "  window.HaniHelperBot = Object.freeze({init, update, duty, kstDate, timeBand, greeting, help, news, slot});\n",
+              "after": "  window.HaniHelperBot = Object.freeze({init, update, duty, kstDate, timeBand, greeting, help, news, slot, bubble: onViewChange, bubbleText});\n"
+            }
+          ]
+        },
+        "assets/data/hani-history-releases-v1.json": {
+          "beforeSha256": "32d620852b3962c72d06a24859914c67057120bc996eef44cd099977c90339f5",
+          "afterSha256": "7bcdbc8a609070443601846f0e2ff7a6b3b4bcd11061d266ab818836b607be4d",
+          "beforeBytes": 73263,
+          "afterBytes": 73633,
+          "replacements": [
+            {
+              "beforeStart": 696,
+              "afterStart": 696,
+              "before": "",
+              "after": "      \"id\": \"v2.9.306\",\n      \"date\": \"2026-11-21\",\n      \"status\": \"released\",\n      \"title\": \"도우미 한마디 말풍선\",\n      \"category\": \"도우미 · 사용성\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.306 도우미 한마디 말풍선\"\n      }\n    },\n    {\n"
+            },
+            {
+              "beforeStart": 871,
+              "afterStart": 1145,
+              "before": "        \"commit\": \"\",\n        \"subject\": \"release: v2.9.305 뉴스룸 시황 4컷 3호\"\n",
+              "after": "        \"commit\": \"8a46ac79705ac515da41d0dccf9ef72283bfad50\",\n        \"subject\": \"release: v2.9.305 뉴스룸 시황 4컷 3호 (#531)\"\n"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

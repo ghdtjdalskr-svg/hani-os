@@ -88,9 +88,9 @@
     image.alt = issue.alt;
     renderIssuePanels(q('.newsroom-4cut-context'),issue);
     q('.newsroom-4cut-layout').classList?.toggle('has-context',!q('.newsroom-4cut-context').hidden);
-    // The published image already contains this notice. Keep the text fallback for other artwork.
+    // Every published 4-cut (001+) draws this notice inside the image (composition guide). Keep the text fallback for other artwork.
     for (const selector of ['.newsroom-4cut-footnote', 'dialog .newsroom-4cut-footnote']) {
-      q(selector).hidden = /^00[12]$/.test(issue.image);
+      q(selector).hidden = /^\d{3}$/.test(issue.image);
     }
     q('.newsroom-4cut-open').setAttribute('aria-label', `${issue.title} 원본 크기로 보기`);
     q('.newsroom-4cut-sources').open = false;
