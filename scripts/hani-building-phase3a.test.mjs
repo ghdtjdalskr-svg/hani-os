@@ -9,8 +9,8 @@ const plain=x=>JSON.parse(JSON.stringify(x));
 
 const source=read('hani-office-live.js');
 const files={
-  canon:'data/hani-building/spatial-contract.json',
-  art:'data/hani-building/art-map-v1.json',
+  canon:'data/hani-building/spatial-contract-v2.json',
+  art:'data/hani-building/art-map-v2.json',
   sprites:'assets/sprites-v2/manifest.json',
   spritesV3:'assets/sprites-v3/manifest-v3.json',
   places:'data/hani-building/office-places.json'
