@@ -4,6 +4,20 @@ const path=require('node:path'),{fileURLToPath}=require('node:url');
 const inverse=require('./hani-menu-badges-source.cjs'),repository=require('./hani-test-repository-evidence.cjs');
 const root=path.resolve(__dirname,'..'),authored='55f3fe64e2b88aa1b39ed503e3133614265e88d7';
 const outerFiles=new Map([
+ // tooling310 outer boundaries
+ ['scripts/hani-release-310-source.cjs','1e43f0a774a128dd20ba6ac557e151de0148fda1b5a4e419a61bcb2c6e4c6d15'],
+ ['scripts/hani-release-310-preload.cjs','725991e9d9e7e0fdfc5ac138e4d55049d7f13028546b58ca0fc8d2f43d82cfe0'],
+ ['scripts/hani-release-310-reviewed-input.cjs','7a8885af3fb8620673cb0e01044ce9fdeac218eff29ac341da5a38155b316f0c'],
+ ['scripts/hani-release-310.test.mjs','e8672687525d07396dbb654692f2e57a84dca3f1ccd4e3d1edabaf262b073706'],
+ ['scripts/fixtures/release-310-layer.json','25db327cc33876ef59ceff1ff731adcef5b4f960aa088948ac62c0f567408961'],
+ // tooling310 outer boundaries end
+ // attendance outer boundaries
+ ['scripts/hani-attendance-board.test.mjs','052418eaf3ce57f8113d941d7c8a624cbc9a03f3393acc056629a46e93e18194'],
+ ['scripts/hani-attendance-core.test.mjs','5afff45abc29ae0dc6325b895828757e275b029c6c9c985841dd2c4a0dc550a1'],
+ ['scripts/hani-attendance-layout.test.mjs','592d20545843b94fdba1475728936d44d47b5cb567dac1bdcf9d7298e815efa8'],
+ ['scripts/hani-attendance-layer.test.mjs','cb7d1c2c8b8f629345bda938015e829984b6791c263e8314ac006080b7bc4683'],
+ ['scripts/fixtures/attendance-layer.json','e8aa6bed12810ad1c8d5023e1e2a4a10b71bbbf280a3777f26383afa80a6cd31'],
+ // attendance outer boundaries end
  // tooling309 outer boundaries
  ['scripts/fixtures/release-309-layer.json','7240094271a71ef7300e322f7bb8ac7292f8612b654ca147ee2fdda82203dd74'],
  ['scripts/hani-release-309-source.cjs','e85fa27bce4ed8082bf30d06c7c1ed4ae8636071d83451b831c15abe0492cbbc'],
