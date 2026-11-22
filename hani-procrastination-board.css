@@ -217,3 +217,21 @@
 @media(prefers-reduced-motion:reduce){
   #procrastination *,#procrastination *::before,#procrastination *::after{animation:none!important;transition:none!important}
 }
+
+/* Round 3: illustrated scene backgrounds (pb-scene-bg-v1.webp, 4x3 cells, 640x360 each). Last block so it wins over the pattern rules above. */
+#procrastination .pb-card .pb-scene{background-image:url("./assets/procrastination/pb-scene-bg-v1.webp");background-size:400% 300%;background-position:var(--pb-bg-x,0%) var(--pb-bg-y,0%);background-repeat:no-repeat}
+#procrastination [data-pb-card="steps"]{--pb-bg-x:0%;--pb-bg-y:0%}
+#procrastination [data-pb-card="weight"]{--pb-bg-x:33.3333%;--pb-bg-y:0%}
+#procrastination [data-pb-card="workout"]{--pb-bg-x:66.6667%;--pb-bg-y:0%}
+#procrastination [data-pb-card="quiz"]{--pb-bg-x:100%;--pb-bg-y:0%}
+#procrastination [data-pb-card="wrongReview"]{--pb-bg-x:0%;--pb-bg-y:50%}
+#procrastination [data-pb-card="assets"]{--pb-bg-x:33.3333%;--pb-bg-y:50%}
+#procrastination [data-pb-card="ledger"]{--pb-bg-x:66.6667%;--pb-bg-y:50%}
+#procrastination [data-pb-card="wishlist"]{--pb-bg-x:100%;--pb-bg-y:50%}
+#procrastination [data-pb-card="spendReview"]{--pb-bg-x:0%;--pb-bg-y:100%}
+#procrastination [data-pb-card="culture"]{--pb-bg-x:33.3333%;--pb-bg-y:100%}
+#procrastination [data-pb-card="tasks"]{--pb-bg-x:66.6667%;--pb-bg-y:100%}
+#procrastination [data-pb-card="diary"]{--pb-bg-x:100%;--pb-bg-y:100%}
+#procrastination .pb-card .pb-scene::before{background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,0) 45%),var(--pb-weather)}
+[data-theme="dark"] #procrastination .pb-card .pb-scene::before,
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #procrastination .pb-card .pb-scene::before{background:linear-gradient(rgba(16,14,22,.42),rgba(16,14,22,.42)),var(--pb-weather)}
