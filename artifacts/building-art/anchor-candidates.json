@@ -1,0 +1,113 @@
+{
+  "coordinateSystem": "1672x941 image pixels; top-left origin; visual estimates about +/-5px",
+  "status": "art-only suggestions; not runtime anchors; confirm character foot pivot/occlusion in app",
+  "floors": {
+    "1f": {
+      "elevatorDoorCenter": [
+        366,
+        159
+      ],
+      "elevatorThreshold": [
+        366,
+        262
+      ],
+      "stairsLanding": [
+        120,
+        300
+      ],
+      "entranceThreshold": [
+        833,
+        815
+      ],
+      "coffeeBounds": [
+        1450,
+        565,
+        1671,
+        790
+      ]
+    },
+    "creative-5f": {
+      "elevatorDoorCenter": [
+        837,
+        118
+      ],
+      "elevatorThreshold": [
+        837,
+        178
+      ],
+      "runnerBounds": [
+        788,
+        243,
+        914,
+        878
+      ],
+      "runnerCenterXApprox": 851,
+      "corridorStops": [
+        [
+          853,
+          480
+        ],
+        [
+          853,
+          700
+        ]
+      ],
+      "rooms": {
+        "studio": {
+          "floorBounds": [
+            105,
+            275,
+            690,
+            425
+          ],
+          "standingCandidate": [
+            575,
+            405
+          ]
+        },
+        "library_cinema": {
+          "floorBounds": [
+            1010,
+            250,
+            1615,
+            425
+          ],
+          "standingCandidate": [
+            1590,
+            390
+          ]
+        },
+        "fitness": {
+          "floorBounds": [
+            110,
+            655,
+            690,
+            850
+          ],
+          "matCandidates": [
+            [
+              535,
+              752
+            ],
+            [
+              535,
+              812
+            ]
+          ]
+        },
+        "kids_pet_lounge": {
+          "floorBounds": [
+            995,
+            675,
+            1615,
+            850
+          ],
+          "standingCandidate": [
+            1200,
+            730
+          ]
+        }
+      }
+    }
+  }
+}

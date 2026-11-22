@@ -1,0 +1,49 @@
+{
+  "assets": [
+    {
+      "file": "assets/building/floor-5f-creative-v1.webp",
+      "bytes": 235536,
+      "dimensions": [
+        1672,
+        941
+      ],
+      "quality": 78,
+      "method": 6,
+      "lossy": true,
+      "alpha": false,
+      "source": "generated-5f-final-decision-v3.png",
+      "source_dimensions": [
+        1670,
+        941
+      ],
+      "sha256": "ae6cbdda11ab6b01c77adaae97071bdf61161527fa5652a8c839c7d9af6f31d3"
+    },
+    {
+      "file": "assets/building/floor-1f-v2.webp",
+      "bytes": 238476,
+      "dimensions": [
+        1672,
+        941
+      ],
+      "quality": 85,
+      "method": 6,
+      "lossy": true,
+      "alpha": false,
+      "source": "generated-1f-final-decision-v1.png",
+      "source_dimensions": [
+        1672,
+        941
+      ],
+      "sha256": "727edb3f92c0e3eaf271f31d77603516e94e6bb703d1386b966913f7ccfcc5eb"
+    }
+  ],
+  "reference_hashes": {
+    "floor-1f-217.webp": "e70a5f528209876bf6285dad47612047dc4fdfc043df469adbb8216efd77c2a1",
+    "floor-2f-217.webp": "e829b0d2e7f72c47234d6b8ce9eb59e283d9f4ca20934aea4794157158faca65",
+    "floor-4f-217.webp": "fa31401ff0eaa529ccd3b0b1210565b5d66206675e8e801687ce9b53560fca21",
+    "floor-5f-217.webp": "6532b7fcd36c47a46a6c427009d3f5bc99b82f6349b4aab07debc24bab83ac30"
+  },
+  "reference_preservation": "PASS",
+  "generator": "built-in image_gen",
+  "formatting": "Pillow: size normalization and lossy encoding only"
+}
