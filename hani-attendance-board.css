@@ -1,33 +1,47 @@
+@import url("https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap");
+
 /* Scoped Home Attendance Stamp Board (#attendanceBoard). */
 #attendanceBoard {
-  --att-bg: linear-gradient(135deg, #fffdf9, #fff7eb);
-  --att-surface: #ffffff;
-  --att-surface-soft: #fffaf2;
-  --att-ink: #383028;
-  --att-muted: #7b6f62;
-  --att-line: #eadcc8;
-  --att-accent: #e07b42;
-  --att-accent-deep: #c9642d;
-  --att-gold: #d99b18;
-  --att-gold-bg: #fff5d9;
-  --att-rest-bg: #eef7ee;
-  --att-rest-line: #a7d4a9;
-  --att-rest-ink: #2b6b32;
-  --att-bubble: #ffffff;
-  --att-shadow: 0 8px 22px rgba(72, 52, 32, 0.06);
+  --att-bg: #ffffff;
+  --att-paper: #ffffff;
+  --att-surface-soft: #f6f3fb;
+  --att-ink: #2b2433;
+  --att-muted: #675d75;
+  --att-line: #e4dcef;
+  --att-accent: #7a4fd0;
+  --att-accent-deep: #643ab8;
+  --att-accent-soft: #efe7ff;
+  --att-on-accent: #ffffff;
+  --att-stamp: #d04372;
+  --att-stamp-bg: color-mix(in srgb, var(--att-stamp) 11%, transparent);
+  --att-rest: #248250;
+  --att-rest-bg: color-mix(in srgb, var(--att-rest) 11%, transparent);
+  --att-gold: #c8901a;
+  --att-gold-ink: #8c5d04;
+  --att-gold-bg: #fff4d8;
+  --att-gold-badge-bg: #946205;
+  --att-on-gold: #ffffff;
+  --att-shadow: 0 8px 22px -10px rgba(80, 50, 140, 0.34), 0 2px 8px rgba(80, 50, 140, 0.06);
+  --att-font-display: "Jua", "Gowun Dodum", var(--ds-font, "SUIT Variable", "Pretendard Variable", system-ui, sans-serif);
+  --att-font-body: "Gowun Dodum", var(--ds-font, "SUIT Variable", "Pretendard Variable", system-ui, -apple-system, "Malgun Gothic", sans-serif);
 
   box-sizing: border-box;
   width: 100%;
   max-width: 100%;
   min-width: 0;
   margin: 0 0 18px;
-  padding: 18px 20px;
+  padding: 15px 16px;
   border: 1px solid var(--att-line);
-  border-radius: 20px;
+  border-radius: 18px;
   background: var(--att-bg);
   color: var(--att-ink);
   box-shadow: var(--att-shadow);
-  font-family: var(--ds-font, "SUIT Variable", "Pretendard Variable", Pretendard, -apple-system, sans-serif);
+  font-family: var(--att-font-body);
+  font-size: 15px;
+  line-height: 1.55;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   overflow-x: clip;
 }
 
@@ -50,37 +64,44 @@
 :root[data-theme="dark"] #attendanceBoard,
 [data-theme="dark"] #attendanceBoard,
 :root:is([data-finish="midnight-black"], [data-finish="titanium-graphite"]) #attendanceBoard {
-  --att-bg: linear-gradient(135deg, #211f2a, #28232d);
-  --att-surface: #1b1d27;
-  --att-surface-soft: #262938;
-  --att-ink: #f4f1eb;
-  --att-muted: #b6b1a9;
-  --att-line: #3e3a4b;
-  --att-accent: #f08d52;
-  --att-accent-deep: #d9763b;
-  --att-gold: #f0b93d;
-  --att-gold-bg: #3b301b;
-  --att-rest-bg: #1e3325;
-  --att-rest-line: #497e55;
-  --att-rest-ink: #9be0a5;
-  --att-bubble: #252836;
-  --att-shadow: 0 10px 26px rgba(0, 0, 0, 0.28);
+  --att-bg: #221d2b;
+  --att-paper: #221d2b;
+  --att-surface-soft: #2b2437;
+  --att-ink: #f1ecf7;
+  --att-muted: #b7adc6;
+  --att-line: #3a3246;
+  --att-accent: #b89aff;
+  --att-accent-deep: #cab3ff;
+  --att-accent-soft: #2f2742;
+  --att-on-accent: #1d1629;
+  --att-stamp: #ff85ad;
+  --att-stamp-bg: color-mix(in srgb, var(--att-stamp) 14%, transparent);
+  --att-rest: #68db9b;
+  --att-rest-bg: color-mix(in srgb, var(--att-rest) 14%, transparent);
+  --att-gold: #f2c35b;
+  --att-gold-ink: #f2c35b;
+  --att-gold-bg: #3a3020;
+  --att-gold-badge-bg: #f2c35b;
+  --att-on-gold: #1f1706;
+  --att-shadow: 0 10px 26px -10px rgba(0, 0, 0, 0.55);
 }
 
 /* Align midnight-black / titanium-graphite finishes with canonical Design System tokens. */
 :root:is([data-finish="midnight-black"], [data-finish="titanium-graphite"]) #attendanceBoard {
-  --att-bg: var(--surface-panel);
-  --att-surface: var(--surface-raised);
-  --att-surface-soft: var(--surface-panel);
-  --att-ink: var(--text-primary);
-  --att-muted: var(--text-secondary);
-  --att-line: var(--border-subtle);
-  --att-bubble: var(--surface-raised);
+  --att-bg: var(--surface-panel, #221d2b);
+  --att-paper: var(--surface-panel, #221d2b);
+  --att-surface-soft: var(--surface-raised, #2b2437);
+  --att-ink: var(--text-primary, #f1ecf7);
+  --att-muted: var(--text-secondary, #b7adc6);
+  --att-line: var(--border-subtle, #3a3246);
+  --att-accent-soft: color-mix(in srgb, #b89aff 16%, var(--surface-raised, #2a2338));
+  --att-gold-bg: color-mix(in srgb, #f2c35b 14%, var(--surface-raised, #2d261b));
 }
 
 #attendanceBoard.gold {
-  border: 2px solid var(--att-gold);
-  box-shadow: 0 8px 24px rgba(217, 155, 24, 0.22);
+  background: linear-gradient(160deg, var(--att-gold-bg), var(--att-paper) 60%);
+  border-color: var(--att-gold);
+  box-shadow: 0 8px 24px -10px color-mix(in srgb, var(--att-gold) 42%, transparent);
 }
 
 #attendanceBoard .att-head {
@@ -89,13 +110,12 @@
   justify-content: space-between;
   gap: 8px;
   flex-wrap: wrap;
-  margin-bottom: 12px;
 }
 
 #attendanceBoard .att-eyebrow {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   color: var(--att-accent);
 }
 
@@ -110,32 +130,30 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 4px 10px;
+  padding: 3px 10px;
   border-radius: 999px;
-  font-size: 11px;
-  font-weight: 800;
-  line-height: 1.3;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
   white-space: nowrap;
 }
 
 #attendanceBoard .att-badge.is-honor {
-  background: var(--att-gold-bg);
-  border: 1px solid var(--att-gold);
-  color: var(--att-ink);
+  background: var(--att-gold-badge-bg);
+  color: var(--att-on-gold);
 }
 
 #attendanceBoard .att-badge.is-pet {
-  background: var(--att-surface-soft);
+  background: var(--att-accent-soft);
   border: 1px solid var(--att-line);
-  color: var(--att-muted);
+  color: var(--att-ink);
 }
 
 #attendanceBoard .att-duty {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
   min-width: 0;
-  margin-bottom: 14px;
 }
 
 #attendanceBoard .face {
@@ -143,9 +161,9 @@
   flex: 0 0 56px;
   width: 56px;
   height: 56px;
-  border-radius: 16px;
-  border: 2px solid var(--att-line);
-  background: var(--att-surface-soft);
+  border-radius: 50%;
+  border: 2px solid var(--att-accent-soft);
+  background: var(--att-accent-soft);
   overflow: hidden;
   display: grid;
   place-items: center;
@@ -169,56 +187,47 @@
 }
 
 #attendanceBoard .face .att-face-fallback {
-  font-size: 20px;
-  font-weight: 800;
+  font-family: var(--att-font-display);
+  font-size: 21px;
   color: var(--att-accent);
 }
 
 #attendanceBoard .face.hop {
-  animation: att-hop 0.9s ease 2;
-}
-
-#attendanceBoard .att-copy {
-  flex: 1 1 auto;
-  min-width: 0;
+  animation: att-hop 0.5s ease 3;
 }
 
 #attendanceBoard .who {
+  flex: 1 1 auto;
+  min-width: 0;
   display: flex;
-  align-items: baseline;
-  gap: 7px;
-  flex-wrap: wrap;
-  font-size: 14px;
-  font-weight: 800;
-  margin-bottom: 5px;
+  flex-direction: column;
+  gap: 2px;
 }
 
-#attendanceBoard .who small {
-  font-size: 11.5px;
+#attendanceBoard .att-role {
+  font-size: 12px;
   font-weight: 700;
-  color: var(--att-muted);
+  letter-spacing: 0.02em;
+  color: var(--att-accent);
+  line-height: 1.35;
+}
+
+#attendanceBoard .att-name {
+  font-family: var(--att-font-display);
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--att-ink);
 }
 
 #attendanceBoard .bubble {
   margin: 0;
   padding: 10px 13px;
-  border-radius: 14px;
-  border: 1px solid var(--att-line);
-  background: var(--att-bubble);
-  font-size: 13.5px;
-  line-height: 1.5;
-  word-break: keep-all;
-  overflow-wrap: anywhere;
-}
-
-#attendanceBoard .att-secret {
-  margin: 7px 0 0;
-  padding: 8px 11px;
-  border-radius: 11px;
-  border: 1px dashed var(--att-gold);
-  background: var(--att-gold-bg);
-  font-size: 12px;
-  line-height: 1.45;
+  border-radius: 4px 14px 14px 14px;
+  background: var(--att-accent-soft);
+  color: var(--att-ink);
+  font-size: 14.5px;
+  line-height: 1.55;
   word-break: keep-all;
   overflow-wrap: anywhere;
 }
@@ -226,67 +235,153 @@
 #attendanceBoard .att-week {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 8px;
+  gap: 6px;
   min-width: 0;
-  margin: 12px 0;
 }
 
 #attendanceBoard .att-cell {
   min-width: 0;
-  min-height: 62px;
-  padding: 6px 2px;
-  border-radius: 13px;
-  border: 1px solid var(--att-line);
-  background: var(--att-surface);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 4px;
   text-align: center;
 }
 
-#attendanceBoard .att-cell .att-day {
-  font-size: 11px;
-  font-weight: 700;
+#attendanceBoard .att-cell .att-mark {
+  width: 100%;
+  max-width: 46px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 2px dashed var(--att-line);
+  background: transparent;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  line-height: 1;
   color: var(--att-muted);
 }
 
-#attendanceBoard .att-cell .att-mark {
-  font-size: 18px;
-  line-height: 1.1;
+#attendanceBoard .att-cell .att-day {
+  font-size: 11.5px;
+  line-height: 1.2;
+  color: var(--att-muted);
+  white-space: nowrap;
 }
 
-#attendanceBoard .att-cell.is-today {
-  border: 2px dashed var(--att-accent);
-}
-
-#attendanceBoard .att-cell.stamped {
-  background: var(--att-gold-bg);
-  border-color: var(--att-gold);
+#attendanceBoard .att-cell.is-today .att-mark {
+  border-color: var(--att-accent);
   border-style: solid;
+  color: var(--att-accent);
 }
 
-#attendanceBoard .att-cell.is-today.stamped {
+#attendanceBoard .att-cell.is-today .att-day {
+  color: var(--att-accent);
+  font-weight: 700;
+}
+
+#attendanceBoard .att-cell.stamped .att-mark {
+  border: 2px solid var(--att-stamp);
+  color: var(--att-stamp);
+  background: var(--att-stamp-bg);
+}
+
+#attendanceBoard .att-cell.is-today.stamped .att-mark {
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--att-accent) 28%, transparent);
 }
 
-#attendanceBoard .att-cell.rest {
+#attendanceBoard .att-cell.rest .att-mark {
+  border: 2px solid var(--att-rest);
+  color: var(--att-rest);
   background: var(--att-rest-bg);
-  border-color: var(--att-rest-line);
-  color: var(--att-rest-ink);
 }
 
-#attendanceBoard .att-cell.miss {
-  opacity: 0.48;
-}
-
+#attendanceBoard .att-cell.miss .att-mark,
 #attendanceBoard .att-cell.future .att-mark {
-  opacity: 0.42;
+  opacity: 0.55;
 }
 
 #attendanceBoard .att-cell.pop .att-mark {
-  animation: att-pop 0.36s cubic-bezier(0.22, 1.4, 0.36, 1) 1;
+  animation: att-pop 0.45s ease 1;
+}
+
+#attendanceBoard .att-reward {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--att-gold-bg);
+  border: 1px solid var(--att-gold);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: var(--att-ink);
+  min-width: 0;
+}
+
+#attendanceBoard .att-reward-media {
+  position: relative;
+  flex: 0 0 46px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1.5px solid var(--att-gold);
+  background: var(--att-paper);
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+#attendanceBoard .att-reward-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 20%;
+  display: block;
+}
+
+#attendanceBoard .att-reward-media .att-pet-sprite {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background-repeat: no-repeat;
+  background-size: 500% auto;
+  background-position: 0% 100%;
+}
+
+#attendanceBoard .att-reward-fallback {
+  font-size: 20px;
+  line-height: 1;
+}
+
+#attendanceBoard .att-reward-copy {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+#attendanceBoard .att-reward-title {
+  font-family: var(--att-font-display);
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--att-gold-ink);
+  line-height: 1.3;
+}
+
+#attendanceBoard .att-reward-text,
+#attendanceBoard .att-reward-secret {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--att-ink);
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+#attendanceBoard .att-reward-secret {
+  margin-top: 2px;
+  font-size: 13px;
 }
 
 #attendanceBoard .att-foot {
@@ -298,24 +393,39 @@
 }
 
 #attendanceBoard .att-streak {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--att-muted);
+  flex: 1 1 180px;
   min-width: 0;
-  overflow-wrap: anywhere;
+  font-size: 13.5px;
+  color: var(--att-ink);
+}
+
+#attendanceBoard .att-streak-num {
+  font-family: var(--att-font-display);
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--att-stamp);
+  line-height: 1.25;
+}
+
+#attendanceBoard .att-streak-sub {
+  display: block;
+  color: var(--att-muted);
+  font-size: 12.5px;
+  line-height: 1.4;
 }
 
 #attendanceBoard .att-btn {
   flex: 0 0 auto;
-  min-height: 40px;
-  padding: 9px 16px;
+  min-height: 42px;
+  padding: 10px 20px;
   border: 0;
-  border-radius: 12px;
+  border-radius: 999px;
   background: var(--att-accent);
-  color: #ffffff;
-  font-family: inherit;
-  font-size: 13.5px;
-  font-weight: 800;
+  color: var(--att-on-accent);
+  font-family: var(--att-font-display);
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
   cursor: pointer;
   transition: transform 0.12s ease, background 0.15s ease, opacity 0.15s ease;
 }
@@ -326,25 +436,24 @@
 }
 
 #attendanceBoard .att-btn:focus-visible {
-  outline: 3px solid var(--att-accent);
+  outline: 3px solid var(--att-gold);
   outline-offset: 2px;
 }
 
 #attendanceBoard .att-btn:disabled {
-  background: var(--att-surface-soft);
-  border: 1px solid var(--att-line);
+  background: var(--att-line);
   color: var(--att-muted);
   cursor: default;
   transform: none;
 }
 
 #attendanceBoard .att-notice {
-  margin: 10px 0 0;
+  margin: 0;
   padding: 8px 11px;
   border-radius: 10px;
   background: var(--att-surface-soft);
   border: 1px solid var(--att-line);
-  font-size: 12px;
+  font-size: 12.5px;
   line-height: 1.45;
   color: var(--att-ink);
   word-break: keep-all;
@@ -352,30 +461,27 @@
 }
 
 #attendanceBoard .att-notice.is-warn {
-  border-color: #d9822b;
+  border-color: var(--att-gold);
 }
 
 @keyframes att-hop {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-5px);
-  }
-  70% {
-    transform: translateY(-2px);
+  50% {
+    transform: translateY(-8px) rotate(-6deg);
   }
 }
 
 @keyframes att-pop {
   0% {
-    transform: scale(0.5);
+    transform: scale(1.8) rotate(-15deg);
+    opacity: 0;
   }
   70% {
-    transform: scale(1.22);
+    transform: scale(0.92);
+    opacity: 1;
   }
   100% {
     transform: scale(1);
+    opacity: 1;
   }
 }
 
@@ -385,31 +491,28 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 480px) {
   #attendanceBoard {
     padding: 14px 13px;
-    border-radius: 17px;
+    gap: 11px;
   }
 
   #attendanceBoard .face {
-    flex-basis: 48px;
-    width: 48px;
-    height: 48px;
-    border-radius: 14px;
+    flex-basis: 50px;
+    width: 50px;
+    height: 50px;
   }
 
   #attendanceBoard .att-week {
     gap: 4px;
   }
 
-  #attendanceBoard .att-cell {
-    min-height: 54px;
-    border-radius: 10px;
-    padding: 4px 1px;
+  #attendanceBoard .att-cell .att-mark {
+    font-size: 17px;
   }
 
-  #attendanceBoard .att-cell .att-mark {
-    font-size: 16px;
+  #attendanceBoard .att-cell .att-day {
+    font-size: 10.5px;
   }
 
   #attendanceBoard .att-foot {
@@ -417,8 +520,13 @@
     align-items: stretch;
   }
 
+  #attendanceBoard .att-streak {
+    flex: none;
+  }
+
   #attendanceBoard .att-btn {
     width: 100%;
+    min-height: 44px;
   }
 }
 
