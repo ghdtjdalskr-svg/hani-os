@@ -4,6 +4,19 @@ const path=require('node:path'),{fileURLToPath}=require('node:url');
 const inverse=require('./hani-menu-badges-source.cjs'),repository=require('./hani-test-repository-evidence.cjs');
 const root=path.resolve(__dirname,'..'),authored='55f3fe64e2b88aa1b39ed503e3133614265e88d7';
 const outerFiles=new Map([
+ // tooling309 outer boundaries
+ ['scripts/fixtures/release-309-layer.json','7240094271a71ef7300e322f7bb8ac7292f8612b654ca147ee2fdda82203dd74'],
+ ['scripts/hani-release-309-source.cjs','e85fa27bce4ed8082bf30d06c7c1ed4ae8636071d83451b831c15abe0492cbbc'],
+ ['scripts/hani-release-309-preload.cjs','bcaa9d6a197f880549b675c49a7576a8fd3b673cac44c9c010cb06654582cd17'],
+ ['scripts/hani-release-309-reviewed-input.cjs','6179c27873ec6957548ce0b5c013aef0e11aeaab393c5b3e7b01f18a9c5eb40a'],
+ ['scripts/hani-release-309.test.mjs','eeafee6f052be65ba9af96058dc718450ef316e194aadb5bc0346f132721f260'],
+ // tooling309 outer boundaries end
+ // ai-budget-view (2.9.309) outer boundaries
+ ['scripts/fixtures/ai-budget-view-layer.json','80900c8cc82f7c443d3286277c3d3c6fb87bd5ebb24c947706532a0018650aee'],
+ ['scripts/hani-ai-budget-view-layer.test.mjs','2ae77309dc379721b99c003161c8db98b52ffe604e8ee1a810c9ea5739a46d60'],
+ ['scripts/hani-ai-budget-view.test.mjs','16d611d2674e868f6e8b908eacc3da5216caefce92b2b87edd9f6e65f2b67ab1'],
+ ['scripts/hani-newsroom-4cut-footnote.test.mjs','87ffa86cced9cc656c585b421b806eea1271be64b1608559cbd4566dab056368'],
+ // ai-budget-view outer boundaries end
  // tooling308 outer boundaries
  ['scripts/fixtures/release-308-layer.json','333a59a05abc549560f11fd5a6e4ec982802e12dc447de0ca819c4de4f3e7c0e'],
  ['scripts/hani-release-308.test.mjs','22242c898fc41c381e3502be28ded551133405ed44f1dcb73319a1c3362571fc'],

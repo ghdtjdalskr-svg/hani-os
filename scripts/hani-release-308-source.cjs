@@ -1,3 +1,4 @@
+require('./hani-ai-budget-view-preload.cjs'); // Outermost budget view inverse before the308 capture.
 // Test-only released308 metadata inverse before building,307, menu and older captures.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
