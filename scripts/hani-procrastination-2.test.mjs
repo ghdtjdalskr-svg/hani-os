@@ -310,7 +310,10 @@ test('render uses persistent card slots, toggles mediation, and handles reply bu
 
 test('CSS references valid assets and supports themes, 9 staff, 5 moods, mobile, and reduced motion', () => {
   const urls = [...cssSource.matchAll(/url\((["']?)([^"')]+)\1\)/g)].map(m => m[2]);
-  assert.equal(urls.length, 5);
+  // Round 3 adds the Naeun per-item pose sheet and the scene background sheet.
+  assert.equal(urls.length, 7);
+  assert.ok(urls.includes('./assets/procrastination/pb-naeun-items-v1.webp'));
+  assert.ok(urls.includes('./assets/procrastination/pb-scene-bg-v1.webp'));
   for (const rel of urls) {
     const abs = path.resolve(rootDir, rel);
     assert.equal(fs.existsSync(abs), true, `Missing CSS asset: ${rel}`);

@@ -4,6 +4,21 @@
   const DAY = 86400000;
   const LABELS = ['괜찮아요 😊', '살짝 서운', '삐짐 😤', '단단히 삐짐', '대삐짐'];
   const UNKNOWN_SPEECH = '회장님, 첫 기록부터 같이 시작해요.';
+  // No record yet: each card greets with its own first line instead of one shared sentence.
+  const FIRST_SPEECH = Object.freeze({
+    steps:'만보기가 아직 새것이에요. 첫 산책 가요!',
+    weight:'체중계가 첫 발걸음을 기다려요!',
+    workout:'운동 기록 첫 칸, 제가 응원할게요!',
+    quiz:'첫 문제지 준비해 뒀어용! 같이 풀어용!',
+    wrongReview:'이거 아세요? 오답노트도 시작이 반!',
+    assets:'첫 잔고 기록부터 차분히 시작해요.',
+    ledger:'첫 영수증 한 장부터 같이 적어 봐요.',
+    wishlist:'장바구니가 텅 비었어요. 첫 위시 골라요!',
+    spendReview:'산 물건 첫 후기, 제가 제일 궁금해요!',
+    culture:'첫 감상 한 줄이면 레디, 액션이에요!',
+    tasks:'첫 할 일만 적어 주시면 제가 챙길게요.',
+    diary:'회장님 첫 한 줄, 제일 먼저 읽고 싶어요♡'
+  });
   const STAFF = {
     naeun: {
       name:'나은', role:'건강 · 루틴',
@@ -383,7 +398,7 @@
       const lines = Array.isArray(spec.lines) ? spec.lines : staff.lines;
       const thanks = spec.thanks || staff.thanks;
       const reply = spec.reply || staff.reply;
-      const speech = celebrated ? thanks : level === null ? UNKNOWN_SPEECH : (lines[level] ?? staff.lines[level]);
+      const speech = celebrated ? thanks : level === null ? (FIRST_SPEECH[spec.id] || UNKNOWN_SPEECH) : (lines[level] ?? staff.lines[level]);
       const mediationText = spec.mediation || staff.mediation;
       const mediation = Number.isInteger(level) && level >= 3 && spec.owner !== 'hani' ? mediationText : null;
       return {
