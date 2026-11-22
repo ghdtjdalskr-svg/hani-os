@@ -207,7 +207,9 @@
     try {await loading;} finally {loading = null;}
   }
   async function enter() {if (!ready) await boot();else await render();}
-  window.HaniIlbo = Object.freeze({enter,homeCard,publishedCount,compute,period,koreaDate,parseManifest,parseExtras,parseIssue,topPosts,newsroomPosts,markup,bindImage});
+  const hasTodayIssue = (now = Date.now()) => {if (!ready) return false;const day = koreaDate(now);return entries.some(x=>x.date===day) || extras.some(x=>x.date===day);};
+  const issueDates = () => ready ? [...entries, ...extras].map(x=>x.date) : [];
+  window.HaniIlbo = Object.freeze({enter,homeCard,publishedCount,hasTodayIssue,issueDates,compute,period,koreaDate,parseManifest,parseExtras,parseIssue,topPosts,newsroomPosts,markup,bindImage});
   if (typeof document === 'undefined') return;
   function start() {
     const host = root();if (!host) return;

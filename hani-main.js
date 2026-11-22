@@ -1699,7 +1699,7 @@ const canonicalProfileImages=Object.freeze({
 const agentImages=Object.freeze({...canonicalProfileImages,nauen:canonicalProfileImages.naeun,suyeon:canonicalProfileImages.sooyeon});
 // Small avatars (30-150px) use pre-resized 256px thumbnails; the 720px originals look jagged when the browser shrinks them 10-20x.
 const sidebarAgentImages=Object.freeze(Object.fromEntries(Object.entries(agentImages).map(([k,v])=>[k,v.replace("./assets/profiles/","./assets/profiles/thumb/").replace(/\.webp$/,"-256.webp")])));
-const pageAgentImage={home:"hani",investment:"hani",investmentCommittee:"hani",newsroom:"hani",asset:"jieun",ledger:"jieun",cards:"jieun",wishlist:"haru",diet:"nauen",exercise:"nauen",travel:"suyeon",university:"hina",study:"hina",certificate:"hina",reading:"haru",movie:"minji",diary:"minji",game:"suyeon",settings:"hani",work:"sua",tasks:"sua",calendar:"sua",drive:"sua",dev:"hani",deployment:"hani",intake:"yuna",agentReview:"hani",monthlyReport:"hani",policy:"hani",aiTeam:"hani"};
+const pageAgentImage={home:"hani",investment:"hani",investmentCommittee:"hani",newsroom:"hani",asset:"jieun",ledger:"jieun",cards:"jieun",wishlist:"haru",diet:"nauen",exercise:"nauen",travel:"suyeon",university:"hina",study:"hina",certificate:"hina",reading:"haru",movie:"minji",diary:"minji",game:"suyeon",settings:"hani",work:"sua",tasks:"sua",calendar:"sua",drive:"sua",dev:"hani",deployment:"hani",intake:"yuna",agentReview:"hani",monthlyReport:"hani",policy:"hani",aiTeam:"hani",aiWork:"dohyun",geminiReports:"serin",aiBudget:"seoyun"};
 const YUNA_AVATAR=canonicalProfileImages.yuna;
 const YUNA_PORTRAIT=canonicalProfileImages.yuna;
 
@@ -1979,7 +1979,6 @@ const INVESTMENT_COMMITTEE_VIEW='investmentCommittee';
 function showView(id){
   if(id==="home"||id==="aura")syncThemeCollections();
   window.HANI_GOAL_PROGRESS?.syncGoalEditor?.(id);
-  if(typeof renderNavNewBadges==="function")renderNavNewBadges();
   const ORGANIZATION_VIEW_ID='organization',SETTINGS_VIEW_ID='settings';
   const committeeView=typeof INVESTMENT_COMMITTEE_VIEW==='string'?INVESTMENT_COMMITTEE_VIEW:'investmentCommittee';
   const committeeRoute=String(id||'').split('/');
@@ -1994,6 +1993,8 @@ function showView(id){
 const BOARD_VIEW_ID='board';
   if(boardHash)id=BOARD_VIEW_ID; // view id kept in a const so static DOM-id scans don't see a second id literal
   if(!$(id))id="home";
+  if(typeof markMenuSeen==="function")markMenuSeen(id);
+  if(typeof renderNavNewBadges==="function")renderNavNewBadges();
   clearTimeout(navigationTimer);navigationCurrent=NAVIGATION_VIEWS.has(id)?id:'';
   if(navigationBooted&&loginGateUnlocked)navigationPersist(navigationCurrent,0);
   document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));$(id).classList.add("active");
@@ -2019,7 +2020,7 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
   if(id==="geminiReports")window.HaniGeminiReports?.render();
   if(id==="drive"&&typeof googleDriveEnter==="function")googleDriveEnter();
   if(['home','intake','tasks'].includes(id)&&typeof renderHaniCareHome==='function')renderHaniCareHome();
-  if(id==="aiBudget")window.HaniAiBudget?.render();
+  if(id==="aiBudget"||id==="home")window.HaniAiBudget?.render();
   if(typeof window!=='undefined')window.HANI_CONTEXT_REMOTE_V1?.update();
   if(typeof window!=='undefined')window.HaniHelperBot?.bubble?.(id);
   if(id==="exercise")drawExercise();if(id==="investment")setTimeout(drawPortfolio,30);if(id==="newsroom")setTimeout(()=>investmentNewsMaybeRefresh(),40);if(id==="diet")setTimeout(drawBody,30);if(id==="ledger")setTimeout(drawLedgerTrend,30);if(id==="calendar")renderCalendar();if(id==="tasks")setTimeout(()=>googleCalendarRefreshStatus({silent:true}),0);if(id==="intake")setTimeout(()=>intakeRenderPreview(),0);if(id==="agentReview")setTimeout(()=>agentReviewInit(),0);if(id==="monthlyReport")setTimeout(()=>renderMonthlyReport(),0);if(id==="policy")setTimeout(()=>agentPolicyInit(),0);if(id==="deployment")setTimeout(()=>deployCenterRender(),0);
@@ -2155,26 +2156,186 @@ window.addEventListener("hashchange",()=>{const route=location.hash.slice(1);if(
 document.querySelectorAll("[data-view]").forEach(b=>b.addEventListener("click",()=>showView(b.dataset.view)));
 document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>showView(b.dataset.go)));
 if($("homeYunaQuick"))$("homeYunaQuick").onclick=()=>{showView("intake");setTimeout(()=>$("yunaInput")?.focus(),80)};
+const MENU_SEEN_KEY="hani_menu_seen_v1";
+const MENU_SEEN_VIEWS=new Set(["board","ilbo","newsroom"]);
+function menuSeenFormatKstIso(now=Date.now()){
+  const ms=now instanceof Date?now.getTime():typeof now==="number"?now:Date.parse(now);
+  if(!Number.isFinite(ms))return "";
+  return new Date(ms+9*3600000).toISOString().replace("Z","+09:00");
+}
+function menuSeenValidTimestamp(value){
+  if(typeof value!=="string")return "";
+  const s=value.trim();
+  if(!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(s))return "";
+  const day=s.slice(0,10),d=new Date(day+"T00:00:00Z");
+  if(!Number.isFinite(d.getTime())||d.toISOString().slice(0,10)!==day)return "";
+  const [hh,mm,ss]=s.slice(11,19).split(":").map(Number);
+  if(hh>23||mm>59||ss>59)return "";
+  return Number.isFinite(Date.parse(s))?s:"";
+}
+function readMenuSeen(){
+  try{
+    const raw=localStorage.getItem(MENU_SEEN_KEY);
+    if(!raw)return {};
+    const parsed=JSON.parse(raw);
+    if(!parsed||typeof parsed!=="object"||Array.isArray(parsed)||parsed.v!==1||!parsed.seen||typeof parsed.seen!=="object"||Array.isArray(parsed.seen))return {};
+    const out={};
+    for(const [k,v] of Object.entries(parsed.seen)){
+      if(!MENU_SEEN_VIEWS.has(k))continue;
+      const valid=menuSeenValidTimestamp(v);
+      if(valid)out[k]=valid;
+    }
+    return out;
+  }catch(_){
+    return {};
+  }
+}
+function markMenuSeen(viewId,now=Date.now()){
+  if(!MENU_SEEN_VIEWS.has(viewId))return false;
+  const stamp=menuSeenFormatKstIso(now);
+  if(!stamp)return false;
+  try{
+    const current=readMenuSeen();
+    const next={v:1,seen:{...current,[viewId]:stamp}};
+    localStorage.setItem(MENU_SEEN_KEY,JSON.stringify(next));
+    return true;
+  }catch(_){
+    return false;
+  }
+}
 const GROUP_COLLAPSE_KEY="hani_os_group_collapse_v1";
 // Menu freshness is a calendar-day window in KST; no read/unread persistence.
 const NAV_NEW_DATES=Object.freeze({investmentCommittee:"2026-10-11",board:"2026-10-11",organization:"2026-10-11",aura:"2026-10-11",aiBudget:"2026-10-11"});
 function navMenuIsNew(viewId,now=Date.now()){
   const date=NAV_NEW_DATES[viewId];if(!date)return false;
-  const day=Math.floor((now+9*3600000)/86400000),added=Math.floor(Date.parse(date+"T00:00:00Z")/86400000);
+  const ms=typeof now==="number"?now:Date.parse(now);if(!Number.isFinite(ms))return false;
+  const day=Math.floor((ms+9*3600000)/86400000),added=Math.floor(Date.parse(date+"T00:00:00Z")/86400000);
   return day>=added&&day<added+7;
 }
 let navNewBadgeTimer;
+function menuBadgeKstDay(now=Date.now()){
+  const ms=typeof now==="number"?now:Date.parse(now);
+  return Number.isFinite(ms)?new Date(ms+9*3600000).toISOString().slice(0,10):"";
+}
+function menuBadgeDateToKstDay(value){
+  const s=String(value||"").trim();
+  if(!s)return "";
+  if(/^\d{4}-\d{2}-\d{2}$/.test(s))return s;
+  if(/^\d{4}-\d{2}-\d{2}T/.test(s)&&!/(?:Z|[+-]\d{2}:?\d{2})$/.test(s))return s.slice(0,10);
+  const ms=Date.parse(s);
+  return Number.isFinite(ms)?new Date(ms+9*3600000).toISOString().slice(0,10):"";
+}
+function menuBadgeTimestampMs(value){
+  if(typeof value==="number")return Number.isFinite(value)?value:NaN;
+  const s=String(value||"").trim();
+  if(!s)return NaN;
+  if(/^\d{4}-\d{2}-\d{2}$/.test(s)){
+    const d=new Date(s+"T00:00:00Z");
+    if(!Number.isFinite(d.getTime())||d.toISOString().slice(0,10)!==s)return NaN;
+    return Date.parse(s+"T00:00:00+09:00");
+  }
+  const normalized=/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}/.test(s)?s.replace(" ","T"):s;
+  if(/^\d{4}-\d{2}-\d{2}T/.test(normalized)){
+    const day=normalized.slice(0,10),d=new Date(day+"T00:00:00Z");
+    if(!Number.isFinite(d.getTime())||d.toISOString().slice(0,10)!==day)return NaN;
+    const iso=/(?:Z|[+-]\d{2}:?\d{2})$/i.test(normalized)?normalized:normalized+"+09:00";
+    return Date.parse(iso);
+  }
+  return NaN;
+}
+function menuBadgeSeenMs(seenMap,viewId){
+  const raw=seenMap&&typeof seenMap==="object"?seenMap[viewId]:"";
+  if(typeof raw!=="string")return null;
+  const s=raw.trim();
+  if(!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(s))return null;
+  const day=s.slice(0,10),d=new Date(day+"T00:00:00Z");
+  if(!Number.isFinite(d.getTime())||d.toISOString().slice(0,10)!==day)return null;
+  const [hh,mm,ss]=s.slice(11,19).split(":").map(Number);
+  if(hh>23||mm>59||ss>59)return null;
+  const ms=Date.parse(s);
+  return Number.isFinite(ms)?ms:null;
+}
+function formatMenuBadgeCount(count){
+  const v=Number(count);
+  if(!Number.isFinite(v)||v<=0)return "";
+  const floored=Math.floor(v);
+  return floored>99?"99+":String(floored);
+}
+function computeMenuBadges(snapshot,runtime={},now=Date.now()){
+  const todayDay=menuBadgeKstDay(now),data=snapshot&&typeof snapshot==="object"?snapshot:{};
+  const rt=runtime&&typeof runtime==="object"?runtime:{};
+  const newEntry=active=>({kind:"new",active:!!active,count:active?1:0,text:active?"NEW":""});
+  const countEntry=nVal=>{
+    const count=Number.isFinite(Number(nVal))&&Number(nVal)>0?Math.floor(Number(nVal)):0;
+    return {kind:"count",active:count>0,count,text:formatMenuBadgeCount(count)};
+  };
+  const seenMap=rt.menuSeen&&typeof rt.menuSeen==="object"&&!Array.isArray(rt.menuSeen)?rt.menuSeen:{};
+  const boardSeenMs=menuBadgeSeenMs(seenMap,"board");
+  const boardToday=(Array.isArray(data.boardPosts)?data.boardPosts:[]).some(p=>{
+    if(!p||p.boardMeta||p.pending||p.draft||p.disposition)return false;
+    const ts=p.publishedAt||p.createdAt;
+    if(boardSeenMs===null)return menuBadgeDateToKstDay(ts)===todayDay;
+    const ms=menuBadgeTimestampMs(ts);
+    return Number.isFinite(ms)&&ms>boardSeenMs;
+  });
+  const ilboDates=Array.isArray(rt.ilboDates)?rt.ilboDates:[];
+  const ilboSeenMs=menuBadgeSeenMs(seenMap,"ilbo");
+  const ilboToday=ilboSeenMs===null
+    ?(rt.ilboHasToday===true||ilboDates.some(d=>menuBadgeDateToKstDay(d)===todayDay))
+    :(ilboDates.some(d=>{
+        const s=String(d||"").trim();
+        if(/^\d{4}-\d{2}-\d{2}$/.test(s)&&todayDay&&s>todayDay)return false;
+        const ms=menuBadgeTimestampMs(d);
+        return Number.isFinite(ms)&&ms>ilboSeenMs;
+      })||(rt.ilboHasToday===true&&!!todayDay&&menuBadgeTimestampMs(todayDay)>ilboSeenMs));
+  const newsReadSet=rt.newsReadSet&&typeof rt.newsReadSet.has==="function"?rt.newsReadSet:null;
+  const newsSeenMs=menuBadgeSeenMs(seenMap,"newsroom");
+  const newsToday=(Array.isArray(rt.newsPosts)?rt.newsPosts:[]).some(p=>{
+    const newsId=p?.post_id||p?.id;
+    if(!p||(newsReadSet&&newsId&&newsReadSet.has(newsId)))return false;
+    const ts=p.event_at||p.published_at||p.created_at;
+    if(newsSeenMs===null)return menuBadgeDateToKstDay(ts)===todayDay;
+    const ms=menuBadgeTimestampMs(ts);
+    return Number.isFinite(ms)&&ms>newsSeenMs;
+  });
+  const procNow=typeof now==="number"&&Number.isFinite(now)?new Date(now).toISOString():now;
+  const procRows=Array.isArray(rt.procrastinationItems)?rt.procrastinationItems:(typeof rt.projectProcrastination==="function"?rt.projectProcrastination(data,procNow):[]);
+  const procCount=(Array.isArray(procRows)?procRows:[]).filter(item=>item&&Number.isInteger(item.level)&&item.level>=1).length;
+  const tasksCount=(Array.isArray(data.tasks)?data.tasks:[]).filter(t=>t&&!t.done&&menuBadgeDateToKstDay(t.dueAt||t.due)===todayDay).length;
+  const studyCount=(Array.isArray(data.learningQuizzes)?data.learningQuizzes:[]).filter(q=>q&&q.status!=="completed"&&menuBadgeDateToKstDay(q.scheduledDate||q.date||q.createdAt)===todayDay).length;
+  const result={
+    board:newEntry(boardToday||navMenuIsNew("board",now)),
+    ilbo:newEntry(ilboToday||navMenuIsNew("ilbo",now)),
+    newsroom:newEntry(newsToday||navMenuIsNew("newsroom",now)),
+    procrastination:countEntry(procCount),
+    tasks:countEntry(tasksCount),
+    study:countEntry(studyCount)
+  };
+  for(const key of Object.keys(NAV_NEW_DATES)){
+    if(!Object.hasOwn(result,key))result[key]=newEntry(navMenuIsNew(key,now));
+  }
+  return result;
+}
+if(typeof window!=="undefined")window.HaniMenuBadges=Object.freeze({compute:computeMenuBadges,formatCount:formatMenuBadgeCount,kstDay:menuBadgeKstDay,dateToKstDay:menuBadgeDateToKstDay});
+window.addEventListener?.("hani-ilbo-ready",()=>renderNavNewBadges());
 function renderNavNewBadges(now=Date.now()){
+  let _snap={},_newsPosts=[],_newsReadSet=null,_menuSeen={};
+  try{_snap=state||{}}catch(_){}
+  try{_newsPosts=investmentNewsArchiveRuntime?.posts||[];_newsReadSet=investmentNewsArchiveRuntime?.readSet||null}catch(_){}
+  try{_menuSeen=typeof readMenuSeen==="function"?readMenuSeen():{}}catch(_){}
+  const _badges=computeMenuBadges(_snap,{ilboHasToday:window.HaniIlbo?.hasTodayIssue?.(now)===true,ilboDates:window.HaniIlbo?.issueDates?.()||[],newsPosts:_newsPosts,newsReadSet:_newsReadSet,projectProcrastination:window.HaniProcrastination?.project,menuSeen:_menuSeen},now);
   window.HaniIlbo?.homeCard(now);window.HaniMilestones?.refresh();updateHomeNewsCount();
   window.HANI_CONTEXT_REMOTE_V1?.update();
   const badge=(label,active)=>{
     if(!label)return;
+    const cfg=active&&typeof active==="object"?active:{kind:"new",active:!!active,text:active?"NEW":"",count:active?1:0},on=!!(cfg.active&&cfg.text);
     let pill=label.nextElementSibling?.classList.contains("nav-new-pill")?label.nextElementSibling:null;
-    if(active&&!pill){pill=document.createElement("span");pill.className="nav-new-pill";pill.textContent="NEW";label.after(pill)}
+    if(on&&!pill){pill=document.createElement("span");pill.className="nav-new-pill";pill.hidden=true;label.after(pill)}
+    if(pill){if(on){pill.dataset.menuBadge=cfg.kind||"new";pill.textContent=cfg.text;pill.setAttribute("aria-label",cfg.kind==="count"?`${cfg.count}건 대기`:"새 항목")}else{pill.textContent="";pill.removeAttribute("aria-label")}}
     // Pill is a sibling so menuLabel's canonical text remains unchanged.
     if(pill)pill.hidden=!active;
   };
-  document.querySelectorAll("#sidebar .nav-btn[data-view]").forEach(button=>badge(button.querySelector(".txt"),navMenuIsNew(button.dataset.view,now)));
+  document.querySelectorAll("#sidebar .nav-btn[data-view]").forEach(button=>{const vid=button.dataset.view;if(vid==="study"&&button.querySelector("[data-study-pending]"))return;const label=button.querySelector(".txt"),e=Object.hasOwn(_badges,vid)?_badges[vid]:null;if(label&&e&&!label.nextElementSibling?.classList.contains("nav-new-pill")){const slot=document.createElement("span");slot.className="nav-new-pill";slot.hidden=true;slot.dataset.menuBadge=e.kind;label.after(slot)}badge(label,e&&e.active&&e.text?e:null)});
   document.querySelectorAll("#sidebar .group-head .nav-new-pill").forEach(pill=>pill.remove());
   clearTimeout(navNewBadgeTimer);
   navNewBadgeTimer=setTimeout(()=>renderNavNewBadges(),86400000-((Date.now()+9*3600000)%86400000)+30);
@@ -5450,6 +5611,7 @@ function renderHomeBirthday(date=new Date(),birthdays=CHIBI_STAFF_BIRTHDAYS){
 }
 function renderHome(){
   renderHomeBirthday();
+  window.HaniAttendanceBoard?.render();
   syncThemeCollections();
   renderHomeDialogue();const official=officialBrokerSorted(),latest=official.at(-1)||null,latestCalc=latest?brokerCalc(latest):null;
   renderHaniCareHome();
@@ -5498,7 +5660,7 @@ function renderHome(){
   if($("homeExerciseLabel"))$("homeExerciseLabel").textContent=`${year}년 운동`;
   // Dashboard metric is rendered by dataHubRenderDashboard.
   // Dashboard metric is rendered by dataHubRenderDashboard.
-  renderHomeMiniCharts();renderLifeMarket()}
+  renderHomeMiniCharts();renderLifeMarket();window.HaniAiBudget?.render()}
 
 let activeLifeIndex="hasdaq";
 const LIFE_MARKET_BRIEFS={
@@ -7716,7 +7878,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.306";
+const HANI_DISPLAY_VERSION="2.9.310";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
@@ -8596,7 +8758,7 @@ function renderMonthlyReport(){
 }
 
 
-function renderAll(){dataHubAuditSource();syncHaniDisplayVersion();normalizeHaniBrandLogos();refreshSelects();renderAccounts();renderInstruments();renderHoldings();renderTransactions();renderMonthlySnapshots();renderInvestmentQuickSuite();renderInvestmentHighlights();renderInvestmentAccountOverview();renderInvestmentNews();syncOverviewYearMirror();renderPortfolio();renderAssets();renderLedger();renderWishlist();renderBody();renderExercise();renderReading();renderMovies();renderDiary();renderCampus();renderTravel();renderCertificates();renderTasks();renderCalendar();renderTeam();renderNotes();renderHome();renderMonthlyReport();renderStoragePanel();window.HaniInvestmentCommittee?.render();/* PROCRASTINATION REFRESH */if(document.body.dataset.view==="procrastination")window.HaniProcrastination?.render(state)}
+function renderAll(){dataHubAuditSource();syncHaniDisplayVersion();normalizeHaniBrandLogos();refreshSelects();renderAccounts();renderInstruments();renderHoldings();renderTransactions();renderMonthlySnapshots();renderInvestmentQuickSuite();renderInvestmentHighlights();renderInvestmentAccountOverview();renderInvestmentNews();syncOverviewYearMirror();renderPortfolio();renderAssets();renderLedger();renderWishlist();renderBody();renderExercise();renderReading();renderMovies();renderDiary();renderCampus();renderTravel();renderCertificates();renderTasks();renderCalendar();renderTeam();renderNotes();renderHome();renderMonthlyReport();renderStoragePanel();window.HaniInvestmentCommittee?.render();/* PROCRASTINATION REFRESH */if(document.body.dataset.view==="procrastination")window.HaniProcrastination?.render(state);if(typeof renderNavNewBadges==="function")renderNavNewBadges()}
 function downloadJson(serialized,filename){const blob=new Blob([serialized],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function buildBackupPayload(value,exportedAt,mediaState=null){
   const payload={...value,meta:{...value.meta,lastBackupAt:exportedAt},version:VERSION,exportedAt,

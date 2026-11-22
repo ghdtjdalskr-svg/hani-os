@@ -39,7 +39,7 @@
 @media(max-width:700px){.hani-office-live{padding:10px}.hani-office-live-head,.hani-office-meeting-title{align-items:stretch;flex-direction:column}.hani-office-live-actions{justify-content:flex-start}.hani-office-map{width:100%}}
 @media(max-width:700px){.hani-office-live:has(.hani-office-map[data-state="meeting"]) .hani-office-scroll{display:none}}
 @media(prefers-reduced-motion:reduce){.hani-office-actor{transition:none}}
-.hani-building-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:16px}
+.hani-building-tabs{display:grid;grid-template-columns:repeat(var(--hani-floor-cols,5),minmax(0,1fr));gap:8px;margin-top:16px}
 .hani-building-tabs button{min-width:0;min-height:58px;padding:10px 8px;border:1px solid #dcd5e8;border-radius:12px;background:#fff;color:#574666;text-align:left;cursor:pointer}
 .hani-building-tabs strong,.hani-building-tabs small{display:block;overflow-wrap:anywhere}.hani-building-tabs strong{font-size:12px}.hani-building-tabs small{margin-top:5px;font-size:11px;color:#71657e}
 .hani-building-tabs [aria-selected="true"]{border-color:#8363b8;background:#eee7f8;box-shadow:inset 0 -3px #8363b8}.hani-building-tabs button:focus-visible{outline:3px solid #8363b8;outline-offset:2px}
@@ -115,7 +115,7 @@
 :root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-building-tabs [aria-selected="true"]{background:#5b4175;border-color:#c7a8e8}
 :root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-building-roster li{background:#302839;color:#ddd1e7}
 :root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-building-roster b{color:#f4edf8}
-@media(max-width:700px){.hani-building-floor-label,.hani-building-overflow{top:auto;right:auto;bottom:auto;font-size:12px}.hani-building-tabs button:last-child{grid-column:1/-1}}
+@media(max-width:700px){.hani-building-floor-label,.hani-building-overflow{top:auto;right:auto;bottom:auto;font-size:12px}.hani-building-tabs button:nth-child(odd):last-child{grid-column:1/-1}}
 @media(max-width:1024px){.hani-office-live{padding-bottom:64px}}
 
 .hani-building-roster .hani-office-planned-badge{display:inline-block;font-size:11px;line-height:1.5;border:1px solid currentColor;border-radius:8px;padding:2px 6px;margin:0 5px 4px 0}
@@ -174,8 +174,8 @@
 .hani-office-sprite{transform-origin:var(--idle-pivot-x,50%) var(--idle-pivot-y,95.3125%)}
 .hani-office-actor[data-pose="sitting"]:not([data-walking="true"]) .hani-office-sprite{animation:hani-office-breathe var(--idle-duration,4.8s) var(--idle-delay,0s) ease-in-out infinite}
 .hani-office-actor[data-pose="standing"]:not([data-walking="true"]) .hani-office-sprite{animation:hani-office-sway var(--idle-duration,4.8s) var(--idle-delay,0s) ease-in-out infinite}
-@keyframes hani-office-breathe{0%,100%{transform:scaleY(1) rotate(0deg)}45%{transform:scaleY(1.012) rotate(.35deg)}70%{transform:scaleY(1.004) rotate(-.2deg)}}
-@keyframes hani-office-sway{0%,100%{transform:rotate(0deg) scaleY(1)}35%{transform:rotate(.65deg) scaleY(1.006)}75%{transform:rotate(-.45deg) scaleY(1.01)}}
+@keyframes hani-office-breathe{0%,100%{transform:scaleY(1) rotate(0deg)}45%{transform:scaleY(1.026) rotate(1.1deg)}70%{transform:scaleY(1.008) rotate(-.7deg)}}
+@keyframes hani-office-sway{0%,100%{transform:rotate(0deg) scaleY(1)}35%{transform:rotate(1.3deg) scaleY(1.022)}75%{transform:rotate(-1.1deg) scaleY(1.026)}}
 @media(prefers-reduced-motion:reduce){.hani-office-sprite{animation:none!important;transform:none!important}}
 /* Static reciprocal head/body turn uses the same persistent partner slots.
    Individual rotate composes with idle transform about the existing foot pivot. */
@@ -225,7 +225,7 @@
 /* Companions share the crowded-label placement and existing reaction/idle owners. */
 .hani-office-actor[data-resident="kid"] .hani-office-name{--office-team:#b78a9d;--office-team-tint:#fff3f7;color:#6d3c50}
 .hani-office-actor[data-companion="true"][data-walking="true"] .hani-office-sprite{animation:none}
-.hani-office-actor[data-person="kid-suyeon"][data-walking="true"]:not([data-motion]) .hani-office-sprite{transform:translateY(var(--pet-bob,0px)) rotate(var(--pet-lean,0deg))}
+.hani-office-actor[data-resident="kid"][data-walking="true"]:not([data-motion]) .hani-office-sprite{transform:translateY(var(--pet-bob,0px)) rotate(var(--pet-lean,0deg))}
 .hani-office-actor[data-resident] .hani-office-sprite{rotate:0deg;filter:none}
 .hani-office-actor[data-resident="pet"][data-motion="hop"] .hani-office-sprite{animation:hani-pet-hop .48s ease-in-out both}
 .hani-office-actor[data-sprite="pet-rabbit"]{--sheet:url("./assets/sprites-v3/pet-rabbit.webp")}
@@ -234,7 +234,7 @@
 
 /* Approved 3F G: reuse the existing foreground slot for the lead desk edge.
    Its own lower-body slice hides ankles; face/labels remain above the desk. */
-.hani-office-map[data-floor="3f"][data-art="floor"]:has(.hani-office-actor[data-seat="dev-lead"][data-pose="sitting"]:not([hidden]))>.hani-office-foreground:nth-of-type(2){display:block;clip-path:polygon(9.33% 67%,14.83% 67%,14.83% 85%,9.33% 85%)}
+.hani-office-map[data-foreground="floor"][data-art="floor"]:has(.hani-office-actor[data-seat="dev-lead"][data-pose="sitting"]:not([hidden]))>.hani-office-foreground:nth-of-type(2){display:block;clip-path:polygon(9.33% 67%,14.83% 67%,14.83% 85%,9.33% 85%)}
 
 /* One reusable heart per pet, driven by the resident clock without layout reads. */
 .hani-office-pet-heart{position:absolute;left:50%;bottom:calc(100% - var(--actor-height)*var(--resident-top,0) + 18px);z-index:8;font-size:13px;line-height:1;color:#e68b9b;pointer-events:none;opacity:0;transform:translateX(-50%)}
@@ -253,12 +253,12 @@
 /* Small life signs reuse the pet sprite; sleep has breathing only. */
 .hani-office-actor[data-resident="pet"]:not([data-walking="true"]):not([data-motion]):not([data-life]):not([data-affection]):not([data-pose="sleep"]) .hani-office-sprite{animation:hani-pet-idle var(--idle-duration,4.8s) var(--idle-delay,0s) ease-in-out infinite}
 /* Shrink about the existing foot pivot, inside the reserved atlas bounds. */
-@keyframes hani-pet-idle{0%,100%{transform:scale(1)}40%{transform:scale(.98,.97)}72%{transform:scale(.99,.985)}}
+@keyframes hani-pet-idle{0%,100%{transform:scale(1) rotate(0deg)}40%{transform:scale(.982,.97) rotate(.8deg)}72%{transform:scale(1.01,1.024) rotate(-.6deg)}}
 .hani-office-actor[data-resident="pet"][data-life="hop"]:not([data-motion]):not([data-affection]) .hani-office-sprite{animation:hani-pet-hop .48s ease-in-out both}
 .hani-office-actor[data-resident="pet"][data-life="turn"]:not([data-motion]):not([data-affection]) .hani-office-sprite{animation:hani-pet-turn .6s ease-in-out both}
 .hani-office-actor[data-resident="pet"][data-life="sit-stand"]:not([data-motion]):not([data-affection]) .hani-office-sprite{animation:hani-office-stand .48s ease-in-out both}
 .hani-office-actor[data-resident="pet"][data-life="wag"]:not([data-motion]):not([data-affection]) .hani-office-sprite{animation:hani-pet-wag .7s ease-in-out both}
-.hani-office-actor[data-resident="pet"][data-pose="sleep"]:not([data-motion]) .hani-office-sprite{animation:hani-pet-sleep 4s ease-in-out infinite}
+.hani-office-actor[data-resident="pet"][data-pose="sleep"]:not([data-motion]) .hani-office-sprite{animation:hani-pet-sleep var(--idle-duration,4s) var(--idle-delay,0s) ease-in-out infinite}
 /* Pet-only effects stay within the existing 88px native body envelope. */
 .hani-office-actor[data-resident="pet"][data-life="turn"][data-motion="nod"] .hani-office-sprite{animation:hani-pet-turn .46s ease-in-out both}
 .hani-office-actor[data-resident="pet"][data-life="sit-stand"][data-motion="stand"] .hani-office-sprite{animation:hani-pet-stretch .48s ease-in-out both}
@@ -267,7 +267,7 @@
 @keyframes hani-pet-stretch{0%,100%{transform:scale(1)}45%{transform:scale(.92,1.06)}70%{transform:scale(1.04,.94)}}
 @keyframes hani-pet-turn{0%,100%{transform:scaleX(1)}45%{transform:scaleX(.8)}}
 @keyframes hani-pet-wag{0%,100%{transform:rotate(0)}25%,65%{transform:rotate(7deg)}45%,80%{transform:rotate(-7deg)}}
-@keyframes hani-pet-sleep{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.012)}}
+@keyframes hani-pet-sleep{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.03)}}
 @media(prefers-reduced-motion:reduce){.hani-office-actor[data-resident="pet"] .hani-office-sprite{animation:none!important;transform:none!important;rotate:none!important}.hani-office-actor[data-resident="pet"]{transition:none!important}}
 
 /* Clock-sampled pet motion: the atlas frame and bob share travelled distance. */
@@ -344,3 +344,18 @@
 
 .hani-office-actor[data-person^="companion-"] .hani-office-sprite{background-image:url("./assets/office-companions/companions-v1.webp")}
 .hani-office-actor[data-resident="kid"] .hani-office-sprite{background-image:url("./assets/office-companions/kids-v2.webp")}
+/* Motion polish 1 (11/21): the 100ms movement clock moves walkers in 10 steps per second; blend each step while walking only. */
+.hani-office-live:not([data-paused="true"]) .hani-office-actor[data-walking="true"]{transition:opacity .3s,left .1s linear,top .1s linear}
+@media(prefers-reduced-motion:reduce){.hani-office-live .hani-office-actor[data-walking="true"]{transition:none}}
+
+/* Phase 2: persistent room buttons, below actor hitboxes; native keyboard activation. */
+.hani-office-room-plate[data-room-view]{z-index:2;pointer-events:auto;cursor:pointer;min-height:44px;white-space:normal;text-align:center;padding:4px 6px;border-radius:8px;width:clamp(102px,22%,250px)!important;max-width:46%;display:block;visibility:visible}
+.hani-office-room-plate[data-room-view] b{font-size:clamp(7px,1cqw,11px)}
+.hani-office-room-plate[data-room-view] small{font-size:clamp(10px,1.15cqw,13px)}
+.hani-office-room-plate[data-room-view]:focus-visible,.hani-office-room-links button:focus-visible{outline:3px solid #8363b8;outline-offset:2px}
+.hani-office-room-plate[data-room-view][hidden]{display:none}
+.hani-office-room-links{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.hani-office-room-links button{min-height:44px;max-width:100%;padding:8px 10px;border:1px solid #c8bad8;border-radius:9px;background:var(--surface,#fff);color:var(--text,#453650);white-space:normal;overflow-wrap:anywhere;cursor:pointer}
+.hani-office-room-mobile-labels{display:none}
+.hani-office-room-mobile-labels button{min-width:0;min-height:44px;padding:8px;border:1px solid #c8bad8;border-radius:9px;background:#3f444a;color:#fff;white-space:normal;cursor:pointer}
+@media(max-width:700px){.hani-office-room-plate[data-room-view]{display:none}.hani-office-room-mobile-labels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:8px 0}}

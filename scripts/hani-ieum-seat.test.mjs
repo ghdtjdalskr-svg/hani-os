@@ -1,3 +1,4 @@
+import './hani-building-phase2-preload.cjs'; // Exact Phase 2 inverse before the fixed 326-anchor reader.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
