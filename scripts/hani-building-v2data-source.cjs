@@ -1,3 +1,4 @@
+require('./hani-release-308-preload.cjs'); // Released308 metadata precedes all building captures.
 // Frozen test input only: building-v2data (v2 data file fallback, 308 prep) -> building-phase2 -> building-phase1 -> ...
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=b=>createHash('sha256').update(b).digest('hex');

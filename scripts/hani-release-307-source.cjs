@@ -1,3 +1,4 @@
+require('./hani-building-phase1-preload.cjs'); // Building inverses precede the307 capture.
 // Test-only released307 version/history inverse before the menu and older captures.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');

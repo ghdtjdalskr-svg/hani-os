@@ -175,10 +175,10 @@
           ]
         },
         "scripts/hani-release-305-source.cjs": {
-          "beforeSha256": "a0d8baf1941dd6821e9421968863d8587e2a5a3df4d9ef70b888ba915c42e854",
-          "afterSha256": "078b30cca5d76a4536e6235fc07fc804e5d53a8599499f2af0b8c288b160254b",
-          "beforeBytes": 1951,
-          "afterBytes": 2058,
+          "beforeSha256": "37196b1ab6dbf0567e129777018b9dc483648eec12cca9d24e0bd531b58752f2",
+          "afterSha256": "493075143b4b482d02c8f64eebd10adcf6cc21d40e8e7fca900fc2537c0b37ba",
+          "beforeBytes": 2040,
+          "afterBytes": 2147,
           "replacements": [
             {
               "beforeStart": 0,

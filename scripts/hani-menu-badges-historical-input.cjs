@@ -4,6 +4,16 @@ const path=require('node:path'),{fileURLToPath}=require('node:url');
 const inverse=require('./hani-menu-badges-source.cjs'),repository=require('./hani-test-repository-evidence.cjs');
 const root=path.resolve(__dirname,'..'),authored='55f3fe64e2b88aa1b39ed503e3133614265e88d7';
 const outerFiles=new Map([
+ // tooling308 outer boundaries
+ ['scripts/fixtures/release-308-layer.json','333a59a05abc549560f11fd5a6e4ec982802e12dc447de0ca819c4de4f3e7c0e'],
+ ['scripts/hani-release-308.test.mjs','22242c898fc41c381e3502be28ded551133405ed44f1dcb73319a1c3362571fc'],
+ ['scripts/fixtures/building-phase1-layer.json','599f7dae9005f4054736108e98abf4a97cf5450ff1a96eabd597b63c8780f3b0'],
+ ['scripts/fixtures/building-phase2-layer.json','77941ad99d0703b12e768f48bf2ed4b04183c84badc77e28e94a9f664bdab790'],
+ ['scripts/fixtures/building-v2data-layer.json','b1a1ef13d0a8d7f18110ac1ec4cf3baa6af755c6de5b6bacfa472071efbfdfea'],
+ ['scripts/hani-building-phase1.test.mjs','2be0175935651dbf0e22f686a4ac8c20c1c9c19fb93d579b5c3574c0ecb25cef'],
+ ['scripts/hani-building-phase2.test.mjs','e9915cc218e4eb09d992476d845b3f0a476371ed2d3c8e5f03c8361e3a591df5'],
+ ['scripts/hani-office-motion-polish-2.test.mjs','98df2acd1dd31f0ae46a551103bfe0e3d034f4e7888e3d2c2aad4ffdca6c847f'],
+ // tooling308 outer boundaries end
  ['scripts/fixtures/release-307-layer.json','b209d2ffdd3dd4d17d996abd3bb81567c05f2450f7c28d2f48fb5ab32caddf7d'],
  ['scripts/hani-release-307.test.mjs','25d9326e63db5693d93f5a1e06e71361377367e1482da1a1fd0120558510bdcc'],
  ['scripts/fixtures/menu-badges-layer.json',null],
