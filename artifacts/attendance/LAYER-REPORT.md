@@ -1,0 +1,12 @@
+# 출석 시험 층 · 서윤 인계
+
+- 2026-11-22 KST · 도연(Codex) 단독 · **구현·전체 단독 실행 완료, 잔여 실패·미검증 인계**. `../atlayer-task.md` UTF-8 전문 정상 확인. CODEMAP_MISS 후 기존309/budget-view owner 확인.
+- branch `hani/attendance-v1` · 착수 HEAD `82c3362a623710398436164a3881bf9666f7c43e` · 로컬 main `6ed927a3de99f4f32d05bae1c160ea07685eb65b`(#540). 원격 연결 실패로 최신성·#541 병합 여부 미확인. 소스 표시/cache309 유지, index의 최신 UI 번들 `hani-ui-v02992.js`(실제 로딩 미검증).
+- 신규5개: `scripts/hani-attendance-{source,preload,reviewed-input}.cjs`, `scripts/hani-attendance-layer.test.mjs`, `scripts/fixtures/attendance-layer.json`. 기존 변경은 **`hani-release-309-source.cjs` 첫줄 require 1개**, `hani-menu-badges-historical-input.cjs` outerFiles 5항목뿐. 기존 시험 import 추가0·단언/fixture/hash 수정0.
+- 연결: **attendance →309 →ai-budget-view →308 이하**. 실제 연결4줄과 tooling import만 exact inverse. 402 owner·선반영3파일 pin 검사, runtime closure177→174/누락0. 선반영0/3파일 허용·부분/변조/무관 추가 차단은 독립 Git blob 기반 합성 tree로 검증. 운영3파일 자체는 원문 보존.
+- 핵심: **출석31/31(새 층8/8), 294~309 전부, budget-view7/7, helper층7/7·306층8/8, syntax6/6·diff check PASS**. [최종 대조와 파일 hash](local/final-check.json).
+- 전체: `& artifacts/attendance/local/run.ps1 -Phase current -Label final` → **310파일 전부 독립 Node 실행, exit0 209 / 실패·미검증101 / timeout0**. 착수 원본309파일은133/176, 성공→실패 파일0·기존 실패75파일 해소. **settings QA 실패 항목1개 추가 노출**: 출석 연결 없는 독립 main540 입력에서도 같은 `train version cannot roll back` 오류 2건 재현. 전 범위 회귀0으로 표시하지 않음. [집계](local/summary.json) · [잔여 목록](local/UNVERIFIED.md) · [main540 재현](local/main540-qa-logs/hani-settings-225-qa-guard.test.mjs.log). Git EPERM 포함10파일은 미검증.
+- 성능: 카페 최초 재실 최소437.1ms FAIL → 단독 재시도2회 **391.5 / 394.2ms PASS**(기존 best-of-3 400ms 기준 유지). 일일 계획 cold312.8ms·warm0.57ms PASS. 해당 파일들의 기존 Git/URL 오류는 남아 파일 전체 PASS가 아님. [전체 표본](local/performance.json).
+- 저장: 실제 보드 render/click을 정상·깨진 저장·quota·읽기 차단에서 각30일 실행. 쓰기/읽기는 `hani_attendance_v1`뿐, 보호 키·Cloud·호감도 저장 직접 접근0, 중복 클릭 저장0·지속 슬롯 유지. **현재 7일 +2는 안내만이고 `HaniOfficeAffinity` 호출·실제 지급0**이며 운영 수정 금지에 따라 유지.
+- 보존: snapshot2608파일에서 허용 도구2개·본 보고서 외 변경/누락0. 기존 시험309개·전체 기존 fixture·보호 경로·`.gitignore`·운영/버전/히스토리 보존. 지정 JSON5개는 착수 hash와 같은 Git 원문으로 복원, 생성 출력17개는 `local/generated/` 이관. 기존 shots2개도 보존. [보존](local/preservation.json) · [복원](local/restoration.json).
+- 다음은 서윤: 잔여 Git/브라우저·settings 문제 검토, #541 확인 및 Git·Notion 처리. 실제 Edge/Preview·Production read-back 미검증. 이번 시험 도구 변경의 버전 증가·Runtime Build·Candidate/One-Pass/HINA는 N/A(미실행). **commit·push·main 병합·배포·Notion 실행0**. 큰 임시 자료는 `local/`뿐이며 commit 대상에서 제외.
