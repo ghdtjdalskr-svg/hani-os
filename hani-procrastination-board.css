@@ -245,3 +245,4 @@
 @media(max-width:600px){#procrastination [data-owner="ieum"] .pb-portrait{width:136px}}
 #procrastination [data-pb-card="goals"]{--pb-bg-x:33.3333%;--pb-bg-y:50%}
 #procrastination [data-pb-card="backup"]{--pb-bg-x:0%;--pb-bg-y:50%}
+#procrastination [data-pb-card="release"]{--pb-bg-x:66.6667%;--pb-bg-y:100%}
