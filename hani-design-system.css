@@ -2992,6 +2992,57 @@ html[data-theme="dark"] #app #investment :is(.tabs,.investment-tabs,.investment-
   }
 }
 
+/* #aiWork portrait crop fix & 390px zero horizontal overflow (strictly scoped to #aiWork). */
+#app #aiWork,#app #aiWork .grid,#app #aiWork .card,#app #aiWork #developmentTeamList,#app #aiWork #developmentTeamList .ui26-member,#app #aiWork .member-copy{min-width:0;max-width:100%;box-sizing:border-box}
+#app #aiWork #developmentTeamList .ui26-member{display:flex;flex-direction:column;padding:0;overflow:hidden}
+#app #aiWork #developmentTeamList .member-visual{width:100%;height:auto;aspect-ratio:1/1;flex:0 0 auto;overflow:hidden;background-image:none!important}
+#app #aiWork #developmentTeamList [data-development-portrait],#app #aiWork .ai-team-profile-avatar [data-development-portrait]{display:block;width:100%;height:100%;object-fit:cover;object-position:center 20%}
+#app #aiWork .member-copy{overflow-wrap:anywhere;word-break:keep-all}
+#app #aiWork .member-role{white-space:normal;overflow-wrap:anywhere}
+@media(max-width:480px){
+  #app #aiWork #developmentTeamList{gap:10px}
+  #app #aiWork #developmentTeamList .member-copy{padding:10px}
+}
+/* #aiWork 2차: "담당자 상세" card header clipping fix, 0 horizontal overflow, & larger detail portrait. */
+#app #aiWork .ai-team-profile-card,#app #aiWork #developmentTeamProfilePanel,#app #aiWork #developmentTeamProfilePanel>*{min-width:0;max-width:100%;box-sizing:border-box}
+#app #aiWork .ai-team-profile-card{margin-inline:0;transform:none;width:100%}
+#app #aiWork .ai-team-profile-card>.sh{margin:0;width:100%;box-sizing:border-box;padding:20px 22px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+#app #aiWork .ai-team-profile-card>.sh h3{margin:0;padding:0;min-width:0;transform:none}
+#app #aiWork .ai-team-profile-card>.sh h3:before{flex:0 0 auto;margin:0;transform:none}
+#app #aiWork #developmentTeamProfilePanel.ai-team-profile-shell{grid-template-columns:minmax(0,.95fr) minmax(0,1.15fr);align-items:stretch}
+#app #aiWork #developmentTeamProfilePanel .ai-team-profile-visual{padding:20px;justify-content:center;min-width:0;max-width:100%;box-sizing:border-box}
+#app #aiWork #developmentTeamProfilePanel .ai-team-profile-avatar{position:relative;overflow:hidden;width:100%;max-width:min(100%,520px);aspect-ratio:4/5;border-radius:24px;box-sizing:border-box}
+#app #aiWork #developmentTeamProfilePanel .ai-team-profile-avatar [data-development-portrait]{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:center 15%}
+#app #aiWork #developmentTeamProfilePanel .ai-team-profile-body{min-width:0;max-width:100%;box-sizing:border-box}
+#app #aiWork #developmentTeamProfilePanel :is(.ai-team-profile-head,.ai-team-meta-grid,.ai-team-meta-card,.ai-team-profile-tag,.ai-team-profile-quote){min-width:0;max-width:100%;box-sizing:border-box}
+@media(max-width:980px){
+  #app #aiWork #developmentTeamProfilePanel.ai-team-profile-shell{grid-template-columns:minmax(0,1fr)}
+  #app #aiWork #developmentTeamProfilePanel .ai-team-profile-visual{border-right:0;border-bottom:1px solid var(--border-subtle,#ece9fb);padding:18px}
+  #app #aiWork #developmentTeamProfilePanel .ai-team-profile-avatar{max-width:min(100%,380px);aspect-ratio:4/5}
+}
+@media(max-width:760px){
+  #app #aiWork .ai-team-profile-card>.sh{padding:16px 17px 14px}
+}
+@media(max-width:480px){
+  #app #aiWork #developmentTeamProfilePanel .ai-team-profile-visual{padding:14px}
+  #app #aiWork #developmentTeamProfilePanel .ai-team-profile-avatar{width:100%;max-width:100%;aspect-ratio:4/5;border-radius:20px}
+  #app #aiWork #developmentTeamProfilePanel .ai-team-profile-body{padding:16px}
+}
+
+/* Sidebar menu NEW & pending count badges (Finish tokens + dark mode contrast + mini rail). */
+#sidebar .nav-btn .nav-new-pill[data-menu-badge]{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;box-sizing:border-box;border:1px solid var(--structure-accent,#685486);border-radius:999px;font-size:9px;font-weight:900;line-height:1.2;letter-spacing:.02em;color:var(--structure-on-accent,#fff);background:var(--structure-accent,#685486);vertical-align:middle}
+#sidebar .nav-btn .nav-new-pill[data-menu-badge="new"]{margin-left:6px;padding:2px 6px}
+#sidebar .nav-btn .nav-new-pill[data-menu-badge="count"]{margin-left:auto;min-width:18px;padding:2px 6px;font-size:10px;font-variant-numeric:tabular-nums}
+#sidebar .nav-btn.active .nav-new-pill[data-menu-badge]{color:var(--structure-accent,#685486);background:var(--structure-on-accent,#fff);border-color:var(--structure-on-accent,#fff)}
+#sidebar .nav-btn .nav-new-pill[data-menu-badge][hidden]{display:none!important}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #sidebar .nav-btn .nav-new-pill[data-menu-badge]{box-shadow:0 0 0 1px color-mix(in srgb,var(--surface-panel,#16181f) 70%,transparent)}
+#app.sidebar-mini #sidebar .nav-btn .nav-new-pill[data-menu-badge="new"]:not([hidden]){position:absolute!important;top:calc(50% - 15px)!important;right:calc(50% - 15px)!important;width:8px!important;height:8px!important;min-width:0!important;min-height:0!important;margin:0!important;padding:0!important;border-radius:50%!important;border:1.5px solid var(--surface-panel,#fff)!important;background:var(--structure-accent,#685486)!important;color:transparent!important;font-size:0!important;line-height:0!important;overflow:hidden!important;display:block!important;z-index:1}
+#app.sidebar-mini #sidebar .nav-btn .nav-new-pill[data-menu-badge="count"]:not([hidden]){position:absolute!important;top:calc(50% - 16px)!important;right:calc(50% - 16px)!important;margin:0!important;display:grid!important;place-items:center!important;min-width:14px!important;max-width:26px!important;height:14px!important;padding:0 3px!important;border-radius:7px!important;font-size:8px!important;line-height:12px!important;white-space:nowrap!important;overflow:hidden!important;z-index:1}
+@media screen and (min-width:700px) and (max-width:900px){
+  #app.app #sidebar .nav-btn .nav-new-pill[data-menu-badge="new"]:not([hidden]){top:calc(50% - 15px)!important;right:calc(50% - 15px)!important;width:8px!important;height:8px!important;min-width:0!important;padding:0!important;border-radius:50%!important;border:1.5px solid var(--surface-panel,#fff)!important;color:transparent!important;font-size:0!important;overflow:hidden!important}
+  #app.app #sidebar .nav-btn .nav-new-pill[data-menu-badge="count"]:not([hidden]){top:calc(50% - 16px)!important;right:calc(50% - 16px)!important;min-width:14px!important;max-width:26px!important;height:14px!important;padding:0 3px!important;border-radius:7px!important;font-size:8px!important;line-height:12px!important;margin:0!important}
+}
+
 /* light finish fix 1 */
 /* L1: Unify fixed blue/purple/teal/orange controls, tabs and accents to active light-finish tokens. */
 :root:not([data-finish="midnight-black"]):not([data-finish="titanium-graphite"]) body[data-finish-active] #app .view:not(#investmentIntake):not(#deployment) .btn:not(#group-backup .btn):not(#group-cloud .btn):not(#cloudBridgeCard .btn):not(#loadRecoveryPanel .btn):focus-visible,
@@ -3807,54 +3858,4 @@ html[data-theme="dark"] #app #investment :is(.tabs,.investment-tabs,.investment-
     overflow-x:auto;
     -webkit-overflow-scrolling:touch;
   }
-}
-/* #aiWork portrait crop fix & 390px zero horizontal overflow (strictly scoped to #aiWork). */
-#app #aiWork,#app #aiWork .grid,#app #aiWork .card,#app #aiWork #developmentTeamList,#app #aiWork #developmentTeamList .ui26-member,#app #aiWork .member-copy{min-width:0;max-width:100%;box-sizing:border-box}
-#app #aiWork #developmentTeamList .ui26-member{display:flex;flex-direction:column;padding:0;overflow:hidden}
-#app #aiWork #developmentTeamList .member-visual{width:100%;height:auto;aspect-ratio:1/1;flex:0 0 auto;overflow:hidden;background-image:none!important}
-#app #aiWork #developmentTeamList [data-development-portrait],#app #aiWork .ai-team-profile-avatar [data-development-portrait]{display:block;width:100%;height:100%;object-fit:cover;object-position:center 20%}
-#app #aiWork .member-copy{overflow-wrap:anywhere;word-break:keep-all}
-#app #aiWork .member-role{white-space:normal;overflow-wrap:anywhere}
-@media(max-width:480px){
-  #app #aiWork #developmentTeamList{gap:10px}
-  #app #aiWork #developmentTeamList .member-copy{padding:10px}
-}
-/* #aiWork 2차: "담당자 상세" card header clipping fix, 0 horizontal overflow, & larger detail portrait. */
-#app #aiWork .ai-team-profile-card,#app #aiWork #developmentTeamProfilePanel,#app #aiWork #developmentTeamProfilePanel>*{min-width:0;max-width:100%;box-sizing:border-box}
-#app #aiWork .ai-team-profile-card{margin-inline:0;transform:none;width:100%}
-#app #aiWork .ai-team-profile-card>.sh{margin:0;width:100%;box-sizing:border-box;padding:20px 22px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-#app #aiWork .ai-team-profile-card>.sh h3{margin:0;padding:0;min-width:0;transform:none}
-#app #aiWork .ai-team-profile-card>.sh h3:before{flex:0 0 auto;margin:0;transform:none}
-#app #aiWork #developmentTeamProfilePanel.ai-team-profile-shell{grid-template-columns:minmax(0,.95fr) minmax(0,1.15fr);align-items:stretch}
-#app #aiWork #developmentTeamProfilePanel .ai-team-profile-visual{padding:20px;justify-content:center;min-width:0;max-width:100%;box-sizing:border-box}
-#app #aiWork #developmentTeamProfilePanel .ai-team-profile-avatar{position:relative;overflow:hidden;width:100%;max-width:min(100%,520px);aspect-ratio:4/5;border-radius:24px;box-sizing:border-box}
-#app #aiWork #developmentTeamProfilePanel .ai-team-profile-avatar [data-development-portrait]{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:center 15%}
-#app #aiWork #developmentTeamProfilePanel .ai-team-profile-body{min-width:0;max-width:100%;box-sizing:border-box}
-#app #aiWork #developmentTeamProfilePanel :is(.ai-team-profile-head,.ai-team-meta-grid,.ai-team-meta-card,.ai-team-profile-tag,.ai-team-profile-quote){min-width:0;max-width:100%;box-sizing:border-box}
-@media(max-width:980px){
-  #app #aiWork #developmentTeamProfilePanel.ai-team-profile-shell{grid-template-columns:minmax(0,1fr)}
-  #app #aiWork #developmentTeamProfilePanel .ai-team-profile-visual{border-right:0;border-bottom:1px solid var(--border-subtle,#ece9fb);padding:18px}
-  #app #aiWork #developmentTeamProfilePanel .ai-team-profile-avatar{max-width:min(100%,380px);aspect-ratio:4/5}
-}
-@media(max-width:760px){
-  #app #aiWork .ai-team-profile-card>.sh{padding:16px 17px 14px}
-}
-@media(max-width:480px){
-  #app #aiWork #developmentTeamProfilePanel .ai-team-profile-visual{padding:14px}
-  #app #aiWork #developmentTeamProfilePanel .ai-team-profile-avatar{width:100%;max-width:100%;aspect-ratio:4/5;border-radius:20px}
-  #app #aiWork #developmentTeamProfilePanel .ai-team-profile-body{padding:16px}
-}
-
-/* Sidebar menu NEW & pending count badges (Finish tokens + dark mode contrast + mini rail). */
-#sidebar .nav-btn .nav-new-pill[data-menu-badge]{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;box-sizing:border-box;border:1px solid var(--structure-accent,#685486);border-radius:999px;font-size:9px;font-weight:900;line-height:1.2;letter-spacing:.02em;color:var(--structure-on-accent,#fff);background:var(--structure-accent,#685486);vertical-align:middle}
-#sidebar .nav-btn .nav-new-pill[data-menu-badge="new"]{margin-left:6px;padding:2px 6px}
-#sidebar .nav-btn .nav-new-pill[data-menu-badge="count"]{margin-left:auto;min-width:18px;padding:2px 6px;font-size:10px;font-variant-numeric:tabular-nums}
-#sidebar .nav-btn.active .nav-new-pill[data-menu-badge]{color:var(--structure-accent,#685486);background:var(--structure-on-accent,#fff);border-color:var(--structure-on-accent,#fff)}
-#sidebar .nav-btn .nav-new-pill[data-menu-badge][hidden]{display:none!important}
-:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #sidebar .nav-btn .nav-new-pill[data-menu-badge]{box-shadow:0 0 0 1px color-mix(in srgb,var(--surface-panel,#16181f) 70%,transparent)}
-#app.sidebar-mini #sidebar .nav-btn .nav-new-pill[data-menu-badge="new"]:not([hidden]){position:absolute!important;top:calc(50% - 15px)!important;right:calc(50% - 15px)!important;width:8px!important;height:8px!important;min-width:0!important;min-height:0!important;margin:0!important;padding:0!important;border-radius:50%!important;border:1.5px solid var(--surface-panel,#fff)!important;background:var(--structure-accent,#685486)!important;color:transparent!important;font-size:0!important;line-height:0!important;overflow:hidden!important;display:block!important;z-index:1}
-#app.sidebar-mini #sidebar .nav-btn .nav-new-pill[data-menu-badge="count"]:not([hidden]){position:absolute!important;top:calc(50% - 16px)!important;right:calc(50% - 16px)!important;margin:0!important;display:grid!important;place-items:center!important;min-width:14px!important;max-width:26px!important;height:14px!important;padding:0 3px!important;border-radius:7px!important;font-size:8px!important;line-height:12px!important;white-space:nowrap!important;overflow:hidden!important;z-index:1}
-@media screen and (min-width:700px) and (max-width:900px){
-  #app.app #sidebar .nav-btn .nav-new-pill[data-menu-badge="new"]:not([hidden]){top:calc(50% - 15px)!important;right:calc(50% - 15px)!important;width:8px!important;height:8px!important;min-width:0!important;padding:0!important;border-radius:50%!important;border:1.5px solid var(--surface-panel,#fff)!important;color:transparent!important;font-size:0!important;overflow:hidden!important}
-  #app.app #sidebar .nav-btn .nav-new-pill[data-menu-badge="count"]:not([hidden]){top:calc(50% - 16px)!important;right:calc(50% - 16px)!important;min-width:14px!important;max-width:26px!important;height:14px!important;padding:0 3px!important;border-radius:7px!important;font-size:8px!important;line-height:12px!important;margin:0!important}
 }
