@@ -42,13 +42,17 @@
     return day ? day.replaceAll('-', '.') : '';
   }
 
-  function isSafeAssetPath(value) {
-    return typeof value === 'string' &&
-      value.startsWith('assets/toons/') &&
-      value.endsWith('.webp') &&
-      !value.includes('..') &&
-      !value.includes('://') &&
-      !/[?#\\]/.test(value);
+  // The catalog stores image names, not paths, so the release closure does not pull every seeded image.
+  function isSafeImageName(value) {
+    return typeof value === 'string' && /^[a-z0-9-]{1,60}$/.test(value);
+  }
+
+  function partUrl(name) {
+    return 'assets/toons/' + name + '.webp';
+  }
+
+  function thumbUrl(name) {
+    return 'assets/toons/thumb/' + name + '.webp';
   }
 
   function positiveInt(value) {
@@ -66,8 +70,8 @@
       if (!row || typeof row !== 'object') continue;
       if (typeof row.id !== 'string' || !/^[a-z0-9-]{1,40}$/.test(row.id)) continue;
       if (seen.has(row.id)) continue;
-      if (!isSafeAssetPath(row.thumb)) continue;
-      if (!Array.isArray(row.parts) || row.parts.length < 1 || !row.parts.every(isSafeAssetPath)) continue;
+      if (!isSafeImageName(row.thumb)) continue;
+      if (!Array.isArray(row.parts) || row.parts.length < 1 || !row.parts.every(isSafeImageName)) continue;
 
       seen.add(row.id);
       const title = typeof row.title === 'string' && row.title.trim() ? row.title.trim() : row.id;
@@ -83,8 +87,8 @@
         episode,
         title,
         date,
-        parts: row.parts.slice(),
-        thumb: row.thumb,
+        parts: row.parts.map(partUrl),
+        thumb: thumbUrl(row.thumb),
         width,
         height
       });
