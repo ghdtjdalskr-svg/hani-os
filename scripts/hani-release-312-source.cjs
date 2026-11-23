@@ -1,3 +1,4 @@
+require('./hani-toon-313-preload.cjs'); // Toon313 menu inverse precedes released312.
 // Test input only: exact released312 version/history inverse before procrast-312.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
