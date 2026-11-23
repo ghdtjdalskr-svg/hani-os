@@ -94,6 +94,7 @@
 <link rel="stylesheet" href="./hani-organization-hub.css?v=2.9.312">
 <link rel="stylesheet" href="./hani-board.css?v=2.9.312">
 <link rel="stylesheet" href="./hani-ilbo.css?v=2.9.312">
+<link rel="stylesheet" href="./hani-toons.css?v=2.9.312">
 <link rel="stylesheet" href="./hani-launch-greeting.css">
 <link rel="stylesheet" href="./hani-attendance-board.css">
 </head>
@@ -224,6 +225,7 @@
         <button class="nav-btn" data-view="monthlyReport"><span class="ico"><svg viewBox="0 0 24 24"><path d="M5 3h14v18H5z"/><path d="M8 16v-4M12 16V8M16 16v-6"/><path d="M8 6h8"/></svg></span><span class="txt">컨퍼런스 룸</span></button>
         <button class="nav-btn" data-view="organization" type="button"><span class="ico" aria-hidden="true">🏢</span><span class="txt">회사 소개</span></button>
         <button class="nav-btn" data-view="ilbo" type="button"><span class="ico" aria-hidden="true">📰</span><span class="txt">HANI 일보</span></button>
+        <button class="nav-btn" data-view="hanitoon" type="button"><span class="ico" aria-hidden="true">📚</span><span class="txt">하니툰</span></button>
         <button class="nav-btn" data-view="board" type="button"><span class="ico" aria-hidden="true">📋</span><span class="txt">HANI 라운지</span></button>
       </div>
     </div>
@@ -1070,6 +1072,7 @@
       <div data-ilbo-content aria-live="polite"><p>신문을 준비하고 있어요.</p></div>
       <nav class="ilbo-archive" data-ilbo-archive aria-label="지난 호 보관함"></nav>
     </section>
+    <section id="hanitoon" class="view" aria-label="하니툰"><div data-toon-root></div></section>
     <section id="milestones" class="view" aria-label="마일스톤">
       <div class="ms-shell">
         <div class="ms-archive" data-ms-archive>
@@ -1869,6 +1872,7 @@
 <script src="./hani-board-library.js?v=2.9.312"></script>
 <script src="./hani-board.js?v=2.9.312"></script>
 <script src="./hani-ilbo.js?v=2.9.312"></script>
+<script src="./hani-toons.js?v=2.9.312"></script>
 <script src="./hani-milestones.js?v=2.9.312"></script>
 <!-- BEGIN PROCRASTINATION SCRIPT -->
 <script src="./hani-procrastination-board.js"></script>
