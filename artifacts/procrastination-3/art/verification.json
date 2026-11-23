@@ -1,0 +1,348 @@
+{
+  "reference_size": [
+    1536,
+    1280
+  ],
+  "reference_bytes": 1393906,
+  "output_size": [
+    1536,
+    512
+  ],
+  "cell_size": [
+    256,
+    256
+  ],
+  "columns": 6,
+  "rows": 2,
+  "output_bytes": 444336,
+  "encoding": "lossless WebP RGBA",
+  "alpha_extrema": [
+    0,
+    255
+  ],
+  "lossless_roundtrip": true,
+  "reference_hash_unchanged": true,
+  "common_scale": 0.65,
+  "baseline_in_cell": 244,
+  "cells": [
+    {
+      "row": 0,
+      "column": 0,
+      "alpha_bounds": [
+        55,
+        28,
+        200,
+        243
+      ]
+    },
+    {
+      "row": 0,
+      "column": 1,
+      "alpha_bounds": [
+        57,
+        27,
+        199,
+        244
+      ]
+    },
+    {
+      "row": 0,
+      "column": 2,
+      "alpha_bounds": [
+        57,
+        28,
+        198,
+        244
+      ]
+    },
+    {
+      "row": 0,
+      "column": 3,
+      "alpha_bounds": [
+        60,
+        31,
+        196,
+        244
+      ]
+    },
+    {
+      "row": 0,
+      "column": 4,
+      "alpha_bounds": [
+        48,
+        46,
+        207,
+        244
+      ]
+    },
+    {
+      "row": 0,
+      "column": 5,
+      "alpha_bounds": [
+        53,
+        39,
+        203,
+        244
+      ]
+    },
+    {
+      "row": 1,
+      "column": 0,
+      "alpha_bounds": [
+        59,
+        28,
+        197,
+        244
+      ]
+    },
+    {
+      "row": 1,
+      "column": 1,
+      "alpha_bounds": [
+        59,
+        39,
+        197,
+        244
+      ]
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "alpha_bounds": [
+        58,
+        30,
+        197,
+        244
+      ]
+    },
+    {
+      "row": 1,
+      "column": 3,
+      "alpha_bounds": [
+        62,
+        24,
+        194,
+        244
+      ]
+    },
+    {
+      "row": 1,
+      "column": 4,
+      "alpha_bounds": [
+        52,
+        59,
+        203,
+        244
+      ]
+    },
+    {
+      "row": 1,
+      "column": 5,
+      "alpha_bounds": [
+        59,
+        30,
+        197,
+        244
+      ]
+    }
+  ],
+  "placements": [
+    {
+      "row": 0,
+      "column": 0,
+      "source_box": [
+        69,
+        21,
+        292,
+        353
+      ],
+      "placed_box": [
+        55,
+        28,
+        200,
+        244
+      ]
+    },
+    {
+      "row": 0,
+      "column": 1,
+      "source_box": [
+        71,
+        21,
+        290,
+        355
+      ],
+      "placed_box": [
+        57,
+        27,
+        199,
+        244
+      ]
+    },
+    {
+      "row": 0,
+      "column": 2,
+      "source_box": [
+        74,
+        22,
+        291,
+        355
+      ],
+      "placed_box": [
+        57,
+        28,
+        198,
+        244
+      ]
+    },
+    {
+      "row": 0,
+      "column": 3,
+      "source_box": [
+        60,
+        26,
+        270,
+        354
+      ],
+      "placed_box": [
+        60,
+        31,
+        196,
+        244
+      ]
+    },
+    {
+      "row": 0,
+      "column": 4,
+      "source_box": [
+        69,
+        49,
+        314,
+        354
+      ],
+      "placed_box": [
+        48,
+        46,
+        207,
+        244
+      ]
+    },
+    {
+      "row": 0,
+      "column": 5,
+      "source_box": [
+        65,
+        39,
+        296,
+        355
+      ],
+      "placed_box": [
+        53,
+        39,
+        203,
+        244
+      ]
+    },
+    {
+      "row": 1,
+      "column": 0,
+      "source_box": [
+        73,
+        17,
+        285,
+        349
+      ],
+      "placed_box": [
+        59,
+        28,
+        197,
+        244
+      ]
+    },
+    {
+      "row": 1,
+      "column": 1,
+      "source_box": [
+        83,
+        33,
+        296,
+        348
+      ],
+      "placed_box": [
+        59,
+        39,
+        197,
+        244
+      ]
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "source_box": [
+        75,
+        20,
+        289,
+        349
+      ],
+      "placed_box": [
+        58,
+        30,
+        197,
+        244
+      ]
+    },
+    {
+      "row": 1,
+      "column": 3,
+      "source_box": [
+        77,
+        14,
+        280,
+        353
+      ],
+      "placed_box": [
+        62,
+        24,
+        194,
+        244
+      ]
+    },
+    {
+      "row": 1,
+      "column": 4,
+      "source_box": [
+        70,
+        65,
+        302,
+        350
+      ],
+      "placed_box": [
+        52,
+        59,
+        203,
+        244
+      ]
+    },
+    {
+      "row": 1,
+      "column": 5,
+      "source_box": [
+        73,
+        19,
+        286,
+        349
+      ],
+      "placed_box": [
+        59,
+        30,
+        197,
+        244
+      ]
+    }
+  ],
+  "output_sha256": "355a95a26afbdfccb2f795028a8ab974b0db9c826b473dd94b2c08536a41b293",
+  "compare_size": [
+    1536,
+    768
+  ]
+}

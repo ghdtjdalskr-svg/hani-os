@@ -1,0 +1,171 @@
+{
+  "size": [
+    2560,
+    1080
+  ],
+  "cell": [
+    640,
+    360
+  ],
+  "grid": [
+    4,
+    3
+  ],
+  "bytes": 364362,
+  "quality": 88,
+  "opaque": true,
+  "sha256": "e3a5917ee382d8ebfbc0702222892b5588ccccabe25ac2935592d00a67ad5ea6",
+  "reference_hashes_unchanged": true,
+  "comparison_size": [
+    1782,
+    1732
+  ],
+  "comparison_scene_size": [
+    380,
+    324
+  ],
+  "comparison_portrait_size": [
+    192,
+    192
+  ],
+  "chibi_count": 8,
+  "comparison_is_browser_screenshot": false,
+  "source_size": [
+    1931,
+    814
+  ],
+  "cells": [
+    {
+      "index": 1,
+      "name": "걸음 수 · 나은",
+      "source_box": [
+        2,
+        2,
+        481,
+        269
+      ],
+      "has_chibi": true
+    },
+    {
+      "index": 2,
+      "name": "체중 · 나은",
+      "source_box": [
+        485,
+        2,
+        964,
+        269
+      ],
+      "has_chibi": true
+    },
+    {
+      "index": 3,
+      "name": "운동 세션 · 수연",
+      "source_box": [
+        968,
+        2,
+        1446,
+        269
+      ],
+      "has_chibi": false
+    },
+    {
+      "index": 4,
+      "name": "퀴즈 · 히나",
+      "source_box": [
+        1450,
+        2,
+        1929,
+        269
+      ],
+      "has_chibi": true
+    },
+    {
+      "index": 5,
+      "name": "오답노트 · 윤슬",
+      "source_box": [
+        2,
+        273,
+        481,
+        541
+      ],
+      "has_chibi": false
+    },
+    {
+      "index": 6,
+      "name": "자산 · 지은",
+      "source_box": [
+        485,
+        273,
+        964,
+        541
+      ],
+      "has_chibi": true
+    },
+    {
+      "index": 7,
+      "name": "가계부 · 지은",
+      "source_box": [
+        968,
+        273,
+        1446,
+        541
+      ],
+      "has_chibi": true
+    },
+    {
+      "index": 8,
+      "name": "위시리스트 · 하루",
+      "source_box": [
+        1450,
+        273,
+        1929,
+        541
+      ],
+      "has_chibi": true
+    },
+    {
+      "index": 9,
+      "name": "소비 리뷰 · 하루",
+      "source_box": [
+        2,
+        545,
+        481,
+        812
+      ],
+      "has_chibi": true
+    },
+    {
+      "index": 10,
+      "name": "책·영화 · 민지",
+      "source_box": [
+        485,
+        545,
+        964,
+        812
+      ],
+      "has_chibi": true
+    },
+    {
+      "index": 11,
+      "name": "할 일 · 가은",
+      "source_box": [
+        968,
+        545,
+        1446,
+        812
+      ],
+      "has_chibi": false
+    },
+    {
+      "index": 12,
+      "name": "일기 · 하니",
+      "source_box": [
+        1450,
+        545,
+        1929,
+        812
+      ],
+      "has_chibi": false
+    }
+  ]
+}
