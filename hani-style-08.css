@@ -294,3 +294,26 @@
 @media(prefers-reduced-motion:reduce){#haniHelperBot .hani-fun-card{animation:none;transform:none;opacity:1}}
 
 @media(min-width:851px){#haniHelperBot h2{font-size:19px}#haniHelperBot h3{font-size:15px}#haniHelperBot p{font-size:16px}#haniHelperBot nav button{font-size:14px}#haniHelperBot .hani-helper-news{font-size:13px}#haniHelperBot .hani-fun-entries button,#haniHelperBot [data-fun-back],#haniHelperBot .hani-fun-message p{font-size:15px}#haniHelperBot .hani-fun-meta,#haniHelperBot .hani-fun-message b,#haniHelperBot .hani-fun-card small{font-size:12px}}
+/* Helper faces v1 (2.9.314): one centered head per 192px cell, 5x4 sheet. Replaces the launch-group crops that cut or tilted faces. */
+#haniHelperBot:is([data-staff="hani"],[data-staff="yuna"],[data-staff="mir"],[data-staff="seoyun"],[data-staff="dohyun"],[data-staff="serin"],[data-staff="yuri"],[data-staff="arin"],[data-staff="gaeun"],[data-staff="jieun"],[data-staff="haru"],[data-staff="naeun"],[data-staff="hina"],[data-staff="minji"],[data-staff="sooyeon"],[data-staff="sua"],[data-staff="taeo"],[data-staff="daon"],[data-staff="yoonseul"],[data-staff="ieum"]){--helper-image:url('./assets/helper/helper-faces-v1.webp');--helper-size:260px 208px;--helper-trim:0px;--helper-shape:none;--helper-mask:none;--helper-art-scale:2.35}
+@media(max-width:850px){#haniHelperBot:is([data-staff="hani"],[data-staff="yuna"],[data-staff="mir"],[data-staff="seoyun"],[data-staff="dohyun"],[data-staff="serin"],[data-staff="yuri"],[data-staff="arin"],[data-staff="gaeun"],[data-staff="jieun"],[data-staff="haru"],[data-staff="naeun"],[data-staff="hina"],[data-staff="minji"],[data-staff="sooyeon"],[data-staff="sua"],[data-staff="taeo"],[data-staff="daon"],[data-staff="yoonseul"],[data-staff="ieum"]){--helper-art-scale:2.04}}
+#haniHelperBot[data-staff="hani"]{--helper-x:0px;--helper-y:0px}
+#haniHelperBot[data-staff="yuna"]{--helper-x:-52px;--helper-y:0px}
+#haniHelperBot[data-staff="mir"]{--helper-x:-104px;--helper-y:0px}
+#haniHelperBot[data-staff="seoyun"]{--helper-x:-156px;--helper-y:0px}
+#haniHelperBot[data-staff="dohyun"]{--helper-x:-208px;--helper-y:0px}
+#haniHelperBot[data-staff="serin"]{--helper-x:0px;--helper-y:-52px}
+#haniHelperBot[data-staff="yuri"]{--helper-x:-52px;--helper-y:-52px}
+#haniHelperBot[data-staff="arin"]{--helper-x:-104px;--helper-y:-52px}
+#haniHelperBot[data-staff="gaeun"]{--helper-x:-156px;--helper-y:-52px}
+#haniHelperBot[data-staff="jieun"]{--helper-x:-208px;--helper-y:-52px}
+#haniHelperBot[data-staff="haru"]{--helper-x:0px;--helper-y:-104px}
+#haniHelperBot[data-staff="naeun"]{--helper-x:-52px;--helper-y:-104px}
+#haniHelperBot[data-staff="hina"]{--helper-x:-104px;--helper-y:-104px}
+#haniHelperBot[data-staff="minji"]{--helper-x:-156px;--helper-y:-104px}
+#haniHelperBot[data-staff="sooyeon"]{--helper-x:-208px;--helper-y:-104px}
+#haniHelperBot[data-staff="sua"]{--helper-x:0px;--helper-y:-156px}
+#haniHelperBot[data-staff="taeo"]{--helper-x:-52px;--helper-y:-156px}
+#haniHelperBot[data-staff="daon"]{--helper-x:-104px;--helper-y:-156px}
+#haniHelperBot[data-staff="yoonseul"]{--helper-x:-156px;--helper-y:-156px}
+#haniHelperBot[data-staff="ieum"]{--helper-x:-208px;--helper-y:-156px}

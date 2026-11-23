@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>도움봇 얼굴 점검</title><base href="/">
+<link rel="stylesheet" href="/hani-style-08.css">
+<style>
+body{margin:0;padding:12px;background:#f6f3fb;font:12px sans-serif}
+.grid{display:flex;flex-wrap:wrap;gap:14px}
+.cell{width:100px;text-align:center}
+.cell #haniHelperBot{position:relative!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;margin:0 auto}
+.cell p{margin:4px 0 0}
+.cell.new #haniHelperBot{--helper-art-scale:var(--try-scale,2.1)}
+.cell.new #haniHelperBot .hani-helper-art{translate:0 var(--try-dy,4px)}
+</style></head><body>
+<div class="grid" id="g"></div>
+<script>
+const q=new URLSearchParams(location.search);if(q.get("s"))document.documentElement.style.setProperty("--try-scale",q.get("s"));if(q.get("dy"))document.documentElement.style.setProperty("--try-dy",q.get("dy"));const ids=['hani','yuna','mir','seoyun','dohyun','serin','yuri','arin','gaeun','jieun','haru','naeun','hina','minji','sooyeon','sua','taeo','daon','yoonseul','pet-cat','pet-dog','pet-rabbit','pet-bori'];
+document.getElementById('g').innerHTML=ids.flatMap(id=>[``,` new`]).length&&ids.flatMap(id=>[["",id],[" new",id]]).map(([k,id])=>`<div class="cell${k}"><div id="haniHelperBot" data-staff="${id}"><span class="hani-helper-face"><span class="hani-helper-art"></span></span></div><p>${id}${k?" 시안":""}</p></div>`).join('');
+</script>
+</body></html>

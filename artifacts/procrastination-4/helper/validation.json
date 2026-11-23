@@ -1,0 +1,688 @@
+{
+  "size": [
+    960,
+    768
+  ],
+  "cell": [
+    192,
+    192
+  ],
+  "grid": [
+    5,
+    4
+  ],
+  "bytes": 506182,
+  "sha256": "32eac69d2aea8b444c48ab32a401cfb09277aadb658abdb85565de3973962cdf",
+  "codec": "WebP lossless",
+  "alpha_range": [
+    0,
+    255
+  ],
+  "distinct_cells": 20,
+  "circle_diameter": 176.64,
+  "face_anchor_y_percent": 45.83333333333333,
+  "original_files_preserved": 30,
+  "preview_circle_diameter": 90,
+  "layout": [
+    {
+      "id": "hani",
+      "name": "하니",
+      "row": 1,
+      "column": 1,
+      "source": "새로 그림 (내장 image_gen, launch/프로필 참조)",
+      "source_box": [
+        0,
+        0,
+        294,
+        285
+      ],
+      "source_face_anchor": [
+        168,
+        158
+      ],
+      "scale": 0.551618,
+      "face_center_cell": [
+        96,
+        88
+      ],
+      "face_center_atlas": [
+        96,
+        88
+      ],
+      "alpha_bounds": [
+        18,
+        19,
+        144,
+        138
+      ],
+      "max_alpha_radius": 84.528
+    },
+    {
+      "id": "yuna",
+      "name": "유나",
+      "row": 1,
+      "column": 2,
+      "source": "새로 그림 (내장 image_gen, launch/프로필 참조)",
+      "source_box": [
+        294,
+        0,
+        568,
+        285
+      ],
+      "source_face_anchor": [
+        445,
+        165
+      ],
+      "scale": 0.543246,
+      "face_center_cell": [
+        96,
+        88
+      ],
+      "face_center_atlas": [
+        288,
+        88
+      ],
+      "alpha_bounds": [
+        26,
+        16,
+        144,
+        135
+      ],
+      "max_alpha_radius": 84.694
+    },
+    {
+      "id": "mir",
+      "name": "미르",
+      "row": 1,
+      "column": 3,
+      "source": "새로 그림 (내장 image_gen, launch/프로필 참조)",
+      "source_box": [
+        568,
+        0,
+        840,
+        285
+      ],
+      "source_face_anchor": [
+        713,
+        163
+      ],
+      "scale": 0.572034,
+      "face_center_cell": [
+        96,
+        88
+      ],
+      "face_center_atlas": [
+        480,
+        88
+      ],
+      "alpha_bounds": [
+        25,
+        13,
+        152,
+        137
+      ],
+      "max_alpha_radius": 84.929
+    },
+    {
+      "id": "seoyun",
+      "name": "서윤",
+      "row": 1,
+      "column": 4,
+      "source": "새로 그림 (내장 image_gen, launch/프로필 참조)",
+      "source_box": [
+        840,
+        0,
+        1120,
+        285
+      ],
+      "source_face_anchor": [
+        987,
+        159
+      ],
+      "scale": 0.580509,
+      "face_center_cell": [
+        96,
+        88
+      ],
+      "face_center_atlas": [
+        672,
+        88
+      ],
+      "alpha_bounds": [
+        27,
+        12,
+        151,
+        140
+      ],
+      "max_alpha_radius": 84.646
+    },
+    {
+      "id": "dohyun",
+      "name": "도현",
+      "row": 1,
+      "column": 5,
+      "source": "새로 그림 (내장 image_gen, launch/프로필 참조)",
+      "source_box": [
+        1120,
+        0,
+        1402,
+        285
+      ],
+      "source_face_anchor": [
+        1270,
+        161
+      ],
+      "scale": 0.567658,
+      "face_center_cell": [
+        96,
+        88
+      ],
+      "face_center_atlas": [
+        864,
+        88
+      ],
+      "alpha_bounds": [
+        26,
+        13,
+        144,
+        140
+      ],
+      "max_alpha_radius": 84.694
+    },
+    {
+      "id": "serin",
+      "name": "세린",
+      "row": 2,
+      "column": 1,
+      "source": "새로 그림 (내장 image_gen, launch/프로필 참조)",
+      "source_box": [
+        0,
+        285,
+        294,
+        566
+      ],
+      "source_face_anchor": [
+        167,
+        433
+      ],
+      "scale": 0.552485,
+      "face_center_cell": [
+        96,
+        88
+      ],
+      "face_center_atlas": [
+        96,
+        280
+      ],
+      "alpha_bounds": [
+        22,
+        18,
+        144,
+        141
+      ],
+      "max_alpha_radius": 84.599
+    },
+    {
+      "id": "yuri",
+      "name": "유리",
+      "row": 2,
+      "column": 2,
+      "source": "새로 그림 (내장 image_gen, launch/프로필 참조)",
+      "source_box": [
+        294,
+        285,
+        568,
+        566
+      ],
+      "source_face_anchor": [
+        427,
+        441
+      ],
+      "scale": 0.565265,
+      "face_center_cell": [
+        96,
+        88
+      ],
+      "face_center_atlas": [
+        288,
+        280
+      ],
+      "alpha_bounds": [
+        33,
+        12,
+        152,
+        137
+      ],
+      "max_alpha_radius": 84.38
+    },
+    {
+      "id": "arin",
+      "name": "아린",
+      "row": 2,
+      "column": 3,
+      "source": "새로 그림 (내장 image_gen, launch/프로필 참조)",
+      "source_box": [
+        568,
+        285,
+        840,
+        566
+      ],
+      "source_face_anchor": [
+        724,
+        437
+      ],
+      "scale": 0.558956,
+      "face_center_cell": [
+        96,
+        88
+      ],
+      "face_center_atlas": [
+        480,
+        280
+      ],
+      "alpha_bounds": [
+        23,
+        15,
+        140,
+        139
+      ],
+      "max_alpha_radius": 84.758
+    },
+    {
+      "id": "gaeun",
+      "name": "가은",
+      "row": 2,
+      "column": 4,
+      "source": "새로 그림 (내장 image_gen, launch/프로필 참조)",
+      "source_box": [
+        840,
+        285,
+        1120,
+        566
+      ],
+      "source_face_anchor": [
+        990,
+        441
+      ],
+      "scale": 0.552443,
+      "face_center_cell": [
+        96,
+        88
+      ],
+      "face_center_atlas": [
+        672,
+        280
+      ],
+      "alpha_bounds": [
+        26,
+        14,
+        147,
+        136
+      ],
+      "max_alpha_radius": 84.758
+    },
+    {
+      "id": "jieun",
+      "name": "지은",
+      "row": 2,
+      "column": 5,
+      "source": "새로 그림 (내장 image_gen, launch/프로필 참조)",
+      "source_box": [
+        1120,
+        285,
+        1402,
+        566
+      ],
+      "source_face_anchor": [
+        1282,
+        441
+      ],
+      "scale": 0.538016,
+      "face_center_cell": [
+        96,
+        88
+      ],
+      "face_center_atlas": [
+        864,
+        280
+      ],
+      "alpha_bounds": [
+        24,
+        16,
+        136,
+        135
+      ],
+      "max_alpha_radius": 84.694
+    },
+    {
+      "id": "haru",
+      "name": "하루",
+      "row": 3,
+      "column": 1,
+      "source": "새로 그림 (내장 image_gen, launch/프로필 참조)",
+      "source_box": [
+        0,
+        566,
+        294,
+        846
+      ],
+      "source_face_anchor": [
+        169,
+        719
+      ],
+      "scale": 0.553076,
+      "face_center_cell": [
+        96,
+        88
+      ],
+      "face_center_atlas": [
+        96,
+        472
+      ],
+      "alpha_bounds": [
+        18,
+        14,
+        143,
+        138
+      ],
+      "max_alpha_radius": 84.534
+    },
+    {
+      "id": "naeun",
+      "name": "나은",
+      "row": 3,
+      "column": 2,
+      "source": "새로 그림 (내장 image_gen, launch/프로필 참조)",
+      "source_box": [
+        294,
+        566,
+        568,
+        846
+      ],
+      "source_face_anchor": [
+        444,
+        717
+      ],
+      "scale": 0.557664,
+      "face_center_cell": [
+        96,
+        88
+      ],
+      "face_center_atlas": [
+        288,
+        472
+      ],
+      "alpha_bounds": [
+        20,
+        17,
+        147,
+        139
+      ],
+      "max_alpha_radius": 84.581
+    },
+    {
+      "id": "hina",
+      "name": "히나",
+      "row": 3,
+      "column": 3,
+      "source": "새로 그림 (내장 image_gen, launch/프로필 참조)",
+      "source_box": [
+        568,
+        566,
+        840,
+        846
+      ],
+      "source_face_anchor": [
+        712,
+        727
+      ],
+      "scale": 0.504932,
+      "face_center_cell": [
+        96,
+        88
+      ],
+      "face_center_atlas": [
+        480,
+        472
+      ],
+      "alpha_bounds": [
+        31,
+        12,
+        144,
+        129
+      ],
+      "max_alpha_radius": 84.481
+    },
+    {
+      "id": "minji",
+      "name": "민지",
+      "row": 3,
+      "column": 4,
+      "source": "새로 그림 (내장 image_gen, launch/프로필 참조)",
+      "source_box": [
+        840,
+        566,
+        1120,
+        846
+      ],
+      "source_face_anchor": [
+        1021,
+        727
+      ],
+      "scale": 0.451302,
+      "face_center_cell": [
+        96,
+        88
+      ],
+      "face_center_atlas": [
+        672,
+        472
+      ],
+      "alpha_bounds": [
+        22,
+        27,
+        128,
+        126
+      ],
+      "max_alpha_radius": 84.646
+    },
+    {
+      "id": "sooyeon",
+      "name": "수연",
+      "row": 3,
+      "column": 5,
+      "source": "새로 그림 (내장 image_gen, launch/프로필 참조)",
+      "source_box": [
+        1120,
+        566,
+        1402,
+        846
+      ],
+      "source_face_anchor": [
+        1263,
+        713
+      ],
+      "scale": 0.595787,
+      "face_center_cell": [
+        96,
+        88
+      ],
+      "face_center_atlas": [
+        864,
+        472
+      ],
+      "alpha_bounds": [
+        24,
+        14,
+        161,
+        145
+      ],
+      "max_alpha_radius": 84.581
+    },
+    {
+      "id": "sua",
+      "name": "수아",
+      "row": 4,
+      "column": 1,
+      "source": "새로 그림 (내장 image_gen, launch/프로필 참조)",
+      "source_box": [
+        0,
+        846,
+        294,
+        1122
+      ],
+      "source_face_anchor": [
+        162,
+        1000
+      ],
+      "scale": 0.551085,
+      "face_center_cell": [
+        96,
+        88
+      ],
+      "face_center_atlas": [
+        96,
+        664
+      ],
+      "alpha_bounds": [
+        24,
+        13,
+        147,
+        137
+      ],
+      "max_alpha_radius": 84.929
+    },
+    {
+      "id": "taeo",
+      "name": "채원",
+      "row": 4,
+      "column": 2,
+      "source": "새로 그림 (내장 image_gen, launch/프로필 참조)",
+      "source_box": [
+        294,
+        846,
+        568,
+        1122
+      ],
+      "source_face_anchor": [
+        435,
+        1008
+      ],
+      "scale": 0.51089,
+      "face_center_cell": [
+        96,
+        88
+      ],
+      "face_center_atlas": [
+        288,
+        664
+      ],
+      "alpha_bounds": [
+        33,
+        14,
+        146,
+        130
+      ],
+      "max_alpha_radius": 84.758
+    },
+    {
+      "id": "daon",
+      "name": "다온",
+      "row": 4,
+      "column": 3,
+      "source": "새로 그림 (내장 image_gen, launch/프로필 참조)",
+      "source_box": [
+        568,
+        846,
+        840,
+        1122
+      ],
+      "source_face_anchor": [
+        710,
+        1003
+      ],
+      "scale": 0.549318,
+      "face_center_cell": [
+        96,
+        88
+      ],
+      "face_center_atlas": [
+        480,
+        664
+      ],
+      "alpha_bounds": [
+        28,
+        12,
+        148,
+        135
+      ],
+      "max_alpha_radius": 84.593
+    },
+    {
+      "id": "yoonseul",
+      "name": "윤슬",
+      "row": 4,
+      "column": 4,
+      "source": "새로 그림 (내장 image_gen, launch/프로필 참조)",
+      "source_box": [
+        840,
+        846,
+        1120,
+        1122
+      ],
+      "source_face_anchor": [
+        991,
+        1005
+      ],
+      "scale": 0.527239,
+      "face_center_cell": [
+        96,
+        88
+      ],
+      "face_center_atlas": [
+        672,
+        664
+      ],
+      "alpha_bounds": [
+        31,
+        13,
+        145,
+        133
+      ],
+      "max_alpha_radius": 84.646
+    },
+    {
+      "id": "ieum",
+      "name": "이음",
+      "row": 4,
+      "column": 5,
+      "source": "새로 그림 (내장 image_gen, launch/프로필 참조)",
+      "source_box": [
+        1120,
+        846,
+        1402,
+        1122
+      ],
+      "source_face_anchor": [
+        1265,
+        999
+      ],
+      "scale": 0.557082,
+      "face_center_cell": [
+        96,
+        88
+      ],
+      "face_center_atlas": [
+        864,
+        664
+      ],
+      "alpha_bounds": [
+        29,
+        13,
+        153,
+        138
+      ],
+      "max_alpha_radius": 84.758
+    }
+  ]
+}
