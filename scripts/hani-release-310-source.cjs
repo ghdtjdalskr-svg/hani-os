@@ -1,3 +1,4 @@
+require('./hani-light-311-preload.cjs'); // Exact light-311 inverse before the310 capture.
 // Test input only: exact released310 version/history inverse before attendance.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
