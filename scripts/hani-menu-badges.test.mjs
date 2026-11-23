@@ -1,3 +1,4 @@
+import './hani-procrast-312-preload.cjs'; // Exact procrast-312 inverse before historical badge counts.
 // node scripts/hani-menu-badges.test.mjs
 import test from 'node:test';
 import assert from 'node:assert/strict';

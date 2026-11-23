@@ -1,0 +1,20 @@
+﻿Use case: illustration-story
+Asset type: transparent game/UI sprite atlas, one single complete sprite sheet, exactly 6 columns by 2 rows, 12 isolated full-body chibi sprites.
+Generate a NEW atlas. Reference image 1 is the existing 6-column 5-row atlas: use ONLY its TOP ROW character Naeun as the identity and drawing-style reference. Do not use the other four characters. Reference image 2 is supporting Naeun identity reference, NOT the rendering style. Match reference 1's first row: chestnut brown wavy chin-length bob with side part, large brown eyes, gentle blush, light sage green blazer and matching skirt, white blouse, warm brown fine outlines, glossy softly shaded detailed chibi rendering. Same face, hair, clothes colors, line weight, coloring and head-to-body proportions in all 12 sprites.
+Canvas: exactly 1536 x 512 pixels, landscape aspect ratio 3:1, divided into 6 equal 256 x 256 square cells per row and 2 equal rows. No visible grid or separators. Place exactly ONE Naeun pose and its small relevant props per cell. Each sprite centered horizontally with full body entirely contained inside its own cell; at least 24px clear space at cell sides and top, feet baseline at approximately y=241 in each row. Match original row's scale (standing sprite from top of hair to shoes about 205px high). Crouched/sitting poses retain same head size and appear lower. Transparent empty space around every sprite; all cells share the same ground baseline. No scenes or backgrounds.
+TOP ROW = STEPS / walking, LEFT TO RIGHT:
+column 1 (stage 0): joyfully taking a walking step, sage outfit with small white athletic sneakers, visible smartwatch, bright open smile, arms in natural walking swing;
+column 2 (stage 1): has stopped walking, both sneakers planted, looks expectantly at viewer, raises wrist with small smartwatch;
+column 3 (stage 2): puffs cheeks adorably, hands on hips, sneakers and smartwatch visible, mildly sulky;
+column 4 (stage 3): turns her back three-quarter toward viewer, arms folded, looks back with mildly annoyed cheeks and brow; convey annoyance ONLY through expression, no anger symbols;
+column 5 (stage 4): crouches sadly in a corner of a small simple bench, hugs knees, lowered eyes, same head size, sneakers visible, bench fully inside cell;
+column 6 (NO RECORD): bends/kneels to tie sneaker laces while waiting, looking gently upward, smartwatch visible.
+BOTTOM ROW = WEIGHT / health, LEFT TO RIGHT:
+column 1 (stage 0): stands BESIDE a small unlabelled bathroom scale, cheerful thumbs up, small green water bottle near scale;
+column 2 (stage 1): points down at the bathroom scale with a gently tilted head, curious expression;
+column 3 (stage 2): cheeks puffed adorably, holding a small green water bottle, bathroom scale next to feet;
+column 4 (stage 3): stands ON the bathroom scale, arms crossed with mildly sulky face, all body and scale fully visible;
+column 5 (stage 4): sits crouched low, hugging the bathroom scale sadly, chin lowered, cute and subdued;
+column 6 (NO RECORD): waits patiently holding a small health notebook with a completely blank cover, water bottle beside feet.
+Weight row retains original dark simple shoes, steps row uses sneakers. Every cell must show the requested distinctly identifiable pose. Cute gentle sulking, never angry or dramatic.
+STRICT: true alpha-transparent background; NO text, letters, numbers, labels, captions, typography, question marks, punctuation, emoji, anger symbols, comic effects, watermarks, signatures, colored backgrounds, checkerboard drawing, frame borders, extra characters, clipped heads or props. Blank smartwatch/scale faces, blank notebook. Do not reproduce speech/emotion symbols from the reference.

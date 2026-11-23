@@ -1,0 +1,19 @@
+Use case: illustration-story.
+Asset type: production background atlas for twelve chibi task cards.
+Input image 1 is the existing five-row chibi character sheet; input image 2 is the newer two-row Naeun item sheet. BOTH ARE STYLE REFERENCES ONLY. Match their soft low-saturation pastel watercolor / cel painted anime finish, warm brown delicate outlines, gentle shading and cozy atmosphere. Do NOT reproduce any characters or isolated sprites.
+Create ONE completely opaque landscape atlas, exactly 4 columns x 3 rows, twelve equal 16:9 landscape panels. Target overall size 2560x1080 pixels, each panel 640x360. Edge-to-edge equal rectangular cells with NO gutters, NO borders, NO frames, NO labels. Every panel is a distinct complete location background, straight-on slightly elevated room perspective, warm and inviting.
+STRICT row-major scene order, left to right, top to bottom:
+Row 1 col 1: sunlit park walking path, leafy trees and a wooden bench along the side; clear central path.
+Row 1 col 2: bright mint-and-cream bathroom/dressing room, folded towels and a potted plant to sides. Leave floor for a scale empty; NO scale in this background.
+Row 1 col 3: indoor fitness gym, dumbbells on rack and an exercise mat near the sides; clean central floor.
+Row 1 col 4: quiet classroom with an EMPTY green chalkboard, desks near the sides.
+Row 2 col 1: quiet library reading area with bookshelves and side reading desks.
+Row 2 col 2: tidy office beside a bright window, a desktop monitor at a side showing only a simple non-text line chart, NO numbers or writing.
+Row 2 col 3: cozy warm study desk scene, receipt holder with blank slips and a calculator with unmarked buttons and blank screen at the side.
+Row 2 col 4: quaint pastel shopping street with cute storefront display windows, simple merchandise, NO mannequins, NO signage or lettering.
+Row 3 col 1: comfortable living room sofa, parcel boxes and a memo with star-shaped rating stickers at side, NO writing or numerals.
+Row 3 col 2: small home theater with a blank pale projection screen, cozy seats and a popcorn tub at side.
+Row 3 col 3: secretary's tidy desk with an open notebook and a calendar showing ONLY an empty grid, absolutely NO letters or numbers.
+Row 3 col 4: sunset window desk with an open blank diary and a teacup at side.
+Composition requirements for EVERY panel: lower central area (horizontal 35%-65%, vertical 45%-100%) is simple unobstructed floor or low-detail foreground for a separately composited standing chibi. All defining props cluster at the sides or mid-ground. Upper third has gentle broad uncluttered shapes and low contrast because a speech bubble will overlay it. Locations must be clearly recognizable, not abstract gradients. Keep line work delicate and scene contrast below the referenced characters.
+ABSOLUTE ZERO people, human figures, faces, animals, character silhouettes, statues, portraits, mannequins. ABSOLUTE ZERO letters, typography, words, numerals, pseudo-writing, signatures, logos, watermarks. Chalkboard, diary, calendar, notebook, receipts and screens have blank areas or simple abstract graphics ONLY. No transparency. No text anywhere.
