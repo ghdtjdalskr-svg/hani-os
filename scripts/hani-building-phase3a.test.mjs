@@ -242,11 +242,11 @@ test('1F counter posts: 다솜/나래 HANI 24, 소담 안내데스크, 이슬/�
   const ids=t=>scene.residents.snapshot(t,scene.snapshot(t),true,false).filter(p=>p.floor==='1f'&&String(p.anchor).startsWith('resident_post_')).map(p=>p.id+'@'+p.anchor+':'+p.pose).sort();
   assert.deepEqual(plain(ids(at('2026-11-23',10*3600+1800))),['npc-barista-iseul@resident_post_cafe:standing','npc-clerk-day@resident_post_store:standing','npc-guide@resident_post_reception:standing']);
   assert.deepEqual(plain(ids(at('2026-11-23',22*3600+2400))),['npc-barista-eunha@resident_post_cafe:standing','npc-clerk-night@resident_post_store:standing']);
-  assert.deepEqual(plain(ids(at('2026-11-24',3*3600+600))),['npc-barista-eunha@resident_post_cafe:dozing','npc-clerk-night@resident_post_store:standing']);
+  assert.deepEqual(plain(ids(at('2026-11-24',3*3600+600))),['npc-barista-eunha@resident_post_cafe:sitting','npc-clerk-night@resident_post_store:standing']);
   for(const id of ['resident_post_store','resident_post_reception','resident_post_cafe']){const spot=scene.residents.spot(id);assert.ok(spot&&spot.post&&spot.floor==='1f',id)}
   // Posts belong to the new painted counters only; the old 1F art keeps its painted barista.
   const old=structuredClone(assets);old.art.floors['1f'].background='./assets/building/floor-1f-217.webp';
   const legacy=load(source,old).scene;assert.equal(legacy.residents.spot('resident_post_cafe'),null);
-  const ids2=new Set(assets.spritesV3.entries.map(e=>e.id));for(const id of ['npc-clerk-day','npc-clerk-night','npc-guide','npc-barista-iseul','npc-barista-eunha'])assert.ok(ids2.has(id),'manifest '+id);
-  for(const f of ['npc-pack-v2.webp','npc-guide-v1.webp','npc-barista-v1.webp'])assert.ok(fs.existsSync(new URL('../assets/sprites-v3/'+f,import.meta.url)),f);
+  // Posts use the resident fallback atlas (<id>.webp, row 0); manifest-v3 is not edited.
+  for(const p of scene.residents.people.filter(p=>p.post)){const atlas=scene.residents.atlas(p);assert.equal(atlas.file,p.id+'.webp');assert.equal(atlas.frames[0].name,'standing');assert.ok(fs.existsSync(new URL('../assets/sprites-v3/'+atlas.file,import.meta.url)),atlas.file);assert.ok(!assets.spritesV3.entries.some(e=>e.id===p.id),'no manifest entry '+p.id)}
 });
