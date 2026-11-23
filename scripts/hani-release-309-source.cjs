@@ -1,3 +1,4 @@
+require('./hani-attendance-preload.cjs'); // Exact attendance inverse before the309 capture.
 // Test input only: exact released309 version/history inverse before the budget view.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');

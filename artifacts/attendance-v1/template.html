@@ -1,0 +1,198 @@
+<title>HANI 출석 도장판</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap">
+<style>
+/* Layout: one phone-width home column; the stamp card sits between the 한마디 card and the shortcut row, test controls below. */
+:root{
+  --bg:#f6f3fb; --paper:#ffffff; --ink:#2b2433; --muted:#776d83; --line:#e4dcef;
+  --accent:#7a4fd0; --accent-soft:#efe7ff; --stamp:#d94f7c; --rest:#2f9b62; --gold:#c8901a; --gold-soft:#fff4d8;
+  --font-display:"Jua","Gowun Dodum",system-ui,sans-serif;
+  --font-body:"Gowun Dodum",system-ui,-apple-system,"Malgun Gothic",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#17141d; --paper:#221d2b; --ink:#f1ecf7; --muted:#a79cb5; --line:#3a3246;
+  --accent:#b294ff; --accent-soft:#2f2742; --stamp:#ff7ea6; --rest:#5fd394; --gold:#f2c35b; --gold-soft:#3a3020; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#17141d; --paper:#221d2b; --ink:#f1ecf7; --muted:#a79cb5; --line:#3a3246;
+  --accent:#b294ff; --accent-soft:#2f2742; --stamp:#ff7ea6; --rest:#5fd394; --gold:#f2c35b; --gold-soft:#3a3020; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.note{font-size:13px;color:var(--muted);background:var(--paper);border:1px dashed var(--line);border-radius:12px;padding:10px 12px}
+.note b{color:var(--ink)}
+.ghost{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 14px;color:var(--muted);font-size:13px;display:flex;gap:10px;align-items:center}
+.ghost .dot{width:30px;height:30px;border-radius:50%;background:var(--accent-soft);flex:none}
+.ghost.row{justify-content:space-between}
+.ghost.row span{flex:1;text-align:center;padding:6px 0;border-radius:10px;background:var(--accent-soft)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:12px;box-shadow:0 6px 18px -12px rgba(80,50,140,.35);position:relative;overflow:hidden}
+.card.gold{background:linear-gradient(160deg,var(--gold-soft),var(--paper) 60%);border-color:var(--gold)}
+.head{display:flex;gap:12px;align-items:center}
+.face{width:56px;height:56px;border-radius:50%;border:2px solid var(--accent-soft);object-fit:cover;flex:none;background:var(--accent-soft)}
+.face.hop{animation:hop .5s ease 3}
+@keyframes hop{50%{transform:translateY(-8px) rotate(-6deg)}}
+.who{min-width:0}
+.who .tag{font-size:12px;color:var(--accent);font-weight:700;letter-spacing:.02em}
+.who .name{font-family:var(--font-display);font-size:17px}
+.bubble{background:var(--accent-soft);border-radius:4px 14px 14px 14px;padding:9px 12px;font-size:14.5px}
+.board{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cell{display:flex;flex-direction:column;align-items:center;gap:4px}
+.cell .d{font-size:11.5px;color:var(--muted)}
+.cell .s{width:100%;aspect-ratio:1;max-width:46px;border-radius:50%;border:2px dashed var(--line);display:grid;place-items:center;font-size:20px}
+.cell.today .s{border-color:var(--accent);border-style:solid}
+.cell.today .d{color:var(--accent);font-weight:700}
+.cell.on .s{border:2px solid var(--stamp);color:var(--stamp);background:color-mix(in srgb,var(--stamp) 10%,transparent)}
+.cell.rest .s{border:2px solid var(--rest);background:color-mix(in srgb,var(--rest) 10%,transparent)}
+.cell.pop .s{animation:pop .45s ease}
+@keyframes pop{0%{transform:scale(1.8) rotate(-15deg);opacity:0}70%{transform:scale(.92)}100%{transform:scale(1)}}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.streak{font-size:13.5px}
+.streak b{font-family:var(--font-display);font-size:19px;color:var(--stamp);font-weight:400}
+.streak small{display:block;color:var(--muted);font-size:12.5px}
+.btn{font:inherit;font-family:var(--font-display);font-size:16px;border:0;border-radius:999px;padding:10px 18px;background:var(--accent);color:var(--paper);cursor:pointer}
+.btn[disabled]{background:var(--line);color:var(--muted);cursor:default}
+.btn:focus-visible,.ctl button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.reward{display:none;gap:10px;align-items:center;background:var(--gold-soft);border:1px solid var(--gold);border-radius:12px;padding:10px 12px;font-size:14px}
+.reward.show{display:flex}
+.reward img{width:48px;height:48px;object-fit:contain;flex:none}
+.reward .rt{font-family:var(--font-display);color:var(--gold);font-size:15px}
+.badge{display:none;font-size:12px;background:var(--gold);color:var(--paper);border-radius:999px;padding:2px 10px;align-self:flex-start}
+.badge.show{display:inline-block}
+.ctl{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.ctl .t{font-size:13px;color:var(--muted)}
+.ctl .bs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ctl button{font:inherit;font-size:13.5px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:9px 6px;cursor:pointer}
+.log{font-size:12.5px;color:var(--muted);max-height:120px;overflow:auto}
+@media (prefers-reduced-motion:reduce){.face.hop,.cell.pop .s{animation:none}}
+</style>
+
+<div class="wrap">
+  <div class="note"><b>출석 도장판 미리보기</b> · 실제 앱은 아직 바뀌지 않았어요. 아래 단추로 날짜를 넘기며 눌러 보세요. 대사는 세린 연구원님 초안이에요.</div>
+
+  <div class="ghost"><div class="dot"></div>오늘의 한마디 카드 (지금 홈 자리)</div>
+
+  <section class="card" id="card" aria-live="polite">
+    <div class="head">
+      <img class="face" id="face" alt="">
+      <div class="who">
+        <div class="tag" id="date">오늘의 출석 당번</div>
+        <div class="name" id="name"></div>
+      </div>
+    </div>
+    <div class="bubble" id="line"></div>
+    <div class="board" id="board"></div>
+    <div class="reward" id="reward"><img id="rimg" alt=""><div><div class="rt" id="rtitle"></div><div id="rtext"></div></div></div>
+    <span class="badge" id="badge">👑 개근 후원자</span>
+    <div class="foot">
+      <div class="streak" id="streak"></div>
+      <button class="btn" id="stampBtn" type="button">오늘 도장 쾅!</button>
+    </div>
+  </section>
+
+  <div class="ghost row"><span>할 일</span><span>가계부</span><span>운동</span><span>일기</span></div>
+
+  <div class="ctl">
+    <div class="t">시험 단추 (미리보기 전용, 앱에는 없어요)</div>
+    <div class="bs">
+      <button type="button" id="next">다음 날로 →</button>
+      <button type="button" id="skip">하루 빠지기</button>
+      <button type="button" id="fast">7일 빨리 감기</button>
+      <button type="button" id="reset">처음부터</button>
+    </div>
+    <div class="log" id="log"></div>
+  </div>
+</div>
+
+<script>
+const IMG = __IMG__;
+const CREW = [
+ ['hani','하니 전무'],['yuna','유나 사원'],['mir','미르'],['gaeun','가은 비서'],['ieum','이음 사원'],
+ ['seoyun','서윤 팀장'],['dohyun','도연 선임'],['serin','세린 연구원'],['yuri','유리 책임'],['arin','아린 선임'],
+ ['jieun','지은 부장'],['haru','하루 대리'],['daon','다온 사원'],['naeun','나은 차장'],['hina','히나 과장'],
+ ['minji','민지 대리'],['sooyeon','수연 주임'],['yoonseul','윤슬 사원'],['sua','수아 과장'],['taeo','채원 매니저'],
+ ['cheese','치즈'],['cream','크림'],['bori','보리'],['mochi','모찌']
+];
+const PET = {cheese:1,cream:1,bori:1,mochi:1};
+const L = __LINES__;
+const LID = {cheese:'pet-cat',cream:'pet-dog',bori:'pet-bori',mochi:'pet-rabbit'};
+const FALLBACK = {before:['회장님 어서 오세요! 오늘 도장 준비해 뒀어요.','오늘 당번은 저예요. 꾹 눌러 주세요!'],after:['도장 쾅! 와 주셔서 고마워요.','찍혔어요! 좋은 하루 보내세요.']};
+const dutyLines = id => L.duty[LID[id]||id] || FALLBACK;
+const MILE = {3:['3일 연속!','오늘 당번 책상 마스코트가 신나서 총총 뛰어요.'],
+  7:['7일 개근!','당번 직원 친밀도 +2, 개근 비밀 대사가 열렸어요.'],
+  14:['2주 개근!','치비 축하 카드와 단톡방 간식 타임 이야기가 열렸어요.'],
+  30:['30일 개근!','이달의 퀸 투표에 👑 개근 후원자 배지가 붙어요. (표 수는 그대로)']};
+function mileText(m,i,id){ const arr=(L.milestone&&L.milestone[m])||[]; let t=arr.length?pick(arr,i):MILE[m][1];
+  if(m===7){ const s=L.secret7[LID[id]||id]; if(s) t+=` 💌 "${s}"`; } return t; }
+const WD = ['일','월','화','수','목','금','토'];
+const START = new Date(2026,10,16); // 월요일
+let S;
+function reset(){ S={day:0, on:new Set(), rest:new Set(), restWeek:new Set(), got:new Set(), log:[], pop:-1}; }
+const dateOf = i => { const d=new Date(START); d.setDate(d.getDate()+i); return d; };
+const weekOf = i => Math.floor(i/7);
+function seed(i){ let x=(i+11)*2654435761>>>0; x^=x>>>13; return x>>>0; }
+function duty(i){ return CREW[seed(i)%CREW.length]; }
+function pick(arr,i){ return arr[seed(i*7+3)%arr.length]; }
+function streak(){
+  let i = S.on.has(S.day) ? S.day : S.day-1, n=0;
+  while(i>=0 && (S.on.has(i)||S.rest.has(i))){ n++; i--; }
+  return n;
+}
+function log(t){ S.log.unshift(t); }
+function render(){
+  const [id,name]=duty(S.day), d=dateOf(S.day), done=S.on.has(S.day);
+  document.getElementById('face').src=IMG.p[id]; document.getElementById('face').alt=name;
+  document.getElementById('name').textContent=name;
+  document.getElementById('date').textContent=`${d.getMonth()+1}월 ${d.getDate()}일(${WD[d.getDay()]}) · 오늘의 출석 당번`;
+  const dl = dutyLines(id), line = pick(done?dl.after:dl.before,S.day);
+  document.getElementById('line').textContent=line;
+  const b=document.getElementById('board'); b.innerHTML='';
+  const w0=weekOf(S.day)*7;
+  for(let k=0;k<7;k++){ const i=w0+k, c=document.createElement('div');
+    c.className='cell'+(i===S.day?' today':'')+(S.on.has(i)?' on':'')+(S.rest.has(i)?' rest':'')+(i===S.pop?' pop':'');
+    const dd=dateOf(i);
+    c.innerHTML=`<div class="s">${S.on.has(i)?(PET[duty(i)[0]]?'🐾':'⭐'):S.rest.has(i)?'🍀':''}</div><div class="d">${WD[dd.getDay()]} ${dd.getDate()}</div>`;
+    b.appendChild(c);}
+  const n=streak(), nxt=[3,7,14,30].find(m=>m>n);
+  document.getElementById('streak').innerHTML=`<b>연속 ${n}일째</b><small>${nxt?`다음 보상(${nxt}일)까지 ${nxt-n}일`:'모든 보상 달성! 👑'}</small>`;
+  const btn=document.getElementById('stampBtn'); btn.disabled=done; btn.textContent=done?'오늘 도장 완료 ✓':'오늘 도장 쾅!';
+  document.getElementById('badge').classList.toggle('show',S.got.has(30));
+  document.getElementById('card').classList.toggle('gold',S.got.has(14));
+  document.getElementById('log').innerHTML=S.log.slice(0,12).map(t=>`<div>${t}</div>`).join('');
+  S.pop=-1;
+}
+function showReward(m,id){
+  const r=document.getElementById('reward');
+  document.getElementById('rtitle').textContent=MILE[m][0];
+  document.getElementById('rtext').textContent=mileText(m,S.day,id);
+  document.getElementById('rimg').src = IMG.m[id] || IMG.p[id];
+  r.classList.add('show');
+  if(m===3){ const f=document.getElementById('face'); f.classList.remove('hop'); void f.offsetWidth; f.classList.add('hop'); }
+}
+function stamp(){
+  if(S.on.has(S.day)) return;
+  S.on.add(S.day); S.pop=S.day;
+  const n=streak(), id=duty(S.day)[0];
+  log(`${dateOf(S.day).getDate()}일 도장 · 연속 ${n}일`);
+  document.getElementById('reward').classList.remove('show');
+  render();
+  const m=[3,7,14,30].find(x=>x===n && !S.got.has(x));
+  if(m){ S.got.add(m); log(`🎁 ${MILE[m][0]} 보상`); showReward(m,id); render(); }
+}
+function advance(){
+  if(!S.on.has(S.day)){
+    const w=weekOf(S.day);
+    if(!S.restWeek.has(w) && streak()>0){ S.rest.add(S.day); S.restWeek.add(w); log(`${dateOf(S.day).getDate()}일 · ${pick(L.rest,S.day)}`); }
+    else if(streak()>0){ log(`${pick(L.comeback,S.day)} (받은 보상은 그대로)`); }
+  }
+  S.day++;
+  document.getElementById('reward').classList.remove('show');
+  render();
+}
+document.getElementById('stampBtn').onclick=stamp;
+document.getElementById('next').onclick=advance;
+document.getElementById('skip').onclick=()=>{ if(S.on.has(S.day)){ advance(); } advance(); };
+document.getElementById('fast').onclick=()=>{ for(let k=0;k<7;k++){ if(k) advance(); stamp(); } };
+document.getElementById('reset').onclick=()=>{ reset(); document.getElementById('reward').classList.remove('show'); render(); };
+reset(); render();
+</script>
