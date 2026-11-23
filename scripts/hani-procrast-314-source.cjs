@@ -1,3 +1,4 @@
+require('./hani-release-314-preload.cjs'); // Released314 metadata precedes the procrast-314 capture.
 // Test input only: exact 미룬 일 4차 + helper-face inverse before released313; production bytes stay untouched.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
