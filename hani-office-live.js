@@ -5,10 +5,10 @@
   const floorDefaults=Object.freeze([
     {id:'5f',legacyIds:['5f'],order:6,code:'6F',label:'6F 옥상',category:'rooftop',quiet:true,tint:'#9cbd9a',residents:[],anchorCount:50,background:'./assets/building/floor-5f-217.webp'},
     {id:'creative',legacyIds:[],order:5,code:'5F',label:'5F 라이프·크리에이티브',category:'amenity',tint:'#a9c7b8',residents:[],background:'./assets/building/floor-5f-creative-v1.webp'},
-    {id:'4f',legacyIds:[],order:4,code:'4F',label:'4F 대표실·라운지',category:'executive',tint:'#b692df',residents:['hani','gaeun','mir'],anchorCount:81,background:'./assets/building/floor-4f-217.webp'},
+    {id:'4f',legacyIds:[],order:4,code:'4F',label:'4F 대표실·라운지',category:'executive',tint:'#b692df',residents:['hani','gaeun','mir','yuna'],anchorCount:84,background:'./assets/building/floor-4f-217.webp'},
     {id:'3f',legacyIds:[],order:3,code:'3F',label:'3F AI플랫폼개발실',category:'office',tint:'#79aecf',residents:['seoyun','dohyun','serin','yuri','arin'],anchorCount:64,background:'./assets/building/floor-3f-215.webp',foregroundMasks:[{slot:0,source:'background'}]},
     {id:'2f',legacyIds:[],order:2,code:'2F',label:'2F 재무·라이프',category:'office',tint:'#94bd8e',residents:['jieun','haru','naeun','hina','minji','sooyeon','sua','taeo'],anchorCount:80,background:'./assets/building/floor-2f-217.webp'},
-    {id:'1f',legacyIds:[],order:1,code:'1F',label:'1F 로비',category:'lobby',tint:'#e3b67d',residents:['yuna'],anchorCount:52,background:'./assets/building/floor-1f-v2.webp'}
+    {id:'1f',legacyIds:[],order:1,code:'1F',label:'1F 로비',category:'lobby',tint:'#e3b67d',residents:[],anchorCount:52,background:'./assets/building/floor-1f-v2.webp'}
   ].map(f=>Object.freeze({...f,legacyIds:Object.freeze(f.legacyIds),residents:Object.freeze(f.residents),foregroundMasks:Object.freeze((f.foregroundMasks||[]).map(Object.freeze))})));
   const floorDefaultIndex=new Map(floorDefaults.map(f=>[f.id,f]));
   let floorRegistry;
@@ -21,7 +21,7 @@
       const order=f.order??base.order,category=f.category||base.category||'office',code=category==='rooftop'?order+'F':f.code||base.code;
       return Object.freeze({id:f.id,legacyIds:Object.freeze([...(f.legacyIds||base.legacyIds||[])]),order,code,label:category==='rooftop'?code+' 옥상':f.label,category,quiet:!!f.quiet,
         tint:base.tint||'#9cbd9a',residents:Object.freeze(residents),maxVisible:f.maxVisible??Math.max(6,residents.length),anchorCount:f.anchorCount??base.anchorCount,
-        art:Object.freeze({background:visual.background||base.background,nightBackground:visual.nightBackground,production:base.residents?.length?base.background:undefined,
+        art:Object.freeze({background:visual.background||base.background,nightBackground:visual.nightBackground,production:base.residents?.length||base.category==='lobby'?base.background:undefined,
           foregroundMasks:Object.freeze((visual.foregroundMasks||base.foregroundMasks||[]).map(m=>Object.freeze({...m}))),plates:visual.plates||Object.freeze([])}),
         connectors:Object.freeze({hallAnchor:f.connectors?.hallAnchor||'hall_'+f.id,elevatorAnchor:f.connectors?.elevatorAnchor||connectors.get(f.id+'|elevator')||'elevator_'+f.id,stairsAnchor:f.connectors?.stairsAnchor||connectors.get(f.id+'|stairs')||'stairs_'+f.id}),visitRules:f.visitRules||Object.freeze([]),rooms:f.rooms||Object.freeze([]),walkable:f.walkable,noWalk:f.noWalk});
     }).sort((a,b)=>b.order-a.order));
@@ -70,7 +70,7 @@
       // All office catalogs/art are seeded separately; use the existing metadata URL list.
       // The v3 sprites and the seeded place catalog are optional (index >= 3).
       const [canon,sprites,art,spritesV3,places]=await Promise.all([
-        ['./data/hani-building/spatial-contract-v2.json','./data/hani-building/spatial-contract.json'],'./assets/sprites-v2/manifest.json',['./data/hani-building/art-map-v2.json','./data/hani-building/art-map-v1.json'],'./assets/sprites-v3/manifest-v3.json','./data/hani-building/office-places.json'
+        ['./data/hani-building/spatial-contract-v3.json','./data/hani-building/spatial-contract-v2.json','./data/hani-building/spatial-contract.json'],'./assets/sprites-v2/manifest.json',['./data/hani-building/art-map-v3.json','./data/hani-building/art-map-v2.json','./data/hani-building/art-map-v1.json'],'./assets/sprites-v3/manifest-v3.json',['./data/hani-building/office-places-v3.json','./data/hani-building/office-places.json']
       ].map(async (url,index)=>{
         // Building v2 data first (7-floor registry); older deployments and fixtures only ship the v1 files.
         for(const candidate of [].concat(url)){try{const response=await fetch(candidate);if(response.ok)return await response.json()}catch(_){}}
@@ -86,7 +86,8 @@
   }
   let actionTable=validActions(globalThis.HaniOfficeActions221,'office-actions-221-v1')?globalThis.HaniOfficeActions221:validActions(globalThis.HaniOfficeActions216,'office-actions-216-v1')?globalThis.HaniOfficeActions216:null;
   if(!actionTable&&typeof fetch==='function'){
-    try{const response=await fetch('./assets/data/office-actions-221.json');if(response.ok){const table=await response.json();if(validActions(table,'office-actions-221-v1'))actionTable=table}}catch(_){/* Try the released catalog next. */}
+    try{const response=await fetch('./assets/data/office-actions-315.json');if(response.ok){const table=await response.json();if(validActions(table,'office-actions-221-v1'))actionTable=table}}catch(_){/* Try the 221 catalog next. */}
+    if(!actionTable)try{const response=await fetch('./assets/data/office-actions-221.json');if(response.ok){const table=await response.json();if(validActions(table,'office-actions-221-v1'))actionTable=table}}catch(_){/* Try the released catalog next. */}
     if(!actionTable)try{const response=await fetch('./assets/data/office-actions-216.json');if(response.ok){const table=await response.json();if(validActions(table,'office-actions-216-v1'))actionTable=table}}catch(_){/* Read-only base-work fallback. */}
   }
   // No places means no optional excursions.
@@ -298,8 +299,8 @@
   "use strict";
   const fallback="./assets/ai-approval-concepts/v3-office-background-empty-8-seats.webp";
   // Dynamic floor art is seeded on main separately from the runtime closure.
-  const DESK_PROP_ART=Object.freeze({"hani":"./assets/building/props/hani-217.webp","yuna":"./assets/building/props/yuna-217.webp","jieun":"./assets/building/props/jieun-217.webp","haru":"./assets/building/props/haru-217.webp","naeun":"./assets/building/props/naeun-217.webp","hina":"./assets/building/props/hina-217.webp","minji":"./assets/building/props/minji-217.webp","sooyeon":"./assets/building/props/sooyeon-217.webp","sua":"./assets/building/props/sua-217.webp","seoyun":"./assets/building/props/seoyun-217.webp","dohyun":"./assets/building/props/dohyun-217.webp","serin":"./assets/building/props/serin-217.webp","yuri":"./assets/building/props/yuri-217.webp","arin":"./assets/building/props/arin-217.webp","gaeun":"./assets/building/props/gaeun-217.webp","taeo":"./assets/building/props/taeo-217.webp","daon":"./assets/building/props/daon-217.webp","yoonseul":"./assets/building/props/yoonseul-217.webp","mir":"./assets/building/props/mir-217.webp"});
-  const legacyFloors=Object.freeze(floorDefaults.filter(f=>f.residents.length).map(f=>Object.freeze({id:f.id,label:f.label,tint:f.tint,residents:f.residents,background:f.background,fallback})));
+  const DESK_PROP_ART=Object.freeze({"hani":"./assets/building/props/hani-217.webp","yuna":"./assets/building/props/yuna-217.webp","jieun":"./assets/building/props/jieun-217.webp","haru":"./assets/building/props/haru-217.webp","naeun":"./assets/building/props/naeun-217.webp","hina":"./assets/building/props/hina-217.webp","minji":"./assets/building/props/minji-217.webp","sooyeon":"./assets/building/props/sooyeon-217.webp","sua":"./assets/building/props/sua-217.webp","seoyun":"./assets/building/props/seoyun-217.webp","dohyun":"./assets/building/props/dohyun-217.webp","serin":"./assets/building/props/serin-217.webp","yuri":"./assets/building/props/yuri-217.webp","arin":"./assets/building/props/arin-217.webp","gaeun":"./assets/building/props/gaeun-217.webp","taeo":"./assets/building/props/taeo-217.webp","daon":"./assets/building/props/daon-217.webp","yoonseul":"./assets/building/props/yoonseul-217.webp","mir":"./assets/building/props/mir-217.webp","desk-4f-yuna":"./assets/building/props/desk-4f-yuna-v1.webp"});
+  const legacyFloors=Object.freeze(floorDefaults.filter(f=>f.residents.length||f.category==='lobby').map(f=>Object.freeze({id:f.id,label:f.label,tint:f.tint,residents:f.residents,background:f.background,fallback})));
 
   // Coordinates are chair/feet anchors on the 1672 x 941 floor art, in percent.
   // box = floor footprint (x radius 1.4%, depth 1.4%); desk rects also drive occlusion.
@@ -364,7 +365,7 @@
     'dev-lead':[.43,.18,152,58],'dev-build':[.43,.18,152,58],'dev-research':[.43,.18,152,58],
     'dev-qa':[.50,.16,152,58],'dev-design':[.50,.16,152,58],
     'ceo-reserved':[.34,.18,80,48],'office_hani':[.40,.18,72,44],
-    'secretary_desk':[.50,.16,82,52],'desk_yuna':[.50,.16,82,52]
+    'secretary_desk':[.50,.16,82,52],'desk_yuna':[.50,.16,82,52],'desk_yuna_east':[.50,.16,82,52]
   });
   function workingMonitors(floorId,entries){
     const furniture=art?.floors[floorId]?.homeFurniture;if(!furniture)return [];
@@ -2601,7 +2602,12 @@
     {id:'npc-gardener',name:residentNames.gardener,sprite:'npc-gardener',hours:[[8,18,'5f']],places:{'5f':['resident_gardener']},lines:["새싹은 결재 없이도 자라네요.","오늘 정원 회의는 맑음입니다.","물 주고 잠깐 바람 쐬는 중이에요.","허브 향이 좋으니 잠시 쉬어 가세요.","화분 흙을 갈아 주니 숨이 트이네요.","꽃망울도 자기 시간표대로 피더군요.","옥상 벤치에 내려앉은 낙엽 치웠어요.","햇살 좋은 날엔 잎사귀도 반짝입니다.","가지치기하듯 생각도 가끔 비워 봐요.","나무는 서두르지 않아도 그늘을 주죠.","비 예보가 있어 배수로를 살펴봤어요."]},
     {id:'npc-temp-a',name:residentNames.temp,sprite:'npc-temp-a',hours:[[9,13,'2f'],[13,18,'3f']],places:{'2f':['resident_temp_2f'],'3f':['resident_temp_a_3f']},lines:["복사기는 벌써 저를 알아봐요.","메모는 작아도 할 일은 확실히!","스테이플러 심 리필 완료했습니다!","라벨지 각 맞추는 데 진심인 편이에요.","회의 자료는 색깔 클립별로 묶었어요.","오늘 배운 단축키, 수첩에 적었어요!","우편물 분류는 가나다순으로 끝냈어요.","파쇄기 종이 걸림도 이제 혼자 풀어요.","비품 창고 재고 표, 새로 붙였습니다!","급한 심부름 있으면 바로 말씀하세요!"]},
     {id:'npc-temp-b',name:residentNames.temp,sprite:'npc-temp-b',hours:[[9,13,'3f'],[13,18,'2f']],places:{'2f':['resident_temp_2f'],'3f':['resident_temp_b_3f']},lines:["오늘의 첫 질문도 잘 부탁드려요.","회의실 위치는 이제 외웠어요.","내선 번호표는 모니터 옆에 붙였어요.","보드 마커는 잘 나오는 걸로 채웠어요!","방문객 명찰 줄 맞추기가 참 재밌네요.","사내 약어를 오늘 세 개나 배웠습니다!","할 일 목록 지울 때가 제일 뿌듯해요!","토너 교체도 매뉴얼 보고 해냈습니다!","인사성 밝다는 말씀에 힘이 불끈 나요!","회의록 초안, 오타 두 번 확인했어요!"]},
-    {id:'npc-temp-c',name:residentNames.temp,sprite:'npc-temp-c',hours:[[9,18,'2f']],places:{'2f':['resident_temp_c_2f']},lines:["점심 메뉴 조사도 업무 맞죠?","작은 일부터 깔끔하게 해볼게요.","탕비실 원두 채우는 날이 제일 설레요.","엑셀 표 테두리 정리, 방금 끝냈어요!","간식 바구니 채우면 인기 만점이에요.","포스트잇 색상별로 우선순위 나눴어요!","영수증 풀칠은 이제 달인 수준이에요.","간식 주문 취합, 빠짐없이 적었습니다!","폴더 이름 정리하니 속이 다 시원해요.","퇴근 전 멀티탭 확인도 제가 챙길게요!"]}
+    {id:'npc-temp-c',name:residentNames.temp,sprite:'npc-temp-c',hours:[[9,18,'2f']],places:{'2f':['resident_temp_c_2f']},lines:["점심 메뉴 조사도 업무 맞죠?","작은 일부터 깔끔하게 해볼게요.","탕비실 원두 채우는 날이 제일 설레요.","엑셀 표 테두리 정리, 방금 끝냈어요!","간식 바구니 채우면 인기 만점이에요.","포스트잇 색상별로 우선순위 나눴어요!","영수증 풀칠은 이제 달인 수준이에요.","간식 주문 취합, 빠짐없이 적었습니다!","폴더 이름 정리하니 속이 다 시원해요.","퇴근 전 멀티탭 확인도 제가 챙길게요!"]},
+    {id:'npc-clerk-day',name:'다솜',sprite:'npc-clerk-day',post:'store',postCut:1.0766,hours:[[7,19,'1f']],places:{'1f':['resident_post_store']},lines:["어서 오세요! HANI 24예요!","오늘 삼각김밥 새로 들어왔어요!","1+1 행사는 제가 제일 먼저 알아요.","회장님, 커피 우유 또 드실 거죠?","점심엔 도시락 코너가 제일 바빠요.","진열 각 맞추는 게 은근 재밌어요!","하루 대리님은 영수증을 꼭 챙기세요.","오늘 날씨엔 따뜻한 음료가 잘 나가요."]},
+    {id:'npc-clerk-night',name:'나래',sprite:'npc-clerk-night',post:'store',postCut:1.0766,hours:[[19,24,'1f'],[0,7,'1f']],places:{'1f':['resident_post_store']},lines:["…어서 오세요.","컵라면 물은 제가 받아 드릴게요.","야근이면 이것도 가져가요. 서비스.","늦었네요. 따뜻한 거 데워 둘까요.","조용한 밤이 좋아요. 손님은 반갑고요.","유통기한 체크는 밤에 끝내 둬요.","…피곤해 보여요. 초콜릿 하나.","아침 교대 전까진 제가 있어요."]},
+    {id:'npc-guide',name:'소담',sprite:'npc-guide',post:'reception',postCut:0.8373,hours:[[9,18,'1f']],places:{'1f':['resident_post_reception']},lines:["안녕하세요, HANI 안내데스크입니다.","방문하신 분은 여기서 명찰 받아 가세요.","임원회의실은 엘리베이터로 4층이에요.","택배는 오른쪽 보관함에 넣어 두었어요.","일보 새 호가 게시판에 걸렸어요.","길을 잃으시면 언제든 불러 주세요.","유나 사원님이 인수인계를 꼼꼼히 해 줬어요.","오늘도 웃으며 맞이할게요."]},
+    {id:'npc-barista-iseul',name:'이슬',sprite:'npc-barista-iseul',post:'cafe',postCut:2.6316,hours:[[7,19,'1f']],places:{'1f':['resident_post_cafe']},lines:["원두는 오늘 아침에 새로 볶았어요."]},
+    {id:'npc-barista-eunha',name:'은하',sprite:'npc-barista-eunha',post:'cafe',postCut:2.6316,doze:true,hours:[[19,24,'1f'],[0,7,'1f']],places:{'1f':['resident_post_cafe']},lines:["조용한 밤엔 원두 향이 더 잘 느껴져요."]}
   ].map(p=>Object.freeze({...p,hours:Object.freeze(p.hours.map(Object.freeze)),places:Object.freeze(Object.fromEntries(Object.entries(p.places).map(([f,spots])=>[f,Object.freeze(spots)]))),lines:Object.freeze(p.lines)})));
   // Calendar-day companions are display-only residents; the existing 07:00 pet day is unchanged.
   const companionPeople=Object.freeze([
@@ -3757,7 +3763,7 @@
     ['resident_bori_night_a','1f',79.5,72,true],['resident_bori_night_b','1f',81,72,true],
     ['resident_bori_lounge_a','2f',51,57,true],['resident_bori_lounge_b','2f',51,59,true],
     ['resident_bori_stroll_lobby','1f',79.5,81,true],['resident_bori_stroll_lounge','2f',51,71,true]
-  ].map(([id,floor,vx,vy,pet],i)=>[id,Object.freeze({id,floor,x:/^resident_(rabbit|bori)_/.test(id)?500:100+i*40,y:330,visual:[vx,vy],pet:!!pet})]));
+  ].map(([id,floor,vx,vy,pet],i)=>[id,Object.freeze({id,floor,x:/^resident_(rabbit|bori)_/.test(id)?500:100+i*40,y:330,visual:[vx,vy],pet:!!pet})]));const residentPosts=new Map([['resident_post_store','1f',17.0455,66.4187],['resident_post_reception','1f',53.8278,25.5048],['resident_post_cafe','1f',92.823,79.4899]].map(([id,floor,vx,vy])=>[id,Object.freeze({id,floor,x:500,y:330,visual:[vx,vy],pet:false,post:true,art:'floor-1f-v2'})]));// 2.9.315 counter posts: fixed spots behind painted counters, only on the new 1F art; never in residentStops/routes.
   function residentBounds(id,pose){if(id.startsWith('companion-'))return [12,60,84,135];if(id.startsWith('kid-'))return ['wave','seat-b','startled','cling'].includes(pose)?[12,31,84,135]:[18,35,78,135];const pet=id.startsWith('pet-');if(id==='pet-bori')return [2,({sitting:52,standing:53,'walk-a':63,'walk-b':65,sleep:89})[pose]??52,94,135];if(id==='pet-rabbit')return [11,({sitting:61,standing:63,'hop-a':74,'hop-b':70,sleep:100})[pose]??61,85,135];const top=pet?(pose==='sleep'?102:({sitting: id==='pet-cat'?81:76,standing:id==='pet-cat'?83:75,'walk-a':id==='pet-cat'?87:82,'walk-b':id==='pet-cat'?90:83})[pose]):({standing:15,sitting:30,'walk-a':24,'walk-b':24})[pose];return [pet?13:9,top??15,pet?82:87,135]}
   const residentPaths=new Map();
   function residentSafe(floorId,point,visual,pet=true){
@@ -3772,7 +3778,7 @@
     if(boxes.some(r=>px[0]+half>=r[0]-8&&px[0]-half<=r[2]+8&&px[1]+8>=r[1]&&px[1]-height<=r[3]+8))return false;
     return !(seatMaps[floorId]||[]).some(s=>(s.posture==='sitting'||s.owner)&&Math.hypot((visual[0]-s.x)*(art?.width||1672)/100,(visual[1]-s.y)*(art?.height||941)/100)<24);
   }
-  function residentSpot(id){const a=residentStops.get(id);return a&&residentSafe(a.floor,[a.x,a.y],a.visual,a.pet)?a:null}
+  function residentSpot(id){const post=residentPosts.get(id);if(post)return String(art?.floors?.[post.floor]?.background||'').includes(post.art)?post:null;const a=residentStops.get(id);return a&&residentSafe(a.floor,[a.x,a.y],a.visual,a.pet)?a:null}
   function residentPath(from,to){
     const key=from+'|'+to;if(residentPaths.has(key))return residentPaths.get(key);
     const a=residentSpot(from),b=residentSpot(to);let safe=!!a&&!!b&&a.floor===b.floor;
@@ -3887,7 +3893,7 @@
       const visitFree=p=>free(p)&&!residentPeople.some(other=>other.pet&&other.id!==person.id&&other.id!=='pet-rabbit'&&(other.id!=='pet-bori'||other.hours.some(([a,b,f])=>clock.seconds/3600>=a&&clock.seconds/3600<b&&f===floor))&&(clock.night?residentNightSpots[other.id]:other.places[floor]||[]).some(id=>{const a=residentSpot(id);return a&&Math.hypot((p[0]-a.visual[0])*art.width/100,(p[1]-a.visual[1])*art.height/100)<96}));
       const visit=interactions&&!reduced&&person.pet&&person.id!=='pet-bori'&&!sleeping&&!trio?residentVisit(person,floor,occupied,seed,beat,visitFree,rhythm.beat):null;
       if(visit){const approach=residentVisitPath({...anchor,pet:true},visit.anchor,free);if(approach.length||!person.places[floor]||visit.scene.kind==='chairman'){anchor=visit.anchor;path=residentVisitPath(visit.previous,anchor,free);scene=visit.scene}}
-      let position=anchor.visual,point=[anchor.x,anchor.y],walking=false,facing=validPrev?prev.facing:(seed%2?'left':'right'),pose=person.pet?(sleeping?'sleep':scene?'sitting':beat%3?'sitting':'standing'):'standing',distance=0,motion,heldSince=null;
+      let position=anchor.visual,point=[anchor.x,anchor.y],walking=false,facing=validPrev?prev.facing:(seed%2?'left':'right'),pose=person.pet?(sleeping?'sleep':scene?'sitting':beat%3?'sitting':'standing'):person.doze&&clock.sleeping?'dozing':'standing',distance=0,motion,heldSince=null;
       const holdPrev=()=>{anchor=prev.anchor||anchor;position=prev.position;point=prev.point;walking=false;facing=prev.facing;pose=person.pet?'sitting':'standing';scene=null;motion=undefined;heldSince=holdStart};
       // Same validated routes: 15..30s cat/dog cycles, 25..45s rabbit cycles.
       // No lifts, shared reservations, layout reads or persistent state.
@@ -3908,7 +3914,7 @@
       }
       const outing=stroll&&boriStrollSample(person,day,stroll,spots,free);
       if(stroll){if(outing)({position,point,walking,facing,pose,scene,motion}=outing);else {position=anchor.visual;point=[anchor.x,anchor.y];walking=false;pose='sleep';motion=undefined;scene=null}}
-      if(person.pet&&!stroll&&canHold&&!free(prev.position)||!free(position)){
+      if(person.pet&&!stroll&&canHold&&!free(prev.position)||!anchor.post&&!free(position)){
         if(canHold){
           holdPrev();
         }else{
@@ -4172,7 +4178,7 @@
   function buildingChairmanSlot(){return HaniBuildingScene.scheduler?.slot('ceo-reserved')}
   for(const [key,name,group,row] of [...people,...residentSlots.map(p=>[p.id,p.name,null,0])]){
     const actor=document.createElement("div");actor.className="hani-office-actor";actor.dataset.person=key;actor.dataset.name=name;actor.dataset.seat=residentSlots.some(p=>p.id===key)?'':(HaniBuildingScene.homeSeat(key)||buildingChairmanSlot()).id;actor.dataset.spot="seat";actor.officeReactions=HaniBuildingScene.motion.createReactions();
-    const resident=residentSlots.find(p=>p.id===key);if(resident){actor.dataset.resident=resident.pet?'pet':resident.kid?'kid':'npc';if(resident.companion)actor.dataset.companion='true';actor.dataset.sprite=resident.sprite;actor.hidden=true}
+    const resident=residentSlots.find(p=>p.id===key);if(resident){actor.dataset.resident=resident.pet?'pet':resident.kid?'kid':'npc';if(resident.post){actor.dataset.post=resident.post;actor.style.setProperty('--post-cut',resident.postCut+'cqw')}if(resident.companion)actor.dataset.companion='true';actor.dataset.sprite=resident.sprite;actor.hidden=true}
     if(resident?.pet){const heart=document.createElement('span');heart.className='hani-office-pet-heart';heart.setAttribute('aria-hidden','true');heart.hidden=true;actor.append(heart);actor.officeHeart=heart}
     const sprite=document.createElement('div');sprite.className='hani-office-sprite';sprite.dataset.row=String(row);actor.officeLegacy={group,row};
     const status=document.createElement('span');status.className='hani-office-status';const tag=document.createElement('small');tag.className='hani-office-name';
@@ -4403,7 +4409,7 @@
   function updateBarista(now=new Date()){
     const clock=baristaClock(now),hidden=activeFloor!=='1f'||map.dataset.art!=='floor';baristaButton.hidden=hidden;
     const label=clock.night?'은하 · 야간 카페':'바리스타 이슬 · 카페 운영 중';if(baristaButton.getAttribute('aria-label')!==label)baristaButton.setAttribute('aria-label',label);
-    baristaNight.hidden=hidden||!clock.night;
+    baristaNight.hidden=hidden||!clock.night||/floor-1f-v2/.test(building.art?.floors?.['1f']?.background||'');
     const frame=clock.dozing?(baristaAwake?3:2):1;if(baristaNight.dataset.frame!==String(frame)){baristaNight.dataset.frame=String(frame);baristaNight.style.backgroundPosition=((frame-1)*50)+'% 0'}
   }
   function openBaristaBubble(event){

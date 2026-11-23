@@ -1,0 +1,119 @@
+{
+  "id": "npc-guide",
+  "name": "안내 데스크",
+  "kind": "npc",
+  "file": "npc-guide-v1.webp",
+  "atlas": [
+    768,
+    768
+  ],
+  "cell": [
+    96,
+    144
+  ],
+  "direction": "front",
+  "frames": [
+    {
+      "name": "standing",
+      "rect": [
+        0,
+        0,
+        96,
+        144
+      ],
+      "pivot": [
+        48,
+        135
+      ],
+      "contentRect": [
+        20,
+        15,
+        56,
+        120
+      ],
+      "sourceRect": [
+        238,
+        51,
+        262,
+        560
+      ]
+    },
+    {
+      "name": "sitting",
+      "rect": [
+        96,
+        0,
+        96,
+        144
+      ],
+      "pivot": [
+        48,
+        135
+      ],
+      "contentRect": [
+        20,
+        30,
+        57,
+        105
+      ],
+      "sourceRect": [
+        724,
+        129,
+        263,
+        483
+      ]
+    },
+    {
+      "name": "walk-a",
+      "rect": [
+        192,
+        0,
+        96,
+        144
+      ],
+      "pivot": [
+        48,
+        135
+      ],
+      "contentRect": [
+        20,
+        24,
+        55,
+        111
+      ],
+      "sourceRect": [
+        252,
+        694,
+        263,
+        527
+      ]
+    },
+    {
+      "name": "walk-b",
+      "rect": [
+        288,
+        0,
+        96,
+        144
+      ],
+      "pivot": [
+        48,
+        135
+      ],
+      "contentRect": [
+        22,
+        24,
+        53,
+        111
+      ],
+      "sourceRect": [
+        719,
+        694,
+        251,
+        527
+      ]
+    }
+  ],
+  "sizeBytes": 39246,
+  "sha256": "cac14abe886813a2032d69ecde8fce16419da93ebdb5692658ddd6916c3fc882"
+}

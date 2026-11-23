@@ -1,0 +1,183 @@
+[
+  {
+    "id": "npc-barista-iseul",
+    "name": "이슬",
+    "kind": "npc",
+    "planned": false,
+    "file": "npc-barista-v1.webp",
+    "sizeBytes": 26420,
+    "sha256": "5482f2b28a8f634aca867883938adfcc3c171434fd6dfa9df278eea3dc800610",
+    "sourceSha256": "8ffe91a1484eeb196846810c0c929e39aca6d2e6cdb6fa97d394a35e4fed7f37",
+    "identityReference": "../building/floor-1f-217.webp",
+    "atlas": [
+      768,
+      768
+    ],
+    "cell": [
+      96,
+      144
+    ],
+    "direction": "front",
+    "frames": [
+      {
+        "name": "standing",
+        "rect": [
+          0,
+          0,
+          96,
+          144
+        ],
+        "pivot": [
+          48,
+          135
+        ],
+        "contentRect": [
+          16,
+          15,
+          64,
+          120
+        ],
+        "sourceRect": [
+          141,
+          29,
+          248,
+          466
+        ]
+      },
+      {
+        "name": "standing-b",
+        "rect": [
+          96,
+          0,
+          96,
+          144
+        ],
+        "pivot": [
+          48,
+          135
+        ],
+        "contentRect": [
+          15,
+          16,
+          67,
+          119
+        ],
+        "sourceRect": [
+          622,
+          31,
+          262,
+          464
+        ]
+      }
+    ],
+    "proposedFootPx": [
+      1552,
+      748
+    ],
+    "placementBackground": "assets/building/floor-1f-v2.webp",
+    "placementNote": "배경 원본 크기 1:1, 계산대 뒤. y=704부터 계산대 전경으로 하반신을 가려야 함."
+  },
+  {
+    "id": "npc-barista-eunha",
+    "name": "은하",
+    "kind": "npc",
+    "planned": false,
+    "file": "npc-barista-v1.webp",
+    "sizeBytes": 26420,
+    "sha256": "5482f2b28a8f634aca867883938adfcc3c171434fd6dfa9df278eea3dc800610",
+    "sourceSha256": "8ffe91a1484eeb196846810c0c929e39aca6d2e6cdb6fa97d394a35e4fed7f37",
+    "identityReference": "../office-season/barista-night.webp",
+    "atlas": [
+      768,
+      768
+    ],
+    "cell": [
+      96,
+      144
+    ],
+    "direction": "front",
+    "frames": [
+      {
+        "name": "standing",
+        "rect": [
+          0,
+          144,
+          96,
+          144
+        ],
+        "pivot": [
+          48,
+          135
+        ],
+        "contentRect": [
+          17,
+          15,
+          63,
+          120
+        ],
+        "sourceRect": [
+          139,
+          540,
+          243,
+          465
+        ]
+      },
+      {
+        "name": "dozing",
+        "rect": [
+          96,
+          144,
+          96,
+          144
+        ],
+        "pivot": [
+          48,
+          135
+        ],
+        "contentRect": [
+          15,
+          18,
+          66,
+          117
+        ],
+        "sourceRect": [
+          628,
+          553,
+          254,
+          452
+        ]
+      },
+      {
+        "name": "startled",
+        "rect": [
+          192,
+          144,
+          96,
+          144
+        ],
+        "pivot": [
+          48,
+          135
+        ],
+        "contentRect": [
+          17,
+          16,
+          63,
+          119
+        ],
+        "sourceRect": [
+          1155,
+          542,
+          246,
+          463
+        ]
+      }
+    ],
+    "proposedFootPx": [
+      1552,
+      748
+    ],
+    "placementBackground": "assets/building/floor-1f-v2.webp",
+    "placementNote": "배경 원본 크기 1:1, 계산대 뒤. y=704부터 계산대 전경으로 하반신을 가려야 함."
+  }
+]

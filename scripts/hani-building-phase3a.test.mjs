@@ -9,14 +9,14 @@ const plain=x=>JSON.parse(JSON.stringify(x));
 
 const source=read('hani-office-live.js');
 const files={
-  canon:'data/hani-building/spatial-contract-v2.json',
-  art:'data/hani-building/art-map-v2.json',
+  canon:'data/hani-building/spatial-contract-v3.json',
+  art:'data/hani-building/art-map-v3.json',
   sprites:'assets/sprites-v2/manifest.json',
   spritesV3:'assets/sprites-v3/manifest-v3.json',
-  places:'data/hani-building/office-places.json'
+  places:'data/hani-building/office-places-v3.json'
 };
 const assets=Object.fromEntries(Object.entries(files).map(([k,f])=>[k,json(f)]));
-const table=json('assets/data/office-actions-221.json');
+const table=json('assets/data/office-actions-315.json');
 const at=(day,sec)=>new Date(Date.parse(day+'T00:00:00+09:00')+sec*1000);
 
 function load(code=source,metadata=assets){
@@ -112,7 +112,10 @@ test('sua and taeo home seats move to 2F spare desks while preserving affinity p
   assert.equal(scene.homeSeat('taeo').anchor,'finance-row-spare-east');
   assert.ok(scene.getFloor('2f').residents.includes('sua'));
   assert.ok(scene.getFloor('2f').residents.includes('taeo'));
-  assert.deepEqual(plain(scene.getFloor('1f').residents),['yuna']);
+  // 11/24 회장님 decision: 유나 leaves the 1F desk for a third 4F secretariat desk; 소담 (NPC) staffs the counter.
+  assert.deepEqual(plain(scene.getFloor('1f').residents),[]);
+  assert.ok(scene.getFloor('4f').residents.includes('yuna'));
+  assert.equal(scene.homeSeat('yuna').anchor,'desk_yuna_east');
 
   const dayWork=scene.snapshot(at('2026-11-23',36000));
   const f2=dayWork.floors.find(f=>f.id==='2f');
@@ -134,7 +137,7 @@ test('sua and taeo home seats move to 2F spare desks while preserving affinity p
   assert.ok(ambient2f.participants.includes('sua')&&ambient2f.participants.includes('taeo'));
 });
 
-test('1F consult booth is visit-only and supports hosting from 2F (sua/taeo) and 1F (yuna)',()=>{
+test('1F consult booth is visit-only and supports hosting from 2F (sua/taeo)',()=>{
   assert.ok(assets.canon.people.every(p=>{
     const room=assets.canon.anchors.find(a=>a.id===p.homeAnchor)?.room;
     return room!=='consult'&&room!=='convenience';
@@ -161,7 +164,9 @@ test('1F and 2F spatial anchors pass Phase 1 validateSpatial and routing',()=>{
   assert.equal(scene.validateSpatial(assets.canon,assets.art),true);
   assert.equal(scene.floorRegistry.get('1f').anchorCount,52);
   assert.equal(scene.floorRegistry.get('2f').anchorCount,80);
-  assert.equal(assets.canon.anchors.length,360);
+  assert.equal(assets.canon.anchors.length,363);
+  assert.equal(scene.floorRegistry.get('4f').anchorCount,84);
+  assert.ok(scene.route('elevator_4f','desk_yuna_east').length>0);
 
   assert.ok(scene.route('elevator_1f','convenience_browse').length>0);
   assert.ok(scene.route('elevator_1f','client_booth_slot_1').length>0);
@@ -207,7 +212,7 @@ test('1F residentSafe and companionSafe reject furniture overlap and keep clear 
   const nightStaff=scene.snapshot(night,{chairmanPresent:true});
   const nightResidents=scene.residents.snapshot(night,nightStaff,true,false);
   const nightCompanions=scene.residents.companionSnapshot(night,nightStaff,true,false,nightResidents);
-  for(const actor of [...nightResidents,...nightCompanions].filter(p=>p.floor==='1f')){
+  for(const actor of [...nightResidents,...nightCompanions].filter(p=>p.floor==='1f'&&!String(p.anchor).startsWith('resident_post_'))){
     if(actor.id.startsWith('kid-')||actor.id.startsWith('companion-')){
       assert.equal(scene.residents.companionSafe('1f',actor.position,actor.id.startsWith('kid-')),true,'live companion clear: '+actor.id);
     }else{
@@ -231,4 +236,17 @@ test('kids scenes stay intact, zero storage accesses, zero extra timers or liste
   scene.snapshot(at('2026-11-23',36000),{chairmanPresent:true});
   scene.validateSpatial(assets.canon,assets.art);
   assert.deepEqual(loaded.counts(),{storage:0,timers:0,listeners:0});
+});
+
+test('1F counter posts: 다솜/나래 HANI 24, 소담 안내데스크, 이슬/은하 cafe stand behind painted counters by the clock',()=>{
+  const ids=t=>scene.residents.snapshot(t,scene.snapshot(t),true,false).filter(p=>p.floor==='1f'&&String(p.anchor).startsWith('resident_post_')).map(p=>p.id+'@'+p.anchor+':'+p.pose).sort();
+  assert.deepEqual(plain(ids(at('2026-11-23',10*3600+1800))),['npc-barista-iseul@resident_post_cafe:standing','npc-clerk-day@resident_post_store:standing','npc-guide@resident_post_reception:standing']);
+  assert.deepEqual(plain(ids(at('2026-11-23',22*3600+2400))),['npc-barista-eunha@resident_post_cafe:standing','npc-clerk-night@resident_post_store:standing']);
+  assert.deepEqual(plain(ids(at('2026-11-24',3*3600+600))),['npc-barista-eunha@resident_post_cafe:dozing','npc-clerk-night@resident_post_store:standing']);
+  for(const id of ['resident_post_store','resident_post_reception','resident_post_cafe']){const spot=scene.residents.spot(id);assert.ok(spot&&spot.post&&spot.floor==='1f',id)}
+  // Posts belong to the new painted counters only; the old 1F art keeps its painted barista.
+  const old=structuredClone(assets);old.art.floors['1f'].background='./assets/building/floor-1f-217.webp';
+  const legacy=load(source,old).scene;assert.equal(legacy.residents.spot('resident_post_cafe'),null);
+  const ids2=new Set(assets.spritesV3.entries.map(e=>e.id));for(const id of ['npc-clerk-day','npc-clerk-night','npc-guide','npc-barista-iseul','npc-barista-eunha'])assert.ok(ids2.has(id),'manifest '+id);
+  for(const f of ['npc-pack-v2.webp','npc-guide-v1.webp','npc-barista-v1.webp'])assert.ok(fs.existsSync(new URL('../assets/sprites-v3/'+f,import.meta.url)),f);
 });

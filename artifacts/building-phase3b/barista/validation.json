@@ -1,0 +1,67 @@
+{
+  "atlas": [
+    768,
+    768
+  ],
+  "cell": [
+    96,
+    144
+  ],
+  "pivot": [
+    48,
+    135
+  ],
+  "sizeBytes": 26420,
+  "sha256": "5482f2b28a8f634aca867883938adfcc3c171434fd6dfa9df278eea3dc800610",
+  "encoding": "lossy quality=95, lossless alpha",
+  "frameCount": 5,
+  "unusedCellsFullyTransparent": true,
+  "frameBoundsWithinCells": true,
+  "footBaselineExclusiveY": 135,
+  "proposedFootPx": [
+    1552,
+    748
+  ],
+  "overlayCropPx": [
+    1432,
+    550,
+    240,
+    254
+  ],
+  "overlayScale": 1,
+  "foregroundOcclusionStartY": 704,
+  "contentRects": [
+    [
+      16,
+      15,
+      64,
+      120
+    ],
+    [
+      15,
+      16,
+      67,
+      119
+    ],
+    [
+      17,
+      15,
+      63,
+      120
+    ],
+    [
+      15,
+      18,
+      66,
+      117
+    ],
+    [
+      17,
+      16,
+      63,
+      119
+    ]
+  ],
+  "runtimeIntegration": "not performed; asset-only handoff",
+  "gitAndEdgeUsed": false
+}

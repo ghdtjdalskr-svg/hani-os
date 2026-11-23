@@ -1,0 +1,1194 @@
+{
+  "draft": true,
+  "runtimeManifestEdited": false,
+  "sourceManifest": "assets/sprites-v3/manifest-v3.json",
+  "layout": "NPC rows 0..6, columns 0..3; columns 4..7 and row 7 fully transparent. Pets retain five poses in left/right rows.",
+  "shadow": "Small generated translucent contact shadows included; do not double-render.",
+  "pivotMeaning": "Cell-local bottom center, consistent with existing manifest.",
+  "scale": 3,
+  "filter": "lanczos3",
+  "sharpen": false,
+  "entries": [
+    {
+      "id": "pet-corgi-sikbbang",
+      "name": "식빵",
+      "kind": "pet",
+      "planned": true,
+      "file": "pet-corgi-sikbbang.webp",
+      "atlas": [
+        480,
+        288
+      ],
+      "cell": [
+        96,
+        144
+      ],
+      "direction": "left-right",
+      "frames": [
+        {
+          "name": "sitting-left",
+          "pose": "sitting",
+          "direction": "left",
+          "rect": [
+            0,
+            0,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            26,
+            81,
+            44,
+            54
+          ],
+          "sourceRect": [
+            88,
+            81,
+            293,
+            363
+          ]
+        },
+        {
+          "name": "standing-left",
+          "pose": "standing",
+          "direction": "left",
+          "rect": [
+            96,
+            0,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            18,
+            83,
+            60,
+            52
+          ],
+          "sourceRect": [
+            525,
+            94,
+            402,
+            348
+          ]
+        },
+        {
+          "name": "walk-a-left",
+          "pose": "walk-a",
+          "direction": "left",
+          "rect": [
+            192,
+            0,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            16,
+            85,
+            63,
+            50
+          ],
+          "sourceRect": [
+            1033,
+            97,
+            432,
+            345
+          ]
+        },
+        {
+          "name": "walk-b-left",
+          "pose": "walk-b",
+          "direction": "left",
+          "rect": [
+            288,
+            0,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            17,
+            85,
+            62,
+            50
+          ],
+          "sourceRect": [
+            41,
+            600,
+            411,
+            329
+          ]
+        },
+        {
+          "name": "sleep-left",
+          "pose": "sleep",
+          "direction": "left",
+          "rect": [
+            384,
+            0,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            18,
+            101,
+            60,
+            34
+          ],
+          "sourceRect": [
+            552,
+            705,
+            392,
+            224
+          ]
+        },
+        {
+          "name": "sitting-right",
+          "pose": "sitting",
+          "direction": "right",
+          "rect": [
+            0,
+            144,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            26,
+            81,
+            44,
+            54
+          ],
+          "sourceRect": [
+            88,
+            81,
+            293,
+            363
+          ],
+          "mirrored": true
+        },
+        {
+          "name": "standing-right",
+          "pose": "standing",
+          "direction": "right",
+          "rect": [
+            96,
+            144,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            18,
+            83,
+            60,
+            52
+          ],
+          "sourceRect": [
+            525,
+            94,
+            402,
+            348
+          ],
+          "mirrored": true
+        },
+        {
+          "name": "walk-a-right",
+          "pose": "walk-a",
+          "direction": "right",
+          "rect": [
+            192,
+            144,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            17,
+            85,
+            63,
+            50
+          ],
+          "sourceRect": [
+            1033,
+            97,
+            432,
+            345
+          ],
+          "mirrored": true
+        },
+        {
+          "name": "walk-b-right",
+          "pose": "walk-b",
+          "direction": "right",
+          "rect": [
+            288,
+            144,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            17,
+            85,
+            62,
+            50
+          ],
+          "sourceRect": [
+            41,
+            600,
+            411,
+            329
+          ],
+          "mirrored": true
+        },
+        {
+          "name": "sleep-right",
+          "pose": "sleep",
+          "direction": "right",
+          "rect": [
+            384,
+            144,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            18,
+            101,
+            60,
+            34
+          ],
+          "sourceRect": [
+            552,
+            705,
+            392,
+            224
+          ],
+          "mirrored": true
+        }
+      ],
+      "maxBytes": 50000,
+      "generator": "built-in image_gen",
+      "scale": 3,
+      "sizeBytes": 22354,
+      "sha256": "3046d33a5bee05db4287cddb80990a113f378b3247138c51936ab5dc68ec8098",
+      "quality": 88
+    },
+    {
+      "id": "npc-conv-day",
+      "name": "HANI 24 주간 점원",
+      "kind": "npc",
+      "planned": true,
+      "file": "npc-pack-v2.webp",
+      "atlas": [
+        768,
+        1152
+      ],
+      "cell": [
+        96,
+        144
+      ],
+      "direction": "front",
+      "row": 0,
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            19,
+            15,
+            58,
+            120
+          ],
+          "sourceRect": [
+            82,
+            5,
+            113,
+            232
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            96,
+            0,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            19,
+            30,
+            58,
+            105
+          ],
+          "sourceRect": [
+            307,
+            33,
+            113,
+            205
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            192,
+            0,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            20,
+            24,
+            56,
+            111
+          ],
+          "sourceRect": [
+            528,
+            13,
+            117,
+            231
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            288,
+            0,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            19,
+            24,
+            57,
+            111
+          ],
+          "sourceRect": [
+            753,
+            14,
+            117,
+            229
+          ]
+        }
+      ],
+      "generator": "built-in image_gen",
+      "scale": 3,
+      "sizeBytes": 89000,
+      "sha256": "cc383f6b30d501082856f1547ce7b5090bb2dfb04edaca4f7c2db0cb79fe93b3",
+      "quality": 40,
+      "maxBytes": 90000,
+      "sharedAtlas": true
+    },
+    {
+      "id": "npc-conv-night",
+      "name": "HANI 24 야간 점원",
+      "kind": "npc",
+      "planned": true,
+      "file": "npc-pack-v2.webp",
+      "atlas": [
+        768,
+        1152
+      ],
+      "cell": [
+        96,
+        144
+      ],
+      "direction": "front",
+      "row": 1,
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            144,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            13,
+            15,
+            69,
+            120
+          ],
+          "sourceRect": [
+            78,
+            247,
+            128,
+            222
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            96,
+            144,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            15,
+            30,
+            66,
+            105
+          ],
+          "sourceRect": [
+            303,
+            273,
+            124,
+            197
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            192,
+            144,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            15,
+            24,
+            66,
+            111
+          ],
+          "sourceRect": [
+            520,
+            254,
+            131,
+            219
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            288,
+            144,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            15,
+            24,
+            66,
+            111
+          ],
+          "sourceRect": [
+            747,
+            252,
+            130,
+            220
+          ]
+        }
+      ],
+      "generator": "built-in image_gen",
+      "scale": 3,
+      "sizeBytes": 89000,
+      "sha256": "cc383f6b30d501082856f1547ce7b5090bb2dfb04edaca4f7c2db0cb79fe93b3",
+      "quality": 40,
+      "maxBytes": 90000,
+      "sharedAtlas": true
+    },
+    {
+      "id": "npc-security",
+      "name": "경비원",
+      "kind": "npc",
+      "planned": true,
+      "file": "npc-pack-v2.webp",
+      "atlas": [
+        768,
+        1152
+      ],
+      "cell": [
+        96,
+        144
+      ],
+      "direction": "front",
+      "row": 2,
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            288,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            20,
+            15,
+            56,
+            120
+          ],
+          "sourceRect": [
+            85,
+            479,
+            109,
+            235
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            96,
+            288,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            20,
+            30,
+            55,
+            105
+          ],
+          "sourceRect": [
+            305,
+            503,
+            112,
+            212
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            192,
+            288,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            21,
+            24,
+            54,
+            111
+          ],
+          "sourceRect": [
+            527,
+            481,
+            116,
+            238
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            288,
+            288,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            19,
+            24,
+            58,
+            111
+          ],
+          "sourceRect": [
+            750,
+            481,
+            124,
+            238
+          ]
+        }
+      ],
+      "generator": "built-in image_gen",
+      "scale": 3,
+      "sizeBytes": 89000,
+      "sha256": "cc383f6b30d501082856f1547ce7b5090bb2dfb04edaca4f7c2db0cb79fe93b3",
+      "quality": 40,
+      "maxBytes": 90000,
+      "sharedAtlas": true
+    },
+    {
+      "id": "npc-studio-crew",
+      "name": "스튜디오 촬영 스태프",
+      "kind": "npc",
+      "planned": true,
+      "file": "npc-pack-v2.webp",
+      "atlas": [
+        768,
+        1152
+      ],
+      "cell": [
+        96,
+        144
+      ],
+      "direction": "front",
+      "row": 3,
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            432,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            14,
+            15,
+            67,
+            120
+          ],
+          "sourceRect": [
+            78,
+            721,
+            131,
+            236
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            96,
+            432,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            16,
+            30,
+            64,
+            105
+          ],
+          "sourceRect": [
+            303,
+            746,
+            130,
+            213
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            192,
+            432,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            15,
+            24,
+            66,
+            111
+          ],
+          "sourceRect": [
+            517,
+            726,
+            140,
+            235
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            288,
+            432,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            15,
+            24,
+            65,
+            111
+          ],
+          "sourceRect": [
+            743,
+            727,
+            138,
+            234
+          ]
+        }
+      ],
+      "generator": "built-in image_gen",
+      "scale": 3,
+      "sizeBytes": 89000,
+      "sha256": "cc383f6b30d501082856f1547ce7b5090bb2dfb04edaca4f7c2db0cb79fe93b3",
+      "quality": 40,
+      "maxBytes": 90000,
+      "sharedAtlas": true
+    },
+    {
+      "id": "npc-trainer",
+      "name": "트레이너",
+      "kind": "npc",
+      "planned": true,
+      "file": "npc-pack-v2.webp",
+      "atlas": [
+        768,
+        1152
+      ],
+      "cell": [
+        96,
+        144
+      ],
+      "direction": "front",
+      "row": 4,
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            576,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            16,
+            15,
+            63,
+            120
+          ],
+          "sourceRect": [
+            76,
+            959,
+            120,
+            228
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            96,
+            576,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            17,
+            30,
+            61,
+            105
+          ],
+          "sourceRect": [
+            301,
+            981,
+            121,
+            210
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            192,
+            576,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            16,
+            24,
+            63,
+            111
+          ],
+          "sourceRect": [
+            517,
+            965,
+            128,
+            226
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            288,
+            576,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            17,
+            24,
+            62,
+            111
+          ],
+          "sourceRect": [
+            750,
+            966,
+            126,
+            225
+          ]
+        }
+      ],
+      "generator": "built-in image_gen",
+      "scale": 3,
+      "sizeBytes": 89000,
+      "sha256": "cc383f6b30d501082856f1547ce7b5090bb2dfb04edaca4f7c2db0cb79fe93b3",
+      "quality": 40,
+      "maxBytes": 90000,
+      "sharedAtlas": true
+    },
+    {
+      "id": "npc-librarian",
+      "name": "사서",
+      "kind": "npc",
+      "planned": true,
+      "file": "npc-pack-v2.webp",
+      "atlas": [
+        768,
+        1152
+      ],
+      "cell": [
+        96,
+        144
+      ],
+      "direction": "front",
+      "row": 5,
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            720,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            16,
+            15,
+            64,
+            120
+          ],
+          "sourceRect": [
+            76,
+            1196,
+            119,
+            224
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            96,
+            720,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            17,
+            30,
+            62,
+            105
+          ],
+          "sourceRect": [
+            300,
+            1220,
+            120,
+            202
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            192,
+            720,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            16,
+            24,
+            64,
+            111
+          ],
+          "sourceRect": [
+            518,
+            1197,
+            129,
+            225
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            288,
+            720,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            17,
+            24,
+            61,
+            111
+          ],
+          "sourceRect": [
+            748,
+            1198,
+            123,
+            223
+          ]
+        }
+      ],
+      "generator": "built-in image_gen",
+      "scale": 3,
+      "sizeBytes": 89000,
+      "sha256": "cc383f6b30d501082856f1547ce7b5090bb2dfb04edaca4f7c2db0cb79fe93b3",
+      "quality": 40,
+      "maxBytes": 90000,
+      "sharedAtlas": true
+    },
+    {
+      "id": "npc-curator",
+      "name": "6F 박물관 학예사",
+      "kind": "npc",
+      "planned": true,
+      "file": "npc-pack-v2.webp",
+      "atlas": [
+        768,
+        1152
+      ],
+      "cell": [
+        96,
+        144
+      ],
+      "direction": "front",
+      "row": 6,
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            864,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            16,
+            15,
+            64,
+            120
+          ],
+          "sourceRect": [
+            80,
+            1429,
+            120,
+            224
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            96,
+            864,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            16,
+            30,
+            64,
+            105
+          ],
+          "sourceRect": [
+            300,
+            1456,
+            120,
+            198
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            192,
+            864,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            16,
+            24,
+            63,
+            111
+          ],
+          "sourceRect": [
+            520,
+            1430,
+            128,
+            226
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            288,
+            864,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            17,
+            24,
+            62,
+            111
+          ],
+          "sourceRect": [
+            747,
+            1432,
+            125,
+            224
+          ]
+        }
+      ],
+      "generator": "built-in image_gen",
+      "scale": 3,
+      "sizeBytes": 89000,
+      "sha256": "cc383f6b30d501082856f1547ce7b5090bb2dfb04edaca4f7c2db0cb79fe93b3",
+      "quality": 40,
+      "maxBytes": 90000,
+      "sharedAtlas": true
+    }
+  ]
+}

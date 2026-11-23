@@ -1,0 +1,143 @@
+{
+  "sourceSize": [
+    1238,
+    1271
+  ],
+  "encoder": "FFmpeg libwebp, lossless=1, compression_level=6",
+  "sizeBytes": 39246,
+  "sha256": "cac14abe886813a2032d69ecde8fce16419da93ebdb5692658ddd6916c3fc882",
+  "frames": [
+    {
+      "name": "standing",
+      "rect": [
+        0,
+        0,
+        96,
+        144
+      ],
+      "pivot": [
+        48,
+        135
+      ],
+      "contentRect": [
+        20,
+        15,
+        56,
+        120
+      ],
+      "sourceRect": [
+        238,
+        51,
+        262,
+        560
+      ]
+    },
+    {
+      "name": "sitting",
+      "rect": [
+        96,
+        0,
+        96,
+        144
+      ],
+      "pivot": [
+        48,
+        135
+      ],
+      "contentRect": [
+        20,
+        30,
+        57,
+        105
+      ],
+      "sourceRect": [
+        724,
+        129,
+        263,
+        483
+      ]
+    },
+    {
+      "name": "walk-a",
+      "rect": [
+        192,
+        0,
+        96,
+        144
+      ],
+      "pivot": [
+        48,
+        135
+      ],
+      "contentRect": [
+        20,
+        24,
+        55,
+        111
+      ],
+      "sourceRect": [
+        252,
+        694,
+        263,
+        527
+      ]
+    },
+    {
+      "name": "walk-b",
+      "rect": [
+        288,
+        0,
+        96,
+        144
+      ],
+      "pivot": [
+        48,
+        135
+      ],
+      "contentRect": [
+        22,
+        24,
+        53,
+        111
+      ],
+      "sourceRect": [
+        719,
+        694,
+        251,
+        527
+      ]
+    }
+  ],
+  "outsideNontransparentPixels": 0,
+  "alpha": {
+    "transparent": 572998,
+    "partial": 15739,
+    "opaque": 1087
+  },
+  "protectedFileCount": 38,
+  "protectedHashesUnchanged": true,
+  "referenceHashes": {
+    "npc-pack-v2.webp": "cc383f6b30d501082856f1547ce7b5090bb2dfb04edaca4f7c2db0cb79fe93b3",
+    "npc-cleaner.webp": "486fa29675af2b2b25c83aad777b77e68071db6c4fae083c3676675a11d0e745",
+    "manifest-v3.json": "a24197083b2bc88c5e90464a2c7f69d6fce3522ad01054d454d3aa97ceac79a5"
+  },
+  "compareSize": [
+    1104,
+    176
+  ],
+  "compareScale": 1,
+  "checks": [
+    "768x768 RGBA",
+    "96x144 cells",
+    "four unique decoded poses",
+    "pivot 48,135",
+    "decoded content heights 120/105/111/111",
+    "outside four cells alpha=0",
+    "encoded alpha identical to packed alpha",
+    "lossless WebP <= 50000 bytes",
+    "compare original source cells copied at 1:1",
+    "existing sprite directory hashes unchanged"
+  ]
+}
+
+Final saved-file read-back: PASS (final WebP decode, metadata/height/pivot/alpha, original reference and manifest hashes, UTF-8; temporary dependency lock removed).

@@ -1,0 +1,8 @@
+Built-in image_gen; transparent_background=true
+Reference: artifacts/building-phase3b/yuna-desk/reference-desk.png
+Selected output: exec-91d71b67-6f79-4e16-8a22-6cf268db6d79.png
+Export: preserve generated alpha; crop (31,38,1314,1077); resize 234x190; lossless WebP
+
+Use case: background-extraction.
+Input image 1 is an EXACT reference crop of the secretary desk we need. Remove only the cream tile floor and tiny sofa fragment at the bottom edge, to yield this IDENTICAL complete desk set as a transparent sprite. Preserve this exact furniture silhouette, proportions and elevated camera projection faithfully, as if carefully cutting it out. No redesign or restyling. One desk set only. Keep the original chair size relative to desk (chair with armrests is approximately 36% of total desk width). Keep the original elevated view with a clearly visible desk top and the same trapezoidal desktop, thin original legs, black monitor and keyboard, tiny black mouse, cream shaded brass lamp, pen cup, small desktop container and small green potted plant. Desk set including wheels has an original visual bounding box about 232x188, aspect ratio 1.234. Preserve this exact visual aspect ratio. Do not turn it into a front-on lower camera product illustration; do not enlarge chair or deepen drawer cabinets. Source painterly game-background rendering, warm lighting and medium brown wood exactly matched. All gaps under the desk and between chair wheels genuinely transparent. Only an extremely faint and small contact shadow. No floor fragments, sofa, scenery, no opaque backdrop. No text, letters, digits, logos, annotations, or watermark.
+

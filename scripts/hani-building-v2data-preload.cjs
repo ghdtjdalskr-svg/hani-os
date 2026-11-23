@@ -1,5 +1,4 @@
 // Innermost: map v2-data-fallback runtime bytes back to Phase 2 output before the Phase 2 reader runs.
-require('./hani-building-phase3-preload.cjs');
 const fs=require('node:fs'),path=require('node:path'),{fileURLToPath}=require('node:url');
 const {project}=require('./hani-building-v2data-source.cjs'),root=path.resolve(__dirname,'..');
 const sync=fs.readFileSync,callback=fs.readFile,promise=fs.promises.readFile;

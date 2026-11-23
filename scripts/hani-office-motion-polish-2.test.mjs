@@ -1,4 +1,3 @@
-import {createRequire} from 'node:module';
 import test from 'node:test';
 import strictAssert from 'node:assert/strict';
 // Values returned from the vm context come from another realm; compare them by plain JSON structure.
@@ -10,9 +9,7 @@ const assert = Object.assign(Object.create(strictAssert), strictAssert, {
 import fs from 'node:fs';
 import vm from 'node:vm';
 
-// Motion polish 2 targets the 2.9.308 runtime; later building phases are projected back to it.
-const phase3 = createRequire(import.meta.url)('./hani-building-phase3-source.cjs');
-const read = f => phase3.project(fs.readFileSync(new URL('../' + f, import.meta.url), 'utf8'), f);
+const read = f => fs.readFileSync(new URL('../' + f, import.meta.url), 'utf8');
 const jsSource = read('hani-office-live.js');
 const cssSource = read('hani-office-live.css');
 

@@ -1,0 +1,256 @@
+{
+  "task": "yuna-4f-desk-2026-11-24",
+  "branch_from_task": "hani/building-phase3b",
+  "base_sha": null,
+  "base_verification": "not_run_user_forbids_git",
+  "coordinate_system": {
+    "origin": "top_left",
+    "background_pixels": {
+      "w": 1672,
+      "h": 941
+    },
+    "percent_formula": {
+      "x": "x/1672*100",
+      "y": "y/941*100",
+      "w": "w/1672*100",
+      "h": "h/941*100"
+    },
+    "precision_decimal_places": 6
+  },
+  "background": {
+    "file": "assets/building/floor-4f-217.webp",
+    "w": 1672,
+    "h": 941,
+    "sha256": "fa31401ff0eaa529ccd3b0b1210565b5d66206675e8e801687ce9b53560fca21",
+    "unchanged": true
+  },
+  "asset": {
+    "file": "assets/building/props/desk-4f-yuna-v1.webp",
+    "w": 234,
+    "h": 190,
+    "bytes": 47864,
+    "kilobytes_decimal": 47.864,
+    "kibibytes": 46.7421875,
+    "max_bytes": 100000,
+    "sha256": "5601583459847ef7ac07715bcdf34f0f189c2ad375fe20a6dc411b595c968e4a",
+    "format": "webp",
+    "encoding": "lossless",
+    "has_alpha": true,
+    "alpha_pixels": {
+      "transparent": 12300,
+      "partial": 31130,
+      "fully_opaque": 1030,
+      "alpha_at_least_250": 28657
+    },
+    "transparent_gap_samples": [
+      {
+        "x": 0,
+        "y": 0,
+        "alpha": 0
+      },
+      {
+        "x": 233,
+        "y": 0,
+        "alpha": 0
+      },
+      {
+        "x": 0,
+        "y": 189,
+        "alpha": 0
+      },
+      {
+        "x": 233,
+        "y": 189,
+        "alpha": 0
+      },
+      {
+        "x": 70,
+        "y": 160,
+        "alpha": 0
+      },
+      {
+        "x": 170,
+        "y": 160,
+        "alpha": 0
+      }
+    ],
+    "visible_text_count_visual_review": 0,
+    "generation": "built_in_image_gen_reference_crop_extraction",
+    "generation_prompt_file": "artifacts/building-phase3b/yuna-desk/PROMPT.txt",
+    "generated_source_crop": {
+      "left": 31,
+      "top": 38,
+      "w": 1314,
+      "h": 1077
+    },
+    "reference_desk_approx_pixels": {
+      "x": 88,
+      "y": 533,
+      "w": 234,
+      "h": 188
+    },
+    "design_match": "same_design_reference_regenerated_not_pixel_identical"
+  },
+  "placements": [
+    {
+      "id": "primary",
+      "overlay": "artifacts/building-phase3b/yuna-desk/overlay.png",
+      "prop": {
+        "pixels": {
+          "x": 576,
+          "y": 531,
+          "w": 234,
+          "h": 190
+        },
+        "percent": {
+          "x": 34.449761,
+          "y": 56.42933,
+          "w": 13.995215,
+          "h": 20.191286
+        }
+      },
+      "seated_person_feet": {
+        "pixels": {
+          "x": 681,
+          "y": 709
+        },
+        "percent": {
+          "x": 40.729665,
+          "y": 75.345377
+        },
+        "local_pixels": {
+          "x": 105,
+          "y": 178
+        },
+        "status": "estimated_ground_projection_not_character_render_validated"
+      },
+      "facing": "screen_up_toward_monitor_away_from_viewer",
+      "placement_status": "proposal_only_space_insufficient_carpet_overlap",
+      "approximate_carpet_overlap": {
+        "estimated_polygon_pixels": [
+          [
+            787,
+            222
+          ],
+          [
+            912,
+            222
+          ],
+          [
+            926,
+            870
+          ],
+          [
+            779,
+            870
+          ]
+        ],
+        "sprite_alpha_threshold": 16,
+        "overlap_pixels": 3174,
+        "x_min": 782,
+        "x_max": 808,
+        "horizontal_overlap_extent_px": 27
+      },
+      "validation": {
+        "overlay_pixels": {
+          "w": 1672,
+          "h": 941
+        },
+        "changed_pixels": 32148,
+        "pixels_changed_outside_prop_rect": 0,
+        "max_composite_channel_error": 1
+      },
+      "overlay_bytes": 3407501,
+      "overlay_sha256": "f600ace468c3a242c57779549b639530ef31e74a15c364fceda56c9428158042"
+    },
+    {
+      "id": "alternative",
+      "overlay": "artifacts/building-phase3b/yuna-desk/overlay-alt.png",
+      "prop": {
+        "pixels": {
+          "x": 576,
+          "y": 620,
+          "w": 234,
+          "h": 190
+        },
+        "percent": {
+          "x": 34.449761,
+          "y": 65.887354,
+          "w": 13.995215,
+          "h": 20.191286
+        }
+      },
+      "seated_person_feet": {
+        "pixels": {
+          "x": 681,
+          "y": 798
+        },
+        "percent": {
+          "x": 40.729665,
+          "y": 84.803401
+        },
+        "local_pixels": {
+          "x": 105,
+          "y": 178
+        },
+        "status": "estimated_ground_projection_not_character_render_validated"
+      },
+      "facing": "screen_up_toward_monitor_away_from_viewer",
+      "placement_status": "proposal_only_space_insufficient_carpet_overlap",
+      "approximate_carpet_overlap": {
+        "estimated_polygon_pixels": [
+          [
+            787,
+            222
+          ],
+          [
+            912,
+            222
+          ],
+          [
+            926,
+            870
+          ],
+          [
+            779,
+            870
+          ]
+        ],
+        "sprite_alpha_threshold": 16,
+        "overlap_pixels": 3315,
+        "x_min": 781,
+        "x_max": 808,
+        "horizontal_overlap_extent_px": 28
+      },
+      "validation": {
+        "overlay_pixels": {
+          "w": 1672,
+          "h": 941
+        },
+        "changed_pixels": 32148,
+        "pixels_changed_outside_prop_rect": 0,
+        "max_composite_channel_error": 1
+      },
+      "overlay_bytes": 3411189,
+      "overlay_sha256": "5eab41054c6a42816c8c223ff9473d4741a9e6ebc30fff60a633962e6ac16e85"
+    }
+  ],
+  "validation": {
+    "format_dimensions_alpha_size": "PASS",
+    "original_background_hash_preserved": "PASS",
+    "overlay_dimensions_and_composite_readback": "PASS",
+    "zero_visible_text": "VISUALLY_CHECKED",
+    "design_pixel_identity": "NOT_GUARANTEED_AI_REGENERATED",
+    "unobstructed_floor_placement": "NOT_PASSED_SPACE_INSUFFICIENT",
+    "seated_character_render": "NOT_RUN",
+    "git": "NOT_RUN_USER_FORBIDS",
+    "edge": "NOT_RUN_USER_FORBIDS",
+    "runtime_integration": "NOT_RUN_OUT_OF_SCOPE",
+    "storage_cloud_schema": "N_A_IMAGE_ONLY",
+    "candidate_build_release": "NOT_RUN_OUT_OF_SCOPE"
+  },
+  "handoff": {
+    "next": "Review primary and alternative and decide layout before runtime integration.",
+    "notion": "Not updated: task write scope limits writes to new asset and artifact directory."
+  }
+}
