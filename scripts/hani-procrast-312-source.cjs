@@ -1,3 +1,4 @@
+require('./hani-release-312-preload.cjs'); // Released312 metadata precedes the procrast-312 capture.
 // Test input only: exact procrastination/attendance-bonus inverse before released311.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
