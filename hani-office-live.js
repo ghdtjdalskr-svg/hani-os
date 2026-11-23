@@ -7,8 +7,8 @@
     {id:'creative',legacyIds:[],order:5,code:'5F',label:'5F 라이프·크리에이티브',category:'amenity',tint:'#a9c7b8',residents:[],background:'./assets/building/floor-5f-creative-v1.webp'},
     {id:'4f',legacyIds:[],order:4,code:'4F',label:'4F 대표실·라운지',category:'executive',tint:'#b692df',residents:['hani','gaeun','mir'],anchorCount:81,background:'./assets/building/floor-4f-217.webp'},
     {id:'3f',legacyIds:[],order:3,code:'3F',label:'3F AI플랫폼개발실',category:'office',tint:'#79aecf',residents:['seoyun','dohyun','serin','yuri','arin'],anchorCount:64,background:'./assets/building/floor-3f-215.webp',foregroundMasks:[{slot:0,source:'background'}]},
-    {id:'2f',legacyIds:[],order:2,code:'2F',label:'2F 재무·라이프',category:'office',tint:'#94bd8e',residents:['jieun','haru','naeun','hina','minji','sooyeon'],anchorCount:74,background:'./assets/building/floor-2f-217.webp'},
-    {id:'1f',legacyIds:[],order:1,code:'1F',label:'1F 로비',category:'lobby',tint:'#e3b67d',residents:['yuna','sua','taeo'],anchorCount:57,background:'./assets/building/floor-1f-217.webp'}
+    {id:'2f',legacyIds:[],order:2,code:'2F',label:'2F 재무·라이프',category:'office',tint:'#94bd8e',residents:['jieun','haru','naeun','hina','minji','sooyeon','sua','taeo'],anchorCount:80,background:'./assets/building/floor-2f-217.webp'},
+    {id:'1f',legacyIds:[],order:1,code:'1F',label:'1F 로비',category:'lobby',tint:'#e3b67d',residents:['yuna'],anchorCount:52,background:'./assets/building/floor-1f-v2.webp'}
   ].map(f=>Object.freeze({...f,legacyIds:Object.freeze(f.legacyIds),residents:Object.freeze(f.residents),foregroundMasks:Object.freeze((f.foregroundMasks||[]).map(Object.freeze))})));
   const floorDefaultIndex=new Map(floorDefaults.map(f=>[f.id,f]));
   let floorRegistry;
@@ -307,12 +307,12 @@
   const legacySeatMaps=Object.freeze({
     "1f":Object.freeze([
       chair("reception","reception",50,30.5,"yuna"),
-      chair("business-west","lounge",12,58,"sua"),chair("business-east","lounge",18,58,"taeo"),
       chair("lobby-nw","lounge",72,36),chair("lobby-ne","lounge",86,36),
       chair("lobby-sw","lounge",72,49),chair("lobby-se","lounge",87,49)
     ]),
     "2f":Object.freeze([
       chair("finance-lead","desk",20,18),chair("finance-a","desk",13,49,"jieun"),
+      chair("finance-row-spare","desk",10.6,63.5,"sua"),chair("finance-row-spare-east","desk",40.5,63.5,"taeo"),
       chair("finance-b","desk",25,49,"haru"),chair("life-a","desk",38,49,"naeun"),
       chair("life-b","desk",13,73,"hina"),chair("life-c","desk",25,73,"minji"),
       chair("life-d","desk",38,73,"sooyeon"),
@@ -358,7 +358,7 @@
   // homeFurniture deskBounds, followed by screen size in source pixels. Only
   // desks with a visible monitor are listed (no rooftop, MIR pod or spare chair).
   const monitorScreens=Object.freeze({
-    'business-west':[.50,.14,62,44],'business-east':[.50,.14,62,44],
+    'finance-row-spare':[.50,.19,96,58],'finance-row-spare-east':[.50,.19,96,58],
     'finance-a':[.38,.16,78,50],'finance-b':[.50,.19,96,58],'desk_daon':[.50,.19,96,58],
     'life-a':[.50,.18,88,54],'life-b':[.50,.18,88,54],'life-c':[.50,.18,88,54],'life-d':[.50,.18,88,54],'desk_yoonseul':[.50,.18,88,54],
     'dev-lead':[.43,.18,152,58],'dev-build':[.43,.18,152,58],'dev-research':[.43,.18,152,58],
@@ -606,7 +606,7 @@
     if(places.length&&anchors.has('reception'))errandPlaces.push({id:'task-reception-1f',kind:'errand',errandKind:'task',floor:'1f',room:'lobby',slots:['reception'],pose:'stand',stay:[8,25],go:'접수대로 가는 중',at:['접수대에서 전달 사항 확인 중','접수대에서 방문 일정 확인 중']});
     // The business-floor desk approaches overlap fixed homes on phones. Use
     // the existing, clear entrance nodes for short work checks; no new graph.
-    for(const [target,name]of [['hall_business','사업부'],['hall_consult','상담실']])if(places.length&&anchors.has(target))errandPlaces.push({id:'task-'+target,kind:'errand',errandKind:'task',floor:'1f',room:anchors.get(target).room,slots:[target],pose:'stand',stay:[8,25],go:name+' 앞 전달 사항 확인하러 가는 중',at:[name+' 앞에서 전달 일정 확인 중']});
+    for(const [target,name]of [['hall_convenience','편의점'],['hall_consult','상담실']])if(places.length&&anchors.has(target))errandPlaces.push({id:'task-'+target,kind:'errand',errandKind:'task',floor:'1f',room:anchors.get(target).room,slots:[target],pose:'stand',stay:[8,25],go:name+' 앞 전달 사항 확인하러 가는 중',at:[name+' 앞에서 전달 일정 확인 중']});
     const defaults=actions.get('base-work'),cache=new Map(),paths=new Map(),targetCache=new Map(),slotCache=new Map();
     // Voice/role grounding: existing office-tap-lines toChairman and seeded jobs.
     // No new place or chair: the existing CEO entrance is real floor, reachable
@@ -1512,10 +1512,10 @@
       return [...compact].length<=limit?compact:'업무 진행 중';
     }
     const visitorKinds=[
-      {kind:'client',sprite:'visitor-client',name:'방문 고객',hours:[[10,17]],target:'client_booth_slot_4',stay:[120,220],go:'상담실로 안내받아 가는 중',at:'상담 받는 중'},
+      {kind:'client',sprite:'visitor-client',name:'방문 고객',hours:[[10,17]],target:'client_booth_slot_1',stay:[120,220],go:'상담실로 안내받아 가는 중',at:'상담 받는 중'},
       {kind:'courier',sprite:'visitor-courier',name:'택배 기사',hours:[[9,18]],target:'parcel_box',stay:[15,30],go:'택배함으로 가는 중',at:'택배 두고 갈게요'},
       {kind:'rider',sprite:'visitor-rider',name:'배달 기사',hours:[[11.5,13.5],[17.5,20]],target:'reception',stay:[15,30],go:'안내대로 배달 가는 중',at:'배달 왔습니다!'},
-      {kind:'candidate',sprite:'visitor-candidate',name:'면접 지원자',hours:[[10,16]],weekdayOnly:true,target:'client_booth_slot_2',stay:[120,220],go:'면접 보러 상담실 가는 중',at:'면접 대기 중… 두근'},
+      {kind:'candidate',sprite:'visitor-candidate',name:'면접 지원자',hours:[[10,16]],weekdayOnly:true,target:'client_booth_slot_1',stay:[120,220],go:'면접 보러 상담실 가는 중',at:'면접 대기 중… 두근'},
       {kind:'generic',sprite:'visitor-generic',name:'테이크아웃 손님',hours:[[9,20]],target:'coffee_counter',stay:[20,40],go:'HANI Coffee 가는 중',at:'커피 받아 가는 중'}
     ];
     function blockPlan(day,index,events,options={}){
@@ -1875,7 +1875,7 @@
             // appointment waits on an existing lobby sofa, even with an absent
             // desk owner; reserve the same full round trip and waiting words.
             const target=anchors.get(v.target);
-            if(!visitorTargets.has(v.target))visitorTargets.set(v.target,v.target==='coffee_counter'?places.find(c=>c.id==='coffee-1f').slots:target.room==='consult'?(places.find(c=>c.id==='cafe-1f')?.slots||[]):[v.target]);
+            if(!visitorTargets.has(v.target))visitorTargets.set(v.target,v.target==='coffee_counter'?places.find(c=>c.id==='coffee-1f').slots:target.room==='consult'?[v.target,...(places.find(c=>c.id==='cafe-1f')?.slots||[])]:[v.target]);
             const choiceKey=v.kind+'|'+(isLate(at)||isEvening(at))+'|'+(isLate(at+1)||isEvening(at+1));
             if(!guestChoices.has(choiceKey))guestChoices.set(choiceKey,visitorTargets.get(v.target).filter(destination=>screenHomeClear(id,'arrival_gate',slot(destination,'stand'),allowed,at,at+1)));
             const targets=guestChoices.get(choiceKey);
@@ -1903,7 +1903,7 @@
         const kind=guest.visitor.kind,n=(seen.get(kind)||0)+1;seen.set(kind,n);
         if(['client','candidate'].includes(kind)&&(served.get(kind)||0)>=Math.ceil(n/2))continue;
         const destination=guest.people[0].seat,point=pixels([destination.x,destination.y]);
-        const hosts=(placeTable?.behavior?.visitorHosts||[]).map(id=>personById.get(id)).filter(p=>p&&allowed.includes(p)&&homeAt(p,guest.performStart).floor==='1f');
+        const hosts=(placeTable?.behavior?.visitorHosts||[]).map(id=>personById.get(id)).filter(p=>p&&allowed.includes(p)&&['1f','2f'].includes(homeAt(p,guest.performStart).floor));
         // Existing host approach cards stay in the same room, but the old
         // 160-art-pixel radius was smaller than one phone sprite footprint.
         if(!hostSlots.has(destination.anchor))hostSlots.set(destination.anchor,[...anchors.values()].filter(a=>hostCards.has(a.id)&&a.floor==='1f'&&a.room===anchors.get(destination.anchor).room&&a.type==='junction'&&(()=>{const q=pixels(visualPoint(a)),d=Math.hypot(q[0]-point[0],q[1]-point[1]);return d>=170&&d<=400})()));
@@ -1916,7 +1916,7 @@
          if(consultation&&lunch(at))continue;
          const errands=hostErrands.get(p.id);
          if(errands.some(q=>Math.abs(q.start-at)<360))continue;
-         const deadline=Math.min(guest.performEnd,nextCommitment(p.id,at),at+60);
+         const deadline=Math.min(guest.performEnd,nextCommitment(p.id,at),at+75);
          if(deadline-at<8)continue;
          if(ledgerOverlaps(ledger,at,at+.001).some(e=>e.people.some(t=>t.id===p.id)))continue;
          const home=homeAt(p,at),choiceKey=destination.anchor+'|'+p.id+'|'+home.anchorId+'|'+(isLate(at)||isEvening(at))+'|'+(isLate(deadline-.001)||isEvening(deadline-.001));
@@ -2637,7 +2637,7 @@
     if(!Number.isFinite(x)||!Number.isFinite(y)||x<half+12||x>art.width-half-12||y<height+60||y>art.height-12)return false;
     // Resident room-wide exclusions intentionally reserve the chairman room for staff.
     // His own companions use the actual desk/chair bounds, never the whole room box.
-    const boxes=[...Object.values(items?.homeFurniture||{}).flatMap(item=>[item.seatBounds,item.deskBounds].filter(Boolean)),...(items?.freeDesks||[]).flatMap(item=>[item.seatBounds,item.deskBounds].filter(Boolean))];
+    const boxes=[...Object.values(items?.homeFurniture||{}).flatMap(item=>[item.seatBounds,item.deskBounds].filter(Boolean)),...(items?.freeDesks||[]).flatMap(item=>[item.seatBounds,item.deskBounds].filter(Boolean)),...(items?.furnitureBounds||[])];
     return !boxes.some(r=>x+half>=r[0]-8&&x-half<=r[2]+8&&y+6>=r[1]&&y-height<=r[3]+8);
   }
   // Approved hidden lines are embedded; no runtime JSON request or persistence.
@@ -3728,7 +3728,7 @@
   // Include whole furniture groups, counters, cabinets, plants and partitions;
   // logical walkability alone cannot describe the painted furniture footprint.
   const residentFurniture=Object.freeze({
-    '1f':[[0,0,460,438],[475,0,1105,300],[600,185,655,346],[650,235,1018,410],[985,132,1105,346],[1105,0,1672,525],[0,438,452,805],[432,555,1238,941],[1450,450,1672,805],[1435,490,1550,572],[0,805,480,941],[1220,805,1672,941]],
+    '1f':[[0,0,445,290],[610,235,990,410],[1035,245,1245,420],[1140,0,1672,275],[1220,295,1520,520],[0,435,455,815],[650,485,1000,580],[1440,555,1672,815],[0,815,615,941],[1050,815,1672,941]],
     '2f':[[0,0,780,360],[0,400,780,635],[0,645,780,941],[930,0,1672,395],[980,385,1672,941],[0,0,1672,110]],
     '3f':[[0,0,805,360],[0,395,805,615],[0,615,805,941],[990,0,1672,941],[0,0,1672,260]],
     '4f':[[0,0,780,500],[0,500,760,941],[920,0,1672,445],[970,435,1672,941],[0,0,1672,200]],
@@ -3737,26 +3737,26 @@
   // Resident-only stops never enter the shared staff anchor/edge maps. Logical
   // corridor points and visual floor points are both checked, including travel.
   const residentStops=new Map([
-    ['resident_cat_lobby','1f',43,55,true],['resident_cat_front','1f',47,55,true],
-    ['resident_dog_lobby','1f',57,55,true],['resident_dog_front','1f',61,55,true],
-    ['resident_cleaner_1f','1f',32,55],['resident_dog_hall','2f',51,44,true],['resident_dog_hall_front','2f',51,46,true],
+    ['resident_cat_lobby','1f',44,74,true],['resident_cat_front','1f',48,74,true],
+    ['resident_dog_lobby','1f',56,74,true],['resident_dog_front','1f',60,74,true],
+    ['resident_cleaner_1f','1f',32.9,68],['resident_dog_hall','2f',51,44,true],['resident_dog_hall_front','2f',51,46,true],
     ['resident_cleaner_2f','2f',51,72],['resident_temp_2f','2f',51,98],['resident_temp_c_2f','2f',51,30],
     ['resident_cleaner_3f','3f',52,52],['resident_temp_a_3f','3f',52,76],['resident_temp_b_3f','3f',52,94],
     ['resident_cleaner_4f','4f',51,66],['resident_cat_roof','5f',51,38,true],['resident_cat_roof_front','5f',51,44,true],
     ['resident_cleaner_5f','5f',51,70],['resident_gardener','5f',51,96],
-    // Clear strip beside the 1F lounge; separate walking ranges for 22:00..02:00.
-    ['resident_cat_night_a','1f',54,55,true],['resident_cat_night_b','1f',55.5,55,true],
-    ['resident_dog_night_a','1f',61.5,55,true],['resident_dog_night_b','1f',62.5,55,true],
+    // Clear strip in the 1F south-central lobby; separate walking ranges for 22:00..02:00.
+    ['resident_cat_night_a','1f',44,76,true],['resident_cat_night_b','1f',46,76,true],
+    ['resident_dog_night_a','1f',56,76,true],['resident_dog_night_b','1f',58,76,true],
     ['resident_rabbit_quiet_a','3f',52,38.5,true],['resident_rabbit_quiet_b','3f',52,40.5,true],
     ['resident_rabbit_lounge_a','4f',51,66,true],['resident_rabbit_lounge_b','4f',51,70,true],
-    ['resident_rabbit_lobby_a','1f',34,55,true],['resident_rabbit_lobby_b','1f',35,55,true],
-    ['resident_rabbit_night_a','1f',47,55,true],['resident_rabbit_night_b','1f',47.5,55,true],
-    ['resident_rabbit_sleep_spare','1f',50,55,true],
+    ['resident_rabbit_lobby_a','1f',68,72,true],['resident_rabbit_lobby_b','1f',70,72,true],
+    ['resident_rabbit_night_a','1f',68,74,true],['resident_rabbit_night_b','1f',69.5,74,true],
+    ['resident_rabbit_sleep_spare','1f',68,76,true],
     // Clear right lobby aisle: beyond the lounge, left of the cafe and barista.
     ['resident_bori_lobby_a','1f',79.5,72,true],['resident_bori_lobby_b','1f',81,72,true],
     ['resident_bori_night_a','1f',79.5,72,true],['resident_bori_night_b','1f',81,72,true],
     ['resident_bori_lounge_a','2f',51,57,true],['resident_bori_lounge_b','2f',51,59,true],
-    ['resident_bori_stroll_lobby','1f',79.5,83,true],['resident_bori_stroll_lounge','2f',51,71,true]
+    ['resident_bori_stroll_lobby','1f',79.5,81,true],['resident_bori_stroll_lounge','2f',51,71,true]
   ].map(([id,floor,vx,vy,pet],i)=>[id,Object.freeze({id,floor,x:/^resident_(rabbit|bori)_/.test(id)?500:100+i*40,y:330,visual:[vx,vy],pet:!!pet})]));
   function residentBounds(id,pose){if(id.startsWith('companion-'))return [12,60,84,135];if(id.startsWith('kid-'))return ['wave','seat-b','startled','cling'].includes(pose)?[12,31,84,135]:[18,35,78,135];const pet=id.startsWith('pet-');if(id==='pet-bori')return [2,({sitting:52,standing:53,'walk-a':63,'walk-b':65,sleep:89})[pose]??52,94,135];if(id==='pet-rabbit')return [11,({sitting:61,standing:63,'hop-a':74,'hop-b':70,sleep:100})[pose]??61,85,135];const top=pet?(pose==='sleep'?102:({sitting: id==='pet-cat'?81:76,standing:id==='pet-cat'?83:75,'walk-a':id==='pet-cat'?87:82,'walk-b':id==='pet-cat'?90:83})[pose]):({standing:15,sitting:30,'walk-a':24,'walk-b':24})[pose];return [pet?13:9,top??15,pet?82:87,135]}
   const residentPaths=new Map();
@@ -3768,7 +3768,7 @@
     // Reserve the visible body at a 360px map (40px minimum cell), plus room
     // for idle motion. Pets keep their smaller, pose-independent envelope.
     const half=pet?46:56,height=pet?88:164,items=art?.floors[floorId];
-    const boxes=[...(residentFurniture[floorId]||[]),...Object.values(items?.homeFurniture||{}).flatMap(item=>[item.seatBounds,item.deskBounds].filter(Boolean)),...(items?.freeDesks||[]).flatMap(item=>[item.seatBounds,item.deskBounds].filter(Boolean))];
+    const boxes=[...(residentFurniture[floorId]||[]),...(items?.furnitureBounds||[]),...Object.values(items?.homeFurniture||{}).flatMap(item=>[item.seatBounds,item.deskBounds].filter(Boolean)),...(items?.freeDesks||[]).flatMap(item=>[item.seatBounds,item.deskBounds].filter(Boolean))];
     if(boxes.some(r=>px[0]+half>=r[0]-8&&px[0]-half<=r[2]+8&&px[1]+8>=r[1]&&px[1]-height<=r[3]+8))return false;
     return !(seatMaps[floorId]||[]).some(s=>(s.posture==='sitting'||s.owner)&&Math.hypot((visual[0]-s.x)*(art?.width||1672)/100,(visual[1]-s.y)*(art?.height||941)/100)<24);
   }
@@ -4370,11 +4370,11 @@
     plate.style.transform='rotate('+entry.rotate+'deg) skewX('+entry.skew+'deg)';
     map.append(plate);plates.push({plate,floor:floor.id});
   }
-  // Measured purple inner canvas in art-map 1F floor-1f-217.webp (1672 x 941).
+  // Measured purple left-wall canvas in art-map 1F floor-1f-v2.webp (1672 x 941).
   const queenFrame=document.createElement('button');queenFrame.type='button';queenFrame.className='hani-office-queen-frame';queenFrame.hidden=true;
   const queenImage=document.createElement('img'),queenCaption=document.createElement('span');
   queenImage.alt='';queenImage.draggable=false;queenCaption.className='hani-office-queen-caption';queenCaption.setAttribute('aria-hidden','true');queenFrame.append(queenImage,queenCaption);
-  queenFrame.style.left=(1171/(building.art?.width||1672)*100)+'%';queenFrame.style.top=(73/(building.art?.height||941)*100)+'%';queenFrame.style.width=(176/(building.art?.width||1672)*100)+'%';queenFrame.style.height=(107/(building.art?.height||941)*100)+'%';
+  queenFrame.style.left=(497/(building.art?.width||1672)*100)+'%';queenFrame.style.top=(70/(building.art?.height||941)*100)+'%';queenFrame.style.width=(46/(building.art?.width||1672)*100)+'%';queenFrame.style.height=(72/(building.art?.height||941)*100)+'%';
   map.append(queenFrame);
   function updateQueenFrame(now=Date.now()){
     const award=activeFloor==='1f'&&map.dataset.art==='floor'?window.HaniBoard?.queenWinner?.(now):null;
@@ -4452,7 +4452,7 @@
   // Approved four-frame art: one map-owned layer and persistent prop/event slots.
   const livePropLayer=document.createElement('div');livePropLayer.className='hani-office-live-props';livePropLayer.setAttribute('aria-hidden','true');livePropLayer.hidden=true;map.append(livePropLayer);
   const liveProps=[
-    ['coffee-desk','coffee-steam','1f',238,570,32,48,'bottom-center'],
+    ['coffee-desk','coffee-steam','1f',115,745,32,48,'bottom-center'],
     ['coffee-counter','coffee-steam','1f',1530,720,32,48,'bottom-center'],
     ['plant','plant-sway','2f',1197,314,48,64,'bottom-center'],
     ['monitor','monitor-glow','3f',466,480,64,40,'center'],

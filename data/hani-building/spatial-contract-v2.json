@@ -1252,6 +1252,7 @@
       "id": "2f",
       "label": "2F 재무자산관리 · 라이프&엔터테인먼트",
       "quiet": false,
+      "anchorCount": 80,
       "rooms": [
         {
           "id": "finance",
@@ -1659,22 +1660,32 @@
     },
     {
       "id": "1f",
-      "label": "1F 로비 · 기업솔루션사업부",
+      "label": "1F 로비 · 편의점 · 카페",
       "quiet": false,
+      "anchorCount": 52,
       "rooms": [
         {
-          "id": "business",
-          "label": "기업솔루션사업부",
+          "id": "convenience",
+          "label": "HANI 24 편의점",
           "x": 40,
           "y": 50,
           "w": 390,
           "h": 250,
-          "door": "door_business",
+          "door": "door_convenience",
           "plate": {
             "x": 235,
             "y": 276
           },
-          "access": "staff"
+          "access": "public",
+          "menuLink": {
+            "primaryView": "ledger",
+            "choices": [
+              {
+                "view": "ledger",
+                "label": "가계부"
+              }
+            ]
+          }
         },
         {
           "id": "consult",
@@ -1735,7 +1746,7 @@
           "h": 230
         },
         {
-          "id": "walk_business",
+          "id": "walk_convenience",
           "x": 52,
           "y": 92,
           "w": 366,
@@ -1777,7 +1788,7 @@
       ],
       "noWalk": [
         {
-          "id": "wall_top_business",
+          "id": "wall_top_convenience",
           "x": 40,
           "y": 50,
           "w": 390,
@@ -1785,7 +1796,7 @@
           "kind": "wall"
         },
         {
-          "id": "wall_left_business",
+          "id": "wall_left_convenience",
           "x": 40,
           "y": 50,
           "w": 8,
@@ -1793,7 +1804,7 @@
           "kind": "wall"
         },
         {
-          "id": "wall_right_business",
+          "id": "wall_right_convenience",
           "x": 422,
           "y": 50,
           "w": 8,
@@ -1801,7 +1812,7 @@
           "kind": "wall"
         },
         {
-          "id": "wall_door_business_40",
+          "id": "wall_door_convenience_40",
           "x": 40,
           "y": 296,
           "w": 173,
@@ -1809,7 +1820,7 @@
           "kind": "wall"
         },
         {
-          "id": "wall_door_business_257",
+          "id": "wall_door_convenience_257",
           "x": 257,
           "y": 296,
           "w": 173,
@@ -1935,22 +1946,6 @@
           "w": 280,
           "h": 8,
           "kind": "wall"
-        },
-        {
-          "id": "surface_business-west",
-          "x": 124,
-          "y": 141,
-          "w": 52,
-          "h": 18,
-          "kind": "desk_surface"
-        },
-        {
-          "id": "surface_business-east",
-          "x": 284,
-          "y": 141,
-          "w": 52,
-          "h": 18,
-          "kind": "desk_surface"
         },
         {
           "id": "surface_lobby-nw",
@@ -3420,20 +3415,20 @@
       "capacity": 2
     },
     {
-      "id": "door_business",
+      "id": "door_convenience",
       "floor": "1f",
-      "room": "business",
+      "room": "convenience",
       "x": 235,
       "y": 300,
       "type": "door",
-      "label": "출입문 · 기업솔루션사업부",
+      "label": "출입문 · HANI 24 편의점",
       "capacity": 1,
       "width": 44
     },
     {
-      "id": "junction_business",
+      "id": "junction_convenience",
       "floor": "1f",
-      "room": "business",
+      "room": "convenience",
       "x": 235,
       "y": 245,
       "type": "junction",
@@ -3441,7 +3436,7 @@
       "capacity": 1
     },
     {
-      "id": "hall_business",
+      "id": "hall_convenience",
       "floor": "1f",
       "room": null,
       "x": 235,
@@ -3449,6 +3444,32 @@
       "type": "junction",
       "label": "공용 복도",
       "capacity": 1
+    },
+    {
+      "id": "convenience_browse",
+      "floor": "1f",
+      "room": "convenience",
+      "x": 161,
+      "y": 200,
+      "type": "interaction",
+      "label": "HANI 24 편의점",
+      "capacity": 2,
+      "walkTarget": true,
+      "posture": "standing",
+      "rendererSeat": {
+        "id": "convenience_browse",
+        "zone": "lounge",
+        "x": 16.1,
+        "y": 79.2,
+        "owner": null,
+        "layer": 4,
+        "box": [
+          14.7,
+          77.8,
+          17.5,
+          79.2
+        ]
+      }
     },
     {
       "id": "door_consult",
@@ -3904,35 +3925,35 @@
       "capacity": 1
     },
     {
-      "id": "business-west",
-      "floor": "1f",
-      "room": "business",
-      "x": 150,
+      "id": "finance-row-spare",
+      "floor": "2f",
+      "room": "finance",
+      "x": 106,
       "y": 175,
       "type": "desk",
       "label": "수아 · 과장",
       "capacity": 1,
       "occupant": "sua",
       "rendererSeat": {
-        "id": "business-west",
-        "zone": "lounge",
-        "x": 15,
-        "y": 27.34375,
+        "id": "finance-row-spare",
+        "zone": "desk",
+        "x": 10.6,
+        "y": 63.5,
         "owner": "sua",
         "layer": 4,
         "box": [
-          13.6,
-          25.94375,
-          16.4,
-          27.34375
+          9.2,
+          62.1,
+          12,
+          63.5
         ]
       }
     },
     {
       "id": "approach_desk_sua",
-      "floor": "1f",
-      "room": "business",
-      "x": 108,
+      "floor": "2f",
+      "room": "finance",
+      "x": 106,
       "y": 245,
       "type": "junction",
       "label": "접근 · 수아 · 과장",
@@ -3940,9 +3961,9 @@
     },
     {
       "id": "side_desk_sua",
-      "floor": "1f",
-      "room": "business",
-      "x": 108,
+      "floor": "2f",
+      "room": "finance",
+      "x": 106,
       "y": 175,
       "type": "junction",
       "label": "측면 접근 · 수아 · 과장",
@@ -4219,35 +4240,35 @@
       "capacity": 1
     },
     {
-      "id": "business-east",
-      "floor": "1f",
-      "room": "business",
-      "x": 310,
+      "id": "finance-row-spare-east",
+      "floor": "2f",
+      "room": "finance",
+      "x": 405,
       "y": 175,
       "type": "desk",
       "label": "채원 · 솔루션 매니저",
       "capacity": 1,
       "occupant": "taeo",
       "rendererSeat": {
-        "id": "business-east",
-        "zone": "lounge",
-        "x": 31,
-        "y": 27.34375,
+        "id": "finance-row-spare-east",
+        "zone": "desk",
+        "x": 40.5,
+        "y": 63.5,
         "owner": "taeo",
         "layer": 4,
         "box": [
-          29.6,
-          25.94375,
-          32.4,
-          27.34375
+          39.1,
+          62.1,
+          41.9,
+          63.5
         ]
       }
     },
     {
       "id": "approach_desk_taeo",
-      "floor": "1f",
-      "room": "business",
-      "x": 268,
+      "floor": "2f",
+      "room": "finance",
+      "x": 405,
       "y": 245,
       "type": "junction",
       "label": "접근 · 채원 · 솔루션 매니저",
@@ -4255,9 +4276,9 @@
     },
     {
       "id": "side_desk_taeo",
-      "floor": "1f",
-      "room": "business",
-      "x": 268,
+      "floor": "2f",
+      "room": "finance",
+      "x": 405,
       "y": 175,
       "type": "junction",
       "label": "측면 접근 · 채원 · 솔루션 매니저",
@@ -8015,19 +8036,25 @@
     },
     {
       "from": "hall_1f",
-      "to": "hall_business",
+      "to": "hall_convenience",
       "kind": "walk",
       "bidirectional": true
     },
     {
-      "from": "hall_business",
-      "to": "door_business",
+      "from": "hall_convenience",
+      "to": "door_convenience",
       "kind": "door",
       "bidirectional": true
     },
     {
-      "from": "door_business",
-      "to": "junction_business",
+      "from": "door_convenience",
+      "to": "junction_convenience",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "junction_convenience",
+      "to": "convenience_browse",
       "kind": "walk",
       "bidirectional": true
     },
@@ -8313,7 +8340,7 @@
       "terminalOnly": true
     },
     {
-      "from": "junction_business",
+      "from": "junction_finance",
       "to": "approach_desk_sua",
       "kind": "walk",
       "bidirectional": true
@@ -8326,7 +8353,7 @@
     },
     {
       "from": "side_desk_sua",
-      "to": "business-west",
+      "to": "finance-row-spare",
       "kind": "seat",
       "bidirectional": true,
       "terminalOnly": true
@@ -8446,7 +8473,7 @@
       "terminalOnly": true
     },
     {
-      "from": "junction_business",
+      "from": "junction_finance",
       "to": "approach_desk_taeo",
       "kind": "walk",
       "bidirectional": true
@@ -8459,7 +8486,7 @@
     },
     {
       "from": "side_desk_taeo",
-      "to": "business-east",
+      "to": "finance-row-spare-east",
       "kind": "seat",
       "bidirectional": true,
       "terminalOnly": true
@@ -10000,13 +10027,13 @@
       "name": "수아",
       "rank": "과장",
       "team": "business",
-      "homeAnchor": "business-west",
+      "homeAnchor": "finance-row-spare",
       "entity": "human_chibi",
       "registration": "registered",
       "provider": null,
-      "workAnchor": "business-west",
-      "meetingAnchor": "client_booth",
-      "breakAnchor": "rooftop_rest",
+      "workAnchor": "finance-row-spare",
+      "meetingAnchor": "shared_meeting_2f",
+      "breakAnchor": "pantry_2f",
       "optionalEventAnchor": [],
       "status": "active"
     },
@@ -10118,13 +10145,13 @@
       "name": "채원",
       "rank": "솔루션 매니저",
       "team": "business",
-      "homeAnchor": "business-east",
+      "homeAnchor": "finance-row-spare-east",
       "entity": "human_chibi",
       "registration": "registered",
       "provider": "회사 업무용 Claude",
-      "workAnchor": "business-east",
-      "meetingAnchor": "client_booth",
-      "breakAnchor": "rooftop_rest",
+      "workAnchor": "finance-row-spare-east",
+      "meetingAnchor": "shared_meeting_2f",
+      "breakAnchor": "pantry_2f",
       "optionalEventAnchor": [],
       "status": "active"
     },
@@ -12882,6 +12909,34 @@
           ]
         },
         {
+          "id": "finance-row-spare",
+          "zone": "desk",
+          "x": 10.6,
+          "y": 63.5,
+          "owner": "sua",
+          "layer": 4,
+          "box": [
+            9.2,
+            62.1,
+            12,
+            63.5
+          ]
+        },
+        {
+          "id": "finance-row-spare-east",
+          "zone": "desk",
+          "x": 40.5,
+          "y": 63.5,
+          "owner": "taeo",
+          "layer": 4,
+          "box": [
+            39.1,
+            62.1,
+            41.9,
+            63.5
+          ]
+        },
+        {
           "id": "pantry_2f",
           "zone": "lounge",
           "x": 23.5,
@@ -13010,31 +13065,17 @@
       ],
       "1f": [
         {
-          "id": "business-west",
+          "id": "convenience_browse",
           "zone": "lounge",
-          "x": 15,
-          "y": 27.34375,
-          "owner": "sua",
+          "x": 16.1,
+          "y": 79.2,
+          "owner": null,
           "layer": 4,
           "box": [
-            13.6,
-            25.94375,
-            16.4,
-            27.34375
-          ]
-        },
-        {
-          "id": "business-east",
-          "zone": "lounge",
-          "x": 31,
-          "y": 27.34375,
-          "owner": "taeo",
-          "layer": 4,
-          "box": [
-            29.6,
-            25.94375,
-            32.4,
-            27.34375
+            14.7,
+            77.8,
+            17.5,
+            79.2
           ]
         },
         {

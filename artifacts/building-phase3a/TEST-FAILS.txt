@@ -1,0 +1,159 @@
+﻿===== hani-building-phase3a
+✖ 1F background uses floor-1f-v2.webp in metadata, registry, fallback and live DOM (0.6016ms)
+✖ 1F mounts four HTML room plates and convenience store routes to ledger via delegated click (475.084ms)
+✔ sua and taeo home seats move to 2F spare desks while preserving affinity personIds (360.8485ms)
+✖ 1F mounts four HTML room plates and convenience store routes to ledger via delegated click (475.084ms)
+✔ sua and taeo home seats move to 2F spare desks while preserving affinity personIds (360.8485ms)
+✖ 1F consult booth is visit-only and supports hosting from 2F (sua/taeo) and 1F (yuna) (2.4573ms)
+✖ 1F consult booth is visit-only and supports hosting from 2F (sua/taeo) and 1F (yuna) (2.4573ms)
+✖ 1F and 2F spatial anchors pass Phase 1 validateSpatial and routing (1.3312ms)
+✖ 1F residentSafe and companionSafe reject furniture overlap and keep clear spots valid (0.4525ms)
+✖ 1F and 2F spatial anchors pass Phase 1 validateSpatial and routing (1.3312ms)
+✖ 1F residentSafe and companionSafe reject furniture overlap and keep clear spots valid (0.4525ms)
+✔ kids scenes stay intact, zero storage accesses, zero extra timers or listeners (303.2495ms)
+✖ 1F residentSafe and companionSafe reject furniture overlap and keep clear spots valid (0.4525ms)
+✔ kids scenes stay intact, zero storage accesses, zero extra timers or listeners (303.2495ms)
+ℹ tests 7
+✖ failing tests:
+
+test at scripts\hani-building-phase3a.test.mjs:47:1
+✖ 1F background uses floor-1f-v2.webp in metadata, registry, fallback and live DOM (0.6016ms)
+  TypeError: Cannot read properties of undefined (reading 'background')
+      at TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/floor5/scripts/hani-building-phase3a.test.mjs:49:40)
+  TypeError: Cannot read properties of undefined (reading 'background')
+      at TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/floor5/scripts/hani-building-phase3a.test.mjs:49:40)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+✖ 1F mounts four HTML room plates and convenience store routes to ledger via delegated click (475.084ms)
+  AssertionError [ERR_ASSERTION]: Values have same structure but are not reference-equal:
+  
+  AssertionError [ERR_ASSERTION]: Values have same structure but are not reference-equal:
+  
+  [
+    actual: [ 'HANI 24 편의점', '안내데스크', '로비', 'HANI Coffee' ],
+    expected: [ 'HANI 24 편의점', '안내데스크', '로비', 'HANI Coffee' ],
+    operator: 'deepStrictEqual',
+    expected: [ 'HANI 24 편의점', '안내데스크', '로비', 'HANI Coffee' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+✖ 1F consult booth is visit-only and supports hosting from 2F (sua/taeo) and 1F (yuna) (2.4573ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(consultGuests.length>0)
+    actual: false,
+    expected: true,
+    operator: '==',
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+✖ 1F and 2F spatial anchors pass Phase 1 validateSpatial and routing (1.3312ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  undefined !== 52
+  undefined !== 52
+  
+      at TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/floor5/scripts/hani-building-phase3a.test.mjs:161:10)
+    actual: undefined,
+    expected: 52,
+    operator: 'strictEqual',
+    expected: 52,
+    operator: 'strictEqual',
+    diff: 'simple'
+✖ 1F residentSafe and companionSafe reject furniture overlap and keep clear spots valid (0.4525ms)
+  AssertionError [ERR_ASSERTION]: companionSafe allows clear lobby 44,74
+  
+  AssertionError [ERR_ASSERTION]: companionSafe allows clear lobby 44,74
+  
+  false !== true
+  false !== true
+===== hani-building-phase2
+✖ 359 canonical anchors, measured elevator, four standard rooms and return routes (0.5885ms)
+✖ weekday programs cover all scheduled themes deterministically, once per person and no night workers (1590.3812ms)
+✔ old formal and outing ledgers and old-floor snapshots stay identical with new programs disabled (2824.1367ms)
+✖ weekday programs cover all scheduled themes deterministically, once per person and no night workers (1590.3812ms)
+✔ old formal and outing ledgers and old-floor snapshots stay identical with new programs disabled (2824.1367ms)
+✔ summoning, absence, participant locks, cooldown and the four-person cap hold (352.8522ms)
+✔ pre-QA: metadata fallback uses four actual tabs and a reachable default floor (13.0053ms)
+✔ actual DOM mounts six tabs, four clickable labels and all menu IDs on one delegated path (476.3503ms)
+✔ new feature performs zero storage accesses and adds zero timers/listeners (21.6621ms)
+✔ actual DOM mounts six tabs, four clickable labels and all menu IDs on one delegated path (476.3503ms)
+✔ new feature performs zero storage accesses and adds zero timers/listeners (21.6621ms)
+✔ six mobile tabs retain paired rows and native 44px room targets (0.5541ms)
+✖ exact inverse covers every owner and refuses modified hashes; warm program lookup is cached (1.9502ms)
+ℹ tests 14
+ℹ suites 0
+✖ failing tests:
+
+test at scripts\hani-building-phase2.test.mjs:57:1
+✖ 359 canonical anchors, measured elevator, four standard rooms and return routes (0.5885ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  360 !== 359
+  360 !== 359
+  
+      at TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/floor5/scripts/hani-building-phase2.test.mjs:58:9)
+    actual: 360,
+    expected: 359,
+    operator: 'strictEqual',
+    expected: 359,
+    operator: 'strictEqual',
+    diff: 'simple'
+✖ weekday programs cover all scheduled themes deterministically, once per person and no night workers (1590.3812ms)
+  AssertionError [ERR_ASSERTION]: creative-lunch-cinema
+      at TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/floor5/scripts/hani-building-phase2.test.mjs:70:188)
+  AssertionError [ERR_ASSERTION]: creative-lunch-cinema
+      at TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/floor5/scripts/hani-building-phase2.test.mjs:70:188)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+    actual: false,
+    expected: true,
+    operator: '==',
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+✖ exact inverse covers every owner and refuses modified hashes; warm program lookup is cached (1.9502ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + actual - expected
+  
+  + '38f37dfc1b34a653027a96d3c2736ba01cb3a42d57f101fc290506a613d66c8b'
+  + '38f37dfc1b34a653027a96d3c2736ba01cb3a42d57f101fc290506a613d66c8b'
+  - '52b29f356a9e35169897037fd61feb7a79a53c3729dec387c1b3b227cb8f6803'
+  
+  - '52b29f356a9e35169897037fd61feb7a79a53c3729dec387c1b3b227cb8f6803'
+  
+      at TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/floor5/scripts/hani-building-phase2.test.mjs:148:58)
+    actual: '38f37dfc1b34a653027a96d3c2736ba01cb3a42d57f101fc290506a613d66c8b',
+    expected: '52b29f356a9e35169897037fd61feb7a79a53c3729dec387c1b3b227cb8f6803',
+    operator: 'strictEqual',
+    expected: '52b29f356a9e35169897037fd61feb7a79a53c3729dec387c1b3b227cb8f6803',
+    operator: 'strictEqual',
+    diff: 'simple'
+===== hani-building-phase1
+AssertionError [ERR_ASSERTION]: exact building-phase1 input hani-office-live.js
++ actual - expected
+
++ actual - expected
+
++ '38f37dfc1b34a653027a96d3c2736ba01cb3a42d57f101fc290506a613d66c8b'
+  actual: '38f37dfc1b34a653027a96d3c2736ba01cb3a42d57f101fc290506a613d66c8b',
+  expected: 'aeb2de37fcfe9dbefa5190b924ef37bb345eeea7caaf1b37046ef9d0e0ea3fab',
+  operator: 'strictEqual',
+  expected: 'aeb2de37fcfe9dbefa5190b924ef37bb345eeea7caaf1b37046ef9d0e0ea3fab',
+  operator: 'strictEqual',
+  diff: 'simple'
+✖ scripts\hani-building-phase1.test.mjs (65.7658ms)
+ℹ tests 1
+ℹ suites 0
+✖ failing tests:
+
+test at scripts\hani-building-phase1.test.mjs:1:1
+✖ scripts\hani-building-phase1.test.mjs (65.7658ms)
+  'test failed'
