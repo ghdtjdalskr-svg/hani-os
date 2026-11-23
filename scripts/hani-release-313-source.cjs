@@ -1,3 +1,4 @@
+require('./hani-procrast-314-preload.cjs'); // Procrast314 inverse precedes released313.
 // Test input only: exact released313 version/history inverse before toon-313.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
