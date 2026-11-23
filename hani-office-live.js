@@ -179,7 +179,8 @@
       'pet-rabbit':['회장님 발소리는 조용히 알아볼 수 있어요.','제 옆 햇살은 조금 나눠드릴게요.','귀를 기울이면 사무실도 포근해요.','이제 회장님 곁에서도 눈을 감을 수 있어요.','가장 조용한 콤비여도 괜찮겠지요.'],
       'pet-bori':['회장님 오시면 꼬리 끝부터 깨어나요, 멍.','로비 바닥의 따뜻한 자리를 알아뒀어요.','제 옆에선 천천히 이야기해도 돼요.','이젠 회장님 발소리에 눈 감고도 반겨요.','최애 콤비면 제 큰 그늘도 나눠드려요, 멍.'],
       iseul:['회장님 오시는 소리에 컵부터 꺼냈어요.','제 앞치마 주머니엔 하트 스케치가 있어요.','한가한 카페에선 원두 소리가 더 다정해요.','이젠 하트 모양만 봐도 제 잔인 줄 아시죠.','우리 콤비 잔 받침은 나란히 놓아둘게요.'],
-      eunha:['야간 카페 시계 소리가 은근히 좋아요.','회장님 오시면 조용한 밤도 반가워져요.','제 앞치마 별 자수는 밤에 더 잘 보여요.','이젠 졸린 인사도 알아들으시겠네요.','최애 콤비 자리는 작은 조명 아래예요.']
+      eunha:['야간 카페 시계 소리가 은근히 좋아요.','회장님 오시면 조용한 밤도 반가워져요.','제 앞치마 별 자수는 밤에 더 잘 보여요.','이젠 졸린 인사도 알아들으시겠네요.','최애 콤비 자리는 작은 조명 아래예요.'],
+      ieum:['제 기록장 맨 뒤엔 회장님 칸이 있어요.','회장님 오신 날은 기록이 한 줄 더 따뜻해요.','흩어진 메모를 잇는 시간이 제일 좋아요.','이제 회장님 말투도 기록 없이 기억나요.','우리 콤비 이야기는 제가 소중히 엮어둘게요.']
     });
     const ids=new Set(Object.keys(secrets)),counts=Object.create(null),turns=new Map(),notified=new Set();
     let day=kstDay(),today=Object.create(null);
@@ -207,11 +208,20 @@
         rollover();merge(readStored());
       }catch(_){for(const id of Object.keys(counts))delete counts[id];writable=false;warn()}
     }
-    function get(id){load();rollover();const count=ids.has(id)?counts[id]||0:0,level=1+[5,15,35,70].filter(n=>count>=n).length;return {count,level,name:names[level-1],hearts:'♥'.repeat(level)+'♡'.repeat(5-level)}}
+    // Approved 11/23: 7-day attendance bonus (+2) is read from the attendance board's own ledger; the counts above stay untouched.
+    const bonusKey='hani_attendance_bonus_v1';let bonusRaw=null,bonus=Object.create(null);
+    function readBonus(){
+      try{
+        const raw=globalThis.localStorage.getItem(bonusKey);if(raw===bonusRaw)return;bonusRaw=raw;const next=Object.create(null);
+        if(raw!==null){const value=JSON.parse(raw);if(value&&value.v===1&&value.grants&&typeof value.grants==='object'&&!Array.isArray(value.grants))for(const [d,id]of Object.entries(value.grants))if(/^\d{4}-\d{2}-\d{2}$/.test(d)&&ids.has(id))next[id]=(next[id]||0)+2}
+        bonus=next;
+      }catch(_){bonus=Object.create(null)}
+    }
+    function get(id){load();rollover();readBonus();const count=ids.has(id)?Math.min(9999,(counts[id]||0)+(bonus[id]||0)):0,level=1+[5,15,35,70].filter(n=>count>=n).length;return {count,level,name:names[level-1],hearts:'♥'.repeat(level)+'♡'.repeat(5-level)}}
     function tap(id,event){
       if(!ids.has(id)||event?.isTrusted!==true||!((event.type==='click')||(event.type==='keydown'&&event.key==='Enter'&&!event.repeat)))return null;
       const before=get(id),limited=(today[id]||0)>=2;
-      if(!limited&&before.count<9999){counts[id]=before.count+1;today[id]=(today[id]||0)+1;dirty=true;if(due===Infinity)due=Date.now()+2000}
+      if(!limited&&before.count<9999){counts[id]=(counts[id]||0)+1;today[id]=(today[id]||0)+1;dirty=true;if(due===Infinity)due=Date.now()+2000}
       if(limited&&!notified.has(id)){
         notified.add(id);
         const line=({hani:'오늘 친밀도는 여기까지예요♡ 내일 또 봐요!','pet-cat':'오늘 골골송은 여기까지다옹. 내일 또 와요.','pet-dog':'오늘도 신났어요! 내일 또 꼬리 흔들게요!','pet-rabbit':'오늘은 포근히 쉴게요. 내일 또 조용히 만나요.','pet-bori':'오늘은 제 옆에서 쉬어요. 내일 또 반겨줄게요, 멍.'})[id]||'오늘은 충분히 친해졌어요. 내일 또 만나요!';
