@@ -156,7 +156,7 @@
   };
   const SPECS = [
     {
-      id:'steps', title:'걸음 수 입력', owner:'naeun', route:'exercise', cadence:'매일', bounds:[1,7,14,30],
+      id:'steps', title:'걸음 수 입력', owner:'naeun', route:'exercise', cadence:'주 1회', bounds:[7,14,30,60],
       lines:[
         '회장님, 오늘 산책길 가뿐했죠!',
         '만보기 숫자가 오늘 비어 있어요.',
@@ -169,7 +169,7 @@
       mediation:'회장님, 나은이가 만보기만 보고 있어요…'
     },
     {
-      id:'weight', title:'체중 입력', owner:'naeun', route:'diet', cadence:'매일', bounds:[1,7,14,30],
+      id:'weight', title:'체중 입력', owner:'naeun', route:'diet', cadence:'주 1회', bounds:[7,14,30,60],
       lines:[
         '회장님, 오늘도 물 챙겨 드셨죠?',
         '체중계가 회장님 발길을 기다려요.',
@@ -182,7 +182,7 @@
       mediation:'회장님, 나은이가 물컵 들고 시무룩해요…'
     },
     {
-      id:'workout', title:'운동 세션 기록', owner:'sooyeon', route:'exercise', cadence:'3일마다', bounds:[3,7,14,30],
+      id:'workout', title:'운동 세션 기록', owner:'sooyeon', route:'exercise', cadence:'주 1회', bounds:[7,14,30,60],
       lines:[
         '회장님, 오늘 흘린 땀 멋졌어요!',
         '오늘 운동 세트 기록이 비었어요!',
@@ -195,7 +195,7 @@
       mediation:'회장님, 수연이가 덤벨 옆에서 시무룩해요…'
     },
     {
-      id:'quiz', title:'미완료 퀴즈 풀기', owner:'hina', route:'study', cadence:'문제 예정일 기준', bounds:[1,7,14,30],
+      id:'quiz', title:'미완료 퀴즈 풀기', owner:'hina', route:'study', cadence:'문제 예정일 기준', bounds:[7,14,30,60],
       lines:[
         '회장님♡ 오늘 문제지 술술 풀리네용!',
         '문제지가 책상에서 기다리고 있어용!',
@@ -208,7 +208,7 @@
       mediation:'회장님, 히나가 문제지 안고 삐졌어요…'
     },
     {
-      id:'wrongReview', title:'오답노트 복습', owner:'yoonseul', route:'study', cadence:'주 1회', bounds:[7,14,30,60],
+      id:'wrongReview', title:'오답노트 복습', owner:'yoonseul', route:'study', cadence:'2주 1회', bounds:[14,30,45,60],
       lines:[
         '회장님, 오답 정리 흐름이 좋아요!',
         '빨간펜 든 오답노트가 기다려요.',
@@ -247,7 +247,7 @@
       mediation:'회장님, 지은이가 영수증 철 안고 있어요…'
     },
     {
-      id:'wishlist', title:'위시리스트 정리', owner:'haru', route:'wishlist', cadence:'주 1회', bounds:[7,14,30,60],
+      id:'wishlist', title:'위시리스트 정리', owner:'haru', route:'wishlist', cadence:'월 1회', bounds:[31,45,60,90],
       lines:[
         '회장님, 장바구니 취향이 멋져요!',
         '장바구니 목록이 손길을 기다려요.',
@@ -260,7 +260,7 @@
       mediation:'회장님, 하루가 장바구니만 보고 있어요…'
     },
     {
-      id:'spendReview', title:'소비 후속 리뷰', owner:'haru', route:'ledger', cadence:'구매 2주 후', bounds:[14,30,45,60],
+      id:'spendReview', title:'소비 후속 리뷰', owner:'haru', route:'ledger', cadence:'구매 후 한 달', bounds:[31,45,60,90],
       lines:[
         '회장님, 산 물건 잘 쓰시니 뿌듯해요.',
         '지난번 산 물건 후기가 궁금해요.',
@@ -273,7 +273,7 @@
       mediation:'회장님, 하루가 후기 메모지 만지작거려요…'
     },
     {
-      id:'culture', title:'책·영화 기록', owner:'minji', route:'movie', cadence:'주 1회', bounds:[7,14,30,60],
+      id:'culture', title:'책·영화 기록', owner:'minji', route:'movie', cadence:'월 1회', bounds:[31,45,60,90],
       lines:[
         '회장님, 오늘 본 감상 멋졌어요!',
         '엔딩 크레딧 후 감상이 궁금해요!',
@@ -286,7 +286,7 @@
       mediation:'회장님, 민지가 감상 노트 덮고 삐졌어요…'
     },
     {
-      id:'tasks', title:'밀린 할 일', owner:'gaeun', route:'tasks', cadence:'마감일 기준', bounds:[1,7,14,30],
+      id:'tasks', title:'밀린 할 일', owner:'gaeun', route:'tasks', cadence:'마감일 기준', bounds:[7,14,30,60],
       lines:[
         '회장님, 오늘 마감이 매끄럽네요.',
         '지난 마감 할 일이 하나 남았어요.',
@@ -299,7 +299,7 @@
       mediation:'회장님, 가은이가 마감 수첩 안고 있어요…'
     },
     {
-      id:'diary', title:'하루 한 줄 기록', owner:'hani', route:'diary', cadence:'매일', bounds:[1,7,14,30],
+      id:'diary', title:'하루 한 줄 기록', owner:'hani', route:'diary', cadence:'주 1회', bounds:[7,14,30,60],
       lines:[
         '회장님, 오늘 한 줄도 든든하네요♡',
         '오늘의 한 줄 이야기가 궁금해요.',
@@ -323,7 +323,7 @@
       reply:'좋아요, 목표판 바로 펼쳐 둘게요♡'
     },
     {
-      id:'backup', title:'데이터 백업', owner:'ieum', route:'settings', cadence:'주 1회', bounds:[7,14,30,60],
+      id:'backup', title:'데이터 백업', owner:'ieum', route:'settings', cadence:'월 1회', bounds:[31,45,60,90],
       lines:[
         '회장님 기록, 오늘도 안전해요.',
         '백업 한 번 해 두면 마음 편해요.',
@@ -503,7 +503,7 @@
       card.dataset.owner = item.owner;
       delete card.dataset.replied;
       card.querySelector('.pb-portrait').setAttribute('aria-label', `${item.staff.name} · ${item.level === null ? '기록 없음 · 기간 미확인' : item.level + '단계 · ' + LABELS[item.level]}`);
-      card.querySelector('.pb-age').textContent = item.days === null ? '기록 없음 · 기간 미확인' : item.days === 0 ? '오늘은 괜찮아요' : `${item.days}일째 미룸`;
+      card.querySelector('.pb-age').textContent = item.days === null ? '기록 없음 · 기간 미확인' : item.days === 0 ? '오늘은 괜찮아요' : item.level === 0 ? `${item.days}일째 · 아직 여유 있어요` : `${item.days}일째 미룸`;
       card.querySelector('.pb-level').textContent = item.level === null ? '아직 판단하지 않아요' : `${item.level}단계 · ${LABELS[item.level]}`;
       const speechEl = card.querySelector('.pb-speech');
       speechEl.textContent = item.speech;
