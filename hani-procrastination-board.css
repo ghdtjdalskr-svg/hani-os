@@ -96,7 +96,7 @@
 #procrastination [data-replied="true"] .pb-speech::after{border-top-color:var(--pb-staff-soft)}
 #procrastination [data-replied="true"] .pb-bubble-wrap::after{content:"♡";position:absolute;top:2px;right:12px;z-index:4;font-size:13px;font-weight:800;color:var(--pb-staff-color);pointer-events:none}
 
-/* Portraits: 5-row chibi sheet + 4 profile thumbnails */
+/* Portraits: two 5-row chibi sheets (v1: 나은·히나·지은·하루·민지, v2: 하니·가은·수연·윤슬·이음) */
 #procrastination .pb-portrait{display:block;flex:none;width:192px;max-width:100%;aspect-ratio:1;background-image:url("./assets/procrastination/pb-chibi-sheet-v1.webp");background-repeat:no-repeat;background-size:600% 500%;background-position:var(--pb-x,100%) var(--pb-y,0%)}
 #procrastination [data-owner="naeun"]{--pb-y:0%}
 #procrastination :is([data-pb-card="steps"],[data-pb-card="weight"]) .pb-portrait{background-image:url("./assets/procrastination/pb-naeun-items-v1.webp");background-size:600% 200%}
@@ -106,16 +106,12 @@
 #procrastination [data-owner="jieun"]{--pb-y:50%}
 #procrastination [data-owner="haru"]{--pb-y:75%}
 #procrastination [data-owner="minji"]{--pb-y:100%}
-#procrastination [data-owner="hani"] .pb-portrait,
-#procrastination [data-owner="gaeun"] .pb-portrait,
-#procrastination [data-owner="sooyeon"] .pb-portrait,
-#procrastination [data-owner="yoonseul"] .pb-portrait{width:148px;margin:10px 0 6px;border-radius:50%;border:3px solid var(--pb-staff-color);background-size:cover;background-position:center 18%;box-shadow:0 6px 16px rgba(45,35,60,.14)}
-#procrastination [data-owner="hani"] .pb-portrait{background-image:url("./assets/profiles/thumb/hani-profile-hani-256.webp")}
-#procrastination [data-owner="gaeun"] .pb-portrait{background-image:url("./assets/profiles/thumb/hani-profile-gaeun-256.webp")}
-#procrastination [data-owner="sooyeon"] .pb-portrait{background-image:url("./assets/profiles/thumb/hani-profile-sooyeon-256.webp")}
-#procrastination [data-owner="yoonseul"] .pb-portrait{background-image:url("./assets/profiles/thumb/hani-profile-yoonseul-v2-256.webp")}
-#procrastination [data-level="3"]:is([data-owner="hani"],[data-owner="gaeun"],[data-owner="sooyeon"],[data-owner="yoonseul"]) .pb-portrait{border-color:#c94a5a}
-#procrastination [data-level="4"]:is([data-owner="hani"],[data-owner="gaeun"],[data-owner="sooyeon"],[data-owner="yoonseul"]) .pb-portrait{border-color:#727a8c;filter:saturate(.76) brightness(.95)}
+#procrastination :is([data-owner="hani"],[data-owner="gaeun"],[data-owner="sooyeon"],[data-owner="yoonseul"],[data-owner="ieum"]) .pb-portrait{background-image:url("./assets/procrastination/pb-chibi-sheet-v2.webp")}
+#procrastination [data-owner="hani"]{--pb-y:0%}
+#procrastination [data-owner="gaeun"]{--pb-y:25%}
+#procrastination [data-owner="sooyeon"]{--pb-y:50%}
+#procrastination [data-owner="yoonseul"]{--pb-y:75%}
+#procrastination [data-owner="ieum"]{--pb-y:100%}
 #procrastination [data-level="0"]{--pb-x:0%}
 #procrastination [data-level="1"]{--pb-x:20%}
 #procrastination [data-level="2"]{--pb-x:40%}
@@ -207,10 +203,6 @@
   #procrastination .pb-card{padding:14px 10px}
   #procrastination .pb-scene{padding:12px 10px 8px}
   #procrastination .pb-portrait{width:172px}
-  #procrastination [data-owner="hani"] .pb-portrait,
-  #procrastination [data-owner="gaeun"] .pb-portrait,
-  #procrastination [data-owner="sooyeon"] .pb-portrait,
-  #procrastination [data-owner="yoonseul"] .pb-portrait{width:136px}
   #procrastination .pb-speech{font-size:15px}
   #procrastination .pb-actions{flex-direction:column}
 }
@@ -237,12 +229,8 @@
 :root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #procrastination .pb-card .pb-scene::before{background:linear-gradient(rgba(16,14,22,.42),rgba(16,14,22,.42)),var(--pb-weather)}
 /* Round 3b: 목표 점검(하니) · 데이터 백업(이음) cards. Backgrounds reuse the office-window and library cells until dedicated art lands. */
 #procrastination [data-owner="ieum"]{--pb-staff-color:#5b6fb5;--pb-staff-soft:#e8ecfa;--pb-staff-ink:#ffffff;--pb-scene-base:#eceffa}
-#procrastination [data-owner="ieum"] .pb-portrait{width:148px;margin:10px 0 6px;border-radius:50%;border:3px solid var(--pb-staff-color);background-image:url("./assets/profiles/thumb/hani-profile-ieum-256.webp");background-size:cover;background-position:center 18%;box-shadow:0 6px 16px rgba(45,35,60,.14)}
-#procrastination [data-level="3"][data-owner="ieum"] .pb-portrait{border-color:#c94a5a}
-#procrastination [data-level="4"][data-owner="ieum"] .pb-portrait{border-color:#727a8c;filter:saturate(.76) brightness(.95)}
 [data-theme="dark"] #procrastination [data-owner="ieum"],
 :root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #procrastination [data-owner="ieum"]{--pb-staff-color:#93a6ec;--pb-staff-soft:#252c46;--pb-staff-ink:#10162c;--pb-scene-base:#232a40}
-@media(max-width:600px){#procrastination [data-owner="ieum"] .pb-portrait{width:136px}}
 #procrastination [data-pb-card="goals"]{--pb-bg-x:33.3333%;--pb-bg-y:50%}
 #procrastination [data-pb-card="backup"]{--pb-bg-x:0%;--pb-bg-y:50%}
 #procrastination [data-pb-card="release"]{--pb-bg-x:66.6667%;--pb-bg-y:100%}

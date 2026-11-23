@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>미룬 일 4차 미리보기</title><base href="/">
+<link rel="stylesheet" href="/hani-design-system.css">
+<link rel="stylesheet" href="/hani-procrastination-board.css">
+<style>body{margin:0;padding:10px;background:#f6f3fb;font-family:sans-serif}#procrastination{display:block}
+.row{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:8px}.row .pb-card{padding:6px!important;min-width:0}.row .pb-portrait{width:100%!important}
+h4{margin:10px 0 4px;font-size:13px}</style></head><body>
+<section id="procrastination" class="view active"><div id="rows"></div></section>
+<script>
+const owners=[['diary','hani','하니'],['tasks','gaeun','가은'],['workout','sooyeon','수연'],['wrongReview','yoonseul','윤슬'],['backup','ieum','이음']];
+const lv=['0','1','2','3','4','unknown'];
+document.getElementById('rows').innerHTML=owners.map(([card,o,n])=>`<h4>${n}</h4><div class="row">`+lv.map(l=>`<article class="pb-card" data-pb-card="${card}" data-owner="${o}" data-level="${l}"><div class="pb-scene"><span class="pb-portrait"></span></div></article>`).join('')+'</div>').join('');
+</script></body></html>

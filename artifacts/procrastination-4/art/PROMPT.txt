@@ -1,0 +1,26 @@
+Use case: stylized-concept. Asset type: production transparent chibi sprite atlas for an existing UI.
+Create ONE brand-new sheet containing EXACTLY 30 distinct full-body chibi sprites on a strict uniform 6 COLUMN x 5 ROW grid, reading left to right then top to bottom. Canvas 1536 x 1280 pixels, every cell 256 x 256. Actual alpha transparency everywhere outside characters and their small job props, no background, no visible grid or cell frames, no shadows/pedestals. No labels or writing whatsoever.
+
+REFERENCE ROLES:
+Image 1 reference-style.png is ONLY the canonical drawing style and spacing/pose-flow reference. Match its fine soft warm-brown outlines, detailed glossy hair, gentle pastel shaded paint, expressive large eyes, tiny full body, huge head-to-body proportions, and small hands/shoes. Do NOT copy its characters or any writing/punctuation. Its cream backdrop is just for viewing; output must be transparent.
+Image 2 reference-identities.png contains FIVE identity columns in precisely the required output row order. Each column has the character's original portrait above and her established office chibi below. Use both. Preserve hair silhouette, face/eye colors, clothing colors and accessories from that column.
+
+STRICT GEOMETRY:
+There are SIX evenly-spaced square cells across and FIVE down. One sprite per cell with clear transparent gutters, never overlapping another cell. All sprites have identical scale, matching image 1, around 205-216 px tall for standing poses. In each 256 cell, standing hair top about y28, feet bottom y244, horizontal center x128, side margins at least 28px. The crouching pose stays at the same head/body scale but has smaller total height and sits toward the lower-right corner, at x approximately160,y244 feet; hair begins about y76. Any props must stay within that same cell. Each row is ONE identity repeated six times, not a collection of different people.
+
+ROW 1 HANI: identity column 1: long loose dark chocolate brown wavy hair, warm brown eyes, white blouse, elegant deep purple blazer and skirt, black pumps, tiny gold earrings. Kind composed executive. Small lavender daily diary and a goal-check board (blank squares/checkmarks ONLY, NO lettering).
+ROW 2 GAEUN: identity column 2: chestnut brown side-part hair gathered into low bun with loose side locks, warm brown eyes, white blouse, navy blazer/skirt, burgundy tied neck scarf, black pumps. Secretary with a clipboard carrying a to-do list depicted by blank checkboxes ONLY, plus pen.
+ROW 3 SOOYEON: identity column 3: shoulder-length wavy ash-blonde hair, blue eyes, white blouse and dark teal blazer/skirt, black shoes. Lively sports colleague with a small dumbbell, compact rolled exercise mat, and water bottle. Keep her office outfit consistent with reference.
+ROW 4 YOONSEUL: identity column 4: warm chestnut long side braid tied with mint ribbon, round fine gold glasses, brown eyes, cream cardigan, pale sage blouse, olive pleated skirt, brown shoes. Learning researcher with a small warm terracotta wrong-answer notebook, red pen and ribbon bookmark. Book pages blank, no writing.
+ROW 5 IEUM: identity column 5: dark ash-brown chin/shoulder-length bob with bangs, half pulled-back hair and a pale rectangular clip at the viewer's right, cool grey-blue eyes, cream cardigan, navy collared blouse and navy skirt, dark shoes. Knowledge archivist with a small dark laptop, compact external backup drive with short cable, and a tabbed binder. Laptop screen may have one simple cloud outline icon, NO letters.
+
+THE EXACT SIX COLUMNS FOR EVERY ROW:
+0 (first column): happily cheering, warm open-mouth smile, one arm raised in encouragement, the other holding her main job prop; never romantic.
+1: has paused and is looking straight at the viewer, mildly curious neutral expression, holding her main prop quietly at chest or side.
+2: cheeks puffed out in a mild cute pout, arms lightly crossed in front, job prop nearby on floor.
+3: arms visibly folded across chest, torso and feet TURNED AWAY in a rear three-quarter view with face glancing back over shoulder, cute mildly annoyed expression. Show the folded arms clearly from the side of the turned torso. No anger marks, no emoji, no symbols, express emotion by face and pose only.
+4: crouched/squatting on the floor in the lower-right corner of her cell, hugging knees, head lowered with sad but cute face, job props beside her. No tears, no gloomy scene/background, no cloud overhead.
+5 (last column): no recorded activity yet; standing patiently waiting while holding her main job prop, gentle expectant neutral face, relaxed posture. NO question marks or text.
+
+Distribute the full row-specific prop set across its six poses while keeping the illustrations uncluttered and small enough to match canonical sheet. Hani diary plus checklist board; Gaeun clipboard plus pen; Sooyeon dumbbell plus mat plus bottle; Yoonseul notebook plus red pen and bookmark; Ieum laptop plus backup drive plus binder.
+All 30 poses must be present. Full-body sprites, entire heads/hair, arms, feet and props visible and never cut off. Absolutely ZERO text, letters, numbers, punctuation, name badges, watermark, logos, speech balloons, anger icons, hearts or flirtation. Cute restrained sulking. Render with true transparent alpha.
