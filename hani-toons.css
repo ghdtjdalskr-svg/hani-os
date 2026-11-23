@@ -1,0 +1,411 @@
+/* HaniToons: scoped to #hanitoon and .toon-* classes, consuming HANI Design System tokens. */
+#hanitoon [data-toon-root] {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+#hanitoon .toon-shell,
+#hanitoon .toon-shell * {
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+#hanitoon .toon-shell {
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  color: var(--text-primary, var(--text, #28374c));
+  font-family: var(--ds-font, var(--hani-font-sans, inherit));
+}
+
+/* Header */
+#hanitoon .toon-header {
+  padding: 18px 20px;
+  border: 1px solid var(--border-subtle, var(--line, #e8ebf2));
+  border-radius: var(--hani-radius-banner, 18px);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--structure-accent, var(--control-accent, #9b87d6)) 10%, var(--surface-panel, var(--panel, #fff))),
+    var(--surface-panel, var(--panel, #fff))
+  );
+  box-shadow: var(--ds-shadow, 0 6px 22px rgba(58, 48, 80, 0.04));
+}
+
+#hanitoon .toon-tagline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 6px;
+  padding: 4px 10px;
+  border-radius: var(--hani-radius-pill, 9999px);
+  background: color-mix(in srgb, var(--structure-accent, var(--control-accent, #9b87d6)) 14%, var(--surface-raised, var(--panel2, #fafbff)));
+  color: var(--structure-accent, var(--control-accent, #7656b3));
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.4;
+}
+
+#hanitoon .toon-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 850;
+  letter-spacing: -0.03em;
+  line-height: 1.3;
+  color: var(--text-primary, var(--text, #28374c));
+}
+
+#hanitoon .toon-subtitle {
+  margin: 4px 0 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text-secondary, var(--muted, #718096));
+}
+
+/* Series filter chips */
+#hanitoon .toon-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+
+#hanitoon .toon-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  max-width: 100%;
+  padding: 7px 14px;
+  border: 1px solid var(--border-subtle, var(--line, #e8ebf2));
+  border-radius: var(--hani-radius-pill, 9999px);
+  background: var(--surface-panel, var(--panel, #fff));
+  color: var(--text-secondary, var(--muted, #718096));
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.3;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+#hanitoon .toon-chip:hover {
+  border-color: var(--border-strong, var(--structure-accent, #9b87d6));
+  color: var(--text-primary, var(--text, #28374c));
+}
+
+#hanitoon .toon-chip[aria-pressed="true"] {
+  background: var(--structure-accent, var(--control-accent, #7656b3));
+  border-color: var(--structure-accent, var(--control-accent, #7656b3));
+  color: var(--structure-on-accent, #fff);
+  font-weight: 800;
+}
+
+#hanitoon .toon-chip:focus-visible,
+#hanitoon .toon-row:focus-visible,
+#hanitoon .toon-back-btn:focus-visible,
+#hanitoon .toon-nav-btn:focus-visible {
+  outline: 3px solid var(--structure-accent, var(--control-accent, #7656b3));
+  outline-offset: 2px;
+}
+
+/* Board list */
+#hanitoon .toon-board {
+  border: 1px solid var(--border-subtle, var(--line, #e8ebf2));
+  border-radius: var(--hani-radius-card, 16px);
+  background: var(--surface-panel, var(--panel, #fff));
+  box-shadow: var(--ds-shadow, 0 6px 22px rgba(58, 48, 80, 0.04));
+  overflow: hidden;
+}
+
+#hanitoon .toon-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#hanitoon .toon-list-item + .toon-list-item {
+  border-top: 1px solid var(--border-subtle, var(--line, #e8ebf2));
+}
+
+#hanitoon .toon-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+#hanitoon .toon-row:hover {
+  background: color-mix(in srgb, var(--structure-accent, var(--control-accent, #9b87d6)) 7%, var(--surface-panel, var(--panel, #fff)));
+}
+
+#hanitoon .toon-row:active {
+  background: color-mix(in srgb, var(--structure-accent, var(--control-accent, #9b87d6)) 14%, var(--surface-panel, var(--panel, #fff)));
+}
+
+#hanitoon .toon-thumb-wrap {
+  display: block;
+  flex: 0 0 64px;
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle, var(--line, #e8ebf2));
+  background: var(--surface-raised, var(--panel2, #fafbff));
+}
+
+#hanitoon .toon-thumb {
+  display: block;
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+}
+
+#hanitoon .toon-row-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+#hanitoon .toon-row-title-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+#hanitoon .toon-row-title {
+  flex: 0 1 auto;
+  min-width: 0;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--text-primary, var(--text, #28374c));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#hanitoon .toon-new-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+  padding: 2px 7px;
+  border-radius: var(--hani-radius-pill, 9999px);
+  background: var(--structure-accent, var(--control-accent, #7656b3));
+  color: var(--structure-on-accent, #fff);
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: 0.03em;
+  line-height: 1.4;
+}
+
+#hanitoon .toon-new-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+#hanitoon .toon-row-meta {
+  display: block;
+  min-width: 0;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--text-secondary, var(--muted, #718096));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#hanitoon .toon-row-date {
+  flex: 0 0 auto;
+  margin-left: auto;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted, var(--text-secondary, var(--muted, #718096)));
+  white-space: nowrap;
+}
+
+/* Empty / Error state */
+#hanitoon .toon-empty {
+  padding: 36px 20px;
+  border: 1px dashed var(--border-subtle, var(--line, #e8ebf2));
+  border-radius: var(--hani-radius-card, 16px);
+  background: var(--surface-panel, var(--panel, #fff));
+  color: var(--text-secondary, var(--muted, #718096));
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* Reader view */
+#hanitoon .toon-reader {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#hanitoon .toon-reader-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--border-subtle, var(--line, #e8ebf2));
+  border-radius: var(--hani-radius-card, 16px);
+  background: var(--surface-panel, var(--panel, #fff));
+  box-shadow: var(--ds-shadow, 0 6px 22px rgba(58, 48, 80, 0.04));
+}
+
+#hanitoon .toon-back-btn,
+#hanitoon .toon-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 1px solid var(--border-subtle, var(--line, #e8ebf2));
+  border-radius: 11px;
+  background: var(--surface-raised, var(--panel2, #fafbff));
+  color: var(--text-primary, var(--text, #28374c));
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 750;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+#hanitoon .toon-back-btn {
+  flex: 0 0 auto;
+}
+
+#hanitoon .toon-back-btn:hover,
+#hanitoon .toon-nav-btn:hover:not(:disabled) {
+  border-color: var(--border-strong, var(--structure-accent, #9b87d6));
+  background: color-mix(in srgb, var(--structure-accent, var(--control-accent, #9b87d6)) 10%, var(--surface-raised, var(--panel2, #fafbff)));
+}
+
+#hanitoon .toon-reader-info {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+#hanitoon .toon-reader-meta {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--text-secondary, var(--muted, #718096));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#hanitoon .toon-reader-title {
+  margin: 2px 0 0;
+  font-size: 18px;
+  font-weight: 850;
+  line-height: 1.35;
+  color: var(--text-primary, var(--text, #28374c));
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+#hanitoon .toon-canvas {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle, var(--line, #e8ebf2));
+  background: var(--surface-panel, var(--panel, #fff));
+  font-size: 0;
+  line-height: 0;
+}
+
+#hanitoon .toon-part {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+#hanitoon .toon-reader-nav {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+#hanitoon .toon-nav-btn {
+  min-height: 44px;
+  padding: 10px 8px;
+}
+
+#hanitoon .toon-nav-btn:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+#hanitoon .toon-nav-list {
+  background: var(--surface-panel, var(--panel, #fff));
+}
+
+@media (max-width: 480px) {
+  #hanitoon .toon-header {
+    padding: 14px 16px;
+  }
+
+  #hanitoon .toon-title {
+    font-size: 21px;
+  }
+
+  #hanitoon .toon-row {
+    gap: 10px;
+    padding: 10px 12px;
+  }
+
+  #hanitoon .toon-row-title {
+    font-size: 14px;
+  }
+
+  #hanitoon .toon-row-date {
+    font-size: 11px;
+  }
+
+  #hanitoon .toon-reader-top {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  #hanitoon .toon-reader-title {
+    font-size: 16px;
+  }
+}

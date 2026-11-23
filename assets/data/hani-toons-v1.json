@@ -1,0 +1,315 @@
+{
+  "v": 1,
+  "items": [
+    {
+      "id": "build-3",
+      "series": "하니 그룹 대공사",
+      "episode": "3편",
+      "title": "완공 예고: 살아 있는 HANI GROUP",
+      "date": "2026-11-23",
+      "parts": [
+        "assets/toons/build-3.webp"
+      ],
+      "thumb": "assets/toons/thumb/build-3.webp",
+      "width": 800,
+      "height": 6402,
+      "bytes": 661696
+    },
+    {
+      "id": "build-2",
+      "series": "하니 그룹 대공사",
+      "episode": "2편",
+      "title": "공사 현장은 소동 중",
+      "date": "2026-11-23",
+      "parts": [
+        "assets/toons/build-2.webp"
+      ],
+      "thumb": "assets/toons/thumb/build-2.webp",
+      "width": 800,
+      "height": 6320,
+      "bytes": 578406
+    },
+    {
+      "id": "build-1",
+      "series": "하니 그룹 대공사",
+      "episode": "1편",
+      "title": "착공! 4층짜리 회사가 7층이 된다고요?",
+      "date": "2026-11-23",
+      "parts": [
+        "assets/toons/build-1.webp"
+      ],
+      "thumb": "assets/toons/thumb/build-1.webp",
+      "width": 800,
+      "height": 6039,
+      "bytes": 615456
+    },
+    {
+      "id": "queen-1",
+      "series": "깜짝 스페셜",
+      "episode": null,
+      "title": "이달의 퀸 선거운동 대작전",
+      "date": "2026-11-20",
+      "parts": [
+        "assets/toons/queen-1.webp"
+      ],
+      "thumb": "assets/toons/thumb/queen-1.webp",
+      "width": 800,
+      "height": 7804,
+      "bytes": 758084
+    },
+    {
+      "id": "surprise-1",
+      "series": "깜짝 스페셜",
+      "episode": "1화",
+      "title": "시무룩 서윤과 몰래카메라",
+      "date": "2026-11-19",
+      "parts": [
+        "assets/toons/surprise-1.webp"
+      ],
+      "thumb": "assets/toons/thumb/surprise-1.webp",
+      "width": 800,
+      "height": 7804,
+      "bytes": 728572
+    },
+    {
+      "id": "trip-3",
+      "series": "나들이 스페셜",
+      "episode": "3화",
+      "title": "노을 기념사진",
+      "date": "2026-11-14",
+      "parts": [
+        "assets/toons/trip-3.webp"
+      ],
+      "thumb": "assets/toons/thumb/trip-3.webp",
+      "width": 800,
+      "height": 6276,
+      "bytes": 643260
+    },
+    {
+      "id": "trip-2",
+      "series": "나들이 스페셜",
+      "episode": "2화",
+      "title": "한강 피크닉 소동",
+      "date": "2026-11-14",
+      "parts": [
+        "assets/toons/trip-2.webp"
+      ],
+      "thumb": "assets/toons/thumb/trip-2.webp",
+      "width": 800,
+      "height": 6276,
+      "bytes": 685912
+    },
+    {
+      "id": "trip-1",
+      "series": "나들이 스페셜",
+      "episode": "1화",
+      "title": "출발! 나들이 대작전",
+      "date": "2026-11-14",
+      "parts": [
+        "assets/toons/trip-1.webp"
+      ],
+      "thumb": "assets/toons/thumb/trip-1.webp",
+      "width": 800,
+      "height": 6276,
+      "bytes": 565528
+    },
+    {
+      "id": "sp-seoyun-hina-suyeon",
+      "series": "서윤 × 히나 × 수연 스페셜",
+      "episode": null,
+      "title": "아빠 귀가 버튼",
+      "date": "2026-11-13",
+      "parts": [
+        "assets/toons/sp-seoyun-hina-suyeon.webp"
+      ],
+      "thumb": "assets/toons/thumb/sp-seoyun-hina-suyeon.webp",
+      "width": 800,
+      "height": 5622,
+      "bytes": 619596
+    },
+    {
+      "id": "sp-pets",
+      "series": "반려동물 스페셜",
+      "episode": null,
+      "title": "회장님 의자 쟁탈전",
+      "date": "2026-11-13",
+      "parts": [
+        "assets/toons/sp-pets.webp"
+      ],
+      "thumb": "assets/toons/thumb/sp-pets.webp",
+      "width": 800,
+      "height": 5307,
+      "bytes": 567482
+    },
+    {
+      "id": "sp-hani-suyeon",
+      "series": "하니 × 수연 스페셜",
+      "episode": null,
+      "title": "하니 이모랑 놀아요",
+      "date": "2026-11-13",
+      "parts": [
+        "assets/toons/sp-hani-suyeon.webp"
+      ],
+      "thumb": "assets/toons/thumb/sp-hani-suyeon.webp",
+      "width": 800,
+      "height": 5393,
+      "bytes": 550584
+    },
+    {
+      "id": "ep06",
+      "series": "HANI FAMILY × M9",
+      "episode": "6화",
+      "title": "아빠 데리러 왔어요",
+      "date": "2026-11-13",
+      "parts": [
+        "assets/toons/ep06.webp"
+      ],
+      "thumb": "assets/toons/thumb/ep06.webp",
+      "width": 800,
+      "height": 2684,
+      "bytes": 206686
+    },
+    {
+      "id": "ep05",
+      "series": "HANI FAMILY × M9",
+      "episode": "5화",
+      "title": "수연이의 첫 회의",
+      "date": "2026-11-13",
+      "parts": [
+        "assets/toons/ep05.webp"
+      ],
+      "thumb": "assets/toons/thumb/ep05.webp",
+      "width": 800,
+      "height": 3498,
+      "bytes": 260450
+    },
+    {
+      "id": "ep04",
+      "series": "HANI FAMILY × M9",
+      "episode": "4화",
+      "title": "민지의 결정적 순간",
+      "date": "2026-11-13",
+      "parts": [
+        "assets/toons/ep04.webp"
+      ],
+      "thumb": "assets/toons/thumb/ep04.webp",
+      "width": 800,
+      "height": 2757,
+      "bytes": 206812
+    },
+    {
+      "id": "ep03",
+      "series": "HANI FAMILY × M9",
+      "episode": "3화",
+      "title": "회장실 비상회의",
+      "date": "2026-11-13",
+      "parts": [
+        "assets/toons/ep03.webp"
+      ],
+      "thumb": "assets/toons/thumb/ep03.webp",
+      "width": 800,
+      "height": 2594,
+      "bytes": 213196
+    },
+    {
+      "id": "ep02",
+      "series": "HANI FAMILY × M9",
+      "episode": "2화",
+      "title": "회장님 도시락 사건",
+      "date": "2026-11-13",
+      "parts": [
+        "assets/toons/ep02.webp"
+      ],
+      "thumb": "assets/toons/thumb/ep02.webp",
+      "width": 800,
+      "height": 2444,
+      "bytes": 237530
+    },
+    {
+      "id": "ep01",
+      "series": "HANI FAMILY × M9",
+      "episode": "1화",
+      "title": "아빠 회사에서 제일 높은 사람",
+      "date": "2026-11-13",
+      "parts": [
+        "assets/toons/ep01.webp"
+      ],
+      "thumb": "assets/toons/thumb/ep01.webp",
+      "width": 800,
+      "height": 2074,
+      "bytes": 227598
+    },
+    {
+      "id": "ep5",
+      "series": "수현·수연 × M9",
+      "episode": "5화",
+      "title": "주말 출근 체험",
+      "date": "2026-11-13",
+      "parts": [
+        "assets/toons/ep5-1.webp",
+        "assets/toons/ep5-2.webp"
+      ],
+      "thumb": "assets/toons/thumb/ep5-1.webp",
+      "width": 800,
+      "height": 2844,
+      "bytes": 301912
+    },
+    {
+      "id": "ep4",
+      "series": "수현·수연 × M9",
+      "episode": "4화",
+      "title": "아빠 생일 비밀 작전",
+      "date": "2026-11-13",
+      "parts": [
+        "assets/toons/ep4-1.webp",
+        "assets/toons/ep4-2.webp"
+      ],
+      "thumb": "assets/toons/thumb/ep4-1.webp",
+      "width": 800,
+      "height": 2844,
+      "bytes": 303142
+    },
+    {
+      "id": "toon-3",
+      "series": "수현·수연 꽁트",
+      "episode": "3화",
+      "title": "숙제 도우미",
+      "date": "2026-11-13",
+      "parts": [
+        "assets/toons/toon-3.webp"
+      ],
+      "thumb": "assets/toons/thumb/toon-3.webp",
+      "width": 800,
+      "height": 1422,
+      "bytes": 131398
+    },
+    {
+      "id": "toon-2",
+      "series": "수현·수연 꽁트",
+      "episode": "2화",
+      "title": "넥타이 대작전",
+      "date": "2026-11-13",
+      "parts": [
+        "assets/toons/toon-2.webp"
+      ],
+      "thumb": "assets/toons/thumb/toon-2.webp",
+      "width": 800,
+      "height": 1422,
+      "bytes": 130610
+    },
+    {
+      "id": "toon-1",
+      "series": "수현·수연 꽁트",
+      "episode": "1화",
+      "title": "범인은 누구?",
+      "date": "2026-11-13",
+      "parts": [
+        "assets/toons/toon-1.webp"
+      ],
+      "thumb": "assets/toons/thumb/toon-1.webp",
+      "width": 800,
+      "height": 1422,
+      "bytes": 132620
+    }
+  ]
+}
