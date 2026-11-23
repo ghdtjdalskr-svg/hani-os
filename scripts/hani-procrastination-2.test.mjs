@@ -1,3 +1,4 @@
+import './hani-procrast-314-preload.cjs'; // Exact 미룬 일 4차 inverse before this 2차 contract.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
