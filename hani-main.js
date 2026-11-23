@@ -1626,6 +1626,7 @@ const pageMeta={
  procrastination:["미룬 일","기다리는 기록을 담당 직원과 하나씩 다시 시작해요.","work"],
  // END PROCRASTINATION META
  ilbo:["HANI 일보","민지 대리가 전하는 한 주의 우리 이야기","team"],
+ hanitoon:["하니툰","회장님 회사의 소소한 이야기를 웹툰으로 모아 봐요.","team"],
  home:["대시보드","오늘의 기록과 흐름을 한눈에 확인합니다.","home"],
  milestones:["마일스톤","삶에 남은 의미 있는 변화를 오래 기억할 수 있게 기록합니다.","milestones"],
  investment:["투자","월간 스냅샷으로 계좌별 자산과 자금 흐름을 기록합니다.","finance"],
@@ -2012,6 +2013,7 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
   if(id==="board")window.HaniBoard?.render();
   window.HaniBoard?.syncBanner?.();
   if(id==="ilbo")window.HaniIlbo?.enter();
+  if(id==="hanitoon")window.HaniToons?.enter();
   if(id==="milestones")window.HaniMilestones?.enter();
   // BEGIN PROCRASTINATION ENTER
   if(id==="procrastination")window.HaniProcrastination?.render(state);
@@ -2032,6 +2034,7 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
 
 const QUICK_JUMP_ITEMS=[
   ["ilbo","HANI 일보","하니일보 하니 일보 신문 사보 아카이브"],
+  ["hanitoon","하니툰","하니툰 웹툰 만화 치비툰 대공사 남매"],
   ["board","HANI 라운지","하니 라운지 HANI GROUP BOARD WORK LIFE MEMORY LOUNGE"],
   ["characterArchive","M9 + MIR Character Archive","HANI GROUP 캐릭터 프로필 Canon 관계 직급 연차 미르"],
   ["aiBudget","AI 주간 예산","Codex Claude Gemini 토큰 사용량 주간 세션 한도 회복 재충전"],
@@ -7878,7 +7881,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.312";
+const HANI_DISPLAY_VERSION="2.9.313";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
