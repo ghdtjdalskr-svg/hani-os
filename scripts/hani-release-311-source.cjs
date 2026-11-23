@@ -1,3 +1,4 @@
+require('./hani-procrast-312-preload.cjs'); // Procrast-312 exact inverse before the released311 capture.
 // Test input only: exact released311 version/history inverse before light-311.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
