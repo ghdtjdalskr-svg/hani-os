@@ -376,6 +376,22 @@
     }
   }
 
+  // Approved 11/23: 7-day bonus ledger (+2 affinity, once per bonus day). Own key only; a malformed ledger is never overwritten.
+  const BONUS_KEY = "hani_attendance_bonus_v1";
+  function grantAttendanceBonus(storage, day, id) {
+    try {
+      const raw = storage.getItem(BONUS_KEY);
+      const value = raw === null ? { v: 1, grants: {} } : JSON.parse(raw);
+      if (!value || value.v !== 1 || !value.grants || typeof value.grants !== "object" || Array.isArray(value.grants)) return false;
+      if (Object.prototype.hasOwnProperty.call(value.grants, day)) return true;
+      value.grants[day] = id;
+      storage.setItem(BONUS_KEY, JSON.stringify(value));
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
   function hashSeed(text) {
     let n = 2166136261;
     for (let i = 0; i < text.length; i++) {
@@ -680,6 +696,7 @@
       if (storage) {
         const saved = core.save(storage, res.state);
         if (!saved) storageBlocked = true;
+        else if (res.bonus) lastClick.granted = grantAttendanceBonus(storage, today, dutyForDay(core, today).id);
       } else {
         storageBlocked = true;
       }
@@ -778,7 +795,9 @@
       refs.rewardTitle.textContent = MILESTONE_TITLES[mKey] || `${activeMilestone}일 개근 보상! 🎁`;
       let mText = pickLine(LINES.milestone[mKey], `${today}:m:${activeMilestone}`);
       if (activeMilestone === 7 && clickInfo.bonus) {
-        mText = `${mText} · ✨ ${duty.name}의 마음이 한 뼘 더 가까워졌어요`;
+        mText = clickInfo.granted
+          ? `${mText} · ✨ ${duty.name} 호감도 +2 ♡`
+          : `${mText} · ✨ ${duty.name}의 마음이 한 뼘 더 가까워졌어요`;
       }
       refs.rewardText.textContent = mText;
       if (secretLine) {
