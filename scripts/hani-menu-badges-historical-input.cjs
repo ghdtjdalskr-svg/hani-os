@@ -4,6 +4,13 @@ const path=require('node:path'),{fileURLToPath}=require('node:url');
 const inverse=require('./hani-menu-badges-source.cjs'),repository=require('./hani-test-repository-evidence.cjs');
 const root=path.resolve(__dirname,'..'),authored='55f3fe64e2b88aa1b39ed503e3133614265e88d7';
 const outerFiles=new Map([
+ // procrast314 outer boundaries
+ ['scripts/hani-procrast-314-source.cjs','f2487afc39fa2da66b606d609d76c4a358e80cd2b6f374d97febdb31530de710'],
+ ['scripts/hani-procrast-314-preload.cjs','3ee3661c9c19d435fbbcf94d2db0e5389685c2a8f9ea15d0689a2352073dafcd'],
+ ['scripts/hani-procrast-314-layer.test.mjs','87e3d4c783d256e6db4fc82a29f4668d08a56242cbaa556147924853091aab6d'],
+ ['scripts/hani-procrastination-4.test.mjs','b721bf497ca0bbc9bd571c1907b35c955d46bedea346e59b411400f3650578c1'],
+ ['scripts/fixtures/procrast-314-layer.json','006c2da01269258080a4099fcf9e9e839799624e7f44e22e90ef4c326a9ad9fb'],
+ // procrast314 outer boundaries end
  // tooling313 outer boundaries
  ['scripts/hani-release-313-source.cjs','95d75bcb5d372820128533a4118ae75b9905894ab9affe51dbdfb44b1318bb8f'],
  ['scripts/hani-release-313-preload.cjs','ab593b0fa2bf99d4a707d7bc13ead847bc2b6b55697a18b8fc3d8ecfbfffa56d'],
