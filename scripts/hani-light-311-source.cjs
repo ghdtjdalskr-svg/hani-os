@@ -1,3 +1,4 @@
+require('./hani-release-311-preload.cjs'); // Released311 metadata precedes the light-311 capture.
 // Test input only: light-311 -> released310 -> attendance -> released309.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
