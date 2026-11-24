@@ -3485,11 +3485,14 @@
         // The 2F hall stops face finance above and life/entertainment below.
         const preferred=available.filter(a=>person.id==='companion-chick'?a.id.startsWith('resident_bori_'):person.id==='companion-fox'?a.id.startsWith('resident_dog_'):true),stops=preferred.length?preferred:available;
         if(!stops.length)continue;
-        const open=s=>!usedStops.has(s.id)&&free(floor,s.visual),index=reduced?seed%stops.length:(rhythm.beat+seed)%stops.length,a=stops[(index+stops.length-1)%stops.length],held=companionHeld.get(person.id);let b=stops[index],hold=null;
-        if(!open(b)){hold=held&&held.floor===floor&&held.day===day&&!usedStops.has(held.id)&&free(floor,held.position)?held:null;if(!hold){b=null;for(let k=1;k<stops.length&&!b;k++)if(open(stops[(index+k)%stops.length]))b=stops[(index+k)%stops.length]}if(!hold&&!b)continue}
-        usedStops.add(a.id);if(hold){usedStops.add(hold.id);position=hold.position;point=hold.point;pose='sitting'}else{usedStops.add(b.id);position=b.visual;point=[b.x,b.y];pose=rhythm.beat%3?'sitting':'standing'}
-        if(!reduced&&!hold&&a!==b){motion=petMotion(person.id,day,rhythm.beat,a,b,rhythm.elapsed,v=>free(floor,v),1,companionPrevFacing.get(person.id)||null);if(motion){({position,point,walking,facing,pose}=motion);companionPrevFacing.set(person.id,facing);if(person.id==='companion-chick'&&walking)motion={...motion,bob:-Math.abs(Math.sin((seconds+(residentSeed('walk-phase|'+person.id)%100)/100)*9))*2.5}}}
-        companionHeld.set(person.id,hold||{id:b.id,floor,day,position,point});
+        const open=s=>!usedStops.has(s.id)&&free(floor,s.visual),index=reduced?seed%stops.length:(rhythm.beat+seed)%stops.length,a=stops[(index+stops.length-1)%stops.length],H=companionHeld.get(person.id),cont=!reduced&&!!H&&H.floor===floor&&H.day===day,same=cont&&H.beat===rhythm.beat,stuck=cont&&!same&&H.hold&&H.holds>=3;
+        // Each beat starts where the pet actually is. A blocked stop or route means waiting in place for the beat; only 3+ blocked beats in a row re-seat once.
+        const origin=same?H.origin:cont&&!stuck?{...a,id:H.id,visual:H.position,x:H.point[0],y:H.point[1]}:a;let b=stops[index],hold=same&&H.hold&&free(floor,H.position);
+        if(!hold&&!open(b)){if(cont&&!stuck&&free(floor,H.position))hold=true;else{b=null;for(let k=1;k<stops.length&&!b;k++)if(open(stops[(index+k)%stops.length]))b=stops[(index+k)%stops.length];if(!b)continue}}
+        if(hold){usedStops.add(H.id);position=H.position;point=H.point;pose='sitting'}
+        else{usedStops.add(origin.id);usedStops.add(b.id);position=b.visual;point=[b.x,b.y];pose=rhythm.beat%3?'sitting':'standing';
+          if(!reduced&&Math.hypot((origin.visual[0]-b.visual[0])*art.width/100,(origin.visual[1]-b.visual[1])*art.height/100)>.5){motion=petMotion(person.id,day,rhythm.beat,origin,b,rhythm.elapsed,v=>free(floor,v),1,companionPrevFacing.get(person.id)||null);if(motion){({position,point,walking,facing,pose}=motion);companionPrevFacing.set(person.id,facing);if(person.id==='companion-chick'&&walking)motion={...motion,bob:-Math.abs(Math.sin((seconds+(residentSeed('walk-phase|'+person.id)%100)/100)*9))*2.5}}else if(cont&&!stuck&&free(floor,H.position)){hold=true;usedStops.add(H.id);position=H.position;point=H.point;pose='sitting';walking=false;motion=undefined}}}
+        companionHeld.set(person.id,{id:hold?H.id:b.id,floor,day,beat:rhythm.beat,hold:!!hold,holds:hold?(same?H.holds:(H?.holds||0)+1):0,origin,position,point});
       }
       const state={id:person.id,name:person.name,sprite:person.id,pet:!!person.pet,kid:!!person.kid,companion:true,following:follow,floor,anchor:follow?'companion-'+chair.id:person.id+'-'+floor,position,point,walking,facing,pose,...(motion?{motion}:{})};
       if(follow&&person.kid&&chair.patrol){
