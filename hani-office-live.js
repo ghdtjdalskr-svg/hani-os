@@ -2605,8 +2605,8 @@
     {id:'npc-temp-c',name:residentNames.temp,sprite:'npc-temp-c',hours:[[9,18,'2f']],places:{'2f':['resident_temp_c_2f']},lines:["점심 메뉴 조사도 업무 맞죠?","작은 일부터 깔끔하게 해볼게요.","탕비실 원두 채우는 날이 제일 설레요.","엑셀 표 테두리 정리, 방금 끝냈어요!","간식 바구니 채우면 인기 만점이에요.","포스트잇 색상별로 우선순위 나눴어요!","영수증 풀칠은 이제 달인 수준이에요.","간식 주문 취합, 빠짐없이 적었습니다!","폴더 이름 정리하니 속이 다 시원해요.","퇴근 전 멀티탭 확인도 제가 챙길게요!"]},
     {id:'npc-clerk-day',name:'다솜',sprite:'npc-clerk-day',post:'store',postCut:1.0766,hours:[[7,19,'1f']],places:{'1f':['resident_post_store']},lines:["어서 오세요! HANI 24예요!","오늘 삼각김밥 새로 들어왔어요!","1+1 행사는 제가 제일 먼저 알아요.","회장님, 커피 우유 또 드실 거죠?","점심엔 도시락 코너가 제일 바빠요.","진열 각 맞추는 게 은근 재밌어요!","하루 대리님은 영수증을 꼭 챙기세요.","오늘 날씨엔 따뜻한 음료가 잘 나가요."]},
     {id:'npc-clerk-night',name:'나래',sprite:'npc-clerk-night',post:'store',postCut:1.0766,hours:[[19,24,'1f'],[0,7,'1f']],places:{'1f':['resident_post_store']},lines:["…어서 오세요.","컵라면 물은 제가 받아 드릴게요.","야근이면 이것도 가져가요. 서비스.","늦었네요. 따뜻한 거 데워 둘까요.","조용한 밤이 좋아요. 손님은 반갑고요.","유통기한 체크는 밤에 끝내 둬요.","…피곤해 보여요. 초콜릿 하나.","아침 교대 전까진 제가 있어요."]},
-    {id:'npc-guide',name:'소담',sprite:'npc-guide',post:'reception',postCut:0.8373,hours:[[9,18,'1f']],places:{'1f':['resident_post_reception']},lines:["안녕하세요, HANI 안내데스크입니다.","방문하신 분은 여기서 명찰 받아 가세요.","임원회의실은 엘리베이터로 4층이에요.","택배는 오른쪽 보관함에 넣어 두었어요.","일보 새 호가 게시판에 걸렸어요.","길을 잃으시면 언제든 불러 주세요.","유나 사원님이 인수인계를 꼼꼼히 해 줬어요.","오늘도 웃으며 맞이할게요."]},
-    {id:'npc-desk-night',name:'하람',sprite:'npc-desk-night',post:'reception',postCut:0.8373,hours:[[18,24,'1f'],[0,9,'1f']],places:{'1f':['resident_post_reception']},lines:["늦은 시간까지 수고 많으세요.","출입 기록은 제가 꼼꼼히 남겨 둘게요.","정문은 잠갔어요. 안심하고 일하세요.","택배는 아침까지 제가 맡아 둘게요.","새벽 순찰 한 바퀴, 이상 없어요.","졸리면 카페에 은하 씨가 있어요.","첫차 시간 알려 드릴까요?","아침에 소담 씨한테 잘 넘겨 줄게요."]},
+    {id:'npc-guide',name:'소담',sprite:'npc-guide',post:'reception',postCut:1.6,hours:[[9,18,'1f']],places:{'1f':['resident_post_reception']},lines:["안녕하세요, HANI 안내데스크입니다.","방문하신 분은 여기서 명찰 받아 가세요.","임원회의실은 엘리베이터로 4층이에요.","택배는 오른쪽 보관함에 넣어 두었어요.","일보 새 호가 게시판에 걸렸어요.","길을 잃으시면 언제든 불러 주세요.","유나 사원님이 인수인계를 꼼꼼히 해 줬어요.","오늘도 웃으며 맞이할게요."]},
+    {id:'npc-desk-night',name:'하람',sprite:'npc-desk-night',post:'reception',postCut:1.6,hours:[[18,24,'1f'],[0,9,'1f']],places:{'1f':['resident_post_reception']},lines:["늦은 시간까지 수고 많으세요.","출입 기록은 제가 꼼꼼히 남겨 둘게요.","정문은 잠갔어요. 안심하고 일하세요.","택배는 아침까지 제가 맡아 둘게요.","새벽 순찰 한 바퀴, 이상 없어요.","졸리면 카페에 은하 씨가 있어요.","첫차 시간 알려 드릴까요?","아침에 소담 씨한테 잘 넘겨 줄게요."]},
     {id:'npc-barista-iseul',name:'이슬',sprite:'npc-barista-iseul',post:'cafe',postCut:2.6316,hours:[[7,19,'1f']],places:{'1f':['resident_post_cafe']},lines:["원두는 오늘 아침에 새로 볶았어요."]},
     {id:'npc-barista-eunha',name:'은하',sprite:'npc-barista-eunha',post:'cafe',postCut:2.6316,doze:true,hours:[[19,24,'1f'],[0,7,'1f']],places:{'1f':['resident_post_cafe']},lines:["조용한 밤엔 원두 향이 더 잘 느껴져요."]}
   ].map(p=>Object.freeze({...p,hours:Object.freeze(p.hours.map(Object.freeze)),places:Object.freeze(Object.fromEntries(Object.entries(p.places).map(([f,spots])=>[f,Object.freeze(spots)]))),lines:Object.freeze(p.lines)})));
@@ -3751,27 +3751,27 @@
   // Resident-only stops never enter the shared staff anchor/edge maps. Logical
   // corridor points and visual floor points are both checked, including travel.
   const residentStops=new Map([
-    ['resident_cat_lobby','1f',44,74,true],['resident_cat_front','1f',48,74,true],
-    ['resident_dog_lobby','1f',56,74,true],['resident_dog_front','1f',60,74,true],
+    ['resident_cat_lobby','1f',33,55,true],['resident_cat_front','1f',37,57,true],
+    ['resident_dog_lobby','1f',63,55,true],['resident_dog_front','1f',67,57,true],
     ['resident_cleaner_1f','1f',32.9,68],['resident_dog_hall','2f',51,44,true],['resident_dog_hall_front','2f',51,46,true],
     ['resident_cleaner_2f','2f',51,72],['resident_temp_2f','2f',51,98],['resident_temp_c_2f','2f',51,30],
     ['resident_cleaner_3f','3f',52,52],['resident_temp_a_3f','3f',52,76],['resident_temp_b_3f','3f',52,94],
     ['resident_cleaner_4f','4f',51,66],['resident_cat_roof','5f',51,38,true],['resident_cat_roof_front','5f',51,44,true],
     ['resident_cleaner_5f','5f',51,70],['resident_gardener','5f',51,96],
     // Clear strip in the 1F south-central lobby; separate walking ranges for 22:00..02:00.
-    ['resident_cat_night_a','1f',44,76,true],['resident_cat_night_b','1f',46,76,true],
-    ['resident_dog_night_a','1f',56,76,true],['resident_dog_night_b','1f',58,76,true],
+    ['resident_cat_night_a','1f',33,57,true],['resident_cat_night_b','1f',35,57,true],
+    ['resident_dog_night_a','1f',63,57,true],['resident_dog_night_b','1f',65,57,true],
     ['resident_rabbit_quiet_a','3f',52,38.5,true],['resident_rabbit_quiet_b','3f',52,40.5,true],
     ['resident_rabbit_lounge_a','4f',51,66,true],['resident_rabbit_lounge_b','4f',51,70,true],
-    ['resident_rabbit_lobby_a','1f',68,72,true],['resident_rabbit_lobby_b','1f',70,72,true],
-    ['resident_rabbit_night_a','1f',68,74,true],['resident_rabbit_night_b','1f',69.5,74,true],
-    ['resident_rabbit_sleep_spare','1f',68,76,true],
+    ['resident_rabbit_lobby_a','1f',74,60,true],['resident_rabbit_lobby_b','1f',76,60,true],
+    ['resident_rabbit_night_a','1f',74,62,true],['resident_rabbit_night_b','1f',75.5,62,true],
+    ['resident_rabbit_sleep_spare','1f',74,64,true],
     // Clear right lobby aisle: beyond the lounge, left of the cafe and barista.
     ['resident_bori_lobby_a','1f',79.5,72,true],['resident_bori_lobby_b','1f',81,72,true],
     ['resident_bori_night_a','1f',79.5,72,true],['resident_bori_night_b','1f',81,72,true],
     ['resident_bori_lounge_a','2f',51,57,true],['resident_bori_lounge_b','2f',51,59,true],
     ['resident_bori_stroll_lobby','1f',79.5,81,true],['resident_bori_stroll_lounge','2f',51,71,true]
-  ].map(([id,floor,vx,vy,pet],i)=>[id,Object.freeze({id,floor,x:/^resident_(rabbit|bori)_/.test(id)?500:100+i*40,y:330,visual:[vx,vy],pet:!!pet})]));const residentPosts=new Map([['resident_post_store','1f',17.0455,66.4187],['resident_post_reception','1f',53.8278,25.5048],['resident_post_cafe','1f',92.823,79.4899]].map(([id,floor,vx,vy])=>[id,Object.freeze({id,floor,x:500,y:330,visual:[vx,vy],pet:false,post:true,art:'floor-1f-v2'})]));// 2.9.315 counter posts: fixed spots behind painted counters, only on the new 1F art; never in residentStops/routes.
+  ].map(([id,floor,vx,vy,pet],i)=>[id,Object.freeze({id,floor,x:/^resident_(rabbit|bori)_/.test(id)?500:100+i*40,y:330,visual:[vx,vy],pet:!!pet})]));const residentPosts=new Map([['resident_post_store','1f',17.0455,66.4187],['resident_post_reception','1f',50.19,33.4],['resident_post_cafe','1f',92.823,79.4899]].map(([id,floor,vx,vy])=>[id,Object.freeze({id,floor,x:500,y:330,visual:[vx,vy],pet:false,post:true,art:'floor-1f-v2'})]));// 2.9.315 counter posts: fixed spots behind painted counters, only on the new 1F art; never in residentStops/routes.
   function residentBounds(id,pose){if(id.startsWith('companion-'))return [12,60,84,135];if(id.startsWith('kid-'))return ['wave','seat-b','startled','cling'].includes(pose)?[12,31,84,135]:[18,35,78,135];const pet=id.startsWith('pet-');if(id==='pet-bori')return [2,({sitting:52,standing:53,'walk-a':63,'walk-b':65,sleep:89})[pose]??52,94,135];if(id==='pet-rabbit')return [11,({sitting:61,standing:63,'hop-a':74,'hop-b':70,sleep:100})[pose]??61,85,135];const top=pet?(pose==='sleep'?102:({sitting: id==='pet-cat'?81:76,standing:id==='pet-cat'?83:75,'walk-a':id==='pet-cat'?87:82,'walk-b':id==='pet-cat'?90:83})[pose]):({standing:15,sitting:30,'walk-a':24,'walk-b':24})[pose];return [pet?13:9,top??15,pet?82:87,135]}
   const residentPaths=new Map();
   function residentSafe(floorId,point,visual,pet=true){
