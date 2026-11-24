@@ -1,3 +1,4 @@
+import './hani-building-315-preload.cjs'; // Exact 대공사 3단계 inverse before this older contract.
 import test from 'node:test';
 import strictAssert from 'node:assert/strict';
 // Values returned from the vm context come from another realm; compare them by plain JSON structure.
