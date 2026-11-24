@@ -3445,7 +3445,7 @@
     if(occupied.some(q=>{const at=q.position||[q.seat?.x,q.seat?.y];return q.floor===state.floor&&at.every(Number.isFinite)&&Math.hypot((at[0]-position[0])*art.width/100,(at[1]-position[1])*art.height/100)<96}))return null;
     return {id:person.id,name:person.name,sprite:person.sprite||person.id,pet:true,companion:!!person.companion,kid:false,following:false,floor:state.floor,anchor:state.seat.anchor,position,point:[anchors.get(state.seat.anchor).x,anchors.get(state.seat.anchor).y],walking:state.walking,facing:'left',pose:state.walking?(Math.floor(seconds*4)%2?'walk-a':'walk-b'):state.seat.posture,creative:true};
   }
-  function companionSnapshot(now=new Date(),staff=null,enabled=true,reduced=false,neighbors=[]){
+  const companionHeld=new Map();function companionSnapshot(now=new Date(),staff=null,enabled=true,reduced=false,neighbors=[]){
     if(!enabled||!canon||!art)return [];
     const date=koreaTime(now),weekday=date.getUTCDay(),weekend=weekday===0||weekday===6,day=date.toISOString().slice(0,10),seconds=date.getUTCHours()*3600+date.getUTCMinutes()*60+date.getUTCSeconds()+date.getUTCMilliseconds()/1000;
     const people=[...(staff?.floors?.flatMap(f=>f.people||[])||[]),...neighbors],chair=people.find(p=>p.id==='seongmin'&&floors.some(f=>f.id===p.floor)&&p.state!=='ABSENT'),center=chair&&(chair.position||[chair.seat?.x,chair.seat?.y]),states=[],usedStops=new Set(neighbors.flatMap(p=>p.stroll?.stops||[]));
@@ -3480,12 +3480,19 @@
         const visit=creativePetState({...person,companion:true},now,reduced,people.concat(states));if(visit){states.push(visit);continue}
         // Off-duty companions stay in their department, on the existing pet rhythm.
         floor=['4f','3f','1f','2f','2f'][person.atlasRow];
-        const available=[...residentStops.values()].filter(a=>a.floor===floor&&a.pet&&!usedStops.has(a.id)&&residentSpot(a.id)).flatMap(a=>[0,-12,12,24].map(dy=>({...a,visual:[a.visual[0],a.visual[1]+dy]}))).filter(a=>residentSafe(floor,[a.x,a.y],a.visual)&&free(floor,a.visual));
+        // Static order: a passer-by may block a stop for a moment but never reshuffles the sequence.
+        const available=[...residentStops.values()].filter(a=>a.floor===floor&&a.pet&&residentSpot(a.id)).flatMap(a=>[0,-12,12,24].map(dy=>({...a,visual:[a.visual[0],a.visual[1]+dy]}))).filter(a=>residentSafe(floor,[a.x,a.y],a.visual));
         // The 2F hall stops face finance above and life/entertainment below.
         const preferred=available.filter(a=>person.id==='companion-chick'?a.id.startsWith('resident_bori_'):person.id==='companion-fox'?a.id.startsWith('resident_dog_'):true),stops=preferred.length?preferred:available;
         if(!stops.length)continue;
-        const index=reduced?seed%stops.length:(rhythm.beat+seed)%stops.length,a=stops[(index+stops.length-1)%stops.length],b=stops[index];usedStops.add(a.id);usedStops.add(b.id);position=b.visual;point=[b.x,b.y];pose=rhythm.beat%3?'sitting':'standing';
-        if(!reduced&&a!==b){motion=petMotion(person.id,day,rhythm.beat,a,b,rhythm.elapsed,v=>free(floor,v),1,companionPrevFacing.get(person.id)||null);if(motion){({position,point,walking,facing,pose}=motion);companionPrevFacing.set(person.id,facing);if(person.id==='companion-chick'&&walking)motion={...motion,bob:-Math.abs(Math.sin((seconds+(residentSeed('walk-phase|'+person.id)%100)/100)*9))*2.5}}}
+        const open=s=>!usedStops.has(s.id)&&free(floor,s.visual),index=reduced?seed%stops.length:(rhythm.beat+seed)%stops.length,a=stops[(index+stops.length-1)%stops.length],H=companionHeld.get(person.id),cont=!reduced&&!!H&&H.floor===floor&&H.day===day,same=cont&&H.beat===rhythm.beat,stuck=cont&&!same&&H.hold&&H.holds>=3;
+        // Each beat starts where the pet actually is. A blocked stop or route means waiting in place for the beat; only 3+ blocked beats in a row re-seat once.
+        const origin=same?H.origin:cont&&!stuck?{...a,id:H.id,visual:H.position,x:H.point[0],y:H.point[1]}:a;let b=stops[index],hold=same&&H.hold&&free(floor,H.position);
+        if(!hold&&!open(b)){if(cont&&!stuck&&free(floor,H.position))hold=true;else{b=null;for(let k=1;k<stops.length&&!b;k++)if(open(stops[(index+k)%stops.length]))b=stops[(index+k)%stops.length];if(!b){if(cont)hold=true;else continue}}}
+        if(hold){usedStops.add(H.id);position=H.position;point=H.point;pose='sitting'}
+        else{usedStops.add(origin.id);usedStops.add(b.id);position=b.visual;point=[b.x,b.y];pose=rhythm.beat%3?'sitting':'standing';
+          if(!reduced&&Math.hypot((origin.visual[0]-b.visual[0])*art.width/100,(origin.visual[1]-b.visual[1])*art.height/100)>.5){motion=petMotion(person.id,day,rhythm.beat,origin,b,rhythm.elapsed,v=>free(floor,v),1,companionPrevFacing.get(person.id)||null);if(motion){({position,point,walking,facing,pose}=motion);companionPrevFacing.set(person.id,facing);if(person.id==='companion-chick'&&walking)motion={...motion,bob:-Math.abs(Math.sin((seconds+(residentSeed('walk-phase|'+person.id)%100)/100)*9))*2.5}}else if(cont&&!stuck&&free(floor,H.position)){hold=true;usedStops.add(H.id);position=H.position;point=H.point;pose='sitting';walking=false;motion=undefined}}}
+        companionHeld.set(person.id,{id:hold?H.id:b.id,floor,day,beat:rhythm.beat,hold:!!hold,holds:hold?(same?H.holds:(H?.holds||0)+1):0,origin,position,point});
       }
       const state={id:person.id,name:person.name,sprite:person.id,pet:!!person.pet,kid:!!person.kid,companion:true,following:follow,floor,anchor:follow?'companion-'+chair.id:person.id+'-'+floor,position,point,walking,facing,pose,...(motion?{motion}:{})};
       if(follow&&person.kid&&chair.patrol){
@@ -3854,9 +3861,21 @@
     return null;
   }
   const petPrev=new Map();
+  // Grid detour for companions: 24 art-px cells, 8-neighbour A*, start/goal cells always allowed. Cached; no storage.
+  const companionCells=new Map(),companionPaths=new Map();
+  function companionPath(floor,from,to,kid=false){
+    const w=art?.width||1672,h=art?.height||941,C=24,cols=Math.ceil(w/C),rows=Math.ceil(h/C),cell=v=>[Math.min(cols-1,Math.max(0,Math.floor(v[0]*w/100/C))),Math.min(rows-1,Math.max(0,Math.floor(v[1]*h/100/C)))];
+    const [sx,sy]=cell(from),[gx,gy]=cell(to),key=floor+'|'+(kid?1:0)+'|'+sx+','+sy+'|'+gx+','+gy;if(companionPaths.has(key))return companionPaths.get(key);
+    const center=(x,y)=>[(x+.5)*C/w*100,(y+.5)*C/h*100],ok=(x,y)=>{if(x===gx&&y===gy||x===sx&&y===sy)return true;const k=floor+'|'+(kid?1:0)+'|'+x+','+y;if(!companionCells.has(k))companionCells.set(k,companionSafe(floor,center(x,y),kid));return companionCells.get(k)};
+    const id=(x,y)=>y*cols+x,g=new Map([[id(sx,sy),0]]),came=new Map(),open=[[Math.hypot(gx-sx,gy-sy),sx,sy]],done=new Set();let found=sx===gx&&sy===gy,guard=0;
+    while(!found&&open.length&&guard++<6000){let bi=0;for(let i=1;i<open.length;i++)if(open[i][0]<open[bi][0])bi=i;const [,x,y]=open.splice(bi,1)[0],here=id(x,y);if(done.has(here))continue;done.add(here);if(x===gx&&y===gy){found=true;break}
+      for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]]){const nx=x+dx,ny=y+dy;if(nx<0||ny<0||nx>=cols||ny>=rows||!ok(nx,ny)||dx&&dy&&(!ok(x+dx,y)||!ok(x,y+dy)))continue;const ng=g.get(here)+(dx&&dy?1.414:1),there=id(nx,ny);if(ng<(g.get(there)??Infinity)){g.set(there,ng);came.set(there,here);open.push([ng+Math.hypot(gx-nx,gy-ny),nx,ny])}}}
+    let route=null;if(found){route=[];for(let c=id(gx,gy);c!==id(sx,sy);c=came.get(c))route.push(center(c%cols,Math.floor(c/cols)));route.reverse();if(route.length)route[route.length-1]=to;else route=[to]}
+    if(companionPaths.size>=256)companionPaths.delete(companionPaths.keys().next().value);companionPaths.set(key,route);return route;
+  }
   function slewCompanion(floor,from,to,dt,kid=false){
     const w=art?.width||1672,h=art?.height||941,dx=(to[0]-from[0])*w/100,dy=(to[1]-from[1])*h/100,dist=Math.hypot(dx,dy);
-    if(dist<=.5||dt<=0)return {position:to,moved:false,dx:0};
+    if(dist<=.5)return {position:to,moved:false,dx:0};if(dt<=0)return {position:from,moved:false,dx:0};
     const step=Math.min(dist,240*dt);
     if(step>=dist-.5)return {position:to,moved:false,dx};
     const ratio=step/dist,cand=[from[0]+(to[0]-from[0])*ratio,from[1]+(to[1]-from[1])*ratio];
@@ -3865,7 +3884,9 @@
     if(Math.abs(dx)>=Math.abs(dy)&&companionSafe(floor,altX,kid))return {position:altX,moved:true,dx:dx*ratio};
     if(companionSafe(floor,altY,kid))return {position:altY,moved:true,dx:0};
     if(companionSafe(floor,altX,kid))return {position:altX,moved:true,dx:dx*ratio};
-    return {position:to,moved:false,dx};
+    const route=companionPath(floor,from,to,kid);
+    if(route){let rest=step,cur=from;for(const p of route){const d=Math.hypot((p[0]-cur[0])*w/100,(p[1]-cur[1])*h/100);if(d>=rest&&d>0){const r=rest/d,pos=[cur[0]+(p[0]-cur[0])*r,cur[1]+(p[1]-cur[1])*r];return {position:pos,moved:true,dx:(pos[0]-from[0])*w/100}}rest-=d;cur=p}return {position:cur,moved:true,dx:(cur[0]-from[0])*w/100}}
+    return {position:from,moved:false,dx:0,blocked:true};
   }
   function residentSnapshot(now=new Date(),staff=null,enabled=true,reduced=false,interactions=true){
     if(!enabled||!canon||!art)return [];
@@ -4820,9 +4841,9 @@
       let targetPos=state.position,effectiveWalking=state.walking,effectiveFacing=state.facing,effectivePose=state.artPose||state.pose,effectiveMotion=state.motion;
       if(person.companion&&wasVisible&&!reduced&&actor.officePosition&&actor.officeCompanionAt!=null&&!state.artPose){
         const dt=(nowMs-actor.officeCompanionAt)/1000;
-        if(dt>0&&dt<=1){
+        if(dt>=0&&dt<=1){
           const slewed=building.residents.slew(activeFloor,actor.officePosition,state.position,dt,!!person.kid);
-          targetPos=slewed.position;
+          if(slewed.blocked){actor.officeSlewBlocked??=nowMs;if(nowMs-actor.officeSlewBlocked<4000)targetPos=actor.officePosition;else{targetPos=state.position;delete actor.officeSlewBlocked}}else{delete actor.officeSlewBlocked;targetPos=slewed.position}
           if(slewed.moved){
             if(!effectiveWalking){
               effectiveWalking=true;
@@ -4834,6 +4855,17 @@
           }
         }
       }
+      // Resident pets: a far target that flickers (blocked stop, on/off visit) is ignored; a target that stays 1.5s is walked to.
+      if(person.pet&&!person.companion&&wasVisible&&!reduced&&actor.officePosition&&!state.artPose){
+        const w=building.art?.width||1672,h=building.art?.height||941,far=Math.hypot((state.position[0]-actor.officePosition[0])*w/100,(state.position[1]-actor.officePosition[1])*h/100)>40;
+        if(far){
+          const key=state.anchor+'|'+state.position.map(v=>v.toFixed(1)).join(',');if(actor.officePetTarget!==key){actor.officePetTarget=key;actor.officePetSince=nowMs}
+          if(nowMs-actor.officePetSince<1500){targetPos=actor.officePosition;effectiveWalking=false;effectiveMotion=undefined;if(effectivePose!=='sleep'&&/walk|hop/.test(effectivePose))effectivePose='sitting'}
+          else{const dt=Math.min(1,Math.max(0,(nowMs-(actor.officePetAt??nowMs))/1000)),slewed=building.residents.slew(activeFloor,actor.officePosition,state.position,dt,false);targetPos=slewed.position;
+            if(slewed.moved){effectiveWalking=true;effectiveMotion=undefined;effectivePose=(person.id==='pet-rabbit'?'hop-':'walk-')+(Math.floor(nowMs/250)%2?'b':'a');if(Math.abs(slewed.dx)>=4)effectiveFacing=slewed.dx<0?'left':'right'}}
+        }else delete actor.officePetTarget;
+      }
+      if(person.pet)actor.officePetAt=nowMs;
       if(person.companion)actor.officeCompanionAt=nowMs;
       const walking=String(effectiveWalking),moved=!actor.officePosition||actor.officePosition[0]!==targetPos[0]||actor.officePosition[1]!==targetPos[1],turned=!prior||actor.dataset.facing!==effectiveFacing,posed=!prior||actor.dataset.pose!==effectivePose;
       if(person.pet&&effectivePose==='sleep'&&(!wasVisible||prior?.pose!=='sleep'))clearMotion(actor);
