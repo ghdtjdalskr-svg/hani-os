@@ -1,0 +1,47 @@
+{
+ "schema": 1,
+ "layer": "building-318",
+ "base": "a54d9434aca0ea469f6d2bce0e949df4997af088",
+ "head": "82ad29a46a33e2060d42d787740b955d16797351",
+ "bootstrap": {
+  "file": "scripts/hani-release-317-source.cjs",
+  "line": "require('./hani-building-318-preload.cjs'); // Building318 inverse precedes released317.\n"
+ },
+ "imports": [],
+ "files": {
+  "hani-office-live.js": {
+   "beforeSha256": "ffe5b29e4157172fbbdf94ca95c00bdfb5de1efd57e287897cf6cb9ff8e7876b",
+   "afterSha256": "65dd7dfdc1b96450c333e2ffb99bf6781b73dbd88435b7065da58741e72a7434",
+   "beforeBytes": 481157,
+   "afterBytes": 481149,
+   "count": 1,
+   "replacements": [
+    {
+     "start": 297550,
+     "beforeStart": 297550,
+     "before": "  ].map(([id,floor,vx,vy,pet],i)=>[id,Object.freeze({id,floor,x:/^resident_(rabbit|bori)_/.test(id)?500:100+i*40,y:330,visual:[vx,vy],pet:!!pet})]));const residentPosts=new Map([['resident_post_store','1f',17.0455,66.4187],['resident_post_reception','1f',50.19,33.4],['resident_post_cafe','1f',92.823,79.4899]].map(([id,floor,vx,vy])=>[id,Object.freeze({id,floor,x:500,y:330,visual:[vx,vy],pet:false,post:true,art:'floor-1f-v2'})]));// 2.9.315 counter posts: fixed spots behind painted counters, only on the new 1F art; never in residentStops/routes.\n",
+     "after": "  ].map(([id,floor,vx,vy,pet],i)=>[id,Object.freeze({id,floor,x:/^resident_(rabbit|bori)_/.test(id)?500:100+i*40,y:330,visual:[vx,vy],pet:!!pet})]));const residentPosts=new Map([['resident_post_store','1f',20,67.5],['resident_post_reception','1f',50.19,33.4],['resident_post_cafe','1f',92.823,79.4899]].map(([id,floor,vx,vy])=>[id,Object.freeze({id,floor,x:500,y:330,visual:[vx,vy],pet:false,post:true,art:'floor-1f-v2'})]));// 2.9.315 counter posts: fixed spots behind painted counters, only on the new 1F art; never in residentStops/routes.\n"
+    }
+   ]
+  },
+  "scripts/hani-release-317-source.cjs": {
+   "beforeSha256": "812d96004175b4032e852187d9c7bb7458b3a26903c1d7747a30ad34a57cbcaa",
+   "afterSha256": "c09fccba5d44f1a38b0c0c611859128a99502e85d99cbe40ae741677be6bd5a6",
+   "beforeBytes": 3718,
+   "afterBytes": 3807,
+   "count": 1,
+   "replacements": [
+    {
+     "start": 0,
+     "beforeStart": 0,
+     "before": "",
+     "after": "require('./hani-building-318-preload.cjs'); // Building318 inverse precedes released317.\n"
+    }
+   ]
+  }
+ },
+ "helper": {
+  "file": "scripts/hani-menu-badges-historical-input.cjs",
+  "beforeSha256": "1f852ebf165d177856fbe320cbfc2490d8eb8d63879009b3784c543c4b138a73"
+ }
+}
