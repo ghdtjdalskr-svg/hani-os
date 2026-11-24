@@ -1,3 +1,4 @@
+require('./hani-release-317-preload.cjs'); // Released317 metadata precedes the building-317 capture.
 // Test input only: exact 1F lobby seat fix (reception post, lobby pet stops) inverse before released316; production bytes stay untouched.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
