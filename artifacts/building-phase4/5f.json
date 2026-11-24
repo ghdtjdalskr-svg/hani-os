@@ -1,0 +1,41 @@
+{
+ "floor": "5f",
+ "day": "2026-11-24",
+ "from": "07:00",
+ "to": "23:59",
+ "samples": 61141,
+ "msPerTick": 8.7,
+ "overlapSamples": [
+  [
+   "pet-cat+seoyun",
+   2
+  ],
+  [
+   "ieum+pet-cat",
+   2
+  ],
+  [
+   "daon+pet-cat",
+   1
+  ],
+  [
+   "arin+pet-cat",
+   1
+  ],
+  [
+   "minji+pet-cat",
+   1
+  ],
+  [
+   "pet-cat+sua",
+   1
+  ],
+  [
+   "haru+pet-cat",
+   1
+  ]
+ ],
+ "jumps": [],
+ "worstJumpPx": 0,
+ "distinctBubbleLines": 0
+}

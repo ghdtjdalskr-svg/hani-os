@@ -1,0 +1,50 @@
+{
+ "floor": "1f",
+ "day": "2026-11-24",
+ "from": "07:00",
+ "to": "23:59",
+ "samples": 61141,
+ "msPerTick": 10.46,
+ "overlapSamples": [
+  [
+   "companion-otter+pet-dog",
+   69
+  ],
+  [
+   "pet-rabbit+visitor-2",
+   7
+  ],
+  [
+   "companion-otter+pet-rabbit",
+   3
+  ],
+  [
+   "dohyun+pet-rabbit",
+   2
+  ],
+  [
+   "pet-rabbit+visitor",
+   1
+  ],
+  [
+   "naeun+pet-rabbit",
+   1
+  ]
+ ],
+ "jumps": [
+  [
+   "companion-otter",
+   561
+  ],
+  [
+   "pet-bori",
+   91
+  ],
+  [
+   "pet-cat",
+   18
+  ]
+ ],
+ "worstJumpPx": 805,
+ "distinctBubbleLines": 0
+}

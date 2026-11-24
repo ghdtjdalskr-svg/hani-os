@@ -1,0 +1,41 @@
+{
+ "floor": "4f",
+ "day": "2026-11-24",
+ "from": "07:00",
+ "to": "23:59",
+ "samples": 61141,
+ "msPerTick": 12,
+ "overlapSamples": [
+  [
+   "companion-frog+npc-cleaner",
+   53
+  ],
+  [
+   "hani+ieum",
+   42
+  ],
+  [
+   "gaeun+ieum",
+   34
+  ],
+  [
+   "mir+npc-cleaner",
+   2
+  ],
+  [
+   "companion-frog+ieum",
+   1
+  ],
+  [
+   "companion-frog+yuna",
+   1
+  ],
+  [
+   "ieum+npc-cleaner",
+   1
+  ]
+ ],
+ "jumps": [],
+ "worstJumpPx": 0,
+ "distinctBubbleLines": 0
+}

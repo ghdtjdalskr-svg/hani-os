@@ -1,0 +1,70 @@
+{
+ "floor": "2f",
+ "day": "2026-11-24",
+ "from": "07:00",
+ "to": "23:59",
+ "samples": 61141,
+ "msPerTick": 17.3,
+ "overlapSamples": [
+  [
+   "companion-chick+companion-fox",
+   39
+  ],
+  [
+   "hina+pet-dog",
+   8
+  ],
+  [
+   "haru+npc-cleaner",
+   3
+  ],
+  [
+   "jieun+npc-temp-c",
+   2
+  ],
+  [
+   "pet-dog+sooyeon",
+   2
+  ],
+  [
+   "npc-cleaner+sua",
+   1
+  ],
+  [
+   "hina+npc-cleaner",
+   1
+  ],
+  [
+   "companion-fox+hina",
+   1
+  ],
+  [
+   "minji+pet-dog",
+   1
+  ],
+  [
+   "jieun+pet-bori",
+   1
+  ],
+  [
+   "haru+pet-bori",
+   1
+  ],
+  [
+   "companion-fox+pet-bori",
+   1
+  ]
+ ],
+ "jumps": [
+  [
+   "companion-chick",
+   19
+  ],
+  [
+   "companion-fox",
+   17
+  ]
+ ],
+ "worstJumpPx": 480,
+ "distinctBubbleLines": 0
+}

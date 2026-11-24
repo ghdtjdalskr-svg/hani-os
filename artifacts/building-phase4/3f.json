@@ -1,0 +1,61 @@
+{
+ "floor": "3f",
+ "day": "2026-11-24",
+ "from": "07:00",
+ "to": "23:59",
+ "samples": 61141,
+ "msPerTick": 12.43,
+ "overlapSamples": [
+  [
+   "npc-temp-a+yuri",
+   7
+  ],
+  [
+   "npc-cleaner+seoyun",
+   5
+  ],
+  [
+   "npc-temp-a+serin",
+   4
+  ],
+  [
+   "dohyun+pet-rabbit",
+   2
+  ],
+  [
+   "jieun+yuri",
+   2
+  ],
+  [
+   "npc-temp-a+seoyun",
+   2
+  ],
+  [
+   "dohyun+npc-temp-a",
+   2
+  ],
+  [
+   "arin+npc-temp-a",
+   2
+  ],
+  [
+   "arin+pet-rabbit",
+   1
+  ],
+  [
+   "pet-rabbit+seoyun",
+   1
+  ],
+  [
+   "arin+npc-cleaner",
+   1
+  ],
+  [
+   "gaeun+npc-temp-a",
+   1
+  ]
+ ],
+ "jumps": [],
+ "worstJumpPx": 0,
+ "distinctBubbleLines": 0
+}
