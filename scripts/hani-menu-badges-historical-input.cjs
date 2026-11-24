@@ -4,6 +4,20 @@ const path=require('node:path'),{fileURLToPath}=require('node:url');
 const inverse=require('./hani-menu-badges-source.cjs'),repository=require('./hani-test-repository-evidence.cjs');
 const root=path.resolve(__dirname,'..'),authored='55f3fe64e2b88aa1b39ed503e3133614265e88d7';
 const outerFiles=new Map([
+ // tooling316 outer boundaries
+ ['scripts/hani-release-316-source.cjs','ad13d601a932209af3c51559236ae37bf9ab44536c08c88875fabd39edb5d148'],
+ ['scripts/hani-release-316-preload.cjs','4535617e7aaddbc2441954d3d579af48bb3c536aaa38ea4aad2d3a3fcbe99586'],
+ ['scripts/hani-release-316-reviewed-input.cjs','520b8b93fc865d66344f0e5835022be058bd2247b3732d87041c5913536fa9d7'],
+ ['scripts/hani-release-316.test.mjs','8167940d9a88bdd307e2a9d370781db79abefc5a7720d5bfc1a35844d71b3114'],
+ ['scripts/fixtures/release-316-layer.json','2f9ff5b684fdb71919b8fb5b7295728e44531fd0241a6149c8666dc2075e8479'],
+ // tooling316 outer boundaries end
+ // building316 outer boundaries
+ ['scripts/hani-building-316-source.cjs','73fb700e32835ad9e50a5a9b95395927b62bb3fbe8cbe714ff5009c07f96112b'],
+ ['scripts/hani-building-316-preload.cjs','ac0e83bd9e56a530d4fa9c102973fa22fb48fde6a399956d133738409cf7a3c0'],
+ ['scripts/hani-building-316-layer.test.mjs','ee2e5c1f74588bf5163a00bc2bae9c91c163c4586d0f73449931e7bca26ccf14'],
+ ['scripts/hani-office-sim-41.test.mjs','0e60ba6c67ed70449ad841a5ef72b29bc5cacc7603483acca60e6312360240df'],
+ ['scripts/fixtures/building-316-layer.json','cb162731d681229032b4a7d3809c41c66632222e73453c75f86cf9ad52e71293'],
+ // building316 outer boundaries end
  // tooling315 outer boundaries
  ['scripts/hani-release-315-source.cjs','33869af8c8e56c0b48c7af5285d09fd3a021fa8f61b356c340376d06bccd7035'],
  ['scripts/hani-release-315-preload.cjs','6af011c71d76393fb1b2ba82e5bc9d02e2b7137b7c9b4580ce14c3fe8e249a2d'],
