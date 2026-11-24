@@ -238,11 +238,14 @@ test('kids scenes stay intact, zero storage accesses, zero extra timers or liste
   assert.deepEqual(loaded.counts(),{storage:0,timers:0,listeners:0});
 });
 
-test('1F counter posts: 다솜/나래 HANI 24, 소담 안내데스크, 이슬/은하 cafe stand behind painted counters by the clock',()=>{
+test('1F counter posts: 다솜/나래 HANI 24, 소담/하람 안내데스크, 이슬/은하 cafe stand behind painted counters by the clock',()=>{
   const ids=t=>scene.residents.snapshot(t,scene.snapshot(t),true,false).filter(p=>p.floor==='1f'&&String(p.anchor).startsWith('resident_post_')).map(p=>p.id+'@'+p.anchor+':'+p.pose).sort();
   assert.deepEqual(plain(ids(at('2026-11-23',10*3600+1800))),['npc-barista-iseul@resident_post_cafe:standing','npc-clerk-day@resident_post_store:standing','npc-guide@resident_post_reception:standing']);
-  assert.deepEqual(plain(ids(at('2026-11-23',22*3600+2400))),['npc-barista-eunha@resident_post_cafe:standing','npc-clerk-night@resident_post_store:standing']);
-  assert.deepEqual(plain(ids(at('2026-11-24',3*3600+600))),['npc-barista-eunha@resident_post_cafe:sitting','npc-clerk-night@resident_post_store:standing']);
+  assert.deepEqual(plain(ids(at('2026-11-23',22*3600+2400))),['npc-barista-eunha@resident_post_cafe:standing','npc-clerk-night@resident_post_store:standing','npc-desk-night@resident_post_reception:standing']);
+  assert.deepEqual(plain(ids(at('2026-11-24',3*3600+600))),['npc-barista-eunha@resident_post_cafe:sitting','npc-clerk-night@resident_post_store:standing','npc-desk-night@resident_post_reception:standing']);
+  // The desk hand-over: 소담 until 18:00, 하람 from 18:00 to 09:00, never both.
+  const desk=h=>plain(ids(at('2026-11-23',h*3600)).filter(x=>x.includes('reception')));
+  assert.deepEqual(desk(8.5),['npc-desk-night@resident_post_reception:standing']);assert.deepEqual(desk(9),['npc-guide@resident_post_reception:standing']);assert.deepEqual(desk(17.9),['npc-guide@resident_post_reception:standing']);assert.deepEqual(desk(18),['npc-desk-night@resident_post_reception:standing']);
   for(const id of ['resident_post_store','resident_post_reception','resident_post_cafe']){const spot=scene.residents.spot(id);assert.ok(spot&&spot.post&&spot.floor==='1f',id)}
   // Posts belong to the new painted counters only; the old 1F art keeps its painted barista.
   const old=structuredClone(assets);old.art.floors['1f'].background='./assets/building/floor-1f-217.webp';
