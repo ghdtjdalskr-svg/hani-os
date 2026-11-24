@@ -359,3 +359,7 @@
 .hani-office-room-mobile-labels{display:none}
 .hani-office-room-mobile-labels button{min-width:0;min-height:44px;padding:8px;border:1px solid #c8bad8;border-radius:9px;background:#3f444a;color:#fff;white-space:normal;cursor:pointer}
 @media(max-width:700px){.hani-office-room-plate[data-room-view]{display:none}.hani-office-room-mobile-labels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:8px 0}}
+/* 2.9.315 counter posts: the painted counter hides the lower body (6.25% below the pivot + counter height in map units). */
+.hani-office-actor[data-post] .hani-office-sprite{clip-path:inset(0 0 calc(6.25% + var(--post-cut,0cqw)) 0)}
+.hani-office-actor[data-post="cafe"] .hani-office-sprite{pointer-events:none}
+.hani-office-desk-props[data-person="desk-4f-yuna"]{max-height:none}
