@@ -1,3 +1,4 @@
+require('./hani-release-316-preload.cjs'); // Released316 metadata precedes the building-316 capture.
 // Test input only: exact 대공사 4-1 (pets and companions never teleport) inverse before released315; production bytes stay untouched.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
