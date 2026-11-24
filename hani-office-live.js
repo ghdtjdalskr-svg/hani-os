@@ -4855,6 +4855,17 @@
           }
         }
       }
+      // Resident pets: a far target that flickers (blocked stop, on/off visit) is ignored; a target that stays 1.5s is walked to.
+      if(person.pet&&!person.companion&&wasVisible&&!reduced&&actor.officePosition&&!state.artPose){
+        const w=building.art?.width||1672,h=building.art?.height||941,far=Math.hypot((state.position[0]-actor.officePosition[0])*w/100,(state.position[1]-actor.officePosition[1])*h/100)>40;
+        if(far){
+          const key=state.anchor+'|'+state.position.map(v=>v.toFixed(1)).join(',');if(actor.officePetTarget!==key){actor.officePetTarget=key;actor.officePetSince=nowMs}
+          if(nowMs-actor.officePetSince<1500){targetPos=actor.officePosition;effectiveWalking=false;effectiveMotion=undefined;if(effectivePose!=='sleep'&&/walk|hop/.test(effectivePose))effectivePose='sitting'}
+          else{const dt=Math.min(1,Math.max(0,(nowMs-(actor.officePetAt??nowMs))/1000)),slewed=building.residents.slew(activeFloor,actor.officePosition,state.position,dt,false);targetPos=slewed.position;
+            if(slewed.moved){effectiveWalking=true;effectiveMotion=undefined;effectivePose=(person.id==='pet-rabbit'?'hop-':'walk-')+(Math.floor(nowMs/250)%2?'b':'a');if(Math.abs(slewed.dx)>=4)effectiveFacing=slewed.dx<0?'left':'right'}}
+        }else delete actor.officePetTarget;
+      }
+      if(person.pet)actor.officePetAt=nowMs;
       if(person.companion)actor.officeCompanionAt=nowMs;
       const walking=String(effectiveWalking),moved=!actor.officePosition||actor.officePosition[0]!==targetPos[0]||actor.officePosition[1]!==targetPos[1],turned=!prior||actor.dataset.facing!==effectiveFacing,posed=!prior||actor.dataset.pose!==effectivePose;
       if(person.pet&&effectivePose==='sleep'&&(!wasVisible||prior?.pose!=='sleep'))clearMotion(actor);
