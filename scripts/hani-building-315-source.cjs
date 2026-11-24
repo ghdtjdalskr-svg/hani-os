@@ -1,3 +1,4 @@
+require('./hani-release-315-preload.cjs'); // Released315 metadata precedes the building-315 capture.
 // Test input only: exact 대공사 3단계 (1F counter posts, 유나 4F desk, 미룬 일 note) inverse before released314; production bytes stay untouched.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
