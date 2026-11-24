@@ -1,0 +1,283 @@
+{
+ "schema": 1,
+ "layer": "building-315",
+ "base": "acd1f547cfc607175e6a0976c81b37ce1a3f9888",
+ "head": "499c2c8e677944f23200de9e4d672530de2185a5",
+ "bootstrap": {
+  "file": "scripts/hani-release-314-source.cjs",
+  "line": "require('./hani-building-315-preload.cjs'); // Building315 inverse precedes released314.\n"
+ },
+ "imports": [
+  {
+   "file": "scripts/hani-office-motion-polish-2.test.mjs",
+   "line": "import './hani-building-315-preload.cjs'; // Exact 대공사 3단계 inverse before this older contract.\n"
+  }
+ ],
+ "files": {
+  "hani-office-live.js": {
+   "beforeSha256": "624cd591df83c4aedcbd7bb867237bd6925a53c0f9eef28a655ce385b31733dd",
+   "afterSha256": "8f5cde787b58772c2297b8ec0334a69fdb971f384a3a62a6c24fe2fd1d4387c6",
+   "beforeBytes": 471749,
+   "afterBytes": 475788,
+   "count": 32,
+   "replacements": [
+    {
+     "start": 370715,
+     "beforeStart": 367600,
+     "before": "    ['coffee-desk','coffee-steam','1f',238,570,32,48,'bottom-center'],\n",
+     "after": "    ['coffee-desk','coffee-steam','1f',115,745,32,48,'bottom-center'],\n"
+    },
+    {
+     "start": 366406,
+     "beforeStart": 363357,
+     "before": "    baristaNight.hidden=hidden||!clock.night;\n",
+     "after": "    baristaNight.hidden=hidden||!clock.night||/floor-1f-v2/.test(building.art?.floors?.['1f']?.background||'');\n"
+    },
+    {
+     "start": 363124,
+     "beforeStart": 360072,
+     "before": "  queenFrame.style.left=(1171/(building.art?.width||1672)*100)+'%';queenFrame.style.top=(73/(building.art?.height||941)*100)+'%';queenFrame.style.width=(176/(building.art?.width||1672)*100)+'%';queenFrame.style.height=(107/(building.art?.height||941)*100)+'%';\n",
+     "after": "  queenFrame.style.left=(497/(building.art?.width||1672)*100)+'%';queenFrame.style.top=(70/(building.art?.height||941)*100)+'%';queenFrame.style.width=(46/(building.art?.width||1672)*100)+'%';queenFrame.style.height=(72/(building.art?.height||941)*100)+'%';\n"
+    },
+    {
+     "start": 362609,
+     "beforeStart": 359560,
+     "before": "  // Measured purple inner canvas in art-map 1F floor-1f-217.webp (1672 x 941).\n",
+     "after": "  // Measured purple left-wall canvas in art-map 1F floor-1f-v2.webp (1672 x 941).\n"
+    },
+    {
+     "start": 340477,
+     "beforeStart": 337540,
+     "before": "    const resident=residentSlots.find(p=>p.id===key);if(resident){actor.dataset.resident=resident.pet?'pet':resident.kid?'kid':'npc';if(resident.companion)actor.dataset.companion='true';actor.dataset.sprite=resident.sprite;actor.hidden=true}\n",
+     "after": "    const resident=residentSlots.find(p=>p.id===key);if(resident){actor.dataset.resident=resident.pet?'pet':resident.kid?'kid':'npc';if(resident.post){actor.dataset.post=resident.post;actor.style.setProperty('--post-cut',resident.postCut+'cqw')}if(resident.companion)actor.dataset.companion='true';actor.dataset.sprite=resident.sprite;actor.hidden=true}\n"
+    },
+    {
+     "start": 313894,
+     "beforeStart": 310971,
+     "before": "      if(person.pet&&!stroll&&canHold&&!free(prev.position)||!free(position)){\n",
+     "after": "      if(person.pet&&!stroll&&canHold&&!free(prev.position)||!anchor.post&&!free(position)){\n"
+    },
+    {
+     "start": 311371,
+     "beforeStart": 308486,
+     "before": "      let position=anchor.visual,point=[anchor.x,anchor.y],walking=false,facing=validPrev?prev.facing:(seed%2?'left':'right'),pose=person.pet?(sleeping?'sleep':scene?'sitting':beat%3?'sitting':'standing'):'standing',distance=0,motion,heldSince=null;\n",
+     "after": "      let position=anchor.visual,point=[anchor.x,anchor.y],walking=false,facing=validPrev?prev.facing:(seed%2?'left':'right'),pose=person.pet?(sleeping?'sleep':scene?'sitting':beat%3?'sitting':'standing'):person.doze&&clock.sleeping?'sitting':'standing',distance=0,motion,heldSince=null;\n"
+    },
+    {
+     "start": 298680,
+     "beforeStart": 295922,
+     "before": "  function residentSpot(id){const a=residentStops.get(id);return a&&residentSafe(a.floor,[a.x,a.y],a.visual,a.pet)?a:null}\n",
+     "after": "  function residentSpot(id){const post=residentPosts.get(id);if(post)return String(art?.floors?.[post.floor]?.background||'').includes(post.art)?post:null;const a=residentStops.get(id);return a&&residentSafe(a.floor,[a.x,a.y],a.visual,a.pet)?a:null}\n"
+    },
+    {
+     "start": 298105,
+     "beforeStart": 295379,
+     "before": "    const boxes=[...(residentFurniture[floorId]||[]),...Object.values(items?.homeFurniture||{}).flatMap(item=>[item.seatBounds,item.deskBounds].filter(Boolean)),...(items?.freeDesks||[]).flatMap(item=>[item.seatBounds,item.deskBounds].filter(Boolean))];\n",
+     "after": "    const boxes=[...(residentFurniture[floorId]||[]),...(items?.furnitureBounds||[]),...Object.values(items?.homeFurniture||{}).flatMap(item=>[item.seatBounds,item.deskBounds].filter(Boolean)),...(items?.freeDesks||[]).flatMap(item=>[item.seatBounds,item.deskBounds].filter(Boolean))];\n"
+    },
+    {
+     "start": 296078,
+     "beforeStart": 293758,
+     "before": "    ['resident_bori_stroll_lobby','1f',79.5,83,true],['resident_bori_stroll_lounge','2f',51,71,true]\n  ].map(([id,floor,vx,vy,pet],i)=>[id,Object.freeze({id,floor,x:/^resident_(rabbit|bori)_/.test(id)?500:100+i*40,y:330,visual:[vx,vy],pet:!!pet})]));\n",
+     "after": "    ['resident_bori_stroll_lobby','1f',79.5,81,true],['resident_bori_stroll_lounge','2f',51,71,true]\n  ].map(([id,floor,vx,vy,pet],i)=>[id,Object.freeze({id,floor,x:/^resident_(rabbit|bori)_/.test(id)?500:100+i*40,y:330,visual:[vx,vy],pet:!!pet})]));const residentPosts=new Map([['resident_post_store','1f',17.0455,66.4187],['resident_post_reception','1f',53.8278,25.5048],['resident_post_cafe','1f',92.823,79.4899]].map(([id,floor,vx,vy])=>[id,Object.freeze({id,floor,x:500,y:330,visual:[vx,vy],pet:false,post:true,art:'floor-1f-v2'})]));// 2.9.315 counter posts: fixed spots behind painted counters, only on the new 1F art; never in residentStops/routes.\n"
+    },
+    {
+     "start": 295483,
+     "beforeStart": 293163,
+     "before": "    ['resident_rabbit_lobby_a','1f',34,55,true],['resident_rabbit_lobby_b','1f',35,55,true],\n    ['resident_rabbit_night_a','1f',47,55,true],['resident_rabbit_night_b','1f',47.5,55,true],\n    ['resident_rabbit_sleep_spare','1f',50,55,true],\n",
+     "after": "    ['resident_rabbit_lobby_a','1f',68,72,true],['resident_rabbit_lobby_b','1f',70,72,true],\n    ['resident_rabbit_night_a','1f',68,74,true],['resident_rabbit_night_b','1f',69.5,74,true],\n    ['resident_rabbit_sleep_spare','1f',68,76,true],\n"
+    },
+    {
+     "start": 295025,
+     "beforeStart": 292708,
+     "before": "    // Clear strip beside the 1F lounge; separate walking ranges for 22:00..02:00.\n    ['resident_cat_night_a','1f',54,55,true],['resident_cat_night_b','1f',55.5,55,true],\n    ['resident_dog_night_a','1f',61.5,55,true],['resident_dog_night_b','1f',62.5,55,true],\n",
+     "after": "    // Clear strip in the 1F south-central lobby; separate walking ranges for 22:00..02:00.\n    ['resident_cat_night_a','1f',44,76,true],['resident_cat_night_b','1f',46,76,true],\n    ['resident_dog_night_a','1f',56,76,true],['resident_dog_night_b','1f',58,76,true],\n"
+    },
+    {
+     "start": 294326,
+     "beforeStart": 292011,
+     "before": "    ['resident_cat_lobby','1f',43,55,true],['resident_cat_front','1f',47,55,true],\n    ['resident_dog_lobby','1f',57,55,true],['resident_dog_front','1f',61,55,true],\n    ['resident_cleaner_1f','1f',32,55],['resident_dog_hall','2f',51,44,true],['resident_dog_hall_front','2f',51,46,true],\n",
+     "after": "    ['resident_cat_lobby','1f',44,74,true],['resident_cat_front','1f',48,74,true],\n    ['resident_dog_lobby','1f',56,74,true],['resident_dog_front','1f',60,74,true],\n    ['resident_cleaner_1f','1f',32.9,68],['resident_dog_hall','2f',51,44,true],['resident_dog_hall_front','2f',51,46,true],\n"
+    },
+    {
+     "start": 293550,
+     "beforeStart": 291200,
+     "before": "    '1f':[[0,0,460,438],[475,0,1105,300],[600,185,655,346],[650,235,1018,410],[985,132,1105,346],[1105,0,1672,525],[0,438,452,805],[432,555,1238,941],[1450,450,1672,805],[1435,490,1550,572],[0,805,480,941],[1220,805,1672,941]],\n",
+     "after": "    '1f':[[0,0,445,290],[610,235,990,410],[1035,245,1245,420],[1140,0,1672,275],[1220,295,1520,520],[0,435,455,815],[650,485,1000,580],[1440,555,1672,815],[0,815,615,941],[1050,815,1672,941]],\n"
+    },
+    {
+     "start": 236251,
+     "beforeStart": 233933,
+     "before": "    const boxes=[...Object.values(items?.homeFurniture||{}).flatMap(item=>[item.seatBounds,item.deskBounds].filter(Boolean)),...(items?.freeDesks||[]).flatMap(item=>[item.seatBounds,item.deskBounds].filter(Boolean))];\n",
+     "after": "    const boxes=[...Object.values(items?.homeFurniture||{}).flatMap(item=>[item.seatBounds,item.deskBounds].filter(Boolean)),...(items?.freeDesks||[]).flatMap(item=>[item.seatBounds,item.deskBounds].filter(Boolean)),...(items?.furnitureBounds||[])];\n"
+    },
+    {
+     "start": 230362,
+     "beforeStart": 229774,
+     "before": "    {id:'npc-temp-c',name:residentNames.temp,sprite:'npc-temp-c',hours:[[9,18,'2f']],places:{'2f':['resident_temp_c_2f']},lines:[\"점심 메뉴 조사도 업무 맞죠?\",\"작은 일부터 깔끔하게 해볼게요.\",\"탕비실 원두 채우는 날이 제일 설레요.\",\"엑셀 표 테두리 정리, 방금 끝냈어요!\",\"간식 바구니 채우면 인기 만점이에요.\",\"포스트잇 색상별로 우선순위 나눴어요!\",\"영수증 풀칠은 이제 달인 수준이에요.\",\"간식 주문 취합, 빠짐없이 적었습니다!\",\"폴더 이름 정리하니 속이 다 시원해요.\",\"퇴근 전 멀티탭 확인도 제가 챙길게요!\"]}\n",
+     "after": "    {id:'npc-temp-c',name:residentNames.temp,sprite:'npc-temp-c',hours:[[9,18,'2f']],places:{'2f':['resident_temp_c_2f']},lines:[\"점심 메뉴 조사도 업무 맞죠?\",\"작은 일부터 깔끔하게 해볼게요.\",\"탕비실 원두 채우는 날이 제일 설레요.\",\"엑셀 표 테두리 정리, 방금 끝냈어요!\",\"간식 바구니 채우면 인기 만점이에요.\",\"포스트잇 색상별로 우선순위 나눴어요!\",\"영수증 풀칠은 이제 달인 수준이에요.\",\"간식 주문 취합, 빠짐없이 적었습니다!\",\"폴더 이름 정리하니 속이 다 시원해요.\",\"퇴근 전 멀티탭 확인도 제가 챙길게요!\"]},\n    {id:'npc-clerk-day',name:'다솜',sprite:'npc-clerk-day',post:'store',postCut:1.0766,hours:[[7,19,'1f']],places:{'1f':['resident_post_store']},lines:[\"어서 오세요! HANI 24예요!\",\"오늘 삼각김밥 새로 들어왔어요!\",\"1+1 행사는 제가 제일 먼저 알아요.\",\"회장님, 커피 우유 또 드실 거죠?\",\"점심엔 도시락 코너가 제일 바빠요.\",\"진열 각 맞추는 게 은근 재밌어요!\",\"하루 대리님은 영수증을 꼭 챙기세요.\",\"오늘 날씨엔 따뜻한 음료가 잘 나가요.\"]},\n    {id:'npc-clerk-night',name:'나래',sprite:'npc-clerk-night',post:'store',postCut:1.0766,hours:[[19,24,'1f'],[0,7,'1f']],places:{'1f':['resident_post_store']},lines:[\"…어서 오세요.\",\"컵라면 물은 제가 받아 드릴게요.\",\"야근이면 이것도 가져가요. 서비스.\",\"늦었네요. 따뜻한 거 데워 둘까요.\",\"조용한 밤이 좋아요. 손님은 반갑고요.\",\"유통기한 체크는 밤에 끝내 둬요.\",\"…피곤해 보여요. 초콜릿 하나.\",\"아침 교대 전까진 제가 있어요.\"]},\n    {id:'npc-guide',name:'소담',sprite:'npc-guide',post:'reception',postCut:0.8373,hours:[[9,18,'1f']],places:{'1f':['resident_post_reception']},lines:[\"안녕하세요, HANI 안내데스크입니다.\",\"방문하신 분은 여기서 명찰 받아 가세요.\",\"임원회의실은 엘리베이터로 4층이에요.\",\"택배는 오른쪽 보관함에 넣어 두었어요.\",\"일보 새 호가 게시판에 걸렸어요.\",\"길을 잃으시면 언제든 불러 주세요.\",\"유나 사원님이 인수인계를 꼼꼼히 해 줬어요.\",\"오늘도 웃으며 맞이할게요.\"]},\n    {id:'npc-desk-night',name:'하람',sprite:'npc-desk-night',post:'reception',postCut:0.8373,hours:[[18,24,'1f'],[0,9,'1f']],places:{'1f':['resident_post_reception']},lines:[\"늦은 시간까지 수고 많으세요.\",\"출입 기록은 제가 꼼꼼히 남겨 둘게요.\",\"정문은 잠갔어요. 안심하고 일하세요.\",\"택배는 아침까지 제가 맡아 둘게요.\",\"새벽 순찰 한 바퀴, 이상 없어요.\",\"졸리면 카페에 은하 씨가 있어요.\",\"첫차 시간 알려 드릴까요?\",\"아침에 소담 씨한테 잘 넘겨 줄게요.\"]},\n    {id:'npc-barista-iseul',name:'이슬',sprite:'npc-barista-iseul',post:'cafe',postCut:2.6316,hours:[[7,19,'1f']],places:{'1f':['resident_post_cafe']},lines:[\"원두는 오늘 아침에 새로 볶았어요.\"]},\n    {id:'npc-barista-eunha',name:'은하',sprite:'npc-barista-eunha',post:'cafe',postCut:2.6316,doze:true,hours:[[19,24,'1f'],[0,7,'1f']],places:{'1f':['resident_post_cafe']},lines:[\"조용한 밤엔 원두 향이 더 잘 느껴져요.\"]}\n"
+    },
+    {
+     "start": 165572,
+     "beforeStart": 164984,
+     "before": "         const deadline=Math.min(guest.performEnd,nextCommitment(p.id,at),at+60);\n",
+     "after": "         const deadline=Math.min(guest.performEnd,nextCommitment(p.id,at),at+75);\n"
+    },
+    {
+     "start": 164288,
+     "beforeStart": 163715,
+     "before": "        const hosts=(placeTable?.behavior?.visitorHosts||[]).map(id=>personById.get(id)).filter(p=>p&&allowed.includes(p)&&homeAt(p,guest.performStart).floor==='1f');\n",
+     "after": "        const hosts=(placeTable?.behavior?.visitorHosts||[]).map(id=>personById.get(id)).filter(p=>p&&allowed.includes(p)&&['1f','2f'].includes(homeAt(p,guest.performStart).floor));\n"
+    },
+    {
+     "start": 161803,
+     "beforeStart": 161244,
+     "before": "            if(!visitorTargets.has(v.target))visitorTargets.set(v.target,v.target==='coffee_counter'?places.find(c=>c.id==='coffee-1f').slots:target.room==='consult'?(places.find(c=>c.id==='cafe-1f')?.slots||[]):[v.target]);\n",
+     "after": "            if(!visitorTargets.has(v.target))visitorTargets.set(v.target,v.target==='coffee_counter'?places.find(c=>c.id==='coffee-1f').slots:target.room==='consult'?[v.target,...(places.find(c=>c.id==='cafe-1f')?.slots||[])]:[v.target]);\n"
+    },
+    {
+     "start": 131230,
+     "beforeStart": 130671,
+     "before": "      {kind:'candidate',sprite:'visitor-candidate',name:'면접 지원자',hours:[[10,16]],weekdayOnly:true,target:'client_booth_slot_2',stay:[120,220],go:'면접 보러 상담실 가는 중',at:'면접 대기 중… 두근'},\n",
+     "after": "      {kind:'candidate',sprite:'visitor-candidate',name:'면접 지원자',hours:[[10,16]],weekdayOnly:true,target:'client_booth_slot_1',stay:[120,220],go:'면접 보러 상담실 가는 중',at:'면접 대기 중… 두근'},\n"
+    },
+    {
+     "start": 130784,
+     "beforeStart": 130225,
+     "before": "      {kind:'client',sprite:'visitor-client',name:'방문 고객',hours:[[10,17]],target:'client_booth_slot_4',stay:[120,220],go:'상담실로 안내받아 가는 중',at:'상담 받는 중'},\n",
+     "after": "      {kind:'client',sprite:'visitor-client',name:'방문 고객',hours:[[10,17]],target:'client_booth_slot_1',stay:[120,220],go:'상담실로 안내받아 가는 중',at:'상담 받는 중'},\n"
+    },
+    {
+     "start": 59121,
+     "beforeStart": 58565,
+     "before": "    for(const [target,name]of [['hall_business','사업부'],['hall_consult','상담실']])if(places.length&&anchors.has(target))errandPlaces.push({id:'task-'+target,kind:'errand',errandKind:'task',floor:'1f',room:anchors.get(target).room,slots:[target],pose:'stand',stay:[8,25],go:name+' 앞 전달 사항 확인하러 가는 중',at:[name+' 앞에서 전달 일정 확인 중']});\n",
+     "after": "    for(const [target,name]of [['hall_convenience','편의점'],['hall_consult','상담실']])if(places.length&&anchors.has(target))errandPlaces.push({id:'task-'+target,kind:'errand',errandKind:'task',floor:'1f',room:anchors.get(target).room,slots:[target],pose:'stand',stay:[8,25],go:name+' 앞 전달 사항 확인하러 가는 중',at:[name+' 앞에서 전달 일정 확인 중']});\n"
+    },
+    {
+     "start": 33653,
+     "beforeStart": 33130,
+     "before": "    'secretary_desk':[.50,.16,82,52],'desk_yuna':[.50,.16,82,52]\n",
+     "after": "    'secretary_desk':[.50,.16,82,52],'desk_yuna':[.50,.16,82,52],'desk_yuna_east':[.50,.16,82,52]\n"
+    },
+    {
+     "start": 33124,
+     "beforeStart": 32614,
+     "before": "    'business-west':[.50,.14,62,44],'business-east':[.50,.14,62,44],\n",
+     "after": "    'finance-row-spare':[.50,.19,96,58],'finance-row-spare-east':[.50,.19,96,58],\n"
+    },
+    {
+     "start": 29386,
+     "beforeStart": 28989,
+     "before": "",
+     "after": "      chair(\"finance-row-spare\",\"desk\",10.6,63.5,\"sua\"),chair(\"finance-row-spare-east\",\"desk\",40.5,63.5,\"taeo\"),\n"
+    },
+    {
+     "start": 29126,
+     "beforeStart": 28633,
+     "before": "      chair(\"business-west\",\"lounge\",12,58,\"sua\"),chair(\"business-east\",\"lounge\",18,58,\"taeo\"),\n",
+     "after": ""
+    },
+    {
+     "start": 27448,
+     "beforeStart": 27039,
+     "before": "  const DESK_PROP_ART=Object.freeze({\"hani\":\"./assets/building/props/hani-217.webp\",\"yuna\":\"./assets/building/props/yuna-217.webp\",\"jieun\":\"./assets/building/props/jieun-217.webp\",\"haru\":\"./assets/building/props/haru-217.webp\",\"naeun\":\"./assets/building/props/naeun-217.webp\",\"hina\":\"./assets/building/props/hina-217.webp\",\"minji\":\"./assets/building/props/minji-217.webp\",\"sooyeon\":\"./assets/building/props/sooyeon-217.webp\",\"sua\":\"./assets/building/props/sua-217.webp\",\"seoyun\":\"./assets/building/props/seoyun-217.webp\",\"dohyun\":\"./assets/building/props/dohyun-217.webp\",\"serin\":\"./assets/building/props/serin-217.webp\",\"yuri\":\"./assets/building/props/yuri-217.webp\",\"arin\":\"./assets/building/props/arin-217.webp\",\"gaeun\":\"./assets/building/props/gaeun-217.webp\",\"taeo\":\"./assets/building/props/taeo-217.webp\",\"daon\":\"./assets/building/props/daon-217.webp\",\"yoonseul\":\"./assets/building/props/yoonseul-217.webp\",\"mir\":\"./assets/building/props/mir-217.webp\"});\n  const legacyFloors=Object.freeze(floorDefaults.filter(f=>f.residents.length).map(f=>Object.freeze({id:f.id,label:f.label,tint:f.tint,residents:f.residents,background:f.background,fallback})));\n",
+     "after": "  const DESK_PROP_ART=Object.freeze({\"hani\":\"./assets/building/props/hani-217.webp\",\"yuna\":\"./assets/building/props/yuna-217.webp\",\"jieun\":\"./assets/building/props/jieun-217.webp\",\"haru\":\"./assets/building/props/haru-217.webp\",\"naeun\":\"./assets/building/props/naeun-217.webp\",\"hina\":\"./assets/building/props/hina-217.webp\",\"minji\":\"./assets/building/props/minji-217.webp\",\"sooyeon\":\"./assets/building/props/sooyeon-217.webp\",\"sua\":\"./assets/building/props/sua-217.webp\",\"seoyun\":\"./assets/building/props/seoyun-217.webp\",\"dohyun\":\"./assets/building/props/dohyun-217.webp\",\"serin\":\"./assets/building/props/serin-217.webp\",\"yuri\":\"./assets/building/props/yuri-217.webp\",\"arin\":\"./assets/building/props/arin-217.webp\",\"gaeun\":\"./assets/building/props/gaeun-217.webp\",\"taeo\":\"./assets/building/props/taeo-217.webp\",\"daon\":\"./assets/building/props/daon-217.webp\",\"yoonseul\":\"./assets/building/props/yoonseul-217.webp\",\"mir\":\"./assets/building/props/mir-217.webp\",\"desk-4f-yuna\":\"./assets/building/props/desk-4f-yuna-v1.webp\"});\n  const legacyFloors=Object.freeze(floorDefaults.filter(f=>f.residents.length||f.category==='lobby').map(f=>Object.freeze({id:f.id,label:f.label,tint:f.tint,residents:f.residents,background:f.background,fallback})));\n"
+    },
+    {
+     "start": 9740,
+     "beforeStart": 9581,
+     "before": "    try{const response=await fetch('./assets/data/office-actions-221.json');if(response.ok){const table=await response.json();if(validActions(table,'office-actions-221-v1'))actionTable=table}}catch(_){/* Try the released catalog next. */}\n",
+     "after": "    try{const response=await fetch('./assets/data/office-actions-315.json');if(response.ok){const table=await response.json();if(validActions(table,'office-actions-221-v1'))actionTable=table}}catch(_){/* Try the 221 catalog next. */}\n    if(!actionTable)try{const response=await fetch('./assets/data/office-actions-221.json');if(response.ok){const table=await response.json();if(validActions(table,'office-actions-221-v1'))actionTable=table}}catch(_){/* Try the released catalog next. */}\n"
+    },
+    {
+     "start": 7929,
+     "beforeStart": 7904,
+     "before": "        ['./data/hani-building/spatial-contract-v2.json','./data/hani-building/spatial-contract.json'],'./assets/sprites-v2/manifest.json',['./data/hani-building/art-map-v2.json','./data/hani-building/art-map-v1.json'],'./assets/sprites-v3/manifest-v3.json','./data/hani-building/office-places.json'\n",
+     "after": "        ['./data/hani-building/spatial-contract-v3.json','./data/hani-building/spatial-contract-v2.json','./data/hani-building/spatial-contract.json'],'./assets/sprites-v2/manifest.json',['./data/hani-building/art-map-v3.json','./data/hani-building/art-map-v2.json','./data/hani-building/art-map-v1.json'],'./assets/sprites-v3/manifest-v3.json',['./data/hani-building/office-places-v3.json','./data/hani-building/office-places.json']\n"
+    },
+    {
+     "start": 2962,
+     "beforeStart": 2962,
+     "before": "        art:Object.freeze({background:visual.background||base.background,nightBackground:visual.nightBackground,production:base.residents?.length?base.background:undefined,\n",
+     "after": "        art:Object.freeze({background:visual.background||base.background,nightBackground:visual.nightBackground,production:base.residents?.length||base.category==='lobby'?base.background:undefined,\n"
+    },
+    {
+     "start": 1151,
+     "beforeStart": 1144,
+     "before": "    {id:'2f',legacyIds:[],order:2,code:'2F',label:'2F 재무·라이프',category:'office',tint:'#94bd8e',residents:['jieun','haru','naeun','hina','minji','sooyeon'],anchorCount:74,background:'./assets/building/floor-2f-217.webp'},\n    {id:'1f',legacyIds:[],order:1,code:'1F',label:'1F 로비',category:'lobby',tint:'#e3b67d',residents:['yuna','sua','taeo'],anchorCount:57,background:'./assets/building/floor-1f-217.webp'}\n",
+     "after": "    {id:'2f',legacyIds:[],order:2,code:'2F',label:'2F 재무·라이프',category:'office',tint:'#94bd8e',residents:['jieun','haru','naeun','hina','minji','sooyeon','sua','taeo'],anchorCount:80,background:'./assets/building/floor-2f-217.webp'},\n    {id:'1f',legacyIds:[],order:1,code:'1F',label:'1F 로비',category:'lobby',tint:'#e3b67d',residents:[],anchorCount:52,background:'./assets/building/floor-1f-v2.webp'}\n"
+    },
+    {
+     "start": 684,
+     "beforeStart": 684,
+     "before": "    {id:'4f',legacyIds:[],order:4,code:'4F',label:'4F 대표실·라운지',category:'executive',tint:'#b692df',residents:['hani','gaeun','mir'],anchorCount:81,background:'./assets/building/floor-4f-217.webp'},\n",
+     "after": "    {id:'4f',legacyIds:[],order:4,code:'4F',label:'4F 대표실·라운지',category:'executive',tint:'#b692df',residents:['hani','gaeun','mir','yuna'],anchorCount:84,background:'./assets/building/floor-4f-217.webp'},\n"
+    }
+   ]
+  },
+  "hani-office-live.css": {
+   "beforeSha256": "121270e99446a1fd452b811833a49ed178be95185f58eede51aa0d52e414a7d3",
+   "afterSha256": "8f476a3c2c2f20c96c38be5bf2f40d0298911bf81ca3d95c0bdd70c6d396c4ee",
+   "beforeBytes": 41424,
+   "afterBytes": 41805,
+   "count": 1,
+   "replacements": [
+    {
+     "start": 41424,
+     "beforeStart": 41424,
+     "before": "",
+     "after": "/* 2.9.315 counter posts: the painted counter hides the lower body (6.25% below the pivot + counter height in map units). */\n.hani-office-actor[data-post] .hani-office-sprite{clip-path:inset(0 0 calc(6.25% + var(--post-cut,0cqw)) 0)}\n.hani-office-actor[data-post=\"cafe\"] .hani-office-sprite{pointer-events:none}\n.hani-office-desk-props[data-person=\"desk-4f-yuna\"]{max-height:none}\n"
+    }
+   ]
+  },
+  "index.html": {
+   "beforeSha256": "15dc6e302bc88b3c2e9fedbd1c558801ff87ad066e48e8da93f272d16b68ac03",
+   "afterSha256": "70b07842bd9f28b42adb36c2acfb0ad4dc7c42c9e70f281e2643c602a48015d6",
+   "beforeBytes": 266106,
+   "afterBytes": 266081,
+   "count": 1,
+   "replacements": [
+    {
+     "start": 87762,
+     "beforeStart": 87762,
+     "before": "      <p class=\"pb-note\">KST 날짜 기준 · 마지막 기록 이후의 경과일을 보여줘요. 건강·일기는 매일, 목록은 주 1회, 자산·가계부는 월 1회를 기준으로 삐짐 단계가 달라져요. 퀴즈는 미완료 문제의 예정일 기준이며 오늘 풀면 0단계예요.<br>기록이 없거나 날짜가 불확실하면 기간을 추측하지 않아요. 건강 기록은 양보다 지속 가능성이 먼저예요.</p>\n",
+     "after": "      <p class=\"pb-note\">KST 날짜 기준 · 마지막 기록 이후의 경과일을 보여줘요. 카드마다 적힌 주 1회·2주 1회·월 1회 기준에 맞춰 삐짐 단계가 달라져요. 퀴즈는 미완료 문제의 예정일 기준이며 오늘 풀면 0단계예요.<br>기록이 없거나 날짜가 불확실하면 기간을 추측하지 않아요. 건강 기록은 양보다 지속 가능성이 먼저예요.</p>\n"
+    }
+   ]
+  },
+  "scripts/hani-release-314-source.cjs": {
+   "beforeSha256": "c466222b359c6c25b0e56446ce8c7ea1de35f2d7eb870bac67b667895d429061",
+   "afterSha256": "fc7feb0f803629f1fe91b94a7183927ad0b4b84f58d38a8887ab13cd7a5a16f2",
+   "beforeBytes": 3718,
+   "afterBytes": 3807,
+   "count": 1,
+   "replacements": [
+    {
+     "start": 0,
+     "beforeStart": 0,
+     "before": "",
+     "after": "require('./hani-building-315-preload.cjs'); // Building315 inverse precedes released314.\n"
+    }
+   ]
+  },
+  "scripts/hani-office-motion-polish-2.test.mjs": {
+   "beforeSha256": "98df2acd1dd31f0ae46a551103bfe0e3d034f4e7888e3d2c2aad4ffdca6c847f",
+   "afterSha256": "32ebff35066f741a32712928aeb958a849888cac653338b2ae9dcbd62f1f4ed7",
+   "beforeBytes": 20005,
+   "afterBytes": 20110,
+   "count": 1,
+   "replacements": [
+    {
+     "start": 0,
+     "beforeStart": 0,
+     "before": "",
+     "after": "import './hani-building-315-preload.cjs'; // Exact 대공사 3단계 inverse before this older contract.\n"
+    }
+   ]
+  }
+ },
+ "helper": {
+  "file": "scripts/hani-menu-badges-historical-input.cjs",
+  "beforeSha256": "85db5ea4886ac1fc70ce49f262d8ebae33277611cc90947ed86b58a70c960276"
+ }
+}
