@@ -363,3 +363,19 @@
 .hani-office-actor[data-post] .hani-office-sprite{clip-path:inset(0 0 calc(6.25% + var(--post-cut,0cqw)) 0)}
 .hani-office-actor[data-post="cafe"] .hani-office-sprite{pointer-events:none}
 .hani-office-desk-props[data-person="desk-4f-yuna"]{max-height:none}
+/* 2.9.319 room plate design B: soft department colour + round icon badge (visual only). */
+.hani-office-room-plate[data-tone="green"],.hani-office-room-mobile-labels button[data-tone="green"]{--plate-bg:#eaf3de;--plate-ink:#27500a;--plate-dot:#639922}
+.hani-office-room-plate[data-tone="blue"],.hani-office-room-mobile-labels button[data-tone="blue"]{--plate-bg:#e6f1fb;--plate-ink:#0c447c;--plate-dot:#378add}
+.hani-office-room-plate[data-tone="amber"],.hani-office-room-mobile-labels button[data-tone="amber"]{--plate-bg:#faeeda;--plate-ink:#633806;--plate-dot:#ba7517}
+.hani-office-room-plate[data-tone="teal"],.hani-office-room-mobile-labels button[data-tone="teal"]{--plate-bg:#e1f5ee;--plate-ink:#085041;--plate-dot:#1d9e75}
+.hani-office-room-plate[data-tone="pink"],.hani-office-room-mobile-labels button[data-tone="pink"]{--plate-bg:#fbeaf0;--plate-ink:#72243e;--plate-dot:#d4537e}
+.hani-office-room-plate[data-tone="purple"],.hani-office-room-mobile-labels button[data-tone="purple"]{--plate-bg:#eeedfe;--plate-ink:#3c3489;--plate-dot:#7f77dd}
+.hani-office-room-plate[data-tone="coral"],.hani-office-room-mobile-labels button[data-tone="coral"]{--plate-bg:#faece7;--plate-ink:#712b13;--plate-dot:#d85a30}
+.hani-office-room-plate[data-tone="sand"],.hani-office-room-mobile-labels button[data-tone="sand"]{--plate-bg:#f6efe3;--plate-ink:#5a4326;--plate-dot:#a88552}
+.hani-office-room-plate[data-tone]:not([data-brand="true"]):not([hidden]){display:grid;grid-template-columns:auto auto;grid-template-rows:auto auto;align-items:center;column-gap:.36cqw;width:auto!important;padding:.22cqw .7cqw .22cqw .26cqw;border-radius:999px;background:var(--plate-bg);color:var(--plate-ink);box-shadow:0 0 0 1px color-mix(in srgb,var(--plate-dot) 45%,transparent)}
+.hani-office-room-plate[data-tone]:not([data-brand="true"])::before{content:attr(data-icon);grid-row:1/3;display:grid;place-items:center;width:2.05cqw;height:2.05cqw;min-width:16px;min-height:16px;border-radius:50%;background:var(--plate-dot);font-size:min(11px,1.15cqw);line-height:1}
+.hani-office-room-plate[data-tone]:not([data-brand="true"]) b{font-size:min(8px,.92cqw);letter-spacing:.04em;opacity:.78}
+.hani-office-room-plate[data-tone]:not([data-brand="true"]) small{margin-top:0;font-size:min(10px,1.12cqw);font-weight:600}
+.hani-office-room-plate[data-room-view][data-tone]:not([hidden]){width:auto!important;min-height:0;padding:.3cqw .8cqw .3cqw .3cqw;text-align:left}
+.hani-office-room-mobile-labels button[data-tone]{display:flex;align-items:center;justify-content:center;gap:6px;border-color:color-mix(in srgb,var(--plate-dot) 55%,transparent);border-radius:999px;background:var(--plate-bg);color:var(--plate-ink);font-weight:600}
+.hani-office-room-mobile-labels button[data-tone]::before{content:attr(data-icon);display:grid;place-items:center;width:24px;height:24px;flex:none;border-radius:50%;background:var(--plate-dot);font-size:13px;line-height:1}
