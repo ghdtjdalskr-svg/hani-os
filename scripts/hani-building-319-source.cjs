@@ -1,3 +1,4 @@
+require('./hani-release-319-preload.cjs'); // Released319 metadata precedes the building-319 capture.
 // Test input only: exact room plate design B (department tone and icon) inverse before released318; production bytes stay untouched.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
