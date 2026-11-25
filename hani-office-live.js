@@ -4379,11 +4379,13 @@
     row.append(name,badge,info);roster.append(row);return {row,floor};
   });
   const plates=[];
+const roomPlateTones=Object.freeze({"convenience":["green","🏪"],"lobby|INFO DESK":["blue","💁"],"lobby|LOBBY":["sand","🏢"],"cafe":["amber","☕"],"finance":["teal","💰"],"finance|Director":["teal","💼"],"life":["pink","🎬"],"pantry":["amber","🍪"],"team_meeting":["purple","👥"],"platform":["purple","💻"],"server":["blue","🖥️"],"standup":["coral","🗣️"],"release":["green","🚀"],"ceo":["amber","👑"],"secretariat":["pink","📋"],"hani_office":["purple","⭐"],"exec":["blue","🤝"],"mir_nook":["teal","🤖"],"garden":["green","🌿"],"terrace":["amber","☀️"],"event_roof":["coral","🍖"],"quiet_roof":["teal","🍃"],"studio":["coral","🎙️"],"library_cinema":["purple","🎞️"],"fitness":["green","💪"],"kids_pet_lounge":["pink","🐾"]});// 2.9.319 room plate design B: tone + icon per room, visual only.
   for(const floor of building.floors)for(const entry of building.floorRegistry.get(floor.id).art.plates){
     const room=building.floorRegistry.get(floor.id).rooms.find(r=>r.id===entry.room),menu=room?.menuLink;
     const plate=document.createElement(menu?'button':'span');if(menu){plate.type='button';plate.dataset.roomView=menu.primaryView;plate.dataset.roomFloor=floor.id}plate.className='hani-office-room-plate';plate.dataset.room=entry.room;
     plate.dataset.material=entry.material;plate.dataset.label=entry.label;plate.title=entry.fullLabel||entry.label;
     plate.dataset.mount=entry.mount||'wall';
+    {const tone=roomPlateTones[entry.room+'|'+entry.english]||roomPlateTones[entry.room];if(tone){plate.dataset.tone=tone[0];plate.dataset.icon=tone[1]}}
     const english=document.createElement('b'),korean=document.createElement('small');
     english.textContent=entry.english;korean.textContent=entry.label;plate.append(english,korean);
     plate.setAttribute('aria-label',entry.english+' · '+entry.label);
@@ -4697,7 +4699,7 @@
   const roomLabels=new Map();
   for(const floor of building.floors){const list=document.createElement('p');list.textContent=[...(building.floorRegistry.get(floor.id).rooms).map(r=>r.label),...(building.floorRegistry.get(floor.id).art.plates).filter(p=>p.detail).map(p=>p.fullLabel)].join(' · ');
     const mobileLabels=document.createElement('span');mobileLabels.className='hani-office-room-mobile-labels';
-    for(const room of building.floorRegistry.get(floor.id).rooms)if(room.menuLink){const label=document.createElement('button');label.type='button';label.dataset.room=room.id;label.dataset.roomView=room.menuLink.primaryView;label.dataset.roomFloor=floor.id;label.textContent=room.label;mobileLabels.append(label)}
+    for(const room of building.floorRegistry.get(floor.id).rooms)if(room.menuLink){const label=document.createElement('button');label.type='button';label.dataset.room=room.id;label.dataset.roomView=room.menuLink.primaryView;label.dataset.roomFloor=floor.id;label.textContent=room.label;{const tone=roomPlateTones[room.id];if(tone){label.dataset.tone=tone[0];label.dataset.icon=tone[1]}}mobileLabels.append(label)}
     if(mobileLabels.children.length)list.append(mobileLabels);
     for(const room of building.floorRegistry.get(floor.id).rooms)if(room.menuLink){const group=document.createElement('span');group.className='hani-office-room-links';for(const choice of room.menuLink.choices){const button=document.createElement('button');button.type='button';button.dataset.room=room.id;button.dataset.roomView=choice.view;button.dataset.roomFloor=floor.id;button.textContent=choice.label;group.append(button)}list.append(group)}
     rooms.append(list);roomLabels.set(floor.id,list)}
