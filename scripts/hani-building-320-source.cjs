@@ -1,3 +1,4 @@
+require('./hani-release-320-preload.cjs'); // Released320 metadata precedes the building-320 capture.
 // Test input only: exact interview and consult hosting fix inverse before released319; production bytes stay untouched.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
