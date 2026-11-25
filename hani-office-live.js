@@ -1406,7 +1406,8 @@
       // disjoint route floors. Keep intermediate/transit floors in this set.
       const candidateFloors=resourceFloors(candidate);
       nearby=nearby.filter(e=>sharesResourceFloor(e,candidateFloors));
-      if(nearby.some(e=>resourceConflict(e,candidate)))return false;
+      const pairGuest=candidate.pairGuestId;// 2.9.320: the booth host's own guest only
+      if(nearby.some(e=>e.id!==pairGuest&&resourceConflict(e,candidate)))return false;
       nearby=nearby.filter(e=>motion(e).moving);
       if(!floorCapacity(candidate,nearby))return false;
       if(candidate.card&&!candidate.visitor&&!transitCapacity(candidate,nearby))return false;
@@ -1437,7 +1438,7 @@
       if(candidate.people.some(t=>otherHomeOwner(t,candidate.start,candidate.end)))return false;
       if(candidate.people.some(t=>!t.visitor&&(!presentAt(t.id,candidate.end-.001)||homeAt(personById.get(t.id),candidate.end-.001).anchorId!==t.home.anchorId)))return false;
       if(candidate.people.some(t=>!clearHomeRoute(t,allowed,candidate.start,candidate.end)))return false;
-      if(!homeOnly&&!screenReservations(candidate,nearby,allowed))return false;
+      if(!homeOnly&&!screenReservations(candidate,pairGuest?nearby.filter(e=>e.id!==pairGuest):nearby,allowed))return false;
       // Desk-only microexpressions share the already checked static home geometry.
       // No sampled state objects are needed when every overlapping actor is home.
       if(homeOnly){staticSafe.add(staticKey);ledger.push(candidate);return true}
@@ -1513,10 +1514,10 @@
       return [...compact].length<=limit?compact:'업무 진행 중';
     }
     const visitorKinds=[
-      {kind:'client',sprite:'visitor-client',name:'방문 고객',hours:[[10,17]],target:'client_booth_slot_1',stay:[120,220],go:'상담실로 안내받아 가는 중',at:'상담 받는 중'},
+      {kind:'client',sprite:'visitor-client',name:'방문 고객',hours:[[10,17]],target:'client_booth_slot_1',stay:[200,320],go:'상담실로 안내받아 가는 중',at:'상담 받는 중'},
       {kind:'courier',sprite:'visitor-courier',name:'택배 기사',hours:[[9,18]],target:'parcel_box',stay:[15,30],go:'택배함으로 가는 중',at:'택배 두고 갈게요'},
-      {kind:'rider',sprite:'visitor-rider',name:'배달 기사',hours:[[11.5,13.5],[17.5,20]],target:'reception',stay:[15,30],go:'안내대로 배달 가는 중',at:'배달 왔습니다!'},
-      {kind:'candidate',sprite:'visitor-candidate',name:'면접 지원자',hours:[[10,16]],weekdayOnly:true,target:'client_booth_slot_1',stay:[120,220],go:'면접 보러 상담실 가는 중',at:'면접 대기 중… 두근'},
+      {kind:'rider',sprite:'visitor-rider',name:'배달 기사',hours:[],target:'reception',stay:[15,30],go:'안내대로 배달 가는 중',at:'배달 왔습니다!'},
+      {kind:'candidate',sprite:'visitor-candidate',name:'면접 지원자',hours:[[10,16]],weekdayOnly:true,target:'client_booth_slot_1',stay:[200,320],go:'면접 보러 상담실 가는 중',at:'면접 대기 중… 두근'},
       {kind:'generic',sprite:'visitor-generic',name:'테이크아웃 손님',hours:[[9,20]],target:'coffee_counter',stay:[20,40],go:'HANI Coffee 가는 중',at:'커피 받아 가는 중'}
     ];
     function blockPlan(day,index,events,options={}){
@@ -1855,7 +1856,7 @@
       // Clock phases favour parcels, deliveries and appointments; reserve() owns
       // capacities, target uniqueness, gate FIFO and every swept trajectory.
       // Takeaway pairs retain the two distinct service slots, then cool down.
-      const guestLast=new Map(),guestCadence={client:190,candidate:400,rider:40,generic:600};let takeaways=0;
+      const guestLast=new Map(),guestCadence={client:2700,candidate:5400,courier:1500,rider:600,generic:600};let takeaways=0;
       const guestChoices=new Map();
       for(let at=32400;at<72000;at+=20){
         // Choose the first available persistent visitor before ranking visits.
@@ -1894,17 +1895,18 @@
       for(const e of [...events,...result])for(const t of e.people)if(t.out.length)arrivalKeys.add(arrivalKey(t.seat.anchor,t.out.at(-1).end));
       // A host visits a real free approach node while the guest is stationary.
       // Both trajectories remain in the same reservation ledger; no host teleport.
+      const consultHosts={client:['sua','taeo','jieun','gaeun','daon','naeun'],candidate:['gaeun','jieun','naeun','yuri','sua','hani']},consultBase=places.find(c=>c.id==='meeting-1f'),consultCards=consultBase?{client:{...consultBase,id:'visitor-host-booth-client',kind:'errand',hostOnly:true,go:'고객 맞이하러 상담실로',at:['상담 중']},candidate:{...consultBase,id:'visitor-host-booth-candidate',kind:'errand',hostOnly:true,go:'면접 보러 상담실로',at:['면접 진행 중']}}:{};// 2.9.320 booth hosting
       const hostErrands=new Map(),hostSlots=new Map(),hostChoices=new Map(),hostCards=new Map(errandPlaces.filter(c=>c.hostOnly).map(c=>[c.slots[0],c]));
-      for(const id of placeTable?.behavior?.visitorHosts||[])hostErrands.set(id,result.filter(q=>q.card.kind==='errand'&&q.people.some(t=>t.id===id)).sort((a,b)=>a.start-b.start));
+      for(const id of new Set([...(placeTable?.behavior?.visitorHosts||[]),...consultHosts.client,...consultHosts.candidate]))hostErrands.set(id,result.filter(q=>q.card.kind==='errand'&&q.people.some(t=>t.id===id)).sort((a,b)=>a.start-b.start));
       function reserveHosts(guests){
       // Spread one consultation per two visits of each kind across the day,
       // carrying failed opportunities forward. Unhosted guests keep waiting.
       const seen=new Map(),served=new Map();
       for(const guest of guests){
         const kind=guest.visitor.kind,n=(seen.get(kind)||0)+1;seen.set(kind,n);
-        if(['client','candidate'].includes(kind)&&(served.get(kind)||0)>=Math.ceil(n/2))continue;
         const destination=guest.people[0].seat,point=pixels([destination.x,destination.y]);
-        const hosts=(placeTable?.behavior?.visitorHosts||[]).map(id=>personById.get(id)).filter(p=>p&&allowed.includes(p)&&['1f','2f'].includes(homeAt(p,guest.performStart).floor));
+        const consultKind=['client','candidate'].includes(guest.visitor.kind),boothSeat=consultKind&&consultCards[guest.visitor.kind]&&/^client_booth_slot_[123]$/.test(destination.anchor)?'client_booth_slot_4':null;
+        const hosts=[...new Set([...(boothSeat?consultHosts[guest.visitor.kind]:[]),...(placeTable?.behavior?.visitorHosts||[])])].map(id=>personById.get(id)).filter(p=>p&&allowed.includes(p)&&(boothSeat||['1f','2f'].includes(homeAt(p,guest.performStart).floor))).sort((a,b)=>boothSeat?seed(day+'|host|'+guest.id+a.id)-seed(day+'|host|'+guest.id+b.id):0);
         // Existing host approach cards stay in the same room, but the old
         // 160-art-pixel radius was smaller than one phone sprite footprint.
         if(!hostSlots.has(destination.anchor))hostSlots.set(destination.anchor,[...anchors.values()].filter(a=>hostCards.has(a.id)&&a.floor==='1f'&&a.room===anchors.get(destination.anchor).room&&a.type==='junction'&&(()=>{const q=pixels(visualPoint(a)),d=Math.hypot(q[0]-point[0],q[1]-point[1]);return d>=170&&d<=400})()));
@@ -1917,25 +1919,28 @@
          if(consultation&&lunch(at))continue;
          const errands=hostErrands.get(p.id);
          if(errands.some(q=>Math.abs(q.start-at)<360))continue;
-         const deadline=Math.min(guest.performEnd,nextCommitment(p.id,at),at+75);
+         const deadline=boothSeat?Math.min(nextCommitment(p.id,at),guest.performEnd+300):Math.min(guest.performEnd,nextCommitment(p.id,at),at+75);
          if(deadline-at<8)continue;
          if(ledgerOverlaps(ledger,at,at+.001).some(e=>e.people.some(t=>t.id===p.id)))continue;
          const home=homeAt(p,at),choiceKey=destination.anchor+'|'+p.id+'|'+home.anchorId+'|'+(isLate(at)||isEvening(at))+'|'+(isLate(deadline-.001)||isEvening(deadline-.001));
-         if(!hostChoices.has(choiceKey))hostChoices.set(choiceKey,slots.filter(target=>screenHomeClear(p.id,home.anchorId,slot(target.id,'stand'),allowed,at,deadline)).map(target=>({target,duration:pathDuration(path(home.anchorId,target.id)),back:pathDuration(path(target.id,home.anchorId))})));
+         if(!hostChoices.has(choiceKey))hostChoices.set(choiceKey,(boothSeat?[anchors.get(boothSeat)].filter(target=>target&&screenHomeClear(p.id,home.anchorId,slot(target.id,'sit'),allowed,at,deadline)):slots.filter(target=>screenHomeClear(p.id,home.anchorId,slot(target.id,'stand'),allowed,at,deadline))).map(target=>({target,duration:pathDuration(path(home.anchorId,target.id)),back:pathDuration(path(target.id,home.anchorId))})));
          for(const {target,duration,back} of hostChoices.get(choiceKey)){
           if(blockedGeometry(p,home,target.id,at,deadline))continue;
-          const stay=Math.min(15,guest.performEnd-at-duration);
-          if(stay<8)continue;
+          const stay=boothSeat?guest.performEnd-at-duration-2:Math.min(15,guest.performEnd-at-duration);
+          if(stay<(boothSeat?40:8))continue;
           if(at+stay+duration+back>deadline)continue;
-          const c=hostCards.get(target.id),e=excursion(p.id,home,c,target.id,at,stay,day,null,deadline);
+          const c=boothSeat?consultCards[guest.visitor.kind]:hostCards.get(target.id),e=excursion(p.id,home,c,target.id,at,stay,day,null,deadline);
           if(!e||errands.some(q=>Math.abs(q.start-e.start)<360)||errands.filter(q=>q.start<e.start).at(-1)?.card.id===c.id||errands.find(q=>q.start>e.start)?.card.id===c.id)continue;
           if(arrivalKeys.has(arrivalKey(target.id,e.performStart)))continue;
+          if(e&&boothSeat)e.pairGuestId=guest.id;
           if(!e||!reserve(e,ledger,allowed))continue;
           e.guestId=guest.id;result.push(e);if(consultation)consultations.push(e);errands.push(e);errands.sort((a,b)=>a.start-b.start);arrivalKeys.add(arrivalKey(target.id,e.performStart));served.set(kind,(served.get(kind)||0)+1);booked=true;break;
         }if(booked)break}
       }
       }
       reserveHosts(result.filter(e=>['client','candidate'].includes(e.visitor?.kind)));
+      // 2.9.320: a booth guest nobody can meet is simply not invited that day (no lonely wait).
+      {const met=new Set(result.filter(e=>e.pairGuestId).map(e=>e.pairGuestId));for(let i=result.length-1;i>=0;i--){const e=result[i];if(['client','candidate'].includes(e.visitor?.kind)&&/^client_booth_slot_[123]$/.test(e.people[0].seat.anchor)&&!met.has(e.id))result.splice(i,1)}}
       // Lunch has four-person capacity. Offer the same reservation path every
       // 45 seconds there; retain the 180s clock and all personal gates otherwise.
       for(let at=0;at<86400;at+=lunch(at)?45:180){
