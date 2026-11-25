@@ -1,3 +1,4 @@
+require('./hani-release-318-preload.cjs'); // Released318 metadata precedes the building-318 capture.
 // Test input only: exact 1F store post fix (store clerks behind the register) inverse before released317; production bytes stay untouched.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
