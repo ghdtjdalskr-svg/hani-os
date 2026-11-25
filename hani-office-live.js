@@ -388,6 +388,45 @@
     if(u<=1-r)return (u-r/2)/(1-r);
     const w=1-u;return 1-w*w/(2*r*(1-r));
   }
+
+  // 2.9.321 walk detours: painted-furniture rects [x1,y1,x2,y2] in art percent, measured on the current floor art.
+  const floorObstacles=Object.freeze({"1f":[[0,0,14,38],[0,34,7,46],[6,35,16,40],[11,17,17,38],[14,0,30,26],[29,18,37,31],[36,22,40,37],[30,0,62,24],[39,28,61,43],[56,22,62,34],[1,47,27,55],[6,52,12,72],[12,52,21,68],[17,64,25,77],[3,72,15,82],[5,78,12,85],[0,60,4,80],[24.5,46,26,63],[0,86,26,93],[28,58,30,95],[29,58,37,66],[30,68,37,92],[39.5,51,41,61],[48.5,51,50.5,61],[57.5,51,59.5,61],[36,63,43,87],[57,63,64,87],[62,58,74,67],[62,68,69,91],[70,65,74,95],[74,85,100,95],[61.5,29,63,46],[61.5,29,74,32],[72.5,29,74.5,47],[65,35,69,45],[62.5,42,66.5,49],[62,0,90,29],[74.5,30,80,39],[84.5,30,90,39],[79.5,39,86.5,45.5],[75.5,42.5,80.5,49.5],[86,42.5,91.5,49.5],[80.5,32,83,37.5],[90,0,100,46],[94,30,100,47],[87,48,100,84]],"2f":[[0,0,8,32],[8,0,34,18],[10.5,21.5,29,31],[0,31.5,36,37.5],[34,0,41.5,22],[41.5,0,47.5,17.5],[41.5,26,46,39],[53.5,0,57,11.5],[54.5,22,58.5,34],[0,35,5.5,72],[5.5,45.5,45,62],[0,68,4.5,89],[4.5,69,46.5,86.5],[0,88,12,100],[12,91.5,36,100],[36,88,45,100],[57.5,12.5,62.5,28],[62.5,0,76,17.5],[84,0,92,22],[92,0,100,41.5],[67.5,17,81.5,26],[61.5,28,67.5,39],[69.5,31,80,38.5],[80.5,32.5,84.5,38],[58.5,41.5,100,56],[58.5,56,60.5,72.5],[60.5,52,64,64.5],[55,68,59.5,73],[55,83,65.5,96],[70,66.5,90.5,73.5],[93.5,49,100,71],[94.5,71,100,91],[67,87,73,100],[73,91,100,100]],"3f":[[0,0,8.5,38],[8.5,0,15.5,21],[15.5,0,31,12],[31.5,0,35,17.5],[15.5,12,31,19.2],[10.5,21,16.5,30],[17.5,23.5,26,28.5],[27.5,23.5,31,27.3],[7.5,30.5,35.5,37.5],[32.5,27,35,32],[36,25.5,41.5,37.5],[38.5,15.5,41.5,22.5],[42.5,0,49,27],[53,0,61,27],[60,0,65.5,25],[61,29,65.5,41],[66.5,0,71.5,35],[71,0,85.5,25],[71.5,31.5,74.5,35],[80.5,32.5,92,35],[87,17,91,29.5],[92,0,100,38],[0,36,4.5,68],[0,73,4.5,90],[0,88,14.5,100],[9.5,42,16,85],[18,44,45,60.5],[44.5,44,48.5,57],[17.5,66,46,83],[31.5,87,47,96.5],[59,40.5,100,56],[59,56,61.5,72],[60.5,52,64,65],[60,83,66,96],[70,62.5,91.5,71],[66.5,81,97,84.5],[93.5,49,100,71],[95,71,100,94],[65.5,84,72,100],[72,85,95.5,100]],"4f":[[0,0,10.5,42],[10.5,0,35.5,24.5],[36,0,42.5,26],[10.5,26.5,34,38],[0,46,38,53],[41.5,0,47,20],[42,20,43.5,36],[42.5,32,47,48],[53,0,57,12],[58,0,68,18],[68,0,88,20],[62.5,21.5,79.5,32],[81,21,91,38],[69,32,75.5,42],[76.5,33.5,85.5,40.5],[88,0,100,34],[89,34,91.5,41.5],[91.5,35,97,44],[58.5,45.5,88,47.5],[55.5,30,59.5,42],[0,50,5.5,69],[30,50,35,56],[5.5,56,34,74],[0,73,6,94],[0,85,13,100],[12.5,76.5,26,82],[28,78.5,33,86.5],[16,87.5,25,92.5],[31,92,43.5,100],[58,47.5,100,58],[58,63,60.5,72.5],[59,56,63,69],[55,68,59.5,73],[55,83,65.5,96],[67.5,66.5,90,74.5],[93.5,52,100,71],[95,71,100,92],[65.5,86,71,100],[71,86,95,100]],"creative":[[0,0,10,14],[0,14,9,42.5],[10,0,42,9],[10,10,14.5,32],[17,9,35,24.5],[17.5,31,34.5,40],[37,10,41,32],[10,33,15.5,50],[1,42.5,7,52],[7,45.5,36,52],[36,42.5,44.5,52],[41.5,0,46.5,31],[54,0,58.5,31],[58,0,91,9],[90,0,100,14],[93,14,100,52],[61.5,8,93.5,30],[58.5,19,62.5,30],[62,26.5,75.5,33.5],[64,37,72.5,41.8],[73.5,38.5,78,41.8],[80.5,32.5,94,38],[56,42.5,64,52],[64,45.5,94,52],[0,52,8.5,72],[0,72,4,96],[10,55,15.5,70.5],[22.5,56,41.5,76.5],[7,71.5,21.5,89],[5.5,87,15.5,98.5],[15.5,91,36,98.5],[36,87,44.5,98.5],[41.5,52,44.5,73],[56,52,58.5,73],[58.5,55,82.5,70],[81.5,55,93.5,76],[90.5,54,100,96],[61,76.5,68,84.5],[68.5,81.5,71,89],[75,75,81.5,82],[86,75,92.5,82],[76,83,83,89.5],[86.5,83,93,89.5],[56,87,64,98.5],[64,91,85.5,98.5],[85.5,87,95.5,98.5]],"5f":[[0,0,14,24],[14,8,38,21],[0,24,9,43],[12,19,17,34],[34,19,38,31.5],[21,25,30,32],[14.5,35,23.5,42],[27.5,35,35.5,42],[12,35,14.5,42],[39,23,42.5,31.5],[36,36,38.5,42],[0,43,39.5,47],[38.5,40.5,43.5,45.5],[38,0,47,20],[53.5,0,68,22],[56,21,60.5,43.5],[56,43.5,59.5,49.5],[72,0,94,22],[89,20,100,44],[69.5,28.5,85,34],[0,44,12,74],[0,71,8,97],[11,47,33,63],[32.5,52,40,65],[14,65.5,31.5,73.5],[8,82,16,97],[16,87,32,97],[32,82,43.5,97],[64.5,46,100,56],[62,57,68.5,69.5],[70.5,61,88.5,67],[70.5,67,72.5,74],[86.5,67,88.5,74],[65,69,70,78.5],[69.5,76,71.5,82.5],[74.5,74,85,83.5],[86,76,90.5,84],[89,55,100,88],[57.5,83,63.5,97],[63.5,88,88,97],[88,82,100,97]]});
+  const petOnlyObstacles=Object.freeze({'1f':[[34,58,66,96]]});// pets never settle in the entrance vestibule
+  const detourCache=new Map();
+  function detourLeg(floor,a,b){
+    const rects=floorObstacles[floor];if(!rects||!a||!b)return [a,b];
+    const key=floor+'|'+a.join(',')+'|'+b.join(',');if(detourCache.has(key))return detourCache.get(key);
+    const hit=(x,y)=>rects.some(r=>x>=r[0]&&x<=r[2]&&y>=r[1]&&y<=r[3]);
+    let nearR=4;const near=(x,y,p)=>Math.hypot(x-p[0],(y-p[1])*.5628)<nearR;
+    const clear=(p,q)=>{const n=Math.ceil(Math.hypot(q[0]-p[0],(q[1]-p[1])*.5628)/.4)+1;for(let i=1;i<n;i++){const t=i/n,x=p[0]+(q[0]-p[0])*t,y=p[1]+(q[1]-p[1])*t;if(hit(x,y)&&!near(x,y,a)&&!near(x,y,b))return false}return true};
+    let result=[a,b];
+    for(const r of [4,8]){nearR=r;if(clear(a,b)){result=[a,b];break}
+      const W=100,H=100,id=(x,y)=>y*W+x,cx=p=>Math.max(0,Math.min(W-1,Math.round(p[0]))),cy=p=>Math.max(0,Math.min(H-1,Math.round(p[1])));
+      const sx=cx(a),sy=cy(a),gx=cx(b),gy=cy(b),blocked=(x,y)=>hit(x,y)&&!near(x,y,a)&&!near(x,y,b);
+      const g=new Float64Array(W*H).fill(Infinity),from=new Int32Array(W*H).fill(-1),open=[[0,sx,sy]];g[id(sx,sy)]=0;
+      const hcost=(x,y)=>Math.hypot((x-gx)*16.72,(y-gy)*9.41);let found=false;
+      while(open.length){
+        let bi=0;for(let i=1;i<open.length;i++)if(open[i][0]<open[bi][0])bi=i;
+        const [,x,y]=open[bi];open[bi]=open[open.length-1];open.pop();
+        if(x===gx&&y===gy){found=true;break}
+        for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
+          if(!dx&&!dy)continue;const nx=x+dx,ny=y+dy;if(nx<0||ny<0||nx>=W||ny>=H||blocked(nx,ny))continue;
+          if(dx&&dy&&(blocked(x+dx,y)||blocked(x,y+dy)))continue;
+          const ng=g[id(x,y)]+Math.hypot(dx*16.72,dy*9.41);
+          if(ng<g[id(nx,ny)]){g[id(nx,ny)]=ng;from[id(nx,ny)]=id(x,y);open.push([ng+hcost(nx,ny),nx,ny])}
+        }
+      }
+      if(found){
+        const cells=[];for(let c=id(gx,gy);c>=0;c=from[c])cells.push([c%W,Math.floor(c/W)]);cells.reverse();
+        const pts=[a,...cells.slice(1,-1),b],out=[a];let i=0;
+        while(i<pts.length-1){let j=pts.length-1;while(j>i+1&&!clear(pts[i],pts[j]))j--;out.push(pts[j]);i=j}
+        result=out;break
+      }
+    }
+    if(detourCache.size>4000)detourCache.clear();
+    detourCache.set(key,result);return result;
+  }
+  function detourRun(floor,waypoints){const out=[waypoints[0]];for(let i=1;i<waypoints.length;i++)out.push(...detourLeg(floor,waypoints[i-1],waypoints[i]).slice(1));return out}
   function compileCurve(waypoints,w=art?.width||1672,h=art?.height||941){
     const pts=[];
     for(const p of waypoints){
@@ -450,7 +489,7 @@
         runs.push(cur);
       }else{cur.end=leg.end;cur.waypoints.push(visualPoint(b))}
     }
-    for(const run of runs){run.duration=run.end-run.start;run.curve=compileCurve(run.waypoints,w,h)}
+    for(const run of runs){run.duration=run.end-run.start;run.curve=compileCurve(detourRun(run.floor,run.waypoints),w,h)}
     return runs;
   }
   // Dijkstra over explicit canon edges. Intermediate chairs and stairs are forbidden.
@@ -3781,6 +3820,7 @@
   const residentPaths=new Map();
   function residentSafe(floorId,point,visual,pet=true){
     const floor=floorRegistry.get(floorId);if(!floor||!point||!visual)return false;
+    if([...(floorObstacles[floorId]||[]),...(pet?petOnlyObstacles[floorId]||[]:[])].some(r=>visual[0]>=r[0]&&visual[0]<=r[2]&&visual[1]>=r[1]&&visual[1]<=r[3]))return false;// 2.9.321 painted furniture
     const inside=(p,r)=>p[0]>=r.x&&p[0]<=r.x+r.w&&p[1]>=r.y&&p[1]<=r.y+r.h;
     if(!floor.walkable.some(r=>inside(point,r))||floor.noWalk.some(r=>inside(point,r)))return false;
     const px=[visual[0]*(art?.width||1672)/100,visual[1]*(art?.height||941)/100];
@@ -4039,7 +4079,7 @@
     const left=floor.left+(parent?.clientLeft||0)+node.offsetLeft-width/2,top=floor.top+(parent?.clientTop||0)+node.offsetTop-height;
     return {left,right:left+width,top,bottom:top+height,width,height};
   }
-  globalThis.HaniBuildingScene=Object.freeze({floorRegistry,getFloor:id=>floorIndex.get(id),buildFloorRegistry,validateSpatial,floors,snapshot,projection,profile,spriteSource,residents,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,motion:Object.freeze({gait:distanceGait,sample:sampleMotion,ease:easeRun,curve:compileCurve,sampleCurve,createReactions,stableActorBox,stableSpriteBox,stableMascotBox,effectDurations}),atmosphere:Object.freeze({light:officeLight,background:officeBackground,monitors:workingMonitors,opacity:monitorOpacity}),labels:Object.freeze({priority:statusLabelPriority,place:placeStatusLabels,short:phoneStatusLine}),places:Object.freeze([...places,...(scheduler?.errandPlaces||[]),...(scheduler?.reportPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines,dramaDate,validateDrama:validDramaBank})});
+  globalThis.HaniBuildingScene=Object.freeze({floorRegistry,getFloor:id=>floorIndex.get(id),buildFloorRegistry,validateSpatial,floors,snapshot,projection,profile,spriteSource,residents,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,motion:Object.freeze({detour:detourLeg,obstacles:floorObstacles,gait:distanceGait,sample:sampleMotion,ease:easeRun,curve:compileCurve,sampleCurve,createReactions,stableActorBox,stableSpriteBox,stableMascotBox,effectDurations}),atmosphere:Object.freeze({light:officeLight,background:officeBackground,monitors:workingMonitors,opacity:monitorOpacity}),labels:Object.freeze({priority:statusLabelPriority,place:placeStatusLabels,short:phoneStatusLine}),places:Object.freeze([...places,...(scheduler?.errandPlaces||[]),...(scheduler?.reportPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines,dramaDate,validateDrama:validDramaBank})});
 })();
 /* Read-only Living Office. The Agent Case renderer remains the sole owner of requests, answers and decisions. */
 (() => {
