@@ -1,0 +1,2073 @@
+{
+  "schema": 2,
+  "version": "2.0.0-draft",
+  "author": "세린 연구원 (Gemini · AI플랫폼개발실)",
+  "title": "HANI 빌딩 직원끼리 상호작용 데이터 v2",
+  "rules": {
+    "storageWrites": 0,
+    "aiCalls": 0,
+    "deterministicSeed": "fnv1a32(kstDate + '|' + scope + '|' + id)",
+    "maxLineLength": 16,
+    "lineLengthRule": "공백 포함, 이모지 1개 = 1자 (Array.from(text).length <= 16)",
+    "seatTalkRule": "같은 방 같은 줄 옆자리, spatial-contract-v3.json 좌표 거리 <= 90px",
+    "seatTalkMaxDistancePx": 90,
+    "pairDailyMax": 2,
+    "lineSetCooldownDays": 7,
+    "perFloorPerHour": [2, 4],
+    "chairmanAddress": "회장님",
+    "mutualFacingRequired": true,
+    "skipBusyActors": ["meeting", "chairman_report"],
+    "forbidden": ["appearance", "romance", "bullying", "kids_competition"],
+    "timeSlots": {
+      "morning": { "label": "아침", "range": ["09:00", "11:00"], "note": "11:00~11:30 전환 구간은 morning 가중치 승계" },
+      "lunch": { "label": "점심", "range": ["11:30", "13:30"] },
+      "afternoon": { "label": "오후", "range": ["13:30", "17:00"] },
+      "evening": { "label": "저녁", "range": ["17:00", "19:00"] },
+      "overtime": { "label": "야근", "range": ["19:00", "24:00"] }
+    }
+  },
+  "relations": [
+    {
+      "a": "hani",
+      "b": "naeun",
+      "type": "가족 같은 정",
+      "note": "창립 초기 최고참 절친, 일이 커져도 서로의 생활과 밥부터 챙김",
+      "crossFloor": true,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_naeun",
+      "visitNote": "4F 하니가 2F life 방 나은(life-a: 510,175) 바로 옆 side_desk_naeun(468,175, 거리 42px)에 서서 대화"
+    },
+    {
+      "a": "hani",
+      "b": "hina",
+      "type": "티격태격 케미",
+      "note": "창립 동기 선의의 라이벌, 자주 놀리다 결정적 순간엔 가장 먼저 편듦",
+      "crossFloor": true,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_hina",
+      "visitNote": "4F 하니가 2F life 방 히나(life-b: 580,175) 옆 side_desk_hina(538,175, 거리 42px)에 멈춰 서서 대화"
+    },
+    {
+      "a": "hani",
+      "b": "gaeun",
+      "type": "업무 파트너",
+      "note": "전략 일정과 회의 사이 이동 시간 10분 사수를 두고 호흡을 맞춤",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_secretary_desk",
+      "visitNote": "4F 하니가 같은 층 비서실 가은(secretary_desk: 370,175) 옆 side_secretary_desk(328,175, 거리 42px)에 섬"
+    },
+    {
+      "a": "hani",
+      "b": "yuna",
+      "type": "선후배·멘토",
+      "note": "전무가 라우팅 기준을 짚어 주고 막내가 맥락을 익히며 성장",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_yuna_east",
+      "visitNote": "4F 하니가 비서실 유나(desk_yuna_east: 505,230) 바로 앞 side_desk_yuna_east(505,270, 거리 40px)에 섬"
+    },
+    {
+      "a": "hani",
+      "b": "ieum",
+      "type": "선후배·멘토",
+      "note": "4F 사수로서 기록 맥락과 완료 닫기 기준을 함께 맞춤",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_yuna",
+      "visitNote": "4F 하니가 비서실 이음(desk_yuna: 480,175) 옆 side_desk_yuna(438,175, 거리 42px)에 멈춰 섬"
+    },
+    {
+      "a": "hani",
+      "b": "mir",
+      "type": "업무 파트너",
+      "note": "사람의 선택 이유와 놓친 패턴 질문을 주고받는 대화 파트너",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_mir_station",
+      "visitNote": "4F 하니가 mir_nook 방 미르(mir_station: 745,540) 옆 side_mir_station(703,540, 거리 42px)에 기립 대면"
+    },
+    {
+      "a": "gaeun",
+      "b": "yuna",
+      "type": "단짝",
+      "note": "4F 비서실 운영 콤비, 가은이 시간 흐름·유나가 정보 흐름을 담당",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_yuna_east",
+      "visitNote": "가은(370,175)과 유나(505,230) 거리가 145.8px(>90px)이므로 side_desk_yuna_east(505,270)로 이동해 대화"
+    },
+    {
+      "a": "gaeun",
+      "b": "ieum",
+      "type": "업무 파트너",
+      "note": "4F 비서실 안에서 일정 여유와 기록 완료 상태를 교차 확인",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_yuna",
+      "visitNote": "가은(370,175)과 이음(480,175) 거리가 110px(>90px)이므로 side_desk_yuna(438,175)로 이동해 대화"
+    },
+    {
+      "a": "yuna",
+      "b": "ieum",
+      "type": "단짝",
+      "note": "4F 나란한 책상에서 접수 태그와 기록 파일철을 서로 이어 줌",
+      "crossFloor": false,
+      "seatTalk": true,
+      "visitAnchor": "side_desk_yuna",
+      "visitNote": "유나(505,230)와 이음(480,175) 거리가 spatial 60.4px(<=90px, art-map 동일 y=76% 옆자리)로 seatTalk 가능, 방문 시 side_desk_yuna(438,175)"
+    },
+    {
+      "a": "yuna",
+      "b": "mir",
+      "type": "단짝",
+      "note": "'제가요?!'와 '왜?'로 회사 문맥과 감정을 함께 배우는 호기심 동료",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_mir_station",
+      "visitNote": "4F 비서실 유나가 mir_nook 미르 옆 side_mir_station(703,540, 거리 42px)에 서서 대화"
+    },
+    {
+      "a": "ieum",
+      "b": "mir",
+      "type": "어색하지만 존중",
+      "note": "조용한 기록자와 패턴 관찰자가 짧지만 정확한 문맥을 나눔",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_mir_station",
+      "visitNote": "4F 비서실 이음이 mir_nook 미르 옆 side_mir_station(703,540, 거리 42px)에 서서 대화"
+    },
+    {
+      "a": "seoyun",
+      "b": "dohyun",
+      "type": "업무 파트너",
+      "note": "설계와 재현·구현의 호흡이 가장 빠른 3F 개발실 핵심 콤비",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_dohyun",
+      "visitNote": "서윤(130,175)과 도연(290,175) 거리가 160px(>90px)이므로 side_desk_dohyun(248,175, 거리 42px)으로 이동"
+    },
+    {
+      "a": "seoyun",
+      "b": "yuri",
+      "type": "업무 파트너",
+      "note": "'설계 완료와 QA 완료는 다릅니다'를 상호 존중하는 검증 파트너",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_yuri",
+      "visitNote": "서윤(130,175)과 유리(450,245) 거리가 327.6px이므로 side_desk_yuri(500,245, 거리 50px)로 이동"
+    },
+    {
+      "a": "seoyun",
+      "b": "serin",
+      "type": "선후배·멘토",
+      "note": "세린의 자동화 가설을 서윤이 기존 구조 영향 범위 안에서 다듬어 줌",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_serin",
+      "visitNote": "서윤(130,175)과 세린(450,175) 거리가 320px이므로 side_desk_serin(408,175, 거리 42px)으로 이동"
+    },
+    {
+      "a": "seoyun",
+      "b": "arin",
+      "type": "티격태격 케미",
+      "note": "시스템 구조 보존 vs 사용자 화면 단순화를 두고 건설적으로 맞섬",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_arin",
+      "visitNote": "서윤(130,175)과 아린(770,175) 거리가 640px이므로 side_desk_arin(728,175, 거리 42px)으로 이동"
+    },
+    {
+      "a": "dohyun",
+      "b": "yuri",
+      "type": "티격태격 케미",
+      "note": "'고쳤어요' vs '다시 깨볼게요'로 품질을 끌어올리는 창과 방패",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_yuri",
+      "visitNote": "도연(290,175)과 유리(450,245) 거리가 174.6px(>90px)이므로 side_desk_yuri(500,245, 거리 50px)로 이동"
+    },
+    {
+      "a": "dohyun",
+      "b": "serin",
+      "type": "업무 파트너",
+      "note": "세린이 반복 패턴을 찾으면 도연이 즉시 스크립트 줄 수를 계산",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_serin",
+      "visitNote": "도연(290,175)과 세린(450,175) 거리가 160px(>90px)이므로 side_desk_serin(408,175, 거리 42px)으로 이동"
+    },
+    {
+      "a": "dohyun",
+      "b": "arin",
+      "type": "업무 파트너",
+      "note": "UI 2픽셀 여백과 인터랙션을 코드로 정확히 구현해 맞추는 손발",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_arin",
+      "visitNote": "도연(290,175)과 아린(770,175) 거리가 480px이므로 side_desk_arin(728,175, 거리 42px)으로 이동"
+    },
+    {
+      "a": "yuri",
+      "b": "arin",
+      "type": "업무 파트너",
+      "note": "'예쁘긴 한데 모바일서 눌려요?'로 감성과 예외 동작을 함께 잡음",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_arin",
+      "visitNote": "유리(450,245)와 아린(770,175) 거리가 327.6px이므로 side_desk_arin(728,175, 거리 42px)으로 이동"
+    },
+    {
+      "a": "yuri",
+      "b": "serin",
+      "type": "티격태격 케미",
+      "note": "'패턴 보여요!'와 '패턴은 있는데 PASS는 아직이죠'의 근거 체크 케미",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_serin",
+      "visitNote": "유리(450,245)와 세린(450,175)은 앞뒤 다른 줄(dy=70px, art 216px)이므로 side_desk_serin(408,175)으로 이동"
+    },
+    {
+      "a": "serin",
+      "b": "arin",
+      "type": "단짝",
+      "note": "데이터 패턴 카드와 사용자 눈높이 표현을 즐겁게 맞춰 보는 동료",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_arin",
+      "visitNote": "세린(450,175)과 아린(770,175) 거리가 320px이므로 side_desk_arin(728,175, 거리 42px)으로 이동"
+    },
+    {
+      "a": "jieun",
+      "b": "haru",
+      "type": "단짝",
+      "note": "'살 수 있는지는 지은, 살 가치가 있는지는 하루'인 2F 재무실 단짝",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_haru",
+      "visitNote": "지은(130,175)과 하루(240,175) 거리가 110px(>90px)이므로 side_desk_haru(198,175, 거리 42px)로 이동"
+    },
+    {
+      "a": "jieun",
+      "b": "daon",
+      "type": "선후배·멘토",
+      "note": "예산·고정비 검증에 다온의 하방 위험 메모를 연결해 키워 주는 사수",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_daon",
+      "visitNote": "지은(130,175)과 다온(350,175) 거리가 220px이므로 side_desk_daon(308,175, 거리 42px)으로 이동"
+    },
+    {
+      "a": "haru",
+      "b": "daon",
+      "type": "선후배·멘토",
+      "note": "조심스러운 다온의 걱정을 실사용 관점으로 부드럽게 다독여 줌",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_daon",
+      "visitNote": "하루(240,175)와 다온(350,175) 거리가 110px(>90px)이므로 side_desk_daon(308,175, 거리 42px)으로 이동"
+    },
+    {
+      "a": "sua",
+      "b": "taeo",
+      "type": "선후배·멘토",
+      "note": "고객 요구 번역(채원)과 Owner·기한·후속 실행(수아)을 잇는 사수-후배",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "approach_desk_taeo",
+      "visitNote": "side_desk_taeo(405,175)가 채원 좌석과 0px 겹쳐 approach_desk_taeo(405,245, 거리 70px) 선택(모바일 폰 오차 주의)"
+    },
+    {
+      "a": "jieun",
+      "b": "sua",
+      "type": "업무 파트너",
+      "note": "2F 같은 층에서 예산 숫자와 계약 증빙을 나란히 맞추는 파트너",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "approach_desk_sua",
+      "visitNote": "side_desk_sua(106,175)가 수아 좌석과 0px 겹쳐 approach_desk_sua(106,245, 거리 70px) 선택(art상 지은은 별도 임원실이라 seatTalk 제외)"
+    },
+    {
+      "a": "haru",
+      "b": "sua",
+      "type": "업무 파트너",
+      "note": "좋은 도입 선택지를 실제 운영 담당자와 기한 관점으로 함께 점검",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "approach_desk_sua",
+      "visitNote": "하루(240,175)가 수아(106,175) 앞 approach_desk_sua(106,245, 거리 70px)로 이동(side_desk_sua는 spatial 0px 겹침)"
+    },
+    {
+      "a": "taeo",
+      "b": "daon",
+      "type": "어색하지만 존중",
+      "note": "차분하고 정중한 2F 동료로, 고객 요구와 리스크 근거를 조용히 나눔",
+      "crossFloor": false,
+      "seatTalk": true,
+      "visitAnchor": "side_desk_daon",
+      "visitNote": "채원(405,175)과 다온(350,175)은 같은 줄(y=175) 55px(<=90px)로 seatTalk 가능, 방문 시 왼쪽 side_desk_daon(308,175)"
+    },
+    {
+      "a": "naeun",
+      "b": "hina",
+      "type": "가족 같은 정",
+      "note": "창립 최고참 언니·동생 단짝, 잠·회복 챙김과 애교가 자연스럽게 오감",
+      "crossFloor": false,
+      "seatTalk": true,
+      "visitAnchor": "approach_desk_hina",
+      "visitNote": "나은(510,175)과 히나(580,175)는 같은 줄 70px(<=90px)로 seatTalk 가능, 방문 시 나은과 28px 겹치는 side 대신 앞쪽 approach_desk_hina(538,245)"
+    },
+    {
+      "a": "naeun",
+      "b": "sooyeon",
+      "type": "가족 같은 정",
+      "note": "아침 운동 과다를 걱정하는 언니와 워치 수치를 내미는 동생",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_sooyeon",
+      "visitNote": "나은(510,175)과 수연(790,175) 거리가 280px이므로 side_desk_sooyeon(748,175, 거리 42px)으로 이동"
+    },
+    {
+      "a": "naeun",
+      "b": "haru",
+      "type": "단짝",
+      "note": "운동·생활용품의 실제 습관 적합성을 함께 고르는 현실 생활 파트너",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_haru",
+      "visitNote": "나은(life, 510,175)이 하루(finance, 240,175) 옆 side_desk_haru(198,175, 거리 42px)로 이동"
+    },
+    {
+      "a": "naeun",
+      "b": "yoonseul",
+      "type": "선후배·멘토",
+      "note": "책 읽느라 끼니·스트레칭 거르는 윤슬에게 따뜻한 차와 휴식을 챙김",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_yoonseul",
+      "visitNote": "나은(510,175)과 윤슬(650,175) 거리가 140px(>90px)이므로 side_desk_yoonseul(608,175, 거리 42px)으로 이동"
+    },
+    {
+      "a": "hina",
+      "b": "minji",
+      "type": "단짝",
+      "note": "히나의 솔직한 리액션을 민지가 포착하고 함께 웃는 밝은 케미",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_minji",
+      "visitNote": "히나(580,175)와 민지(720,175) 거리가 140px(>90px)이므로 side_desk_minji(678,175, 거리 42px)로 이동"
+    },
+    {
+      "a": "hina",
+      "b": "yoonseul",
+      "type": "선후배·멘토",
+      "note": "윤슬의 배경 자료 조사와 히나의 정확한 학습 검수가 바통을 주고받음",
+      "crossFloor": false,
+      "seatTalk": true,
+      "visitAnchor": "side_desk_yoonseul",
+      "visitNote": "히나(580,175)와 윤슬(650,175)은 같은 줄 70px(<=90px)로 seatTalk 가능, approach_desk_yoonseul은 art 9.4px 겹침이라 방문 시 side_desk_yoonseul(608,175)"
+    },
+    {
+      "a": "minji",
+      "b": "sooyeon",
+      "type": "단짝",
+      "note": "'일단 가, 내가 찍을게'로 평범한 외출도 콘텐츠로 만드는 현장 단짝",
+      "crossFloor": false,
+      "seatTalk": true,
+      "visitAnchor": "approach_desk_sooyeon",
+      "visitNote": "민지(720,175)와 수연(790,175)은 같은 줄 70px(<=90px)로 seatTalk 가능, 방문 시 민지와 28px 겹치는 side 대신 앞쪽 approach_desk_sooyeon(748,245)"
+    },
+    {
+      "a": "minji",
+      "b": "haru",
+      "type": "티격태격 케미",
+      "note": "감성 굿즈에 꽂힌 민지에게 '집에 둘 데 있어?'라고 팩폭하는 콤비",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_haru",
+      "visitNote": "민지(life, 720,175)가 하루(finance, 240,175) 옆 side_desk_haru(198,175, 거리 42px)로 이동"
+    },
+    {
+      "a": "sooyeon",
+      "b": "haru",
+      "type": "티격태격 케미",
+      "note": "'일단 가자!' vs '뭐 챙길 건데?'로 여행 준비 속도를 맞추는 사이",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_haru",
+      "visitNote": "수연(life, 790,175)이 하루(finance, 240,175) 옆 side_desk_haru(198,175, 거리 42px)로 이동"
+    },
+    {
+      "a": "daon",
+      "b": "yoonseul",
+      "type": "단짝",
+      "note": "2F 동기처럼 차분히 각자 메모지와 책을 들고 정보를 나누는 사이",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_yoonseul",
+      "visitNote": "다온(finance, 350,175)이 윤슬(life, 650,175) 옆 side_desk_yoonseul(608,175, 거리 42px)로 이동"
+    },
+    {
+      "a": "hani",
+      "b": "seoyun",
+      "type": "업무 파트너",
+      "note": "4F 전략 Why/What과 3F 아키텍처 How를 잇는 핵심 협업",
+      "crossFloor": true,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_seoyun",
+      "visitNote": "4F 하니가 엘베로 3F platform 방 서윤(dev-lead: 130,175) 옆 side_desk_seoyun(88,175, 거리 42px)에 섬"
+    },
+    {
+      "a": "hani",
+      "b": "jieun",
+      "type": "티격태격 케미",
+      "note": "'전략적으로 필요해요' vs '예산은요?'로 4F·2F를 오가는 현실 체크",
+      "crossFloor": true,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_jieun",
+      "visitNote": "4F 하니가 엘베로 2F finance 방 지은(finance-a: 130,175) 옆 side_desk_jieun(88,175, 거리 42px)에 섬"
+    },
+    {
+      "a": "hani",
+      "b": "sua",
+      "type": "업무 파트너",
+      "note": "전략 안건에 Owner와 Due Date를 붙여 실행으로 내리는 신뢰 파트너",
+      "crossFloor": true,
+      "seatTalk": false,
+      "visitAnchor": "approach_desk_sua",
+      "visitNote": "4F 하니가 엘베로 2F 수아(106,175) 앞 approach_desk_sua(106,245, 거리 70px)에 섬(side_desk_sua는 spatial 0px 겹침)"
+    },
+    {
+      "a": "hani",
+      "b": "arin",
+      "type": "티격태격 케미",
+      "note": "기능 우선순위와 화면 정보 밀도를 두고 건설적으로 맞붙는 사이",
+      "crossFloor": true,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_arin",
+      "visitNote": "4F 하니가 엘베로 3F 아린(dev-design: 770,175) 옆 side_desk_arin(728,175, 거리 42px)에 섬"
+    },
+    {
+      "a": "seoyun",
+      "b": "ieum",
+      "type": "선후배·멘토",
+      "note": "3F-4F 멘토-멘티, 개발 기록과 시스템 문맥을 차분히 이어 줌",
+      "crossFloor": true,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_yuna",
+      "visitNote": "3F 서윤이 엘베로 4F 비서실 이음(desk_yuna: 480,175) 옆 side_desk_yuna(438,175, 거리 42px)에 섬"
+    },
+    {
+      "a": "seoyun",
+      "b": "taeo",
+      "type": "업무 파트너",
+      "note": "고객의 '버튼 하나' 요청을 2F→3F로 가져와 기술 제약과 번역",
+      "crossFloor": true,
+      "seatTalk": false,
+      "visitAnchor": "approach_desk_taeo",
+      "visitNote": "3F 서윤이 엘베로 2F 채원(405,175) 앞 approach_desk_taeo(405,245, 거리 70px)에 섬(side_desk_taeo는 spatial 0px 겹침)"
+    },
+    {
+      "a": "seoyun",
+      "b": "mir",
+      "type": "어색하지만 존중",
+      "note": "기술 구조와 존재의 맥락을 서로 섣불리 단정하지 않고 존중",
+      "crossFloor": true,
+      "seatTalk": false,
+      "visitAnchor": "side_mir_station",
+      "visitNote": "3F 서윤이 엘베로 4F mir_nook 미르 옆 side_mir_station(703,540, 거리 42px)에 섬"
+    },
+    {
+      "a": "arin",
+      "b": "taeo",
+      "type": "업무 파트너",
+      "note": "고객 요구사항과 실제 사용자 경험의 간극을 2F·3F 오가며 조율",
+      "crossFloor": true,
+      "seatTalk": false,
+      "visitAnchor": "approach_desk_taeo",
+      "visitNote": "3F 아린이 엘베로 2F 채원(405,175) 앞 approach_desk_taeo(405,245, 거리 70px)에 섬"
+    },
+    {
+      "a": "arin",
+      "b": "hina",
+      "type": "업무 파트너",
+      "note": "학습 문제의 정확성과 학습 화면의 가독성을 함께 맞추는 협업",
+      "crossFloor": true,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_hina",
+      "visitNote": "3F 아린이 엘베로 2F life 방 히나(580,175) 옆 side_desk_hina(538,175, 거리 42px)에 섬"
+    },
+    {
+      "a": "serin",
+      "b": "hina",
+      "type": "업무 파트너",
+      "note": "오답 데이터 패턴과 실제 학습자 맥락을 연결하는 분석-교육 파트너",
+      "crossFloor": true,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_hina",
+      "visitNote": "3F 세린이 엘베로 2F life 방 히나(580,175) 옆 side_desk_hina(538,175, 거리 42px)에 섬"
+    },
+    {
+      "a": "serin",
+      "b": "yoonseul",
+      "type": "단짝",
+      "note": "3F 실험과 2F 독서·러닝 자료를 연결하며 신나게 수다 떠는 파트너",
+      "crossFloor": true,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_yoonseul",
+      "visitNote": "3F 세린이 엘베로 2F life 방 윤슬(650,175) 옆 side_desk_yoonseul(608,175, 거리 42px)에 섬"
+    },
+    {
+      "a": "naeun",
+      "b": "sua",
+      "type": "가족 같은 정",
+      "note": "야근하는 수아에게 '일은 끝나도 사람은 안 끝나야지'라며 밥부터 챙김",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "approach_desk_sua",
+      "visitNote": "나은(life, 510,175)이 수아(finance, 106,175) 앞 approach_desk_sua(106,245, 거리 70px)로 이동"
+    },
+    {
+      "a": "sua",
+      "b": "yuna",
+      "type": "선후배·멘토",
+      "note": "4F 유나가 받은 요청에 2F 수아가 후속 조치 기준을 가르쳐 줌",
+      "crossFloor": true,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_yuna_east",
+      "visitNote": "2F 수아가 엘베로 4F 비서실 유나(505,230) 앞 side_desk_yuna_east(505,270, 거리 40px)에 섬"
+    },
+    {
+      "a": "minji",
+      "b": "yuna",
+      "type": "티격태격 케미",
+      "note": "'제가요?!' 순간을 찍으려는 선배와 카메라 꺼달라는 막내의 케미",
+      "crossFloor": true,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_yuna_east",
+      "visitNote": "2F 민지가 엘베로 4F 비서실 유나(505,230) 앞 side_desk_yuna_east(505,270, 거리 40px)에 섬"
+    },
+    {
+      "a": "mir",
+      "b": "sooyeon",
+      "type": "티격태격 케미",
+      "note": "'왜 지금 가?' vs '가보면 알아!'로 이성과 경험이 부딪히는 문답",
+      "crossFloor": true,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_sooyeon",
+      "visitNote": "4F 미르가 엘베로 2F life 방 수연(790,175) 옆 side_desk_sooyeon(748,175, 거리 42px)에 기립 대면"
+    },
+    {
+      "a": "mir",
+      "b": "minji",
+      "type": "단짝",
+      "note": "'그건 감동코드야'라며 감정 서사와 패턴 질문을 나누는 관찰자 콤비",
+      "crossFloor": true,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_minji",
+      "visitNote": "4F 미르가 엘베로 2F life 방 민지(720,175) 옆 side_desk_minji(678,175, 거리 42px)에 기립 대면"
+    },
+    {
+      "a": "jieun",
+      "b": "yuna",
+      "type": "어색하지만 존중",
+      "note": "숫자·증빙 기준을 차분히 배워가는 신입과 정중히 가르치는 부장",
+      "crossFloor": true,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_yuna_east",
+      "visitNote": "2F 지은이 엘베로 4F 비서실 유나(505,230) 앞 side_desk_yuna_east(505,270, 거리 40px)에 섬"
+    },
+    {
+      "a": "gaeun",
+      "b": "daon",
+      "type": "어색하지만 존중",
+      "note": "일정 겹침 없는지 조심스레 묻는 후배와 15분 여유로 안심시키는 선배",
+      "crossFloor": true,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_daon",
+      "visitNote": "4F 가은이 엘베로 2F finance 방 다온(350,175) 옆 side_desk_daon(308,175, 거리 42px)에 섬"
+    },
+    {
+      "a": "yuri",
+      "b": "minji",
+      "type": "어색하지만 존중",
+      "note": "꼼꼼한 QA와 자유로운 촬영감독이 화면 앞에서 부딪히다 인정",
+      "crossFloor": true,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_minji",
+      "visitNote": "3F 유리가 엘베로 2F life 방 민지(720,175) 옆 side_desk_minji(678,175, 거리 42px)에 섬"
+    },
+    {
+      "a": "dohyun",
+      "b": "minji",
+      "type": "어색하지만 존중",
+      "note": "말 짧은 개발자와 호기심 많은 기록자가 틈새로 한마디씩 나눔",
+      "crossFloor": true,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_minji",
+      "visitNote": "3F 도연이 엘베로 2F life 방 민지(720,175) 옆 side_desk_minji(678,175, 거리 42px)에 섬"
+    },
+    {
+      "a": "jieun",
+      "b": "naeun",
+      "type": "가족 같은 정",
+      "note": "2F 팬트리에서 서로 눈 쉬게 차 챙겨 주는 같은 층 팀장 정",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_naeun",
+      "visitNote": "지은(finance, 130,175)과 나은(life, 510,175)은 방이 다르므로 side_desk_naeun(468,175, 거리 42px)으로 이동"
+    },
+    {
+      "a": "hina",
+      "b": "sooyeon",
+      "type": "가족 같은 정",
+      "note": "2F 라이프팀에서 밝게 에너지와 간식을 나누며 서로 응원하는 사이",
+      "crossFloor": false,
+      "seatTalk": false,
+      "visitAnchor": "side_desk_sooyeon",
+      "visitNote": "히나(580,175)와 수연(790,175) 거리가 210px(>90px)이므로 side_desk_sooyeon(748,175, 거리 42px)으로 이동"
+    }
+  ],
+  "kinds": [
+    {
+      "id": "work_question",
+      "title": "업무 질문",
+      "initiator": "질문자(a)가 상대(b) 자리 옆(visitAnchor)으로 걸어가거나 옆자리에서 고개 돌림",
+      "turns": [2, 3],
+      "exit": "답을 메모하는 끄덕임(nod) 1초 후 자기 자리로 걸어 복귀(seatTalk면 정자세 복귀)",
+      "weights": {
+        "base": 1.4,
+        "mode": "seat_or_visit",
+        "timeSlot": { "morning": 1.6, "lunch": 0.5, "afternoon": 1.3, "evening": 0.7, "overtime": 0.4 },
+        "weekday": { "mon": 1.6, "tue": 1.2, "wed": 1.0, "thu": 1.1, "fri": 0.8, "sat": 0.5, "sun": 0.5 },
+        "calendar": { "payday25": 1.0, "monthEnd": 1.2, "birthday": 0.8 },
+        "chairman": { "present": 1.35, "absent": 0.9 }
+      }
+    },
+    {
+      "id": "help_thanks",
+      "title": "도움 요청과 감사",
+      "initiator": "요청자(a)가 상대(b) visitAnchor로 다가가 함께 화면·문서를 보고 감사를 전함",
+      "turns": [3, 4],
+      "exit": "서로 살짝 기울여 웃음(lean→nod) 후 요청자(a)가 자기 자리로 복귀",
+      "weights": {
+        "base": 1.2,
+        "mode": "visit_only",
+        "timeSlot": { "morning": 1.3, "lunch": 0.6, "afternoon": 1.4, "evening": 1.0, "overtime": 0.8 },
+        "weekday": { "mon": 1.3, "tue": 1.2, "wed": 1.1, "thu": 1.1, "fri": 0.9, "sat": 0.6, "sun": 0.6 },
+        "calendar": { "payday25": 1.0, "monthEnd": 1.4, "birthday": 1.0 },
+        "chairman": { "present": 1.2, "absent": 1.0 }
+      }
+    },
+    {
+      "id": "review_feedback",
+      "title": "리뷰·피드백",
+      "initiator": "검토자 또는 작성자(a)가 상대(b) 자리·스탠드업 보드로 걸어가 항목별로 맞춰 봄",
+      "turns": [3, 4],
+      "exit": "체크 완료 끄덕임(nod) 후 각자 홈 좌석으로 도보 복귀",
+      "weights": {
+        "base": 1.25,
+        "mode": "seat_or_visit",
+        "timeSlot": { "morning": 1.1, "lunch": 0.4, "afternoon": 1.5, "evening": 1.2, "overtime": 0.7 },
+        "weekday": { "mon": 1.2, "tue": 1.3, "wed": 1.2, "thu": 1.3, "fri": 1.0, "sat": 0.4, "sun": 0.4 },
+        "calendar": { "payday25": 1.0, "monthEnd": 1.3, "birthday": 0.9 },
+        "chairman": { "present": 1.3, "absent": 0.95 }
+      }
+    },
+    {
+      "id": "small_talk",
+      "title": "일상 잡담",
+      "initiator": "먼저 말 거는 쪽(a)이 팬트리·카페·옆자리에서 날씨·점심·취미로 말문을 염",
+      "turns": [3, 4],
+      "exit": "기분 좋은 미소(lean) 후 자기 자리로 돌아가거나 하던 휴식 이어감",
+      "weights": {
+        "base": 1.3,
+        "mode": "seat_or_visit",
+        "timeSlot": { "morning": 0.8, "lunch": 1.7, "afternoon": 0.9, "evening": 1.3, "overtime": 0.9 },
+        "weekday": { "mon": 0.8, "tue": 1.0, "wed": 1.1, "thu": 1.1, "fri": 1.6, "sat": 1.7, "sun": 1.7 },
+        "calendar": { "payday25": 1.2, "monthEnd": 0.8, "birthday": 1.3 },
+        "chairman": { "present": 0.85, "absent": 1.45 }
+      }
+    },
+    {
+      "id": "snack_share",
+      "title": "간식 나눔",
+      "initiator": "간식을 챙겨 온 사람(a)이 상대(b) visitAnchor로 걸어가 작은 간식([그림 필요: 간식 봉투])을 건넴",
+      "turns": [2, 3],
+      "exit": "고맙게 받아 들며 끄덕임(nod) 후 나눔이(a)는 자리로 복귀",
+      "weights": {
+        "base": 1.0,
+        "mode": "visit_only",
+        "timeSlot": { "morning": 0.6, "lunch": 1.1, "afternoon": 1.5, "evening": 1.2, "overtime": 1.6 },
+        "weekday": { "mon": 0.9, "tue": 1.0, "wed": 1.35, "thu": 1.1, "fri": 1.25, "sat": 1.3, "sun": 1.3 },
+        "calendar": { "payday25": 1.8, "monthEnd": 1.2, "birthday": 1.4 },
+        "chairman": { "present": 0.9, "absent": 1.35 }
+      }
+    },
+    {
+      "id": "praise_cheer",
+      "title": "칭찬·응원",
+      "initiator": "응원하는 사람(a)이 집중 중인 상대(b) 옆에 잠깐 서서 칭찬·응원 한마디를 건넴",
+      "turns": [2, 3],
+      "exit": "쑥스러운 미소(nod) 후 방해되지 않게 조용히 자리로 돌아감",
+      "weights": {
+        "base": 1.0,
+        "mode": "seat_or_visit",
+        "timeSlot": { "morning": 1.0, "lunch": 0.9, "afternoon": 1.3, "evening": 1.4, "overtime": 1.1 },
+        "weekday": { "mon": 1.0, "tue": 1.0, "wed": 1.2, "thu": 1.1, "fri": 1.2, "sat": 1.0, "sun": 1.0 },
+        "calendar": { "payday25": 1.1, "monthEnd": 1.75, "birthday": 1.5 },
+        "chairman": { "present": 1.25, "absent": 1.1 }
+      }
+    },
+    {
+      "id": "comfort_support",
+      "title": "실수·피곤한 날 위로",
+      "initiator": "챙기는 사람(a)이 지치거나 실수한 동료(b)에게 조용히 다가와 다정한 말과 차를 권함",
+      "turns": [3, 4],
+      "exit": "한숨 돌린 뒤 고개 끄덕임(nod), 민지는 진심 순간엔 카메라를 내린 채 복귀",
+      "weights": {
+        "base": 0.75,
+        "mode": "visit_only",
+        "timeSlot": { "morning": 0.7, "lunch": 0.8, "afternoon": 1.1, "evening": 1.4, "overtime": 1.7 },
+        "weekday": { "mon": 1.0, "tue": 1.1, "wed": 1.0, "thu": 1.2, "fri": 0.9, "sat": 0.8, "sun": 0.8 },
+        "calendar": { "payday25": 0.9, "monthEnd": 1.5, "birthday": 0.8 },
+        "chairman": { "present": 0.95, "absent": 1.2 }
+      }
+    },
+    {
+      "id": "banter_joke",
+      "title": "티키타카 농담",
+      "initiator": "장난기 있는 쪽(a)이 단짝·라이벌(b) 근처로 다가가 가벼운 농담을 던짐",
+      "turns": [3, 4],
+      "exit": "서로 피식 웃고 고개 젖히기/끄덕임(lean) 후 흩어짐",
+      "weights": {
+        "base": 1.1,
+        "mode": "seat_or_visit",
+        "timeSlot": { "morning": 0.8, "lunch": 1.5, "afternoon": 1.1, "evening": 1.3, "overtime": 0.8 },
+        "weekday": { "mon": 0.8, "tue": 1.0, "wed": 1.1, "thu": 1.1, "fri": 1.5, "sat": 1.4, "sun": 1.4 },
+        "calendar": { "payday25": 1.2, "monthEnd": 0.85, "birthday": 1.2 },
+        "chairman": { "present": 0.85, "absent": 1.4 }
+      }
+    },
+    {
+      "id": "mild_disagree_makeup",
+      "title": "가벼운 의견 차이와 화해",
+      "initiator": "서로 다른 기준을 가진(a)가 상대(b)에게 확인하러 와서 귀엽게 맞서다 한 걸음씩 양보함",
+      "turns": [4, 4],
+      "exit": "동시 끄덕임(nod)으로 웃으며 합의한 뒤 각자 자리 복귀(싸움·비난 금지)",
+      "weights": {
+        "base": 0.85,
+        "mode": "visit_only",
+        "timeSlot": { "morning": 1.1, "lunch": 0.5, "afternoon": 1.5, "evening": 0.9, "overtime": 0.5 },
+        "weekday": { "mon": 1.1, "tue": 1.2, "wed": 1.1, "thu": 1.2, "fri": 0.9, "sat": 0.5, "sun": 0.5 },
+        "calendar": { "payday25": 1.0, "monthEnd": 1.2, "birthday": 0.7 },
+        "chairman": { "present": 1.15, "absent": 1.0 }
+      }
+    },
+    {
+      "id": "mentoring",
+      "title": "멘토링",
+      "initiator": "선배·사수(a)가 후배(b) 책상 옆(visitAnchor)으로 직접 와서 노하우를 알려 줌",
+      "turns": [3, 4],
+      "exit": "후배(b)가 고개 끄덕이며 필기(nod)하고 선배(a)가 자리로 돌아감",
+      "weights": {
+        "base": 0.95,
+        "mode": "visit_only",
+        "timeSlot": { "morning": 1.4, "lunch": 0.5, "afternoon": 1.4, "evening": 0.7, "overtime": 0.3 },
+        "weekday": { "mon": 1.4, "tue": 1.2, "wed": 1.1, "thu": 1.0, "fri": 0.8, "sat": 0.4, "sun": 0.4 },
+        "calendar": { "payday25": 1.0, "monthEnd": 1.0, "birthday": 0.9 },
+        "chairman": { "present": 1.2, "absent": 1.05 }
+      }
+    },
+    {
+      "id": "cross_dept_collab",
+      "title": "부서 간 협업",
+      "initiator": "요청 부서원(a)이 엘리베이터(elevator_*)를 타고 다른 층 상대(b) visitAnchor로 찾아감",
+      "turns": [3, 4],
+      "exit": "서로 일정·범위 확인 후 엘리베이터를 타고 원래 층 자기 자리로 복귀",
+      "weights": {
+        "base": 0.95,
+        "mode": "visit_only",
+        "timeSlot": { "morning": 1.3, "lunch": 0.4, "afternoon": 1.5, "evening": 0.7, "overtime": 0.3 },
+        "weekday": { "mon": 1.45, "tue": 1.3, "wed": 1.1, "thu": 1.2, "fri": 0.85, "sat": 0.3, "sun": 0.3 },
+        "calendar": { "payday25": 1.0, "monthEnd": 1.3, "birthday": 0.8 },
+        "chairman": { "present": 1.35, "absent": 0.9 }
+      }
+    },
+    {
+      "id": "invite_walk_coffee",
+      "title": "산책·커피 부르기",
+      "initiator": "제안자(a)가 상대(b) 자리로 와서 1F 카페나 2F 팬트리·6F 옥상 같이 가자고 부름",
+      "turns": [2, 3],
+      "exit": "동의하면 나란히 걷거나(walk) 엘리베이터로 휴식 공간에 함께 이동 후 복귀",
+      "weights": {
+        "base": 1.05,
+        "mode": "move_together",
+        "timeSlot": { "morning": 0.8, "lunch": 1.6, "afternoon": 1.4, "evening": 0.9, "overtime": 0.4 },
+        "weekday": { "mon": 0.85, "tue": 1.0, "wed": 1.15, "thu": 1.1, "fri": 1.55, "sat": 1.6, "sun": 1.6 },
+        "calendar": { "payday25": 1.5, "monthEnd": 0.9, "birthday": 1.3 },
+        "chairman": { "present": 0.85, "absent": 1.45 }
+      }
+    },
+    {
+      "id": "secret_whisper",
+      "title": "비밀 프로젝트 소곤소곤",
+      "initiator": "기획자(a)가 주인공 몰래 한쪽 구석·팬트리·라운지로 동료(b)를 불러 소곤소곤 의논함",
+      "turns": [3, 4],
+      "exit": "비밀 사인(nod) 후 시치미 떼고 각자 자리로 빠르게 복귀([그림 필요: 손짓·메모])",
+      "weights": {
+        "base": 0.55,
+        "mode": "visit_only",
+        "timeSlot": { "morning": 0.7, "lunch": 1.3, "afternoon": 1.2, "evening": 1.4, "overtime": 0.6 },
+        "weekday": { "mon": 0.8, "tue": 1.0, "wed": 1.1, "thu": 1.1, "fri": 1.2, "sat": 1.0, "sun": 1.0 },
+        "calendar": { "payday25": 1.1, "monthEnd": 0.8, "birthday": 3.0 },
+        "chairman": { "present": 1.0, "absent": 1.3 }
+      }
+    },
+    {
+      "id": "desk_handoff",
+      "title": "옆자리 인계·마무리",
+      "initiator": "같은 방 옆자리(a)가 앉은 채 몸을 돌려 상대(b)에게 당일 상태와 다음 바통을 넘김",
+      "turns": [2, 3],
+      "exit": "가벼운 손짓이나 고개 끄덕임(nod) 후 각자 정자세로 복귀",
+      "weights": {
+        "base": 1.15,
+        "mode": "seat_only",
+        "timeSlot": { "morning": 0.4, "lunch": 0.5, "afternoon": 0.9, "evening": 1.8, "overtime": 1.4 },
+        "weekday": { "mon": 1.1, "tue": 1.1, "wed": 1.1, "thu": 1.1, "fri": 1.3, "sat": 0.7, "sun": 0.7 },
+        "calendar": { "payday25": 1.0, "monthEnd": 1.4, "birthday": 1.0 },
+        "chairman": { "present": 1.2, "absent": 1.0 }
+      }
+    }
+  ],
+  "lines": [
+    {
+      "id": "L01",
+      "kind": "work_question",
+      "relation": "선후배·멘토",
+      "a": "yuna",
+      "b": "hani",
+      "set": [
+        { "who": "a", "text": "전무님, 이거 어디로 넘겨요?" },
+        { "who": "b", "text": "기한 건은 수아 과장 쪽이야." },
+        { "who": "a", "text": "네! 바로 2층에 넘길게요!" }
+      ]
+    },
+    {
+      "id": "L02",
+      "kind": "work_question",
+      "relation": "업무 파트너",
+      "a": "taeo",
+      "b": "seoyun",
+      "set": [
+        { "who": "a", "text": "리드님, 버튼 요청 가능해요?" },
+        { "who": "b", "text": "기존 경로 안 깨면 가능해요💜" },
+        { "who": "a", "text": "예외 조건만 더 적어올게요." }
+      ]
+    },
+    {
+      "id": "L03",
+      "kind": "work_question",
+      "relation": "단짝",
+      "a": "haru",
+      "b": "jieun",
+      "set": [
+        { "who": "a", "text": "부장님, 영수증 어디 넣어요?" },
+        { "who": "b", "text": "이번 달 비품 폴더 위예요." },
+        { "who": "a", "text": "딱 맞네요, 바로 올려둘게요!" }
+      ]
+    },
+    {
+      "id": "L04",
+      "kind": "work_question",
+      "relation": "어색하지만 존중",
+      "a": "dohyun",
+      "b": "minji",
+      "set": [
+        { "who": "a", "text": "민지님, 4컷 비율 몇이죠?" },
+        { "who": "b", "text": "16대 9예요. 잠깐 볼래요?" },
+        { "who": "a", "text": "확인했어요. 바로 반영할게요☕" }
+      ]
+    },
+    {
+      "id": "L05",
+      "kind": "help_thanks",
+      "relation": "선후배·멘토",
+      "a": "ieum",
+      "b": "seoyun",
+      "set": [
+        { "who": "a", "text": "선배, 이 기록 문맥 맞나요?" },
+        { "who": "b", "text": "응, 기준 SHA만 붙이자." },
+        { "who": "a", "text": "감사합니다! 바로 이어둘게요." },
+        { "who": "b", "text": "고생했어, 차분히 잘 찾았네💜" }
+      ]
+    },
+    {
+      "id": "L06",
+      "kind": "help_thanks",
+      "relation": "선후배·멘토",
+      "a": "daon",
+      "b": "haru",
+      "set": [
+        { "who": "a", "text": "대리님… 표 정렬이 꼬여서요😅" },
+        { "who": "b", "text": "어디 봐요, 이 열만 빼요." },
+        { "who": "a", "text": "한 번에 됐어요! 감사합니다!" }
+      ]
+    },
+    {
+      "id": "L07",
+      "kind": "help_thanks",
+      "relation": "단짝",
+      "a": "yuna",
+      "b": "gaeun",
+      "set": [
+        { "who": "a", "text": "가은님! 오후 동선 맞나요?" },
+        { "who": "b", "text": "10분 비워뒀어요, 괜찮아요." },
+        { "who": "a", "text": "역시 가은님! 큰일 났을 뻔!" }
+      ]
+    },
+    {
+      "id": "L08",
+      "kind": "help_thanks",
+      "relation": "어색하지만 존중",
+      "a": "yuri",
+      "b": "minji",
+      "set": [
+        { "who": "a", "text": "민지님, 스틸컷 원본 있나요?" },
+        { "who": "b", "text": "여기요! 바로 보내드릴게요." },
+        { "who": "a", "text": "대조에 딱이에요! 감사해요." }
+      ]
+    },
+    {
+      "id": "L09",
+      "kind": "review_feedback",
+      "relation": "티격태격 케미",
+      "a": "yuri",
+      "b": "dohyun",
+      "set": [
+        { "who": "b", "text": "책임님, 이번엔 고쳤어요☕" },
+        { "who": "a", "text": "기본 통과. 모바일 회전은요?" },
+        { "who": "b", "text": "어… 5분 안에 잡을게요." },
+        { "who": "a", "text": "기다릴게요. 아주 꼼꼼해요✅" }
+      ]
+    },
+    {
+      "id": "L10",
+      "kind": "review_feedback",
+      "relation": "업무 파트너",
+      "a": "arin",
+      "b": "yuri",
+      "set": [
+        { "who": "a", "text": "버튼 여백 4픽셀 늘렸어요✨" },
+        { "who": "b", "text": "직접 눌러보니 겹침 없네요!" },
+        { "who": "a", "text": "휴, 모바일 PASS 맞죠?🎨" }
+      ]
+    },
+    {
+      "id": "L11",
+      "kind": "review_feedback",
+      "relation": "업무 파트너",
+      "a": "dohyun",
+      "b": "arin",
+      "set": [
+        { "who": "a", "text": "선임님, 간격 수치 맞췄어요☕" },
+        { "who": "b", "text": "카드 숨 쉬는 느낌이 좋아요!" },
+        { "who": "a", "text": "다행이에요. 테스트도 통과요." }
+      ]
+    },
+    {
+      "id": "L12",
+      "kind": "review_feedback",
+      "relation": "선후배·멘토",
+      "a": "taeo",
+      "b": "sua",
+      "set": [
+        { "who": "a", "text": "고객 제안서 3줄 요약입니다." },
+        { "who": "b", "text": "좋아요! 증빙 날짜만 넣죠ㅎㅎ" },
+        { "who": "a", "text": "네, 바로 고쳐 올리겠습니다." }
+      ]
+    },
+    {
+      "id": "L13",
+      "kind": "review_feedback",
+      "relation": "업무 파트너",
+      "a": "hina",
+      "b": "arin",
+      "set": [
+        { "who": "a", "text": "아린님, 퀴즈 글씨가 작아용🐰" },
+        { "who": "b", "text": "폰 글씨 한 단계 키울까요?" },
+        { "who": "a", "text": "좋아용! 눈에 쏙 들어오겠네용" }
+      ]
+    },
+    {
+      "id": "L14",
+      "kind": "small_talk",
+      "relation": "단짝",
+      "a": "minji",
+      "b": "sooyeon",
+      "set": [
+        { "who": "b", "text": "오늘 점심 날씨 완전 봄이야!" },
+        { "who": "a", "text": "나갈래? 나도 카메라 챙겼어." },
+        { "who": "b", "text": "역시! 20분 산책하고 오자!" }
+      ]
+    },
+    {
+      "id": "L15",
+      "kind": "small_talk",
+      "relation": "단짝",
+      "a": "daon",
+      "b": "yoonseul",
+      "set": [
+        { "who": "b", "text": "다온님, 주말 책 골랐어요?📚" },
+        { "who": "a", "text": "추리 소설… 반전이 무섭대요😅" },
+        { "who": "b", "text": "저도 읽고 꼭 후기 나눠요!🔖" }
+      ]
+    },
+    {
+      "id": "L16",
+      "kind": "small_talk",
+      "relation": "가족 같은 정",
+      "a": "naeun",
+      "b": "hani",
+      "set": [
+        { "who": "a", "text": "하니야, 어제도 늦게 잤지?" },
+        { "who": "b", "text": "들켰네… 아이디어 정리하다가♡" },
+        { "who": "a", "text": "오늘은 11시 전에 꼭 자!" }
+      ]
+    },
+    {
+      "id": "L17",
+      "kind": "small_talk",
+      "relation": "단짝",
+      "a": "mir",
+      "b": "minji",
+      "set": [
+        { "who": "a", "text": "왜 비 오면 카페가 붐벼?" },
+        { "who": "b", "text": "빗소리에 마음이 포근해지거든." },
+        { "who": "a", "text": "소리랑 기분이 연결되네." }
+      ]
+    },
+    {
+      "id": "L18",
+      "kind": "small_talk",
+      "relation": "어색하지만 존중",
+      "a": "taeo",
+      "b": "daon",
+      "set": [
+        { "who": "a", "text": "다온님, 점심 메뉴 정했어요?" },
+        { "who": "b", "text": "혹시… 줄 짧은 곳 갈래요?😅" },
+        { "who": "a", "text": "좋죠, 조용한 백반집 가시죠." }
+      ]
+    },
+    {
+      "id": "L19",
+      "kind": "snack_share",
+      "relation": "가족 같은 정",
+      "a": "naeun",
+      "b": "sua",
+      "set": [
+        { "who": "a", "text": "수아야, 견과류 두고 갈게!" },
+        { "who": "b", "text": "앗, 안 그래도 배고팠어요ㅎㅎ" },
+        { "who": "a", "text": "일만 말고 꼭 챙겨 먹어!" }
+      ]
+    },
+    {
+      "id": "L20",
+      "kind": "snack_share",
+      "relation": "업무 파트너",
+      "a": "serin",
+      "b": "dohyun",
+      "set": [
+        { "who": "a", "text": "선임님!! 초콜릿 드세요!!✨" },
+        { "who": "b", "text": "오, 딱 당 떨어질 때였어요☕" },
+        { "who": "a", "text": "스크립트 응원 간식이에요!" }
+      ]
+    },
+    {
+      "id": "L21",
+      "kind": "snack_share",
+      "relation": "단짝",
+      "a": "jieun",
+      "b": "haru",
+      "set": [
+        { "who": "a", "text": "하루 대리, 귤 챙겨왔어요." },
+        { "who": "b", "text": "오, 달아요! 비품 예산이죠?" },
+        { "who": "a", "text": "제 사비예요. 맛만 보세요." }
+      ]
+    },
+    {
+      "id": "L22",
+      "kind": "snack_share",
+      "relation": "어색하지만 존중",
+      "a": "gaeun",
+      "b": "daon",
+      "set": [
+        { "who": "a", "text": "다온님, 4층 쿠키 남아서요." },
+        { "who": "b", "text": "고맙습니다… 달달한 편인가요😅" },
+        { "who": "a", "text": "담백하니 부담 없이 드세요." }
+      ]
+    },
+    {
+      "id": "L23",
+      "kind": "praise_cheer",
+      "relation": "업무 파트너",
+      "a": "hani",
+      "b": "sua",
+      "set": [
+        { "who": "a", "text": "수아씨, 이번 미팅 깔끔했어♡" },
+        { "who": "b", "text": "네?! 칭찬에 약하다구요ㅎㅎ" },
+        { "who": "a", "text": "잘했으니까! 오후도 파이팅!" }
+      ]
+    },
+    {
+      "id": "L24",
+      "kind": "praise_cheer",
+      "relation": "업무 파트너",
+      "a": "seoyun",
+      "b": "dohyun",
+      "set": [
+        { "who": "a", "text": "선임님, 아까 패치 빨랐어요💜" },
+        { "who": "b", "text": "범위를 잘 나눠주신 덕분이죠☕" },
+        { "who": "a", "text": "릴리스 든든해요. 고마워요!" }
+      ]
+    },
+    {
+      "id": "L25",
+      "kind": "praise_cheer",
+      "relation": "선후배·멘토",
+      "a": "hina",
+      "b": "yoonseul",
+      "set": [
+        { "who": "a", "text": "오답 정리 카드 백점이야용!🐰" },
+        { "who": "b", "text": "과장님 칭찬 들으니 힘나요!📚" },
+        { "who": "a", "text": "다음 단원도 이대로 가자용♡" }
+      ]
+    },
+    {
+      "id": "L26",
+      "kind": "praise_cheer",
+      "relation": "가족 같은 정",
+      "a": "jieun",
+      "b": "naeun",
+      "set": [
+        { "who": "a", "text": "차장님 덕분에 공기가 좋네요." },
+        { "who": "b", "text": "부장님이 잘 챙겨주신 덕이죠!" },
+        { "who": "a", "text": "월말 마감도 같이 넘겨봅시다." }
+      ]
+    },
+    {
+      "id": "L27",
+      "kind": "comfort_support",
+      "relation": "가족 같은 정",
+      "a": "naeun",
+      "b": "hina",
+      "set": [
+        { "who": "a", "text": "히나야, 오타로 기죽지 마." },
+        { "who": "b", "text": "언니… 실수해서 부끄러워용😢" },
+        { "who": "a", "text": "실수할 수도 있지! 차 마셔." },
+        { "who": "b", "text": "헤헤♡ 언니 있어서 괜찮아용!" }
+      ]
+    },
+    {
+      "id": "L28",
+      "kind": "comfort_support",
+      "relation": "선후배·멘토",
+      "a": "seoyun",
+      "b": "ieum",
+      "set": [
+        { "who": "b", "text": "선배, 기록이 자꾸 꼬여요…" },
+        { "who": "a", "text": "다 헷갈려. 숨부터 고르자." },
+        { "who": "b", "text": "네… 다시 천천히 이어볼게요!" }
+      ]
+    },
+    {
+      "id": "L29",
+      "kind": "comfort_support",
+      "relation": "선후배·멘토",
+      "a": "haru",
+      "b": "daon",
+      "set": [
+        { "who": "b", "text": "제가 너무 걱정만 말했나요…😅" },
+        { "who": "a", "text": "미리 챙겨줘서 다들 든든해요." },
+        { "who": "b", "text": "휴… 말씀 들으니 놓이네요." }
+      ]
+    },
+    {
+      "id": "L30",
+      "kind": "comfort_support",
+      "relation": "티격태격 케미",
+      "a": "minji",
+      "b": "yuna",
+      "set": [
+        { "who": "b", "text": "선배, 메모 전달 놓쳤어요…" },
+        { "who": "a", "text": "괜찮아, 지금 보내면 돼." },
+        { "who": "b", "text": "어, 안 찍어요? …감사해요!" }
+      ]
+    },
+    {
+      "id": "L31",
+      "kind": "banter_joke",
+      "relation": "티격태격 케미",
+      "a": "hani",
+      "b": "hina",
+      "set": [
+        { "who": "a", "text": "아직도 만년 과장 할 거야?" },
+        { "who": "b", "text": "과장 배지가 제일 예뻐용!🐰" },
+        { "who": "a", "text": "회장님 오면 바로 갈 거면서♡" },
+        { "who": "b", "text": "あれ？😳 전무님도 같잖아용!" }
+      ]
+    },
+    {
+      "id": "L32",
+      "kind": "banter_joke",
+      "relation": "티격태격 케미",
+      "a": "minji",
+      "b": "haru",
+      "set": [
+        { "who": "a", "text": "이 컵 영화 소품 같지 않아?" },
+        { "who": "b", "text": "예쁜데 씻기 불편한 모양이야." },
+        { "who": "a", "text": "컷! 감성 파괴자 등장했네!" }
+      ]
+    },
+    {
+      "id": "L33",
+      "kind": "banter_joke",
+      "relation": "티격태격 케미",
+      "a": "mir",
+      "b": "sooyeon",
+      "set": [
+        { "who": "a", "text": "왜 계획 없이 옥상으로 뛰어?" },
+        { "who": "b", "text": "하늘 보는데 계획이 필요해?!" },
+        { "who": "a", "text": "가보면 안다… 또 그 답이네." }
+      ]
+    },
+    {
+      "id": "L34",
+      "kind": "banter_joke",
+      "relation": "단짝",
+      "a": "mir",
+      "b": "yuna",
+      "set": [
+        { "who": "a", "text": "'제가요?!' 오늘 3번째야." },
+        { "who": "b", "text": "제가요?! 아, 네 번째네요!" },
+        { "who": "a", "text": "적응 속도가 보이네. 헤헤." }
+      ]
+    },
+    {
+      "id": "L35",
+      "kind": "banter_joke",
+      "relation": "가족 같은 정",
+      "a": "hina",
+      "b": "sooyeon",
+      "set": [
+        { "who": "a", "text": "수연아, 운동화 또 챙겼네용!" },
+        { "who": "b", "text": "점심에 한 바퀴 뛰실래요?" },
+        { "who": "a", "text": "전 팬트리 당 충전 갈래용🐰" }
+      ]
+    },
+    {
+      "id": "L36",
+      "kind": "mild_disagree_makeup",
+      "relation": "티격태격 케미",
+      "a": "seoyun",
+      "b": "arin",
+      "set": [
+        { "who": "a", "text": "이 상태값은 꼭 보여야 해요." },
+        { "who": "b", "text": "사용자는 단순해야 편한데요✨" },
+        { "who": "a", "text": "작은 툴팁으로만 남길까요?" },
+        { "who": "b", "text": "오, 깔끔하네요! 합의해요🎨" }
+      ]
+    },
+    {
+      "id": "L37",
+      "kind": "mild_disagree_makeup",
+      "relation": "티격태격 케미",
+      "a": "hani",
+      "b": "jieun",
+      "set": [
+        { "who": "a", "text": "지은 부장, 이거 꼭 넣자!" },
+        { "who": "b", "text": "전무님, 유지비부터 보셔야죠." },
+        { "who": "a", "text": "그럼 범위 절반만 시작하자!" },
+        { "who": "b", "text": "그 금액이면 예산 통과입니다." }
+      ]
+    },
+    {
+      "id": "L38",
+      "kind": "mild_disagree_makeup",
+      "relation": "티격태격 케미",
+      "a": "serin",
+      "b": "yuri",
+      "set": [
+        { "who": "a", "text": "이 패턴 정확도 높아요!📊" },
+        { "who": "b", "text": "좋지만 엣지 케이스는 미검증!" },
+        { "who": "a", "text": "실패 조건 5개 붙여올게요!" },
+        { "who": "b", "text": "확인되면 PASS 드립니다✅" }
+      ]
+    },
+    {
+      "id": "L39",
+      "kind": "mild_disagree_makeup",
+      "relation": "티격태격 케미",
+      "a": "sooyeon",
+      "b": "haru",
+      "set": [
+        { "who": "a", "text": "하루야, 워크숍 바로 잡자!" },
+        { "who": "b", "text": "잠깐, 준비물 목록부터 보자." },
+        { "who": "a", "text": "준비물은 딱 3개만 골라 줘!" },
+        { "who": "b", "text": "오케이, 그럼 일정 확정하자." }
+      ]
+    },
+    {
+      "id": "L40",
+      "kind": "mild_disagree_makeup",
+      "relation": "티격태격 케미",
+      "a": "hani",
+      "b": "arin",
+      "set": [
+        { "who": "a", "text": "이것도 첫 화면에 같이 넣죠." },
+        { "who": "b", "text": "다 보이면 오히려 안 보여요." },
+        { "who": "a", "text": "핵심 둘만 두고 나머진 접자♡" },
+        { "who": "b", "text": "네! 한눈에 딱 맞출게요✨" }
+      ]
+    },
+    {
+      "id": "L41",
+      "kind": "mentoring",
+      "relation": "선후배·멘토",
+      "a": "jieun",
+      "b": "daon",
+      "set": [
+        { "who": "a", "text": "반대 근거 옆에 대안도 쓰죠." },
+        { "who": "b", "text": "위험만 쓰면 막막하겠네요😅" },
+        { "who": "a", "text": "회장님 선택지를 지키는 거죠." },
+        { "who": "b", "text": "배웠습니다! 바로 덧붙일게요." }
+      ]
+    },
+    {
+      "id": "L42",
+      "kind": "mentoring",
+      "relation": "선후배·멘토",
+      "a": "sua",
+      "b": "yuna",
+      "set": [
+        { "who": "a", "text": "접수 끝엔 꼭 기한 적어야죠!" },
+        { "who": "b", "text": "담당만 적고 날짜를 뺐네요!" },
+        { "who": "a", "text": "금방 느네요. 정리 좋아요ㅎㅎ" }
+      ]
+    },
+    {
+      "id": "L43",
+      "kind": "mentoring",
+      "relation": "선후배·멘토",
+      "a": "hani",
+      "b": "ieum",
+      "set": [
+        { "who": "a", "text": "불확실하면 열어두는 게 맞아." },
+        { "who": "b", "text": "확인될 때까진 대기로 둘까요?" },
+        { "who": "a", "text": "응, 끝난 것만 완료로 닫자♡" }
+      ]
+    },
+    {
+      "id": "L44",
+      "kind": "mentoring",
+      "relation": "선후배·멘토",
+      "a": "naeun",
+      "b": "yoonseul",
+      "set": [
+        { "who": "a", "text": "책 읽을 땐 목도 꼭 풀어줘!" },
+        { "who": "b", "text": "앗, 벌써 2시간이나 봤네요!" },
+        { "who": "a", "text": "타이머 맞추고 물도 마셔요." }
+      ]
+    },
+    {
+      "id": "L45",
+      "kind": "cross_dept_collab",
+      "relation": "업무 파트너",
+      "a": "seoyun",
+      "b": "hani",
+      "set": [
+        { "who": "a", "text": "전무님, 설계 둘로 나눴어요💜" },
+        { "who": "b", "text": "좋아, 1단계부터 보여드리자!" },
+        { "who": "a", "text": "영향 범위 표도 올리겠습니다." }
+      ]
+    },
+    {
+      "id": "L46",
+      "kind": "cross_dept_collab",
+      "relation": "업무 파트너",
+      "a": "taeo",
+      "b": "arin",
+      "set": [
+        { "who": "a", "text": "고객이 화면이 좀 어렵대요." },
+        { "who": "b", "text": "올라오시느라 고생! 볼게요✨" },
+        { "who": "a", "text": "카드 두 장으로 줄이면 돼요." }
+      ]
+    },
+    {
+      "id": "L47",
+      "kind": "cross_dept_collab",
+      "relation": "업무 파트너",
+      "a": "serin",
+      "b": "hina",
+      "set": [
+        { "who": "a", "text": "JLPT 오답 패턴 뽑았어요📊" },
+        { "who": "b", "text": "한자 실수 많네용! 복습해요🐰" },
+        { "who": "a", "text": "다음 주 퀴즈에 바로 넣어요!" }
+      ]
+    },
+    {
+      "id": "L48",
+      "kind": "cross_dept_collab",
+      "relation": "어색하지만 존중",
+      "a": "jieun",
+      "b": "yuna",
+      "set": [
+        { "who": "a", "text": "유나님, 구독 영수증 맞죠?" },
+        { "who": "b", "text": "네! 4층에서 바로 챙겼어요!" },
+        { "who": "a", "text": "빠짐없네요. 잘 올라가요." }
+      ]
+    },
+    {
+      "id": "L49",
+      "kind": "invite_walk_coffee",
+      "relation": "가족 같은 정",
+      "a": "sooyeon",
+      "b": "naeun",
+      "set": [
+        { "who": "a", "text": "언니! 6층 옥상 바람 쐬요!" },
+        { "who": "b", "text": "햇볕 좋지! 물병 챙겨 가자." },
+        { "who": "a", "text": "야호! 10분 산책 출발해요!" }
+      ]
+    },
+    {
+      "id": "L50",
+      "kind": "invite_walk_coffee",
+      "relation": "단짝",
+      "a": "serin",
+      "b": "yoonseul",
+      "set": [
+        { "who": "a", "text": "윤슬님! 카페 라떼 마실래요?" },
+        { "who": "b", "text": "좋아요! 책 얘기도 해요!📚" },
+        { "who": "a", "text": "신난다!! 엘베 타러 가요!" }
+      ]
+    },
+    {
+      "id": "L51",
+      "kind": "invite_walk_coffee",
+      "relation": "어색하지만 존중",
+      "a": "ieum",
+      "b": "mir",
+      "set": [
+        { "who": "a", "text": "미르님, 옥상 바람 쐴래요?" },
+        { "who": "b", "text": "난 구경만 할게. 같이 걷자." },
+        { "who": "a", "text": "좋아요, 천천히 올라가요." }
+      ]
+    },
+    {
+      "id": "L52",
+      "kind": "invite_walk_coffee",
+      "relation": "단짝",
+      "a": "hina",
+      "b": "minji",
+      "set": [
+        { "who": "a", "text": "민지야! 딸기 차 마시자용🐰" },
+        { "who": "b", "text": "오 간식? 카메라 두고 갈게!" },
+        { "who": "a", "text": "헤헤♡ 5분만 수다 떨자용!" }
+      ]
+    },
+    {
+      "id": "L53",
+      "kind": "secret_whisper",
+      "relation": "단짝",
+      "a": "gaeun",
+      "b": "yuna",
+      "set": [
+        { "who": "a", "text": "(소곤) 감사 카드 준비했죠?" },
+        { "who": "b", "text": "(소곤) 쉿, 서랍에 숨겼어요" },
+        { "who": "a", "text": "회의 끝나고 딱 꺼내 드리죠." }
+      ]
+    },
+    {
+      "id": "L54",
+      "kind": "secret_whisper",
+      "relation": "가족 같은 정",
+      "a": "naeun",
+      "b": "jieun",
+      "set": [
+        { "who": "a", "text": "(소곤) 신입 케이크 어때요?" },
+        { "who": "b", "text": "(소곤) 조각 케이크 좋아요." },
+        { "who": "a", "text": "둘 놀라게 오후 4시 어때요?" }
+      ]
+    },
+    {
+      "id": "L55",
+      "kind": "secret_whisper",
+      "relation": "단짝",
+      "a": "arin",
+      "b": "serin",
+      "set": [
+        { "who": "a", "text": "(소곤) 리드님 생일 배지야🎨" },
+        { "who": "b", "text": "(소곤) 보라색 별 딱이에요!" },
+        { "who": "a", "text": "모일 때까지 꼭 비밀로 해줘!" }
+      ]
+    },
+    {
+      "id": "L56",
+      "kind": "secret_whisper",
+      "relation": "업무 파트너",
+      "a": "sua",
+      "b": "haru",
+      "set": [
+        { "who": "a", "text": "(소곤) 선물 머그컵 괜찮지?" },
+        { "who": "b", "text": "(소곤) 뚜껑 있으면 딱이야." },
+        { "who": "a", "text": "고마워! 몰래 주문할게ㅎㅎ" }
+      ]
+    },
+    {
+      "id": "L57",
+      "kind": "desk_handoff",
+      "relation": "업무 파트너",
+      "a": "gaeun",
+      "b": "ieum",
+      "set": [
+        { "who": "a", "text": "회의록 4층 폴더에 올렸어요." },
+        { "who": "b", "text": "확인! 색인 탭 붙여 닫아요." },
+        { "who": "a", "text": "내일 아침 일정 같이 챙기죠." }
+      ]
+    },
+    {
+      "id": "L58",
+      "kind": "desk_handoff",
+      "relation": "업무 파트너",
+      "a": "jieun",
+      "b": "sua",
+      "set": [
+        { "who": "a", "text": "과장님, 입금 확인 끝났어요." },
+        { "who": "b", "text": "완료 메일 바로 보낼게요ㅎㅎ" },
+        { "who": "a", "text": "오늘도 빈틈없네요, 고생해요." }
+      ]
+    },
+    {
+      "id": "L59",
+      "kind": "desk_handoff",
+      "relation": "업무 파트너",
+      "a": "seoyun",
+      "b": "yuri",
+      "set": [
+        { "who": "a", "text": "책임님, 체크 항목 넘겼어요💜" },
+        { "who": "b", "text": "접수! 회귀 결과 공유할게요." },
+        { "who": "a", "text": "네, 천천히 꼼꼼히 봐주세요!" }
+      ]
+    },
+    {
+      "id": "L60",
+      "kind": "desk_handoff",
+      "relation": "어색하지만 존중",
+      "a": "seoyun",
+      "b": "mir",
+      "set": [
+        { "who": "a", "text": "미르님, 로그는 여기까지예요." },
+        { "who": "b", "text": "잘 받았어. 내일 이어 볼게." },
+        { "who": "a", "text": "고마워요. 편안한 밤 되세요💜" }
+      ]
+    },
+    {
+      "id": "L61",
+      "kind": "help_thanks",
+      "relation": "티격태격 케미",
+      "threadId": "TH01",
+      "a": "yuri",
+      "b": "dohyun",
+      "set": [
+        { "who": "a", "text": "도연님, 회전 버그 여기예요." },
+        { "who": "b", "text": "오, 여기 누르니 재현돼요☕" },
+        { "who": "a", "text": "원인 찾았으니 곧 고치겠네요✅" }
+      ]
+    },
+    {
+      "id": "L62",
+      "kind": "snack_share",
+      "relation": "티격태격 케미",
+      "threadId": "TH01",
+      "a": "dohyun",
+      "b": "yuri",
+      "set": [
+        { "who": "a", "text": "책임님, 커피랑 쿠키요☕" },
+        { "who": "b", "text": "고마워요. 버그는 잘 잡았죠?" },
+        { "who": "a", "text": "덕분에 금방 고쳤습니다!" }
+      ]
+    },
+    {
+      "id": "L63",
+      "kind": "desk_handoff",
+      "relation": "단짝",
+      "threadId": "TH02",
+      "a": "yoonseul",
+      "b": "daon",
+      "set": [
+        { "who": "a", "text": "다온님, 오늘 수고했어요🔖" },
+        { "who": "b", "text": "그 책 주말에 꼭 읽을게요!" },
+        { "who": "a", "text": "월요일에 후기 나눠요!📚" }
+      ]
+    },
+    {
+      "id": "L64",
+      "kind": "praise_cheer",
+      "relation": "티격태격 케미",
+      "threadId": "TH04",
+      "a": "jieun",
+      "b": "hani",
+      "set": [
+        { "who": "a", "text": "전무님, 범위 딱 맞아요." },
+        { "who": "b", "text": "지은 부장이 잘 봐준 덕이야♡" },
+        { "who": "a", "text": "깔끔하니 저도 든든해요." }
+      ]
+    },
+    {
+      "id": "L65",
+      "kind": "praise_cheer",
+      "relation": "선후배·멘토",
+      "threadId": "TH05",
+      "a": "yuna",
+      "b": "sua",
+      "set": [
+        { "who": "a", "text": "과장님, 기한 다 맞췄어요!" },
+        { "who": "b", "text": "유나님, 정말 빠르네요ㅎㅎ" },
+        { "who": "a", "text": "과장님께 배운 덕분이에요!" }
+      ]
+    },
+    {
+      "id": "L66",
+      "kind": "snack_share",
+      "relation": "단짝",
+      "threadId": "TH06",
+      "a": "serin",
+      "b": "arin",
+      "set": [
+        { "who": "a", "text": "아린님! 간식 챙겨왔어요!✨" },
+        { "who": "b", "text": "카드도 딱 완성! 지금 가자🎨" },
+        { "who": "a", "text": "완벽해요! 지금 출동해요!✨" }
+      ]
+    },
+    {
+      "id": "L67",
+      "kind": "work_question",
+      "relation": "업무 파트너",
+      "threadId": "TH07",
+      "a": "gaeun",
+      "b": "hani",
+      "set": [
+        { "who": "a", "text": "안건 세 개까지만 넣으시죠." },
+        { "who": "b", "text": "좋아! 이동 여유 꼭 챙기자♡" },
+        { "who": "a", "text": "네, 딱 맞게 조율해 둘게요." }
+      ]
+    },
+    {
+      "id": "L68",
+      "kind": "desk_handoff",
+      "relation": "단짝",
+      "threadId": "TH07",
+      "a": "gaeun",
+      "b": "yuna",
+      "set": [
+        { "who": "a", "text": "오늘 동선 누락 0건이에요!" },
+        { "who": "b", "text": "가은님 덕에 무사히 끝났어요!" },
+        { "who": "a", "text": "유나님도 수고 많았어요." }
+      ]
+    },
+    {
+      "id": "L69",
+      "kind": "invite_walk_coffee",
+      "relation": "단짝",
+      "threadId": "TH08",
+      "a": "sooyeon",
+      "b": "minji",
+      "set": [
+        { "who": "a", "text": "옥상 햇볕 보러 같이 가자!" },
+        { "who": "b", "text": "좋지! 카메라 챙겨 나갈게!" },
+        { "who": "a", "text": "오늘 바람 좋다! 출발하자!" }
+      ]
+    },
+    {
+      "id": "L70",
+      "kind": "banter_joke",
+      "relation": "단짝",
+      "threadId": "TH08",
+      "a": "minji",
+      "b": "sooyeon",
+      "set": [
+        { "who": "a", "text": "너 점프한 거 컷 확보했어!" },
+        { "who": "b", "text": "어? 그건 NG 컷이잖아!" },
+        { "who": "a", "text": "완전 낭만상이라 저장했지!" }
+      ]
+    },
+    {
+      "id": "L71",
+      "kind": "invite_walk_coffee",
+      "relation": "가족 같은 정",
+      "threadId": "TH09",
+      "a": "hina",
+      "b": "naeun",
+      "set": [
+        { "who": "a", "text": "언니! 이제 백점 모드예용🐰" },
+        { "who": "b", "text": "기운 났네! 차 마시러 갈까?" },
+        { "who": "a", "text": "네! 언니랑 가니까 좋네용♡" }
+      ]
+    },
+    {
+      "id": "L72",
+      "kind": "review_feedback",
+      "relation": "선후배·멘토",
+      "threadId": "TH10",
+      "a": "hina",
+      "b": "yoonseul",
+      "set": [
+        { "who": "a", "text": "윤슬아, 오답 퀴즈 묶자용🐰" },
+        { "who": "b", "text": "요약 카드에 쏙 넣을게요!🔖" },
+        { "who": "a", "text": "검수는 내가 꼼꼼히 볼게용♡" }
+      ]
+    },
+    {
+      "id": "L73",
+      "kind": "mild_disagree_makeup",
+      "relation": "티격태격 케미",
+      "threadId": "TH11",
+      "a": "haru",
+      "b": "minji",
+      "set": [
+        { "who": "a", "text": "예쁜데 둘 데가 있어야지." },
+        { "who": "b", "text": "그래도 책상 위 포인트잖아!" },
+        { "who": "a", "text": "엽서 크기면 오래 잘 쓸걸." },
+        { "who": "b", "text": "인정! 작은 걸로 고를게." }
+      ]
+    },
+    {
+      "id": "L74",
+      "kind": "snack_share",
+      "relation": "티격태격 케미",
+      "threadId": "TH11",
+      "a": "haru",
+      "b": "minji",
+      "set": [
+        { "who": "a", "text": "가성비랑 맛 다 합격이야." },
+        { "who": "b", "text": "오! 야근 간식 센스 최고야!" },
+        { "who": "a", "text": "실용적이면서도 맛있지?" }
+      ]
+    },
+    {
+      "id": "L75",
+      "kind": "desk_handoff",
+      "relation": "어색하지만 존중",
+      "threadId": "TH12",
+      "a": "mir",
+      "b": "ieum",
+      "set": [
+        { "who": "a", "text": "색깔이랑 완료가 연결되네." },
+        { "who": "b", "text": "네, 팀별 색을 맞춘 거예요." },
+        { "who": "a", "text": "좋은 방법이야. 내일 또 봐." }
+      ]
+    }
+  ],
+  "threads": [
+    {
+      "id": "TH01",
+      "title": "오전 디버깅 도움 → 오후 커피·쿠키 감사",
+      "first": {
+        "kind": "help_thanks",
+        "a": "yuri",
+        "b": "dohyun",
+        "timeSlot": "morning",
+        "time": "09:30~10:50",
+        "lineSetId": "L61",
+        "summary": "유리가 도연 자리에서 모바일 회전 엣지 재현을 함께 잡아 줌",
+        "line": "여기 터치하니 재현됐어요!"
+      },
+      "then": {
+        "kind": "snack_share",
+        "a": "dohyun",
+        "b": "yuri",
+        "timeSlot": "afternoon",
+        "time": "14:20~16:00",
+        "lineSetId": "L62",
+        "summary": "오후에 도연이 1F 커피·쿠키를 들고 유리 자리로 감사 인사",
+        "line": "금방 잡았어요, 쿠키요☕"
+      },
+      "window": "09:30~10:50 -> 14:20~16:00"
+    },
+    {
+      "id": "TH02",
+      "title": "점심 영화·책 수다 → 퇴근길 주말 약속",
+      "first": {
+        "kind": "small_talk",
+        "a": "daon",
+        "b": "yoonseul",
+        "timeSlot": "lunch",
+        "time": "12:00~13:10",
+        "lineSetId": "L15",
+        "summary": "2F 팬트리에서 다온과 윤슬이 새로 나온 추리 소설·영화 이야기",
+        "line": "결말 반전이 진짜 궁금하죠?📚"
+      },
+      "then": {
+        "kind": "desk_handoff",
+        "a": "yoonseul",
+        "b": "daon",
+        "timeSlot": "evening",
+        "time": "17:40~18:20",
+        "lineSetId": "L63",
+        "summary": "퇴근 직전 책갈피를 건네며 주말에 보고 얘기하자고 인사",
+        "line": "그 책 주말에 꼭 읽어요!"
+      },
+      "window": "12:00~13:10 -> 17:40~18:20"
+    },
+    {
+      "id": "TH03",
+      "title": "오전 고객 요구 번역 → 오후 UI·QA 3단 협업",
+      "first": {
+        "kind": "cross_dept_collab",
+        "a": "taeo",
+        "b": "arin",
+        "timeSlot": "morning",
+        "time": "09:45~10:55",
+        "lineSetId": "L46",
+        "summary": "채원이 2F에서 3F 아린 자리로 올라와 고객 요구 3줄 전달",
+        "line": "고객이 첫 화면이 어렵대요."
+      },
+      "then": {
+        "kind": "review_feedback",
+        "a": "arin",
+        "b": "yuri",
+        "timeSlot": "afternoon",
+        "time": "15:00~16:40",
+        "lineSetId": "L10",
+        "summary": "아린이 다듬은 카드 여백을 유리와 함께 모바일 폭 확인",
+        "line": "여백 넓히니 훨씬 깔끔하죠?✨"
+      },
+      "window": "09:45~10:55 -> 15:00~16:40"
+    },
+    {
+      "id": "TH04",
+      "title": "오전 범위·예산 티격태격 → 오후 합의 응원",
+      "first": {
+        "kind": "mild_disagree_makeup",
+        "a": "hani",
+        "b": "jieun",
+        "timeSlot": "morning",
+        "time": "09:40~10:55",
+        "lineSetId": "L37",
+        "summary": "새 프로젝트 범위와 서버 비용을 두고 하니와 지은이 2F에서 조율",
+        "line": "절반 범위면 예산 통과예요."
+      },
+      "then": {
+        "kind": "praise_cheer",
+        "a": "jieun",
+        "b": "hani",
+        "timeSlot": "afternoon",
+        "time": "15:30~16:50",
+        "lineSetId": "L64",
+        "summary": "오후에 지은이 4F로 올라와 정리된 예산안 건네며 응원",
+        "line": "전무님, 범위 딱 맞아요."
+      },
+      "window": "09:40~10:55 -> 15:30~16:50"
+    },
+    {
+      "id": "TH05",
+      "title": "오전 멘토링 → 오후 실전 성공 보고·칭찬",
+      "first": {
+        "kind": "mentoring",
+        "a": "sua",
+        "b": "yuna",
+        "timeSlot": "morning",
+        "time": "09:20~10:50",
+        "lineSetId": "L42",
+        "summary": "수아가 4F 유나 자리로 와서 기한·담당자 태그 붙이는 법 전수",
+        "line": "접수 뒤엔 꼭 기한 적어요!"
+      },
+      "then": {
+        "kind": "praise_cheer",
+        "a": "yuna",
+        "b": "sua",
+        "timeSlot": "afternoon",
+        "time": "15:20~16:50",
+        "lineSetId": "L65",
+        "summary": "유나가 실수 없이 전달 완료 후 수아에게 달려가 보고하고 칭찬받음",
+        "line": "과장님, 기한 다 맞췄어요!"
+      },
+      "window": "09:20~10:50 -> 15:20~16:50"
+    },
+    {
+      "id": "TH06",
+      "title": "낮에 비밀 생일 소곤소곤 → 저녁 깜짝 간식 전달",
+      "first": {
+        "kind": "secret_whisper",
+        "a": "arin",
+        "b": "serin",
+        "timeSlot": "afternoon",
+        "time": "13:40~14:30",
+        "lineSetId": "L55",
+        "summary": "3F 라운지 구석에서 동료 생일 카드·간식 준비 소곤소곤",
+        "line": "(소곤) 5시에 몰래 주자!"
+      },
+      "then": {
+        "kind": "snack_share",
+        "a": "serin",
+        "b": "arin",
+        "timeSlot": "evening",
+        "time": "17:05~17:50",
+        "lineSetId": "L66",
+        "summary": "준비한 간식 상자를 챙겨 들고 다 같이 나누러 출발",
+        "line": "완벽해요! 지금 출동해요!✨"
+      },
+      "window": "13:40~14:30 -> 17:05~17:50"
+    },
+    {
+      "id": "TH07",
+      "title": "오전 비서실 일정 걱정 → 오후 15분 여유 확인 안도",
+      "first": {
+        "kind": "work_question",
+        "a": "gaeun",
+        "b": "hani",
+        "timeSlot": "morning",
+        "time": "09:15~10:30",
+        "lineSetId": "L67",
+        "summary": "오전 회의 사이 10분 이동 시간을 두고 가은과 하니가 조율",
+        "line": "안건 세 개까지만 넣으시죠."
+      },
+      "then": {
+        "kind": "desk_handoff",
+        "a": "gaeun",
+        "b": "yuna",
+        "timeSlot": "evening",
+        "time": "17:05~17:45",
+        "lineSetId": "L68",
+        "summary": "오후 일정이 차질 없이 끝나자 가은과 유나가 안도의 마무리",
+        "line": "오늘 동선 누락 0건이에요!"
+      },
+      "window": "09:15~10:30 -> 17:05~17:45"
+    },
+    {
+      "id": "TH08",
+      "title": "점심 산책 권유 → 오후 촬영 NG 컷 수다",
+      "first": {
+        "kind": "invite_walk_coffee",
+        "a": "sooyeon",
+        "b": "minji",
+        "timeSlot": "lunch",
+        "time": "12:15~13:05",
+        "lineSetId": "L69",
+        "summary": "수연이 민지를 데리고 6F 옥상 햇볕 산책 루트 답사",
+        "line": "민지야, 오늘 바람 완전 좋다!"
+      },
+      "then": {
+        "kind": "banter_joke",
+        "a": "minji",
+        "b": "sooyeon",
+        "timeSlot": "afternoon",
+        "time": "15:30~16:45",
+        "lineSetId": "L70",
+        "summary": "오후 팬트리에서 찍힌 웃긴 사진 보며 티키타카 농담",
+        "line": "너 점프한 거 컷 확보했어!"
+      },
+      "window": "12:15~13:05 -> 15:30~16:45"
+    },
+    {
+      "id": "TH09",
+      "title": "오전 실수 위로 → 오후 회복 확인",
+      "first": {
+        "kind": "comfort_support",
+        "a": "naeun",
+        "b": "hina",
+        "timeSlot": "morning",
+        "time": "09:50~10:55",
+        "lineSetId": "L27",
+        "summary": "칠판 예문 오타로 시무룩한 히나를 나은이 따뜻한 차로 다독임",
+        "line": "실수할 수도 있지, 차 마셔."
+      },
+      "then": {
+        "kind": "invite_walk_coffee",
+        "a": "hina",
+        "b": "naeun",
+        "timeSlot": "afternoon",
+        "time": "15:40~16:50",
+        "lineSetId": "L71",
+        "summary": "기운 차린 히나가 나은에게 달달한 간식·커피 마시러 가자고 부름",
+        "line": "언니! 이제 백점 모드예용🐰"
+      },
+      "window": "09:50~10:55 -> 15:40~16:50"
+    },
+    {
+      "id": "TH10",
+      "title": "오전 자동화 가설 질문 → 오후 학습 퀴즈 반영",
+      "first": {
+        "kind": "cross_dept_collab",
+        "a": "serin",
+        "b": "hina",
+        "timeSlot": "morning",
+        "time": "09:40~10:50",
+        "lineSetId": "L47",
+        "summary": "세린이 2F 히나 자리로 내려가 JLPT 오답 패턴 공유",
+        "line": "이 한자 오답률이 높아요!📊"
+      },
+      "then": {
+        "kind": "review_feedback",
+        "a": "hina",
+        "b": "yoonseul",
+        "timeSlot": "afternoon",
+        "time": "14:40~16:20",
+        "lineSetId": "L72",
+        "summary": "히나가 윤슬과 오답 노트에 세린의 분석 내용을 퀴즈로 묶음",
+        "line": "요약 카드에 쏙 넣자용!🔖"
+      },
+      "window": "09:40~10:50 -> 14:40~16:20"
+    },
+    {
+      "id": "TH11",
+      "title": "낮 구매 심의 티격태격 → 저녁 야근 간식 합의",
+      "first": {
+        "kind": "mild_disagree_makeup",
+        "a": "haru",
+        "b": "minji",
+        "timeSlot": "lunch",
+        "time": "12:20~13:20",
+        "lineSetId": "L73",
+        "summary": "민지의 감성 소품과 하루의 실용성 기준이 2F 팬트리에서 부딪힘",
+        "line": "예쁜데 둘 데가 있어야지."
+      },
+      "then": {
+        "kind": "snack_share",
+        "a": "haru",
+        "b": "minji",
+        "timeSlot": "overtime",
+        "time": "19:05~19:50",
+        "lineSetId": "L74",
+        "summary": "하루가 1F 편의점에서 실용적이고 맛있는 간식을 골라 민지에게 건넴",
+        "line": "가성비랑 맛 다 합격이야."
+      },
+      "window": "12:20~13:20 -> 19:05~19:50"
+    },
+    {
+      "id": "TH12",
+      "title": "낮 '왜?' 질문 → 저녁 미르의 깨달음 한 줄",
+      "first": {
+        "kind": "banter_joke",
+        "a": "mir",
+        "b": "yuna",
+        "timeSlot": "lunch",
+        "time": "11:35~12:20",
+        "lineSetId": "L34",
+        "summary": "미르가 유나의 색깔별 포스트잇을 보고 왜 나누는지 질문",
+        "line": "왜 색깔마다 뜻이 달라?"
+      },
+      "then": {
+        "kind": "desk_handoff",
+        "a": "mir",
+        "b": "ieum",
+        "timeSlot": "evening",
+        "time": "17:30~18:40",
+        "lineSetId": "L75",
+        "summary": "퇴근 무렵 미르가 이음에게 오늘 관찰한 색깔·맥락 연결을 공유",
+        "line": "색깔이랑 완료가 연결되네."
+      },
+      "window": "11:35~12:20 -> 17:30~18:40"
+    }
+  ]
+}
