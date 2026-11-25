@@ -1,0 +1,74 @@
+{
+ "schema": 1,
+ "layer": "building-319",
+ "base": "f688a30b099b1290dca46b65b7739d7849176aa9",
+ "head": "a99a02698e04bb6668515b7ec0cb2d8dcd1cce54",
+ "bootstrap": {
+  "file": "scripts/hani-release-318-source.cjs",
+  "line": "require('./hani-building-319-preload.cjs'); // Building319 inverse precedes released318.\n"
+ },
+ "imports": [],
+ "files": {
+  "hani-office-live.js": {
+   "beforeSha256": "65dd7dfdc1b96450c333e2ffb99bf6781b73dbd88435b7065da58741e72a7434",
+   "afterSha256": "a2be68aa4c87e54809e2ceff11cdf0249eae82b5d028cdc238490579f12ffbd1",
+   "beforeBytes": 481149,
+   "afterBytes": 482259,
+   "count": 3,
+   "replacements": [
+    {
+     "start": 396005,
+     "beforeStart": 395057,
+     "before": "    for(const room of building.floorRegistry.get(floor.id).rooms)if(room.menuLink){const label=document.createElement('button');label.type='button';label.dataset.room=room.id;label.dataset.roomView=room.menuLink.primaryView;label.dataset.roomFloor=floor.id;label.textContent=room.label;mobileLabels.append(label)}\n",
+     "after": "    for(const room of building.floorRegistry.get(floor.id).rooms)if(room.menuLink){const label=document.createElement('button');label.type='button';label.dataset.room=room.id;label.dataset.roomView=room.menuLink.primaryView;label.dataset.roomFloor=floor.id;label.textContent=room.label;{const tone=roomPlateTones[room.id];if(tone){label.dataset.tone=tone[0];label.dataset.icon=tone[1]}}mobileLabels.append(label)}\n"
+    },
+    {
+     "start": 366228,
+     "beforeStart": 365434,
+     "before": "",
+     "after": "    {const tone=roomPlateTones[entry.room+'|'+entry.english]||roomPlateTones[entry.room];if(tone){plate.dataset.tone=tone[0];plate.dataset.icon=tone[1]}}\n"
+    },
+    {
+     "start": 364826,
+     "beforeStart": 364826,
+     "before": "",
+     "after": "const roomPlateTones=Object.freeze({\"convenience\":[\"green\",\"🏪\"],\"lobby|INFO DESK\":[\"blue\",\"💁\"],\"lobby|LOBBY\":[\"sand\",\"🏢\"],\"cafe\":[\"amber\",\"☕\"],\"finance\":[\"teal\",\"💰\"],\"finance|Director\":[\"teal\",\"💼\"],\"life\":[\"pink\",\"🎬\"],\"pantry\":[\"amber\",\"🍪\"],\"team_meeting\":[\"purple\",\"👥\"],\"platform\":[\"purple\",\"💻\"],\"server\":[\"blue\",\"🖥️\"],\"standup\":[\"coral\",\"🗣️\"],\"release\":[\"green\",\"🚀\"],\"ceo\":[\"amber\",\"👑\"],\"secretariat\":[\"pink\",\"📋\"],\"hani_office\":[\"purple\",\"⭐\"],\"exec\":[\"blue\",\"🤝\"],\"mir_nook\":[\"teal\",\"🤖\"],\"garden\":[\"green\",\"🌿\"],\"terrace\":[\"amber\",\"☀️\"],\"event_roof\":[\"coral\",\"🍖\"],\"quiet_roof\":[\"teal\",\"🍃\"],\"studio\":[\"coral\",\"🎙️\"],\"library_cinema\":[\"purple\",\"🎞️\"],\"fitness\":[\"green\",\"💪\"],\"kids_pet_lounge\":[\"pink\",\"🐾\"]});// 2.9.319 room plate design B: tone + icon per room, visual only.\n"
+    }
+   ]
+  },
+  "hani-office-live.css": {
+   "beforeSha256": "8f476a3c2c2f20c96c38be5bf2f40d0298911bf81ca3d95c0bdd70c6d396c4ee",
+   "afterSha256": "b4e184930fd556062f178eef0c0cc750acd527438ce672aec67f75cadd1fd8ee",
+   "beforeBytes": 41805,
+   "afterBytes": 44749,
+   "count": 1,
+   "replacements": [
+    {
+     "start": 41736,
+     "beforeStart": 41736,
+     "before": ".hani-office-desk-props[data-person=\"desk-4f-yuna\"]{max-height:none}\n",
+     "after": ".hani-office-desk-props[data-person=\"desk-4f-yuna\"]{max-height:none}\r\n/* 2.9.319 room plate design B: soft department colour + round icon badge (visual only). */\r\n.hani-office-room-plate[data-tone=\"green\"],.hani-office-room-mobile-labels button[data-tone=\"green\"]{--plate-bg:#eaf3de;--plate-ink:#27500a;--plate-dot:#639922}\r\n.hani-office-room-plate[data-tone=\"blue\"],.hani-office-room-mobile-labels button[data-tone=\"blue\"]{--plate-bg:#e6f1fb;--plate-ink:#0c447c;--plate-dot:#378add}\r\n.hani-office-room-plate[data-tone=\"amber\"],.hani-office-room-mobile-labels button[data-tone=\"amber\"]{--plate-bg:#faeeda;--plate-ink:#633806;--plate-dot:#ba7517}\r\n.hani-office-room-plate[data-tone=\"teal\"],.hani-office-room-mobile-labels button[data-tone=\"teal\"]{--plate-bg:#e1f5ee;--plate-ink:#085041;--plate-dot:#1d9e75}\r\n.hani-office-room-plate[data-tone=\"pink\"],.hani-office-room-mobile-labels button[data-tone=\"pink\"]{--plate-bg:#fbeaf0;--plate-ink:#72243e;--plate-dot:#d4537e}\r\n.hani-office-room-plate[data-tone=\"purple\"],.hani-office-room-mobile-labels button[data-tone=\"purple\"]{--plate-bg:#eeedfe;--plate-ink:#3c3489;--plate-dot:#7f77dd}\r\n.hani-office-room-plate[data-tone=\"coral\"],.hani-office-room-mobile-labels button[data-tone=\"coral\"]{--plate-bg:#faece7;--plate-ink:#712b13;--plate-dot:#d85a30}\r\n.hani-office-room-plate[data-tone=\"sand\"],.hani-office-room-mobile-labels button[data-tone=\"sand\"]{--plate-bg:#f6efe3;--plate-ink:#5a4326;--plate-dot:#a88552}\r\n.hani-office-room-plate[data-tone]:not([data-brand=\"true\"]):not([hidden]){display:grid;grid-template-columns:auto auto;grid-template-rows:auto auto;align-items:center;column-gap:.36cqw;width:auto!important;padding:.22cqw .7cqw .22cqw .26cqw;border-radius:999px;background:var(--plate-bg);color:var(--plate-ink);box-shadow:0 0 0 1px color-mix(in srgb,var(--plate-dot) 45%,transparent)}\r\n.hani-office-room-plate[data-tone]:not([data-brand=\"true\"])::before{content:attr(data-icon);grid-row:1/3;display:grid;place-items:center;width:2.05cqw;height:2.05cqw;min-width:16px;min-height:16px;border-radius:50%;background:var(--plate-dot);font-size:min(11px,1.15cqw);line-height:1}\r\n.hani-office-room-plate[data-tone]:not([data-brand=\"true\"]) b{font-size:min(8px,.92cqw);letter-spacing:.04em;opacity:.78}\r\n.hani-office-room-plate[data-tone]:not([data-brand=\"true\"]) small{margin-top:0;font-size:min(10px,1.12cqw);font-weight:600}\r\n.hani-office-room-plate[data-room-view][data-tone]:not([hidden]){width:auto!important;min-height:0;padding:.3cqw .8cqw .3cqw .3cqw;text-align:left}\r\n.hani-office-room-mobile-labels button[data-tone]{display:flex;align-items:center;justify-content:center;gap:6px;border-color:color-mix(in srgb,var(--plate-dot) 55%,transparent);border-radius:999px;background:var(--plate-bg);color:var(--plate-ink);font-weight:600}\r\n.hani-office-room-mobile-labels button[data-tone]::before{content:attr(data-icon);display:grid;place-items:center;width:24px;height:24px;flex:none;border-radius:50%;background:var(--plate-dot);font-size:13px;line-height:1}\r\n"
+    }
+   ]
+  },
+  "scripts/hani-release-318-source.cjs": {
+   "beforeSha256": "c726ec4b00bdb75415e689385f355e3da359a86a34b63a47e2612b2bb6727721",
+   "afterSha256": "a70cfee6b132affdb1f47561582d6f98dae9b644a38237c90ecefd273142250f",
+   "beforeBytes": 3718,
+   "afterBytes": 3807,
+   "count": 1,
+   "replacements": [
+    {
+     "start": 0,
+     "beforeStart": 0,
+     "before": "",
+     "after": "require('./hani-building-319-preload.cjs'); // Building319 inverse precedes released318.\n"
+    }
+   ]
+  }
+ },
+ "helper": {
+  "file": "scripts/hani-menu-badges-historical-input.cjs",
+  "beforeSha256": "32e6888b1fa6c06e470cc7bb9cfb219d4c77e5abe06c5862a83fc817753dd433"
+ }
+}
