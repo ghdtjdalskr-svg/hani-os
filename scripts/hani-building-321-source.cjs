@@ -1,3 +1,4 @@
+require('./hani-release-321-preload.cjs'); // Released321 metadata precedes the building-321 capture.
 // Test input only: exact walk detour and obstacle map inverse before released320; production bytes stay untouched.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
