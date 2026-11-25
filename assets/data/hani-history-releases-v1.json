@@ -26,6 +26,18 @@
   ],
   "entries": [
     {
+      "id": "v2.9.319",
+      "date": "2026-11-26",
+      "status": "released",
+      "title": "부서 이름표 새 단장",
+      "category": "하니 그룹 · 대공사",
+      "credits": [],
+      "source": {
+        "commit": "",
+        "subject": "release: v2.9.319 부서 이름표 새 단장"
+      }
+    },
+    {
       "id": "v2.9.318",
       "date": "2026-11-26",
       "status": "released",
@@ -33,8 +45,8 @@
       "category": "하니 그룹 · 대공사",
       "credits": [],
       "source": {
-        "commit": "",
-        "subject": "release: v2.9.318 편의점 직원 자리 바로잡기"
+        "commit": "a272c9e6ef462418d9f0284fc8e2837b2c88cb24",
+        "subject": "release: v2.9.318 편의점 직원 자리 바로잡기 (#565)"
       }
     },
     {
