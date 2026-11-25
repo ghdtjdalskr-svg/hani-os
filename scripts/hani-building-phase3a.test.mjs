@@ -1,3 +1,4 @@
+import './hani-building-320-preload.cjs'; // Exact interview hosting fix inverse before this older contract.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

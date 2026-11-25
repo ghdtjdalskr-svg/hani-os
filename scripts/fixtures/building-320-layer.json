@@ -1,0 +1,151 @@
+{
+ "schema": 1,
+ "layer": "building-320",
+ "base": "b1f5581b7b77d75f94087f52041a6d5845298e06",
+ "head": "1867215da381ba5886a7f4903197a235872951cd",
+ "bootstrap": {
+  "file": "scripts/hani-release-319-source.cjs",
+  "line": "require('./hani-building-320-preload.cjs'); // Building320 inverse precedes released319.\n"
+ },
+ "imports": [
+  {
+   "file": "scripts/hani-building-phase3a.test.mjs",
+   "line": "import './hani-building-320-preload.cjs'; // Exact interview hosting fix inverse before this older contract.\n"
+  }
+ ],
+ "files": {
+  "hani-office-live.js": {
+   "beforeSha256": "a2be68aa4c87e54809e2ceff11cdf0249eae82b5d028cdc238490579f12ffbd1",
+   "afterSha256": "fe8ebd7e5059b154d492912aac0dbdc6cef8329a1d7ad93db584d11cd0c02f59",
+   "beforeBytes": 482259,
+   "afterBytes": 484018,
+   "count": 15,
+   "replacements": [
+    {
+     "start": 168674,
+     "beforeStart": 167346,
+     "before": "",
+     "after": "      // 2.9.320: a booth guest nobody can meet is simply not invited that day (no lonely wait).\n      {const met=new Set(result.filter(e=>e.pairGuestId).map(e=>e.pairGuestId));for(let i=result.length-1;i>=0;i--){const e=result[i];if(['client','candidate'].includes(e.visitor?.kind)&&/^client_booth_slot_[123]$/.test(e.people[0].seat.anchor)&&!met.has(e.id))result.splice(i,1)}}\n"
+    },
+    {
+     "start": 168191,
+     "beforeStart": 166913,
+     "before": "",
+     "after": "          if(e&&boothSeat)e.pairGuestId=guest.id;\n"
+    },
+    {
+     "start": 167783,
+     "beforeStart": 166548,
+     "before": "          const c=hostCards.get(target.id),e=excursion(p.id,home,c,target.id,at,stay,day,null,deadline);\n",
+     "after": "          const c=boothSeat?consultCards[guest.visitor.kind]:hostCards.get(target.id),e=excursion(p.id,home,c,target.id,at,stay,day,null,deadline);\n"
+    },
+    {
+     "start": 167579,
+     "beforeStart": 166400,
+     "before": "          const stay=Math.min(15,guest.performEnd-at-duration);\n          if(stay<8)continue;\n",
+     "after": "          const stay=boothSeat?guest.performEnd-at-duration-2:Math.min(15,guest.performEnd-at-duration);\n          if(stay<(boothSeat?40:8))continue;\n"
+    },
+    {
+     "start": 167001,
+     "beforeStart": 165961,
+     "before": "         if(!hostChoices.has(choiceKey))hostChoices.set(choiceKey,slots.filter(target=>screenHomeClear(p.id,home.anchorId,slot(target.id,'stand'),allowed,at,deadline)).map(target=>({target,duration:pathDuration(path(home.anchorId,target.id)),back:pathDuration(path(target.id,home.anchorId))})));\n",
+     "after": "         if(!hostChoices.has(choiceKey))hostChoices.set(choiceKey,(boothSeat?[anchors.get(boothSeat)].filter(target=>target&&screenHomeClear(p.id,home.anchorId,slot(target.id,'sit'),allowed,at,deadline)):slots.filter(target=>screenHomeClear(p.id,home.anchorId,slot(target.id,'stand'),allowed,at,deadline))).map(target=>({target,duration:pathDuration(path(home.anchorId,target.id)),back:pathDuration(path(target.id,home.anchorId))})));\n"
+    },
+    {
+     "start": 166547,
+     "beforeStart": 165572,
+     "before": "         const deadline=Math.min(guest.performEnd,nextCommitment(p.id,at),at+75);\n",
+     "after": "         const deadline=boothSeat?Math.min(nextCommitment(p.id,at),guest.performEnd+300):Math.min(guest.performEnd,nextCommitment(p.id,at),at+75);\n"
+    },
+    {
+     "start": 164873,
+     "beforeStart": 164288,
+     "before": "        const hosts=(placeTable?.behavior?.visitorHosts||[]).map(id=>personById.get(id)).filter(p=>p&&allowed.includes(p)&&['1f','2f'].includes(homeAt(p,guest.performStart).floor));\n",
+     "after": "        const consultKind=['client','candidate'].includes(guest.visitor.kind),boothSeat=consultKind&&consultCards[guest.visitor.kind]&&/^client_booth_slot_[123]$/.test(destination.anchor)?'client_booth_slot_4':null;\n        const hosts=[...new Set([...(boothSeat?consultHosts[guest.visitor.kind]:[]),...(placeTable?.behavior?.visitorHosts||[])])].map(id=>personById.get(id)).filter(p=>p&&allowed.includes(p)&&(boothSeat||['1f','2f'].includes(homeAt(p,guest.performStart).floor))).sort((a,b)=>boothSeat?seed(day+'|host|'+guest.id+a.id)-seed(day+'|host|'+guest.id+b.id):0);\n"
+    },
+    {
+     "start": 164781,
+     "beforeStart": 164098,
+     "before": "        if(['client','candidate'].includes(kind)&&(served.get(kind)||0)>=Math.ceil(n/2))continue;\n",
+     "after": ""
+    },
+    {
+     "start": 164184,
+     "beforeStart": 163566,
+     "before": "      for(const id of placeTable?.behavior?.visitorHosts||[])hostErrands.set(id,result.filter(q=>q.card.kind==='errand'&&q.people.some(t=>t.id===id)).sort((a,b)=>a.start-b.start));\n",
+     "after": "      for(const id of new Set([...(placeTable?.behavior?.visitorHosts||[]),...consultHosts.client,...consultHosts.candidate]))hostErrands.set(id,result.filter(q=>q.card.kind==='errand'&&q.people.some(t=>t.id===id)).sort((a,b)=>a.start-b.start));\n"
+    },
+    {
+     "start": 163558,
+     "beforeStart": 163412,
+     "before": "",
+     "after": "      const consultHosts={client:['sua','taeo','jieun','gaeun','daon','naeun'],candidate:['gaeun','jieun','naeun','yuri','sua','hani']},consultBase=places.find(c=>c.id==='meeting-1f'),consultCards=consultBase?{client:{...consultBase,id:'visitor-host-booth-client',kind:'errand',hostOnly:true,go:'고객 맞이하러 상담실로',at:['상담 중']},candidate:{...consultBase,id:'visitor-host-booth-candidate',kind:'errand',hostOnly:true,go:'면접 보러 상담실로',at:['면접 진행 중']}}:{};// 2.9.320 booth hosting\n"
+    },
+    {
+     "start": 160306,
+     "beforeStart": 160176,
+     "before": "      const guestLast=new Map(),guestCadence={client:190,candidate:400,rider:40,generic:600};let takeaways=0;\n",
+     "after": "      const guestLast=new Map(),guestCadence={client:2700,candidate:5400,courier:1500,rider:600,generic:600};let takeaways=0;\n"
+    },
+    {
+     "start": 131229,
+     "beforeStart": 131078,
+     "before": "      {kind:'rider',sprite:'visitor-rider',name:'배달 기사',hours:[[11.5,13.5],[17.5,20]],target:'reception',stay:[15,30],go:'안내대로 배달 가는 중',at:'배달 왔습니다!'},\n      {kind:'candidate',sprite:'visitor-candidate',name:'면접 지원자',hours:[[10,16]],weekdayOnly:true,target:'client_booth_slot_1',stay:[120,220],go:'면접 보러 상담실 가는 중',at:'면접 대기 중… 두근'},\n",
+     "after": "      {kind:'rider',sprite:'visitor-rider',name:'배달 기사',hours:[],target:'reception',stay:[15,30],go:'안내대로 배달 가는 중',at:'배달 왔습니다!'},\n      {kind:'candidate',sprite:'visitor-candidate',name:'면접 지원자',hours:[[10,16]],weekdayOnly:true,target:'client_booth_slot_1',stay:[200,320],go:'면접 보러 상담실 가는 중',at:'면접 대기 중… 두근'},\n"
+    },
+    {
+     "start": 130935,
+     "beforeStart": 130784,
+     "before": "      {kind:'client',sprite:'visitor-client',name:'방문 고객',hours:[[10,17]],target:'client_booth_slot_1',stay:[120,220],go:'상담실로 안내받아 가는 중',at:'상담 받는 중'},\n",
+     "after": "      {kind:'client',sprite:'visitor-client',name:'방문 고객',hours:[[10,17]],target:'client_booth_slot_1',stay:[200,320],go:'상담실로 안내받아 가는 중',at:'상담 받는 중'},\n"
+    },
+    {
+     "start": 124073,
+     "beforeStart": 123967,
+     "before": "      if(!homeOnly&&!screenReservations(candidate,nearby,allowed))return false;\n",
+     "after": "      if(!homeOnly&&!screenReservations(candidate,pairGuest?nearby.filter(e=>e.id!==pairGuest):nearby,allowed))return false;\n"
+    },
+    {
+     "start": 121355,
+     "beforeStart": 121355,
+     "before": "      if(nearby.some(e=>resourceConflict(e,candidate)))return false;\n",
+     "after": "      const pairGuest=candidate.pairGuestId;// 2.9.320: the booth host's own guest only\n      if(nearby.some(e=>e.id!==pairGuest&&resourceConflict(e,candidate)))return false;\n"
+    }
+   ]
+  },
+  "scripts/hani-release-319-source.cjs": {
+   "beforeSha256": "4b4635a13f855efecf4afffb1c4d0910bda478a9d147f1cc5baa8632a782f3c4",
+   "afterSha256": "39a10b0336f3c439dc6c9662109e8487aa0ebd533d905a9d20fefc5c72f0985e",
+   "beforeBytes": 3718,
+   "afterBytes": 3807,
+   "count": 1,
+   "replacements": [
+    {
+     "start": 0,
+     "beforeStart": 0,
+     "before": "",
+     "after": "require('./hani-building-320-preload.cjs'); // Building320 inverse precedes released319.\n"
+    }
+   ]
+  },
+  "scripts/hani-building-phase3a.test.mjs": {
+   "beforeSha256": "cb90716f70562744a68ac58c15b35299a547654a3f87b2dff34b6ca95b960889",
+   "afterSha256": "baf144ed1833ca936fee7a53ae4744c4715d743b7c3b6bf014b0a31ca9ee9703",
+   "beforeBytes": 15064,
+   "afterBytes": 15173,
+   "count": 1,
+   "replacements": [
+    {
+     "start": 0,
+     "beforeStart": 0,
+     "before": "",
+     "after": "import './hani-building-320-preload.cjs'; // Exact interview hosting fix inverse before this older contract.\n"
+    }
+   ]
+  }
+ },
+ "helper": {
+  "file": "scripts/hani-menu-badges-historical-input.cjs",
+  "beforeSha256": "beeaf7fb56b969770aa7199adf071dabf775d98b1af22c3d5e1146deda9c2141"
+ }
+}
