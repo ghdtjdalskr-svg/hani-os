@@ -1,3 +1,4 @@
+require('./hani-release-322-preload.cjs'); // Released322 metadata precedes the building-322 capture.
 // Test input only: exact staff conversation expansion inverse before released321; production bytes stay untouched.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
