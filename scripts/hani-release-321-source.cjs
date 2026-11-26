@@ -1,3 +1,4 @@
+require('./hani-building-322-preload.cjs'); // Building322 inverse precedes released321.
 // Test input only: exact released321 version/history inverse before building-321.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
