@@ -1,0 +1,216 @@
+{
+    "background":  {
+                       "file":  "assets/building/floor-4f-217.webp",
+                       "w":  1672,
+                       "h":  941
+                   },
+    "prop":  {
+                 "file":  "assets/building/props/desk-4f-team4-v1.webp",
+                 "x":  75,
+                 "y":  495,
+                 "w":  715,
+                 "h":  229,
+                 "scale":  1
+             },
+    "furnitureRect":  {
+                          "x":  75,
+                          "y":  495,
+                          "w":  715,
+                          "h":  170
+                      },
+    "chairs":  [
+                   {
+                       "id":  1,
+                       "occupant":  "gaeun",
+                       "foot":  {
+                                    "x":  165,
+                                    "y":  655
+                                },
+                       "footPercent":  {
+                                           "x":  9.868421,
+                                           "y":  69.606801
+                                       },
+                       "seatWidth":  170,
+                       "labelSafeRect":  {
+                                             "x":  85,
+                                             "y":  669,
+                                             "w":  160,
+                                             "h":  22
+                                         }
+                   },
+                   {
+                       "id":  2,
+                       "occupant":  "hyejin",
+                       "foot":  {
+                                    "x":  345,
+                                    "y":  655
+                                },
+                       "footPercent":  {
+                                           "x":  20.633971,
+                                           "y":  69.606801
+                                       },
+                       "seatWidth":  170,
+                       "labelSafeRect":  {
+                                             "x":  265,
+                                             "y":  669,
+                                             "w":  160,
+                                             "h":  22
+                                         }
+                   },
+                   {
+                       "id":  3,
+                       "occupant":  "ieum",
+                       "foot":  {
+                                    "x":  524,
+                                    "y":  655
+                                },
+                       "footPercent":  {
+                                           "x":  31.339713,
+                                           "y":  69.606801
+                                       },
+                       "seatWidth":  170,
+                       "labelSafeRect":  {
+                                             "x":  444,
+                                             "y":  669,
+                                             "w":  160,
+                                             "h":  22
+                                         }
+                   },
+                   {
+                       "id":  4,
+                       "occupant":  "yuna",
+                       "foot":  {
+                                    "x":  705,
+                                    "y":  655
+                                },
+                       "footPercent":  {
+                                           "x":  42.165072,
+                                           "y":  69.606801
+                                       },
+                       "seatWidth":  170,
+                       "labelSafeRect":  {
+                                             "x":  625,
+                                             "y":  669,
+                                             "w":  160,
+                                             "h":  22
+                                         }
+                   }
+               ],
+    "corridor":  {
+                     "x":  [
+                               155,
+                               740
+                           ],
+                     "y":  [
+                               666,
+                               718
+                           ],
+                     "height":  52,
+                     "rightExit":  {
+                                       "x":  [
+                                                 790,
+                                                 925
+                                             ],
+                                       "y":  [
+                                                 570,
+                                                 718
+                                             ]
+                                   }
+                 },
+    "floorOcclusion":  {
+                           "includedInProp":  true,
+                           "reason":  "기존 배경의 두 책상과 의자 및 바닥 그림자를 덮는 국소 바닥 가림. 기존 3인용 방식과 원화 재사용. 지정 배경·좌표 전용.",
+                           "sourceCrop":  {
+                                              "x":  60,
+                                              "y":  495,
+                                              "w":  600,
+                                              "h":  225
+                                          },
+                           "regions":  [
+                                           {
+                                               "x":  75,
+                                               "y":  522,
+                                               "w":  509,
+                                               "h":  198,
+                                               "featherTopAndSides":  12,
+                                               "bottomExclusive":  720
+                                           }
+                                       ],
+                           "heelCleanup":  [
+                                               {
+                                                   "x":  179,
+                                                   "y":  720,
+                                                   "w":  25,
+                                                   "h":  3
+                                               },
+                                               {
+                                                   "x":  430,
+                                                   "y":  720,
+                                                   "w":  25,
+                                                   "h":  3
+                                               }
+                                           ]
+                       },
+    "hyejin":  {
+                   "frame":  "sitting",
+                   "chair":  2,
+                   "foot":  {
+                                "x":  345,
+                                "y":  655
+                            },
+                   "cellTopLeft":  {
+                                       "x":  273,
+                                       "y":  472
+                                   },
+                   "scale":  1,
+                   "sourceFile":  "assets/sprites-v3/hyejin.webp",
+                   "sourceRect":  [
+                                      144,
+                                      0,
+                                      144,
+                                      192
+                                  ],
+                   "pivot":  [
+                                 72,
+                                 183
+                             ]
+               },
+    "ieum":  {
+                 "frame":  "sitting",
+                 "chair":  3,
+                 "foot":  {
+                              "x":  524,
+                              "y":  655
+                          },
+                 "cellTopLeft":  {
+                                     "x":  452,
+                                     "y":  472
+                                 },
+                 "scale":  1,
+                 "sourceFile":  "assets/sprites-v3/ieum.webp",
+                 "sourceRect":  [
+                                    144,
+                                    0,
+                                    144,
+                                    192
+                                ],
+                 "pivot":  [
+                               72,
+                               183
+                           ]
+             },
+    "layerOrder":  [
+                       "original floor",
+                       "desk prop including floor occlusion",
+                       "seated characters",
+                       "name labels (runtime integration required)"
+                   ],
+    "notes":  [
+                  "1672×941 배경 기준 1:1 좌표. 4인 순서: 가은·혜진·이음·유나.",
+                  "유나 별도 소품 미합성. 실제 코드에서 제거하는 작업은 통합 담당 범위.",
+                  "좌석 중심 간격180·179·181px. 자리 폭170px, 발 y655.",
+                  "소파 앞 통로52px, 오른쪽 x790부터 출구. 러너 픽셀 보존.",
+                  "문자·이름표는 소품에 없음. labelSafeRect는 런타임 통합용 제안.",
+                  "생성 원화의 좌우 끝 구역만 추가 축소. 모니터·의자4개는 중앙 구역에 동일 비율 적용."
+              ]
+}

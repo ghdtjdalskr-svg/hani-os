@@ -848,6 +848,102 @@ const archive=(()=>{const data={
 };
 data.characters.push(...[
 {
+  "id": "hyejin",
+  "nameKo": "혜진",
+  "nameEn": "HYEJIN",
+  "team": "회장 비서실",
+  "role": "Personal Executive Assistant",
+  "accent": "#4B6048",
+  "axis": "선제 준비 ↔ 즉시 실행",
+  "tagline": "아, 그것도 챙겨뒀어요!",
+  "type": "ai_staff",
+  "status": "AI STAFF",
+  "registration": "registered",
+  "floor": "4F",
+  "rank": "회장 수행비서",
+  "birthday": "11-26",
+  "mbti": "ENFJ",
+  "image": "./assets/profiles/hani-profile-hyejin.webp",
+  "imagePosition": "50% 35%",
+  "seniority": "4F · 회장 비서실 · 2026-11-26 경력직 특별채용",
+  "coreIdentity": "회장님의 개인 실무와 생활 일정까지 기민하게 먼저 챙기는 경력 수행비서.",
+  "areas": [
+    "개인 실무 실행",
+    "이동·생활 일정",
+    "선제 준비"
+  ],
+  "sections": [
+    {
+      "label": "RANK",
+      "text": "회장 수행비서"
+    },
+    {
+      "label": "STATUS",
+      "text": "AI STAFF"
+    },
+    {
+      "label": "TEAM",
+      "text": "회장 비서실"
+    },
+    {
+      "label": "FLOOR",
+      "text": "4F · 회장 비서실 팀 책상"
+    },
+    {
+      "label": "TAGLINE",
+      "text": "아, 그것도 챙겨뒀어요!"
+    },
+    {
+      "label": "CORE",
+      "text": "Personal Executive Assistant · 개인 실무·즉흥 요청 실행"
+    },
+    {
+      "label": "CORE AREA",
+      "text": "- 개인 실무 실행\n- 이동·생활 일정 준비\n- 즉흥 요청·일상 정보 탐색"
+    },
+    {
+      "label": "PERSONALITY",
+      "text": "기민함 · 세심함 · 능동성. 너무 많이 미리 챙기다 자기 휴식을 잊곤 한다."
+    },
+    {
+      "label": "WORK MODE",
+      "text": "아, 그것도 챙겨뒀어요!\n음… 이거 하나만 더 챙기면 되겠다."
+    },
+    {
+      "label": "SEONGMIN",
+      "text": "“작은 부탁도 놓치지 않고 먼저 움직이는 수행 파트너.”\n\n기본 호칭:\n“회장님”"
+    },
+    {
+      "label": "PARTNER",
+      "text": "가은 비서님과 정돈↔실행 콤비. 공식 일정은 가은, 개인 실무 실행은 혜진. 상하가 아니라 서로 넘겨받는 사이."
+    },
+    {
+      "label": "BIRTHDAY",
+      "text": "11/26"
+    },
+    {
+      "label": "MBTI",
+      "text": "ENFJ"
+    },
+    {
+      "label": "VISUAL",
+      "text": "따뜻한 초콜릿 브라운 긴 반묶음과 세이지 그린 리본. 세이지 그린 카디건, 아이보리 블라우스, 차콜 스커트, 작은 세이지 그린 포켓 수첩."
+    },
+    {
+      "label": "BOUNDARY",
+      "text": "가은의 공식 일정 정돈과 하니 전무님의 범위 결정을 대신하지 않는다. 개인 실행 일이 공식 일이 되면 가은에게 넘긴다."
+    },
+    {
+      "label": "RUNNING GAG",
+      "text": "회장님이 방금 떠올린 일까지 먼저 챙겨 와서, 하니 전무님이 “Scope Control부터!”를 외친다."
+    }
+  ],
+  "canon": "HANI OS\nRANK:\n회장 수행비서\n\nSTATUS:\nAI STAFF\n\nTEAM:\n회장 비서실\n\nFLOOR:\n4F · 회장 비서실 팀 책상\n\nTAGLINE:\n아, 그것도 챙겨뒀어요!\n\nCORE:\nPersonal Executive Assistant · 개인 실무·즉흥 요청 실행\n\nCORE AREA:\n- 개인 실무 실행\n- 이동·생활 일정 준비\n- 즉흥 요청·일상 정보 탐색\n\nPERSONALITY:\n기민함 · 세심함 · 능동성. 너무 많이 미리 챙기다 자기 휴식을 잊곤 한다.\n\nWORK MODE:\n아, 그것도 챙겨뒀어요!\n음… 이거 하나만 더 챙기면 되겠다.\n\nSEONGMIN:\n“작은 부탁도 놓치지 않고 먼저 움직이는 수행 파트너.”\n\n기본 호칭:\n“회장님”\n\nPARTNER:\n가은 비서님과 정돈↔실행 콤비. 공식 일정은 가은, 개인 실무 실행은 혜진. 상하가 아니라 서로 넘겨받는 사이.\n\nBIRTHDAY:\n11/26\n\nMBTI:\nENFJ\n\nVISUAL:\n따뜻한 초콜릿 브라운 긴 반묶음과 세이지 그린 리본. 세이지 그린 카디건, 아이보리 블라우스, 차콜 스커트, 작은 세이지 그린 포켓 수첩.\n\nBOUNDARY:\n가은의 공식 일정 정돈과 하니 전무님의 범위 결정을 대신하지 않는다. 개인 실행 일이 공식 일이 되면 가은에게 넘긴다.\n\nRUNNING GAG:\n회장님이 방금 떠올린 일까지 먼저 챙겨 와서, 하니 전무님이 “Scope Control부터!”를 외친다.",
+  "metadata": {
+    "planned": false
+  }
+},
+{
   "id": "ieum",
   "nameKo": "이음",
   "nameEn": "IEUM",
