@@ -26,6 +26,18 @@
   ],
   "entries": [
     {
+      "id": "v2.9.322",
+      "date": "2026-11-26",
+      "status": "released",
+      "title": "직원 대화 대폭 추가",
+      "category": "하니 그룹 · 대공사",
+      "credits": [],
+      "source": {
+        "commit": "",
+        "subject": "release: v2.9.322 직원 대화 대폭 추가"
+      }
+    },
+    {
       "id": "v2.9.321",
       "date": "2026-11-26",
       "status": "released",
@@ -33,8 +45,8 @@
       "category": "하니 그룹 · 대공사",
       "credits": [],
       "source": {
-        "commit": "",
-        "subject": "release: v2.9.321 가구 피해 걷기 (동선 정리)"
+        "commit": "dbcc1f81d25b1dc239f6bf01aa48fa7dbe73a25c",
+        "subject": "release: v2.9.321 가구 피해 걷기 (동선 정리) (#571)"
       }
     },
     {
