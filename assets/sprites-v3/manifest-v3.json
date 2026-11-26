@@ -6,7 +6,7 @@
   "layout": "Only row 0 columns 0..3 are populated: standing, sitting, walk-a, walk-b. Other cells are transparent reserved capacity. This is the user-requested front-only four-pose subset, not a completed four-direction animation set. Resident humans use the same four columns; pets use five poses in left/right rows.",
   "shadow": "Generated translucent floor shadow included per frame. Do not double-render; future split shadow pass requires mask/extraction work.",
   "pivotMeaning": "Bottom center of included floor shadow; chair/desk masking must be validated by runtime owner.",
-  "spriteBytes": 1205496,
+  "spriteBytes": 1241356,
   "maxSpriteBytes": 1475000,
   "entries": [
     {
@@ -5176,6 +5176,138 @@
       "generator": "built-in image_gen",
       "scale": 3,
       "quality": 88
+    },
+    {
+      "id": "hyejin",
+      "name": "혜진",
+      "kind": "human",
+      "planned": false,
+      "file": "hyejin.webp",
+      "sizeBytes": 35860,
+      "sha256": "005094cd3607ef7537e88a505ae6f1944ffb7522e05e46bf6f1167cbfa1c3f4d",
+      "sourceSha256": "62ac6ab4750c967b6e8bcf9f82c5e5a3c54ad8afcc522e894a44e66ba597353e",
+      "sourceRowSplit": 627,
+      "identityReference": "../profiles/hani-profile-hyejin.webp",
+      "atlas": [
+        1152,
+        1536
+      ],
+      "cell": [
+        144,
+        192
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "sourceRect": [
+            184,
+            21,
+            285,
+            595
+          ],
+          "contentRect": [
+            32,
+            15,
+            80,
+            168
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            144,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "sourceRect": [
+            778,
+            55,
+            279,
+            552
+          ],
+          "contentRect": [
+            35,
+            36,
+            74,
+            147
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            288,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "sourceRect": [
+            196,
+            635,
+            286,
+            604
+          ],
+          "contentRect": [
+            35,
+            24,
+            75,
+            159
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            432,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "sourceRect": [
+            775,
+            636,
+            279,
+            602
+          ],
+          "contentRect": [
+            35,
+            24,
+            74,
+            159
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 1735309,
+        "partial": 32979,
+        "opaque": 1184
+      },
+      "maxBytes": 100000,
+      "generator": "built-in image_gen",
+      "scale": 3,
+      "quality": 90
     }
   ],
   "scale": 3,
