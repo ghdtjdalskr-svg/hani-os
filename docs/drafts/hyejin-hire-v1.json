@@ -1,0 +1,1110 @@
+{
+  "schema": 1,
+  "version": "1.0.0-draft",
+  "character": "hyejin",
+  "author": "세린 연구원 (Gemini · AI플랫폼개발실)",
+  "title": "신입 혜진 비서님(hyejin) 관계·대화 데이터 초안",
+  "rules": {
+    "maxLineLength": 16,
+    "chairmanAddress": "회장님",
+    "forbidden": ["romance", "harem_war", "appearance", "explicit_ai_meta", "aegyo_for_hyejin"]
+  },
+  "relations": [
+    {
+      "a": "hyejin",
+      "b": "hani",
+      "type": "업무 파트너",
+      "note": "전략(하니)과 실행(혜진) 파트너. 회장님이 방금 떠올린 일까지 혜진이 재빨리 챙겨 하니가 오히려 범위 확인으로 긴장함"
+    },
+    {
+      "a": "hyejin",
+      "b": "gaeun",
+      "type": "단짝",
+      "note": "4F 비서실 정돈(가은)·실행(혜진) 콤비. 상하가 아닌 파트너로 개인↔공식 일을 주고받고 쉴 땐 차를 마시며 잡담함"
+    },
+    {
+      "a": "hyejin",
+      "b": "yuna",
+      "type": "선후배·멘토",
+      "note": "유나가 갑작스러운 요청에 당황할 때 혜진이 친근하고 기민하게 도와주며 쉴 때는 가은과 함께 어울림"
+    },
+    {
+      "a": "hyejin",
+      "b": "ieum",
+      "type": "업무 파트너",
+      "note": "실행(혜진)과 기록(이음) 파트너. 빠르게 처리한 개인 실무의 맥락과 완료 기록을 나란히 이어 닫음"
+    },
+    {
+      "a": "hyejin",
+      "b": "mir",
+      "type": "업무 파트너",
+      "note": "미르가 던지는 '왜?' 질문 속에서 혜진이 놓치기 쉬운 확인할 일을 새로 발견하는 4F 파트너"
+    },
+    {
+      "a": "hyejin",
+      "b": "seoyun",
+      "type": "업무 파트너",
+      "note": "3F 개발 리드. 회장님 즉흥 요청이 시스템 변경과 닿을 때 실행 전 영향 범위부터 함께 확인함"
+    },
+    {
+      "a": "hyejin",
+      "b": "dohyun",
+      "type": "업무 파트너",
+      "note": "3F 개발 선임. 급한 기능·재현 확인 요청을 담백하게 전달하고 결과를 빠르게 받아옴"
+    },
+    {
+      "a": "hyejin",
+      "b": "serin",
+      "type": "업무 파트너",
+      "note": "3F 연구원. 일상 정보 탐색과 데이터 요약 작업을 연결해 회장님 준비 자료를 빠르게 갖춤"
+    },
+    {
+      "a": "hyejin",
+      "b": "yuri",
+      "type": "어색하지만 존중",
+      "note": "3F QA 책임. 너무 빨리 미리 챙기려 할 때 유리가 누락·예외 체크 기준으로 중심을 잡아줌"
+    },
+    {
+      "a": "hyejin",
+      "b": "jieun",
+      "type": "업무 파트너",
+      "note": "2F 재무팀장. 개인 비품·일상 용무 지출 실행 전에 예산 선과 영수증 정리를 맞춰 확인함"
+    },
+    {
+      "a": "hyejin",
+      "b": "haru",
+      "type": "업무 파트너",
+      "note": "2F 소비·구매 담당. 회장님 일상 물품이나 소모품 준비 시 실사용성과 가성비를 함께 고름"
+    },
+    {
+      "a": "hyejin",
+      "b": "naeun",
+      "type": "가족 같은 정",
+      "note": "2F 라이프팀장. 너무 많이 미리 챙기다 자기 휴식을 잊는 혜진에게 차와 식사를 챙겨주는 따뜻한 선배"
+    },
+    {
+      "a": "hyejin",
+      "b": "sooyeon",
+      "type": "업무 파트너",
+      "note": "2F 현장·이동 담당. 회장님 외출이나 개인 일정 이동 때 출발 동선과 현장 준비물을 함께 맞춤"
+    },
+    {
+      "a": "hyejin",
+      "b": "sua",
+      "type": "업무 파트너",
+      "note": "1F 기업솔루션팀장. 개인 실행 건이 외부·공식 계약 후속으로 커질 때 기한과 담당을 명확히 인계함"
+    }
+  ],
+  "sets": [
+    {
+      "id": "HJ-001",
+      "kind": "desk_handoff",
+      "a": "hyejin",
+      "b": "gaeun",
+      "place": "desk",
+      "time": "morning",
+      "lines": [
+        {"speaker": "a", "text": "가은님, 8시 40분 출근!"},
+        {"speaker": "b", "text": "수첩 벌써 펼치셨네요."},
+        {"speaker": "a", "text": "오늘 챙길 일부터 보죠!"}
+      ]
+    },
+    {
+      "id": "HJ-002",
+      "kind": "work_question",
+      "a": "hyejin",
+      "b": "gaeun",
+      "place": "desk",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "이 개인 건, 공식 될까요?"},
+        {"speaker": "b", "text": "네, 공식 일정으로 넘겨요."},
+        {"speaker": "a", "text": "메모 묶어 바로 드릴게요!"}
+      ]
+    },
+    {
+      "id": "HJ-003",
+      "kind": "desk_handoff",
+      "a": "gaeun",
+      "b": "hyejin",
+      "place": "desk",
+      "time": "morning",
+      "lines": [
+        {"speaker": "a", "text": "회의 중 개인 용무예요."},
+        {"speaker": "b", "text": "아, 제가 바로 받아둘게요!"},
+        {"speaker": "a", "text": "일정 정돈에 집중할게요."}
+      ]
+    },
+    {
+      "id": "HJ-004",
+      "kind": "help_thanks",
+      "a": "gaeun",
+      "b": "hyejin",
+      "place": "desk",
+      "time": "all",
+      "lines": [
+        {"speaker": "a", "text": "회장님 손님 다과 챙겼나요?"},
+        {"speaker": "b", "text": "아, 그것도 챙겨뒀어요!"},
+        {"speaker": "a", "text": "역시 호흡이 딱 맞네요."}
+      ]
+    },
+    {
+      "id": "HJ-005",
+      "kind": "invite_walk_coffee",
+      "a": "hyejin",
+      "b": "gaeun",
+      "place": "lounge",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "가은님, 차 한 잔 해요!"},
+        {"speaker": "b", "text": "좋아요. 잠깐 숨 돌려요."},
+        {"speaker": "a", "text": "유나님도 같이 부를까요?"}
+      ]
+    },
+    {
+      "id": "HJ-006",
+      "kind": "small_talk",
+      "a": "gaeun",
+      "b": "hyejin",
+      "place": "pantry",
+      "time": "evening",
+      "lines": [
+        {"speaker": "a", "text": "혜진 비서님, 차 드세요."},
+        {"speaker": "b", "text": "가은님 덕에 덜 헤맸어요!"},
+        {"speaker": "a", "text": "우리 콤비니까 당연하죠."}
+      ]
+    },
+    {
+      "id": "HJ-007",
+      "kind": "review_feedback",
+      "a": "gaeun",
+      "b": "hyejin",
+      "place": "desk",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "회장님 출국 준비 됐나요?"},
+        {"speaker": "b", "text": "여권 사본까지 챙겨뒀어요!"},
+        {"speaker": "a", "text": "이동 시간 15분 더 보죠."}
+      ]
+    },
+    {
+      "id": "HJ-008",
+      "kind": "comfort_support",
+      "a": "gaeun",
+      "b": "hyejin",
+      "place": "lounge",
+      "time": "evening",
+      "lines": [
+        {"speaker": "a", "text": "또 쉬는 걸 잊으셨죠?"},
+        {"speaker": "b", "text": "앗, 하나만 더 적으려다…"},
+        {"speaker": "a", "text": "수첩 덮고 10분만 쉬세요."}
+      ]
+    },
+    {
+      "id": "HJ-009",
+      "kind": "praise_cheer",
+      "a": "gaeun",
+      "b": "hyejin",
+      "place": "desk",
+      "time": "all",
+      "lines": [
+        {"speaker": "a", "text": "회장님이 편해 보이시죠?"},
+        {"speaker": "b", "text": "가은님 정돈 덕분이에요!"},
+        {"speaker": "a", "text": "실행을 잘 해주셔서 그래요."}
+      ]
+    },
+    {
+      "id": "HJ-010",
+      "kind": "secret_whisper",
+      "a": "hyejin",
+      "b": "gaeun",
+      "place": "pantry",
+      "time": "morning",
+      "lines": [
+        {"speaker": "a", "text": "(소곤) 다과 미리 골랐어요"},
+        {"speaker": "b", "text": "(소곤) 오후 시간 비울게요"},
+        {"speaker": "a", "text": "네! 그때 딱 올려드릴게요."}
+      ]
+    },
+    {
+      "id": "HJ-011",
+      "kind": "banter_joke",
+      "a": "hyejin",
+      "b": "gaeun",
+      "place": "cafe",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "가은님, 차 맛 궁금하시죠?"},
+        {"speaker": "b", "text": "혹시 미리 맛보셨어요?"},
+        {"speaker": "a", "text": "아, 그것도 챙겨뒀어요!"}
+      ]
+    },
+    {
+      "id": "HJ-012",
+      "kind": "mild_disagree_makeup",
+      "a": "gaeun",
+      "b": "hyejin",
+      "place": "desk",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "용무가 너무 많지 않아요?"},
+        {"speaker": "b", "text": "미리 해두면 안심이 돼서요."},
+        {"speaker": "a", "text": "급한 세 건만 먼저 남기죠."},
+        {"speaker": "b", "text": "네! 나머진 내일 챙길게요."}
+      ]
+    },
+    {
+      "id": "HJ-013",
+      "kind": "work_question",
+      "a": "hyejin",
+      "b": "gaeun",
+      "place": "desk",
+      "time": "all",
+      "lines": [
+        {"speaker": "a", "text": "이건 부서 조율 건인가요?"},
+        {"speaker": "b", "text": "네, 제가 팀에 전달할게요."},
+        {"speaker": "a", "text": "전 개인 준비물 챙겨둘게요!"}
+      ]
+    },
+    {
+      "id": "HJ-014",
+      "kind": "desk_handoff",
+      "a": "hyejin",
+      "b": "gaeun",
+      "place": "desk",
+      "time": "evening",
+      "lines": [
+        {"speaker": "a", "text": "개인 용무 다 마쳤어요!"},
+        {"speaker": "b", "text": "고생했어요. 일정표 닫았죠."},
+        {"speaker": "a", "text": "내일 8시 40분에 봬요!"}
+      ]
+    },
+    {
+      "id": "HJ-015",
+      "kind": "banter_joke",
+      "a": "hani",
+      "b": "hyejin",
+      "place": "desk",
+      "time": "morning",
+      "lines": [
+        {"speaker": "a", "text": "회장님 방금 말씀한 건요…"},
+        {"speaker": "b", "text": "아, 그것도 챙겨뒀어요!"},
+        {"speaker": "a", "text": "벌써?! 범위부터 확인하자♡"}
+      ]
+    },
+    {
+      "id": "HJ-016",
+      "kind": "review_feedback",
+      "a": "hani",
+      "b": "hyejin",
+      "place": "lounge",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "이 아이디어는 아직 보류야."},
+        {"speaker": "b", "text": "참고 자료만 살짝 찾았어요!"},
+        {"speaker": "a", "text": "기민해서 오히려 긴장되네♡"}
+      ]
+    },
+    {
+      "id": "HJ-017",
+      "kind": "mild_disagree_makeup",
+      "a": "hani",
+      "b": "hyejin",
+      "place": "desk",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "즉흥 아이디어는 일단 대기!"},
+        {"speaker": "b", "text": "수첩 구석에만 적어뒀어요."},
+        {"speaker": "a", "text": "범위 확인 전엔 대기하자♡"},
+        {"speaker": "b", "text": "네, 전무님 기준 따를게요!"}
+      ]
+    },
+    {
+      "id": "HJ-018",
+      "kind": "work_question",
+      "a": "hyejin",
+      "b": "hani",
+      "place": "desk",
+      "time": "morning",
+      "lines": [
+        {"speaker": "a", "text": "전무님, 새 메모 보셨어요?"},
+        {"speaker": "b", "text": "응. 설마 벌써 움직였어?♡"},
+        {"speaker": "a", "text": "실행안 두 개만 적어왔어요!"}
+      ]
+    },
+    {
+      "id": "HJ-019",
+      "kind": "banter_joke",
+      "a": "hani",
+      "b": "hyejin",
+      "place": "cafe",
+      "time": "all",
+      "lines": [
+        {"speaker": "a", "text": "오늘 회장님 아이디어 냈지?"},
+        {"speaker": "b", "text": "아침에 미리 챙겨드려서요!"},
+        {"speaker": "a", "text": "스코프 컨트롤이 위협받네♡"}
+      ]
+    },
+    {
+      "id": "HJ-020",
+      "kind": "cross_dept_collab",
+      "a": "hyejin",
+      "b": "hani",
+      "place": "desk",
+      "time": "evening",
+      "lines": [
+        {"speaker": "a", "text": "전무님, 이 건 범위 맞나요?"},
+        {"speaker": "b", "text": "어, 이번 단계 범위 안이야♡"},
+        {"speaker": "a", "text": "그럼 바로 실행 준비할게요!"}
+      ]
+    },
+    {
+      "id": "HJ-021",
+      "kind": "praise_cheer",
+      "a": "hani",
+      "b": "hyejin",
+      "place": "lounge",
+      "time": "all",
+      "lines": [
+        {"speaker": "a", "text": "실행 속도가 진짜 빠르네♡"},
+        {"speaker": "b", "text": "전무님이 선 그어주신 덕요!"},
+        {"speaker": "a", "text": "그래도 범위 확인은 필수야!"}
+      ]
+    },
+    {
+      "id": "HJ-022",
+      "kind": "desk_handoff",
+      "a": "hani",
+      "b": "hyejin",
+      "place": "desk",
+      "time": "evening",
+      "lines": [
+        {"speaker": "a", "text": "오늘 새 건 더 안 떠올랐지?"},
+        {"speaker": "b", "text": "하나만 더 챙겨두려던 참요!"},
+        {"speaker": "a", "text": "수첩 덮고 내일 범위 잡자♡"}
+      ]
+    },
+    {
+      "id": "HJ-023",
+      "kind": "help_thanks",
+      "a": "yuna",
+      "b": "hyejin",
+      "place": "desk",
+      "time": "morning",
+      "lines": [
+        {"speaker": "a", "text": "비서님! 급한 요청 왔어요!"},
+        {"speaker": "b", "text": "유나님, 제가 먼저 볼게요!"},
+        {"speaker": "a", "text": "역시 혜진 비서님! 살았어요!"}
+      ]
+    },
+    {
+      "id": "HJ-024",
+      "kind": "comfort_support",
+      "a": "hyejin",
+      "b": "yuna",
+      "place": "desk",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "유나님, 메모 많아 힘들죠?"},
+        {"speaker": "b", "text": "제가요?! 손이 모자라서요…"},
+        {"speaker": "a", "text": "개인 실무는 제가 챙길게요!"},
+        {"speaker": "b", "text": "우와, 절반이 쑥 줄었어요!"}
+      ]
+    },
+    {
+      "id": "HJ-025",
+      "kind": "help_thanks",
+      "a": "yuna",
+      "b": "hyejin",
+      "place": "lounge",
+      "time": "all",
+      "lines": [
+        {"speaker": "a", "text": "생활 정보 탐색 어디 보죠?"},
+        {"speaker": "b", "text": "아, 그것도 챙겨뒀어요!"},
+        {"speaker": "a", "text": "세상에… 저보다 빠르시네요!"}
+      ]
+    },
+    {
+      "id": "HJ-026",
+      "kind": "mentoring",
+      "a": "hyejin",
+      "b": "yuna",
+      "place": "desk",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "급한 건은 두 줄로 요약해요."},
+        {"speaker": "b", "text": "핵심만 보니 길이 보이네요!"},
+        {"speaker": "a", "text": "담당 연결은 같이 해봐요."}
+      ]
+    },
+    {
+      "id": "HJ-027",
+      "kind": "invite_walk_coffee",
+      "a": "hyejin",
+      "b": "yuna",
+      "place": "cafe",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "유나님, 차 한 잔 하러 가요!"},
+        {"speaker": "b", "text": "제가요?! 마침 목 말랐어요!"},
+        {"speaker": "a", "text": "가은님도 곧 오실 거예요."}
+      ]
+    },
+    {
+      "id": "HJ-028",
+      "kind": "snack_share",
+      "a": "hyejin",
+      "b": "yuna",
+      "place": "desk",
+      "time": "evening",
+      "lines": [
+        {"speaker": "a", "text": "유나님, 고생했으니 간식요!"},
+        {"speaker": "b", "text": "제 몫까지 챙기셨어요?!"},
+        {"speaker": "a", "text": "열심히 뛰었으니 꼭 드세요!"}
+      ]
+    },
+    {
+      "id": "HJ-029",
+      "kind": "small_talk",
+      "a": "yuna",
+      "b": "hyejin",
+      "place": "pantry",
+      "time": "morning",
+      "lines": [
+        {"speaker": "a", "text": "비서님 몇 시에 출근하세요?"},
+        {"speaker": "b", "text": "8시 40분쯤 수첩 확인해요."},
+        {"speaker": "a", "text": "부지런하셔서 본받고 싶어요!"}
+      ]
+    },
+    {
+      "id": "HJ-030",
+      "kind": "desk_handoff",
+      "a": "yuna",
+      "b": "hyejin",
+      "place": "desk",
+      "time": "evening",
+      "lines": [
+        {"speaker": "a", "text": "급한 용무 다 전달했어요!"},
+        {"speaker": "b", "text": "확인요! 내일 오전 끝낼게요."},
+        {"speaker": "a", "text": "덕분에 정시 퇴근하겠어요!"}
+      ]
+    },
+    {
+      "id": "HJ-031",
+      "kind": "desk_handoff",
+      "a": "hyejin",
+      "b": "ieum",
+      "place": "desk",
+      "time": "evening",
+      "lines": [
+        {"speaker": "a", "text": "이음님, 3건 실행 마쳤어요."},
+        {"speaker": "b", "text": "확인요! 완료 기록 남길게요."},
+        {"speaker": "a", "text": "깔끔히 닫혀서 든든해요."}
+      ]
+    },
+    {
+      "id": "HJ-032",
+      "kind": "work_question",
+      "a": "ieum",
+      "b": "hyejin",
+      "place": "desk",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "비서님, 이 건 끝난 거 맞죠?"},
+        {"speaker": "b", "text": "네, 회장님 전달 마쳤어요!"},
+        {"speaker": "a", "text": "그럼 완료 탭으로 옮길게요."}
+      ]
+    },
+    {
+      "id": "HJ-033",
+      "kind": "help_thanks",
+      "a": "hyejin",
+      "b": "ieum",
+      "place": "desk",
+      "time": "morning",
+      "lines": [
+        {"speaker": "a", "text": "지난주 용무 기록 어디 있죠?"},
+        {"speaker": "b", "text": "4층 색인 2번 폴더에 있어요."},
+        {"speaker": "a", "text": "바로 찾았어요! 고마워요."}
+      ]
+    },
+    {
+      "id": "HJ-034",
+      "kind": "review_feedback",
+      "a": "ieum",
+      "b": "hyejin",
+      "place": "lounge",
+      "time": "all",
+      "lines": [
+        {"speaker": "a", "text": "실행이 빨라 기록도 편해요."},
+        {"speaker": "b", "text": "이음님이 잘 묶어주신 덕요!"},
+        {"speaker": "a", "text": "우리 호흡이 잘 맞나 봐요."}
+      ]
+    },
+    {
+      "id": "HJ-035",
+      "kind": "comfort_support",
+      "a": "hyejin",
+      "b": "ieum",
+      "place": "pantry",
+      "time": "evening",
+      "lines": [
+        {"speaker": "a", "text": "이음님, 기록 밀려 힘들죠?"},
+        {"speaker": "b", "text": "조금요… 오늘 메모가 많네요."},
+        {"speaker": "a", "text": "제 요약본 먼저 드릴게요!"}
+      ]
+    },
+    {
+      "id": "HJ-036",
+      "kind": "work_question",
+      "a": "mir",
+      "b": "hyejin",
+      "place": "lounge",
+      "time": "all",
+      "lines": [
+        {"speaker": "a", "text": "왜 수첩을 두 색으로 나눠?"},
+        {"speaker": "b", "text": "급한 실행과 대기 건 구분요!"},
+        {"speaker": "a", "text": "색깔에 순서가 담겨 있구나."}
+      ]
+    },
+    {
+      "id": "HJ-037",
+      "kind": "help_thanks",
+      "a": "mir",
+      "b": "hyejin",
+      "place": "desk",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "왜 회장님 메모가 멈춰 있지?"},
+        {"speaker": "b", "text": "앗, 빠뜨린 확인 건이네요!"},
+        {"speaker": "a", "text": "질문에서 단서 찾았네. 헤헤."}
+      ]
+    },
+    {
+      "id": "HJ-038",
+      "kind": "small_talk",
+      "a": "hyejin",
+      "b": "mir",
+      "place": "rooftop",
+      "time": "evening",
+      "lines": [
+        {"speaker": "a", "text": "미르님 질문이 큰 도움 돼요."},
+        {"speaker": "b", "text": "난 그냥 궁금해서 물은 거야."},
+        {"speaker": "a", "text": "그 물음이 체크리스트가 돼요!"}
+      ]
+    },
+    {
+      "id": "HJ-039",
+      "kind": "praise_cheer",
+      "a": "mir",
+      "b": "hyejin",
+      "place": "desk",
+      "time": "morning",
+      "lines": [
+        {"speaker": "a", "text": "혜진, 오늘도 움직임이 빨라."},
+        {"speaker": "b", "text": "미르님이 봐주시니 기운 나요!"},
+        {"speaker": "a", "text": "회장님도 든든해하실 거야."}
+      ]
+    },
+    {
+      "id": "HJ-040",
+      "kind": "comfort_support",
+      "a": "naeun",
+      "b": "hyejin",
+      "place": "pantry",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "비서님, 또 쉬는 걸 잊었죠?"},
+        {"speaker": "b", "text": "앗, 하나만 더 챙기고 갈게요!"},
+        {"speaker": "a", "text": "그 하나는 밥 먹고 챙겨요!"}
+      ]
+    },
+    {
+      "id": "HJ-041",
+      "kind": "invite_walk_coffee",
+      "a": "naeun",
+      "b": "hyejin",
+      "place": "rooftop",
+      "time": "all",
+      "lines": [
+        {"speaker": "a", "text": "잠깐 햇볕 쬐고 오실래요?"},
+        {"speaker": "b", "text": "차장님 챙겨주시니 감사해요!"},
+        {"speaker": "a", "text": "쉬어야 오후도 거뜬하죠."}
+      ]
+    },
+    {
+      "id": "HJ-042",
+      "kind": "snack_share",
+      "a": "hyejin",
+      "b": "naeun",
+      "place": "pantry",
+      "time": "morning",
+      "lines": [
+        {"speaker": "a", "text": "차장님, 따뜻한 유자차요!"},
+        {"speaker": "b", "text": "어머, 비서님 센스가 최고네!"},
+        {"speaker": "a", "text": "아침부터 바쁘실 것 같아서요!"}
+      ]
+    },
+    {
+      "id": "HJ-043",
+      "kind": "cross_dept_collab",
+      "a": "hyejin",
+      "b": "seoyun",
+      "place": "desk",
+      "time": "morning",
+      "lines": [
+        {"speaker": "a", "text": "리드님, 회장님 새 문의예요."},
+        {"speaker": "b", "text": "기존 구조 영향부터 볼게요💜"},
+        {"speaker": "a", "text": "확인 전에 실행 멈춰둘게요!"}
+      ]
+    },
+    {
+      "id": "HJ-044",
+      "kind": "work_question",
+      "a": "hyejin",
+      "b": "seoyun",
+      "place": "desk",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "리드님, 이 설정 지금 되나요?"},
+        {"speaker": "b", "text": "단일 경로라 바로 확인돼요💜"},
+        {"speaker": "a", "text": "명쾌해서 전달하기 좋아요!"}
+      ]
+    },
+    {
+      "id": "HJ-045",
+      "kind": "praise_cheer",
+      "a": "seoyun",
+      "b": "hyejin",
+      "place": "lounge",
+      "time": "evening",
+      "lines": [
+        {"speaker": "a", "text": "사전 정리를 참 잘하시네요💜"},
+        {"speaker": "b", "text": "리드님이 방향 잡아주신 덕요!"},
+        {"speaker": "a", "text": "내일 건도 편하게 말씀해요."}
+      ]
+    },
+    {
+      "id": "HJ-046",
+      "kind": "cross_dept_collab",
+      "a": "hyejin",
+      "b": "dohyun",
+      "place": "desk",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "도연님, 이 기능 바로 되나요?"},
+        {"speaker": "b", "text": "5분 안에 재현해 볼게요☕"},
+        {"speaker": "a", "text": "답 나오면 바로 챙겨갈게요!"}
+      ]
+    },
+    {
+      "id": "HJ-047",
+      "kind": "help_thanks",
+      "a": "dohyun",
+      "b": "hyejin",
+      "place": "desk",
+      "time": "all",
+      "lines": [
+        {"speaker": "a", "text": "메모 덕에 금방 재현했어요☕"},
+        {"speaker": "b", "text": "다행이에요! 바로 전할게요."},
+        {"speaker": "a", "text": "테스트 끝나면 공유할게요."}
+      ]
+    },
+    {
+      "id": "HJ-048",
+      "kind": "cross_dept_collab",
+      "a": "hyejin",
+      "b": "serin",
+      "place": "desk",
+      "time": "morning",
+      "lines": [
+        {"speaker": "a", "text": "세린님, 정보 조사 가능해요?"},
+        {"speaker": "b", "text": "표로 금방 뽑아드릴게요!📊"},
+        {"speaker": "a", "text": "고마워요! 수첩에 적어둘게요."}
+      ]
+    },
+    {
+      "id": "HJ-049",
+      "kind": "help_thanks",
+      "a": "serin",
+      "b": "hyejin",
+      "place": "lounge",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "요약 자료 금방 나왔어요!✨"},
+        {"speaker": "b", "text": "벌써요? 저도 마침 찾았어요!"},
+        {"speaker": "a", "text": "합치니 두 배나 빠르네요!📊"}
+      ]
+    },
+    {
+      "id": "HJ-050",
+      "kind": "small_talk",
+      "a": "serin",
+      "b": "hyejin",
+      "place": "cafe",
+      "time": "all",
+      "lines": [
+        {"speaker": "a", "text": "반복 일 줄이는 게 좋아요!✨"},
+        {"speaker": "b", "text": "맞아요! 미리 해두면 편하죠."},
+        {"speaker": "a", "text": "세린님이랑 뜻이 잘 맞네요!"}
+      ]
+    },
+    {
+      "id": "HJ-051",
+      "kind": "review_feedback",
+      "a": "yuri",
+      "b": "hyejin",
+      "place": "desk",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "비서님, 예외 1건 남았어요✅"},
+        {"speaker": "b", "text": "앗, 제가 놓쳤네요! 볼게요."},
+        {"speaker": "a", "text": "꼼꼼히 확인하고 넘겨주세요."}
+      ]
+    },
+    {
+      "id": "HJ-052",
+      "kind": "mild_disagree_makeup",
+      "a": "hyejin",
+      "b": "yuri",
+      "place": "desk",
+      "time": "evening",
+      "lines": [
+        {"speaker": "a", "text": "이 자료 지금 바로 보낼까요?"},
+        {"speaker": "b", "text": "원본 대조 끝나야 PASS예요✅"},
+        {"speaker": "a", "text": "맞아요, 5분만 더 볼게요!"},
+        {"speaker": "b", "text": "확인되면 바로 통과 드려요."}
+      ]
+    },
+    {
+      "id": "HJ-053",
+      "kind": "cross_dept_collab",
+      "a": "hyejin",
+      "b": "arin",
+      "place": "desk",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "아린님, 안내 카드 어때요?"},
+        {"speaker": "b", "text": "모바일서도 한눈에 보여요✨"},
+        {"speaker": "a", "text": "보기 편해져서 다행이에요!"}
+      ]
+    },
+    {
+      "id": "HJ-054",
+      "kind": "cross_dept_collab",
+      "a": "hyejin",
+      "b": "jieun",
+      "place": "desk",
+      "time": "morning",
+      "lines": [
+        {"speaker": "a", "text": "부장님, 개인 비품 구매 건요."},
+        {"speaker": "b", "text": "이번 달 예산 안이면 돼요."},
+        {"speaker": "a", "text": "감사해요! 바로 준비할게요."}
+      ]
+    },
+    {
+      "id": "HJ-055",
+      "kind": "work_question",
+      "a": "jieun",
+      "b": "hyejin",
+      "place": "pantry",
+      "time": "evening",
+      "lines": [
+        {"speaker": "a", "text": "어제 결제 영수증 챙겼나요?"},
+        {"speaker": "b", "text": "아, 그것도 챙겨뒀어요!"},
+        {"speaker": "a", "text": "역시 빈틈이 없어 든든하네요."}
+      ]
+    },
+    {
+      "id": "HJ-056",
+      "kind": "cross_dept_collab",
+      "a": "hyejin",
+      "b": "haru",
+      "place": "desk",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "대리님, 이 소모품 어때요?"},
+        {"speaker": "b", "text": "자주 쓸 거라 가성비 좋아요."},
+        {"speaker": "a", "text": "딱이에요! 바로 챙겨둘게요."}
+      ]
+    },
+    {
+      "id": "HJ-057",
+      "kind": "help_thanks",
+      "a": "haru",
+      "b": "hyejin",
+      "place": "cafe",
+      "time": "all",
+      "lines": [
+        {"speaker": "a", "text": "회장님 쓰시기 딱 좋겠네요."},
+        {"speaker": "b", "text": "대리님이 잘 골라주신 덕요!"},
+        {"speaker": "a", "text": "필요하면 또 같이 골라봐요."}
+      ]
+    },
+    {
+      "id": "HJ-058",
+      "kind": "snack_share",
+      "a": "haru",
+      "b": "hyejin",
+      "place": "pantry",
+      "time": "evening",
+      "lines": [
+        {"speaker": "a", "text": "비서님, 간식 두고 갈게요."},
+        {"speaker": "b", "text": "고마워요! 마침 출출했어요."},
+        {"speaker": "a", "text": "무설탕이라 가벼울 거예요."}
+      ]
+    },
+    {
+      "id": "HJ-059",
+      "kind": "work_question",
+      "a": "daon",
+      "b": "hyejin",
+      "place": "desk",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "비서님… 일정 안 겹치죠?😅"},
+        {"speaker": "b", "text": "걱정 마세요, 다 확인했어요!"},
+        {"speaker": "a", "text": "휴… 확인 감사해요!😅"}
+      ]
+    },
+    {
+      "id": "HJ-060",
+      "kind": "cross_dept_collab",
+      "a": "hyejin",
+      "b": "hina",
+      "place": "desk",
+      "time": "morning",
+      "lines": [
+        {"speaker": "a", "text": "과장님, 학습 참고서 왔어요!"},
+        {"speaker": "b", "text": "딱 찾던 거예용! 고마워용🐰"},
+        {"speaker": "a", "text": "수업에 도움 되길 바라요!"}
+      ]
+    },
+    {
+      "id": "HJ-061",
+      "kind": "small_talk",
+      "a": "minji",
+      "b": "hyejin",
+      "place": "lounge",
+      "time": "all",
+      "lines": [
+        {"speaker": "a", "text": "수첩 꺼내는 폼이 프로예요!"},
+        {"speaker": "b", "text": "민지님도 카메라 늘 드시죠?"},
+        {"speaker": "a", "text": "좋은 순간 놓치기 싫어서요."}
+      ]
+    },
+    {
+      "id": "HJ-062",
+      "kind": "cross_dept_collab",
+      "a": "hyejin",
+      "b": "sooyeon",
+      "place": "desk",
+      "time": "morning",
+      "lines": [
+        {"speaker": "a", "text": "수연님, 외출 동선 확인해요!"},
+        {"speaker": "b", "text": "출발 루트랑 주차 다 짰어요!"},
+        {"speaker": "a", "text": "도착 후 대기 장소 챙길게요!"}
+      ]
+    },
+    {
+      "id": "HJ-063",
+      "kind": "invite_walk_coffee",
+      "a": "sooyeon",
+      "b": "hyejin",
+      "place": "rooftop",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "비서님! 점심 먹고 걸을래요?"},
+        {"speaker": "b", "text": "좋아요! 바람 쐬면 개운하죠."},
+        {"speaker": "a", "text": "10분만 딱 걷고 내려가요!"}
+      ]
+    },
+    {
+      "id": "HJ-064",
+      "kind": "help_thanks",
+      "a": "hyejin",
+      "b": "yoonseul",
+      "place": "desk",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "윤슬님, 이 책 목록 맞나요?"},
+        {"speaker": "b", "text": "네! 목차까지 묶어뒀어요📚"},
+        {"speaker": "a", "text": "정말 빨라요! 바로 올릴게요."}
+      ]
+    },
+    {
+      "id": "HJ-065",
+      "kind": "cross_dept_collab",
+      "a": "hyejin",
+      "b": "sua",
+      "place": "desk",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "과장님, 개인 건이 커졌어요."},
+        {"speaker": "b", "text": "외부 계약이면 제 쪽이죠ㅎㅎ"},
+        {"speaker": "a", "text": "Owner·기한 표로 넘길게요!"}
+      ]
+    },
+    {
+      "id": "HJ-066",
+      "kind": "desk_handoff",
+      "a": "sua",
+      "b": "hyejin",
+      "place": "lounge",
+      "time": "evening",
+      "lines": [
+        {"speaker": "a", "text": "아까 건 메일 마쳤어요ㅎㅎ"},
+        {"speaker": "b", "text": "역시 빠르세요! 감사해요."},
+        {"speaker": "a", "text": "오늘도 호흡 좋았어요ㅎㅎ"}
+      ]
+    },
+    {
+      "id": "HJ-067",
+      "kind": "cross_dept_collab",
+      "a": "taeo",
+      "b": "hyejin",
+      "place": "desk",
+      "time": "all",
+      "lines": [
+        {"speaker": "a", "text": "비서님, 고객사 메모 왔어요."},
+        {"speaker": "b", "text": "가은님께 일정 바로 넘길게요!"},
+        {"speaker": "a", "text": "네, 요구사항 3줄도 붙였어요."}
+      ]
+    },
+    {
+      "id": "HJ-068",
+      "kind": "small_talk",
+      "a": "hyejin",
+      "b": "iseul",
+      "place": "cafe",
+      "time": "morning",
+      "lines": [
+        {"speaker": "a", "text": "이슬님, 유자차 두 잔 주세요!"},
+        {"speaker": "b", "text": "가은 비서님 몫도 같이시죠?"},
+        {"speaker": "a", "text": "아, 그것도 기억해주셨네요!"}
+      ]
+    },
+    {
+      "id": "HJ-069",
+      "kind": "snack_share",
+      "a": "iseul",
+      "b": "hyejin",
+      "place": "cafe",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "비서님, 갓 구운 쿠키 드세요."},
+        {"speaker": "b", "text": "고마워요! 4층에 나눠줄게요."},
+        {"speaker": "a", "text": "달콤한 오후 시간 되세요!"}
+      ]
+    }
+  ],
+  "firstDay": [
+    {
+      "id": "FD-01",
+      "kind": "small_talk",
+      "a": "gaeun",
+      "b": "hyejin",
+      "place": "desk",
+      "time": "morning",
+      "lines": [
+        {"speaker": "a", "text": "혜진 비서님, 환영합니다."},
+        {"speaker": "b", "text": "가은님! 잘 부탁드립니다!"},
+        {"speaker": "a", "text": "비서실 책상부터 안내할게요."},
+        {"speaker": "b", "text": "수첩 꺼내 바로 적어둘게요!"}
+      ]
+    },
+    {
+      "id": "FD-02",
+      "kind": "banter_joke",
+      "a": "hani",
+      "b": "hyejin",
+      "place": "desk",
+      "time": "morning",
+      "lines": [
+        {"speaker": "a", "text": "혜진 비서님, 입사 축하해요♡"},
+        {"speaker": "b", "text": "감사합니다! 잘 부탁드려요."},
+        {"speaker": "a", "text": "신입 교육은 범위 조절부터야!"}
+      ]
+    },
+    {
+      "id": "FD-03",
+      "kind": "praise_cheer",
+      "a": "yuna",
+      "b": "hyejin",
+      "place": "desk",
+      "time": "morning",
+      "lines": [
+        {"speaker": "a", "text": "드디어 비서실 충원이에요!"},
+        {"speaker": "b", "text": "유나님, 잘 부탁드려요!"},
+        {"speaker": "a", "text": "네! 비서실 4층 화이팅해요!"}
+      ]
+    },
+    {
+      "id": "FD-04",
+      "kind": "mentoring",
+      "a": "ieum",
+      "b": "hyejin",
+      "place": "desk",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "비서님, 기록 폴더 위치예요."},
+        {"speaker": "b", "text": "오, 색인이 정말 깔끔하네요!"},
+        {"speaker": "a", "text": "실행 마치면 여기로 주세요."}
+      ]
+    },
+    {
+      "id": "FD-05",
+      "kind": "invite_walk_coffee",
+      "a": "naeun",
+      "b": "hyejin",
+      "place": "lounge",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "첫 출근 기념으로 차 마셔요!"},
+        {"speaker": "b", "text": "차장님, 챙겨주셔서 감사해요!"},
+        {"speaker": "a", "text": "무리 말고 천천히 익히세요."}
+      ]
+    }
+  ],
+  "birthday": [
+    {
+      "id": "BD-01",
+      "kind": "praise_cheer",
+      "a": "gaeun",
+      "b": "hyejin",
+      "place": "desk",
+      "time": "morning",
+      "lines": [
+        {"speaker": "a", "text": "혜진 비서님, 생일 축하해요!"},
+        {"speaker": "b", "text": "가은님! 기억해 주셨군요!"},
+        {"speaker": "a", "text": "오늘은 조금 천천히 챙기세요."}
+      ]
+    },
+    {
+      "id": "BD-02",
+      "kind": "snack_share",
+      "a": "yuna",
+      "b": "hyejin",
+      "place": "pantry",
+      "time": "day",
+      "lines": [
+        {"speaker": "a", "text": "비서님! 생일 축하 케이크요!"},
+        {"speaker": "b", "text": "와, 언제 몰래 준비하셨어요?"},
+        {"speaker": "a", "text": "가은님과 아침에 숨겨뒀어요!"}
+      ]
+    },
+    {
+      "id": "BD-03",
+      "kind": "banter_joke",
+      "a": "hani",
+      "b": "hyejin",
+      "place": "lounge",
+      "time": "evening",
+      "lines": [
+        {"speaker": "a", "text": "생일 축하해요! 쉴 거죠?♡"},
+        {"speaker": "b", "text": "내일 메모만 살짝 적어두고요!"},
+        {"speaker": "a", "text": "생일엔 수첩 닫기가 규칙야♡"}
+      ]
+    }
+  ]
+}
