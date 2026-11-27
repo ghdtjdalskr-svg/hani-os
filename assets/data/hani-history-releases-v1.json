@@ -26,6 +26,18 @@
   ],
   "entries": [
     {
+      "id": "v2.9.323",
+      "date": "2026-11-27",
+      "status": "released",
+      "title": "혜진 비서 입사 · 4층 팀 책상",
+      "category": "하니 그룹 · 대공사",
+      "credits": [],
+      "source": {
+        "commit": "",
+        "subject": "release: v2.9.323 혜진 비서 입사 · 4층 팀 책상"
+      }
+    },
+    {
       "id": "v2.9.322",
       "date": "2026-11-26",
       "status": "released",
