@@ -362,7 +362,7 @@
 /* 2.9.315 counter posts: the painted counter hides the lower body (6.25% below the pivot + counter height in map units). */
 .hani-office-actor[data-post] .hani-office-sprite{clip-path:inset(0 0 calc(6.25% + var(--post-cut,0cqw)) 0)}
 .hani-office-actor[data-post="cafe"] .hani-office-sprite{pointer-events:none}
-.hani-office-desk-props[data-person="desk-4f-yuna"]{max-height:none}
+.hani-office-desk-props[data-person="desk-4f-yuna"],.hani-office-desk-props[data-person="desk-4f-team4"]{max-height:none}
 /* 2.9.319 room plate design B: soft department colour + round icon badge (visual only). */
 .hani-office-room-plate[data-tone="green"],.hani-office-room-mobile-labels button[data-tone="green"]{--plate-bg:#eaf3de;--plate-ink:#27500a;--plate-dot:#639922}
 .hani-office-room-plate[data-tone="blue"],.hani-office-room-mobile-labels button[data-tone="blue"]{--plate-bg:#e6f1fb;--plate-ink:#0c447c;--plate-dot:#378add}

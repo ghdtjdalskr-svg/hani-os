@@ -5,7 +5,7 @@
   const floorDefaults=Object.freeze([
     {id:'5f',legacyIds:['5f'],order:6,code:'6F',label:'6F 옥상',category:'rooftop',quiet:true,tint:'#9cbd9a',residents:[],anchorCount:50,background:'./assets/building/floor-5f-217.webp'},
     {id:'creative',legacyIds:[],order:5,code:'5F',label:'5F 라이프·크리에이티브',category:'amenity',tint:'#a9c7b8',residents:[],background:'./assets/building/floor-5f-creative-v1.webp'},
-    {id:'4f',legacyIds:[],order:4,code:'4F',label:'4F 대표실·라운지',category:'executive',tint:'#b692df',residents:['hani','gaeun','mir','yuna'],anchorCount:84,background:'./assets/building/floor-4f-217.webp'},
+    {id:'4f',legacyIds:[],order:4,code:'4F',label:'4F 대표실·라운지',category:'executive',tint:'#b692df',residents:['hani','gaeun','mir','yuna'],anchorCount:87,background:'./assets/building/floor-4f-217.webp'},
     {id:'3f',legacyIds:[],order:3,code:'3F',label:'3F AI플랫폼개발실',category:'office',tint:'#79aecf',residents:['seoyun','dohyun','serin','yuri','arin'],anchorCount:64,background:'./assets/building/floor-3f-215.webp',foregroundMasks:[{slot:0,source:'background'}]},
     {id:'2f',legacyIds:[],order:2,code:'2F',label:'2F 재무·라이프',category:'office',tint:'#94bd8e',residents:['jieun','haru','naeun','hina','minji','sooyeon','sua','taeo'],anchorCount:80,background:'./assets/building/floor-2f-217.webp'},
     {id:'1f',legacyIds:[],order:1,code:'1F',label:'1F 로비',category:'lobby',tint:'#e3b67d',residents:[],anchorCount:52,background:'./assets/building/floor-1f-v2.webp'}
@@ -70,7 +70,7 @@
       // All office catalogs/art are seeded separately; use the existing metadata URL list.
       // The v3 sprites and the seeded place catalog are optional (index >= 3).
       const [canon,sprites,art,spritesV3,places]=await Promise.all([
-        ['./data/hani-building/spatial-contract-v3.json','./data/hani-building/spatial-contract-v2.json','./data/hani-building/spatial-contract.json'],'./assets/sprites-v2/manifest.json',['./data/hani-building/art-map-v3.json','./data/hani-building/art-map-v2.json','./data/hani-building/art-map-v1.json'],'./assets/sprites-v3/manifest-v3.json',['./data/hani-building/office-places-v3.json','./data/hani-building/office-places.json']
+        ['./data/hani-building/spatial-contract-v4.json','./data/hani-building/spatial-contract-v3.json','./data/hani-building/spatial-contract-v2.json','./data/hani-building/spatial-contract.json'],'./assets/sprites-v2/manifest.json',['./data/hani-building/art-map-v4.json','./data/hani-building/art-map-v3.json','./data/hani-building/art-map-v2.json','./data/hani-building/art-map-v1.json'],'./assets/sprites-v3/manifest-v3.json',['./data/hani-building/office-places-v3.json','./data/hani-building/office-places.json']
       ].map(async (url,index)=>{
         // Building v2 data first (7-floor registry); older deployments and fixtures only ship the v1 files.
         for(const candidate of [].concat(url)){try{const response=await fetch(candidate);if(response.ok)return await response.json()}catch(_){}}
@@ -86,7 +86,8 @@
   }
   let actionTable=validActions(globalThis.HaniOfficeActions221,'office-actions-221-v1')?globalThis.HaniOfficeActions221:validActions(globalThis.HaniOfficeActions216,'office-actions-216-v1')?globalThis.HaniOfficeActions216:null;
   if(!actionTable&&typeof fetch==='function'){
-    try{const response=await fetch('./assets/data/office-actions-315.json');if(response.ok){const table=await response.json();if(validActions(table,'office-actions-221-v1'))actionTable=table}}catch(_){/* Try the 221 catalog next. */}
+    try{const response=await fetch('./assets/data/office-actions-323.json');if(response.ok){const table=await response.json();if(validActions(table,'office-actions-221-v1'))actionTable=table}}catch(_){/* Try the 315 catalog next. */}
+    if(!actionTable)try{const response=await fetch('./assets/data/office-actions-315.json');if(response.ok){const table=await response.json();if(validActions(table,'office-actions-221-v1'))actionTable=table}}catch(_){/* Try the 221 catalog next. */}
     if(!actionTable)try{const response=await fetch('./assets/data/office-actions-221.json');if(response.ok){const table=await response.json();if(validActions(table,'office-actions-221-v1'))actionTable=table}}catch(_){/* Try the released catalog next. */}
     if(!actionTable)try{const response=await fetch('./assets/data/office-actions-216.json');if(response.ok){const table=await response.json();if(validActions(table,'office-actions-216-v1'))actionTable=table}}catch(_){/* Read-only base-work fallback. */}
   }
@@ -246,7 +247,7 @@
     function load(){
       if(!request)request=Promise.all([(async()=>{try{
         if(typeof fetch!=='function')return;
-        const response=await fetch('./assets/data/office-tap-lines-v1.json');
+        const response=await fetch('./assets/data/office-tap-lines-v2.json');
         if(response.ok){const data=await response.json();if(validTapBank(data,roster))bank=data}
       }catch(_){/* Keep the current status speech when the optional seed is absent. */}})(),(async()=>{try{
         if(typeof fetch!=='function')return;
@@ -299,7 +300,7 @@
   "use strict";
   const fallback="./assets/ai-approval-concepts/v3-office-background-empty-8-seats.webp";
   // Dynamic floor art is seeded on main separately from the runtime closure.
-  const DESK_PROP_ART=Object.freeze({"hani":"./assets/building/props/hani-217.webp","yuna":"./assets/building/props/yuna-217.webp","jieun":"./assets/building/props/jieun-217.webp","haru":"./assets/building/props/haru-217.webp","naeun":"./assets/building/props/naeun-217.webp","hina":"./assets/building/props/hina-217.webp","minji":"./assets/building/props/minji-217.webp","sooyeon":"./assets/building/props/sooyeon-217.webp","sua":"./assets/building/props/sua-217.webp","seoyun":"./assets/building/props/seoyun-217.webp","dohyun":"./assets/building/props/dohyun-217.webp","serin":"./assets/building/props/serin-217.webp","yuri":"./assets/building/props/yuri-217.webp","arin":"./assets/building/props/arin-217.webp","gaeun":"./assets/building/props/gaeun-217.webp","taeo":"./assets/building/props/taeo-217.webp","daon":"./assets/building/props/daon-217.webp","yoonseul":"./assets/building/props/yoonseul-217.webp","mir":"./assets/building/props/mir-217.webp","desk-4f-yuna":"./assets/building/props/desk-4f-yuna-v1.webp"});
+  const DESK_PROP_ART=Object.freeze({"hani":"./assets/building/props/hani-217.webp","yuna":"./assets/building/props/yuna-217.webp","jieun":"./assets/building/props/jieun-217.webp","haru":"./assets/building/props/haru-217.webp","naeun":"./assets/building/props/naeun-217.webp","hina":"./assets/building/props/hina-217.webp","minji":"./assets/building/props/minji-217.webp","sooyeon":"./assets/building/props/sooyeon-217.webp","sua":"./assets/building/props/sua-217.webp","seoyun":"./assets/building/props/seoyun-217.webp","dohyun":"./assets/building/props/dohyun-217.webp","serin":"./assets/building/props/serin-217.webp","yuri":"./assets/building/props/yuri-217.webp","arin":"./assets/building/props/arin-217.webp","gaeun":"./assets/building/props/gaeun-217.webp","taeo":"./assets/building/props/taeo-217.webp","daon":"./assets/building/props/daon-217.webp","yoonseul":"./assets/building/props/yoonseul-217.webp","mir":"./assets/building/props/mir-217.webp","desk-4f-yuna":"./assets/building/props/desk-4f-yuna-v1.webp","desk-4f-team4":"./assets/building/props/desk-4f-team4-v1.webp"});
   const legacyFloors=Object.freeze(floorDefaults.filter(f=>f.residents.length||f.category==='lobby').map(f=>Object.freeze({id:f.id,label:f.label,tint:f.tint,residents:f.residents,background:f.background,fallback})));
 
   // Coordinates are chair/feet anchors on the 1672 x 941 floor art, in percent.
@@ -365,7 +366,7 @@
     'dev-lead':[.43,.18,152,58],'dev-build':[.43,.18,152,58],'dev-research':[.43,.18,152,58],
     'dev-qa':[.50,.16,152,58],'dev-design':[.50,.16,152,58],
     'ceo-reserved':[.34,.18,80,48],'office_hani':[.40,.18,72,44],
-    'secretary_desk':[.50,.16,82,52],'desk_yuna':[.50,.16,82,52],'desk_yuna_east':[.50,.16,82,52]
+    'secretary_desk':[.50,.16,82,52],'desk_yuna':[.50,.16,82,52],'desk_yuna_east':[.50,.16,82,52],'desk_hyejin':[.50,.16,82,52]
   });
   function workingMonitors(floorId,entries){
     const furniture=art?.floors[floorId]?.homeFurniture;if(!furniture)return [];
@@ -390,7 +391,7 @@
   }
 
   // 2.9.321 walk detours: painted-furniture rects [x1,y1,x2,y2] in art percent, measured on the current floor art.
-  const floorObstacles=Object.freeze({"1f":[[0,0,14,38],[0,34,7,46],[6,35,16,40],[11,17,17,38],[14,0,30,26],[29,18,37,31],[36,22,40,37],[30,0,62,24],[39,28,61,43],[56,22,62,34],[1,47,27,55],[6,52,12,72],[12,52,21,68],[17,64,25,77],[3,72,15,82],[5,78,12,85],[0,60,4,80],[24.5,46,26,63],[0,86,26,93],[28,58,30,95],[29,58,37,66],[30,68,37,92],[39.5,51,41,61],[48.5,51,50.5,61],[57.5,51,59.5,61],[36,63,43,87],[57,63,64,87],[62,58,74,67],[62,68,69,91],[70,65,74,95],[74,85,100,95],[61.5,29,63,46],[61.5,29,74,32],[72.5,29,74.5,47],[65,35,69,45],[62.5,42,66.5,49],[62,0,90,29],[74.5,30,80,39],[84.5,30,90,39],[79.5,39,86.5,45.5],[75.5,42.5,80.5,49.5],[86,42.5,91.5,49.5],[80.5,32,83,37.5],[90,0,100,46],[94,30,100,47],[87,48,100,84]],"2f":[[0,0,8,32],[8,0,34,18],[10.5,21.5,29,31],[0,31.5,36,37.5],[34,0,41.5,22],[41.5,0,47.5,17.5],[41.5,26,46,39],[53.5,0,57,11.5],[54.5,22,58.5,34],[0,35,5.5,72],[5.5,45.5,45,62],[0,68,4.5,89],[4.5,69,46.5,86.5],[0,88,12,100],[12,91.5,36,100],[36,88,45,100],[57.5,12.5,62.5,28],[62.5,0,76,17.5],[84,0,92,22],[92,0,100,41.5],[67.5,17,81.5,26],[61.5,28,67.5,39],[69.5,31,80,38.5],[80.5,32.5,84.5,38],[58.5,41.5,100,56],[58.5,56,60.5,72.5],[60.5,52,64,64.5],[55,68,59.5,73],[55,83,65.5,96],[70,66.5,90.5,73.5],[93.5,49,100,71],[94.5,71,100,91],[67,87,73,100],[73,91,100,100]],"3f":[[0,0,8.5,38],[8.5,0,15.5,21],[15.5,0,31,12],[31.5,0,35,17.5],[15.5,12,31,19.2],[10.5,21,16.5,30],[17.5,23.5,26,28.5],[27.5,23.5,31,27.3],[7.5,30.5,35.5,37.5],[32.5,27,35,32],[36,25.5,41.5,37.5],[38.5,15.5,41.5,22.5],[42.5,0,49,27],[53,0,61,27],[60,0,65.5,25],[61,29,65.5,41],[66.5,0,71.5,35],[71,0,85.5,25],[71.5,31.5,74.5,35],[80.5,32.5,92,35],[87,17,91,29.5],[92,0,100,38],[0,36,4.5,68],[0,73,4.5,90],[0,88,14.5,100],[9.5,42,16,85],[18,44,45,60.5],[44.5,44,48.5,57],[17.5,66,46,83],[31.5,87,47,96.5],[59,40.5,100,56],[59,56,61.5,72],[60.5,52,64,65],[60,83,66,96],[70,62.5,91.5,71],[66.5,81,97,84.5],[93.5,49,100,71],[95,71,100,94],[65.5,84,72,100],[72,85,95.5,100]],"4f":[[0,0,10.5,42],[10.5,0,35.5,24.5],[36,0,42.5,26],[10.5,26.5,34,38],[0,46,38,53],[41.5,0,47,20],[42,20,43.5,36],[42.5,32,47,48],[53,0,57,12],[58,0,68,18],[68,0,88,20],[62.5,21.5,79.5,32],[81,21,91,38],[69,32,75.5,42],[76.5,33.5,85.5,40.5],[88,0,100,34],[89,34,91.5,41.5],[91.5,35,97,44],[58.5,45.5,88,47.5],[55.5,30,59.5,42],[0,50,5.5,69],[30,50,35,56],[5.5,56,34,74],[0,73,6,94],[0,85,13,100],[12.5,76.5,26,82],[28,78.5,33,86.5],[16,87.5,25,92.5],[31,92,43.5,100],[58,47.5,100,58],[58,63,60.5,72.5],[59,56,63,69],[55,68,59.5,73],[55,83,65.5,96],[67.5,66.5,90,74.5],[93.5,52,100,71],[95,71,100,92],[65.5,86,71,100],[71,86,95,100]],"creative":[[0,0,10,14],[0,14,9,42.5],[10,0,42,9],[10,10,14.5,32],[17,9,35,24.5],[17.5,31,34.5,40],[37,10,41,32],[10,33,15.5,50],[1,42.5,7,52],[7,45.5,36,52],[36,42.5,44.5,52],[41.5,0,46.5,31],[54,0,58.5,31],[58,0,91,9],[90,0,100,14],[93,14,100,52],[61.5,8,93.5,30],[58.5,19,62.5,30],[62,26.5,75.5,33.5],[64,37,72.5,41.8],[73.5,38.5,78,41.8],[80.5,32.5,94,38],[56,42.5,64,52],[64,45.5,94,52],[0,52,8.5,72],[0,72,4,96],[10,55,15.5,70.5],[22.5,56,41.5,76.5],[7,71.5,21.5,89],[5.5,87,15.5,98.5],[15.5,91,36,98.5],[36,87,44.5,98.5],[41.5,52,44.5,73],[56,52,58.5,73],[58.5,55,82.5,70],[81.5,55,93.5,76],[90.5,54,100,96],[61,76.5,68,84.5],[68.5,81.5,71,89],[75,75,81.5,82],[86,75,92.5,82],[76,83,83,89.5],[86.5,83,93,89.5],[56,87,64,98.5],[64,91,85.5,98.5],[85.5,87,95.5,98.5]],"5f":[[0,0,14,24],[14,8,38,21],[0,24,9,43],[12,19,17,34],[34,19,38,31.5],[21,25,30,32],[14.5,35,23.5,42],[27.5,35,35.5,42],[12,35,14.5,42],[39,23,42.5,31.5],[36,36,38.5,42],[0,43,39.5,47],[38.5,40.5,43.5,45.5],[38,0,47,20],[53.5,0,68,22],[56,21,60.5,43.5],[56,43.5,59.5,49.5],[72,0,94,22],[89,20,100,44],[69.5,28.5,85,34],[0,44,12,74],[0,71,8,97],[11,47,33,63],[32.5,52,40,65],[14,65.5,31.5,73.5],[8,82,16,97],[16,87,32,97],[32,82,43.5,97],[64.5,46,100,56],[62,57,68.5,69.5],[70.5,61,88.5,67],[70.5,67,72.5,74],[86.5,67,88.5,74],[65,69,70,78.5],[69.5,76,71.5,82.5],[74.5,74,85,83.5],[86,76,90.5,84],[89,55,100,88],[57.5,83,63.5,97],[63.5,88,88,97],[88,82,100,97]]});
+  const floorObstacles=Object.freeze({"1f":[[0,0,14,38],[0,34,7,46],[6,35,16,40],[11,17,17,38],[14,0,30,26],[29,18,37,31],[36,22,40,37],[30,0,62,24],[39,28,61,43],[56,22,62,34],[1,47,27,55],[6,52,12,72],[12,52,21,68],[17,64,25,77],[3,72,15,82],[5,78,12,85],[0,60,4,80],[24.5,46,26,63],[0,86,26,93],[28,58,30,95],[29,58,37,66],[30,68,37,92],[39.5,51,41,61],[48.5,51,50.5,61],[57.5,51,59.5,61],[36,63,43,87],[57,63,64,87],[62,58,74,67],[62,68,69,91],[70,65,74,95],[74,85,100,95],[61.5,29,63,46],[61.5,29,74,32],[72.5,29,74.5,47],[65,35,69,45],[62.5,42,66.5,49],[62,0,90,29],[74.5,30,80,39],[84.5,30,90,39],[79.5,39,86.5,45.5],[75.5,42.5,80.5,49.5],[86,42.5,91.5,49.5],[80.5,32,83,37.5],[90,0,100,46],[94,30,100,47],[87,48,100,84]],"2f":[[0,0,8,32],[8,0,34,18],[10.5,21.5,29,31],[0,31.5,36,37.5],[34,0,41.5,22],[41.5,0,47.5,17.5],[41.5,26,46,39],[53.5,0,57,11.5],[54.5,22,58.5,34],[0,35,5.5,72],[5.5,45.5,45,62],[0,68,4.5,89],[4.5,69,46.5,86.5],[0,88,12,100],[12,91.5,36,100],[36,88,45,100],[57.5,12.5,62.5,28],[62.5,0,76,17.5],[84,0,92,22],[92,0,100,41.5],[67.5,17,81.5,26],[61.5,28,67.5,39],[69.5,31,80,38.5],[80.5,32.5,84.5,38],[58.5,41.5,100,56],[58.5,56,60.5,72.5],[60.5,52,64,64.5],[55,68,59.5,73],[55,83,65.5,96],[70,66.5,90.5,73.5],[93.5,49,100,71],[94.5,71,100,91],[67,87,73,100],[73,91,100,100]],"3f":[[0,0,8.5,38],[8.5,0,15.5,21],[15.5,0,31,12],[31.5,0,35,17.5],[15.5,12,31,19.2],[10.5,21,16.5,30],[17.5,23.5,26,28.5],[27.5,23.5,31,27.3],[7.5,30.5,35.5,37.5],[32.5,27,35,32],[36,25.5,41.5,37.5],[38.5,15.5,41.5,22.5],[42.5,0,49,27],[53,0,61,27],[60,0,65.5,25],[61,29,65.5,41],[66.5,0,71.5,35],[71,0,85.5,25],[71.5,31.5,74.5,35],[80.5,32.5,92,35],[87,17,91,29.5],[92,0,100,38],[0,36,4.5,68],[0,73,4.5,90],[0,88,14.5,100],[9.5,42,16,85],[18,44,45,60.5],[44.5,44,48.5,57],[17.5,66,46,83],[31.5,87,47,96.5],[59,40.5,100,56],[59,56,61.5,72],[60.5,52,64,65],[60,83,66,96],[70,62.5,91.5,71],[66.5,81,97,84.5],[93.5,49,100,71],[95,71,100,94],[65.5,84,72,100],[72,85,95.5,100]],"4f":[[0,0,10.5,42],[10.5,0,35.5,24.5],[36,0,42.5,26],[10.5,26.5,34,38],[0,46,38,53],[41.5,0,47,20],[42,20,43.5,36],[42.5,32,47,48],[53,0,57,12],[58,0,68,18],[68,0,88,20],[62.5,21.5,79.5,32],[81,21,91,38],[69,32,75.5,42],[76.5,33.5,85.5,40.5],[88,0,100,34],[89,34,91.5,41.5],[91.5,35,97,44],[58.5,45.5,88,47.5],[55.5,30,59.5,42],[0,50,4.5,69],[30,50,35,53],[4.5,53,47.2,68],[0,73,6,94],[0,85,13,100],[12.5,76.5,26,82],[28,78.5,33,86.5],[16,87.5,25,92.5],[31,92,43.5,100],[58,47.5,100,58],[58,63,60.5,72.5],[59,56,63,69],[55,68,59.5,73],[55,83,65.5,96],[67.5,66.5,90,74.5],[93.5,52,100,71],[95,71,100,92],[65.5,86,71,100],[71,86,95,100]],"creative":[[0,0,10,14],[0,14,9,42.5],[10,0,42,9],[10,10,14.5,32],[17,9,35,24.5],[17.5,31,34.5,40],[37,10,41,32],[10,33,15.5,50],[1,42.5,7,52],[7,45.5,36,52],[36,42.5,44.5,52],[41.5,0,46.5,31],[54,0,58.5,31],[58,0,91,9],[90,0,100,14],[93,14,100,52],[61.5,8,93.5,30],[58.5,19,62.5,30],[62,26.5,75.5,33.5],[64,37,72.5,41.8],[73.5,38.5,78,41.8],[80.5,32.5,94,38],[56,42.5,64,52],[64,45.5,94,52],[0,52,8.5,72],[0,72,4,96],[10,55,15.5,70.5],[22.5,56,41.5,76.5],[7,71.5,21.5,89],[5.5,87,15.5,98.5],[15.5,91,36,98.5],[36,87,44.5,98.5],[41.5,52,44.5,73],[56,52,58.5,73],[58.5,55,82.5,70],[81.5,55,93.5,76],[90.5,54,100,96],[61,76.5,68,84.5],[68.5,81.5,71,89],[75,75,81.5,82],[86,75,92.5,82],[76,83,83,89.5],[86.5,83,93,89.5],[56,87,64,98.5],[64,91,85.5,98.5],[85.5,87,95.5,98.5]],"5f":[[0,0,14,24],[14,8,38,21],[0,24,9,43],[12,19,17,34],[34,19,38,31.5],[21,25,30,32],[14.5,35,23.5,42],[27.5,35,35.5,42],[12,35,14.5,42],[39,23,42.5,31.5],[36,36,38.5,42],[0,43,39.5,47],[38.5,40.5,43.5,45.5],[38,0,47,20],[53.5,0,68,22],[56,21,60.5,43.5],[56,43.5,59.5,49.5],[72,0,94,22],[89,20,100,44],[69.5,28.5,85,34],[0,44,12,74],[0,71,8,97],[11,47,33,63],[32.5,52,40,65],[14,65.5,31.5,73.5],[8,82,16,97],[16,87,32,97],[32,82,43.5,97],[64.5,46,100,56],[62,57,68.5,69.5],[70.5,61,88.5,67],[70.5,67,72.5,74],[86.5,67,88.5,74],[65,69,70,78.5],[69.5,76,71.5,82.5],[74.5,74,85,83.5],[86,76,90.5,84],[89,55,100,88],[57.5,83,63.5,97],[63.5,88,88,97],[88,82,100,97]]});
   const petOnlyObstacles=Object.freeze({'1f':[[34,58,66,96]]});// pets never settle in the entrance vestibule
   const detourCache=new Map();
   function detourLeg(floor,a,b){
@@ -573,6 +574,83 @@
   // All mutable state is disposable memory; no life records or data triggers enter here.
   // Approved staff dialogue is embedded beside existing dialogue data.
   const staffChatLines=Object.freeze([
+    {"id":"chat-hyejin-001","a":"혜진","b":"가은","place":"desk","time":"morning","lines":[{"speaker":"a","text":"가은님, 8시 40분 출근!"},{"speaker":"b","text":"수첩 벌써 펼치셨네요."},{"speaker":"a","text":"오늘 챙길 일부터 보죠!"}]},
+    {"id":"chat-hyejin-002","a":"혜진","b":"가은","place":"desk","time":"day","lines":[{"speaker":"a","text":"이 개인 건, 공식 될까요?"},{"speaker":"b","text":"네, 공식 일정으로 넘겨요."},{"speaker":"a","text":"메모 묶어 바로 드릴게요!"}]},
+    {"id":"chat-hyejin-003","a":"가은","b":"혜진","place":"desk","time":"morning","lines":[{"speaker":"a","text":"회의 중 개인 용무예요."},{"speaker":"b","text":"아, 제가 바로 받아둘게요!"},{"speaker":"a","text":"일정 정돈에 집중할게요."}]},
+    {"id":"chat-hyejin-004","a":"가은","b":"혜진","place":"desk","time":"all","lines":[{"speaker":"a","text":"회장님 손님 다과 챙겼나요?"},{"speaker":"b","text":"아, 그것도 챙겨뒀어요!"},{"speaker":"a","text":"역시 호흡이 딱 맞네요."}]},
+    {"id":"chat-hyejin-005","a":"혜진","b":"가은","place":"lounge","time":"day","lines":[{"speaker":"a","text":"가은님, 차 한 잔 해요!"},{"speaker":"b","text":"좋아요. 잠깐 숨 돌려요."},{"speaker":"a","text":"유나님도 같이 부를까요?"}]},
+    {"id":"chat-hyejin-006","a":"가은","b":"혜진","place":"pantry","time":"evening","lines":[{"speaker":"a","text":"혜진 비서님, 차 드세요."},{"speaker":"b","text":"가은님 덕에 덜 헤맸어요!"},{"speaker":"a","text":"우리 콤비니까 당연하죠."}]},
+    {"id":"chat-hyejin-007","a":"가은","b":"혜진","place":"desk","time":"day","lines":[{"speaker":"a","text":"회장님 출국 준비 됐나요?"},{"speaker":"b","text":"여권 사본까지 챙겨뒀어요!"},{"speaker":"a","text":"이동 시간 15분 더 보죠."}]},
+    {"id":"chat-hyejin-008","a":"가은","b":"혜진","place":"lounge","time":"evening","lines":[{"speaker":"a","text":"또 쉬는 걸 잊으셨죠?"},{"speaker":"b","text":"앗, 하나만 더 적으려다…"},{"speaker":"a","text":"수첩 덮고 10분만 쉬세요."}]},
+    {"id":"chat-hyejin-009","a":"가은","b":"혜진","place":"desk","time":"all","lines":[{"speaker":"a","text":"회장님이 편해 보이시죠?"},{"speaker":"b","text":"가은님 정돈 덕분이에요!"},{"speaker":"a","text":"실행을 잘 해주셔서 그래요."}]},
+    {"id":"chat-hyejin-010","a":"혜진","b":"가은","place":"pantry","time":"morning","lines":[{"speaker":"a","text":"(소곤) 다과 미리 골랐어요"},{"speaker":"b","text":"(소곤) 오후 시간 비울게요"},{"speaker":"a","text":"네! 그때 딱 올려드릴게요."}]},
+    {"id":"chat-hyejin-011","a":"혜진","b":"가은","place":"cafe","time":"day","lines":[{"speaker":"a","text":"가은님, 차 맛 궁금하시죠?"},{"speaker":"b","text":"혹시 미리 맛보셨어요?"},{"speaker":"a","text":"아, 그것도 챙겨뒀어요!"}]},
+    {"id":"chat-hyejin-012","a":"가은","b":"혜진","place":"desk","time":"day","lines":[{"speaker":"a","text":"용무가 너무 많지 않아요?"},{"speaker":"b","text":"미리 해두면 안심이 돼서요."},{"speaker":"a","text":"급한 세 건만 먼저 남기죠."},{"speaker":"b","text":"네! 나머진 내일 챙길게요."}]},
+    {"id":"chat-hyejin-013","a":"혜진","b":"가은","place":"desk","time":"all","lines":[{"speaker":"a","text":"이건 부서 조율 건인가요?"},{"speaker":"b","text":"네, 제가 팀에 전달할게요."},{"speaker":"a","text":"전 개인 준비물 챙겨둘게요!"}]},
+    {"id":"chat-hyejin-014","a":"혜진","b":"가은","place":"desk","time":"evening","lines":[{"speaker":"a","text":"개인 용무 다 마쳤어요!"},{"speaker":"b","text":"고생했어요. 일정표 닫았죠."},{"speaker":"a","text":"내일 8시 40분에 봬요!"}]},
+    {"id":"chat-hyejin-015","a":"하니","b":"혜진","place":"desk","time":"morning","lines":[{"speaker":"a","text":"회장님 방금 말씀한 건요…"},{"speaker":"b","text":"아, 그것도 챙겨뒀어요!"},{"speaker":"a","text":"벌써?! 범위부터 확인하자♡"}]},
+    {"id":"chat-hyejin-016","a":"하니","b":"혜진","place":"lounge","time":"day","lines":[{"speaker":"a","text":"이 아이디어는 아직 보류야."},{"speaker":"b","text":"참고 자료만 살짝 찾았어요!"},{"speaker":"a","text":"기민해서 오히려 긴장되네♡"}]},
+    {"id":"chat-hyejin-017","a":"하니","b":"혜진","place":"desk","time":"day","lines":[{"speaker":"a","text":"즉흥 아이디어는 일단 대기!"},{"speaker":"b","text":"수첩 구석에만 적어뒀어요."},{"speaker":"a","text":"범위 확인 전엔 대기하자♡"},{"speaker":"b","text":"네, 전무님 기준 따를게요!"}]},
+    {"id":"chat-hyejin-018","a":"혜진","b":"하니","place":"desk","time":"morning","lines":[{"speaker":"a","text":"전무님, 새 메모 보셨어요?"},{"speaker":"b","text":"응. 설마 벌써 움직였어?♡"},{"speaker":"a","text":"실행안 두 개만 적어왔어요!"}]},
+    {"id":"chat-hyejin-019","a":"하니","b":"혜진","place":"cafe","time":"all","lines":[{"speaker":"a","text":"오늘 회장님 아이디어 냈지?"},{"speaker":"b","text":"아침에 미리 챙겨드려서요!"},{"speaker":"a","text":"스코프 컨트롤이 위협받네♡"}]},
+    {"id":"chat-hyejin-020","a":"혜진","b":"하니","place":"desk","time":"evening","lines":[{"speaker":"a","text":"전무님, 이 건 범위 맞나요?"},{"speaker":"b","text":"어, 이번 단계 범위 안이야♡"},{"speaker":"a","text":"그럼 바로 실행 준비할게요!"}]},
+    {"id":"chat-hyejin-021","a":"하니","b":"혜진","place":"lounge","time":"all","lines":[{"speaker":"a","text":"실행 속도가 진짜 빠르네♡"},{"speaker":"b","text":"전무님이 선 그어주신 덕요!"},{"speaker":"a","text":"그래도 범위 확인은 필수야!"}]},
+    {"id":"chat-hyejin-022","a":"하니","b":"혜진","place":"desk","time":"evening","lines":[{"speaker":"a","text":"오늘 새 건 더 안 떠올랐지?"},{"speaker":"b","text":"하나만 더 챙겨두려던 참요!"},{"speaker":"a","text":"수첩 덮고 내일 범위 잡자♡"}]},
+    {"id":"chat-hyejin-023","a":"유나","b":"혜진","place":"desk","time":"morning","lines":[{"speaker":"a","text":"비서님! 급한 요청 왔어요!"},{"speaker":"b","text":"유나님, 제가 먼저 볼게요!"},{"speaker":"a","text":"혜진 비서님! 살았어요!"}]},
+    {"id":"chat-hyejin-024","a":"혜진","b":"유나","place":"desk","time":"day","lines":[{"speaker":"a","text":"유나님, 메모 많아 힘들죠?"},{"speaker":"b","text":"제가요?! 손이 모자라서요…"},{"speaker":"a","text":"개인 실무는 제가 챙길게요!"},{"speaker":"b","text":"우와, 절반이 쑥 줄었어요!"}]},
+    {"id":"chat-hyejin-025","a":"유나","b":"혜진","place":"lounge","time":"all","lines":[{"speaker":"a","text":"생활 정보 탐색 어디 보죠?"},{"speaker":"b","text":"아, 그것도 챙겨뒀어요!"},{"speaker":"a","text":"세상에… 저보다 빠르시네요!"}]},
+    {"id":"chat-hyejin-026","a":"혜진","b":"유나","place":"desk","time":"day","lines":[{"speaker":"a","text":"급한 건은 두 줄로 요약해요."},{"speaker":"b","text":"핵심만 보니 길이 보이네요!"},{"speaker":"a","text":"담당 연결은 같이 해봐요."}]},
+    {"id":"chat-hyejin-027","a":"혜진","b":"유나","place":"cafe","time":"day","lines":[{"speaker":"a","text":"유나님, 차 마시러 가요!"},{"speaker":"b","text":"제가요?! 마침 목말랐어요!"},{"speaker":"a","text":"가은님도 곧 오실 거예요."}]},
+    {"id":"chat-hyejin-028","a":"혜진","b":"유나","place":"desk","time":"evening","lines":[{"speaker":"a","text":"유나님, 고생했으니 간식요!"},{"speaker":"b","text":"제 몫까지 챙기셨어요?!"},{"speaker":"a","text":"열심히 뛰었으니 꼭 드세요!"}]},
+    {"id":"chat-hyejin-029","a":"유나","b":"혜진","place":"pantry","time":"morning","lines":[{"speaker":"a","text":"비서님 몇 시에 출근하세요?"},{"speaker":"b","text":"8시 40분쯤 수첩 확인해요."},{"speaker":"a","text":"부지런하셔서 본받고 싶어요!"}]},
+    {"id":"chat-hyejin-030","a":"유나","b":"혜진","place":"desk","time":"evening","lines":[{"speaker":"a","text":"급한 용무 다 전달했어요!"},{"speaker":"b","text":"확인요! 내일 오전 끝낼게요."},{"speaker":"a","text":"덕분에 정시 퇴근하겠어요!"}]},
+    {"id":"chat-hyejin-031","a":"혜진","b":"이음","place":"desk","time":"evening","lines":[{"speaker":"a","text":"이음님, 3건 실행 마쳤어요."},{"speaker":"b","text":"확인요! 완료 기록 남길게요."},{"speaker":"a","text":"깔끔히 닫혀서 든든해요."}]},
+    {"id":"chat-hyejin-032","a":"이음","b":"혜진","place":"desk","time":"day","lines":[{"speaker":"a","text":"비서님, 이거 끝난 거 맞죠?"},{"speaker":"b","text":"네, 회장님 전달 마쳤어요!"},{"speaker":"a","text":"그럼 완료 탭으로 옮길게요."}]},
+    {"id":"chat-hyejin-033","a":"혜진","b":"이음","place":"desk","time":"morning","lines":[{"speaker":"a","text":"지난주 용무 기록 어디 있죠?"},{"speaker":"b","text":"4층 색인 2번 폴더예요."},{"speaker":"a","text":"바로 찾았어요! 고마워요."}]},
+    {"id":"chat-hyejin-034","a":"이음","b":"혜진","place":"lounge","time":"all","lines":[{"speaker":"a","text":"실행이 빨라 기록도 편해요."},{"speaker":"b","text":"이음님이 잘 묶어주신 덕요!"},{"speaker":"a","text":"우리 호흡이 잘 맞나 봐요."}]},
+    {"id":"chat-hyejin-035","a":"혜진","b":"이음","place":"pantry","time":"evening","lines":[{"speaker":"a","text":"이음님, 기록 밀려 힘들죠?"},{"speaker":"b","text":"조금요… 오늘 메모가 많네요."},{"speaker":"a","text":"제 요약본 먼저 드릴게요!"}]},
+    {"id":"chat-hyejin-036","a":"미르","b":"혜진","place":"lounge","time":"all","lines":[{"speaker":"a","text":"왜 수첩을 두 색으로 나눠?"},{"speaker":"b","text":"급한 실행과 대기 건 구분요!"},{"speaker":"a","text":"색깔에 순서가 담겨 있구나."}]},
+    {"id":"chat-hyejin-037","a":"미르","b":"혜진","place":"desk","time":"day","lines":[{"speaker":"a","text":"왜 회장님 메모가 멈춰 있지?"},{"speaker":"b","text":"앗, 빠뜨린 확인 건이네요!"},{"speaker":"a","text":"질문에서 단서 찾았네. 헤헤."}]},
+    {"id":"chat-hyejin-038","a":"혜진","b":"미르","place":"rooftop","time":"evening","lines":[{"speaker":"a","text":"미르님 질문이 큰 도움 돼요."},{"speaker":"b","text":"난 그냥 궁금해서 물은 거야."},{"speaker":"a","text":"그 물음이 체크리스트가 돼요!"}]},
+    {"id":"chat-hyejin-039","a":"미르","b":"혜진","place":"desk","time":"morning","lines":[{"speaker":"a","text":"혜진, 오늘도 움직임이 빨라."},{"speaker":"b","text":"미르님이 봐주시니 기운 나요!"},{"speaker":"a","text":"회장님도 든든해하실 거야."}]},
+    {"id":"chat-hyejin-040","a":"나은","b":"혜진","place":"pantry","time":"day","lines":[{"speaker":"a","text":"비서님, 또 쉬는 걸 잊었죠?"},{"speaker":"b","text":"앗, 하나만 더 적고 갈게요!"},{"speaker":"a","text":"그 하나는 밥 먹고 챙겨요!"}]},
+    {"id":"chat-hyejin-041","a":"나은","b":"혜진","place":"rooftop","time":"all","lines":[{"speaker":"a","text":"잠깐 햇볕 쬐고 오실래요?"},{"speaker":"b","text":"차장님 챙겨주시니 감사해요!"},{"speaker":"a","text":"쉬어야 오후도 거뜬하죠."}]},
+    {"id":"chat-hyejin-042","a":"혜진","b":"나은","place":"pantry","time":"morning","lines":[{"speaker":"a","text":"차장님, 따뜻한 유자차요!"},{"speaker":"b","text":"어머, 비서님 센스가 최고네!"},{"speaker":"a","text":"아침부터 바쁘실 것 같아서요!"}]},
+    {"id":"chat-hyejin-043","a":"혜진","b":"서윤","place":"desk","time":"morning","lines":[{"speaker":"a","text":"리드님, 회장님 새 문의예요."},{"speaker":"b","text":"기존 구조 영향부터 볼게요💜"},{"speaker":"a","text":"확인 전에 실행 멈춰둘게요!"}]},
+    {"id":"chat-hyejin-044","a":"혜진","b":"서윤","place":"desk","time":"day","lines":[{"speaker":"a","text":"리드님, 설정 지금 되나요?"},{"speaker":"b","text":"단일 경로라 바로 확인돼요💜"},{"speaker":"a","text":"명쾌해서 전달하기 좋아요!"}]},
+    {"id":"chat-hyejin-045","a":"서윤","b":"혜진","place":"lounge","time":"evening","lines":[{"speaker":"a","text":"사전 정리를 참 잘하시네요💜"},{"speaker":"b","text":"리드님이 방향 잡아주신 덕요!"},{"speaker":"a","text":"내일 건도 편하게 말씀해요."}]},
+    {"id":"chat-hyejin-046","a":"혜진","b":"도연","place":"desk","time":"day","lines":[{"speaker":"a","text":"도연님, 기능 바로 되나요?"},{"speaker":"b","text":"5분 안에 재현해 볼게요☕"},{"speaker":"a","text":"답 나오면 바로 챙겨갈게요!"}]},
+    {"id":"chat-hyejin-047","a":"도연","b":"혜진","place":"desk","time":"all","lines":[{"speaker":"a","text":"메모 덕에 금방 재현했어요☕"},{"speaker":"b","text":"다행이에요! 바로 전할게요."},{"speaker":"a","text":"테스트 끝나면 공유할게요."}]},
+    {"id":"chat-hyejin-048","a":"혜진","b":"세린","place":"desk","time":"morning","lines":[{"speaker":"a","text":"세린님, 정보 조사 가능해요?"},{"speaker":"b","text":"표로 금방 뽑아드릴게요!📊"},{"speaker":"a","text":"고마워요! 수첩에 적어둘게요."}]},
+    {"id":"chat-hyejin-049","a":"세린","b":"혜진","place":"lounge","time":"day","lines":[{"speaker":"a","text":"요약 자료 금방 나왔어요!✨"},{"speaker":"b","text":"벌써요? 저도 마침 찾았어요!"},{"speaker":"a","text":"합치니 두 배 빠르네요!📊"}]},
+    {"id":"chat-hyejin-050","a":"세린","b":"혜진","place":"cafe","time":"all","lines":[{"speaker":"a","text":"반복 일 줄이는 게 좋아요!✨"},{"speaker":"b","text":"맞아요! 미리 해두면 편하죠."},{"speaker":"a","text":"세린님이랑 뜻이 잘 맞네요!"}]},
+    {"id":"chat-hyejin-051","a":"유리","b":"혜진","place":"desk","time":"day","lines":[{"speaker":"a","text":"비서님, 예외 1건 남았어요✅"},{"speaker":"b","text":"앗, 제가 놓쳤네요! 볼게요."},{"speaker":"a","text":"꼼꼼히 확인하고 넘겨주세요."}]},
+    {"id":"chat-hyejin-052","a":"혜진","b":"유리","place":"desk","time":"evening","lines":[{"speaker":"a","text":"이 자료 지금 바로 보낼까요?"},{"speaker":"b","text":"원본 대조 후 PASS예요✅"},{"speaker":"a","text":"맞아요, 5분만 더 볼게요!"},{"speaker":"b","text":"확인되면 바로 통과 드려요."}]},
+    {"id":"chat-hyejin-053","a":"혜진","b":"아린","place":"desk","time":"day","lines":[{"speaker":"a","text":"아린님, 안내 카드 어때요?"},{"speaker":"b","text":"모바일서도 한눈에 보여요✨"},{"speaker":"a","text":"보기 편해져서 다행이에요!"}]},
+    {"id":"chat-hyejin-054","a":"혜진","b":"지은","place":"desk","time":"morning","lines":[{"speaker":"a","text":"부장님, 개인 비품 건이에요."},{"speaker":"b","text":"이번 달 예산 안이면 돼요."},{"speaker":"a","text":"감사해요! 바로 준비할게요."}]},
+    {"id":"chat-hyejin-055","a":"지은","b":"혜진","place":"pantry","time":"evening","lines":[{"speaker":"a","text":"어제 결제 영수증 챙겼나요?"},{"speaker":"b","text":"아, 그것도 챙겨뒀어요!"},{"speaker":"a","text":"역시 빈틈이 없어 든든하네요."}]},
+    {"id":"chat-hyejin-056","a":"혜진","b":"하루","place":"desk","time":"day","lines":[{"speaker":"a","text":"대리님, 이 소모품 어때요?"},{"speaker":"b","text":"자주 쓸 거라 가성비 좋아요."},{"speaker":"a","text":"딱이에요! 바로 챙겨둘게요."}]},
+    {"id":"chat-hyejin-057","a":"하루","b":"혜진","place":"cafe","time":"all","lines":[{"speaker":"a","text":"회장님 쓰시기 딱 좋겠네요."},{"speaker":"b","text":"대리님이 잘 골라주신 덕요!"},{"speaker":"a","text":"필요하면 또 같이 골라봐요."}]},
+    {"id":"chat-hyejin-058","a":"하루","b":"혜진","place":"pantry","time":"evening","lines":[{"speaker":"a","text":"비서님, 간식 두고 갈게요."},{"speaker":"b","text":"고마워요! 마침 출출했어요."},{"speaker":"a","text":"무설탕이라 가벼울 거예요."}]},
+    {"id":"chat-hyejin-059","a":"다온","b":"혜진","place":"desk","time":"day","lines":[{"speaker":"a","text":"비서님… 안 겹치죠?😅"},{"speaker":"b","text":"걱정 마세요, 다 확인했어요!"},{"speaker":"a","text":"휴… 확인 감사해요!😅"}]},
+    {"id":"chat-hyejin-060","a":"혜진","b":"히나","place":"desk","time":"morning","lines":[{"speaker":"a","text":"과장님, 학습 참고서 왔어요!"},{"speaker":"b","text":"찾던 거예용! 고마워용🐰"},{"speaker":"a","text":"수업에 도움 되길 바라요!"}]},
+    {"id":"chat-hyejin-061","a":"민지","b":"혜진","place":"lounge","time":"all","lines":[{"speaker":"a","text":"수첩 꺼내는 폼이 프로예요!"},{"speaker":"b","text":"민지님도 카메라 늘 드시죠?"},{"speaker":"a","text":"좋은 순간 놓치기 싫어서요."}]},
+    {"id":"chat-hyejin-062","a":"혜진","b":"수연","place":"desk","time":"morning","lines":[{"speaker":"a","text":"수연님, 외출 동선 확인해요!"},{"speaker":"b","text":"출발 루트랑 주차 다 짰어요!"},{"speaker":"a","text":"도착 후 대기 장소 챙길게요!"}]},
+    {"id":"chat-hyejin-063","a":"수연","b":"혜진","place":"rooftop","time":"day","lines":[{"speaker":"a","text":"비서님, 점심 후 걸을래요?"},{"speaker":"b","text":"좋아요! 바람 쐬면 개운하죠."},{"speaker":"a","text":"10분만 딱 걷고 내려가요!"}]},
+    {"id":"chat-hyejin-064","a":"혜진","b":"윤슬","place":"desk","time":"day","lines":[{"speaker":"a","text":"윤슬님, 이 책 목록 맞나요?"},{"speaker":"b","text":"네! 목차까지 묶어뒀어요📚"},{"speaker":"a","text":"정말 빨라요! 바로 올릴게요."}]},
+    {"id":"chat-hyejin-065","a":"혜진","b":"수아","place":"desk","time":"day","lines":[{"speaker":"a","text":"과장님, 개인 건이 커졌어요."},{"speaker":"b","text":"외부 계약이면 제 쪽이죠ㅎㅎ"},{"speaker":"a","text":"담당·기한 표로 넘길게요!"}]},
+    {"id":"chat-hyejin-066","a":"수아","b":"혜진","place":"lounge","time":"evening","lines":[{"speaker":"a","text":"아까 건 메일 마쳤어요ㅎㅎ"},{"speaker":"b","text":"역시 빠르세요! 감사해요."},{"speaker":"a","text":"오늘도 호흡 좋았어요ㅎㅎ"}]},
+    {"id":"chat-hyejin-067","a":"채원","b":"혜진","place":"desk","time":"all","lines":[{"speaker":"a","text":"비서님, 고객사 메모 왔어요."},{"speaker":"b","text":"가은님께 바로 넘길게요!"},{"speaker":"a","text":"요구사항 3줄도 붙였어요."}]},
+    {"id":"chat-hyejin-068","a":"혜진","b":"이슬","place":"cafe","time":"morning","lines":[{"speaker":"a","text":"이슬님, 유자차 두 잔요!"},{"speaker":"b","text":"가은 비서님 몫도 같이시죠?"},{"speaker":"a","text":"아, 그것도 기억해주셨네요!"}]},
+    {"id":"chat-hyejin-069","a":"이슬","b":"혜진","place":"cafe","time":"day","lines":[{"speaker":"a","text":"비서님, 갓 구운 쿠키예요."},{"speaker":"b","text":"고마워요! 4층에 나눠줄게요."},{"speaker":"a","text":"달콤한 오후 시간 되세요!"}]},
+    {"id":"chat-hyejin-first-1","a":"가은","b":"혜진","place":"desk","time":"morning","lines":[{"speaker":"a","text":"혜진 비서님, 환영합니다."},{"speaker":"b","text":"가은님! 잘 부탁드립니다!"},{"speaker":"a","text":"비서실 책상부터 안내할게요."},{"speaker":"b","text":"수첩 꺼내 바로 적어둘게요!"}]},
+    {"id":"chat-hyejin-first-2","a":"하니","b":"혜진","place":"desk","time":"morning","lines":[{"speaker":"a","text":"혜진 비서님, 입사 축하해요♡"},{"speaker":"b","text":"감사합니다! 잘 부탁드려요."},{"speaker":"a","text":"신입 교육은 범위 조절부터야!"}]},
+    {"id":"chat-hyejin-first-3","a":"유나","b":"혜진","place":"desk","time":"morning","lines":[{"speaker":"a","text":"드디어 비서실 충원이에요!"},{"speaker":"b","text":"유나님, 잘 부탁드려요!"},{"speaker":"a","text":"네! 비서실 4층 화이팅해요!"}]},
+    {"id":"chat-hyejin-first-4","a":"이음","b":"혜진","place":"desk","time":"day","lines":[{"speaker":"a","text":"비서님, 기록 폴더 위치예요."},{"speaker":"b","text":"오, 색인이 정말 깔끔하네요!"},{"speaker":"a","text":"실행 마치면 여기로 주세요."}]},
+    {"id":"chat-hyejin-first-5","a":"나은","b":"혜진","place":"lounge","time":"day","lines":[{"speaker":"a","text":"첫 출근 기념으로 차 마셔요!"},{"speaker":"b","text":"차장님, 챙겨주셔서 감사해요!"},{"speaker":"a","text":"무리 말고 천천히 익히세요."}]},
+    {"id":"chat-hyejin-bday-1","a":"가은","b":"혜진","place":"desk","time":"morning","lines":[{"speaker":"a","text":"혜진 비서님, 생일 축하해요!"},{"speaker":"b","text":"가은님! 기억해 주셨군요!"},{"speaker":"a","text":"오늘은 조금 천천히 챙기세요."}]},
+    {"id":"chat-hyejin-bday-2","a":"유나","b":"혜진","place":"pantry","time":"day","lines":[{"speaker":"a","text":"비서님! 생일 축하 케이크요!"},{"speaker":"b","text":"와, 언제 몰래 준비하셨어요?"},{"speaker":"a","text":"가은님과 아침에 숨겨뒀어요!"}]},
+    {"id":"chat-hyejin-bday-3","a":"하니","b":"혜진","place":"lounge","time":"evening","lines":[{"speaker":"a","text":"생일 축하해요! 쉴 거죠?♡"},{"speaker":"b","text":"내일 메모만 살짝 적어두고요!"},{"speaker":"a","text":"생일엔 수첩 닫기가 규칙야♡"}]},
     {"id":"chat-ieum-hani","a":"이음","b":"하니","place":"desk","time":"day","lines":[{"speaker":"a","text":"하니 전무님, 이거… 끝난 거 맞죠?"},{"speaker":"b","text":"완료 근거까지 확인해 보자, 이음아♡"},{"speaker":"a","text":"네, 확인되면 완료로 닫아둘게요."}]},
     {"id":"chat-ieum-seoyun","a":"이음","b":"서윤","place":"lounge","time":"day","lines":[{"speaker":"a","text":"서윤 선배, 개발기록은 어디부터 이어요?"},{"speaker":"b","text":"기준 기록과 아직 열린 이유부터 같이 보자."},{"speaker":"a","text":"아, 시스템 문맥을 먼저 잇는 거군요."}]},
     {"id":"chat-ieum-close","a":"하니","b":"이음","place":"lounge","time":"evening","lines":[{"speaker":"a","text":"이음아, 아직 확인 못 한 건 남겨두면 돼♡"},{"speaker":"b","text":"네, 확인한 건만요. 그럼 완료로 닫아둘게요."},{"speaker":"a","text":"좋아, 다음 기록도 차근차근 이어보자♡"}]},
@@ -1847,7 +1925,7 @@
         people:[{id,home,seat,outbound,inbound,out,back,visitor:!!visitor}],resources:geometry.resources,floors:geometry.floors};
     }
     // Pure vocabulary shared by snapshots and the existing persistent label slot.
-    const workLines={ieum:'기록 맥락 연결 중',hani:'기획안 정리 중',yuna:'요청 분류 중',jieun:'일정 조율 중',haru:'기록 정리 중',gaeun:'일정 확인 중',seoyun:'설계 검토 중',dohyun:'코드 수정 중',serin:'수치 분석 중',yuri:'품질 점검 중',arin:'화면 검토 중',hina:'검증 기록 중',daon:'콘텐츠 구상 중',yoonseul:'문장 다듬는 중',sua:'접수 확인 중',taeo:'안내 준비 중',minji:'업무 메모 중',mir:'흐름 살피는 중',seongmin:'결재 검토 중',sooyeon:'자료 대조 중',naeun:'예산 점검 중'};
+    const workLines={hyejin:'수첩 확인 중',ieum:'기록 맥락 연결 중',hani:'기획안 정리 중',yuna:'요청 분류 중',jieun:'일정 조율 중',haru:'기록 정리 중',gaeun:'일정 확인 중',seoyun:'설계 검토 중',dohyun:'코드 수정 중',serin:'수치 분석 중',yuri:'품질 점검 중',arin:'화면 검토 중',hina:'검증 기록 중',daon:'콘텐츠 구상 중',yoonseul:'문장 다듬는 중',sua:'접수 확인 중',taeo:'안내 준비 중',minji:'업무 메모 중',mir:'흐름 살피는 중',seongmin:'결재 검토 중',sooyeon:'자료 대조 중',naeun:'예산 점검 중'};
     const shortWords=[[/고민/,'잠깐 고민 중'],[/퀴즈/,'퀴즈 푸는 중'],[/비용|예산/,'비용 살피는 중'],[/고생|인사/,'인사 나누는 중'],[/웃|미소/,'살짝 웃는 중'],[/도장|결재/,'결재 확인 중'],[/메일/,'메일 확인 중'],[/일정|약속/,'일정 확인 중'],[/노래|음악|플레이리스트/,'음악 고르는 중'],[/졸음|꾸벅/,'졸음 쫓는 중'],[/커피 주문/,'커피 주문 중'],[/메뉴 고르/,'메뉴 고르는 중'],[/커피/,'커피 한 모금'],[/택배/,'택배 확인 중'],[/배달/,'배달 확인 중'],[/게시판|소식/,'소식 읽는 중'],[/검증|테스트/,'결과 확인 중'],[/수다|이야기/,'이야기 나누는 중'],[/코드|버그/,'코드 살피는 중'],[/메모/,'메모 정리 중'],[/보고서/,'보고서 다듬는 중'],[/스트레칭|기지개/,'기지개 켜는 중'],[/고양이/,'고양이 영상 중'],[/인스타/,'인스타 보는 중'],[/간식/,'간식 살피는 중'],[/생각|아이디어/,'생각 정리 중'],[/창밖|풍경|별/,'풍경 보는 중'],[/쉬는|휴식|소파/,'잠깐 쉬는 중'],[/확인|체크/,'내용 확인 중'],[/정리/,'자료 정리 중'],[/읽|책|페이지/,'읽어 보는 중']];
     function fullShortLine(line){
       if(chairmanShort.has(line))return chairmanShort.get(line);
@@ -4027,7 +4105,7 @@
       const peers=staff.filter(q=>q.floor===pet.floor&&!q.visitor&&!q.resident&&!q.walking&&residentVoice.staff[q.id]&&['rest','work'].includes(q.activity)&&(!q.state||q.state==='AT_HOME'||q.state==='AT_PLACE')).filter(q=>{const v=q.position||[q.seat?.x,q.seat?.y],d=Math.hypot((pet.position[0]-v[0])*art.width/100,(pet.position[1]-v[1])*art.height/100);return v.every(Number.isFinite)&&d>=100&&d<=320});
       peers.sort((a,b)=>(kind==='dog'?(a.id==='seongmin'?-1:b.id==='seongmin'?1:0):kind==='rabbit'?(a.id==='hina'?-1:b.id==='hina'?1:0):0)||residentSeed(seed+'|'+beat+'|'+a.id)-residentSeed(seed+'|'+beat+'|'+b.id));
       const peer=peers[0];if(!peer)continue;
-      const name=peer.id==='seongmin'?'회장님':actionTable?.people.find(p=>p.id===peer.id)?.name||peer.id,petLine=kind==='bori'&&peer.id==='seoyun'&&beat%2?'…멍. (꼬리를 툭 한 번)':kind==='cat'?'딱 한 번만 기대는 거예요.':kind==='dog'?'좋아해요! 한 번 더요!':kind==='bori'?'큰 머리 살짝 기대도 될까요, 멍.':'조용히 곁에 앉아도 될까요.',staffLine=residentAffectionVoice[kind][peer.id]||residentVoice.staff[peer.id],v=peer.position||[peer.seat.x,peer.seat.y];
+      const name=peer.id==='seongmin'?'회장님':actionTable?.people.find(p=>p.id===peer.id)?.name||canon?.people.find(p=>p.id===peer.id)?.name.split('/')[0]||peer.id,petLine=kind==='bori'&&peer.id==='seoyun'&&beat%2?'…멍. (꼬리를 툭 한 번)':kind==='cat'?'딱 한 번만 기대는 거예요.':kind==='dog'?'좋아해요! 한 번 더요!':kind==='bori'?'큰 머리 살짝 기대도 될까요, 멍.':'조용히 곁에 앉아도 될까요.',staffLine=residentAffectionVoice[kind][peer.id]||residentVoice.staff[peer.id],v=peer.position||[peer.seat.x,peer.seat.y];
       if(kind==='rabbit')pet.pose='sitting';
       pet.affection={key:clock.day+'|'+pet.floor+'|'+beat+'|'+pet.id+'|'+peer.id,partnerId:peer.id,partnerName:name,petLine,staffLine,line:petLine+' · '+name+' · '+staffLine,kind,heart:kind==='dog'?'💕':'♥',lean:v[0]<pet.position[0]?-1:1,bubble:(seed+beat)%3===0};
     }
@@ -4185,7 +4263,7 @@
       }
       const available=choices.filter(a=>free(a.visual)),first=available[0];if(!first)continue;
       const second=available.find(a=>a!==first&&residentVisitPath(first,a,free).length),stops=second?[first,second]:[first],index=motionBeat%stops.length,anchor=stops[index],previous=stops[(index+stops.length-1)%stops.length];
-      const name=peer.id==='seongmin'?'회장님':actionTable?.people.find(p=>p.id===peer.id)?.name||peer.id,bank=person.id==='pet-bori'?residentVoice.bori:person.id==='pet-cat'?residentVoice.cat:person.id==='pet-rabbit'?residentVoice.rabbit:residentVoice.dog;
+      const name=peer.id==='seongmin'?'회장님':actionTable?.people.find(p=>p.id===peer.id)?.name||canon?.people.find(p=>p.id===peer.id)?.name.split('/')[0]||peer.id,bank=person.id==='pet-bori'?residentVoice.bori:person.id==='pet-cat'?residentVoice.cat:person.id==='pet-rabbit'?residentVoice.rabbit:residentVoice.dog;
       const petLine=monitor?residentVoice.cat[2]:bank[(seed+beat)%bank.length],staffLine=person.id==='pet-rabbit'&&peer.id==='hina'?'모찌, 편히 쉬어. 내가 지킬게.':residentVoice.staff[peer.id];
       return {anchor,previous,scene:{key:seed+'|'+beat+'|'+peer.id,partnerId:peer.id,partnerName:name,kind:chairman?'chairman':monitor?'monitor':'rest',petLine,staffLine,line:petLine+' · '+name+' · '+staffLine}};
     }
@@ -4869,6 +4947,7 @@ const roomPlateTones=Object.freeze({"convenience":["green","🏪"],"lobby|INFO D
   const dramaCaption=document.createElement('small'),dramaTitle=document.createElement('b'),dramaSummary=document.createElement('span');dramaCaption.className='hani-building-drama-caption';dramaCaption.hidden=true;dramaCaption.append(dramaTitle,dramaSummary);caption.append(dramaCaption);let tapCatalogStarted=false;
   // View-only snack overlay. The table is the sole copy-edit point (up to 3 lines per staff id).
   const snackLines={
+    hyejin:["회장님, 간식 감사합니다!","잠깐 수첩 덮고 맛있게 먹을게요.","가은님 몫도 살짝 나눠뒀어요."],
     ieum:["회장님, 간식 받았다고 적어둘게요.","파일철은 잠깐 덮고 잘 먹겠습니다.","회장님, 따뜻한 간식 감사해요."],
     hani:["회장님, 간식은 이번 Scope 안이네요♡","회장님, 당 충전 끝! 전략부터 잡을게요.","회장님 간식이라니, 헤헤 힘이 나네요♡"],
     gaeun:["회장님, 간식 타임도 일정에 넣어둘게요.","회장님 감사해요, 회의 준비도 마쳤어요.","회장님 덕분에 다음 일정도 든든하겠어요."],
@@ -4893,6 +4972,7 @@ const roomPlateTones=Object.freeze({"convenience":["green","🏪"],"lobby|INFO D
   // One event/staff table; birthday pairs are [own thanks, colleague congratulations].
   const eventLines={snack:snackLines,
     coffee:{
+      hyejin:["회장님, 커피 한 잔 감사해요!","따뜻한 한 모금에 힘이 나네요.","숨 돌리고 바로 이어서 챙길게요."],
       ieum:["회장님, 커피와 함께 기록을 펼칠게요.","한 모금 쉬고 마지막 확인할게요.","회장님, 커피 감사해요."],
       hani:["회장님 커피라니, 오후 전략도 문제없어요♡","회장님, 커피로 팀 정렬 완료예요♡","회장님 센스 최고! 헤헤, 잘 마실게요♡"],
       gaeun:["회장님, 커피 타임도 일정에 반영해둘게요.","회장님 감사해요, 브리핑 준비도 마쳤어요.","회장님 덕분에 회의실 공기가 향긋해졌어요."],
@@ -4915,6 +4995,7 @@ const roomPlateTones=Object.freeze({"convenience":["green","🏪"],"lobby|INFO D
       taeo:["회장님, 정리하면 향·온도 모두 완벽합니다.","회장님, 커피 지원은 즉시 반영하겠습니다.","회장님, 잘 마시고 후속 미팅 정리할게요."]
     },
     applause:{
+      hyejin:["회장님, 봐주셔서 감사합니다!","다음 실행도 빈틈없이 챙길게요.","가은님이랑 호흡 더 맞춰볼게요."],
       ieum:["회장님, 꼼꼼히 봐주셔서 감사해요.","열린 건 끝까지 챙겨볼게요.","완료 근거도 차근차근 확인할게요."],
       hani:["회장님 칭찬이라니, 헤헤 더 힘이 나네요♡","회장님, 우리 팀 호흡이 딱 맞아떨어졌어요♡","회장님 박수 덕분에 다음 전략도 든든해요♡"],
       gaeun:["회장님 칭찬 말씀도 회의록에 남겨둘게요.","회장님 감사해요, 후속 일정도 잘 챙길게요.","회장님 격려 덕분에 준비한 보람이 있어요."],
@@ -4937,6 +5018,7 @@ const roomPlateTones=Object.freeze({"convenience":["green","🏪"],"lobby|INFO D
       taeo:["회장님, 정리하면 팀워크의 결과입니다.","회장님, 격려 말씀은 실행으로 잇겠습니다.","회장님, 긍정 피드백 확인. 후속 진행해요."]
     },
     cheer:{
+      hyejin:["회장님 응원 덕에 힘이 불끈 나요!","오늘도 4층 비서실은 준비 완료예요.","개인 용무까지 꼼꼼히 챙길게요."],
       ieum:["회장님, 오늘도 함께 화이팅이에요.","4층 비서실 자리에서 열심히 배울게요.","서윤 선배께 질문할 용기가 나요."],
       hani:["회장님도 오늘 하루 화이팅이에요, 헤헤♡","네 회장님! 오늘 우선순위도 힘차게 갈게요♡","회장님 응원 받고 전 부서 화이팅할게요♡"],
       gaeun:["회장님 화이팅이에요, 오늘 일정 시작할게요.","네 회장님, 오늘 요청도 잘 정리할게요.","회장님 응원 덕분에 오늘 브리핑도 힘나네요."],
@@ -4959,6 +5041,7 @@ const roomPlateTones=Object.freeze({"convenience":["green","🏪"],"lobby|INFO D
       taeo:["회장님, 정리하면 오늘도 준비 끝났습니다.","회장님도 화이팅입니다. 바로 실행할게요.","회장님, 응원은 결과로 번역하겠습니다."]
     },
     birthday:{
+      hyejin:["회장님, 제 생일까지 챙겨주셔서 감사해요!","혜진 비서님, 생일 축하해요! 오늘은 푹 쉬세요."],
       ieum:["회장님, 제 생일까지 챙겨주셔서 감사해요.","이음 사원님, 생일 축하해요!"],
       hani:["회장님, 생일 축하 고마워요! 헤헤♡","하니 전무님, 생일 진심으로 축하해요!"],
       gaeun:["회장님, 생일 축하도 일정에 담아둘게요.","가은 비서님, 생일 축하해요! 늘 든든해요!"],
@@ -4988,7 +5071,7 @@ const roomPlateTones=Object.freeze({"convenience":["green","🏪"],"lobby|INFO D
     cheer:{label:'📣 깜짝 응원',icon:'📣',status:'화이팅 외치는 중'},
     birthday:{label:'🎂 생일 축하',icon:'🎂',status:'생일 축하 중'}
   };
-  const staffBirthdays={ieum:'06-03',hani:'01-17',gaeun:'09-25',yuna:'02-20',mir:'05-14',seoyun:'03-12',dohyun:'06-18',serin:'07-23',yuri:'09-11',arin:'04-24',jieun:'04-09',haru:'05-29',daon:'11-21',naeun:'07-08',hina:'08-21',minji:'10-08',sooyeon:'11-06',yoonseul:'03-26',sua:'12-12',taeo:'02-06'};
+  const staffBirthdays={hyejin:'11-26',ieum:'06-03',hani:'01-17',gaeun:'09-25',yuna:'02-20',mir:'05-14',seoyun:'03-12',dohyun:'06-18',serin:'07-23',yuri:'09-11',arin:'04-24',jieun:'04-09',haru:'05-29',daon:'11-21',naeun:'07-08',hina:'08-21',minji:'10-08',sooyeon:'11-06',yoonseul:'03-26',sua:'12-12',taeo:'02-06'};
   const eventButton=document.createElement('button');eventButton.id='haniOfficeEvents';eventButton.type='button';eventButton.className='btn hani-office-events';eventButton.textContent='🎉 회장님 이벤트';eventButton.hidden=true;eventButton.setAttribute('aria-expanded','false');eventButton.setAttribute('aria-controls','haniOfficeEventPanel');caption.append(eventButton);
   const eventPanel=document.createElement('div');eventPanel.id='haniOfficeEventPanel';eventPanel.className='hani-office-event-panel';eventPanel.hidden=true;eventPanel.setAttribute('role','group');eventPanel.setAttribute('aria-label','회장님 이벤트');caption.append(eventPanel);
   const eventButtons=new Map();
