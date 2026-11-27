@@ -1,7 +1,12 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import fs from 'node:fs';
-import {fixture} from './hani-building-206-engine.test.mjs';
+import vm from 'node:vm';
+import {assets} from './hani-office-v2-fixture.mjs';
+// Load only the shared fixture() from the 206 engine test; importing that file would also run its whole suite.
+const engineTest=fs.readFileSync(new URL('./hani-building-206-engine.test.mjs',import.meta.url),'utf8');
+const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
+const fixture=vm.runInNewContext('('+engineTest.slice(engineTest.indexOf('export function fixture('),engineTest.indexOf('\ntest(')).replace('export function ','function ')+')',{assets,read,vm,Date,setTimeout,console});
 
 const readJson=rel=>JSON.parse(fs.readFileSync(new URL('../'+rel,import.meta.url),'utf8'));
 const canon=readJson('data/hani-building/spatial-contract-v4.json');
