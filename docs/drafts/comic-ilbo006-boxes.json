@@ -1,0 +1,445 @@
+{
+  "image": "assets/comic-trial/hani-ilbo-006-v1.png",
+  "width": 1600,
+  "height": 2400,
+  "coordinateSystem": "[x1,y1,x2,y2], origin top-left, x2/y2 exclusive",
+  "measurement": {
+    "source": "Final exported PNG; measured connected pixel components, checked visually",
+    "boxDefinition": "Exact bounding box of connected white balloon interior including tail; dark outline and antialias fringe excluded. Not prompt coordinates.",
+    "whitePixelRule": "R,G,B >= 235; max(R,G,B)-min(R,G,B) <= 20; 4-connected",
+    "textBoxDefinition": "Conservative rectangular overlay area inside oval, excludes tail; every pixel validated against whitePixelRule",
+    "titleBoxDefinition": "Connected title background pixels, y<140, B>R+12, B>G+15, R<145, G<130",
+    "captionBoxDefinition": "Exact connected blank white interior of each caption cell; row box is the envelope including central gutter"
+  },
+  "titleBand": {
+    "box": [
+      16,
+      11,
+      1586,
+      124
+    ],
+    "textBox": [
+      65,
+      32,
+      1535,
+      104
+    ],
+    "text": "오늘의 성민 회장 · 혜진 비서의 첫 출근 — 4인용 팀 책상"
+  },
+  "balloons": [
+    {
+      "order": 1,
+      "panel": 1,
+      "speaker": "혜진",
+      "box": [
+        90,
+        162,
+        427,
+        392
+      ],
+      "textBox": [
+        144,
+        208,
+        373,
+        304
+      ],
+      "whitePixelArea": 52856
+    },
+    {
+      "order": 2,
+      "panel": 1,
+      "speaker": "소담",
+      "box": [
+        446,
+        166,
+        758,
+        400
+      ],
+      "textBox": [
+        496,
+        213,
+        708,
+        311
+      ],
+      "whitePixelArea": 49499
+    },
+    {
+      "order": 3,
+      "panel": 2,
+      "speaker": "혜진",
+      "box": [
+        848,
+        168,
+        1180,
+        414
+      ],
+      "textBox": [
+        902,
+        218,
+        1126,
+        320
+      ],
+      "whitePixelArea": 55381
+    },
+    {
+      "order": 4,
+      "panel": 2,
+      "speaker": "혜진",
+      "box": [
+        1246,
+        168,
+        1556,
+        403
+      ],
+      "textBox": [
+        1296,
+        215,
+        1506,
+        313
+      ],
+      "whitePixelArea": 50704
+    },
+    {
+      "order": 5,
+      "panel": 3,
+      "speaker": "가은",
+      "box": [
+        48,
+        931,
+        279,
+        1150
+      ],
+      "textBox": [
+        85,
+        975,
+        242,
+        1066
+      ],
+      "whitePixelArea": 33077
+    },
+    {
+      "order": 6,
+      "panel": 3,
+      "speaker": "이음",
+      "box": [
+        302,
+        945,
+        528,
+        1159
+      ],
+      "textBox": [
+        339,
+        988,
+        491,
+        1077
+      ],
+      "whitePixelArea": 32394
+    },
+    {
+      "order": 7,
+      "panel": 3,
+      "speaker": "유나",
+      "box": [
+        548,
+        939,
+        776,
+        1158
+      ],
+      "textBox": [
+        585,
+        983,
+        739,
+        1074
+      ],
+      "whitePixelArea": 33753
+    },
+    {
+      "order": 8,
+      "panel": 4,
+      "speaker": "성민 회장",
+      "box": [
+        849,
+        906,
+        1167,
+        1153
+      ],
+      "textBox": [
+        900,
+        956,
+        1116,
+        1059
+      ],
+      "whitePixelArea": 51319
+    },
+    {
+      "order": 9,
+      "panel": 4,
+      "speaker": "혜진",
+      "box": [
+        1228,
+        905,
+        1541,
+        1131
+      ],
+      "textBox": [
+        1279,
+        951,
+        1490,
+        1045
+      ],
+      "whitePixelArea": 49584
+    },
+    {
+      "order": 10,
+      "panel": 5,
+      "speaker": "혜진",
+      "box": [
+        59,
+        1641,
+        388,
+        1883
+      ],
+      "textBox": [
+        112,
+        1690,
+        335,
+        1791
+      ],
+      "whitePixelArea": 54869
+    },
+    {
+      "order": 11,
+      "panel": 5,
+      "speaker": "이슬",
+      "box": [
+        442,
+        1649,
+        748,
+        1878
+      ],
+      "textBox": [
+        491,
+        1695,
+        699,
+        1790
+      ],
+      "whitePixelArea": 48829
+    },
+    {
+      "order": 12,
+      "panel": 6,
+      "speaker": "가은",
+      "box": [
+        829,
+        1654,
+        1055,
+        1845
+      ],
+      "textBox": [
+        866,
+        1693,
+        1018,
+        1772
+      ],
+      "whitePixelArea": 29391
+    },
+    {
+      "order": 13,
+      "panel": 6,
+      "speaker": "혜진",
+      "box": [
+        1090,
+        1650,
+        1328,
+        1846
+      ],
+      "textBox": [
+        1129,
+        1690,
+        1289,
+        1771
+      ],
+      "whitePixelArea": 32590
+    },
+    {
+      "order": 14,
+      "panel": 6,
+      "speaker": "보리",
+      "box": [
+        1289,
+        2031,
+        1536,
+        2216
+      ],
+      "textBox": [
+        1329,
+        2068,
+        1496,
+        2145
+      ],
+      "whitePixelArea": 34702
+    }
+  ],
+  "captionBands": [
+    {
+      "row": 1,
+      "box": [
+        26,
+        816,
+        1576,
+        866
+      ],
+      "cells": [
+        {
+          "panel": 1,
+          "captionIndex": 0,
+          "box": [
+            26,
+            816,
+            788,
+            866
+          ],
+          "textBox": [
+            40,
+            823,
+            774,
+            859
+          ]
+        },
+        {
+          "panel": 2,
+          "captionIndex": 1,
+          "box": [
+            814,
+            816,
+            1576,
+            866
+          ],
+          "textBox": [
+            828,
+            823,
+            1562,
+            859
+          ]
+        }
+      ]
+    },
+    {
+      "row": 2,
+      "box": [
+        26,
+        1551,
+        1576,
+        1602
+      ],
+      "cells": [
+        {
+          "panel": 3,
+          "captionIndex": 2,
+          "box": [
+            26,
+            1551,
+            788,
+            1602
+          ],
+          "textBox": [
+            40,
+            1558,
+            774,
+            1595
+          ]
+        },
+        {
+          "panel": 4,
+          "captionIndex": 3,
+          "box": [
+            814,
+            1551,
+            1576,
+            1601
+          ],
+          "textBox": [
+            828,
+            1558,
+            1562,
+            1594
+          ]
+        }
+      ]
+    },
+    {
+      "row": 3,
+      "box": [
+        26,
+        2320,
+        1576,
+        2369
+      ],
+      "cells": [
+        {
+          "panel": 5,
+          "captionIndex": 4,
+          "box": [
+            26,
+            2320,
+            788,
+            2369
+          ],
+          "textBox": [
+            40,
+            2327,
+            774,
+            2362
+          ]
+        },
+        {
+          "panel": 6,
+          "captionIndex": 5,
+          "box": [
+            815,
+            2320,
+            1576,
+            2369
+          ],
+          "textBox": [
+            829,
+            2327,
+            1562,
+            2362
+          ]
+        }
+      ]
+    }
+  ],
+  "captionBandNote": "Two blank caption cells per row, six captions total; use cells for overlay.",
+  "comparison": {
+    "image": "assets/comic-trial/hani-ilbo-006-compare.png",
+    "hyejinProfile": "assets/profiles/hani-profile-hyejin.webp",
+    "hyejinDrawnCrop": [
+      35,
+      345,
+      345,
+      794
+    ]
+  },
+  "verification": {
+    "balloonCountsByPanel": [
+      2,
+      2,
+      3,
+      2,
+      2,
+      3
+    ],
+    "balloonTotal": 14,
+    "captionCells": 6,
+    "artText": "None, visual review; title, 14 speech balloons and 6 caption cells blank",
+    "generation": "Built-in image_gen; generated 1024x1536, exported to requested 1600x2400 with Lanczos3; no generative corrections",
+    "generationPrompt": "docs/drafts/comic-ilbo006-generation-prompt.txt",
+    "references": "005/004 comic + Hyejin profile + official frog sheet + atlas assembled from all remaining specified references",
+    "runtimeChanges": false,
+    "commitPush": false,
+    "blankTextBoxPixelsChecked": 407984,
+    "imageSha256": "e56a9824b56fea34f4a713aceac0ee540d2d08b5417d379c4c09dfa04be12ea4"
+  }
+}
