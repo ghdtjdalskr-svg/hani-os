@@ -1,3 +1,4 @@
+require('./hani-release-323-preload.cjs'); // Released323 metadata precedes the building-323 capture.
 // Test input only: exact 혜진 hire seat and roster inverse before released322; production bytes stay untouched.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
