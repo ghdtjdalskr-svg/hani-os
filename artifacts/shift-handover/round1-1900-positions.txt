@@ -1,0 +1,200 @@
+0 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@32.1841%,45.2087% W | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:none@,
+1 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:none@,
+2 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:none@,
+3 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:none@,
+4 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@55.77%,66.3224% W
+5 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@71.3313%,57.7178% W
+6 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.7609%,78.382% W
+7 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+8 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+9 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+10 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+11 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+12 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+13 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+14 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+15 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+16 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+17 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+18 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+19 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+20 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+21 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+22 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+23 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+24 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+25 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+26 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+27 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+28 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+29 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+30 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+31 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+32 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+33 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+34 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+35 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+36 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+37 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+38 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+39 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+40 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+41 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+42 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+43 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+44 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+45 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+46 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+47 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+48 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+49 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+50 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+51 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+52 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+53 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+54 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+55 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+56 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+57 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+58 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+59 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+60 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+61 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+62 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+63 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+64 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+65 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+66 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+67 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+68 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+69 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+70 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+71 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+72 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+73 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+74 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+75 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+76 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+77 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+78 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+79 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+80 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+81 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+82 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+83 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+84 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+85 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+86 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+87 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+88 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+89 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+90 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+91 npc-clerk-day:block@20%,67.5% npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+92 npc-clerk-day:block@28.9245%,56.7395% W npc-clerk-night:block@31.8%,45% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+93 npc-clerk-day:block@45.0376%,67.0814% W npc-clerk-night:block@27.2%,59.1727% W | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+94 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+95 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+96 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+97 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:block@92.823%,79.4899% npc-barista-eunha:block@81.8%,78.5%
+98 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:block@82.9677%,65.7715% W npc-barista-eunha:block@81.8%,78.5%
+99 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:block@66.1227%,57.5731% W npc-barista-eunha:block@92.3183%,79.4446% W
+100 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:block@53.1086%,74.3727% W npc-barista-eunha:block@92.823%,79.4899%
+101 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+102 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+103 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+104 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+105 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+106 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+107 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+108 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+109 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+110 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+111 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+112 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+113 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+114 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+115 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+116 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+117 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+118 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+119 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+120 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+121 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+122 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+123 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+124 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+125 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+126 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+127 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+128 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+129 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+130 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+131 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+132 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+133 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+134 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+135 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+136 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+137 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+138 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+139 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+140 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+141 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+142 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+143 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+144 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+145 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+146 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+147 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+148 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+149 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+150 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+151 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+152 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+153 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+154 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+155 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+156 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+157 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+158 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+159 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+160 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+161 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+162 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+163 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+164 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+165 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+166 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+167 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+168 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+169 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+170 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+171 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+172 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+173 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+174 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+175 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+176 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+177 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+178 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+179 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+180 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+181 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+182 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+183 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+184 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+185 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+186 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+187 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+188 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+189 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+190 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+191 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+192 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+193 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+194 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+195 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+196 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+197 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+198 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
+199 npc-clerk-day:none@49.9925%,86.5706% W npc-clerk-night:block@20%,67.5% | npc-barista-iseul:none@50.0197%,86.5227% W npc-barista-eunha:block@92.823%,79.4899%
