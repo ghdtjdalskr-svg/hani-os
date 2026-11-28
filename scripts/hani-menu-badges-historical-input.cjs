@@ -4,6 +4,27 @@ const path=require('node:path'),{fileURLToPath}=require('node:url');
 const inverse=require('./hani-menu-badges-source.cjs'),repository=require('./hani-test-repository-evidence.cjs');
 const root=path.resolve(__dirname,'..'),authored='55f3fe64e2b88aa1b39ed503e3133614265e88d7';
 const outerFiles=new Map([
+ // tooling325 outer boundaries
+ ['scripts/hani-release-325-source.cjs','af92dd98b2e6a0a92fc1afcbff4c10bec5cf78d15a55f7515ddfab44376d0326'],
+ ['scripts/hani-release-325-preload.cjs','a9455fa2e4b6b19a34e065212b55c92ef4a825daaa74af9404a87d5ecbc51202'],
+ ['scripts/hani-release-325-reviewed-input.cjs','f413c65b1dd81551619eeb6db31a724fb92424e86bdc3904f7368f8418e1a3bb'],
+ ['scripts/hani-release-325.test.mjs','5d70e5f4fb3c21524be3e4817c5c84dd20337b5d57c44bc0c131877acff61be6'],
+ ['scripts/fixtures/release-325-layer.json','353409f20df4f3d23f9e3231e6dc05039f219ff61d4aea9e41dd97e2876bd3f9'],
+ // tooling325 outer boundaries end
+ // tooling324 outer boundaries
+ ['scripts/hani-release-324-source.cjs','abb42006abf0e62fed8760129ed0204ddb38618a50d071e372a288a408ebd89e'],
+ ['scripts/hani-release-324-preload.cjs','9a229956b251260cf667134ce4b986436a54d71b384fde682681638ce6816f7c'],
+ ['scripts/hani-release-324-reviewed-input.cjs','461eb35227da0f5378b944d8941931c58b1af858c3ee354603849a3f29e69a10'],
+ ['scripts/hani-release-324.test.mjs','fc4bbc8c141f97c61bf979efad48eeae55e8def586af2ce9e45cdc30d29e54af'],
+ ['scripts/fixtures/release-324-layer.json','3e6eeac89e9771330bd2f3b566d2fe75505f7f2d524989c34c369ae4501c6f04'],
+ // tooling324 outer boundaries end
+ // building324 outer boundaries
+ ['scripts/hani-building-324-source.cjs','00120ebc3a0e822270e5200befd972352bf552eabca071de3e40043e2359fad0'],
+ ['scripts/hani-building-324-preload.cjs','7a20f9b1cf9ddf67f5783e0cfb8694777360040e49d2c30f5a9a8110ec9d932a'],
+ ['scripts/hani-building-324-layer.test.mjs','54d79feef1eee7975458253851e88923cba10a797d8074549f93c0e30418cdab'],
+ ['scripts/hani-office-shift-handover.test.mjs','3a280a2c0bcd9d8761cbe95eeeedc053dcd264c7bbc6daceb93763c50f44c72f'],
+ ['scripts/fixtures/building-324-layer.json','ddeac1bf94ed3c7ba913cdf88dc96372d6d1d19e49efac2808e7e6ce3e55e487'],
+ // building324 outer boundaries end
  // tooling323 outer boundaries
  ['scripts/hani-release-323-source.cjs','ad79320db66a0484f228d41891349e66eaf8598e1184a97497f4f68360699a3d'],
  ['scripts/hani-release-323-preload.cjs','2350d95185141891d8c4ceebe15a361251995f5be72c2524165baf49340912f8'],
