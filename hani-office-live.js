@@ -4327,12 +4327,87 @@
     if(route){let rest=step,cur=from;for(const p of route){const d=Math.hypot((p[0]-cur[0])*w/100,(p[1]-cur[1])*h/100);if(d>=rest&&d>0){const r=rest/d,pos=[cur[0]+(p[0]-cur[0])*r,cur[1]+(p[1]-cur[1])*r];return {position:pos,moved:true,dx:(pos[0]-from[0])*w/100}}rest-=d;cur=p}return {position:cur,moved:true,dx:(cur[0]-from[0])*w/100}}
     return {position:from,moved:false,dx:0,blocked:true};
   }
+  const shiftHandoverPairs=Object.freeze([
+    {post:'store',postId:'resident_post_store',waitId:'post_shift_wait_store',wait:Object.freeze([16,70.8]),waitAlt:Object.freeze([25.2,69.5]),enterClear:Object.freeze([[27.2,56.5],[27.2,64],[26.5,78.5],[16,78.5]]),altEnterClear:Object.freeze([[27.2,56.5],[27.2,64]]),postClear:Object.freeze([[16,78.5],[26.5,78.5],[26.5,65]]),altPostClear:Object.freeze([[26.5,65]]),exitClear:Object.freeze([[27.2,64],[27.2,56.5]]),arriveRel:-180,exitStartRel:6,shifts:Object.freeze([
+      {time:25200,inId:'npc-clerk-day',outId:'npc-clerk-night',lines:Object.freeze(['밤새 수고했어요!','오전 물품 다 왔어요','삼각김밥 채울게요','오늘도 힘내요!'])},
+      {time:68400,inId:'npc-clerk-night',outId:'npc-clerk-day',lines:Object.freeze(['교대하러 왔어요.','삼각김밥 두 줄 남았어요','유통기한 확인해 둘게요','수고해요. 내일 봐요!'])}
+    ])},
+    {post:'reception',postId:'resident_post_reception',waitId:'post_shift_wait_reception',wait:Object.freeze([45.8,49]),waitAlt:Object.freeze([54.2,49]),enterClear:Object.freeze([]),postClear:Object.freeze([[50.2,44]]),exitClear:Object.freeze([[52,46.5]]),arriveRel:-180,exitStartRel:6,shifts:Object.freeze([
+      {time:32400,inId:'npc-guide',outId:'npc-desk-night',lines:Object.freeze(['좋은 아침! 교대 왔어요','출입증 두 개 남았어요','택배함도 확인했어요','오늘도 잘 부탁해요'])},
+      {time:64800,inId:'npc-desk-night',outId:'npc-guide',lines:Object.freeze(['교대 시간이에요.','오늘 방문 3건 있어요','야간 순찰 챙길게요','네, 조심히 가세요!'])}
+    ])},
+    {post:'cafe',postId:'resident_post_cafe',waitId:'post_shift_wait_cafe',wait:Object.freeze([96,84.3]),waitAlt:Object.freeze([89.5,84.3]),enterClear:Object.freeze([[85.5,84.2]]),postClear:Object.freeze([[86.5,84.2],[86.5,79.5]]),exitClear:Object.freeze([[85.5,68]]),arriveRel:-170,exitStartRel:18,shifts:Object.freeze([
+      {time:25200,inId:'npc-barista-iseul',outId:'npc-barista-eunha',lines:Object.freeze(['좋은 아침! 교대 왔어요','원두 새로 채워 뒀어요','바로 추출 준비할게요','잘 부탁해요, 이슬 씨'])},
+      {time:68400,inId:'npc-barista-eunha',outId:'npc-barista-iseul',lines:Object.freeze(['저녁 교대 왔어요.','우유 한 통 남았어요','원두 갈아 둘게요.','따뜻한 밤 되세요.'])}
+    ])}
+  ]);
+  const shiftCurveCache=new Map();
+  function shiftCurve(waypoints){
+    const w=art?.width||1672,h=art?.height||941,key=w+'x'+h+'|'+waypoints.map(p=>p.join(',')).join(';');
+    if(shiftCurveCache.has(key))return shiftCurveCache.get(key);
+    const curve=compileCurve(detourRun('1f',waypoints),w,h);
+    if(shiftCurveCache.size>=64)shiftCurveCache.delete(shiftCurveCache.keys().next().value);
+    shiftCurveCache.set(key,curve);return curve;
+  }
+  function residentShiftHandover(person,day,wallSeconds,clock,occupied=[]){
+    if(!person.post)return null;
+    const pair=shiftHandoverPairs.find(p=>p.post===person.post);if(!pair)return null;
+    const post=residentSpot(pair.postId);if(!post)return null;
+    const shift=pair.shifts.find(s=>(s.inId===person.id||s.outId===person.id)&&wallSeconds>=s.time+pair.arriveRel&&wallSeconds<s.time+180);
+    if(!shift)return null;
+    const isOccupied=pt=>occupied.some(q=>{
+      if(q.floor!=='1f'||q.handover||q.id===shift.outId||q.id===shift.inId)return false;
+      const at=q.position||(q.seat&&[q.seat.x,q.seat.y]);
+      return at&&Number.isFinite(at[0])&&Number.isFinite(at[1])&&Math.hypot((pt[0]-at[0])*(art?.width||1672)/100,(pt[1]-at[1])*(art?.height||941)/100)<90;
+    });
+    const useAlt=isOccupied(pair.wait)&&!isOccupied(pair.waitAlt);
+    const wait=useAlt?pair.waitAlt:pair.wait;
+    const enterClear=useAlt&&pair.altEnterClear?pair.altEnterClear:pair.enterClear;
+    const postClear=useAlt&&pair.altPostClear?pair.altPostClear:pair.postClear;
+    const gateArt=art?.anchors?.arrival_gate,gateNode=anchors.get('arrival_gate');
+    const gate=gateArt?[gateArt.x,gateArt.y]:gateNode?visualPoint(gateNode):[50,86.6];
+    const rel=wallSeconds-shift.time,isIn=shift.inId===person.id,seed=residentSeed('shift-handover|'+day+'|'+pair.post+'|'+shift.time),talkOffset=seed%5;
+    const speed=140,enterCurve=shiftCurve([gate,...enterClear,wait]),enterDur=Math.max(1,enterCurve.totalLen/speed);
+    const exitCurve=shiftCurve([post.visual,...pair.exitClear,gate]),exitDur=Math.max(1,exitCurve.totalLen/speed);
+    const postCurve=shiftCurve([wait,...postClear,post.visual]),enterPostDur=Math.max(1,postCurve.totalLen/speed);
+    const inFacing=post.visual[0]>=wait[0]?'right':'left',outFacing=inFacing==='right'?'left':'right',talkStart=-135+talkOffset,exitStart=pair.exitStartRel;
+    const talkBeat=Math.floor((rel-talkStart+(pair.post==='cafe'?4:0))/(pair.post==='reception'?5:8));
+    const mkScene=(tag,line)=>({key:day+'|'+shift.time+'|'+pair.post+'|'+tag+'|'+talkBeat,line,patrol:true,notBefore:0,handover:true});
+    const walkAt=(curve,dur,elapsed,fallback)=>{const u=Math.max(0,Math.min(1,elapsed/dur)),dist=easeRun(u,dur)*curve.totalLen,sample=sampleCurve(curve,dist);return {position:sample.position,walking:true,facing:Math.abs(sample.dx)>=1?(sample.dx<0?'left':'right'):fallback,pose:distanceGait(dist,sample.dx).pose,u}};
+    let anchor=pair.postId,position=post.visual,point=[post.x,post.y],walking=false,facing=outFacing,pose='standing',scene=null,phase='face';
+    if(isIn){
+      if(rel<pair.arriveRel+enterDur){const ws=walkAt(enterCurve,enterDur,rel-pair.arriveRel,inFacing);position=ws.position;point=ws.u<.5?(gateNode?[gateNode.x,gateNode.y]:[500,330]):[500,330];walking=true;facing=ws.facing;pose=ws.pose;anchor=ws.u<.4?'arrival_gate':pair.waitId;phase='approach';}
+      else if(rel<exitStart+2.5){anchor=pair.waitId;position=wait;point=[500,330];facing=inFacing;
+        if(rel<talkStart)phase='face';
+        else if(rel<-100+talkOffset){phase='talk';scene=mkScene('talk0',shift.lines[0]);}
+        else if(rel<-65)phase='talk';
+        else if(rel<-35+talkOffset){phase='talk';scene=mkScene('talk2',shift.lines[2]);}
+        else if(rel<exitStart)phase='reaction';
+        else phase='disperse';
+      }else if(rel<exitStart+2.5+enterPostDur){const ws=walkAt(postCurve,enterPostDur,rel-(exitStart+2.5),inFacing);position=ws.position;point=[500,330];walking=true;facing=ws.facing;pose=ws.pose;anchor=ws.u<.5?pair.waitId:pair.postId;phase='disperse';}
+      else{anchor=pair.postId;position=post.visual;point=[post.x,post.y];facing=outFacing;pose=person.doze&&clock.sleeping?'sitting':'standing';phase='disperse';}
+    }else{
+      if(rel<exitStart){anchor=pair.postId;position=post.visual;point=[post.x,post.y];facing=outFacing;
+        if(rel<pair.arriveRel+enterDur)phase='approach';
+        else if(rel<talkStart)phase='face';
+        else if(rel<-100+talkOffset)phase='talk';
+        else if(rel<-65){phase='talk';scene=mkScene('talk1',shift.lines[1]);}
+        else if(rel<-35+talkOffset)phase='talk';
+        else{phase='reaction';scene=mkScene('react',shift.lines[3]);}
+      }else if(rel<exitStart+exitDur){const ws=walkAt(exitCurve,exitDur,rel-exitStart,outFacing);position=ws.position;point=ws.u>.5?(gateNode?[gateNode.x,gateNode.y]:[500,330]):[500,330];walking=true;facing=ws.facing;pose=ws.pose;anchor=ws.u<.5?pair.waitId:'arrival_gate';phase='disperse';}
+      else return {absent:true};
+    }
+    return {id:person.id,name:person.name,sprite:person.sprite,pet:false,floor:'1f',anchor,position,point,walking,facing,pose,scene,handover:{key:day+'|'+shift.time+'|'+pair.post,role:isIn?'in':'out',phase}};
+  }
   function residentSnapshot(now=new Date(),staff=null,enabled=true,reduced=false,interactions=true){
     if(!enabled||!canon||!art)return [];
     const time=koreaTime(now),clock=residentClock(now),hour=clock.hour,nowMs=now.getTime();
+    const wallDay=time.toISOString().slice(0,10),wallSeconds=time.getUTCHours()*3600+time.getUTCMinutes()*60+time.getUTCSeconds()+time.getUTCMilliseconds()/1000;
     const occupied=staff?.floors?.flatMap(f=>f.people||[])||[];
     if(residentTrioHold&&(residentTrioHold.key!==residentTrioKey(now)||Number(now)>=residentTrioHold.until))residentTrioHold=null;
     const states=[...residentPeople.filter(p=>p.id!=='pet-rabbit'),...residentPeople.filter(p=>p.id==='pet-rabbit')].flatMap(person=>{
+      const handover=!reduced?residentShiftHandover(person,wallDay,wallSeconds,clock,occupied):null;
+      if(handover){if(handover.absent)return [];const hPrev=petPrev.get(person.id);if(!hPrev||nowMs!==hPrev.at)petPrev.set(person.id,{at:nowMs,day:wallDay,floor:'1f',anchor:{id:handover.anchor,floor:'1f',visual:handover.position},position:handover.position,point:handover.point,facing:handover.facing,holdStart:null});occupied.push({id:handover.id,floor:'1f',resident:true,handover:true,seat:{x:handover.position[0],y:handover.position[1]}});return [handover];}
       const creativeVisit=person.pet&&creativePetState(person,now,reduced,occupied);if(creativeVisit){occupied.push(creativeVisit);return [creativeVisit]}
       const scheduleHour=person.pet?clock.seconds/3600:hour,window=person.hours.find(([start,end])=>scheduleHour>=start&&scheduleHour<end);if(!window)return [];
       const seconds=person.pet?clock.seconds:clock.seconds%86400,day=person.pet?clock.day:time.toISOString().slice(0,10),stroll=person.id==='pet-bori'&&!reduced?boriStroll(day,seconds):null,sleeping=person.pet&&(clock.sleeping||person.id==='pet-bori'&&!stroll&&(reduced||clock.hour<9||clock.hour>=21||(seconds+residentSeed('bori-nap|'+day)%300)%900<360));
@@ -4803,7 +4878,7 @@
     if(link&&root.contains(link)){if(!dismissOnly){const room=building.floorRegistry.get(activeFloor)?.rooms.find(r=>r.id===link.dataset.room);if(link.dataset.roomFloor===activeFloor&&room?.menuLink.choices.some(c=>c.view===link.dataset.roomView)&&typeof showView==='function'){event.preventDefault?.();closeBubble();showView(link.dataset.roomView)}}return}
     if(event.target.closest?.('.hani-office-barista')===baristaButton){if(!dismissOnly)openBaristaBubble(event);return}
     if(!dismissOnly||actorBubble.contains(event.target)||[...actors.values()].some(a=>a.officeRow.contains(event.target)))return;
-    closeBubble(true,true);
+    if(!actorBubble.hidden||kidsVisits.current()||staffChats?.current())closeBubble(true,true);
   }
   root.addEventListener('click',activateActor);
   root.addEventListener('keydown',event=>{if(event.target.closest?.('[data-room-view]'))return;if(event.key==='Enter'||event.key===' '){event.preventDefault();activateActor(event)}else if(event.key==='Escape')closeBubble(true,true)});
@@ -5322,6 +5397,7 @@ const roomPlateTones=Object.freeze({"convenience":["green","🏪"],"lobby|INFO D
       if(turned)actor.dataset.facing=effectiveFacing;
       if(!prior||actor.dataset.walking!==walking)actor.dataset.walking=walking;
       if(!prior||prior.anchor!==state.anchor)actor.officeAnchor=state.anchor;
+      if(person.post){const atPost=state.anchor==='resident_post_'+person.post;if(atPost){if(actor.dataset.post!==person.post)actor.dataset.post=person.post}else if(actor.dataset.post)delete actor.dataset.post}
       if(moved)place(actor,targetPos);
       if(posed||turned)applyPose(actor,effectivePose);
       if(person.pet||person.kid){
@@ -5358,7 +5434,8 @@ const roomPlateTones=Object.freeze({"convenience":["green","🏪"],"lobby|INFO D
       if(person.kid&&visit){delete actor.officeKidReaction;if(moved&&bubblePerson===person.id)fitBubble(true);if(moved&&matchMedia('(max-width:600px)').matches)changed=true;continue}
       const reaction=actor.officeKidReaction||state.reaction;
       if(reaction&&root.officeCompanionReaction!==reaction.key&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000){const speaker=actors.get(reaction.id);if(speaker&&!speaker.hidden){root.officeCompanionReaction=reaction.key;delete actor.officeKidReaction;showBubble(speaker,{speaker:reaction.id,line:reaction.line},3000,true)}}
-      if(!staffChats?.current()&&state.scene&&actor.officeResidentScene!==state.scene.key&&(!state.scene.patrol||Date.now()>=state.scene.notBefore&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)){actor.officeResidentScene=state.scene.key;if(actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)showBubble(actor,{speaker:person.id,line:state.scene.line,resident:true},3000,!!state.scene.patrol)}
+      const chatBlocked=staffChats?.current()&&(!state.scene?.handover||staffChats.current().staffChat?.floor===activeFloor);
+      if(!chatBlocked&&state.scene&&actor.officeResidentScene!==state.scene.key&&(!state.scene.patrol||Date.now()>=state.scene.notBefore&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)){actor.officeResidentScene=state.scene.key;if(actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)showBubble(actor,{speaker:person.id,line:state.scene.line,resident:true},state.scene.handover?3600:3000,!!state.scene.patrol)}
       if(moved&&bubblePerson===person.id){fitBubble(true);if(person.companion&&matchMedia('(max-width:600px)').matches)changed=true}
     }
     if(visit?.line&&visit.floor===activeFloor&&sceneVisible()&&!document.hidden){
