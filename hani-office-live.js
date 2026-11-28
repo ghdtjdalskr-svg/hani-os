@@ -2651,7 +2651,9 @@
         // chair. Keep the long-rest words and reduced-motion seated pose intact.
         if(card?.id==='cafe-1f'&&performing&&!options.reducedMotion&&Math.floor(seconds+seed(p.id)%30)%30===0)state.seat=slot(t.seat.anchor,'stand');
         return {id:p.id,...state,visitor:!!p.visitor,...(p.visitor?event.visitor:{}),idle:!event||!!card,plain,stroll:!!card&&!p.visitor&&!options.reducedMotion,home:p.home?.floor||'1f',
-          pose:state.walking?(Math.floor((seconds+seed(day+'|walk|'+p.id)%10/10)*5)%2?'walk-a':'walk-b'):state.seat.posture,activity:p.visitor?'visit':event?.creative?(event.personalNonWork?'rest':'work'):event&&!card?(action.personalNonWork?'rest':action.layer===3?'meeting':'work'):lounge||card?.id==='cafe-1f'&&state.state==='AT_PLACE'?'rest':'work',
+          // Exercise programs (11/29): mats and rooftop stretch loop the two
+          // exercise frames; treadmills run in place with the walk frames.
+          pose:state.walking?(Math.floor((seconds+seed(day+'|walk|'+p.id)%10/10)*5)%2?'walk-a':'walk-b'):event?.creative&&state.state==='AT_PLACE'&&/fit|stretch|pilates/.test(event.id.split('|')[1]||'')?(/treadmill/.test(state.seat.anchor||'')?(options.reducedMotion?'standing':Math.floor(seconds*3)%2?'walk-a':'walk-b'):options.reducedMotion?'exercise':Math.floor(seconds/1.6+seed(p.id)%2)%2?'exercise-b':'exercise'):state.seat.posture,activity:p.visitor?'visit':event?.creative?(event.personalNonWork?'rest':'work'):event&&!card?(action.personalNonWork?'rest':action.layer===3?'meeting':'work'):lounge||card?.id==='cafe-1f'&&state.state==='AT_PLACE'?'rest':'work',
           actionId:event&&!card&&(performing||state.state==='AT_PLACE')?action.id:'base-work',eventId:card?undefined:event?.id,outingId:card?event.id:undefined,groupIds:event?.group,placeId:card?.id,targetAnchor:t?.seat.anchor,line,...(event?.patrol?{patrol:event.patrol,patrolArrival:t.out.at(-1).end}:{}),
           emoji:performing&&!card?(action.actorOverrides?.[p.id]?.emoji||action.performance.emoji):'',personalNonWork:action?.personalNonWork};
       };
