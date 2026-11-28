@@ -1634,9 +1634,9 @@
        for(const seconds of ticks){
         let count=0,groups=0,people=0;
         for(const e of relevant)if(e.start<=seconds&&seconds<e.end){count++;people+=e.people.length;if(e.people.length>1)groups++}
-        if(isLate(seconds)){if(people>1)return false}
-        else if(seconds>=41400&&seconds<46800){if(people>4)return false}
-        else if(count>2||groups>1)return false;
+        if(isLate(seconds)){if(people>2)return false}
+        else if(seconds>=41400&&seconds<46800){if(people>6)return false}
+        else if(count>4||groups>2)return false;
       }
       }
       return true;
@@ -1998,7 +1998,8 @@
         while(lo<hi){const mid=(lo+hi)>>>1;if(list[mid].end<=at)lo=mid+1;else hi=mid}
         return list[lo]?Math.max(at,list[lo].start):86400;
       }
-      const lunch=s=>s>=41400&&s<46800,cap=s=>isLate(s)?1:lunch(s)?4:2;
+      // 대공사 4-1: floor away caps raised (late 1→2, lunch 4→6, day 2→4) so staff rest more.
+      const lunch=s=>s>=41400&&s<46800,cap=s=>isLate(s)?2:lunch(s)?6:4;
       // Keep one excursion unit available for staff during appointments.
       const publicSlots=s=>s>=36000&&s<61200?1:2;
       let capCache=new Map(),capLength=-1;
@@ -2123,7 +2124,8 @@
         const homeFloors=new Set(people.map(p=>visitor?'1f':homeAt(p,at).floor));
         function floorHasRoom(floor){
           const active=visitor?visitorOpportunity.floor1:visitorOpportunity.byFloor.get(floor)||[];
-          return isLate(at)?active.reduce((n,e)=>n+e.people.length,people.length)<=1:lunch(at)?active.reduce((n,e)=>n+e.people.length,people.length)<=4:active.length<2&&(people.length===1||!active.some(e=>e.people.length>1));
+          // 대공사 4-1: more people may be away from one floor at once (was 1/4/2).
+          return isLate(at)?active.reduce((n,e)=>n+e.people.length,people.length)<=2:lunch(at)?active.reduce((n,e)=>n+e.people.length,people.length)<=6:active.reduce((n,e)=>n+e.people.length,people.length)<=4;
         }
         if([...homeFloors].some(floor=>!floorHasRoom(floor)))return false;
         const freeFloors=visitor?null:new Set(floors.filter(f=>homeFloors.has(f.id)||floorHasRoom(f.id)).map(f=>f.id));
@@ -2543,7 +2545,8 @@
     }
     function programCompatible(event,programs){
       if(event.creative||event.patrol||event.report||event.visitor||event.guestId)return true;
-      return !programs.some(p=>event.people.some(t=>p.people.some(q=>q.id===t.id))&&event.start<p.end+(event.card.kind==='errand'?0:5400)&&p.start<event.end+(event.card.kind==='errand'?0:5400));
+      // 대공사 4-1: a program now clears only 15 minutes around it (was 90), so rests and programs coexist.
+      return !programs.some(p=>event.people.some(t=>p.people.some(q=>q.id===t.id))&&event.start<p.end+(event.card.kind==='errand'?0:900)&&p.start<event.end+(event.card.kind==='errand'?0:900));
     }
     function visitPlan(day,events,outings,options={}){
       const rules=floorRegistry.get('creative')?.visitRules||[];
