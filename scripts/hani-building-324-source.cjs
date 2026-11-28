@@ -1,3 +1,4 @@
+require('./hani-release-324-preload.cjs'); // Released324 metadata precedes the building-324 capture.
 // Test input only: exact 1F shift handover inverse before released323; production bytes stay untouched.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
