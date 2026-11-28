@@ -4,6 +4,13 @@ const path=require('node:path'),{fileURLToPath}=require('node:url');
 const inverse=require('./hani-menu-badges-source.cjs'),repository=require('./hani-test-repository-evidence.cjs');
 const root=path.resolve(__dirname,'..'),authored='55f3fe64e2b88aa1b39ed503e3133614265e88d7';
 const outerFiles=new Map([
+ // tooling326 outer boundaries
+ ['scripts/hani-release-326-source.cjs','156251948da3b3329d543823d55aa03cbf971a43b7b57f512714694bfab32edb'],
+ ['scripts/hani-release-326-preload.cjs','74001ba049a9f4d06737044ce4e897d115027751c8bb93cb5aa4e137e890cf61'],
+ ['scripts/hani-release-326-reviewed-input.cjs','fd393ff127280f75d9162db21f83549ff24a99d89550bca6be6656923f53d88c'],
+ ['scripts/hani-release-326.test.mjs','94218ba9b62917308309040e779921605ba03a94a7db428f90e94267c81e50fc'],
+ ['scripts/fixtures/release-326-layer.json','2157089b8e21f628153ebee16ddb4cb631cdf846c317d74c5f939c4db2ccdaca'],
+ // tooling326 outer boundaries end
  // tooling325 outer boundaries
  ['scripts/hani-release-325-source.cjs','af92dd98b2e6a0a92fc1afcbff4c10bec5cf78d15a55f7515ddfab44376d0326'],
  ['scripts/hani-release-325-preload.cjs','a9455fa2e4b6b19a34e065212b55c92ef4a825daaa74af9404a87d5ecbc51202'],

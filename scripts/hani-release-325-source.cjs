@@ -1,3 +1,4 @@
+require('./hani-release-326-preload.cjs'); // Released326 metadata precedes the release-325 capture.
 // Test input only: exact released325 version/history/4cut inverse before release-325.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
