@@ -2,6 +2,48 @@
   "v": 1,
   "items": [
     {
+      "id": "daily-3",
+      "series": "HANI 오피스 일상",
+      "episode": "3화",
+      "title": "사이드카 주간, 뉴스룸 뒷이야기",
+      "date": "2026-11-28",
+      "parts": [
+        "daily-3"
+      ],
+      "thumb": "daily-3",
+      "width": 800,
+      "height": 6250,
+      "bytes": 640112
+    },
+    {
+      "id": "daily-2",
+      "series": "HANI 오피스 일상",
+      "episode": "2화",
+      "title": "아, 그것도 챙겨뒀어요!",
+      "date": "2026-11-28",
+      "parts": [
+        "daily-2"
+      ],
+      "thumb": "daily-2",
+      "width": 800,
+      "height": 6333,
+      "bytes": 655220
+    },
+    {
+      "id": "daily-1",
+      "series": "HANI 오피스 일상",
+      "episode": "1화",
+      "title": "저녁 7시, 교대 소동",
+      "date": "2026-11-28",
+      "parts": [
+        "daily-1"
+      ],
+      "thumb": "daily-1",
+      "width": 800,
+      "height": 6362,
+      "bytes": 635976
+    },
+    {
       "id": "build-3",
       "series": "하니 그룹 대공사",
       "episode": "3편",
