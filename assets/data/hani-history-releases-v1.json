@@ -26,6 +26,18 @@
   ],
   "entries": [
     {
+      "id": "v2.9.326",
+      "date": "2026-11-28",
+      "status": "released",
+      "title": "회사소개 1층 로비 스태프",
+      "category": "하니 그룹",
+      "credits": [],
+      "source": {
+        "commit": "",
+        "subject": "release: v2.9.326 회사소개 1층 로비 스태프"
+      }
+    },
+    {
       "id": "v2.9.325",
       "date": "2026-11-28",
       "status": "released",
@@ -33,8 +45,8 @@
       "category": "뉴스룸",
       "credits": [],
       "source": {
-        "commit": "",
-        "subject": "release: v2.9.325 뉴스룸 시황 4컷 4호"
+        "commit": "3c3775d8eb1fe37fd5f50bf6ca4e653798b30745",
+        "subject": "release: v2.9.325 뉴스룸 시황 4컷 4호 (#582)"
       }
     },
     {
