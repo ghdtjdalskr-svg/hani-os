@@ -568,6 +568,12 @@
   }
 
   function hash(value){let n=0;for(const ch of value)n=(Math.imul(n,31)+ch.charCodeAt(0))>>>0;return n}
+  function withJosa(word,pair){
+    const text=String(word??'');if(!text)return '';
+    const code=text.charCodeAt(text.length-1);
+    if(code>=0xAC00&&code<=0xD7A3)return text+pair[(code-0xAC00)%28!==0?0:1];
+    return text+pair[1];
+  }
   // Keep every resident's physical desk visible when a floor grows beyond six.
   function projection(entries,capacity=6){const ordered=[...entries].sort((a,b)=>Number(b.activity!=="work")-Number(a.activity!=="work"));return {visible:ordered.slice(0,capacity),overflow:Math.max(0,entries.length-capacity)}}
   // One canonical scheduler. Daily plans are projections, never queues to replay.
@@ -1026,7 +1032,7 @@
         return a?.type==='junction'&&a.room===p.home.room&&distance>=32&&distance<=200;
       }).sort((a,b)=>Math.abs(art.anchors[a].y-h.y)-Math.abs(art.anchors[b].y-h.y)||Math.abs(art.anchors[b].x-h.x)-Math.abs(art.anchors[a].x-h.x));
       return slots.length?[{id:'errand-colleague-'+p.id,kind:'errand',errandKind:'colleague',targetPerson:p.id,floor:p.home.floor,room:p.home.room,slots,pose:'stand',stay:[8,25],
-        go:p.name+' 자리로 가는 중',at:[p.name+'에게 잠깐 물어보는 중',p.name+'랑 화면 같이 보는 중']}]:[];
+        go:p.name+' 자리로 가는 중',at:[p.name+'에게 잠깐 물어보는 중',withJosa(p.name,['이랑','랑'])+' 화면 같이 보는 중']}]:[];
     }):[];
     // Existing public noticeboard is drawn in 1F. No invented printers/cabinets.
     if(places.length&&anchors.has('ilbo_board'))errandPlaces.push({id:'errand-notice',kind:'errand',errandKind:'notice',floor:'1f',room:'lobby',slots:['ilbo_board'],pose:'stand',stay:[8,25],go:'게시판으로 가는 중',at:['게시판 공지 확인 중']});
@@ -2628,7 +2634,7 @@
             const room=floorRegistry.get(destination.floor)?.rooms.find(r=>r.id===destination.room);
             const name=place?.kind==='window'?place.name:(room?.label||destination.label||action.title).split(' · ')[0];
             const partners=event.group?.filter(id=>id!==p.id).map(id=>persons.find(p=>p.id===id).name).join('·');
-            line=p.visitor?event.visitor.go:(partners?partners+'와 ':'')+(card?.go||(floorRegistry.get(destination.floor)?.code||floorRegistry.get(destination.floor)?.label||'목적지')+' '+name+' 가는 중');
+            line=p.visitor?event.visitor.go:(partners?withJosa(partners,['과','와'])+' ':'')+(card?.go||(floorRegistry.get(destination.floor)?.code||floorRegistry.get(destination.floor)?.label||'목적지')+' '+name+' 가는 중');
           }
           else if(state.state==='RETURNING'){
             const voice=placeTable?.behavior?.travelVoice[p.id];
@@ -2638,7 +2644,7 @@
             line=event.report?(p.id==='seongmin'?'보고 기다리는 중':card.at[0]):p.visitor?event.visitor.at:event.staffChat?'잠깐 이야기 나누는 중':card?placeLine(card,p.id,day,event,t,seconds):speech(action,p.id,day);
             if(event.group&&state.state==='AT_PLACE'){
               const partners=event.group.filter(id=>id!==p.id).map(id=>persons.find(p=>p.id===id).name).join('·'),location=card.at[0].split('에서')[0];
-              line=seconds<event.performStart?location+'에서 '+partners+' 기다리는 중':seconds>=event.performEnd?location+'에서 '+partners+'와 나눈 이야기 정리 중':partners+'와 '+location+'에서 '+(event.companion?.topic||'잠깐 수다')+' 중';
+              line=seconds<event.performStart?location+'에서 '+partners+' 기다리는 중':seconds>=event.performEnd?location+'에서 '+withJosa(partners,['과','와'])+' 나눈 이야기 정리 중':withJosa(partners,['과','와'])+' '+location+'에서 '+(event.companion?.topic||'잠깐 수다')+' 중';
             }
           }
         }
@@ -2704,7 +2710,7 @@
           if(peers.length){
             const boundaries=visibleOutings.filter(q=>!q.visitor&&q.card.id===card.id).flatMap(q=>q.people.flatMap(t=>[t.out.at(-1).end,t.back[0].start])).filter(t=>e.performStart<t&&t<=seconds).length;
             const phrase=card.gatheringPhrases?.[boundaries%card.gatheringPhrases.length]||'수다 중';
-            p.gatheringIds=[p.id,...peers.map(q=>q.id)].sort();p.line=card.at[0].split('에서')[0]+'에서 '+peers.map(q=>personById.get(q.id).name).join('·')+'이랑 '+phrase;p.behaviorKind='gathering';
+            p.gatheringIds=[p.id,...peers.map(q=>q.id)].sort();p.line=card.at[0].split('에서')[0]+'에서 '+withJosa(peers.map(q=>personById.get(q.id).name).join('·'),['이랑','랑'])+' '+phrase;p.behaviorKind='gathering';
           }
         }
         // Social words retain the actual companions, but their place phrase
@@ -2712,7 +2718,7 @@
         const t=e.people.find(t=>t.id===p.id),arrival=t.out.at(-1).end,departure=t.back[0].start;
         if((p.groupIds||p.gatheringIds)&&departure-arrival>90&&seconds>=(arrival+departure)/2&&seconds>=e.performStart&&seconds<e.performEnd){
           const ids=(p.gatheringIds||p.groupIds).filter(id=>id!==p.id);
-          p.stayLine=placeLine(card,p.id,day,e,t,seconds);p.line=ids.map(id=>personById.get(id).name).join('·')+'와 '+p.stayLine;
+          p.stayLine=placeLine(card,p.id,day,e,t,seconds);p.line=withJosa(ids.map(id=>personById.get(id).name).join('·'),['과','와'])+' '+p.stayLine;
         }
       }
       const shownLines=new Map();
