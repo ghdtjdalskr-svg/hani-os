@@ -1,0 +1,1398 @@
+{
+  "schema": 1,
+  "version": "1.0.0-draft",
+  "author": "세린 연구원 (Gemini · AI플랫폼개발실)",
+  "title": "HANI 빌딩 사무실 장면 대본 초안 v1",
+  "rules": {
+    "storageWrites": 0,
+    "aiCalls": 0,
+    "deterministicSeed": "fnv1a32(kstDate + '|' + sceneId + '|' + context)",
+    "chairmanAddress": "회장님 (수현·수연은 아빠)",
+    "noCompetitionForKids": true,
+    "noAppearanceOrRomance": true,
+    "mirAlwaysStanding": true,
+    "noTeleportExit": true,
+    "multiPersonBeatOrder": [
+      "approach",
+      "face",
+      "talk",
+      "reaction",
+      "disperse"
+    ]
+  },
+  "dailyTimetable": {
+    "weekday": [
+      {
+        "id": "dawn_handover",
+        "window": "06:55~07:10",
+        "label": "이른 아침 카운터 교대",
+        "summary": "야간 근무자(나래·은하)가 주간 근무자(다솜·이슬)에게 1F 편의점·카페를 인계하고 걸어서 퇴근",
+        "sceneIds": ["SCN-N01", "SCN-N03"]
+      },
+      {
+        "id": "commute_rush",
+        "window": "08:30~09:15",
+        "label": "출근 러시 & 데스크 교대",
+        "summary": "직원들이 1F 로비를 지나 엘리베이터로 출근·착석하고, 하람이 소담에게 프론트를 인계",
+        "sceneIds": ["SCN-D01", "SCN-N02", "SCN-C01"]
+      },
+      {
+        "id": "morning_focus_and_visitors",
+        "window": "09:15~11:45",
+        "label": "오전 집중 · 보고 · 회의 · 택배",
+        "summary": "부서별 스탠드업/협업 회의, 회장님 출근 브리핑, 상급자 보고, 오전 택배·고객·면접 방문 시작",
+        "sceneIds": ["SCN-C01", "SCN-C02", "SCN-D02", "SCN-D05", "SCN-V01", "SCN-V02", "SCN-V03", "SCN-V05", "SCN-R11"]
+      },
+      {
+        "id": "lunch_and_delivery",
+        "window": "11:45~13:30",
+        "label": "점심 무리 이동 & 배달 러시",
+        "summary": "단짝끼리 2F 팬트리·1F 편의점·6F 옥상 테라스로 점심 이동, 배달 기사 1F 도착 및 영수증 해프닝",
+        "sceneIds": ["SCN-D03", "SCN-V04", "SCN-V05", "SCN-R08"]
+      },
+      {
+        "id": "afternoon_flow",
+        "window": "13:30~17:30",
+        "label": "오후 집중 · 커피 심부름 · 면접/상담 · 크리에이티브",
+        "summary": "커피 심부름, 오후 면접·고객 상담, 5F 도서관·스튜디오·피트니스 활동 및 6F/3F/4F 희귀 장면",
+        "sceneIds": ["SCN-D04", "SCN-D02", "SCN-D05", "SCN-V01", "SCN-V02", "SCN-V03", "SCN-V05", "SCN-C02", "SCN-R02", "SCN-R03", "SCN-R04", "SCN-R06", "SCN-R10", "SCN-R12", "SCN-R14", "SCN-R15"]
+      },
+      {
+        "id": "evening_leave_and_kids",
+        "window": "17:30~19:05",
+        "label": "퇴근 인사 · 아빠 마중 · 야간 카운터 교대",
+        "summary": "정시 퇴근 인사, 수현·수연 퇴근 마중/깜짝 방문, 소담↔하람(18시)·다솜↔나래·이슬↔은하(19시) 교대",
+        "sceneIds": ["SCN-D06", "SCN-R05", "SCN-F02", "SCN-N02", "SCN-N01", "SCN-N03"]
+      },
+      {
+        "id": "night_overtime",
+        "window": "19:05~24:00",
+        "label": "야근자 케어 · 심야 컵라면 · 조용한 쉼",
+        "summary": "야근 잔류 인원(서윤·도연·미르·유나·민지 등) 작업, 나은·나래·은하의 야근자 챙기기 및 심야 희귀 장면",
+        "sceneIds": ["SCN-D07", "SCN-V04", "SCN-R01", "SCN-R07", "SCN-R09", "SCN-R13", "SCN-F02"]
+      },
+      {
+        "id": "late_night_watch",
+        "window": "00:00~06:55",
+        "label": "심야 마감 & 새벽 당직",
+        "summary": "00~01시 심야 편의점/카페 마무리, 02:00 일반 잔업자 퇴근 경계 이후 나래·하람·은하 1F 당직 및 미르 상주",
+        "sceneIds": ["SCN-R09", "SCN-N01", "SCN-N02", "SCN-N03"]
+      }
+    ],
+    "weekend": [
+      {
+        "id": "weekend_morning",
+        "window": "07:00~12:00",
+        "label": "주말 오픈 & 가족 소풍 준비",
+        "summary": "카운터 교대 후 1F 카페·편의점 여유 방문, 10시부터 회장님·수현·수연 주말 5F 키즈·펫 라운지 활동",
+        "sceneIds": ["SCN-N01", "SCN-N02", "SCN-N03", "SCN-V05", "SCN-F01"]
+      },
+      {
+        "id": "weekend_afternoon",
+        "window": "12:00~18:00",
+        "label": "주말 라운지 · 옥상 산책 · 동물 교감",
+        "summary": "수현·수연과 펫·마스코트 어울리기, 배달 간식, 주말 산책·옥상 대화(R06, R12)",
+        "sceneIds": ["SCN-F01", "SCN-V04", "SCN-V05", "SCN-R06", "SCN-R12"]
+      },
+      {
+        "id": "weekend_evening",
+        "window": "18:00~24:00",
+        "label": "주말 저녁 마감 & 야간 카운터",
+        "summary": "가족 귀가 배웅, 야간 카운터 교대(하람·나래·은하), 조용한 야간 라운지 정리",
+        "sceneIds": ["SCN-N02", "SCN-N01", "SCN-N03", "SCN-V04", "SCN-V05"]
+      }
+    ]
+  },
+  "concurrency": {
+    "perActorMaxConcurrent": 1,
+    "minDistanceArtPx": 42,
+    "dialoguePairDistanceArtPx": [38, 46],
+    "maxActiveScenesPerFloor": {
+      "1f": 2,
+      "2f": 1,
+      "3f": 1,
+      "4f": 1,
+      "creative": 1,
+      "5f": 1
+    },
+    "maxActiveDialogueBubblesPerFloor": 2,
+    "rareSceneDailyMaxGlobal": 1,
+    "rareSceneMinGapHours": 4,
+    "priorities": [
+      { "tier": "P0", "name": "회장님 직접 조작 및 재실 경계", "rule": "절대 비양보. 경로 위 하위 장면은 즉시 ABORT 후 현재 위치에서 도보 복귀" },
+      { "tier": "P1", "name": "카운터 고정 근무자 슬롯(postLock) 및 긴급 소집", "rule": "카운터 내부 점유 영구 보장(교대 -180s~+30s 제외)" },
+      { "tier": "P2", "name": "수현·수연 남매 · 회장 동행 · 임원회의", "rule": "가족·공식 회의 보장, 중단 시 cancel()로 자연 도보 복귀" },
+      { "tier": "P3", "name": "희귀 관계 장면(R01~R15) · 사내 이벤트", "rule": "일반 1인/일상 행동(P5~P6)보다 우선 슬롯 확보" },
+      { "tier": "P4", "name": "방문객 접대 · 2인 대화 · 5F 프로그램", "rule": "수용량 초과 시 대기 또는 대체 장소 전환" },
+      { "tier": "P5", "name": "직원 일상 연속 장면 · 부서 회의", "rule": "사전 가용성 확인 후 출발" },
+      { "tier": "P6", "name": "개인 휴식 · 심부름 · 펫 배회", "rule": "자리 차면 출발 전 대체 목적지 선택" },
+      { "tier": "P7", "name": "홈 좌석 착석 및 대기", "rule": "기본 복귀 상태" }
+    ]
+  },
+  "dailyVariation": {
+    "fixedSkeleton": [
+      "평일 출근(08:30~09:15) · 점심(11:45~13:15) · 퇴근(17:50~18:40) 시간대",
+      "카운터 NPC 6명 교대 시각(07:00, 09:00, 18:00, 19:00)",
+      "02:00 일반 직원 퇴근 경계 및 심야 5인(seoyun, dohyun, mir, yuna, minji) 잔류 규칙"
+    ],
+    "seededByDate": [
+      "방문객 5종 일일 방문 횟수·분 단서 시각·면접 부서",
+      "점심 같이 먹는 무리 조합(companions 가중치 + 날짜 시드)과 식사 장소",
+      "커피 심부름 당번과 주문자 조합",
+      "희귀 장면 R01~R15 발동 여부(일 최대 1건, 쿨다운 준수)",
+      "평일 저녁 수현/수연 깜짝 방문 당번 및 평일 동행 마스코트"
+    ]
+  },
+  "scenes": [
+    {
+      "id": "SCN-V01",
+      "title": "면접 지원자 맞이 → 안내 → 부서별 면접 → 배웅",
+      "group": "visitor",
+      "trigger": {
+        "days": "weekday",
+        "timeWindow": ["10:00", "16:00"],
+        "probability": 0.65,
+        "dailyTargetRange": [0, 2],
+        "condition": "상담실 또는 지정 면접실 빈 좌석 존재, 부서별 면접관 후보 중 1인 이상 재실"
+      },
+      "roles": {
+        "guest": {
+          "pick": "visitor_slot",
+          "candidates": ["visitor:candidate"],
+          "rule": "1F arrival_gate에서 스폰, 날짜 시드로 지원 부서(platform|finance|life|strategy|business) 결정"
+        },
+        "greeter": {
+          "pick": "fixed_post_at_1f",
+          "candidates": ["npc-guide"],
+          "rule": "09:00~18:00 소담 고정 담당"
+        },
+        "interviewer": {
+          "pick": "department_head_or_senior_available",
+          "candidatesByDept": {
+            "strategy": ["hani", "gaeun", "ieum"],
+            "platform": ["seoyun", "yuri", "dohyun", "serin", "arin"],
+            "finance": ["jieun", "haru", "daon"],
+            "life": ["naeun", "hina", "minji"],
+            "business": ["sua", "taeo"]
+          },
+          "candidates": ["seoyun", "hani", "jieun", "naeun", "sua", "yuri", "dohyun", "haru", "hina", "taeo", "gaeun"],
+          "rule": "지원 부서 재실자 중 P0~P3 미점유 인원 1순위 선택. 기본 면접실은 1F client_booth(escort 시 2F shared_meeting_2f / 3F release_room / 4F exec_meeting 이동 가능)"
+        }
+      },
+      "beats": [
+        { "who": "guest", "to": "arrival_gate", "pose": "walk-a", "line": "안녕하세요, 면접 보러 왔습니다.", "sec": 3, "step": "approach" },
+        { "who": "guest", "to": "reception", "pose": "standing", "line": "오늘 10시 면접 지원자입니다.", "sec": 2, "step": "approach" },
+        { "who": "greeter", "to": "resident_post_reception", "pose": "standing", "line": "반갑습니다! [그림 필요: 방문객 명찰] 여기 명찰 드릴게요.", "sec": 3, "step": "face_talk" },
+        { "who": "guest", "to": "client_booth_slot_1", "pose": "sitting", "line": "안내 감사합니다. 면접 대기 중… 두근", "sec": 4, "step": "wait_seated" },
+        { "who": "interviewer", "to": "client_booth_slot_2", "pose": "sitting", "line": "오래 기다리셨죠? 오늘 면접 담당입니다.", "sec": 3, "step": "approach_and_face" },
+        { "who": "guest", "to": "client_booth_slot_1", "pose": "sitting", "line": "아닙니다! 잘 부탁드립니다!", "sec": 3, "step": "talk" },
+        { "who": "interviewer", "to": "client_booth_slot_2", "pose": "sitting", "line": "지원하신 계기와 강점을 편하게 말씀해 주세요.", "sec": 4, "step": "talk" },
+        { "who": "guest", "to": "client_booth_slot_1", "pose": "sitting", "line": "문제를 구조화해서 끝까지 해내는 편입니다.", "sec": 4, "step": "talk" },
+        { "who": "interviewer", "to": "client_booth_slot_2", "pose": "standing", "line": "오늘 말씀 잘 들었습니다. 조심히 들어가세요!", "sec": 3, "step": "reaction" },
+        { "who": "interviewer", "to": "door_consult", "pose": "walk-a", "line": "소담님, 면접 마쳤습니다. 배웅 부탁드려요.", "sec": 2, "step": "disperse" }
+      ],
+      "fallback": [
+        "1순위 면접관이 회의 중(P2/P5)이면 같은 부서 2순위 후보를 호출한다.",
+        "부서 전원 부재 시 유나(yuna) 또는 가은(gaeun)이 1F 상담실에서 사전 질문지를 받아 준다.",
+        "1F client_booth 4석이 모두 차 있으면 소담이 '잠시 차 한 잔 드시며 대기해 주세요' 하고 lobby-nw 소파로 안내한 뒤 공석 발생 시 이동한다."
+      ],
+      "exit": [
+        "지원자(guest)는 door_consult → hall_consult → reception 앞 인사 후 arrival_gate까지 걸어서 퇴장한다(순간이동 금지).",
+        "면접관(interviewer)은 엘리베이터를 타고 자기 부서 홈 좌석으로 도보 복귀한다."
+      ],
+      "chains": ["SCN-D05"],
+      "limits": { "perDay": 2, "cooldownMin": 90 }
+    },
+    {
+      "id": "SCN-V02",
+      "title": "방문 고객 접수 → 호스트 마중 → 상담 → 배웅",
+      "group": "visitor",
+      "trigger": {
+        "days": "weekday",
+        "timeWindow": ["10:00", "17:00"],
+        "probability": 0.7,
+        "dailyTargetRange": [1, 3],
+        "condition": "상담실 공석 존재, 기업솔루션(sua, taeo) 또는 전략실 대리 호스트 재실"
+      },
+      "roles": {
+        "guest": {
+          "pick": "visitor_slot",
+          "candidates": ["visitor:client"],
+          "rule": "1F arrival_gate에서 입장"
+        },
+        "greeter": {
+          "pick": "fixed_post_at_1f",
+          "candidates": ["npc-guide"],
+          "rule": "소담이 1차 접수 후 2F 호스트 호출"
+        },
+        "host": {
+          "pick": "business_team_first",
+          "candidates": ["sua", "taeo", "jieun", "hani"],
+          "rule": "1순위 sua·taeo(2F 기업솔루션), 둘 다 불가 시 jieun·hani 순"
+        }
+      },
+      "beats": [
+        { "who": "guest", "to": "reception", "pose": "standing", "line": "안녕하세요, 기업솔루션 미팅 예약했습니다.", "sec": 3, "step": "approach" },
+        { "who": "greeter", "to": "resident_post_reception", "pose": "standing", "line": "어서 오세요! 바로 담당자분 연결해 드릴게요.", "sec": 2, "step": "face_talk" },
+        { "who": "guest", "to": "client_booth_slot_1", "pose": "sitting", "line": "네, 상담실에서 기다리고 있겠습니다.", "sec": 3, "step": "wait_seated" },
+        { "who": "host", "to": "client_booth_slot_2", "pose": "sitting", "line": "안녕하세요, 요구사항 세 가지부터 맞춰볼게요.", "sec": 4, "step": "approach_and_face" },
+        { "who": "guest", "to": "client_booth_slot_1", "pose": "sitting", "line": "이번 달 안에 일정과 증빙 기준을 확인하고 싶어요.", "sec": 4, "step": "talk" },
+        { "who": "host", "to": "client_booth_slot_2", "pose": "sitting", "line": "Owner와 기한 정리해서 오늘 안에 메일 드릴게요.", "sec": 4, "step": "talk" },
+        { "who": "host", "to": "door_consult", "pose": "standing", "line": "와주셔서 감사합니다! 엘리베이터 앞까지 배웅할게요.", "sec": 3, "step": "reaction" }
+      ],
+      "fallback": [
+        "sua·taeo가 동시에 다른 회의 중이면 소담이 lobby-sw 카페 대기석으로 모시고 이슬에게 따뜻한 차를 요청한다.",
+        "그래도 10분 이상 지연 시 yuna 또는 ieum이 1F 상담실로 내려와 1차 요구사항 메모를 접수한다."
+      ],
+      "exit": [
+        "고객(guest)은 host의 배웅을 받아 arrival_gate까지 걸어 퇴장한다.",
+        "호스트(host)는 2F 홈 좌석(finance-row-spare / finance-row-spare-east)으로 엘리베이터 도보 복귀한다."
+      ],
+      "chains": ["SCN-D02", "SCN-D05"],
+      "limits": { "perDay": 3, "cooldownMin": 60 }
+    },
+    {
+      "id": "SCN-V03",
+      "title": "택배 기사 도착 → 프론트 확인 → 택배함 보관 → 배웅",
+      "group": "visitor",
+      "trigger": {
+        "days": "daily",
+        "timeWindow": ["09:00", "18:00"],
+        "probability": 0.8,
+        "dailyTargetRange": [1, 2],
+        "condition": "parcel_box 및 approach_parcel_box 가용"
+      },
+      "roles": {
+        "guest": {
+          "pick": "visitor_slot",
+          "candidates": ["visitor:courier"],
+          "rule": "1F arrival_gate에서 입장"
+        },
+        "receiver": {
+          "pick": "front_or_1f_staff",
+          "candidates": ["npc-guide", "yuna", "npc-clerk-day"],
+          "rule": "주간 소담 우선, 비어있으면 yuna 또는 편의점 다솜 확인"
+        }
+      },
+      "beats": [
+        { "who": "guest", "to": "parcel_box", "pose": "standing", "line": "[그림 필요: 택배 상자] HANI 그룹 택배 도착했습니다!", "sec": 3, "step": "approach" },
+        { "who": "receiver", "to": "approach_parcel_box", "pose": "standing", "line": "수고 많으세요! 수령인 확인 도와드릴게요.", "sec": 2, "step": "approach_and_face" },
+        { "who": "guest", "to": "parcel_box", "pose": "standing", "line": "여기 개발실·경영층 물품 두 상자 두고 갈게요.", "sec": 3, "step": "talk" },
+        { "who": "receiver", "to": "approach_parcel_box", "pose": "standing", "line": "서명 확인했어요. 안전운전하세요!", "sec": 2, "step": "reaction" },
+        { "who": "receiver", "to": "resident_post_reception", "pose": "walk-a", "line": "유나님께 택배 도착 알림 넘겨둬야지.", "sec": 2, "step": "disperse" }
+      ],
+      "fallback": [
+        "소담이 다른 방문객 응대 중이면 1F에 있는 유나(yuna)나 다솜(npc-clerk-day)이 approach_parcel_box로 대신 나와 서명한다.",
+        "1F 직원 모두 부재 시 parcel_box 무인 보관 안내 후 소담이 30초 내 확인·인계한다."
+      ],
+      "exit": [
+        "택배 기사(guest)는 arrival_gate까지 걸어서 퇴장한다.",
+        "수령 확인자(receiver)는 자기 위치(resident_post_reception 등)로 걸어서 복귀한다."
+      ],
+      "chains": ["SCN-D05", "SCN-R11"],
+      "limits": { "perDay": 2, "cooldownMin": 90 }
+    },
+    {
+      "id": "SCN-V04",
+      "title": "배달 기사 도착 → 데스크 확인 → 주문 직원 수령",
+      "group": "visitor",
+      "trigger": {
+        "days": "daily",
+        "timeWindow": ["11:30", "13:30"],
+        "altTimeWindow": ["17:30", "21:30"],
+        "probability": 0.75,
+        "dailyTargetRange": [1, 2],
+        "condition": "접수대(reception) 가용, 재실 직원 1명 이상"
+      },
+      "roles": {
+        "guest": {
+          "pick": "visitor_slot",
+          "candidates": ["visitor:rider"],
+          "rule": "점심/저녁 피크 시간 1F arrival_gate에서 입장"
+        },
+        "desk": {
+          "pick": "time_based_front_npc",
+          "candidates": ["npc-guide", "npc-desk-night"],
+          "rule": "09~18시 소담, 18~09시 하람"
+        },
+        "orderer": {
+          "pick": "present_hungry_staff",
+          "candidates": ["dohyun", "serin", "minji", "sooyeon", "yuna", "haru", "sua"],
+          "rule": "시간대 재실자 중 P0~P3 미점유 1인 선택"
+        }
+      },
+      "beats": [
+        { "who": "guest", "to": "reception", "pose": "standing", "line": "[그림 필요: 배달 봉투] 주문하신 음식 배달 왔습니다!", "sec": 3, "step": "approach" },
+        { "who": "desk", "to": "resident_post_reception", "pose": "standing", "line": "감사합니다! 주문하신 분 지금 내려오실 거예요.", "sec": 2, "step": "face_talk" },
+        { "who": "orderer", "to": "approach_reception", "pose": "standing", "line": "저예요! 감사합니다, 맛있게 먹을게요!", "sec": 3, "step": "approach_and_face" },
+        { "who": "guest", "to": "reception", "pose": "standing", "line": "네, 맛있게 드세요! 수고하세요!", "sec": 2, "step": "reaction" },
+        { "who": "orderer", "to": "elevator_1f", "pose": "walk-a", "line": "동료들이랑 나눠 먹으러 올라가자!", "sec": 3, "step": "disperse" }
+      ],
+      "fallback": [
+        "주문자가 회의 등으로 15초 내 하강 불가하면 데스크 NPC(소담/하람)가 대신 받아 NEW:delivery_dropoff_1f에 잠시 보관한 뒤 다음 휴식 때 찾아가게 한다."
+      ],
+      "exit": [
+        "배달 기사(guest)는 arrival_gate로 걸어서 퇴장한다.",
+        "주문 직원(orderer)은 2F 팬트리(pantry_2f) 또는 홈 층으로 엘리베이터 도보 이동한다."
+      ],
+      "chains": ["SCN-D03", "SCN-D07"],
+      "limits": { "perDay": 2, "cooldownMin": 90 }
+    },
+    {
+      "id": "SCN-V05",
+      "title": "테이크아웃 손님 → HANI Coffee 주문·수령 → 퇴장",
+      "group": "visitor",
+      "trigger": {
+        "days": "daily",
+        "timeWindow": ["09:00", "21:30"],
+        "probability": 0.85,
+        "dailyTargetRange": [2, 4],
+        "condition": "coffee_counter 또는 coffee_pickup 가용"
+      },
+      "roles": {
+        "guest": {
+          "pick": "visitor_slot",
+          "candidates": ["visitor:generic"],
+          "rule": "1F arrival_gate에서 입장"
+        },
+        "barista": {
+          "pick": "time_based_barista",
+          "candidates": ["npc-barista-iseul", "npc-barista-eunha"],
+          "rule": "07~19시 이슬, 19~07시 은하"
+        }
+      },
+      "beats": [
+        { "who": "guest", "to": "coffee_counter", "pose": "standing", "line": "안녕하세요, 아이스 아메리카노 한 잔 주세요.", "sec": 3, "step": "approach" },
+        { "who": "barista", "to": "resident_post_cafe", "pose": "standing", "line": "네, 오늘 새로 볶은 원두로 맛있게 내려드릴게요!", "sec": 3, "step": "face_talk" },
+        { "who": "guest", "to": "coffee_pickup", "pose": "standing", "line": "[그림 필요: 테이크아웃 컵] 향이 정말 좋네요. 감사합니다!", "sec": 3, "step": "reaction" },
+        { "who": "barista", "to": "resident_post_cafe", "pose": "standing", "line": "좋은 하루 보내세요! 또 오세요~", "sec": 2, "step": "disperse" }
+      ],
+      "fallback": [
+        "coffee_counter가 직원 2명으로 차 있으면 손님이 approach_coffee_pickup에서 10초 대기 후 순서대로 주문한다.",
+        "은하가 야간 졸음 상태면 깨어난 리액션('앗, 바로 내려드릴게요!') 후 정상 응대한다."
+      ],
+      "exit": [
+        "테이크아웃 손님(guest)은 door_cafe → arrival_gate까지 걸어서 퇴장한다."
+      ],
+      "chains": ["SCN-N03"],
+      "limits": { "perDay": 4, "cooldownMin": 45 }
+    },
+    {
+      "id": "SCN-D01",
+      "title": "출근 러시: 로비 인사 → 엘리베이터 탑승 → 자리 착석",
+      "group": "daily",
+      "trigger": {
+        "days": "weekday",
+        "timeWindow": ["08:30", "09:15"],
+        "probability": 1.0,
+        "condition": "평일 출근 고정 뼈대"
+      },
+      "roles": {
+        "commuters": {
+          "pick": "staggered_wave_by_seed",
+          "candidates": ["hani", "gaeun", "yuna", "ieum", "seoyun", "dohyun", "serin", "yuri", "arin", "jieun", "haru", "daon", "sua", "taeo", "naeun", "hina", "minji", "sooyeon", "yoonseul"],
+          "rule": "날짜 시드로 2~3명씩 소그룹 웨이브 배정 (mir 제외)"
+        },
+        "desk_greeter": {
+          "pick": "time_based_front_npc",
+          "candidates": ["npc-desk-night", "npc-guide"],
+          "rule": "08:30~09:00 하람, 09:00 이후 소담"
+        }
+      },
+      "beats": [
+        { "who": "commuters[0]", "to": "arrival_gate", "pose": "walk-a", "line": "좋은 아침이에요!", "sec": 2, "step": "approach" },
+        { "who": "desk_greeter", "to": "resident_post_reception", "pose": "standing", "line": "안녕하세요! 오늘도 좋은 하루 되세요.", "sec": 2, "step": "face_talk" },
+        { "who": "commuters[0]", "to": "elevator_1f", "pose": "walk-b", "line": "감사합니다, 올라가 볼게요!", "sec": 2, "step": "move_to_elevator" },
+        { "who": "commuters[0]", "to": "side_desk_seoyun", "pose": "standing", "line": "다들 잘 주무셨어요? 오늘 일정 시작하죠!", "sec": 3, "step": "reaction", "resolveByRole": "side_desk_<commuterId>" },
+        { "who": "commuters[0]", "to": "dev-lead", "pose": "sitting", "line": "오늘 할 일부터 차근히 열어보자.", "sec": 2, "step": "disperse", "resolveByRole": "<commuterHomeAnchor>" }
+      ],
+      "fallback": [
+        "elevator_1f 대기 인원이 3명을 넘으면 4번째 출근자는 stairs_1f를 이용하거나 15초 뒤 다음 웨이브로 분산 출발한다."
+      ],
+      "exit": [
+        "모든 출근 직원은 자기 홈 좌석(homeAnchor)에 착석해 기본 업무 상태로 전환한다."
+      ],
+      "chains": ["SCN-C01", "SCN-D02"],
+      "limits": { "perDay": 3, "cooldownMin": 15 }
+    },
+    {
+      "id": "SCN-D02",
+      "title": "부서·협업 회의 소집: 주최자 호출 → 참석자 집결 → 논의 → 해산",
+      "group": "daily",
+      "trigger": {
+        "days": "weekday",
+        "timeWindow": ["10:00", "11:30"],
+        "altTimeWindow": ["14:00", "16:30"],
+        "probability": 0.85,
+        "condition": "지정 회의실(2f team_meeting / 3f release / 4f exec) 공실"
+      },
+      "roles": {
+        "organizer": {
+          "pick": "team_lead_by_seed",
+          "candidates": ["hani", "seoyun", "jieun", "sua", "naeun"],
+          "rule": "부서별 팀장 중 1인이 회의 소집"
+        },
+        "attendees": {
+          "pick": "same_team_or_cross_collaborators",
+          "candidates": ["dohyun", "serin", "yuri", "arin", "haru", "daon", "taeo", "hina", "minji", "sooyeon", "yoonseul", "gaeun", "yuna", "ieum", "mir"],
+          "rule": "주최자 부서 팀원 또는 협업 파트너 2~4명 (mir 포함 시 4f mir_meeting_pos 배정)"
+        }
+      },
+      "beats": [
+        { "who": "organizer", "to": "meeting-nw", "pose": "sitting", "line": "지금 2층 협업실로 잠깐 모이실까요?", "sec": 3, "step": "approach" },
+        { "who": "attendees[0]", "to": "meeting-ne", "pose": "sitting", "line": "네, 바로 내려갈게요!", "sec": 4, "step": "approach" },
+        { "who": "attendees[1]", "to": "meeting-sw", "pose": "sitting", "line": "자료 챙겨 왔습니다.", "sec": 3, "step": "face_talk" },
+        { "who": "organizer", "to": "meeting-nw", "pose": "sitting", "line": "핵심 범위 세 가지만 맞춰보고 각자 진행하죠.", "sec": 4, "step": "talk" },
+        { "who": "attendees[0]", "to": "meeting-ne", "pose": "sitting", "line": "좋아요, 담당이랑 기한 체크했습니다!", "sec": 3, "step": "reaction" },
+        { "who": "organizer", "to": "door_team_meeting", "pose": "walk-a", "line": "수고하셨어요! 각자 자리에서 이어갑시다.", "sec": 2, "step": "disperse" }
+      ],
+      "fallback": [
+        "소집 대상 중 P0~P2에 묶인 인원은 제외하고 가용 인원으로 진행한다.",
+        "2F 협업실(shared_meeting_2f)이 사용 중이면 3F release_room 또는 4F exec_meeting으로 장소를 대체한다."
+      ],
+      "exit": [
+        "참석자들은 1.5초 시차로 문을 나와 엘리베이터 또는 복도를 통해 각자 홈 좌석으로 도보 복귀한다."
+      ],
+      "chains": ["SCN-D05", "SCN-R03"],
+      "limits": { "perDay": 2, "cooldownMin": 120 }
+    },
+    {
+      "id": "SCN-D03",
+      "title": "점심 무리 이동: 단짝 모으기 → 식당/팬트리/테라스 → 복귀",
+      "group": "daily",
+      "trigger": {
+        "days": "weekday",
+        "timeWindow": ["11:50", "13:10"],
+        "probability": 1.0,
+        "condition": "평일 점심 고정 뼈대"
+      },
+      "roles": {
+        "leader": {
+          "pick": "lunch_initiator_by_seed",
+          "candidates": ["naeun", "haru", "minji", "sooyeon", "serin", "hani", "sua", "hina"],
+          "rule": "날짜 시드로 2~3개 점심 무리 리드 선출"
+        },
+        "companions": {
+          "pick": "weighted_by_companions_table",
+          "candidates": ["jieun", "yuna", "ieum", "gaeun", "seoyun", "dohyun", "yuri", "arin", "daon", "yoonseul", "taeo"],
+          "rule": "office-places-v3.json companions 친화도 + 날짜 시드로 1~2명 조합 (mir는 식사 제외, 대화 동행만 선택)"
+        }
+      },
+      "beats": [
+        { "who": "leader", "to": "approach_desk_hina", "pose": "standing", "line": "점심시간이에요! 같이 먹으러 갈래요?", "sec": 3, "step": "approach_and_face", "resolveByRole": "approach_desk_<companionId>" },
+        { "who": "companions[0]", "to": "pantry_2f", "pose": "standing", "line": "좋아요! 오늘은 2층 팬트리 아니면 옥상 어때요?", "sec": 4, "step": "talk" },
+        { "who": "leader", "to": "rooftop_table_slot_1", "pose": "sitting", "line": "바람 좋으니까 옥상 테라스에 자리 잡자!", "sec": 4, "step": "talk" },
+        { "who": "companions[0]", "to": "rooftop_table_slot_2", "pose": "sitting", "line": "오늘 도시락이랑 간식 조합 딱 좋네요ㅎㅎ", "sec": 4, "step": "reaction" },
+        { "who": "leader", "to": "door_terrace", "pose": "walk-a", "line": "잘 먹었다! 오후 일하러 내려가요.", "sec": 3, "step": "disperse" }
+      ],
+      "fallback": [
+        "목표 장소(rooftop_table)가 꽉 차면 2F pantry_2f/finance-lounge-a → 1F convenience_browse → 1F lobby-nw 순으로 비어 있는 곳을 선택한다.",
+        "단짝이 면접/고객 상담(SCN-V01/V02)에 묶여 있으면 같은 층 빈 인원과 2인 조합을 새로 묶는다."
+      ],
+      "exit": [
+        "식사를 마친 무리는 엘리베이터를 타고 각자 홈 좌석으로 걸어 복귀한다."
+      ],
+      "chains": ["SCN-D04", "SCN-R08"],
+      "limits": { "perDay": 3, "cooldownMin": 30 }
+    },
+    {
+      "id": "SCN-D04",
+      "title": "오후 커피 심부름: 주문 모으기 → 1F 카페 주문 → 배달",
+      "group": "daily",
+      "trigger": {
+        "days": "weekday",
+        "timeWindow": ["13:30", "16:00"],
+        "probability": 0.75,
+        "condition": "1F coffee_counter 가용 및 주간 바리스타 이슬 재실"
+      },
+      "roles": {
+        "runner": {
+          "pick": "errand_runner_by_seed",
+          "candidates": ["yuna", "ieum", "dohyun", "haru", "taeo", "sooyeon"],
+          "rule": "날짜 시드로 1인 선정"
+        },
+        "barista": {
+          "pick": "fixed_post_at_1f",
+          "candidates": ["npc-barista-iseul"],
+          "rule": "이슬 고정 응대"
+        },
+        "requesters": {
+          "pick": "same_floor_colleagues",
+          "candidates": ["hani", "gaeun", "seoyun", "serin", "yuri", "arin", "jieun", "sua", "naeun", "minji"],
+          "rule": "심부름자 같은 층 재실 동료 1~2명"
+        }
+      },
+      "beats": [
+        { "who": "runner", "to": "approach_desk_serin", "pose": "standing", "line": "저 1층 커피 사러 가는데 드실 거 있어요?", "sec": 3, "step": "approach_and_face", "resolveByRole": "approach_desk_<requesterId>" },
+        { "who": "requesters[0]", "to": "dev-build", "pose": "sitting", "line": "아이스 아메리카노 한 잔 부탁해요! 고마워요.", "sec": 2, "step": "talk", "resolveByRole": "<requesterHomeAnchor>" },
+        { "who": "runner", "to": "coffee_counter", "pose": "standing", "line": "이슬님, 아메리카노 두 잔이랑 라떼 하나요!", "sec": 3, "step": "approach_and_face" },
+        { "who": "barista", "to": "resident_post_cafe", "pose": "standing", "line": "[그림 필요: 커피 캐리어] 네, 샷 딱 맞춰서 담아드렸어요!", "sec": 3, "step": "reaction" },
+        { "who": "runner", "to": "approach_desk_serin", "pose": "standing", "line": "커피 배달 왔습니다! 맛있게 드세요~", "sec": 3, "step": "reaction", "resolveByRole": "approach_desk_<requesterId>" }
+      ],
+      "fallback": [
+        "1F 카페 앞 대기열이 2명 이상이면 2F pantry_2f에서 직접 커피를 내리는 루트로 전환한다.",
+        "주문자가 그사이 회의실로 이동했으면 책상 옆에 놓아두고 쪽지를 남긴 뒤 복귀한다."
+      ],
+      "exit": [
+        "심부름 담당자(runner)는 전달을 마친 뒤 자기 홈 좌석으로 걸어 복귀한다."
+      ],
+      "chains": ["SCN-D05"],
+      "limits": { "perDay": 2, "cooldownMin": 120 }
+    },
+    {
+      "id": "SCN-D05",
+      "title": "보고하러 윗사람 방 가기: 이동 → 보고 → 피드백 → 복귀",
+      "group": "daily",
+      "trigger": {
+        "days": "weekday",
+        "timeWindow": ["09:30", "17:30"],
+        "probability": 0.85,
+        "afterScene": ["SCN-V01", "SCN-V02", "SCN-V03", "SCN-D02"],
+        "condition": "상급자(회장님/전무/팀장)가 홈 좌석에 착석 중"
+      },
+      "roles": {
+        "reporter": {
+          "pick": "team_member_or_lead",
+          "candidates": ["hani", "gaeun", "yuna", "ieum", "seoyun", "dohyun", "serin", "yuri", "arin", "jieun", "haru", "daon", "sua", "taeo", "naeun", "hina", "minji", "sooyeon", "yoonseul"],
+          "rule": "앞 장면 종료자 또는 날짜 시드 보고 당번"
+        },
+        "supervisor": {
+          "pick": "reporting_line",
+          "candidates": ["seongmin", "hani", "seoyun", "jieun", "naeun", "sua"],
+          "rule": "chairmanPresent 시 seongmin(4F ceo-reserved) 또는 직속 팀장"
+        }
+      },
+      "beats": [
+        { "who": "reporter", "to": "junction_ceo", "pose": "standing", "line": "회장님, 방금 정리한 안건 보고드려도 될까요?", "sec": 3, "step": "approach_and_face" },
+        { "who": "supervisor", "to": "ceo-reserved", "pose": "sitting", "line": "네, 들어오세요. 핵심부터 들어보죠.", "sec": 2, "step": "talk" },
+        { "who": "reporter", "to": "approach_ceo_desk", "pose": "standing", "line": "기한이랑 담당자까지 확인해서 세 줄로 정리했습니다.", "sec": 4, "step": "talk" },
+        { "who": "supervisor", "to": "ceo-reserved", "pose": "sitting", "line": "좋아요, 이대로 갑시다. 수고했어요!", "sec": 3, "step": "reaction" },
+        { "who": "reporter", "to": "door_ceo", "pose": "walk-a", "line": "감사합니다! 바로 실행에 옮기겠습니다.", "sec": 2, "step": "disperse" }
+      ],
+      "fallback": [
+        "상급자가 순찰/회의로 자리에 없으면 4F secretary_desk(가은) 또는 desk_yuna(이음)에 보고 요약을 남기고 복귀한다(빈 의자 앞 독백 금지)."
+      ],
+      "exit": [
+        "보고자는 복도와 엘리베이터를 이용해 자기 홈 좌석으로 도보 복귀한다."
+      ],
+      "chains": ["SCN-R15"],
+      "limits": { "perDay": 3, "cooldownMin": 90 }
+    },
+    {
+      "id": "SCN-D06",
+      "title": "퇴근 인사: 자리 정리 → 동료 인사 → 1F 정문 퇴장",
+      "group": "daily",
+      "trigger": {
+        "days": "weekday",
+        "timeWindow": ["17:50", "18:40"],
+        "probability": 1.0,
+        "condition": "평일 정시 퇴근 고정 뼈대 (야근 지정자 제외)"
+      },
+      "roles": {
+        "leaver": {
+          "pick": "non_late_workers_wave",
+          "candidates": ["gaeun", "ieum", "jieun", "haru", "daon", "taeo", "naeun", "hina", "sooyeon", "yoonseul", "yuri", "arin", "serin"],
+          "rule": "18시 전후 퇴근 인원 1~2명씩 웨이브"
+        },
+        "colleague": {
+          "pick": "same_room_colleague_if_present",
+          "candidates": ["minji", "haru", "serin", "yuna", "sua"],
+          "rule": "퇴근자와 같은 방(또는 같은 층)에 남아 있는 동료 1인"
+        },
+        "desk": {
+          "pick": "time_based_front_npc",
+          "candidates": ["npc-desk-night", "npc-guide"],
+          "rule": "18시 기준 하람(또는 직전 소담) 배웅"
+        }
+      },
+      "beats": [
+        { "who": "leaver", "to": "side_desk_minji", "pose": "standing", "line": "오늘 할 일 다 마쳤어요! 먼저 퇴근하겠습니다.", "sec": 3, "step": "approach_and_face", "resolveByRole": "side_desk_<colleagueId>" },
+        { "who": "colleague", "to": "life-c", "pose": "sitting", "line": "고생 많으셨어요! 내일 봬요~", "sec": 2, "step": "talk", "resolveByRole": "<colleagueHomeAnchor>" },
+        { "who": "leaver", "to": "reception", "pose": "standing", "line": "하람님, 오늘도 수고하셨습니다!", "sec": 3, "step": "approach_and_face" },
+        { "who": "desk", "to": "resident_post_reception", "pose": "standing", "line": "조심히 들어가세요! 내일 뵙겠습니다.", "sec": 2, "step": "reaction" },
+        { "who": "leaver", "to": "arrival_gate", "pose": "walk-b", "line": "안녕히 계세요~", "sec": 3, "step": "disperse" }
+      ],
+      "fallback": [
+        "같은 방 동료가 모두 먼저 퇴근했으면 엘리베이터 앞이나 1F 프론트 하람에게 인사 후 퇴장한다."
+      ],
+      "exit": [
+        "퇴근 직원은 arrival_gate까지 걸어서 화면 밖으로 퇴장한다."
+      ],
+      "chains": ["SCN-D07", "SCN-R05"],
+      "limits": { "perDay": 3, "cooldownMin": 15 }
+    },
+    {
+      "id": "SCN-D07",
+      "title": "야근자 챙기기: 야간 간식·음료 전달 & 휴식 권유",
+      "group": "daily",
+      "trigger": {
+        "days": "weekday",
+        "timeWindow": ["20:30", "23:30"],
+        "probability": 0.8,
+        "condition": "야근 잔류자(seoyun, dohyun, yuna, minji, sua 등) 1인 이상 재실"
+      },
+      "roles": {
+        "caretaker": {
+          "pick": "night_care_person",
+          "candidates": ["naeun", "npc-clerk-night", "npc-barista-eunha", "seongmin"],
+          "rule": "23시 이전 naeun·seongmin 우선, 1F 방문 시 나래·은하 응대"
+        },
+        "worker": {
+          "pick": "present_night_worker",
+          "candidates": ["seoyun", "dohyun", "yuna", "minji", "sua", "mir"],
+          "rule": "실제 야근 중인 인원 중 P0~P3 미점유자"
+        }
+      },
+      "beats": [
+        { "who": "caretaker", "to": "approach_desk_seoyun", "pose": "standing", "line": "[그림 필요: 허브티 컵] 늦었네요. 잠깐 물 마시고 숨 돌려요.", "sec": 3, "step": "approach_and_face", "resolveByRole": "approach_desk_<workerId>" },
+        { "who": "worker", "to": "dev-lead", "pose": "sitting", "line": "감사해요! 딱 요 부분만 마무리하고 들어갈게요.", "sec": 3, "step": "talk", "resolveByRole": "<workerHomeAnchor>" },
+        { "who": "caretaker", "to": "approach_desk_seoyun", "pose": "standing", "line": "무리하면 내일 더 오래 걸려요. 기지개 한 번만 켜고 가요.", "sec": 3, "step": "talk", "resolveByRole": "approach_desk_<workerId>" },
+        { "who": "worker", "to": "side_desk_seoyun", "pose": "standing", "line": "네, 스트레칭 한 번 하고 정리할게요!", "sec": 3, "step": "reaction", "resolveByRole": "side_desk_<workerId>" }
+      ],
+      "fallback": [
+        "해당 야근자가 1F 편의점/카페로 내려온 상태면 나래(npc-clerk-night) 또는 은하(npc-barista-eunha)가 1F 카운터 접점에서 따뜻한 음료와 초콜릿을 건넨다."
+      ],
+      "exit": [
+        "챙겨준 인물은 자기 층·카운터로 복귀하고, 야근자는 10분 내 마무리 후 퇴근 또는 심야 잔류 모드로 이어간다."
+      ],
+      "chains": ["SCN-R07", "SCN-R09", "SCN-R13"],
+      "limits": { "perDay": 2, "cooldownMin": 90 }
+    },
+    {
+      "id": "SCN-N01",
+      "title": "HANI 24 편의점 주·야간 교대 (다솜 ↔ 나래)",
+      "group": "npc_counter",
+      "trigger": {
+        "days": "daily",
+        "timeWindow": ["06:57", "07:03"],
+        "altTimeWindow": ["18:57", "19:03"],
+        "probability": 1.0,
+        "condition": "매일 07:00 / 19:00 고정 교대"
+      },
+      "roles": {
+        "incoming": {
+          "pick": "shift_incoming",
+          "candidates": ["npc-clerk-day", "npc-clerk-night"],
+          "rule": "07시 다솜 출근, 19시 나래 출근"
+        },
+        "outgoing": {
+          "pick": "shift_outgoing",
+          "candidates": ["npc-clerk-night", "npc-clerk-day"],
+          "rule": "07시 나래 퇴근, 19시 다솜 퇴근"
+        }
+      },
+      "beats": [
+        { "who": "incoming", "to": "arrival_gate", "pose": "walk-a", "line": "교대 시간 맞춰 왔어요!", "sec": 2, "step": "approach" },
+        { "who": "incoming", "to": "NEW:post_shift_wait_store", "pose": "standing", "line": "오늘도 수고 많으셨어요. 교대할게요!", "sec": 3, "step": "approach_and_face" },
+        { "who": "outgoing", "to": "resident_post_store", "pose": "standing", "line": "진열이랑 컵라면 온수 다 채워뒀어요. 잘 부탁해요.", "sec": 3, "step": "talk" },
+        { "who": "incoming", "to": "NEW:post_shift_wait_store", "pose": "standing", "line": "네, 조심히 들어가세요!", "sec": 2, "step": "reaction" },
+        { "who": "incoming", "to": "resident_post_store", "pose": "standing", "line": "어서 오세요! HANI 24입니다.", "sec": 2, "step": "disperse" }
+      ],
+      "fallback": [
+        "교대 정각에 계산대 앞(convenience_browse) 손님 응대 중이면 결제 완료까지 최대 20초 대기 후 교대한다(카운터 안쪽 2인 겹침 금지)."
+      ],
+      "exit": [
+        "퇴근 점원(outgoing)은 편의점 문(door_convenience)을 나와 arrival_gate까지 걸어서 퇴장한다."
+      ],
+      "chains": ["SCN-R08", "SCN-R09"],
+      "limits": { "perDay": 2, "cooldownMin": 600 }
+    },
+    {
+      "id": "SCN-N02",
+      "title": "1F 안내데스크 주·야간 교대 (소담 ↔ 하람)",
+      "group": "npc_counter",
+      "trigger": {
+        "days": "daily",
+        "timeWindow": ["08:57", "09:03"],
+        "altTimeWindow": ["17:57", "18:03"],
+        "probability": 1.0,
+        "condition": "매일 09:00 / 18:00 고정 교대"
+      },
+      "roles": {
+        "incoming": {
+          "pick": "shift_incoming",
+          "candidates": ["npc-guide", "npc-desk-night"],
+          "rule": "09시 소담 출근, 18시 하람 출근"
+        },
+        "outgoing": {
+          "pick": "shift_outgoing",
+          "candidates": ["npc-desk-night", "npc-guide"],
+          "rule": "09시 하람 퇴근, 18시 소담 퇴근"
+        }
+      },
+      "beats": [
+        { "who": "incoming", "to": "arrival_gate", "pose": "walk-a", "line": "안녕하세요, 교대하러 왔습니다.", "sec": 2, "step": "approach" },
+        { "who": "incoming", "to": "NEW:post_shift_wait_reception", "pose": "standing", "line": "밤사이 별일 없으셨죠? 교대할게요.", "sec": 3, "step": "approach_and_face" },
+        { "who": "outgoing", "to": "resident_post_reception", "pose": "standing", "line": "택배함 기록이랑 방문 일정표 올려뒀어요.", "sec": 3, "step": "talk" },
+        { "who": "incoming", "to": "NEW:post_shift_wait_reception", "pose": "standing", "line": "확인했습니다! 푹 쉬세요.", "sec": 2, "step": "reaction" },
+        { "who": "incoming", "to": "resident_post_reception", "pose": "standing", "line": "HANI 안내데스크입니다.", "sec": 2, "step": "disperse" }
+      ],
+      "fallback": [
+        "교대 시각에 방문객/택배가 reception 앞에 있으면 안내를 마친 뒤 순차 교대한다."
+      ],
+      "exit": [
+        "퇴근 안내원(outgoing)은 로비 문을 지나 arrival_gate까지 걸어서 퇴장한다."
+      ],
+      "chains": ["SCN-V01", "SCN-V03", "SCN-R11"],
+      "limits": { "perDay": 2, "cooldownMin": 480 }
+    },
+    {
+      "id": "SCN-N03",
+      "title": "HANI Coffee 바리스타 교대 (이슬 ↔ 은하)",
+      "group": "npc_counter",
+      "trigger": {
+        "days": "daily",
+        "timeWindow": ["06:57", "07:03"],
+        "altTimeWindow": ["18:57", "19:03"],
+        "probability": 1.0,
+        "condition": "매일 07:00 / 19:00 고정 교대"
+      },
+      "roles": {
+        "incoming": {
+          "pick": "shift_incoming",
+          "candidates": ["npc-barista-iseul", "npc-barista-eunha"],
+          "rule": "07시 이슬 출근, 19시 은하 출근"
+        },
+        "outgoing": {
+          "pick": "shift_outgoing",
+          "candidates": ["npc-barista-eunha", "npc-barista-iseul"],
+          "rule": "07시 은하 퇴근, 19시 이슬 퇴근"
+        }
+      },
+      "beats": [
+        { "who": "incoming", "to": "arrival_gate", "pose": "walk-a", "line": "좋은 아침이에요! / 안녕하세요, 은하예요.", "sec": 2, "step": "approach" },
+        { "who": "incoming", "to": "NEW:post_shift_wait_cafe", "pose": "standing", "line": "오늘 원두 상태 괜찮나요? 교대할게요!", "sec": 3, "step": "approach_and_face" },
+        { "who": "outgoing", "to": "resident_post_cafe", "pose": "standing", "line": "디카페인 포트랑 시럽 다 채워뒀어요.", "sec": 3, "step": "talk" },
+        { "who": "incoming", "to": "NEW:post_shift_wait_cafe", "pose": "standing", "line": "고생 많으셨어요! 조심히 가세요~", "sec": 2, "step": "reaction" },
+        { "who": "incoming", "to": "resident_post_cafe", "pose": "standing", "line": "따뜻한 커피 준비되어 있어요.", "sec": 2, "step": "disperse" }
+      ],
+      "fallback": [
+        "테이크아웃 손님(SCN-V05) 음료 제조 중이면 전달 후 15초 내 교대한다."
+      ],
+      "exit": [
+        "퇴근 바리스타(outgoing)는 door_cafe를 나와 arrival_gate까지 걸어서 퇴장한다."
+      ],
+      "chains": ["SCN-V05", "SCN-R13"],
+      "limits": { "perDay": 2, "cooldownMin": 600 }
+    },
+    {
+      "id": "SCN-C01",
+      "title": "회장님 출근 맞이: 4F 환영 인사 & 하루 일정 브리핑",
+      "group": "chairman",
+      "trigger": {
+        "days": "weekday",
+        "timeWindow": ["08:50", "11:30"],
+        "probability": 1.0,
+        "condition": "chairmanPresent === true 첫 진입 시 1일 1회"
+      },
+      "roles": {
+        "chairman": {
+          "pick": "fixed_chairman",
+          "candidates": ["seongmin"],
+          "rule": "성민 회장님 4F ceo-reserved 착석"
+        },
+        "greeters": {
+          "pick": "4f_nearest_available",
+          "candidates": ["gaeun", "hani", "yuna", "ieum"],
+          "rule": "가은 우선 + 4F 재실자 중 1인 합류"
+        }
+      },
+      "beats": [
+        { "who": "chairman", "to": "ceo-reserved", "pose": "sitting", "line": "다들 오늘 흐름 어때요?", "sec": 2, "step": "approach" },
+        { "who": "greeters[0]", "to": "approach_ceo_desk", "pose": "standing", "line": "좋은 아침이에요, 회장님! 오늘 체크리스트 올렸습니다.", "sec": 3, "step": "approach_and_face" },
+        { "who": "greeters[1]", "to": "junction_ceo", "pose": "standing", "line": "회장님 오셨어요! 오늘 핵심 안건 세 개부터 보시죠♡", "sec": 3, "step": "talk" },
+        { "who": "chairman", "to": "ceo-reserved", "pose": "sitting", "line": "좋아요, 차분히 하나씩 확인해 봅시다!", "sec": 3, "step": "reaction" }
+      ],
+      "fallback": [
+        "하니가 다른 층에 있으면 가은·유나가 먼저 인사하고, 4F에 아무도 없으면 미르(mir)가 mir_station에서 반갑게 인사('회장님 오셨어요, 헤헤')한다."
+      ],
+      "exit": [
+        "맞이한 4F 직원들은 각자 secretary_desk, office_hani, desk_yuna_east로 걸어서 복귀한다."
+      ],
+      "chains": ["SCN-D05", "SCN-R15"],
+      "limits": { "perDay": 1, "cooldownMin": 720 }
+    },
+    {
+      "id": "SCN-C02",
+      "title": "회장님 부재 시 자율 운영: 조용한 4F 조율 & 대기 메모",
+      "group": "chairman",
+      "trigger": {
+        "days": "weekday",
+        "timeWindow": ["10:30", "16:30"],
+        "probability": 0.6,
+        "condition": "chairmanPresent === false가 30분 이상 지속"
+      },
+      "roles": {
+        "coordinator": {
+          "pick": "fixed_strategy_lead",
+          "candidates": ["hani"],
+          "rule": "하니 전무 중심 조율"
+        },
+        "secretary": {
+          "pick": "secretariat_partner",
+          "candidates": ["gaeun", "ieum", "yuna"],
+          "rule": "가은 우선, 부재 시 이음·유나"
+        }
+      },
+      "beats": [
+        { "who": "coordinator", "to": "hani-side", "pose": "sitting", "line": "회장님 오시기 전에 안건 범위부터 정리해 둘까요?", "sec": 3, "step": "approach" },
+        { "who": "secretary", "to": "lounge-center", "pose": "sitting", "line": "네, 확인 필요한 문서랑 일정 여유칸 묶어뒀어요.", "sec": 3, "step": "face_talk" },
+        { "who": "coordinator", "to": "hani-side", "pose": "sitting", "line": "좋아요. 각 팀 진행 상황만 조용히 체크하죠.", "sec": 3, "step": "talk" },
+        { "who": "secretary", "to": "lounge-center", "pose": "sitting", "line": "회의실 일정도 10분 여유 두고 맞춰둘게요.", "sec": 3, "step": "reaction" }
+      ],
+      "fallback": [
+        "hani가 3F/2F 협업 중이면 가은(gaeun)과 유나(yuna)가 secretary_desk 앞에서 조용히 브리핑 보드를 정리한다."
+      ],
+      "exit": [
+        "두 사람은 각각 office_hani와 secretary_desk로 걸어 돌아간다."
+      ],
+      "chains": ["SCN-D02", "SCN-R01"],
+      "limits": { "perDay": 1, "cooldownMin": 240 }
+    },
+    {
+      "id": "SCN-F01",
+      "title": "주말 키즈·펫 라운지 가족 소풍 (경쟁·점수 0)",
+      "group": "family_pets",
+      "trigger": {
+        "days": "weekend",
+        "timeWindow": ["10:00", "17:00"],
+        "probability": 0.85,
+        "condition": "주말 5F creative kids_pet_lounge 가용 (100% 가족 서사, 경쟁·투표 0)"
+      },
+      "roles": {
+        "dad": {
+          "pick": "chairman_if_present",
+          "candidates": ["seongmin"],
+          "rule": "주말 회장님 재실 시 참여"
+        },
+        "kids": {
+          "pick": "both_siblings",
+          "candidates": ["kid-suhyeon", "kid-suyeon"],
+          "rule": "수현·수연 항상 함께 참여"
+        },
+        "pets": {
+          "pick": "lounge_pets",
+          "candidates": ["pet-dog", "pet-cat", "pet-rabbit", "pet-bori", "companion-frog"],
+          "rule": "주말 라운지 쿠션 배정 펫 1~2마리"
+        }
+      },
+      "beats": [
+        { "who": "dad", "to": "lounge_parent_chair", "pose": "sitting", "line": "주말인데 우리 강아지들이랑 조금 쉬다 가자!", "sec": 3, "step": "approach" },
+        { "who": "kids[1]", "to": "lounge_kids_play_a", "pose": "wave", "line": "아빠! 크림이랑 치즈 여기 다 모여 있어!", "sec": 3, "step": "approach_and_face" },
+        { "who": "kids[0]", "to": "lounge_kids_play_b", "pose": "seat-b", "line": "…모찌 안 놀라게 천천히 다가가야 해.", "sec": 3, "step": "talk" },
+        { "who": "pets[0]", "to": "pet_cushion_1", "pose": "sitting", "line": "같이 쉬니까 더 좋아요!", "sec": 3, "step": "reaction" },
+        { "who": "dad", "to": "lounge_parent_chair", "pose": "sitting", "line": "사이좋게 놀고 있어서 아빠도 기분 좋다.", "sec": 3, "step": "reaction" }
+      ],
+      "fallback": [
+        "5F kids_pet_lounge가 만석이면 가족이 함께 6F 옥상(rooftop_garden)이나 1F 카페 소파(lobby-nw/sw)로 걸어 이동해 코코아 타임을 갖는다."
+      ],
+      "exit": [
+        "라운지 시간을 마친 가족은 junction_kids_pet_lounge → elevator_creative를 거쳐 1F 또는 4F로 함께 걸어 이동한다."
+      ],
+      "chains": ["SCN-R06", "SCN-R12"],
+      "limits": { "perDay": 2, "cooldownMin": 120 }
+    },
+    {
+      "id": "SCN-F02",
+      "title": "평일 하교 후 깜짝 방문 & 동물 마중 (경쟁·점수 0)",
+      "group": "family_pets",
+      "trigger": {
+        "days": "weekday",
+        "timeWindow": ["18:00", "22:00"],
+        "probability": 0.65,
+        "condition": "평일 저녁 깜짝 방문(날짜 시드로 수현/수연 중 1명 선정)"
+      },
+      "roles": {
+        "kid": {
+          "pick": "one_sibling_by_day_seed",
+          "candidates": ["kid-suyeon", "kid-suhyeon"],
+          "rule": "날짜 시드로 1명만 평일 저녁 깜짝 방문"
+        },
+        "dad": {
+          "pick": "chairman_if_present",
+          "candidates": ["seongmin"],
+          "rule": "아빠 자리 또는 현재 층"
+        },
+        "pet": {
+          "pick": "present_floor_pet",
+          "candidates": ["pet-dog", "pet-bori"],
+          "rule": "크림 또는 보리 동행 반김"
+        }
+      },
+      "beats": [
+        { "who": "kid", "to": "arrival_gate", "pose": "walk-a", "line": "아빠! 학교 끝나고 보고 싶어서 왔어요!", "sec": 2, "step": "approach" },
+        { "who": "kid", "to": "junction_ceo", "pose": "walk-b", "line": "아빠 여기계시죠?", "sec": 3, "step": "approach" },
+        { "who": "kid", "to": "approach_ceo_desk", "pose": "cling", "line": "아빠아! 오늘은 내가 깜짝 선물이야!", "sec": 3, "step": "face_talk" },
+        { "who": "dad", "to": "ceo-reserved", "pose": "sitting", "line": "우리 딸/아들 잘 왔네! 잠깐만 정리하고 같이 가자.", "sec": 3, "step": "talk" },
+        { "who": "pet", "to": "side_ceo_desk", "pose": "standing", "line": "오늘도 만나서 반가워요!", "sec": 2, "step": "reaction" }
+      ],
+      "fallback": [
+        "회장님이 잠시 부재(ABSENT) 상태면 유나(yuna)나 나은(naeun)이 1F lobby-sw에서 간식과 책을 챙겨주며 아빠를 기다린다(혼자 대기 금지)."
+      ],
+      "exit": [
+        "회장님이 일어서면 아이와 함께 엘리베이터를 타고 1F arrival_gate로 걸어서 퇴근한다."
+      ],
+      "chains": ["SCN-R05"],
+      "limits": { "perDay": 1, "cooldownMin": 240 }
+    },
+    {
+      "id": "SCN-R01",
+      "title": "[희귀 R01] 늦은 밤 4F 로드맵",
+      "group": "rare",
+      "trigger": {
+        "days": "weekday",
+        "timeWindow": ["21:00", "23:30"],
+        "probability": 0.22,
+        "cooldownDays": 5,
+        "rareId": "R01"
+      },
+      "roles": {
+        "strategist": { "pick": "fixed", "candidates": ["hani"], "rule": "하니 4F 잔류 시" },
+        "tech_lead": { "pick": "fixed", "candidates": ["seoyun"], "rule": "서윤 야근 중 4F 합류" }
+      },
+      "beats": [
+        { "who": "strategist", "to": "board-n", "pose": "sitting", "line": "아직 안 가셨어요, 리드님?", "sec": 3, "step": "approach_and_face" },
+        { "who": "tech_lead", "to": "board-ne", "pose": "sitting", "line": "영향 범위만 마저 보고요", "sec": 3, "step": "talk" },
+        { "who": "strategist", "to": "board-n", "pose": "sitting", "line": "회장님 내일 뵈면 웃겠다", "sec": 3, "step": "talk" },
+        { "who": "tech_lead", "to": "board-ne", "pose": "standing", "line": "고개 끄덕(오늘도 잘 맞췄네요 💜)", "sec": 2, "step": "reaction" }
+      ],
+      "fallback": [
+        "board-n/ne가 다른 회의 중이면 4F lounge-center / hani-side 소파에서 동일 3턴 대화를 진행한다.",
+        "두 사람 중 한 명이 이미 퇴근(ABSENT)했으면 발동하지 않고 쿨다운 소모도 하지 않는다."
+      ],
+      "exit": [
+        "하니는 office_hani로, 서윤은 elevator_4f를 타고 3F dev-lead(또는 퇴근 시 1F arrival_gate)로 걸어서 복귀한다."
+      ],
+      "chains": ["SCN-D07"],
+      "limits": { "perDay": 1, "cooldownMin": 7200 }
+    },
+    {
+      "id": "SCN-R02",
+      "title": "[희귀 R02] 도서관 딴 책 읽기",
+      "group": "rare",
+      "trigger": {
+        "days": "weekday",
+        "timeWindow": ["14:00", "17:00"],
+        "probability": 0.25,
+        "cooldownDays": 4,
+        "rareId": "R02"
+      },
+      "roles": {
+        "teacher": { "pick": "fixed", "candidates": ["hina"], "rule": "히나 5F 도서관 이동 가능 시" },
+        "researcher": { "pick": "fixed", "candidates": ["yoonseul"], "rule": "윤슬 5F 도서관 재실 시" }
+      },
+      "beats": [
+        { "who": "teacher", "to": "lib_study_a", "pose": "sitting", "line": "윤슬아, 그거 시험 책 아니지?", "sec": 3, "step": "approach_and_face" },
+        { "who": "researcher", "to": "lib_study_b", "pose": "sitting", "line": "과장님도 소설책 보셨잖아요!", "sec": 3, "step": "talk" },
+        { "who": "teacher", "to": "lib_study_a", "pose": "sitting", "line": "쉿! 딱 10분만 더 보자용", "sec": 3, "step": "talk" },
+        { "who": "researcher", "to": "lib_study_b", "pose": "sitting", "line": "네, 딱 한 챕터만요!", "sec": 3, "step": "reaction" }
+      ],
+      "fallback": [
+        "lib_study_a/b가 이미 점유 중이면 cinema_sofa_a/b 또는 2F pantry_2f 조용한 구석으로 옮겨 진행한다."
+      ],
+      "exit": [
+        "책을 덮고 일어서서 junction_library_cinema → elevator_creative를 거쳐 2F 각자 책상(life-b, desk_yoonseul)으로 도보 복귀한다."
+      ],
+      "chains": [],
+      "limits": { "perDay": 1, "cooldownMin": 5760 }
+    },
+    {
+      "id": "SCN-R03",
+      "title": "[희귀 R03] 예쁨 vs 정확함",
+      "group": "rare",
+      "trigger": {
+        "days": "tue_to_fri",
+        "timeWindow": ["10:30", "16:00"],
+        "probability": 0.25,
+        "cooldownDays": 4,
+        "rareId": "R03"
+      },
+      "roles": {
+        "designer": { "pick": "fixed", "candidates": ["arin"], "rule": "아린 3F dev-design 착석 시" },
+        "qa": { "pick": "fixed", "candidates": ["yuri"], "rule": "유리 3F 가용 시" }
+      },
+      "beats": [
+        { "who": "qa", "to": "approach_desk_arin", "pose": "standing", "line": "시안 확인 중이세요?", "sec": 2, "step": "approach" },
+        { "who": "designer", "to": "dev-design", "pose": "sitting", "line": "유리님, 여백 딱 예쁘죠?", "sec": 3, "step": "face_talk" },
+        { "who": "qa", "to": "approach_desk_arin", "pose": "standing", "line": "예쁜데 모바일서 눌려요?", "sec": 3, "step": "talk" },
+        { "who": "designer", "to": "dev-design", "pose": "sitting", "line": "…지금 바로 눌러보죠!", "sec": 3, "step": "reaction" }
+      ],
+      "fallback": [
+        "3F dev-design 주변이 붐비면 3F dev-lounge-a/b 또는 5F studio_anchor_a/b에서 동일 대화를 진행한다."
+      ],
+      "exit": [
+        "유리(qa)는 dev-qa 자리로 걸어 복귀하고 아린(designer)은 모바일 화면 테스트를 이어간다."
+      ],
+      "chains": [],
+      "limits": { "perDay": 1, "cooldownMin": 5760 }
+    },
+    {
+      "id": "SCN-R04",
+      "title": "[희귀 R04] 옥상 몰카 적발",
+      "group": "rare",
+      "trigger": {
+        "days": "fri",
+        "timeWindow": ["15:00", "18:00"],
+        "probability": 0.30,
+        "cooldownDays": 7,
+        "rareId": "R04"
+      },
+      "roles": {
+        "photographer": { "pick": "fixed", "candidates": ["minji"], "rule": "민지 6F(5f) 옥상 휴식 이동 시" },
+        "target": { "pick": "fixed", "candidates": ["hani"], "rule": "하니 옥상 합류 시" }
+      },
+      "beats": [
+        { "who": "photographer", "to": "rooftop_rest_slot_1", "pose": "standing", "line": "[그림 필요: 필름 카메라] 전무님 감동샷 각 나온다!", "sec": 3, "step": "approach" },
+        { "who": "target", "to": "rooftop_rest_slot_2", "pose": "standing", "line": "민지 대리, 카메라 내려요", "sec": 3, "step": "approach_and_face" },
+        { "who": "photographer", "to": "rooftop_rest_slot_1", "pose": "standing", "line": "컷! 역시 눈치 백단!", "sec": 3, "step": "talk" },
+        { "who": "target", "to": "rooftop_rest_slot_2", "pose": "standing", "line": "고개 절레절레 웃음 리액션", "sec": 2, "step": "reaction" }
+      ],
+      "fallback": [
+        "옥상 쉼터 3석이 모두 찼으면 rooftop_garden 화단 옆으로 옮겨 진행한다."
+      ],
+      "exit": [
+        "민지는 walk-b 빠른 걸음으로 elevator_5f로 이동해 2F life-c로, 하니는 4F office_hani로 도보 복귀한다."
+      ],
+      "chains": [],
+      "limits": { "perDay": 1, "cooldownMin": 10080 }
+    },
+    {
+      "id": "SCN-R05",
+      "title": "[희귀 R05] 퇴근 직전 아빠 마중 (가족 전용)",
+      "group": "rare",
+      "trigger": {
+        "days": "weekday",
+        "timeWindow": ["17:30", "18:45"],
+        "probability": 0.28,
+        "cooldownDays": 3,
+        "rareId": "R05"
+      },
+      "roles": {
+        "kids": { "pick": "both_siblings", "candidates": ["kid-suhyeon", "kid-suyeon"], "rule": "수현·수연 동반 마중 (경쟁·투표 0)" },
+        "dad": { "pick": "chairman_required", "candidates": ["seongmin"], "rule": "chairmanPresent === true 필수" }
+      },
+      "beats": [
+        { "who": "kids[0]", "to": "door_ceo", "pose": "walk-a", "line": "회장님! 아니 아빠 끝났어요?", "sec": 3, "step": "approach_and_face" },
+        { "who": "kids[1]", "to": "junction_ceo", "pose": "wave", "line": "오늘 같이 산책 가면 안 돼?", "sec": 3, "step": "talk" },
+        { "who": "dad", "to": "ceo-reserved", "pose": "standing", "line": "잠깐, 가방만 챙기고 나가자", "sec": 3, "step": "reaction" },
+        { "who": "kids[1]", "to": "hall_ceo", "pose": "walk-b", "line": "신난다! 아빠 손 꼭 잡고 갈래!", "sec": 3, "step": "disperse" }
+      ],
+      "fallback": [
+        "회장님이 급한 결재 중이면 남매가 4F lounge-center 소파에 잠깐 앉아 기다렸다가 결재 종료 후 합류한다."
+      ],
+      "exit": [
+        "세 사람이 함께 elevator_4f → 1F arrival_gate까지 걸어서 퇴근한다."
+      ],
+      "chains": ["SCN-D06"],
+      "limits": { "perDay": 1, "cooldownMin": 4320 }
+    },
+    {
+      "id": "SCN-R06",
+      "title": "[희귀 R06] 식빵의 타 직원 동행",
+      "group": "rare",
+      "trigger": {
+        "days": "daily",
+        "timeWindow": ["13:00", "16:30"],
+        "probability": 0.20,
+        "cooldownDays": 4,
+        "rareId": "R06"
+      },
+      "roles": {
+        "dog": {
+          "pick": "chairman_dog_or_cream",
+          "candidates": ["NEW:companion_bread", "pet-dog"],
+          "rule": "[그림 필요: 식빵(chairmanDog) 스프라이트] 미확보 시 크림(pet-dog)으로 대체 가능"
+        },
+        "staff": {
+          "pick": "pet_friendly_staff",
+          "candidates": ["naeun", "hina"],
+          "rule": "나은 우선, 부재 시 히나"
+        }
+      },
+      "beats": [
+        { "who": "dog", "to": "lounge_kids_play_a", "pose": "walk-a", "line": "(졸졸 따라온다)", "sec": 3, "step": "approach" },
+        { "who": "staff", "to": "pantry_2f", "pose": "standing", "line": "어, 식빵이 회장님은 어쩌구", "sec": 3, "step": "face_talk" },
+        { "who": "staff", "to": "approach_pantry_2f", "pose": "standing", "line": "산책 한 바퀴만 돌고 가자", "sec": 3, "step": "reaction" }
+      ],
+      "fallback": [
+        "회장님이 걷기 시작하면(P0) 식빵은 즉시 cancel 경로로 회장님 곁으로 걸어 복귀한다."
+      ],
+      "exit": [
+        "나은/히나는 2F 홈 좌석으로, 식빵은 5F kids_pet_lounge 또는 회장님 곁으로 걸어 복귀한다."
+      ],
+      "chains": [],
+      "limits": { "perDay": 1, "cooldownMin": 5760 }
+    },
+    {
+      "id": "SCN-R07",
+      "title": "[희귀 R07] 야근자 강제 휴식",
+      "group": "rare",
+      "trigger": {
+        "days": "mon_to_thu",
+        "timeWindow": ["21:30", "23:45"],
+        "probability": 0.30,
+        "cooldownDays": 4,
+        "rareId": "R07"
+      },
+      "roles": {
+        "caretaker": { "pick": "fixed", "candidates": ["naeun"], "rule": "나은 순찰 담당" },
+        "worker": { "pick": "working_overtime", "candidates": ["sua", "dohyun"], "rule": "수아 또는 도연 야근 중" }
+      },
+      "beats": [
+        { "who": "caretaker", "to": "approach_desk_sua", "pose": "standing", "line": "일은 끝나도 사람은 지켜야죠", "sec": 3, "step": "approach_and_face" },
+        { "who": "worker", "to": "finance-row-spare", "pose": "sitting", "line": "기한 하나만 더 보고요…", "sec": 3, "step": "talk" },
+        { "who": "caretaker", "to": "approach_desk_sua", "pose": "standing", "line": "안 돼요, 허브차 마시고 귀가!", "sec": 3, "step": "talk" },
+        { "who": "worker", "to": "pantry_2f", "pose": "standing", "line": "네, 알겠어요… 같이 가요ㅎㅎ", "sec": 3, "step": "reaction" }
+      ],
+      "fallback": [
+        "수아·도연 모두 이미 귀가했으면 4F 하니(hani) 또는 3F 서윤(seoyun)을 대상으로 전환한다."
+      ],
+      "exit": [
+        "두 사람은 2F pantry_2f에서 따뜻한 차를 마신 뒤 각자 자리 정리 후 퇴근길에 오른다."
+      ],
+      "chains": ["SCN-D06"],
+      "limits": { "perDay": 1, "cooldownMin": 5760 }
+    },
+    {
+      "id": "SCN-R08",
+      "title": "[희귀 R08] 편의점 영수증 추적",
+      "group": "rare",
+      "trigger": {
+        "days": "weekday",
+        "timeWindow": ["12:30", "14:00"],
+        "probability": 0.25,
+        "cooldownDays": 5,
+        "rareId": "R08"
+      },
+      "roles": {
+        "auditor": { "pick": "fixed", "candidates": ["jieun"], "rule": "지은 재무 총괄" },
+        "curator": { "pick": "fixed", "candidates": ["haru"], "rule": "하루 신상 간식 픽" },
+        "clerk": { "pick": "fixed_post_at_1f", "candidates": ["npc-clerk-day"], "rule": "다솜 카운터 응대" }
+      },
+      "beats": [
+        { "who": "curator", "to": "convenience_browse", "pose": "standing", "line": "[그림 필요: 간식 바구니] 이거 테스트용 신상이에요!", "sec": 2, "step": "approach" },
+        { "who": "auditor", "to": "NEW:conv_checkout_front", "pose": "standing", "line": "하루 대리, 이 영수증 뭐죠?", "sec": 3, "step": "approach_and_face" },
+        { "who": "curator", "to": "convenience_browse", "pose": "standing", "line": "테스트용 신상 간식인데요!", "sec": 3, "step": "talk" },
+        { "who": "clerk", "to": "resident_post_store", "pose": "standing", "line": "둘 다 맛있기로 유명해요!", "sec": 2, "step": "talk" },
+        { "who": "auditor", "to": "NEW:conv_checkout_front", "pose": "standing", "line": "예산은 한 봉지까지만요", "sec": 3, "step": "reaction" }
+      ],
+      "fallback": [
+        "convenience_browse가 다른 이용객으로 찼으면 door_convenience 앞 복도에서 영수증 확인 대화를 이어간다."
+      ],
+      "exit": [
+        "지은과 하루는 간식 한 봉지만 계산한 뒤 elevator_1f를 타고 2F 재무실로 함께 걸어 복귀한다."
+      ],
+      "chains": [],
+      "limits": { "perDay": 1, "cooldownMin": 7200 }
+    },
+    {
+      "id": "SCN-R09",
+      "title": "[희귀 R09] 심야 편의점 컵라면",
+      "group": "rare",
+      "trigger": {
+        "days": "weekday",
+        "timeWindow": ["22:00", "01:00"],
+        "probability": 0.22,
+        "cooldownDays": 5,
+        "rareId": "R09"
+      },
+      "roles": {
+        "dev_a": { "pick": "fixed", "candidates": ["dohyun"], "rule": "도연 3F 심야 잔류" },
+        "dev_b": { "pick": "fixed", "candidates": ["serin"], "rule": "세린 야근 합류" },
+        "clerk": { "pick": "fixed_post_at_1f", "candidates": ["npc-clerk-night"], "rule": "나래 야간 점원" }
+      },
+      "beats": [
+        { "who": "dev_b", "to": "convenience_browse", "pose": "standing", "line": "[그림 필요: 컵라면] 밤엔 자동화보다 컵라면이죠", "sec": 3, "step": "approach_and_face" },
+        { "who": "dev_a", "to": "NEW:conv_checkout_front", "pose": "standing", "line": "재현 안 될 때가 제일 맵죠", "sec": 3, "step": "talk" },
+        { "who": "clerk", "to": "resident_post_store", "pose": "standing", "line": "뜨거운 물 조심해서 드세요", "sec": 3, "step": "reaction" }
+      ],
+      "fallback": [
+        "세린이 이미 퇴근했으면 도연과 미르(mir) 조합으로 대체한다(단, 미르는 라면 섭취 없이 관찰만 수행: '밤엔 뜨거운 물이 인기네')."
+      ],
+      "exit": [
+        "나래에게 인사 후 도연·세린은 3F 개발실 또는 6F 옥상(5f)으로 걸어 복귀한다."
+      ],
+      "chains": [],
+      "limits": { "perDay": 1, "cooldownMin": 7200 }
+    },
+    {
+      "id": "SCN-R10",
+      "title": "[희귀 R10] 스튜디오 NG 컷",
+      "group": "rare",
+      "trigger": {
+        "days": "wed_or_fri",
+        "timeWindow": ["15:30", "17:30"],
+        "probability": 0.22,
+        "cooldownDays": 6,
+        "rareId": "R10"
+      },
+      "roles": {
+        "director": { "pick": "fixed", "candidates": ["minji"], "rule": "민지 촬영 감독" },
+        "mc": { "pick": "fixed", "candidates": ["sooyeon"], "rule": "수연 리허설 진행" },
+        "guest_staff": { "pick": "fixed", "candidates": ["yuna"], "rule": "유나 깜짝 게스트" }
+      },
+      "beats": [
+        { "who": "mc", "to": "studio_anchor_a", "pose": "sitting", "line": "유나야, 그냥 크게 외쳐봐!", "sec": 3, "step": "approach_and_face" },
+        { "who": "guest_staff", "to": "studio_anchor_b", "pose": "sitting", "line": "제가요?! 대본이 없는데요!", "sec": 3, "step": "talk" },
+        { "who": "director", "to": "studio_camera", "pose": "standing", "line": "[그림 필요: 스튜디오 카메라] 좋아, 자연스러운 NG 컷 완료", "sec": 3, "step": "reaction" }
+      ],
+      "fallback": [
+        "studio가 다른 방송 프로그램으로 사용 중이면 5F cinema_sofa_a/b에서 NG 리뷰 토크로 대체한다."
+      ],
+      "exit": [
+        "셋이 웃으며 인사한 뒤 elevator_creative를 타고 민지·수연은 2F로, 유나는 4F desk_yuna_east로 도보 복귀한다."
+      ],
+      "chains": [],
+      "limits": { "perDay": 1, "cooldownMin": 8640 }
+    },
+    {
+      "id": "SCN-R11",
+      "title": "[희귀 R11] 1F↔4F 안내 인수인계",
+      "group": "rare",
+      "trigger": {
+        "days": "mon_or_wed",
+        "timeWindow": ["09:30", "11:30"],
+        "probability": 0.24,
+        "cooldownDays": 5,
+        "rareId": "R11"
+      },
+      "roles": {
+        "routing": { "pick": "fixed", "candidates": ["yuna"], "rule": "유나 4F 하강" },
+        "secretary": { "pick": "fixed", "candidates": ["gaeun"], "rule": "가은 동행 조율" },
+        "guide": { "pick": "fixed_post_at_1f", "candidates": ["npc-guide"], "rule": "소담 1F 프론트" }
+      },
+      "beats": [
+        { "who": "guide", "to": "resident_post_reception", "pose": "standing", "line": "[그림 필요: 방문 일지] 오늘 오신 분 자료 정리했어요", "sec": 3, "step": "approach_and_face" },
+        { "who": "routing", "to": "reception", "pose": "standing", "line": "감사해요! 담당자 바로 연결할게요", "sec": 3, "step": "talk" },
+        { "who": "secretary", "to": "approach_reception", "pose": "standing", "line": "오전 일정이랑 딱 맞네요", "sec": 3, "step": "reaction" }
+      ],
+      "fallback": [
+        "가은이 임원회의 준비로 내려올 수 없으면 유나와 이음(ieum)이 함께 소담의 안내 자료를 수령한다."
+      ],
+      "exit": [
+        "유나와 가은은 elevator_1f를 타고 4F 비서실로 걸어 복귀한다."
+      ],
+      "chains": ["SCN-D05"],
+      "limits": { "perDay": 1, "cooldownMin": 7200 }
+    },
+    {
+      "id": "SCN-R12",
+      "title": "[희귀 R12] '왜?' vs '가보면 알아'",
+      "group": "rare",
+      "trigger": {
+        "days": "thu_or_sat",
+        "timeWindow": ["16:00", "18:00"],
+        "probability": 0.22,
+        "cooldownDays": 5,
+        "rareId": "R12"
+      },
+      "roles": {
+        "ai_entity": { "pick": "fixed", "candidates": ["mir"], "rule": "미르 6F(5f) 옥상 쉼터 (항상 standing)" },
+        "field_staff": { "pick": "fixed", "candidates": ["sooyeon"], "rule": "수연 옥상 산책" }
+      },
+      "beats": [
+        { "who": "ai_entity", "to": "rooftop_rest_slot_1", "pose": "standing", "line": "그 산책은 왜 지금 가나요?", "sec": 3, "step": "approach_and_face" },
+        { "who": "field_staff", "to": "rooftop_rest_slot_2", "pose": "standing", "line": "가보면 알아, 바람이 좋거든", "sec": 3, "step": "talk" },
+        { "who": "ai_entity", "to": "rooftop_rest_slot_1", "pose": "standing", "line": "비논리적인데… 궁금해지네요", "sec": 3, "step": "reaction" }
+      ],
+      "fallback": [
+        "rooftop_rest_slot이 찼으면 window_5f_1 옥상 전망 난간에서 마주 보고 진행한다."
+      ],
+      "exit": [
+        "미르는 4F mir_station으로, 수연은 2F life-d로 엘리베이터 도보 복귀한다."
+      ],
+      "chains": [],
+      "limits": { "perDay": 1, "cooldownMin": 7200 }
+    },
+    {
+      "id": "SCN-R13",
+      "title": "[희귀 R13] 야간 바리스타와 조용한 쉼",
+      "group": "rare",
+      "trigger": {
+        "days": "tue_or_fri",
+        "timeWindow": ["20:00", "22:30"],
+        "probability": 0.20,
+        "cooldownDays": 6,
+        "rareId": "R13"
+      },
+      "roles": {
+        "barista": { "pick": "fixed_post_at_1f", "candidates": ["npc-barista-eunha"], "rule": "은하 1F 야간 카페" },
+        "visitor_a": { "pick": "fixed", "candidates": ["taeo"], "rule": "채원(taeo) 티타임" },
+        "visitor_b": { "pick": "fixed", "candidates": ["mir"], "rule": "미르 합류 (standing 유지, 음료 섭취 금지)" }
+      },
+      "beats": [
+        { "who": "visitor_a", "to": "coffee_counter", "pose": "standing", "line": "은하님, 제일 순한 차로 주세요", "sec": 3, "step": "approach_and_face" },
+        { "who": "barista", "to": "resident_post_cafe", "pose": "standing", "line": "(하품) 밤엔 유자차가 딱이죠…", "sec": 3, "step": "talk" },
+        { "who": "visitor_b", "to": "coffee_pickup", "pose": "standing", "line": "밤의 속도는 낮과 다르네요", "sec": 3, "step": "reaction" }
+      ],
+      "fallback": [
+        "채원(taeo)이 일찍 퇴근했으면 서윤(seoyun) 또는 유나(yuna)가 참여한다."
+      ],
+      "exit": [
+        "채원은 2F(또는 arrival_gate 귀가)로, 미르는 4F mir_station으로 걸어 복귀한다."
+      ],
+      "chains": [],
+      "limits": { "perDay": 1, "cooldownMin": 8640 }
+    },
+    {
+      "id": "SCN-R14",
+      "title": "[희귀 R14] 2F 팬트리 차 한 잔",
+      "group": "rare",
+      "trigger": {
+        "days": "weekday",
+        "timeWindow": ["15:00", "16:30"],
+        "probability": 0.22,
+        "cooldownDays": 5,
+        "rareId": "R14"
+      },
+      "roles": {
+        "care_lead": { "pick": "fixed", "candidates": ["naeun"], "rule": "나은 차 챙김" },
+        "finance_lead": { "pick": "fixed", "candidates": ["jieun"], "rule": "지은 결산 휴식" },
+        "connector": { "pick": "fixed", "candidates": ["ieum"], "rule": "이음 4F→2F 전달 겸 합류" }
+      },
+      "beats": [
+        { "who": "care_lead", "to": "pantry_2f", "pose": "standing", "line": "지은 부장님, 눈 좀 쉬세요", "sec": 3, "step": "approach_and_face" },
+        { "who": "finance_lead", "to": "finance-lounge-a", "pose": "sitting", "line": "결산 숫자만 딱 맞추고요", "sec": 3, "step": "talk" },
+        { "who": "connector", "to": "finance-lounge-b", "pose": "sitting", "line": "전달할 메모도 잠시 뒤 줄게요", "sec": 3, "step": "reaction" }
+      ],
+      "fallback": [
+        "이음이 4F 비서실 대기 중이면 하루(haru) 또는 다온(daon)이 팬트리 차 자리에 합류한다."
+      ],
+      "exit": [
+        "각자 차를 들고 지은·나은은 2F 사무실로, 이음은 4F desk_yuna로 걸어서 복귀한다."
+      ],
+      "chains": [],
+      "limits": { "perDay": 1, "cooldownMin": 7200 }
+    },
+    {
+      "id": "SCN-R15",
+      "title": "[희귀 R15] 칭찬 면역 0콤비",
+      "group": "rare",
+      "trigger": {
+        "days": "weekday",
+        "timeWindow": ["14:00", "17:00"],
+        "probability": 0.18,
+        "cooldownDays": 7,
+        "afterScene": ["SCN-C01", "SCN-D05"],
+        "rareId": "R15"
+      },
+      "roles": {
+        "exec": { "pick": "fixed", "candidates": ["hani"], "rule": "하니 전무" },
+        "partner": { "pick": "fixed", "candidates": ["sua"], "rule": "수아 과장 (칭찬저항 F급)" }
+      },
+      "beats": [
+        { "who": "exec", "to": "lounge-center", "pose": "standing", "line": "아까 회장님이 수아씨 칭찬하더라", "sec": 3, "step": "approach_and_face" },
+        { "who": "partner", "to": "hani-side", "pose": "standing", "line": "네?! 전무님도 잘하셨잖아요!", "sec": 3, "step": "talk" },
+        { "who": "exec", "to": "lounge-center", "pose": "standing", "line": "나도 아까 듣고 쑥스러웠어", "sec": 3, "step": "reaction" }
+      ],
+      "fallback": [
+        "4F 라운지가 회의 중이면 2F shared_meeting_2f 또는 1F lobby-nw 소파에서 동일하게 진행한다."
+      ],
+      "exit": [
+        "둘 다 어색하게 웃으며 빠른 걸음(walk-b)으로 각자 자리(office_hani, finance-row-spare)로 도보 복귀한다."
+      ],
+      "chains": [],
+      "limits": { "perDay": 1, "cooldownMin": 10080 }
+    }
+  ]
+}
