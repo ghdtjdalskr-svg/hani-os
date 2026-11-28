@@ -1,0 +1,114 @@
+{
+ "schema": 1,
+ "layer": "building-324",
+ "base": "ee83d200979e3aee18aeaa20fbe3747cb7d90c2b",
+ "seedBase": "48278fa18aecfbe32ffface88f1f40e841e0f4ba",
+ "head": "e0451cf82f2ed62f81cf92c7bb37c9139a6ae7a9",
+ "bootstrap": {
+  "file": "scripts/hani-release-323-source.cjs",
+  "line": "require('./hani-building-324-preload.cjs'); // Building324 inverse precedes released323.\n"
+ },
+ "imports": [],
+ "files": {
+  "hani-office-live.js": {
+   "beforeSha256": "f919769daedaa0240d9f614e571bcbe5e86fe941805d709497cdc5766dae69d6",
+   "afterSha256": "e2e6048b2e662e82a752f917b9eae2684399c75d60c9f2ef6cfd71ffee5ed5a8",
+   "beforeBytes": 605166,
+   "afterBytes": 613926,
+   "count": 6,
+   "replacements": [
+    {
+     "start": 521889,
+     "beforeStart": 513657,
+     "before": "      if(!staffChats?.current()&&state.scene&&actor.officeResidentScene!==state.scene.key&&(!state.scene.patrol||Date.now()>=state.scene.notBefore&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)){actor.officeResidentScene=state.scene.key;if(actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)showBubble(actor,{speaker:person.id,line:state.scene.line,resident:true},3000,!!state.scene.patrol)}\n",
+     "after": "      const chatBlocked=staffChats?.current()&&(!state.scene?.handover||staffChats.current().staffChat?.floor===activeFloor);\n      if(!chatBlocked&&state.scene&&actor.officeResidentScene!==state.scene.key&&(!state.scene.patrol||Date.now()>=state.scene.notBefore&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)){actor.officeResidentScene=state.scene.key;if(actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)showBubble(actor,{speaker:person.id,line:state.scene.line,resident:true},state.scene.handover?3600:3000,!!state.scene.patrol)}\n"
+    },
+    {
+     "start": 517428,
+     "beforeStart": 509407,
+     "before": "",
+     "after": "      if(person.post){const atPost=state.anchor==='resident_post_'+person.post;if(atPost){if(actor.dataset.post!==person.post)actor.dataset.post=person.post}else if(actor.dataset.post)delete actor.dataset.post}\n"
+    },
+    {
+     "start": 464367,
+     "beforeStart": 456414,
+     "before": "    closeBubble(true,true);\n",
+     "after": "    if(!actorBubble.hidden||kidsVisits.current()||staffChats?.current())closeBubble(true,true);\n"
+    },
+    {
+     "start": 411746,
+     "beforeStart": 404356,
+     "before": "",
+     "after": "      const handover=!reduced?residentShiftHandover(person,wallDay,wallSeconds,clock,occupied):null;\n      if(handover){if(handover.absent)return [];const hPrev=petPrev.get(person.id);if(!hPrev||nowMs!==hPrev.at)petPrev.set(person.id,{at:nowMs,day:wallDay,floor:'1f',anchor:{id:handover.anchor,floor:'1f',visual:handover.position},position:handover.position,point:handover.point,facing:handover.facing,holdStart:null});occupied.push({id:handover.id,floor:'1f',resident:true,handover:true,seat:{x:handover.position[0],y:handover.position[1]}});return [handover];}\n"
+    },
+    {
+     "start": 411254,
+     "beforeStart": 404026,
+     "before": "",
+     "after": "    const wallDay=time.toISOString().slice(0,10),wallSeconds=time.getUTCHours()*3600+time.getUTCMinutes()*60+time.getUTCSeconds()+time.getUTCMilliseconds()/1000;\n"
+    },
+    {
+     "start": 403792,
+     "beforeStart": 403792,
+     "before": "",
+     "after": "  const shiftHandoverPairs=Object.freeze([\n    {post:'store',postId:'resident_post_store',waitId:'post_shift_wait_store',wait:Object.freeze([16,70.8]),waitAlt:Object.freeze([25.2,69.5]),enterClear:Object.freeze([[27.2,56.5],[27.2,64],[26.5,78.5],[16,78.5]]),altEnterClear:Object.freeze([[27.2,56.5],[27.2,64]]),postClear:Object.freeze([[16,78.5],[26.5,78.5],[26.5,65]]),altPostClear:Object.freeze([[26.5,65]]),exitClear:Object.freeze([[27.2,64],[27.2,56.5]]),arriveRel:-180,exitStartRel:6,shifts:Object.freeze([\n      {time:25200,inId:'npc-clerk-day',outId:'npc-clerk-night',lines:Object.freeze(['밤새 수고했어요!','오전 물품 다 왔어요','삼각김밥 채울게요','오늘도 힘내요!'])},\n      {time:68400,inId:'npc-clerk-night',outId:'npc-clerk-day',lines:Object.freeze(['교대하러 왔어요.','삼각김밥 두 줄 남았어요','유통기한 확인해 둘게요','수고해요. 내일 봐요!'])}\n    ])},\n    {post:'reception',postId:'resident_post_reception',waitId:'post_shift_wait_reception',wait:Object.freeze([45.8,49]),waitAlt:Object.freeze([54.2,49]),enterClear:Object.freeze([]),postClear:Object.freeze([[50.2,44]]),exitClear:Object.freeze([[52,46.5]]),arriveRel:-180,exitStartRel:6,shifts:Object.freeze([\n      {time:32400,inId:'npc-guide',outId:'npc-desk-night',lines:Object.freeze(['좋은 아침! 교대 왔어요','출입증 두 개 남았어요','택배함도 확인했어요','오늘도 잘 부탁해요'])},\n      {time:64800,inId:'npc-desk-night',outId:'npc-guide',lines:Object.freeze(['교대 시간이에요.','오늘 방문 3건 있어요','야간 순찰 챙길게요','네, 조심히 가세요!'])}\n    ])},\n    {post:'cafe',postId:'resident_post_cafe',waitId:'post_shift_wait_cafe',wait:Object.freeze([96,84.3]),waitAlt:Object.freeze([89.5,84.3]),enterClear:Object.freeze([[85.5,84.2]]),postClear:Object.freeze([[86.5,84.2],[86.5,79.5]]),exitClear:Object.freeze([[85.5,68]]),arriveRel:-170,exitStartRel:18,shifts:Object.freeze([\n      {time:25200,inId:'npc-barista-iseul',outId:'npc-barista-eunha',lines:Object.freeze(['좋은 아침! 교대 왔어요','원두 새로 채워 뒀어요','바로 추출 준비할게요','잘 부탁해요, 이슬 씨'])},\n      {time:68400,inId:'npc-barista-eunha',outId:'npc-barista-iseul',lines:Object.freeze(['저녁 교대 왔어요.','우유 한 통 남았어요','원두 갈아 둘게요.','따뜻한 밤 되세요.'])}\n    ])}\n  ]);\n  const shiftCurveCache=new Map();\n  function shiftCurve(waypoints){\n    const w=art?.width||1672,h=art?.height||941,key=w+'x'+h+'|'+waypoints.map(p=>p.join(',')).join(';');\n    if(shiftCurveCache.has(key))return shiftCurveCache.get(key);\n    const curve=compileCurve(detourRun('1f',waypoints),w,h);\n    if(shiftCurveCache.size>=64)shiftCurveCache.delete(shiftCurveCache.keys().next().value);\n    shiftCurveCache.set(key,curve);return curve;\n  }\n  function residentShiftHandover(person,day,wallSeconds,clock,occupied=[]){\n    if(!person.post)return null;\n    const pair=shiftHandoverPairs.find(p=>p.post===person.post);if(!pair)return null;\n    const post=residentSpot(pair.postId);if(!post)return null;\n    const shift=pair.shifts.find(s=>(s.inId===person.id||s.outId===person.id)&&wallSeconds>=s.time+pair.arriveRel&&wallSeconds<s.time+180);\n    if(!shift)return null;\n    const isOccupied=pt=>occupied.some(q=>{\n      if(q.floor!=='1f'||q.handover||q.id===shift.outId||q.id===shift.inId)return false;\n      const at=q.position||(q.seat&&[q.seat.x,q.seat.y]);\n      return at&&Number.isFinite(at[0])&&Number.isFinite(at[1])&&Math.hypot((pt[0]-at[0])*(art?.width||1672)/100,(pt[1]-at[1])*(art?.height||941)/100)<90;\n    });\n    const useAlt=isOccupied(pair.wait)&&!isOccupied(pair.waitAlt);\n    const wait=useAlt?pair.waitAlt:pair.wait;\n    const enterClear=useAlt&&pair.altEnterClear?pair.altEnterClear:pair.enterClear;\n    const postClear=useAlt&&pair.altPostClear?pair.altPostClear:pair.postClear;\n    const gateArt=art?.anchors?.arrival_gate,gateNode=anchors.get('arrival_gate');\n    const gate=gateArt?[gateArt.x,gateArt.y]:gateNode?visualPoint(gateNode):[50,86.6];\n    const rel=wallSeconds-shift.time,isIn=shift.inId===person.id,seed=residentSeed('shift-handover|'+day+'|'+pair.post+'|'+shift.time),talkOffset=seed%5;\n    const speed=140,enterCurve=shiftCurve([gate,...enterClear,wait]),enterDur=Math.max(1,enterCurve.totalLen/speed);\n    const exitCurve=shiftCurve([post.visual,...pair.exitClear,gate]),exitDur=Math.max(1,exitCurve.totalLen/speed);\n    const postCurve=shiftCurve([wait,...postClear,post.visual]),enterPostDur=Math.max(1,postCurve.totalLen/speed);\n    const inFacing=post.visual[0]>=wait[0]?'right':'left',outFacing=inFacing==='right'?'left':'right',talkStart=-135+talkOffset,exitStart=pair.exitStartRel;\n    const talkBeat=Math.floor((rel-talkStart+(pair.post==='cafe'?4:0))/(pair.post==='reception'?5:8));\n    const mkScene=(tag,line)=>({key:day+'|'+shift.time+'|'+pair.post+'|'+tag+'|'+talkBeat,line,patrol:true,notBefore:0,handover:true});\n    const walkAt=(curve,dur,elapsed,fallback)=>{const u=Math.max(0,Math.min(1,elapsed/dur)),dist=easeRun(u,dur)*curve.totalLen,sample=sampleCurve(curve,dist);return {position:sample.position,walking:true,facing:Math.abs(sample.dx)>=1?(sample.dx<0?'left':'right'):fallback,pose:distanceGait(dist,sample.dx).pose,u}};\n    let anchor=pair.postId,position=post.visual,point=[post.x,post.y],walking=false,facing=outFacing,pose='standing',scene=null,phase='face';\n    if(isIn){\n      if(rel<pair.arriveRel+enterDur){const ws=walkAt(enterCurve,enterDur,rel-pair.arriveRel,inFacing);position=ws.position;point=ws.u<.5?(gateNode?[gateNode.x,gateNode.y]:[500,330]):[500,330];walking=true;facing=ws.facing;pose=ws.pose;anchor=ws.u<.4?'arrival_gate':pair.waitId;phase='approach';}\n      else if(rel<exitStart+2.5){anchor=pair.waitId;position=wait;point=[500,330];facing=inFacing;\n        if(rel<talkStart)phase='face';\n        else if(rel<-100+talkOffset){phase='talk';scene=mkScene('talk0',shift.lines[0]);}\n        else if(rel<-65)phase='talk';\n        else if(rel<-35+talkOffset){phase='talk';scene=mkScene('talk2',shift.lines[2]);}\n        else if(rel<exitStart)phase='reaction';\n        else phase='disperse';\n      }else if(rel<exitStart+2.5+enterPostDur){const ws=walkAt(postCurve,enterPostDur,rel-(exitStart+2.5),inFacing);position=ws.position;point=[500,330];walking=true;facing=ws.facing;pose=ws.pose;anchor=ws.u<.5?pair.waitId:pair.postId;phase='disperse';}\n      else{anchor=pair.postId;position=post.visual;point=[post.x,post.y];facing=outFacing;pose=person.doze&&clock.sleeping?'sitting':'standing';phase='disperse';}\n    }else{\n      if(rel<exitStart){anchor=pair.postId;position=post.visual;point=[post.x,post.y];facing=outFacing;\n        if(rel<pair.arriveRel+enterDur)phase='approach';\n        else if(rel<talkStart)phase='face';\n        else if(rel<-100+talkOffset)phase='talk';\n        else if(rel<-65){phase='talk';scene=mkScene('talk1',shift.lines[1]);}\n        else if(rel<-35+talkOffset)phase='talk';\n        else{phase='reaction';scene=mkScene('react',shift.lines[3]);}\n      }else if(rel<exitStart+exitDur){const ws=walkAt(exitCurve,exitDur,rel-exitStart,outFacing);position=ws.position;point=ws.u>.5?(gateNode?[gateNode.x,gateNode.y]:[500,330]):[500,330];walking=true;facing=ws.facing;pose=ws.pose;anchor=ws.u<.5?pair.waitId:'arrival_gate';phase='disperse';}\n      else return {absent:true};\n    }\n    return {id:person.id,name:person.name,sprite:person.sprite,pet:false,floor:'1f',anchor,position,point,walking,facing,pose,scene,handover:{key:day+'|'+shift.time+'|'+pair.post,role:isIn?'in':'out',phase}};\n  }\n"
+    }
+   ]
+  },
+  "assets/data/hani-history-releases-v1.json": {
+   "beforeSha256": "af6a1e9ba7798ee9a28ef6097d88f9c5c5a159c6a91090a9bf63368e4cf58321",
+   "afterSha256": "c7e9d42fb5a4ba7c704282b530198befd2586b6192336bc3f709d89761d244ce",
+   "beforeBytes": 80125,
+   "afterBytes": 80542,
+   "count": 2,
+   "replacements": [
+    {
+     "start": 1177,
+     "beforeStart": 885,
+     "before": "        \"commit\": \"\",\n        \"subject\": \"release: v2.9.323 혜진 비서 입사 · 4층 팀 책상\"\n",
+     "after": "        \"commit\": \"48278fa18aecfbe32ffface88f1f40e841e0f4ba\",\n        \"subject\": \"release: v2.9.323 신입 혜진 비서 입사 · 4층 4인용 팀 책상 (#577)\"\n"
+    },
+    {
+     "start": 690,
+     "beforeStart": 690,
+     "before": "",
+     "after": "    {\n      \"id\": \"v2.9.324\",\n      \"date\": \"2026-11-28\",\n      \"status\": \"released\",\n      \"title\": \"1층 교대 장면 (걸어서 인수인계)\",\n      \"category\": \"하니 그룹 · 대공사\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.324 1층 교대 장면 (걸어서 인수인계)\"\n      }\n    },\n"
+    }
+   ]
+  },
+  "data/hani-ilbo/issues.json": {
+   "beforeSha256": "f4466935aed8f8291870676e04475e7f90414968d4d5db05f0a76a6ed62ce074",
+   "afterSha256": "032693e42becd3d2c631c397b77bf53b880dc9bc972f03366e9f163510da502a",
+   "beforeBytes": 565,
+   "afterBytes": 641,
+   "count": 1,
+   "replacements": [
+    {
+     "start": 320,
+     "beforeStart": 320,
+     "before": "    {\"number\": 5, \"date\": \"2026-11-23\", \"file\": \"data/hani-ilbo/005.json\"}\n",
+     "after": "    {\"number\": 5, \"date\": \"2026-11-23\", \"file\": \"data/hani-ilbo/005.json\"},\n    {\"number\": 6, \"date\": \"2026-11-30\", \"file\": \"data/hani-ilbo/006.json\"}\n"
+    }
+   ]
+  },
+  "scripts/hani-release-323-source.cjs": {
+   "beforeSha256": "ad79320db66a0484f228d41891349e66eaf8598e1184a97497f4f68360699a3d",
+   "afterSha256": "f679247dcd7d3bede1929b14d6238a9bdc5af787117cc2e15add6c898c270c3d",
+   "beforeBytes": 3718,
+   "afterBytes": 3807,
+   "count": 1,
+   "replacements": [
+    {
+     "start": 0,
+     "beforeStart": 0,
+     "before": "",
+     "after": "require('./hani-building-324-preload.cjs'); // Building324 inverse precedes released323.\n"
+    }
+   ]
+  }
+ },
+ "helper": {
+  "file": "scripts/hani-menu-badges-historical-input.cjs",
+  "beforeSha256": "76b3d2533631eaabeaca340878bc1d74668f97ca82d2e25b61f578c86c4f3c7f"
+ }
+}
