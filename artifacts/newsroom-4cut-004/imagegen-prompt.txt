@@ -1,0 +1,25 @@
+Use case: illustration-story. Create the finished fourth issue of a Korean financial-news four-row comic, exactly 1200x2000 portrait. References 1=002.webp and 2=003.webp are style/layout only, not content to copy; reference 3=chibi-sheet-v1.webp is cast identity reference. Match the polished, detailed, warmly shaded anime chibi newsroom art, thin vivid purple rounded borders and four stacked wide rows with separate white caption strips. New compositions except panel 2 deliberately continues the broken 5,000 railing of issue 003. Make the events understandable from pictures alone.
+
+CAST ONLY: Hani = long wavy honey-brown hair, light lavender-blue blazer, white blouse, gold hoop earrings, cheerful microphone reporter. Jieun = long dark wavy hair, purple blazer and skirt, white blouse, gold earrings. Minji = chestnut-brown ponytail, coral blazer/skirt, white blouse, round glasses in panel 3. No other humans. No chairman. No real company logo or trademark. A generic unbranded semiconductor chip icon is allowed. No scales in panel 3.
+
+LAYOUT: title strip at the very top, then four landscape art rows, each followed by an exact caption strip. Purple borders, white gutters. Title must read exactly: 이번 주 시장 4컷 · 11월 4주차 · 사이드카 딛고 4,915 반등
+All Korean text must be clean and legible. Do not draw speaker names or speaker prefixes in any balloon. Keep commas, dots, plus signs, percent signs, decimals and dates exact. Do not invent any additional numbers.
+
+PANEL 1: Dramatic high-angle aerial shot down onto an S-curved roller coaster dropping then sharply curving UP to the right. Jieun in front, scared, gripping safety bar; Hani behind, cheerful with microphone. Bottom-left at track start a RED emergency siren marked 매도 사이드카. At the turn, a news monitor with generic chip icon reads AI 칩 수장 복귀. At the rising track a GREEN signal lamp reads 매수 사이드카. The visual sequence is red sell panic -> chip leadership return monitor -> green buy rebound, track distinctly curving up. Two short balloons connected correctly: Jieun 매도 사이드카 아찔! / Hani 수장 복귀에 급반등!
+Caption EXACT: 11/23 매도 사이드카 → AI 수장 복귀·11/24·27 매수 사이드카
+
+PANEL 2: Dynamic LOW-angle full-body shot from below looking up at cliff ledge, with both characters' feet visible. At the highest ledge is a visibly BROKEN railing with sign 5,000, continuing issue 3. Jieun on LEFT climbing a safety rope tagged 증안펀드 기대, reaching the 4,915 sign JUST BELOW the broken 5,000 railing. Minji on RIGHT climbing a ladder and planting a green 708.99 flag ABOVE a 700선 rung marker. The upward climbing and flag planting express recovery after last issue's fall. No slide/falling composition. Two balloons: Jieun 5천선 턱밑 4,915! / Minji 코스닥 700선 탈환!
+Caption EXACT, two lines:
+11/27 종가 · 주간 등락 (11/20 대비)
+코스피 4,915.68 (+0.94%) · 코스닥 708.99 (+9.81%)
+
+PANEL 3: CLOSE-UP warm ivory/purple newsroom DESK and half-body Minji alone behind desk, round glasses, coral blazer, calmly pointing to the document with one hand and clock with other. Large official rate-decision paper on left with small gavel stamp, printed 기준금리 3.00% → 3.25% (+0.25%p), with 3.25% particularly prominent. On right a desk clock accurately at 15:30 (minute hand straight down, hour hand between 3 and 4), clearly show 15:30 as digital inset too; next to it an exchange rate nameplate reading 1,337.9원. No balance scales. One balloon: 한은 금리 3.25% 인상!
+Caption EXACT: 11/26 한은 기준금리 3.25% · 11/27 원/달러 1,337.9원 (15:30 종가)
+
+PANEL 4: Three reporters in back/three-quarter view at BOTTOM foreground, Hani left, Jieun middle slightly turning toward reader with notebook, Minji right. All looking UP at a large newsroom status board occupying upper part. Clearly divide LEFT completed news and RIGHT upcoming schedule. Do NOT use the front-facing trio/checklist composition from issue 3.
+LEFT title 이번 주 완료 · 뉴욕증시. A little turkey illustration beside 11/26 휴장. Small clock 13:00 EST beside 11/27 조기 폐장. Green upward arrows beside EXACT S&P500 7,297.49 (+5.6%) and EXACT 나스닥 24,129.50 (+6.7%).
+RIGHT title 다음 주 예정(미발표). Dotted calendar cards, printed EXACT 12/1 수출 · 12/4 美 고용 · 12/8~9 FOMC (can wrap by date onto 3 lines).
+Three SMALL balloons below board near their speakers, no overlap with board: Hani 미국 단축장 속 반등! / Jieun 발표와 예정 구분해요. / Minji 다음 주 수출·고용 주목!
+Caption EXACT at bottom of panel 4: 11/27 S&P500 7,297.49 (+5.6%) · 나스닥 24,129.50 (+6.7%)
+VERY BOTTOM separate final line EXACT: ※ 정보 정리용이며 투자 권유가 아닙니다.
+Draw disclaimer only ONCE. Do not draw it elsewhere. No watermark. Fill the full canvas with the complete four-row comic at 1200x2000.

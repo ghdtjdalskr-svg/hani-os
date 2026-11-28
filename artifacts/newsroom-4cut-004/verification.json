@@ -1,0 +1,105 @@
+{
+  "size": [
+    1200,
+    2000
+  ],
+  "bytes": 681804,
+  "format": "lossy WebP",
+  "quality": 88,
+  "sha256": "21e78f10fa1f30f99bbd8f38e05414c2c9a672d31a3cdace876c980c68e4fd1c",
+  "typography": [
+    {
+      "text": "이번 주 시장 4컷 · 11월 4주차 · 사이드카 딛고 4,915 반등",
+      "box": [
+        27,
+        15,
+        1174,
+        58
+      ],
+      "font": "malgunbd.ttf",
+      "size": 37
+    },
+    {
+      "text": "11/23 매도 사이드카 → AI 수장 복귀·11/24·27 매수 사이드카",
+      "box": [
+        26,
+        520,
+        1175,
+        559
+      ],
+      "font": "malgunbd.ttf",
+      "size": 31
+    },
+    {
+      "text": "11/27 종가 · 주간 등락 (11/20 대비)\n코스피 4,915.68 (+0.94%) · 코스닥 708.99 (+9.81%)",
+      "box": [
+        26,
+        1068,
+        1175,
+        1136
+      ],
+      "font": "malgunbd.ttf",
+      "size": 30
+    },
+    {
+      "text": "11/26 한은 기준금리 3.25% · 11/27 원/달러 1,337.9원 (15:30 종가)",
+      "box": [
+        26,
+        1526,
+        1175,
+        1560
+      ],
+      "font": "malgunbd.ttf",
+      "size": 29
+    },
+    {
+      "text": "11/27 S&P500 7,297.49 (+5.6%) · 나스닥 24,129.50 (+6.7%)",
+      "box": [
+        26,
+        1940,
+        1175,
+        1968
+      ],
+      "font": "malgunbd.ttf",
+      "size": 26
+    },
+    {
+      "text": "※ 정보 정리용이며 투자 권유가 아닙니다.",
+      "box": [
+        26,
+        1977,
+        1175,
+        1997
+      ],
+      "font": "malgunbd.ttf",
+      "size": 20
+    }
+  ],
+  "balloons_expected_for_visual_review": [
+    [
+      "매도 사이드카 아찔!",
+      "수장 복귀에 급반등!"
+    ],
+    [
+      "5천선 턱밑 4,915!",
+      "코스닥 700선 탈환!"
+    ],
+    [
+      "한은 금리 3.25% 인상!"
+    ],
+    [
+      "미국 단축장 속 반등!",
+      "발표와 예정 구분해요.",
+      "다음 주 수출·고용 주목!"
+    ]
+  ],
+  "protected_file_hashes_unchanged": {
+    "docs/drafts/newsroom-4cut-004-draft.json": "544228FA2E823884F166A3E885D630D081FF3323579C8564141790D810CA89CF",
+    "assets/data/newsroom-4cut/issues.json": "B068AC7AE5D66244EB7951C00E8F7F2A0979B26BBE58B8F03C51EA4EB03ADF7E",
+    "assets/newsroom-4cut/002.webp": "4C5EEA2F595E19A34A596BA4ED886A07AB982F007AE033EDCD5DC91D83409F30",
+    "assets/newsroom-4cut/003.webp": "CF567AC58EBB1403AD3C8DCDEF54BFDA818F4B98489C2B0A4607DA919DE365F0",
+    "assets/street-journal/chibi-sheet-v1.webp": "BA1CAC623DB561CBBCEFE6C5AA783425D7BA3C2DB2F08A0E42AAC383E0F9786C"
+  },
+  "compare": "artifacts/newsroom-4cut-004/compare-003-004.png",
+  "note": "Metadata checks are separate from manual visual review of every final crop."
+}
