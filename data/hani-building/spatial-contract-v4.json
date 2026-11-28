@@ -3588,6 +3588,666 @@
             "하늘 보며 멍때리는 중 ☁️",
             "선베드에서 잠깐 눈 감는 중"
           ]
+        },
+        {
+          "id": "eve-roof-sunset",
+          "floorId": "5f",
+          "roomId": "terrace",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "arin",
+              "minji",
+              "sooyeon",
+              "yoonseul",
+              "ieum"
+            ],
+            "maxParticipants": 3
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "18:00",
+                "19:15"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "rooftop_table_slot_1",
+              "rooftop_table_slot_2",
+              "rooftop_table_slot_3"
+            ]
+          },
+          "durationSeconds": [
+            1200,
+            2160
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "노을 색감이 진짜 예쁘다",
+            "해 질 녘 옥상 바람 시원해",
+            "구름 모양이 매일 달라요",
+            "잠깐 하늘 보며 쉬는 중"
+          ]
+        },
+        {
+          "id": "eve-roof-garden",
+          "floorId": "5f",
+          "roomId": "garden",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "naeun",
+              "haru",
+              "gaeun",
+              "mir",
+              "yuna"
+            ],
+            "maxParticipants": 1
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "18:05",
+                "19:35"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "rooftop_garden"
+            ]
+          },
+          "durationSeconds": [
+            1200,
+            2100
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "저녁 허브 향이 은은하네",
+            "새싹이 어제보다 자랐네",
+            "선선한 풀내음 맡는 중",
+            "화분 잎사귀가 반짝이네"
+          ]
+        },
+        {
+          "id": "eve-fit-pilates",
+          "floorId": "creative",
+          "roomId": "fitness",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "naeun",
+              "arin",
+              "seoyun",
+              "yuri",
+              "taeo"
+            ],
+            "maxParticipants": 2
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "18:00",
+                "19:20"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "fit_mat_a",
+              "fit_mat_b"
+            ]
+          },
+          "durationSeconds": [
+            1440,
+            2400
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "매트 위에서 코어 집중!",
+            "호흡 천천히 내쉬는 중",
+            "어깨랑 등 쭉 펴는 중",
+            "오늘 필라테스 자세 좋다"
+          ]
+        },
+        {
+          "id": "eve-cafe-chat",
+          "floorId": "1f",
+          "roomId": "cafe",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "hani",
+              "yuna",
+              "jieun",
+              "haru",
+              "sua",
+              "taeo"
+            ],
+            "maxParticipants": 4
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "18:10",
+                "20:30"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "lobby-nw",
+              "lobby-ne",
+              "lobby-sw",
+              "lobby-se"
+            ]
+          },
+          "durationSeconds": [
+            1800,
+            3360
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "디카페인 차 마시며 수다 중",
+            "따뜻한 라떼 향이 포근해",
+            "오늘 재밌던 얘기 나누는 중",
+            "푹신한 소파에 기대 쉬는 중"
+          ]
+        },
+        {
+          "id": "eve-library-read",
+          "floorId": "creative",
+          "roomId": "library_cinema",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "yoonseul",
+              "haru",
+              "hina",
+              "daon",
+              "seoyun"
+            ],
+            "maxParticipants": 2
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "18:15",
+                "20:30"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "lib_study_a",
+              "lib_study_b"
+            ]
+          },
+          "durationSeconds": [
+            1800,
+            3000
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "조용히 소설 한 장 읽는 중",
+            "마음에 든 구절 적어두는 중",
+            "책갈피 꽂고 잠깐 쉬는 중",
+            "도서관 저녁 공기가 차분해"
+          ]
+        },
+        {
+          "id": "eve-pantry-snack",
+          "floorId": "2f",
+          "roomId": "pantry",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "haru",
+              "jieun",
+              "hina",
+              "naeun",
+              "daon",
+              "ieum"
+            ],
+            "maxParticipants": 3
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "18:20",
+                "21:20"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "pantry_2f",
+              "finance-lounge-a",
+              "finance-lounge-b"
+            ]
+          },
+          "durationSeconds": [
+            1200,
+            2400
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "따뜻한 허브티 우려내는 중",
+            "맛있는 쿠키 나눠 먹는 중",
+            "오늘 고른 간식 꽤 괜찮네",
+            "차 한 잔에 기분 풀리는 중"
+          ]
+        },
+        {
+          "id": "eve-studio-hobby",
+          "floorId": "creative",
+          "roomId": "studio",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "minji",
+              "sooyeon",
+              "yuna",
+              "arin",
+              "serin"
+            ],
+            "maxParticipants": 3
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "18:30",
+                "20:10"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "studio_anchor_a",
+              "studio_anchor_b",
+              "studio_camera"
+            ]
+          },
+          "durationSeconds": [
+            1200,
+            2160
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "좋아하는 영화 장면 토크 중",
+            "여행 사진 구도 맞춰보는 중",
+            "스튜디오 조명이 아늑하네",
+            "추천 음악 한 곡 틀어보는 중"
+          ]
+        },
+        {
+          "id": "eve-lounge-3f-rest",
+          "floorId": "3f",
+          "roomId": "platform",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "dohyun",
+              "serin",
+              "yuri",
+              "arin",
+              "seoyun"
+            ],
+            "maxParticipants": 2
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "18:40",
+                "21:15"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "dev-lounge-a",
+              "dev-lounge-b"
+            ]
+          },
+          "durationSeconds": [
+            1200,
+            2400
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "소파에서 퍼즐 한 판 푸는 중",
+            "이어폰 끼고 음악 듣는 중",
+            "다리 쭉 뻗고 기지개 켜기",
+            "좋아하는 웹툰 새 화 보는 중"
+          ]
+        },
+        {
+          "id": "eve-lounge-4f-tea",
+          "floorId": "4f",
+          "roomId": "mir_nook",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "hani",
+              "gaeun",
+              "ieum",
+              "mir",
+              "yuna"
+            ],
+            "maxParticipants": 4
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "19:00",
+                "21:20"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "lounge-armchair",
+              "lounge-center",
+              "lounge-east",
+              "hani-side"
+            ]
+          },
+          "durationSeconds": [
+            1200,
+            2400
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "조용한 음악 들으며 쉬는 중",
+            "은은한 조명이 참 편안하네",
+            "오늘 하루 장면 떠올리는 중",
+            "라운지에서 숨 고르는 중"
+          ]
+        },
+        {
+          "id": "eve-cinema-night",
+          "floorId": "creative",
+          "roomId": "library_cinema",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "minji",
+              "haru",
+              "hina",
+              "yuri",
+              "gaeun"
+            ],
+            "maxParticipants": 2
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "19:10",
+                "21:30"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "cinema_sofa_a",
+              "cinema_sofa_b"
+            ]
+          },
+          "durationSeconds": [
+            2400,
+            3600
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "저녁 상영 영화 몰입 중",
+            "명대사 나올 타이밍 기다리는 중",
+            "엔딩 크레딧 여운 즐기는 중",
+            "시네마 소파가 제일 푹신해"
+          ]
+        },
+        {
+          "id": "eve-convenience-snack",
+          "floorId": "1f",
+          "roomId": "convenience",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "dohyun",
+              "serin",
+              "minji",
+              "haru",
+              "hina",
+              "sooyeon"
+            ],
+            "maxParticipants": 1
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "19:20",
+                "21:30"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "convenience_browse"
+            ]
+          },
+          "durationSeconds": [
+            1200,
+            2100
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "저녁 신상 간식 고르는 중",
+            "시원한 음료 하나 찜하는 중",
+            "바삭한 과자랑 젤리 고민 중",
+            "호빵 찜기 앞에서 행복한 중"
+          ]
+        },
+        {
+          "id": "eve-fit-running",
+          "floorId": "creative",
+          "roomId": "fitness",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "sooyeon",
+              "yoonseul",
+              "dohyun",
+              "naeun",
+              "jieun"
+            ],
+            "maxParticipants": 2
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "19:30",
+                "21:20"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "fit_treadmill_a",
+              "fit_treadmill_b"
+            ]
+          },
+          "durationSeconds": [
+            1440,
+            2400
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "저녁 러닝 페이스 맞추는 중",
+            "음악 비트에 맞춰 걷는 중",
+            "땀 살짝 빼니 개운하네",
+            "목표 거리까지 한 걸음 더"
+          ]
+        },
+        {
+          "id": "eve-roof-night-rest",
+          "floorId": "5f",
+          "roomId": "quiet_roof",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "mir",
+              "seoyun",
+              "daon",
+              "sua",
+              "yoonseul",
+              "taeo"
+            ],
+            "maxParticipants": 3
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "19:45",
+                "21:30"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "rooftop_rest_slot_1",
+              "rooftop_rest_slot_2",
+              "rooftop_rest_slot_3"
+            ]
+          },
+          "durationSeconds": [
+            1200,
+            2400
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "밤바람 맞으며 별 구경 중",
+            "선베드에 기대어 멍때리는 중",
+            "저녁 공기가 맑고 시원해",
+            "조용한 옥상에서 숨 고르기"
+          ]
         }
       ]
     }
