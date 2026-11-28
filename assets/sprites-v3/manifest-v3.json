@@ -3,11 +3,11 @@
   "canon": "spatial-216-v1",
   "base": "7978d7b91969db163f64b464bd416c3ecd78af98",
   "generator": "built-in image_gen",
-  "layout": "Only row 0 columns 0..3 are populated: standing, sitting, walk-a, walk-b. Other cells are transparent reserved capacity. This is the user-requested front-only four-pose subset, not a completed four-direction animation set. Resident humans use the same four columns; pets use five poses in left/right rows.",
+  "layout": "Row 0 columns 0..3 hold standing, sitting, walk-a, walk-b. Columns 4..5 now hold exercise and exercise-b for the 21 office staff. Other cells are transparent reserved capacity. This is the user-requested front-only pose subset, not a completed four-direction animation set. Resident humans use the same first four columns; pets use five poses in left/right rows.",
   "shadow": "Generated translucent floor shadow included per frame. Do not double-render; future split shadow pass requires mask/extraction work.",
   "pivotMeaning": "Bottom center of included floor shadow; chair/desk masking must be validated by runtime owner.",
-  "spriteBytes": 1241356,
-  "maxSpriteBytes": 1475000,
+  "spriteBytes": 1629878,
+  "maxSpriteBytes": 1650000,
   "entries": [
     {
       "id": "hani",
@@ -15,8 +15,8 @@
       "kind": "human",
       "planned": false,
       "file": "hani.webp",
-      "sizeBytes": 44506,
-      "sha256": "e77e37a56eb1f06c27ace961a2ffe7e169a195cd3e1bf861d185de49b694813f",
+      "sizeBytes": 63598,
+      "sha256": "7eb8d03cc6d6d46bdaa4d81dc396471b5e37cce42aad07d3e7d6bfb7b5a3f0b0",
       "sourceSha256": "d86868fc0fab45a592ebad0fcb36ae687e886309f94d76f273fc0c7d0126d073",
       "sourceRowSplit": 621,
       "sourceGapSamples": 0,
@@ -130,12 +130,62 @@
             472,
             566
           ]
+        },
+        {
+          "name": "exercise",
+          "rect": [
+            576,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            2,
+            32,
+            136,
+            150
+          ],
+          "sourceRect": [
+            96,
+            25,
+            853,
+            865
+          ]
+        },
+        {
+          "name": "exercise-b",
+          "rect": [
+            720,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            5,
+            32,
+            134,
+            150
+          ],
+          "sourceRect": [
+            68,
+            26,
+            817,
+            865
+          ]
         }
       ],
       "alpha": {
-        "transparent": 1715073,
-        "partial": 52656,
-        "opaque": 1743
+        "transparent": 1683750,
+        "partial": 83009,
+        "opaque": 2713
       },
       "maxBytes": 100000,
       "scale": 3,
@@ -147,8 +197,8 @@
       "kind": "human",
       "planned": false,
       "file": "gaeun.webp",
-      "sizeBytes": 41406,
-      "sha256": "7e4674f26a68fcd5c732b9826e286954ab745b16222c47e68a82727b5a5037ed",
+      "sizeBytes": 60066,
+      "sha256": "00360f1b43e14da2e927e9d7e4be84c957d92a451e424e9ab05c781842d0601f",
       "sourceSha256": "f82a86cee167af7638d5ddcf53ee0c299af76768d292f0d30e9f683e6ae3155d",
       "sourceRowSplit": 656,
       "sourceGapSamples": 0,
@@ -262,12 +312,62 @@
             376,
             568
           ]
+        },
+        {
+          "name": "exercise",
+          "rect": [
+            576,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            18,
+            14,
+            109,
+            169
+          ],
+          "sourceRect": [
+            120,
+            44,
+            724,
+            978
+          ]
+        },
+        {
+          "name": "exercise-b",
+          "rect": [
+            720,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            15,
+            14,
+            110,
+            169
+          ],
+          "sourceRect": [
+            11,
+            45,
+            625,
+            978
+          ]
         }
       ],
       "alpha": {
-        "transparent": 1727017,
-        "partial": 41278,
-        "opaque": 1177
+        "transparent": 1702825,
+        "partial": 64671,
+        "opaque": 1976
       },
       "maxBytes": 100000,
       "scale": 3,
@@ -279,8 +379,8 @@
       "kind": "human",
       "planned": false,
       "file": "yuna.webp",
-      "sizeBytes": 43372,
-      "sha256": "de8883109f74e710746a320dd5587b95ab6564939b4f78cb9bc3b4ce5ae4b22a",
+      "sizeBytes": 63712,
+      "sha256": "f0f44ffbd30c209ca0ed086026e0ac2379be33686290224c98ab886f39ba57cf",
       "sourceSha256": "a1fa11b4d733d2ef5f6a41bae96155c4fe2f4cd39921eef5b8ab64668018fe68",
       "sourceRowSplit": 644,
       "sourceGapSamples": 0,
@@ -394,12 +494,62 @@
             386,
             570
           ]
+        },
+        {
+          "name": "exercise",
+          "rect": [
+            576,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            14,
+            14,
+            106,
+            169
+          ],
+          "sourceRect": [
+            126,
+            53,
+            723,
+            998
+          ]
+        },
+        {
+          "name": "exercise-b",
+          "rect": [
+            720,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            13,
+            16,
+            113,
+            167
+          ],
+          "sourceRect": [
+            22,
+            61,
+            655,
+            998
+          ]
         }
       ],
       "alpha": {
-        "transparent": 1726377,
-        "partial": 41704,
-        "opaque": 1391
+        "transparent": 1700440,
+        "partial": 66732,
+        "opaque": 2300
       },
       "maxBytes": 100000,
       "scale": 3,
@@ -411,8 +561,8 @@
       "kind": "human",
       "planned": false,
       "file": "seoyun.webp",
-      "sizeBytes": 42488,
-      "sha256": "e5692026264fae69e138584d3be2aef2a93d106b038e79364dcb0868e6533922",
+      "sizeBytes": 60590,
+      "sha256": "7605eb1eb75ac643c17d2d4183131f5f91204d951c4ab5a97c70a76756f8af28",
       "sourceSha256": "3ca89b4df1f4a3bd9df5e997231b6706bc3f99ca37e9147703eaeb20ebb41883",
       "sourceRowSplit": 647,
       "sourceGapSamples": 0,
@@ -526,12 +676,62 @@
             524,
             567
           ]
+        },
+        {
+          "name": "exercise",
+          "rect": [
+            576,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            6,
+            39,
+            131,
+            144
+          ],
+          "sourceRect": [
+            152,
+            63,
+            873,
+            858
+          ]
+        },
+        {
+          "name": "exercise-b",
+          "rect": [
+            720,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            10,
+            37,
+            132,
+            146
+          ],
+          "sourceRect": [
+            39,
+            54,
+            761,
+            858
+          ]
         }
       ],
       "alpha": {
-        "transparent": 1721316,
-        "partial": 46375,
-        "opaque": 1781
+        "transparent": 1692443,
+        "partial": 74170,
+        "opaque": 2859
       },
       "maxBytes": 100000,
       "scale": 3,
@@ -543,8 +743,8 @@
       "kind": "human",
       "planned": false,
       "file": "dohyun.webp",
-      "sizeBytes": 44886,
-      "sha256": "f81cdb55516009243d1d062309430a468f2413920808293e03875a2751412db7",
+      "sizeBytes": 64544,
+      "sha256": "3ac913a67ef0484615c9b0bf22610cc311b9a3abf8b79868da789947c3a91c39",
       "sourceSha256": "1ac3be9de9c709775485ad05d9f3f37da6ebf0819939949d78982e2900d90297",
       "sourceRowSplit": 646,
       "sourceGapSamples": 0,
@@ -658,12 +858,62 @@
             379,
             562
           ]
+        },
+        {
+          "name": "exercise",
+          "rect": [
+            576,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            15,
+            29,
+            116,
+            154
+          ],
+          "sourceRect": [
+            201,
+            37,
+            833,
+            870
+          ]
+        },
+        {
+          "name": "exercise-b",
+          "rect": [
+            720,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            22,
+            28,
+            120,
+            155
+          ],
+          "sourceRect": [
+            105,
+            33,
+            763,
+            870
+          ]
         }
       ],
       "alpha": {
-        "transparent": 1723136,
-        "partial": 45269,
-        "opaque": 1067
+        "transparent": 1696624,
+        "partial": 71030,
+        "opaque": 1818
       },
       "maxBytes": 100000,
       "scale": 3,
@@ -675,8 +925,8 @@
       "kind": "human",
       "planned": false,
       "file": "serin.webp",
-      "sizeBytes": 47600,
-      "sha256": "7d4c4bc4b049cb0798722a57dad652c0a004e175b6b27a0adcb46edd6de7ae5a",
+      "sizeBytes": 68718,
+      "sha256": "af9f41f420e4955a44984787a85312e0f14cdd69ed9f2b6c47e1a5c3dd2b585b",
       "sourceSha256": "29fb1e3b222144a183de5d7d0692800b38f217e6c5ab52e18e5bff5eddaba5c1",
       "sourceRowSplit": 650,
       "sourceGapSamples": 0,
@@ -790,12 +1040,62 @@
             441,
             569
           ]
+        },
+        {
+          "name": "exercise",
+          "rect": [
+            576,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            16,
+            15,
+            113,
+            168
+          ],
+          "sourceRect": [
+            109,
+            61,
+            725,
+            973
+          ]
+        },
+        {
+          "name": "exercise-b",
+          "rect": [
+            720,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            24,
+            18,
+            118,
+            166
+          ],
+          "sourceRect": [
+            6,
+            74,
+            645,
+            973
+          ]
         }
       ],
       "alpha": {
-        "transparent": 1720766,
-        "partial": 47722,
-        "opaque": 984
+        "transparent": 1690559,
+        "partial": 77022,
+        "opaque": 1891
       },
       "maxBytes": 100000,
       "scale": 3,
@@ -807,8 +1107,8 @@
       "kind": "human",
       "planned": false,
       "file": "yuri.webp",
-      "sizeBytes": 39066,
-      "sha256": "b4bf86bb8321f21b3b9ca6c7503a6e9bbd4a77b4dd5eeaca3ea4fec14206b0c3",
+      "sizeBytes": 56152,
+      "sha256": "ada58008b27db5cc27ec633e3d3cbc1a01c847435ab8d6226a157f7fad9e58fa",
       "sourceSha256": "baad1cc7113d82030ab9773084c5d2d977b0dda97ff3cb11265809754f0bfe17",
       "sourceRowSplit": 690,
       "sourceGapSamples": 0,
@@ -922,12 +1222,62 @@
             385,
             533
           ]
+        },
+        {
+          "name": "exercise",
+          "rect": [
+            576,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            11,
+            14,
+            111,
+            169
+          ],
+          "sourceRect": [
+            149,
+            91,
+            730,
+            971
+          ]
+        },
+        {
+          "name": "exercise-b",
+          "rect": [
+            720,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            26,
+            14,
+            111,
+            169
+          ],
+          "sourceRect": [
+            9,
+            92,
+            589,
+            971
+          ]
         }
       ],
       "alpha": {
-        "transparent": 1727498,
-        "partial": 40974,
-        "opaque": 1000
+        "transparent": 1703531,
+        "partial": 64131,
+        "opaque": 1810
       },
       "maxBytes": 100000,
       "scale": 3,
@@ -939,8 +1289,8 @@
       "kind": "human",
       "planned": false,
       "file": "arin.webp",
-      "sizeBytes": 44876,
-      "sha256": "4969d0e2865af14d0c64e4f843df7ed90b735e179c13076644fc4cba4572e94e",
+      "sizeBytes": 76650,
+      "sha256": "d55e0d1eca65ace6405cf15a186da4e495bf5983f5c01c667006f10af1c507e5",
       "sourceSha256": "46235d3a48080f3e9bb3c84a31057af8b54a73b9b0b976daef9c1b1d03d791ee",
       "sourceRowSplit": 649,
       "sourceGapSamples": 1,
@@ -1054,16 +1404,66 @@
             415,
             573
           ]
+        },
+        {
+          "name": "exercise",
+          "rect": [
+            576,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            17,
+            27,
+            109,
+            156
+          ],
+          "sourceRect": [
+            181,
+            7,
+            791,
+            872
+          ]
+        },
+        {
+          "name": "exercise-b",
+          "rect": [
+            720,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            31,
+            27,
+            111,
+            156
+          ],
+          "sourceRect": [
+            98,
+            7,
+            695,
+            872
+          ]
         }
       ],
       "alpha": {
-        "transparent": 1724691,
-        "partial": 43420,
-        "opaque": 1361
+        "transparent": 1701067,
+        "partial": 66104,
+        "opaque": 2301
       },
       "maxBytes": 100000,
       "scale": 3,
-      "quality": 88
+      "quality": 94
     },
     {
       "id": "jieun",
@@ -1071,8 +1471,8 @@
       "kind": "human",
       "planned": false,
       "file": "jieun.webp",
-      "sizeBytes": 40380,
-      "sha256": "36fc6d41a54e6ed681e225c71aecc55cabad148cb1e3dc2848cda0d1fd95674d",
+      "sizeBytes": 57814,
+      "sha256": "a56de4297dc9d902a8a6862d93e2dac3d9feb697cd32d15d93578a95520328b4",
       "sourceSha256": "f11f3e2e8e4ac69bc86af18abdbcdfb9c873bc17f7f473c892509fcfec321093",
       "sourceRowSplit": 645,
       "sourceGapSamples": 0,
@@ -1186,12 +1586,62 @@
             375,
             568
           ]
+        },
+        {
+          "name": "exercise",
+          "rect": [
+            576,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            20,
+            14,
+            101,
+            169
+          ],
+          "sourceRect": [
+            138,
+            37,
+            704,
+            978
+          ]
+        },
+        {
+          "name": "exercise-b",
+          "rect": [
+            720,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            21,
+            16,
+            120,
+            167
+          ],
+          "sourceRect": [
+            65,
+            50,
+            651,
+            978
+          ]
         }
       ],
       "alpha": {
-        "transparent": 1726579,
-        "partial": 41589,
-        "opaque": 1304
+        "transparent": 1703824,
+        "partial": 63575,
+        "opaque": 2073
       },
       "maxBytes": 100000,
       "scale": 3,
@@ -1203,8 +1653,8 @@
       "kind": "human",
       "planned": false,
       "file": "haru.webp",
-      "sizeBytes": 44358,
-      "sha256": "562c6aae5b3b86fbcd3d14d67a6911a359e25ee87ddbc12982962d028a041f20",
+      "sizeBytes": 63214,
+      "sha256": "8a07cc00487cb1bddeaa24df00cacbf35e740b791c0a9bdd669de1ac07cdb237",
       "sourceSha256": "55327d0b7558dabb2f189e1516717d2b293123c417edd7a01b334c117a24197f",
       "sourceRowSplit": 637,
       "sourceGapSamples": 0,
@@ -1318,12 +1768,62 @@
             501,
             579
           ]
+        },
+        {
+          "name": "exercise",
+          "rect": [
+            576,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            7,
+            26,
+            120,
+            157
+          ],
+          "sourceRect": [
+            78,
+            106,
+            739,
+            962
+          ]
+        },
+        {
+          "name": "exercise-b",
+          "rect": [
+            720,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            16,
+            27,
+            119,
+            156
+          ],
+          "sourceRect": [
+            18,
+            108,
+            671,
+            962
+          ]
         }
       ],
       "alpha": {
-        "transparent": 1716857,
-        "partial": 50977,
-        "opaque": 1638
+        "transparent": 1686629,
+        "partial": 80230,
+        "opaque": 2613
       },
       "maxBytes": 100000,
       "scale": 3,
@@ -1335,8 +1835,8 @@
       "kind": "human",
       "planned": false,
       "file": "naeun.webp",
-      "sizeBytes": 40896,
-      "sha256": "0d1244531274b381a57320db53144a218640896ca65f5551c70c77b8658feaf9",
+      "sizeBytes": 58070,
+      "sha256": "6b949d7c08506d99cb7cbf3ff9af2f9904d0754cc2758b5a7004611b2849ee92",
       "sourceSha256": "3cb7f12c21c7ef1b9362b2140bf96651eb2758d38cbe03dabab7312c4c9d66c7",
       "sourceRowSplit": 643,
       "sourceGapSamples": 0,
@@ -1450,12 +1950,62 @@
             396,
             559
           ]
+        },
+        {
+          "name": "exercise",
+          "rect": [
+            576,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            21,
+            15,
+            102,
+            168
+          ],
+          "sourceRect": [
+            167,
+            58,
+            722,
+            973
+          ]
+        },
+        {
+          "name": "exercise-b",
+          "rect": [
+            720,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            18,
+            16,
+            105,
+            167
+          ],
+          "sourceRect": [
+            26,
+            63,
+            597,
+            975
+          ]
         }
       ],
       "alpha": {
-        "transparent": 1727218,
-        "partial": 40916,
-        "opaque": 1338
+        "transparent": 1705821,
+        "partial": 61405,
+        "opaque": 2246
       },
       "maxBytes": 100000,
       "scale": 3,
@@ -1467,8 +2017,8 @@
       "kind": "human",
       "planned": false,
       "file": "hina.webp",
-      "sizeBytes": 41550,
-      "sha256": "b97c2b71b5fa7f57c3076f3d85540d91006749bd52508413c1c10ca3daf670fa",
+      "sizeBytes": 60824,
+      "sha256": "97337f3e27d6624208d6c3cb83197cc47ef888881b774d0767beca97c8ad55f9",
       "sourceSha256": "1a9a79ddcdb2d69513634f30fe9ed50e78d5f26f878e7746d20786c1fb756d52",
       "sourceRowSplit": 638,
       "sourceGapSamples": 26,
@@ -1582,12 +2132,62 @@
             366,
             583
           ]
+        },
+        {
+          "name": "exercise",
+          "rect": [
+            576,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            22,
+            15,
+            99,
+            168
+          ],
+          "sourceRect": [
+            165,
+            20,
+            732,
+            981
+          ]
+        },
+        {
+          "name": "exercise-b",
+          "rect": [
+            720,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            23,
+            15,
+            98,
+            168
+          ],
+          "sourceRect": [
+            39,
+            19,
+            598,
+            981
+          ]
         }
       ],
       "alpha": {
-        "transparent": 1729963,
-        "partial": 38224,
-        "opaque": 1285
+        "transparent": 1708242,
+        "partial": 59138,
+        "opaque": 2092
       },
       "maxBytes": 100000,
       "scale": 3,
@@ -1599,8 +2199,8 @@
       "kind": "human",
       "planned": false,
       "file": "minji.webp",
-      "sizeBytes": 41110,
-      "sha256": "8909fe5ce9bc88debcf4e72a1f257a4e6c8ee5e954d387e2e856dbf45759b96e",
+      "sizeBytes": 60626,
+      "sha256": "7a12bf38fef2a3dce2582ccda5a0191b25381bba8a86e5b178c38246641d3f88",
       "sourceSha256": "94aba21ee988a4f62cb15d2d9cc985bf69eec3ce3b71de8ddd1531be56a94069",
       "sourceRowSplit": 645,
       "sourceGapSamples": 0,
@@ -1714,12 +2314,62 @@
             391,
             574
           ]
+        },
+        {
+          "name": "exercise",
+          "rect": [
+            576,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            19,
+            14,
+            109,
+            169
+          ],
+          "sourceRect": [
+            163,
+            63,
+            755,
+            977
+          ]
+        },
+        {
+          "name": "exercise-b",
+          "rect": [
+            720,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            16,
+            15,
+            117,
+            168
+          ],
+          "sourceRect": [
+            22,
+            68,
+            657,
+            976
+          ]
         }
       ],
       "alpha": {
-        "transparent": 1727057,
-        "partial": 40923,
-        "opaque": 1492
+        "transparent": 1700762,
+        "partial": 66334,
+        "opaque": 2376
       },
       "maxBytes": 100000,
       "scale": 3,
@@ -1731,8 +2381,8 @@
       "kind": "human",
       "planned": false,
       "file": "sooyeon.webp",
-      "sizeBytes": 48258,
-      "sha256": "ccea2fb72f74d6e15b2d6133553e7fa04560824c96d053388f64920725e79233",
+      "sizeBytes": 65404,
+      "sha256": "e31762022466203b88c61c988fadcaddbc0c7a74ea885a34c5f66d73e987edb6",
       "sourceSha256": "aa2aef8db207f70f2aaa7792db66b0dc36dd7e4aff4b8768aa2f35eaa398a211",
       "sourceRowSplit": 636,
       "sourceGapSamples": 0,
@@ -1846,12 +2496,62 @@
             465,
             579
           ]
+        },
+        {
+          "name": "exercise",
+          "rect": [
+            576,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            15,
+            34,
+            108,
+            150
+          ],
+          "sourceRect": [
+            102,
+            51,
+            768,
+            970
+          ]
+        },
+        {
+          "name": "exercise-b",
+          "rect": [
+            720,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            22,
+            33,
+            120,
+            150
+          ],
+          "sourceRect": [
+            0,
+            48,
+            666,
+            970
+          ]
         }
       ],
       "alpha": {
-        "transparent": 1720954,
-        "partial": 47256,
-        "opaque": 1262
+        "transparent": 1699178,
+        "partial": 68157,
+        "opaque": 2137
       },
       "maxBytes": 100000,
       "scale": 3,
@@ -1863,8 +2563,8 @@
       "kind": "human",
       "planned": false,
       "file": "sua.webp",
-      "sizeBytes": 37444,
-      "sha256": "9804e4ca07922bdf73b10634381b6bd01189444b2852c6d1a413bea1dd28275f",
+      "sizeBytes": 53764,
+      "sha256": "1adb5899d0ad62abfc5892c874badf3daa4d5620586a82288d24a6b8876d2fa8",
       "sourceSha256": "c7fe2685fb35de72383c706875d526378385568633c552e598d2bcc746e44b6f",
       "sourceRowSplit": 666,
       "sourceGapSamples": 0,
@@ -1978,12 +2678,62 @@
             406,
             563
           ]
+        },
+        {
+          "name": "exercise",
+          "rect": [
+            576,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            15,
+            16,
+            117,
+            167
+          ],
+          "sourceRect": [
+            203,
+            32,
+            792,
+            871
+          ]
+        },
+        {
+          "name": "exercise-b",
+          "rect": [
+            720,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            24,
+            14,
+            117,
+            169
+          ],
+          "sourceRect": [
+            123,
+            25,
+            710,
+            871
+          ]
         }
       ],
       "alpha": {
-        "transparent": 1725915,
-        "partial": 42222,
-        "opaque": 1335
+        "transparent": 1699782,
+        "partial": 67615,
+        "opaque": 2075
       },
       "maxBytes": 100000,
       "scale": 3,
@@ -1995,8 +2745,8 @@
       "kind": "human",
       "planned": false,
       "file": "taeo.webp",
-      "sizeBytes": 41480,
-      "sha256": "a899de7c97454a6fe5190baaaf1d2773e32f3e643a48d2f2322d29c5f8dac362",
+      "sizeBytes": 59946,
+      "sha256": "b832c2ef2dd899bbfe4c76b3febff7bacc258c82780b5a9f8e45bb14f69dd90e",
       "sourceSha256": "55badf4566f0e93bfe0eb22fdac0e5b9ecd180614e7b30e689e205c12d74142e",
       "sourceRowSplit": 665,
       "sourceGapSamples": 0,
@@ -2110,12 +2860,62 @@
             423,
             558
           ]
+        },
+        {
+          "name": "exercise",
+          "rect": [
+            576,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            8,
+            14,
+            123,
+            169
+          ],
+          "sourceRect": [
+            102,
+            72,
+            762,
+            977
+          ]
+        },
+        {
+          "name": "exercise-b",
+          "rect": [
+            720,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            16,
+            15,
+            124,
+            168
+          ],
+          "sourceRect": [
+            25,
+            78,
+            693,
+            978
+          ]
         }
       ],
       "alpha": {
-        "transparent": 1724017,
-        "partial": 44088,
-        "opaque": 1367
+        "transparent": 1695507,
+        "partial": 71779,
+        "opaque": 2186
       },
       "maxBytes": 100000,
       "scale": 3,
@@ -2127,8 +2927,8 @@
       "kind": "office_entity",
       "planned": false,
       "file": "mir.webp",
-      "sizeBytes": 45854,
-      "sha256": "07af92d80ca55c5ea665fe8c34f044f05fdb6866ed8c22176df14dbd0414747c",
+      "sizeBytes": 64854,
+      "sha256": "db611b47ab65b4e132f3d506a97889a8acfb8d642849dd6ac323f6ad552860c8",
       "sourceSha256": "c6de622a141bfb3bce08aca3aeda4bef8dfd761a644dae4e2a7585ac7a25ca5e",
       "sourceRowSplit": 642,
       "sourceGapSamples": 68,
@@ -2242,12 +3042,62 @@
             412,
             573
           ]
+        },
+        {
+          "name": "exercise",
+          "rect": [
+            576,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            7,
+            18,
+            125,
+            165
+          ],
+          "sourceRect": [
+            213,
+            42,
+            823,
+            844
+          ]
+        },
+        {
+          "name": "exercise-b",
+          "rect": [
+            720,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            18,
+            19,
+            124,
+            165
+          ],
+          "sourceRect": [
+            79,
+            43,
+            681,
+            844
+          ]
         }
       ],
       "alpha": {
-        "transparent": 1721873,
-        "partial": 46608,
-        "opaque": 991
+        "transparent": 1692638,
+        "partial": 74951,
+        "opaque": 1883
       },
       "maxBytes": 100000,
       "scale": 3,
@@ -2391,8 +3241,8 @@
       "kind": "human",
       "planned": true,
       "file": "daon.webp",
-      "sizeBytes": 29608,
-      "sha256": "6b43681b488994c4ef90223a0c8c71307cc7e229adfb5c77fca858c2d45bf529",
+      "sizeBytes": 44012,
+      "sha256": "d1a2a1f2e296ad440e676b436b9a0e91b1d09669a219d30be080ec88d331131e",
       "sourceSha256": "91577da31635e3f13b8ea1f5c09b60abdd90f1a12fd400467c350043bdcea7c7",
       "sourceRowSplit": 768,
       "sourceGapSamples": 0,
@@ -2506,12 +3356,62 @@
             405,
             699
           ]
+        },
+        {
+          "name": "exercise",
+          "rect": [
+            576,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            17,
+            18,
+            107,
+            165
+          ],
+          "sourceRect": [
+            151,
+            95,
+            716,
+            966
+          ]
+        },
+        {
+          "name": "exercise-b",
+          "rect": [
+            720,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            29,
+            18,
+            113,
+            166
+          ],
+          "sourceRect": [
+            20,
+            94,
+            614,
+            966
+          ]
         }
       ],
       "alpha": {
-        "transparent": 1732527,
-        "partial": 35764,
-        "opaque": 1181
+        "transparent": 1707284,
+        "partial": 60245,
+        "opaque": 1943
       },
       "maxBytes": 100000,
       "generator": "built-in image_gen",
@@ -2524,8 +3424,8 @@
       "kind": "human",
       "planned": true,
       "file": "yoonseul.webp",
-      "sizeBytes": 37206,
-      "sha256": "58af0f4267c1837413806d486cfbe082d9d24f667caeac13f97453b5cd9f7662",
+      "sizeBytes": 52120,
+      "sha256": "b9feef6b7e67a7ce740d17f1a7844711fe4d0884c1c19b0ef0ea3921b018fed1",
       "sourceSha256": "5bd7a24686130baf23d7d91dcc2f5d53d21ec6fa12545cd51f1a2a0ecf52eef4",
       "sourceRowSplit": 680,
       "sourceGapSamples": 0,
@@ -2639,12 +3539,62 @@
             361,
             647
           ]
+        },
+        {
+          "name": "exercise",
+          "rect": [
+            576,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            27,
+            35,
+            94,
+            149
+          ],
+          "sourceRect": [
+            142,
+            56,
+            725,
+            990
+          ]
+        },
+        {
+          "name": "exercise-b",
+          "rect": [
+            720,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            27,
+            38,
+            115,
+            145
+          ],
+          "sourceRect": [
+            43,
+            79,
+            650,
+            991
+          ]
         }
       ],
       "alpha": {
-        "transparent": 1730164,
-        "partial": 38394,
-        "opaque": 914
+        "transparent": 1711155,
+        "partial": 56810,
+        "opaque": 1507
       },
       "maxBytes": 100000,
       "generator": "built-in image_gen",
@@ -5051,8 +6001,8 @@
       "kind": "human",
       "planned": false,
       "file": "ieum.webp",
-      "sizeBytes": 32302,
-      "sha256": "c276dec44aeb2c022d32bddf6f3b66f514137dda90106dd54cc34a48e43a0ddf",
+      "sizeBytes": 47842,
+      "sha256": "3000c0b7a3fc7e6b5b4187c595aae593d35a9a40cf35bd8d3f5199d5c1475ba5",
       "sourceSha256": "95644ec0a6c9516b8f61d71378ace41508d5918673edc234158ec24355ae36f9",
       "sourceRowSplit": 668,
       "identityReference": "../profiles/hani-profile-ieum.webp",
@@ -5165,12 +6115,62 @@
             288,
             632
           ]
+        },
+        {
+          "name": "exercise",
+          "rect": [
+            576,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            20,
+            16,
+            99,
+            167
+          ],
+          "sourceRect": [
+            152,
+            42,
+            711,
+            988
+          ]
+        },
+        {
+          "name": "exercise-b",
+          "rect": [
+            720,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            38,
+            17,
+            104,
+            166
+          ],
+          "sourceRect": [
+            41,
+            50,
+            628,
+            988
+          ]
         }
       ],
       "alpha": {
-        "transparent": 1737944,
-        "partial": 30310,
-        "opaque": 1218
+        "transparent": 1715550,
+        "partial": 51890,
+        "opaque": 2032
       },
       "maxBytes": 100000,
       "generator": "built-in image_gen",
@@ -5183,8 +6183,8 @@
       "kind": "human",
       "planned": false,
       "file": "hyejin.webp",
-      "sizeBytes": 35860,
-      "sha256": "005094cd3607ef7537e88a505ae6f1944ffb7522e05e46bf6f1167cbfa1c3f4d",
+      "sizeBytes": 50508,
+      "sha256": "1bb3d0e4475392af49d8de1ddb9665f99f76de3426cd044ce2fb85d9598d6fc6",
       "sourceSha256": "62ac6ab4750c967b6e8bcf9f82c5e5a3c54ad8afcc522e894a44e66ba597353e",
       "sourceRowSplit": 627,
       "identityReference": "../profiles/hani-profile-hyejin.webp",
@@ -5297,17 +6297,67 @@
             74,
             159
           ]
+        },
+        {
+          "name": "exercise",
+          "rect": [
+            576,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            27,
+            25,
+            94,
+            158
+          ],
+          "sourceRect": [
+            178,
+            55,
+            730,
+            974
+          ]
+        },
+        {
+          "name": "exercise-b",
+          "rect": [
+            720,
+            0,
+            144,
+            192
+          ],
+          "pivot": [
+            72,
+            183
+          ],
+          "contentRect": [
+            32,
+            25,
+            110,
+            158
+          ],
+          "sourceRect": [
+            22,
+            51,
+            653,
+            974
+          ]
         }
       ],
       "alpha": {
-        "transparent": 1735309,
-        "partial": 32979,
-        "opaque": 1184
+        "transparent": 1712563,
+        "partial": 54927,
+        "opaque": 1982
       },
       "maxBytes": 100000,
       "generator": "built-in image_gen",
       "scale": 3,
-      "quality": 90
+      "quality": 88
     }
   ],
   "scale": 3,
