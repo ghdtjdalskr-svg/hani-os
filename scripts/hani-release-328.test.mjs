@@ -1,0 +1,141 @@
+import release from './hani-release-328-source.cjs';
+import reviewed from './hani-release-328-reviewed-input.cjs';
+import repository from './hani-test-repository-evidence.cjs';
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import vm from 'node:vm';
+import {createRequire} from 'node:module';
+import {createHash} from 'node:crypto';
+import {fileURLToPath} from 'node:url';
+import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
+const require=createRequire(import.meta.url),root=new URL('../',import.meta.url),dirname=fileURLToPath(new URL('.',import.meta.url));
+const {layer,hash,restore,project,readRawFileSync:read}=release,raw=f=>read(new URL(f,root));
+const actualHead=repository.reference('HEAD'),actualOrigin=repository.reference('origin/main');
+const actualMergeBase=repository.readOnly(['merge-base','HEAD','origin/main']).trim();
+function git(ref,file){let tree=repository.commit(ref).tree;for(const name of file.split('/')){const row=repository.tree(tree).find(r=>r.name===name);assert.ok(row,file+' independent Git entry');tree=row.sha}return repository.object(tree).data}
+
+test('328 exact version/history/bubble-groupchat/bootstrap inverse and forward replay match independent Git bytes',()=>{
+ assert.equal(layer.release,'cb393fb03f5110e7c51e6f318c888719ed6a0b15');assert.equal(layer.base,'ef5e5d4c4c84b09bd9295ac1e467f1eb6590ba43');assert.equal(layer.feature,layer.base);
+ assert.deepEqual(Object.keys(layer.files).sort(),['assets/data/hani-history-releases-v1.json','hani-main.js','hani-office-live.css','hani-office-live.js','hani-style-08.css','hani-ui-v02992.js','index.html','scripts/hani-release-327-source.cjs']);
+ for(const [file,row]of Object.entries(layer.files)){
+  const source=raw(file),before=restore(source,file);
+  assert.deepEqual(before,git(file===layer.bootstrap.file?layer.head:layer.feature,file),file+' independent origin');
+  assert.deepEqual(project(source,file),before);assert.equal(restore(source.toString(),file),before.toString());
+  let forward=before.toString();for(const edit of [...row.replacements].sort((a,b)=>b.beforeStart-a.beforeStart)){assert.equal(forward.slice(edit.beforeStart,edit.beforeStart+edit.before.length),edit.before);forward=forward.slice(0,edit.beforeStart)+edit.after+forward.slice(edit.beforeStart+edit.before.length)}assert.equal(forward,source.toString());
+  if(file!==layer.bootstrap.file)assert.deepEqual(source,git(layer.release,file));
+ }
+ for(const [file,count]of [['index.html',62],['hani-main.js',1]]){const source=raw(file).toString();assert.equal(source.split(layer.to).length-1,count);assert.equal(source.replaceAll(layer.to,layer.from),restore(source,file))}
+ assert.equal(raw(layer.bootstrap.file).toString(),layer.bootstrap.line+git(layer.head,layer.bootstrap.file));
+});
+
+test('328 history, bubble card and staff group chat invert to the 327 bytes',()=>{
+ const H='assets/data/hani-history-releases-v1.json',h=JSON.parse(raw(H)),hb=JSON.parse(restore(raw(H),H));
+ assert.equal(h.entries[0].id,'v2.9.328');assert.equal(h.entries[0].title,'말풍선 카드·단톡방 새 단장');assert.equal(h.entries[0].date,'2026-11-29');
+ assert.equal(h.entries[1].id,'v2.9.327');assert.equal(h.entries[1].source.commit,'ef5e5d4c4c84b09bd9295ac1e467f1eb6590ba43');
+ assert.equal(hb.entries[0].id,'v2.9.327');assert.equal(hb.entries[0].source.commit,'');assert.deepEqual(h.entries.slice(2),hb.entries.slice(1));
+ const js=raw('hani-office-live.js').toString(),jb=restore(raw('hani-office-live.js'),'hani-office-live.js').toString();
+ assert.ok(js.includes('function setBubbleText('));assert.ok(!jb.includes('function setBubbleText('));assert.ok(!js.includes('bubbleLine.textContent='));
+ const ui=raw('hani-ui-v02992.js').toString(),ub=restore(raw('hani-ui-v02992.js'),'hani-ui-v02992.js').toString();
+ assert.ok(ui.includes('HANI 오피스 수다방'));assert.ok(!ub.includes('HANI 오피스 수다방'));assert.ok(ub.includes('const TIMES = [545,558,710,730,870,920,1025,1090];'));
+});
+
+test('328 rejects stale input, EOL, duplicate bytes, bad count/span/output and frozen fixture drift',()=>{
+ for(const [file,row]of Object.entries(layer.files)){
+  const source=raw(file).toString();
+  for(const bad of [source+'\n',source.slice(1),source+source,restore(source,file),source.replace(/\r?\n/,m=>m==='\n'?'\r\n':'\n')]){assert.notEqual(bad,source);assert.throws(()=>restore(bad,file));assert.strictEqual(project(bad,file),bad)}
+  const pin=row.beforeSha256,count=row.count,start=row.replacements[0].start;
+  try{row.beforeSha256='0'.repeat(64);assert.throws(()=>restore(source,file),/exact pre328 output/);row.beforeSha256=pin;row.count++;assert.throws(()=>restore(source,file),/edit count/);row.count=count;row.replacements[0].start=-1;assert.throws(()=>restore(source,file),/edit bounds/)}finally{row.beforeSha256=pin;row.count=count;row.replacements[0].start=start}
+ }
+ for(const file of ['unknown','__proto__','constructor','hani-attendance-core.js']){const source=Buffer.from('unrelated');assert.strictEqual(project(source,file),source);assert.throws(()=>restore(source,file),/known release-328 owner/)}
+ assert.throws(()=>vm.runInNewContext(raw('scripts/hani-release-328-source.cjs').toString(),{__dirname:dirname,require:n=>n==='node:fs'?{readFileSync:()=>Buffer.concat([raw('scripts/fixtures/release-328-layer.json'),Buffer.from('\n')])}:n==='node:path'?path:n==='node:assert/strict'?assert:n==='node:crypto'?{createHash}:assert.fail(n)}),/frozen release-328 fixture/);
+});
+
+test('328 complete owner and ancestry gates reject metadata, runtime, fixture, test, protected and registration drift',()=>{
+ const query=['merge-base','HEAD','origin/main'];assert.equal(reviewed.actualReadOnly(query),actualMergeBase);assert.equal(reviewed.readOnly(query),layer.base);
+ const drift=[...Object.keys(layer.files),'scripts/hani-release-327-preload.cjs','scripts/hani-release-327-reviewed-input.cjs','scripts/hani-release-327.test.mjs','scripts/fixtures/release-327-layer.json','scripts/hani-release-326-source.cjs','scripts/hani-context-remote.test.mjs','AGENTS.md','.gitignore','dev-center/codemap.json',layer.helper.file,...release.outerFiles];
+ for(const file of new Set(drift)){
+  const target=fileURLToPath(new URL(file,root)),source=raw(file);
+  assert.ok(Object.hasOwn(layer.files,file)||Object.hasOwn(layer.owners,file)||file===layer.helper.file||release.outerFiles.includes(file),file+' covered');
+  for(const bad of [Buffer.concat([source,Buffer.from('\n')]),source.subarray(1)])assert.equal(reviewed.selectBase(layer.release,f=>f===target?bad:read(f)),layer.release,file+' byte drift');
+ }
+ for(const ref of [actualOrigin,actualMergeBase,actualHead]){assert.equal(reviewed.acceptsRemote(ref),true);assert.equal(reviewed.selectBase(ref),layer.base)}
+ for(const ref of [layer.base,'0'.repeat(40)])assert.equal(reviewed.selectBase(ref,()=>assert.fail('unrelated input reads')),ref);
+ assert.equal(reviewed.selectBase(layer.release,()=>assert.fail('unrelated remote reads'),'0'.repeat(40)),layer.release);
+ assert.throws(()=>reviewed.selectBase(layer.release,()=>{throw Error('read failure')}),/read failure/);
+ const unrelated='1'.repeat(40);for(const parents of [[],[unrelated]])assert.equal(reviewed.acceptsRemote(unrelated,{commit:()=>({parents})}),false);
+ assert.throws(()=>reviewed.acceptsRemote(unrelated,{commit:()=>{throw Error('ancestry failure')}}),/ancestry failure/);
+ assert.equal(reviewed.acceptsRemote('0'.repeat(40),new Proxy({},{get(){assert.fail('zero ref reads')}})),false);
+ for(const args of [['rev-parse','HEAD'],['show',layer.release+':hani-main.js'],['log','--first-parent','--format=%H%x09%s','origin/main'],['diff-tree','--no-commit-id','--name-only','-r',layer.release]])assert.equal(reviewed.readOnly(args),reviewed.actualReadOnly(args));
+ assert.equal(reviewed.readOnly(['rev-parse','origin/main']),layer.base);assert.equal(repository.reference('origin/main'),actualOrigin,'import alone never installs history');assert.equal(reviewed.actualReference('HEAD'),actualHead);
+ assert.throws(()=>reviewed.readOnly(['merge-base','origin/main','HEAD']));
+ const simulated={exports:{}},protocol={...repository,reference:name=>name==='origin/main'?'0'.repeat(40):reviewed.actualReference(name),readOnly:args=>args.join(' ')==='merge-base HEAD origin/main'?layer.base:args.join(' ')==='rev-parse origin/main'?'0'.repeat(40):reviewed.actualReadOnly(args)};
+ vm.runInNewContext(raw('scripts/hani-release-328-reviewed-input.cjs').toString(),{module:simulated,__dirname:dirname,require:n=>n==='./hani-test-repository-evidence.cjs'?protocol:n==='./hani-release-328-source.cjs'?release:n==='node:path'?path:n==='node:fs'?fs:assert.fail(n)});
+ assert.equal(simulated.exports.reference('origin/main'),'0'.repeat(40));assert.equal(simulated.exports.readOnly(['rev-parse','origin/main']),'0'.repeat(40),'passthrough base cannot authorize refs');
+});
+
+test('328 helper and historical directory remove only one complete pinned new-file block',()=>{
+ const helper=raw(layer.helper.file),block=release.outerBlock(),before=release.projectHelper(helper);
+ assert.equal(helper.toString().split(block).length,2);assert.deepEqual(before,git(layer.head,layer.helper.file));
+ for(const bad of [Buffer.concat([helper,Buffer.from('\n')]),Buffer.concat([helper,Buffer.from(block)]),Buffer.from(helper.toString().replace('tooling328 outer boundaries','altered boundary')),before])assert.strictEqual(release.projectHelper(bad),bad);
+ for(const dir of ['scripts','scripts/fixtures'])for(const objects of [false,true]){
+  const names=release.outerFiles.filter(f=>path.posix.dirname(f)===dir).map(f=>path.posix.basename(f));
+  const entries=[...names,'unrelated.test.mjs'].map(name=>objects?{name}:name),want=entries.filter(e=>(objects?e.name:e)==='unrelated.test.mjs');
+  assert.deepEqual(release.directory(new URL(dir,root),entries),want);
+  for(const file of release.outerFiles){const target=fileURLToPath(new URL(file,root)),drift=f=>f===target?Buffer.concat([read(f),Buffer.from('\n')]):read(f);assert.strictEqual(release.projectHelper(helper,drift),helper);if(path.posix.dirname(file)===dir)assert.ok(release.directory(new URL(dir,root),entries,drift).some(e=>(objects?e.name:e)===path.posix.basename(file)))}
+  const target=fileURLToPath(new URL(layer.helper.file,root));assert.deepEqual(release.directory(new URL(dir,root),entries,f=>f===target?Buffer.concat([read(f),Buffer.from('\n')]):read(f)),entries);
+ }
+ const entries=['anything'];assert.strictEqual(release.directory(new URL('data',root),entries),entries);assert.strictEqual(release.directory(42,entries),entries);
+});
+
+test('328 preload preserves sync/callback/promise URL/string Buffer/text/fd and error contracts',async()=>{
+ const names=[...Object.keys(layer.files),layer.helper.file,'hani-attendance-core.js'],originals=new Map(names.map(f=>[fileURLToPath(new URL(f,root)),raw(f)])),error=new Error('read failed');
+ const disk=(file,encoding)=>{if(file===42)return Buffer.from('fd');const bytes=originals.get(file instanceof URL?fileURLToPath(file):file);assert.ok(bytes);return encoding==='utf8'?bytes.toString():bytes};
+ const fake={readFileSync:disk,readFile(file,...args){const done=args.pop();file==='error'?done(error):done(null,disk(file,args[0]))},promises:{readFile:async(file,...args)=>{if(file==='error')throw error;return disk(file,...args)}}};let synced=0,installed=0;
+ vm.runInNewContext(raw('scripts/hani-release-328-preload.cjs').toString(),{__dirname:dirname,URL,process:{argv:['node',path.join(dirname,'hani-release-328.test.mjs')]},require:n=>n==='node:fs'?fake:n==='node:path'?path:n==='node:url'?{fileURLToPath}:n==='node:module'?{syncBuiltinESMExports(){synced++}}:n==='./hani-release-328-source.cjs'?release:n==='./hani-release-328-reviewed-input.cjs'?{installHistoricalInputs(){installed++}}:assert.fail(n)});
+ assert.equal(synced,1);assert.equal(installed,1);
+ for(const name of names)for(const file of [new URL(name,root),fileURLToPath(new URL(name,root))])for(const encoding of [undefined,'utf8']){const expected=name===layer.helper.file?release.projectHelper(raw(name)):project(raw(name),name),want=encoding?expected.toString():expected;assert.deepEqual(fake.readFileSync(file,encoding),want);assert.deepEqual(await new Promise((resolve,reject)=>fake.readFile(file,encoding,(e,b)=>e?reject(e):resolve(b))),want);assert.deepEqual(await fake.promises.readFile(file,encoding),want)}
+ assert.deepEqual(fake.readFileSync(42),Buffer.from('fd'));assert.deepEqual(await fake.promises.readFile(42),Buffer.from('fd'));await new Promise(resolve=>fake.readFile('error',(e,b)=>{assert.equal(e,error);assert.equal(b,undefined);resolve()}));await assert.rejects(fake.promises.readFile('error'),e=>e===error);
+ const thrown=new Error('caller');let calls=0;assert.throws(()=>fake.readFile(new URL('hani-main.js',root),()=>{calls++;throw thrown}),e=>e===thrown);assert.equal(calls,1);
+ const row=layer.files['hani-main.js'],pin=row.beforeSha256;try{row.beforeSha256='0'.repeat(64);await new Promise(resolve=>fake.readFile(new URL('hani-main.js',root),(e,b)=>{assert.match(e.message,/exact pre328 output/);assert.equal(b,undefined);resolve()}));await assert.rejects(fake.promises.readFile(new URL('hani-main.js',root)),/exact pre328 output/)}finally{row.beforeSha256=pin}
+});
+
+test('original tests, fixtures, protected paths and all runtime files retain independent Git bytes',async()=>{
+ const top=repository.tree(repository.commit(layer.head).tree),scripts=repository.tree(top.find(r=>r.name==='scripts').sha);
+ for(const row of scripts.filter(r=>r.name.endsWith('.test.mjs')))assert.deepEqual(project(raw('scripts/'+row.name),'scripts/'+row.name),repository.object(row.sha).data,row.name+' unchanged');
+ function walk(tree,prefix){for(const row of repository.tree(tree)){const file=prefix+row.name;if(row.mode==='40000')walk(row.sha,file+'/');else assert.deepEqual(raw(file),repository.object(row.sha).data,file+' preserved')}}
+ walk(scripts.find(r=>r.name==='fixtures').sha,'scripts/fixtures/');for(const name of ['.github','dev-center','supabase'])walk(top.find(r=>r.name===name).sha,name+'/');
+ for(const file of ['AGENTS.md','.gitignore','scripts/hani-context-remote.test.mjs','scripts/hani-runtime-closure.mjs','scripts/hani-release-package.mjs','scripts/hani-release-preqa.mjs','scripts/hani-ci-scope.mjs','scripts/hani-board-library-build.mjs'])assert.deepEqual(raw(file),git(layer.head,file));
+ for(const row of scripts.filter(r=>r.name.startsWith('hani-one-pass-')&&r.name.endsWith('.mjs')))assert.deepEqual(raw('scripts/'+row.name),repository.object(row.sha).data);
+ const closure=await resolveRuntimeClosure({exists:f=>fs.existsSync(new URL(f,root)),read:raw});assert.equal(closure.files.length,layer.closureCount);assert.deepEqual(closure.missing,[]);for(const file of closure.files)assert.deepEqual(raw(file),git(layer.release,file),file+' released328 runtime');
+ for(const file of ['data/board-library/part-a.json','data/board-library/part-b.json'])assert.deepEqual(raw(file),git(layer.head,file));
+ for(const file of release.outerFiles)assert.ok(release.outerBlock().includes("['"+file+"','"+hash(raw(file))+"']"),file+' exact registration');
+});
+
+
+test('328 complete frozen owner cohort is independently anchored to the original HEAD tree',()=>{
+ assert.equal(repository.commit(layer.release).parents[0],layer.base);
+ assert.equal(layer.head,'3505822d25ea6542a040a9f95ffd55b062876ec2');
+ for(const [file,pin]of Object.entries(layer.owners)){
+  assert.equal(hash(git(layer.head,file)),pin,file+' independent frozen Git owner');
+  assert.equal(hash(raw(file)),pin,file+' complete current owner');
+ }
+});
+
+test('real capture chain is328 -> release-327 -> release-326 -> release-325 -> release-324 -> building-324; actual refs and objects remain available',async()=>{
+ const closure=await resolveRuntimeClosure({exists:f=>fs.existsSync(new URL(f,root)),read:raw});
+ require('./hani-attendance-preload.cjs');
+ const r327=require('./hani-release-327-source.cjs'),r326=require('./hani-release-326-source.cjs'),r325=require('./hani-release-325-source.cjs'),r324=require('./hani-release-324-source.cjs'),b324=require('./hani-building-324-source.cjs');
+ for(const file of [...closure.files,...Object.keys(layer.files)]){
+  let bytes=raw(file);
+  for(const [adapter,previous]of [[r327,release],[r326,r327],[r325,r326],[r324,r325],[b324,r324]]){
+   bytes=previous.project(bytes,file);
+   assert.equal(hash(adapter.readRawFileSync(new URL(file,root))),hash(bytes),file+' '+adapter.layer.layer+' capture');
+  }
+ }
+ assert.equal(reviewed.actualReference('HEAD'),actualHead);assert.equal(reviewed.actualReference('origin/main'),actualOrigin);
+ assert.equal(reviewed.actualReadOnly(['merge-base','HEAD','origin/main']),actualMergeBase);
+ assert.equal(reviewed.actualReadOnly(['show',layer.release+':hani-main.js']),git(layer.release,'hani-main.js').toString());
+ assert.notDeepEqual(raw('index.html'),fs.readFileSync(new URL('index.html',root)));
+});

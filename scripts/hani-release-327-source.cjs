@@ -1,3 +1,4 @@
+require('./hani-release-328-preload.cjs'); // Released328 metadata precedes the release-327 capture.
 // Test input only: exact released327 version/history/office-live inverse before release-327.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const readRawFileSync=fs.readFileSync.bind(fs),hash=s=>createHash('sha256').update(s).digest('hex');
