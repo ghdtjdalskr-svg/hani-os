@@ -2740,6 +2740,854 @@
           "lines": [
             "주말 가족 라운지에서 쉬는 중"
           ]
+        },
+        {
+          "id": "creative-am-fit",
+          "floorId": "creative",
+          "roomId": "fitness",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "naeun",
+              "sooyeon",
+              "yuri",
+              "dohyun"
+            ],
+            "maxParticipants": 2
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "10:00",
+                "11:00"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "fit_treadmill_a",
+              "fit_mat_a",
+              "fit_treadmill_b",
+              "fit_mat_b"
+            ]
+          },
+          "durationSeconds": [
+            600,
+            1080
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "러닝머신에서 땀 흘리는 중 🏃",
+            "매트에서 스트레칭 중 🧘",
+            "오늘 운동 루틴 하나 더!",
+            "플랭크 30초 버티는 중 💪"
+          ]
+        },
+        {
+          "id": "creative-pm-fit",
+          "floorId": "creative",
+          "roomId": "fitness",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "arin",
+              "naeun",
+              "taeo",
+              "haru",
+              "serin"
+            ],
+            "maxParticipants": 3
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "15:30",
+                "16:40"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "fit_treadmill_a",
+              "fit_mat_a",
+              "fit_treadmill_b",
+              "fit_mat_b"
+            ]
+          },
+          "durationSeconds": [
+            600,
+            1080
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "러닝머신에서 땀 흘리는 중 🏃",
+            "매트에서 스트레칭 중 🧘",
+            "오늘 운동 루틴 하나 더!",
+            "플랭크 30초 버티는 중 💪"
+          ]
+        },
+        {
+          "id": "creative-eve-fit",
+          "floorId": "creative",
+          "roomId": "fitness",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "sooyeon",
+              "naeun",
+              "seoyun",
+              "jieun",
+              "hina",
+              "sua"
+            ],
+            "maxParticipants": 3
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "18:20",
+                "20:00"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "fit_treadmill_a",
+              "fit_mat_a",
+              "fit_treadmill_b",
+              "fit_mat_b"
+            ]
+          },
+          "durationSeconds": [
+            720,
+            1200
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "러닝머신에서 땀 흘리는 중 🏃",
+            "매트에서 스트레칭 중 🧘",
+            "오늘 운동 루틴 하나 더!",
+            "플랭크 30초 버티는 중 💪"
+          ]
+        },
+        {
+          "id": "creative-pm-cinema",
+          "floorId": "creative",
+          "roomId": "library_cinema",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "minji",
+              "haru",
+              "hina"
+            ],
+            "maxParticipants": 2
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "16:10",
+                "17:20"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "cinema_sofa_a",
+              "cinema_sofa_b"
+            ]
+          },
+          "durationSeconds": [
+            900,
+            1500
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "시네마 소파에서 영화 보는 중 🍿",
+            "예고편 보다가 본편까지 보는 중",
+            "좋아하는 장면 다시 보는 중 🎬"
+          ]
+        },
+        {
+          "id": "creative-eve-cinema",
+          "floorId": "creative",
+          "roomId": "library_cinema",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "minji",
+              "haru",
+              "yuri",
+              "gaeun"
+            ],
+            "maxParticipants": 2
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "19:00",
+                "21:00"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "cinema_sofa_a",
+              "cinema_sofa_b"
+            ]
+          },
+          "durationSeconds": [
+            1200,
+            1800
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "시네마 소파에서 영화 보는 중 🍿",
+            "예고편 보다가 본편까지 보는 중",
+            "좋아하는 장면 다시 보는 중 🎬"
+          ]
+        },
+        {
+          "id": "creative-we-am-fit",
+          "floorId": "creative",
+          "roomId": "fitness",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "naeun",
+              "sooyeon",
+              "dohyun",
+              "arin",
+              "jieun"
+            ],
+            "maxParticipants": 3
+          },
+          "when": {
+            "days": "weekend",
+            "timeWindows": [
+              [
+                "10:00",
+                "12:00"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "fit_treadmill_a",
+              "fit_mat_a",
+              "fit_treadmill_b",
+              "fit_mat_b"
+            ]
+          },
+          "durationSeconds": [
+            720,
+            1200
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "러닝머신에서 땀 흘리는 중 🏃",
+            "매트에서 스트레칭 중 🧘",
+            "오늘 운동 루틴 하나 더!",
+            "플랭크 30초 버티는 중 💪"
+          ]
+        },
+        {
+          "id": "creative-we-pm-fit",
+          "floorId": "creative",
+          "roomId": "fitness",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "sooyeon",
+              "naeun",
+              "yuri",
+              "taeo"
+            ],
+            "maxParticipants": 2
+          },
+          "when": {
+            "days": "weekend",
+            "timeWindows": [
+              [
+                "15:00",
+                "17:00"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "fit_treadmill_a",
+              "fit_mat_a",
+              "fit_treadmill_b",
+              "fit_mat_b"
+            ]
+          },
+          "durationSeconds": [
+            720,
+            1200
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "러닝머신에서 땀 흘리는 중 🏃",
+            "매트에서 스트레칭 중 🧘",
+            "오늘 운동 루틴 하나 더!",
+            "플랭크 30초 버티는 중 💪"
+          ]
+        },
+        {
+          "id": "creative-we-cinema",
+          "floorId": "creative",
+          "roomId": "library_cinema",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "minji",
+              "haru",
+              "hina",
+              "yoonseul"
+            ],
+            "maxParticipants": 2
+          },
+          "when": {
+            "days": "weekend",
+            "timeWindows": [
+              [
+                "13:00",
+                "16:00"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "cinema_sofa_a",
+              "cinema_sofa_b"
+            ]
+          },
+          "durationSeconds": [
+            1200,
+            1800
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "시네마 소파에서 영화 보는 중 🍿",
+            "예고편 보다가 본편까지 보는 중",
+            "좋아하는 장면 다시 보는 중 🎬"
+          ]
+        },
+        {
+          "id": "creative-0930-fit",
+          "floorId": "creative",
+          "roomId": "fitness",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "jieun",
+              "yuna",
+              "arin",
+              "taeo"
+            ],
+            "maxParticipants": 2
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "09:30",
+                "10:20"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "fit_treadmill_a",
+              "fit_mat_a",
+              "fit_treadmill_b",
+              "fit_mat_b"
+            ]
+          },
+          "durationSeconds": [
+            600,
+            1080
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "러닝머신에서 땀 흘리는 중 🏃",
+            "매트에서 스트레칭 중 🧘",
+            "오늘 운동 루틴 하나 더!",
+            "플랭크 30초 버티는 중 💪"
+          ]
+        },
+        {
+          "id": "creative-1400-fit",
+          "floorId": "creative",
+          "roomId": "fitness",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "sooyeon",
+              "dohyun",
+              "gaeun",
+              "ieum",
+              "daon"
+            ],
+            "maxParticipants": 3
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "14:00",
+                "15:00"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "fit_treadmill_a",
+              "fit_mat_a",
+              "fit_treadmill_b",
+              "fit_mat_b"
+            ]
+          },
+          "durationSeconds": [
+            600,
+            1080
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "러닝머신에서 땀 흘리는 중 🏃",
+            "매트에서 스트레칭 중 🧘",
+            "오늘 운동 루틴 하나 더!",
+            "플랭크 30초 버티는 중 💪"
+          ]
+        },
+        {
+          "id": "creative-1650-fit",
+          "floorId": "creative",
+          "roomId": "fitness",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "naeun",
+              "yuri",
+              "sua",
+              "hani"
+            ],
+            "maxParticipants": 2
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "16:50",
+                "17:50"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "fit_treadmill_a",
+              "fit_mat_a",
+              "fit_treadmill_b",
+              "fit_mat_b"
+            ]
+          },
+          "durationSeconds": [
+            600,
+            1080
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "러닝머신에서 땀 흘리는 중 🏃",
+            "매트에서 스트레칭 중 🧘",
+            "오늘 운동 루틴 하나 더!",
+            "플랭크 30초 버티는 중 💪"
+          ]
+        },
+        {
+          "id": "creative-am-read",
+          "floorId": "creative",
+          "roomId": "library_cinema",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "yoonseul",
+              "haru",
+              "seoyun",
+              "hani"
+            ],
+            "maxParticipants": 2
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "10:30",
+                "11:30"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "lib_study_a",
+              "lib_study_b"
+            ]
+          },
+          "durationSeconds": [
+            600,
+            1200
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "도서관에서 책 한 권 읽는 중 📚",
+            "좋아하는 문장에 책갈피 끼우는 중",
+            "조용히 책장 넘기는 중"
+          ]
+        },
+        {
+          "id": "creative-pm-read",
+          "floorId": "creative",
+          "roomId": "library_cinema",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "hina",
+              "yoonseul",
+              "serin",
+              "daon",
+              "yuna"
+            ],
+            "maxParticipants": 2
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "13:30",
+                "14:30"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "lib_study_a",
+              "lib_study_b"
+            ]
+          },
+          "durationSeconds": [
+            600,
+            1200
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "도서관에서 책 한 권 읽는 중 📚",
+            "좋아하는 문장에 책갈피 끼우는 중",
+            "조용히 책장 넘기는 중"
+          ]
+        },
+        {
+          "id": "roof-am-stretch",
+          "floorId": "5f",
+          "roomId": "event_roof",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "naeun",
+              "sooyeon",
+              "minji",
+              "hina"
+            ],
+            "maxParticipants": 1
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "10:40",
+                "11:20"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "rooftop_event"
+            ]
+          },
+          "durationSeconds": [
+            480,
+            900
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "옥상에서 기지개 쭉~ 🙆",
+            "바람 맞으며 스트레칭 중",
+            "옥상 한 바퀴 가볍게 걷는 중"
+          ]
+        },
+        {
+          "id": "roof-pm-sun",
+          "floorId": "5f",
+          "roomId": "quiet_roof",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "jieun",
+              "haru",
+              "arin",
+              "seoyun",
+              "yuri",
+              "taeo"
+            ],
+            "maxParticipants": 3
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "14:20",
+                "15:20"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "rooftop_rest_slot_1",
+              "rooftop_rest_slot_2",
+              "rooftop_rest_slot_3"
+            ]
+          },
+          "durationSeconds": [
+            720,
+            1320
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "옥상 선베드에서 햇볕 쬐는 중 ☀️",
+            "하늘 보며 멍때리는 중 ☁️",
+            "선베드에서 잠깐 눈 감는 중"
+          ]
+        },
+        {
+          "id": "roof-pm-stretch",
+          "floorId": "5f",
+          "roomId": "event_roof",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "dohyun",
+              "serin",
+              "gaeun",
+              "sua"
+            ],
+            "maxParticipants": 1
+          },
+          "when": {
+            "days": "weekday",
+            "timeWindows": [
+              [
+                "16:00",
+                "16:40"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "rooftop_event"
+            ]
+          },
+          "durationSeconds": [
+            480,
+            900
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "옥상에서 기지개 쭉~ 🙆",
+            "바람 맞으며 스트레칭 중",
+            "옥상 한 바퀴 가볍게 걷는 중"
+          ]
+        },
+        {
+          "id": "roof-we-sun",
+          "floorId": "5f",
+          "roomId": "quiet_roof",
+          "category": "program",
+          "priority": 40,
+          "who": {
+            "required": [],
+            "optional": [
+              "haru",
+              "jieun",
+              "hina",
+              "minji",
+              "yuri"
+            ],
+            "maxParticipants": 3
+          },
+          "when": {
+            "days": "weekend",
+            "timeWindows": [
+              [
+                "11:00",
+                "15:00"
+              ]
+            ]
+          },
+          "trigger": {
+            "mode": "deterministic_slot"
+          },
+          "where": {
+            "anchors": [
+              "rooftop_rest_slot_1",
+              "rooftop_rest_slot_2",
+              "rooftop_rest_slot_3"
+            ]
+          },
+          "durationSeconds": [
+            900,
+            1500
+          ],
+          "cooldowns": {
+            "personNonWorkSeconds": 2700,
+            "crossFloorSeconds": 5400
+          },
+          "lines": [
+            "옥상 선베드에서 햇볕 쬐는 중 ☀️",
+            "하늘 보며 멍때리는 중 ☁️",
+            "선베드에서 잠깐 눈 감는 중"
+          ]
         }
       ]
     }
